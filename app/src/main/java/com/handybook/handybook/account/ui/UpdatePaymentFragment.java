@@ -1,4 +1,4 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.account.ui;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;

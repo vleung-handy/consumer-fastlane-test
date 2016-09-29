@@ -1,10 +1,9 @@
-package com.handybook.handybook.ui.fragment;
+package com.handybook.handybook.account.ui;
+
 
 import android.view.View;
 
-import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;

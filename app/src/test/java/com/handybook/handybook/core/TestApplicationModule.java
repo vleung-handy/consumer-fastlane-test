@@ -9,6 +9,8 @@ import com.handybook.handybook.account.ui.ContactFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfileFragment;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
+import com.handybook.handybook.account.ui.UpdatePaymentFragment;
+import com.handybook.handybook.account.ui.UpdatePaymentFragmentTest;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
@@ -82,8 +84,6 @@ import com.handybook.handybook.module.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.HelpCenterTest;
-import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
-import com.handybook.handybook.ui.fragment.UpdatePaymentFragmentTest;
 import com.handybook.handybook.user.AccountFragmentTest;
 import com.squareup.otto.Bus;
 

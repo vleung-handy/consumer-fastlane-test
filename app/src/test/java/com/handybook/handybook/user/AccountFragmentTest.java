@@ -10,11 +10,11 @@ import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.account.ui.ContactFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
+import com.handybook.handybook.account.ui.UpdatePaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.ui.fragment.UpdatePaymentFragment;
 
 import org.junit.Before;
 import org.junit.Test;
