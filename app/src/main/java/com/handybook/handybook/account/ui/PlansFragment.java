@@ -16,6 +16,8 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.account.PlanSelectionLog;
 
 import java.util.ArrayList;
 
@@ -66,6 +68,12 @@ public class PlansFragment extends InjectedFragment
     {
         super.onResume();
         setupDisplay();
+        int[] ids = new int[mPlans.size()];
+        for (int i = 0; i < ids.length; ++i)
+        {
+            ids[i] = mPlans.get(i).getId();
+        }
+        bus.post(new LogEvent.AddLogEvent(new PlanSelectionLog.Shown(ids)));
     }
 
     private void setupDisplay()
@@ -88,6 +96,7 @@ public class PlansFragment extends InjectedFragment
                 @Override
                 public void onClick(final View v)
                 {
+                    bus.post(new LogEvent.AddLogEvent(new PlanSelectionLog.PlanTapped(plan.getId())));
                     EditPlanFragment fragment = EditPlanFragment.newInstance(plan);
                     FragmentUtils.switchToFragment(PlansFragment.this, fragment, true);
                 }

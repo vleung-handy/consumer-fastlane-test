@@ -16,6 +16,8 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.UiUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.account.EditAddressLog;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
 
@@ -75,11 +77,20 @@ public final class EditPlanAddressFragment extends InjectedFragment
         return view;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Shown()));
+
+    }
+
     @OnClick(R.id.plan_address_update_button)
     public void updateAddress()
     {
         if (validateFields())
         {
+            bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Submitted()));
             sendEditAddressRequest();
         }
     }
@@ -101,12 +112,14 @@ public final class EditPlanAddressFragment extends InjectedFragment
                     @Override
                     public void onSuccess(final RecurringPlanWrapper response)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Success()));
                         onReceiveEditBookingAddressSuccess(response);
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
+                        bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Error()));
                         onReceiveEditBookingAddressError(error);
                     }
                 }

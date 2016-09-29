@@ -17,7 +17,14 @@ public final class ProfileActivity extends MenuDrawerActivity
     @Override
     protected final Fragment createFragment()
     {
-        return ProfileFragment.newInstance();
+        if (getConfiguration().isNewAccountEnabled())
+        {
+            return AccountFragment.newInstance();
+        }
+        else
+        {
+            return ProfileFragment.newInstance();
+        }
     }
 
     @Override
