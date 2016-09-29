@@ -19,6 +19,8 @@ public class Configuration
     private boolean mLockboxEntryMethodEnabled;
     @SerializedName("native_help_center_enabled")
     private boolean mNativeHelpCenterEnabled;
+    @SerializedName("new_account_enabled")
+    private boolean mNewAccountEnabled;
 
     @SerializedName("upcoming_and_past_bookings_enabled")
     private boolean mUpcomingAndPastBookingsEnabled;
@@ -58,20 +60,16 @@ public class Configuration
         return mNativeHelpCenterEnabled;
     }
 
-    //TODO sammy update this when we have theconfiguration value
-    public boolean isNewAccountEnabled() {
-        return false;
-    }
+    public boolean isNewAccountEnabled() { return mNewAccountEnabled; }
 
     public String toJson()
     {
-        return new GsonBuilder().setDateFormat(DATE_FORMAT).create()
-                .toJson(this);
+        return new GsonBuilder().setDateFormat(DATE_FORMAT).create().toJson(this);
     }
 
     public static Configuration fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat(DATE_FORMAT).create()
-                .fromJson(json, Configuration.class);
+        return new GsonBuilder()
+                .setDateFormat(DATE_FORMAT).create().fromJson(json, Configuration.class);
     }
 }

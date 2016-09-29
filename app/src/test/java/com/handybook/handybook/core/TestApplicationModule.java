@@ -319,6 +319,6 @@ public class TestApplicationModule
             final DataManager dataManager
     )
     {
-        return spy(new ConfigurationManager(bus, defaultPreferencesManager, dataManager));
+        return spy(new TestConfigurationManager(bus, defaultPreferencesManager, dataManager));
     }
 }
