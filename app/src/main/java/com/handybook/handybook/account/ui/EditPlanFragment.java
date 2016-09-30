@@ -77,8 +77,8 @@ public class EditPlanFragment extends InjectedFragment
     @OnClick(R.id.edit_plan_frequency)
     public void editFrequency()
     {
-        // TODO: Need to modify backend so that RecurringBooking contains frequency number
-        // bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditFrequencyTapped(mPlan.getId(), mPlan.getFrequency())));
+        bus.post(new LogEvent.AddLogEvent(
+                new EditPlanLog.EditFrequencyTapped(mPlan.getId(), mPlan.getFrequencyValue())));
 
         EditPlanFrequencyFragment fragment = EditPlanFrequencyFragment.newInstance(mPlan);
         FragmentUtils.switchToFragment(this, fragment, true);
