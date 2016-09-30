@@ -39,6 +39,7 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.view.HandyWebView;
+import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
@@ -409,6 +410,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         }
         else
         {
+            Utils.hideSoftKeyboard(this, getCurrentFocus());
             super.onBackPressed();
         }
     }
