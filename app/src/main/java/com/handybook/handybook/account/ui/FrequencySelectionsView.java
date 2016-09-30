@@ -9,6 +9,8 @@ import com.handybook.handybook.library.util.StringUtils;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.handybook.handybook.booking.constant.BookingRecurrence.BookingRecurrenceCode;
+
 public class FrequencySelectionsView extends LinearLayout
 {
     private List<FrequencyOptionView> mFrequencyOptionViews = new LinkedList<>();
@@ -23,7 +25,7 @@ public class FrequencySelectionsView extends LinearLayout
         super(context, attrs);
     }
 
-    public void addOption(int frequency, String price, boolean isCurrent)
+    public void addOption(@BookingRecurrenceCode int frequency, String price, boolean isCurrent)
     {
         FrequencyOptionView view = new FrequencyOptionView(getContext());
         String frequencyText = StringUtils.getFrequencyText(getContext(), frequency);

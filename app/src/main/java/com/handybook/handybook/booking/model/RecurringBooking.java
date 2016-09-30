@@ -21,6 +21,8 @@ public class RecurringBooking implements Serializable
     private String mFullAddress;
     @SerializedName("frequency")
     private String mFrequency;
+    @SerializedName("frequency_value")
+    private int mFrequencyValue;
     @SerializedName("cancel_url")
     private String mCancelUrl;
     @SerializedName("address_components")
@@ -60,6 +62,8 @@ public class RecurringBooking implements Serializable
     {
         return mFrequency;
     }
+
+    public int getFrequencyValue() { return mFrequencyValue; }
 
     public String getCancelUrl()
     {

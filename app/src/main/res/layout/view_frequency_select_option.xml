@@ -60,6 +60,7 @@
                 android:freezesText="false"
                 android:maxLines="1"
                 android:text="@string/current"
+                android:textAllCaps="true"
                 android:textColor="@color/handy_blue"
                 android:visibility="gone"
                 tools:visibility="visible"
