@@ -278,17 +278,25 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     {
         final User currentUser = mUserManager.getCurrentUser();
         final boolean userLoggedIn = currentUser != null;
+        final boolean newAccountEnabled =
+                mConfiguration != null && mConfiguration.isNewAccountEnabled();
 
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_bookings).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_profile).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_free_cleanings).setVisible(userLoggedIn);
-        mNavigationView.getMenu().findItem(R.id.nav_menu_log_out).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_log_in).setVisible(!userLoggedIn);
+        mNavigationView.getMenu().findItem(R.id.nav_menu_log_out).setVisible(
+                userLoggedIn && !newAccountEnabled);
+        mNavigationView.getMenu().findItem(R.id.nav_menu_promotions).setVisible(!newAccountEnabled);
 
-        mNavigationView.getMenu().findItem(R.id.nav_menu_payment).setVisible(currentUser != null && currentUser.getStripeKey() != null);
+        mNavigationView.getMenu().findItem(R.id.nav_menu_payment).setVisible(
+                currentUser != null && currentUser.getStripeKey() != null && !newAccountEnabled);
 
-        mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
-        mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(mConfiguration != null && mConfiguration.isUpcomingAndPastBookingsEnabled());
+        mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(
+                userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
+
+        mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(
+                mConfiguration != null && mConfiguration.isUpcomingAndPastBookingsEnabled());
     }
 
     /**
