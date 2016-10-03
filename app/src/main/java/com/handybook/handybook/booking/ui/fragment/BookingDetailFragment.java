@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
@@ -58,6 +59,7 @@ import com.layer.sdk.LayerClient;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.query.Predicate;
 import com.layer.sdk.query.Query;
+import com.layer.sdk.query.Queryable;
 import com.layer.sdk.query.RecyclerViewController;
 import com.layer.sdk.query.SortDescriptor;
 import com.squareup.otto.Subscribe;
@@ -451,6 +453,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         if ((mLayerClient != null) && mLayerClient.isAuthenticated())
         {
             Log.d(TAG, "initLayer: Already logged in");
+            waitForContent();
             syncConversation();
         }
         else
@@ -478,6 +481,40 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             );
 
         }
+    }
+
+    private void waitForContent()
+    {
+        Log.d(TAG, "waitForContent: ");
+        mLayerClient.waitForContent(
+                Uri.parse(mBooking.getConversationId()),
+                new LayerClient.ContentAvailableCallback()
+                {
+                    @Override
+                    public void onContentAvailable(
+                            final LayerClient layerClient, @NonNull final Queryable queryable
+                    )
+                    {
+                        Log.d(
+                                TAG,
+                                "onContentAvailable() called with: layerClient = [" + layerClient + "], queryable = [" + queryable + "]"
+                        );
+                    }
+
+                    @Override
+                    public void onContentFailed(
+                            final LayerClient layerClient,
+                            final Uri uri,
+                            final Exception e
+                    )
+                    {
+                        Log.d(
+                                TAG,
+                                "onContentFailed() called with: layerClient = [" + layerClient + "], uri = [" + uri + "], e = [" + e + "]"
+                        );
+                    }
+                }
+        );
     }
 
     private void setupClickListeners()

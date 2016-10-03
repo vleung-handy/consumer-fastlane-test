@@ -37,7 +37,10 @@ public final class ChatModule
     private static final String TAG = ChatModule.class.getName();
 
     //JIA's project number
-    private static final String LAYER_APP_ID = "layer:///apps/staging/6178a72e-4e8d-11e6-aca9-940102005074";
+    //private static final String LAYER_APP_ID = "layer:///apps/staging/6178a72e-4e8d-11e6-aca9-940102005074";
+
+    //Handy's project number
+    private static final String LAYER_APP_ID = "layer:///apps/staging/17d296fa-4e8f-11e6-aca9-940102005074";
 
     //JIA's GCM number
     private static final String GCM_SENDER_ID = "606008763304";
