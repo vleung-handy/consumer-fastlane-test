@@ -932,7 +932,7 @@ public class DataManager
      *                          creates. ideally, it should not be used this way.
      * @param cb
      */
-    public final void updateUser(
+    public void updateUser(
             final UpdateUserRequest updateUserRequest,
             final String authToken,
             final Callback<User> cb
@@ -1177,7 +1177,7 @@ public class DataManager
         );
     }
 
-    public final void updateRecurringFrequency(
+    public void updateRecurringFrequency(
             final String recurringId,
             final BookingEditFrequencyRequest bookingEditFrequencyRequest,
             final Callback<Void> cb
@@ -1198,7 +1198,7 @@ public class DataManager
         );
     }
 
-    public final void getRecurringFrequency(
+    public void getRecurringFrequency(
             final String recurringId,
             final Callback<BookingEditFrequencyInfoResponse> cb
     )
