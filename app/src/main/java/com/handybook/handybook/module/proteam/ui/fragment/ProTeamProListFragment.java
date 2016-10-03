@@ -149,6 +149,7 @@ public class ProTeamProListFragment extends InjectedFragment
             return;
         }
         RecyclerView.Adapter proCardCardAdapter = new ProTeamCategoryAdapter(
+                userManager.getCurrentUser(),
                 mProteam,
                 mProTeamCategoryType,
                 mOnInteractionListener
