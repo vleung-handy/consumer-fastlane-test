@@ -219,7 +219,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
         //build the resulting booking detail section
         mBookingDurationText.setText(getResources().getString(
-                R.string.booking_edit_num_hours_formatted, totalHours));
+                R.string.booking_edit_num_hours_formatted, Float.toString(totalHours)));
         mBilledOnText.setText(getResources().getString(
                 R.string.billed_on_date_formatted,
                 mBookingEditExtrasViewModel
@@ -248,7 +248,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         String originalBookingBasePrice = mBookingEditExtrasViewModel
                 .getOriginalBookingBasePriceFormatted(getContext());
         mBookingTableRow.setLabelAndValueText(
-                getResources().getString(R.string.booking_edit_base_hours_formatted, bookingBaseHours),
+                getResources().getString(R.string.booking_edit_base_hours_formatted,
+                        Float.toString(bookingBaseHours)),
                 originalBookingBasePrice);
     }
 

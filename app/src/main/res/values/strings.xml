@@ -210,9 +210,9 @@
     <string name="frequency">Frequency</string>
 
     <!--shared between booking edit screens-->
-    <string name="booking_edit_num_hours_formatted">(%1$f hours)</string>
-    <string name="booking_edit_base_hours_formatted">Base time (%1$f hours)</string>
-    <string name="booking_edit_added_hours_formatted">Added time (%1$f hours)</string>
+    <string name="booking_edit_num_hours_formatted">(%1$s hours)</string>
+    <string name="booking_edit_base_hours_formatted">Base time (%1$s hours)</string>
+    <string name="booking_edit_added_hours_formatted">Added time (%1$s hours)</string>
     <string name="booking_edit_extra_hours_formatted">Extras (%1$s hours)</string>
     <string name="booking_edit_positive_price_formatted">+%1$s</string>
     <string name="booking_edit_pro_assignment_warning">If your pro is unable to commit to your edit, another pro will be assigned.</string>
