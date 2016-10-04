@@ -34,6 +34,7 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
@@ -44,7 +45,6 @@ import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.EmailInputTextView;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.handybook.handybook.ui.widget.PasswordInputTextView;
-import com.handybook.handybook.library.util.ValidationUtils;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -445,58 +445,6 @@ public final class LoginFragment extends BookingFlowFragment
         }
     };
 
-//TODO: Cleanup below
-/*
-    private final Session.StatusCallback statusCallback = new Session.StatusCallback() {
-        @Override
-        public void call(final Session session, final SessionState state, final Exception exception) {
-            if (!mHandleFBSessionUpdates || !allowCallbacks) return;
-
-            if (exception instanceof FacebookAuthorizationException) {
-                mProgressDialog.dismiss();
-                enableInputs();
-
-                mToast.setText(R.string.default_error_string);
-                mToast.show();
-            }
-            else if (session != null && session.isOpened()) {
-                disableInputs();
-                mProgressDialog.show();
-
-                final Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
-                    @Override
-                    public void onCompleted(final GraphUser user, final Response response) {
-                        if (!allowCallbacks) return;
-                        if (response.getError() != null ) {
-                            mProgressDialog.dismiss();
-                            enableInputs();
-
-                            mToast.setText(R.string.default_error_string);
-                            mToast.show();
-                            session.closeAndClearTokenInformation();
-                        }
-                        else if (user != null && user.asMap().get("email") == null) {
-                             // TODO if email not given, then deauthorize app
-                            mProgressDialog.dismiss();
-                            enableInputs();
-
-                            mToast.setText(R.string.default_error_string);
-                            mToast.show();
-                            session.closeAndClearTokenInformation();
-                        }
-                        else {
-                            mAuthType = AuthType.FACEBOOK;
-                            dataManager.authFBUser(user.getId(), session.getAccessToken(),
-                                    user.asMap().get("email").toString(),  user.getFirstName(),
-                                    user.getLastName(), userCallback);
-                        }
-                    }
-                });
-                Request.executeBatchAsync(request);
-            }
-        }
-    };
-*/
 
     @Subscribe
     public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event)
