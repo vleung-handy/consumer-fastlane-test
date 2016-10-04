@@ -82,8 +82,8 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '24.1.0'
-    googlePlayServicesVersion = '9.0.0'
+    supportLibraryVersion = '24.2.1'
+    googlePlayServicesVersion = '9.6.1'
     firebaseVersion = '9.0.0'
 }
 
