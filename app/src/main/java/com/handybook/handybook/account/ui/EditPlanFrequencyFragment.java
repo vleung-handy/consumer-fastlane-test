@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInfoResponse;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
+import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
@@ -67,7 +68,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         super.onResume();
 
         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog
-                .Shown(mPlan.getId(), mFrequencyInfo.getCurrentFrequency())));
+                .Shown(mPlan.getId(), mPlan.getFrequencyValue())));
 
         showUiBlockers();
 
@@ -96,19 +97,19 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
     private void setupDisplay()
     {
         mFrequencySelectionsView.addOption(
-                1,
+                BookingRecurrence.WEEKLY,
                 mFrequencyInfo.getWeeklyPriceFormatted(),
-                mFrequencyInfo.getCurrentFrequency() == 1
+                mPlan.getFrequencyValue() == BookingRecurrence.WEEKLY
         );
         mFrequencySelectionsView.addOption(
-                2,
+                BookingRecurrence.BIWEEKLY,
                 mFrequencyInfo.getBimonthlyPriceFormatted(),
-                mFrequencyInfo.getCurrentFrequency() == 2
+                mPlan.getFrequencyValue() == BookingRecurrence.BIWEEKLY
         );
         mFrequencySelectionsView.addOption(
-                4,
+                BookingRecurrence.MONTHLY,
                 mFrequencyInfo.getMonthlyPriceFormatted(),
-                mFrequencyInfo.getCurrentFrequency() == 4
+                mPlan.getFrequencyValue() == BookingRecurrence.MONTHLY
         );
     }
 
@@ -134,7 +135,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
                         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Success(
                                 mPlan.getId(),
                                 mFrequencyInfo.getCurrentFrequency(),
-                                mFrequencySelectionsView.getCurrentlySelectedFrequency()
+                                mPlan.getFrequencyValue()
                         )));
                         updateSuccess();
                     }
@@ -159,6 +160,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         showToast(R.string.updated_booking_frequency);
         mPlan.setFrequency(StringUtils.getFrequencyText(
                 getContext(), mFrequencySelectionsView.getCurrentlySelectedFrequency()));
+        mPlan.setFrequencyValue(mFrequencySelectionsView.getCurrentlySelectedFrequency());
         getFragmentManager().popBackStack();
     }
 

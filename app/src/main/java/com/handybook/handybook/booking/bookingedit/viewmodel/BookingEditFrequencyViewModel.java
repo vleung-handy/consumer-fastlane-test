@@ -15,7 +15,7 @@ import com.handybook.handybook.booking.model.UserRecurringBooking;
 public class BookingEditFrequencyViewModel
 {
     private final BookingEditFrequencyInfoResponse mEditFrequencyInfoResponse;
-    private final int[] mFrequencyOptionsArray = new int[]{BookingRecurrence.WEEKLY, BookingRecurrence.BIMONTHLY, BookingRecurrence.MONTHLY};
+    private final int[] mFrequencyOptionsArray = new int[]{BookingRecurrence.WEEKLY, BookingRecurrence.BIWEEKLY, BookingRecurrence.MONTHLY};
     //allowing edit frequency only for recurring bookings
 
     private BookingEditFrequencyViewModel(
@@ -140,7 +140,7 @@ public class BookingEditFrequencyViewModel
         {
             case BookingRecurrence.WEEKLY:
                 return mEditFrequencyInfoResponse.getWeeklyPriceFormatted();
-            case BookingRecurrence.BIMONTHLY:
+            case BookingRecurrence.BIWEEKLY:
                 return mEditFrequencyInfoResponse.getBimonthlyPriceFormatted();
             case BookingRecurrence.MONTHLY:
                 return mEditFrequencyInfoResponse.getMonthlyPriceFormatted();
@@ -188,7 +188,7 @@ public class BookingEditFrequencyViewModel
         {
             case BookingRecurrence.WEEKLY:
                 return context.getResources().getString(R.string.every_week);
-            case BookingRecurrence.BIMONTHLY:
+            case BookingRecurrence.BIWEEKLY:
                 return context.getResources().getString(R.string.every_two_weeks);
             case BookingRecurrence.MONTHLY:
                 return context.getResources().getString(R.string.every_four_weeks);

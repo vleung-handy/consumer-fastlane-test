@@ -9,6 +9,11 @@ public class RecurringBookingsResponse
     @SerializedName("recurring_bookings")
     private List<RecurringBooking> mRecurringBookings;
 
+    public RecurringBookingsResponse(final List<RecurringBooking> recurringBookings)
+    {
+        mRecurringBookings = recurringBookings;
+    }
+
     public List<RecurringBooking> getRecurringBookings()
     {
         return mRecurringBookings;

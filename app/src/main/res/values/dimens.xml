@@ -17,6 +17,7 @@
     <dimen name="default_padding_eighth">2dp</dimen>
     <dimen name="default_padding_quarter">4dp</dimen>
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="default_padding_medium">24dp</dimen>
     <dimen name="default_padding_double">32dp</dimen>
     <dimen name="default_padding_4x">64dp</dimen>
     <dimen name="default_padding_half">8dp</dimen>
@@ -97,4 +98,8 @@
     <dimen name="account.medium_padding">14dp</dimen>
     <dimen name="account.credits_text_size">30sp</dimen>
     <dimen name="account.sign_out_height">48dp</dimen>
+
+    <!-- Nav Drawer -->
+    <dimen name="nav.gift_icon_width_height">56dp</dimen>
+    <dimen name="nav.free_cleanings_invite_margin">24dp</dimen>
 </resources>

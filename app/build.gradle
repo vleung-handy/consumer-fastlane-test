@@ -29,13 +29,13 @@ android {
             storePassword "handy-debug"
         }
     }
-    compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 24
+    buildToolsVersion '24.0.2'
     defaultConfig {
         applicationId 'com.handy.handy'
         minSdkVersion 15
-        targetSdkVersion 23
-        versionName '1.25.2'
+        targetSdkVersion 24
+        versionName '1.26.0'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -82,7 +82,7 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '23.4.0'
+    supportLibraryVersion = '24.1.0'
     googlePlayServicesVersion = '9.0.0'
     firebaseVersion = '9.0.0'
 }

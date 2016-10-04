@@ -39,9 +39,11 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.view.HandyWebView;
+import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
 import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
@@ -54,7 +56,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public abstract class MenuDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener
+public abstract class MenuDrawerActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
 {
     private static final String TAG = MenuDrawerActivity.class.getName();
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
@@ -92,6 +95,7 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         }
         FacebookSdk.sdkInitialize(getApplicationContext());
         setupEnvButton();
+        setupNavHeader();
         mNavigationView.setNavigationItemSelectedListener(this);
         int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
         if (selectedMenuId != -1)
@@ -213,7 +217,8 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 getString(R.string.env_format),
                 mEnvironmentModifier.getEnvironment(),
                 BuildConfig.VERSION_NAME,
-                Integer.valueOf(BuildConfig.VERSION_CODE).toString())
+                Integer.valueOf(BuildConfig.VERSION_CODE).toString()
+                          )
         );
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
         {
@@ -244,12 +249,25 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         });
     }
 
+    private void setupNavHeader()
+    {
+        mNavigationView.getHeaderView(0).findViewById(R.id.free_cleanings_nav_header)
+                       .setOnClickListener(this);
+    }
+
     /**
-     * This is needed for the little hamburger menu icon to animate when opening and closing the drawer
+     * This is needed for the little hamburger menu icon to animate when opening and closing the
+     * drawer
      */
     public void setupHamburgerMenu(Toolbar toolbar)
     {
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                toolbar,
+                R.string.open_drawer,
+                R.string.close_drawer
+        );
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
     }
 
@@ -278,17 +296,27 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
     {
         final User currentUser = mUserManager.getCurrentUser();
         final boolean userLoggedIn = currentUser != null;
+        final boolean newAccountEnabled =
+                mConfiguration != null && mConfiguration.isNewAccountEnabled();
 
+        mNavigationView.getHeaderView(0).findViewById(R.id.free_cleanings_nav_header)
+                       .setVisibility(userLoggedIn ? View.VISIBLE : View.GONE);
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_bookings).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_profile).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_free_cleanings).setVisible(userLoggedIn);
-        mNavigationView.getMenu().findItem(R.id.nav_menu_log_out).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_log_in).setVisible(!userLoggedIn);
+        mNavigationView.getMenu().findItem(R.id.nav_menu_log_out).setVisible(
+                userLoggedIn && !newAccountEnabled);
+        mNavigationView.getMenu().findItem(R.id.nav_menu_promotions).setVisible(!newAccountEnabled);
 
-        mNavigationView.getMenu().findItem(R.id.nav_menu_payment).setVisible(currentUser != null && currentUser.getStripeKey() != null);
+        mNavigationView.getMenu().findItem(R.id.nav_menu_payment).setVisible(
+                currentUser != null && currentUser.getStripeKey() != null && !newAccountEnabled);
 
-        mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
-        mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(mConfiguration != null && mConfiguration.isUpcomingAndPastBookingsEnabled());
+        mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(
+                userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
+
+        mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(
+                mConfiguration != null && mConfiguration.isUpcomingAndPastBookingsEnabled());
     }
 
     /**
@@ -326,6 +354,8 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
                 navigateToActivity(UpdatePaymentActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_free_cleanings:
+                mBus.post(new LogEvent.AddLogEvent(new SideMenuLog.ShareButtonTappedLog(
+                        SideMenuLog.ShareButtonTappedLog.BANNER)));
                 navigateToActivity(ReferralActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_help:
@@ -401,8 +431,17 @@ public abstract class MenuDrawerActivity extends BaseActivity implements Navigat
         }
         else
         {
+            Utils.hideSoftKeyboard(this, getCurrentFocus());
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onClick(final View v)
+    {
+        mBus.post(new LogEvent.AddLogEvent(new SideMenuLog.ShareButtonTappedLog(
+                SideMenuLog.ShareButtonTappedLog.CTA)));
+        navigateToActivity(ReferralActivity.class, R.id.nav_menu_free_cleanings);
     }
 
     public void toggleMenu()

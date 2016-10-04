@@ -368,119 +368,123 @@ public final class ApplicationModule
             password = mConfigs.getProperty("api_password");
         }
         final String pwd = password;
-        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint)
-                                                                 .setRequestInterceptor(new RequestInterceptor()
-                                                                 {
-                                                                     final String auth = "Basic " + Base64
-                                                                             .encodeToString(
-                                                                                     (username + ":" + pwd)
-                                                                                             .getBytes(),
-                                                                                     Base64.NO_WRAP
-                                                                             );
+        final RestAdapter restAdapter =
+                new RestAdapter
+                        .Builder()
+                        .setEndpoint(endpoint)
+                        .setRequestInterceptor(new RequestInterceptor()
+                        {
+                            final String auth = "Basic " + Base64
+                                    .encodeToString(
+                                            (username + ":" + pwd)
+                                                    .getBytes(),
+                                            Base64.NO_WRAP
+                                    );
 
-                                                                     @Override
-                                                                     public void intercept(
-                                                                             RequestFacade request
-                                                                     )
-                                                                     {
-                                                                         request.addHeader(
-                                                                                 "Authorization",
-                                                                                 auth
-                                                                         );
-                                                                         request.addHeader(
-                                                                                 "Accept",
-                                                                                 "application/json"
-                                                                         );
-                                                                         request.addQueryParam(
-                                                                                 "client",
-                                                                                 "android"
-                                                                         );
-                                                                         request.addQueryParam(
-                                                                                 "app_version",
-                                                                                 BuildConfig.VERSION_NAME
-                                                                         );
-                                                                         request.addQueryParam(
-                                                                                 "app_version_code",
-                                                                                 String.valueOf(
-                                                                                         BuildConfig.VERSION_CODE)
-                                                                         );
-                                                                         request.addQueryParam(
-                                                                                 "api_sub_version",
-                                                                                 "6.0"
-                                                                         );
-                                                                         request.addQueryParam(
-                                                                                 "app_device_id",
-                                                                                 getDeviceId()
-                                                                         );
-                                                                         request.addQueryParam(
-                                                                                 "app_device_model",
-                                                                                 getDeviceName()
-                                                                         );
-                                                                         request.addQueryParam(
-                                                                                 "app_device_os",
-                                                                                 Build.VERSION.RELEASE
-                                                                         );
-                                                                         final User user = userManager
-                                                                                 .getCurrentUser();
-                                                                         if (user != null)
-                                                                         {
-                                                                             request.addQueryParam(
-                                                                                     "app_user_id",
-                                                                                     user.getId()
-                                                                             );
-                                                                             String authToken = user
-                                                                                     .getAuthToken();
-                                                                             if (authToken != null)
-                                                                             {
-                                                                                 request.addHeader(
-                                                                                         "X-Auth-Token",
-                                                                                         authToken
-                                                                                 );
-                                                                             }
-                                                                         }
-                                                                     }
-                                                                 })
-                                                                 .setConverter(new GsonConverter(new GsonBuilder()
-                                                                                                         .setDateFormat(
-                                                                                                                 "yyyy-MM-dd'T'HH:mm:ssZ")
-                                                                                                         .setExclusionStrategies(
-                                                                                                                 BookingRequest
-                                                                                                                         .getExclusionStrategy())
-                                                                                                         .registerTypeAdapter(
-                                                                                                                 BookingRequest.class,
-                                                                                                                 new BookingRequest.BookingRequestSerializer()
-                                                                                                         )
-                                                                                                         .setExclusionStrategies(
-                                                                                                                 BookingQuote
-                                                                                                                         .getExclusionStrategy())
-                                                                                                         .registerTypeAdapter(
-                                                                                                                 BookingQuote.class,
-                                                                                                                 new BookingQuote.BookingQuoteSerializer()
-                                                                                                         )
-                                                                                                         .setExclusionStrategies(
-                                                                                                                 BookingPostInfo
-                                                                                                                         .getExclusionStrategy())
-                                                                                                         .registerTypeAdapter(
-                                                                                                                 BookingPostInfo.class,
-                                                                                                                 new BookingPostInfo.BookingPostInfoSerializer()
-                                                                                                         )
-                                                                                                         .setExclusionStrategies(
-                                                                                                                 BookingTransaction
-                                                                                                                         .getExclusionStrategy())
-                                                                                                         .registerTypeAdapter(
-                                                                                                                 BookingTransaction.class,
-                                                                                                                 new BookingTransaction.BookingTransactionSerializer()
-                                                                                                         )
-                                                                                                         .setExclusionStrategies(
-                                                                                                                 User.getExclusionStrategy())
-                                                                                                         .registerTypeAdapter(
-                                                                                                                 User.class,
-                                                                                                                 new User.UserSerializer()
-                                                                                                         )
-                                                                                                         .create()))
-                                                                 .setClient(new OkClient(
-                                                                         okHttpClient))
-                                                                 .build();
+                            @Override
+                            public void intercept(
+                                    RequestFacade request
+                            )
+                            {
+                                request.addHeader(
+                                        "Authorization",
+                                        auth
+                                );
+                                request.addHeader(
+                                        "Accept",
+                                        "application/json"
+                                );
+                                request.addQueryParam(
+                                        "client",
+                                        "android"
+                                );
+                                request.addQueryParam(
+                                        "app_version",
+                                        BuildConfig.VERSION_NAME
+                                );
+                                request.addQueryParam(
+                                        "app_version_code",
+                                        String.valueOf(
+                                                BuildConfig.VERSION_CODE)
+                                );
+                                request.addQueryParam(
+                                        "api_sub_version",
+                                        "6.0"
+                                );
+                                request.addQueryParam(
+                                        "app_device_id",
+                                        getDeviceId()
+                                );
+                                request.addQueryParam(
+                                        "app_device_model",
+                                        getDeviceName()
+                                );
+                                request.addQueryParam(
+                                        "app_device_os",
+                                        Build.VERSION.RELEASE
+                                );
+                                final User user = userManager
+                                        .getCurrentUser();
+                                if (user != null)
+                                {
+                                    request.addQueryParam(
+                                            "app_user_id",
+                                            user.getId()
+                                    );
+                                    String authToken = user
+                                            .getAuthToken();
+                                    if (authToken != null)
+                                    {
+                                        request.addHeader(
+                                                "X-Auth-Token",
+                                                authToken
+                                        );
+                                    }
+                                }
+                            }
+                        })
+                        .setConverter(new GsonConverter(
+                                new GsonBuilder()
+                                        .setDateFormat(
+                                                "yyyy-MM-dd'T'HH:mm:ssZ")
+                                        .setExclusionStrategies(
+                                                BookingRequest
+                                                        .getExclusionStrategy())
+                                        .registerTypeAdapter(
+                                                BookingRequest.class,
+                                                new BookingRequest.BookingRequestSerializer()
+                                        )
+                                        .setExclusionStrategies(
+                                                BookingQuote
+                                                        .getExclusionStrategy())
+                                        .registerTypeAdapter(
+                                                BookingQuote.class,
+                                                new BookingQuote.BookingQuoteSerializer()
+                                        )
+                                        .setExclusionStrategies(
+                                                BookingPostInfo
+                                                        .getExclusionStrategy())
+                                        .registerTypeAdapter(
+                                                BookingPostInfo.class,
+                                                new BookingPostInfo.BookingPostInfoSerializer()
+                                        )
+                                        .setExclusionStrategies(
+                                                BookingTransaction
+                                                        .getExclusionStrategy())
+                                        .registerTypeAdapter(
+                                                BookingTransaction.class,
+                                                new BookingTransaction.BookingTransactionSerializer()
+                                        )
+                                        .setExclusionStrategies(
+                                                User.getExclusionStrategy())
+                                        .registerTypeAdapter(
+                                                User.class,
+                                                new User.UserSerializer()
+                                        )
+                                        .create()))
+                        .setClient(new OkClient(
+                                okHttpClient))
+                        .build();
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
         {
