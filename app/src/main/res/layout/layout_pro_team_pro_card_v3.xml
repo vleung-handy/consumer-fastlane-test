@@ -73,7 +73,7 @@
                     android:layout_width="@dimen/pro_team_star_width_height_small"
                     android:layout_height="@dimen/pro_team_star_width_height_small"
                     android:layout_gravity="center"
-                    android:contentDescription="@string/pro_team_star"
+                    android:contentDescription="@string/cd.pro_team_star"
                     android:src="@drawable/ic_star"
                     />
 
