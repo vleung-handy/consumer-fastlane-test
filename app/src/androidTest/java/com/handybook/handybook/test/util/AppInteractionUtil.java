@@ -7,6 +7,7 @@ import com.handybook.handybook.test.model.TestUser;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -25,10 +26,7 @@ public class AppInteractionUtil
         //open nav drawer to log out if necessary
 
         // Skip 'share the love' if it shows up
-        if (ViewUtil.isViewDisplayed(withText(R.string.referral_dialog_title)))
-        {
-            onView(withId(R.id.dialog_referral_close_button)).perform(click());
-        }
+        dismissShareTheLoveIfNeeded();
 
         if (!ViewUtil.isViewDisplayed(R.id.login_button))
         /**
@@ -44,6 +42,7 @@ public class AppInteractionUtil
             openDrawer();
 
             //log out
+            onView(withId(android.R.id.content)).perform(swipeUp());
             if (ViewUtil.isViewDisplayed(withText(R.string.log_out)))
             {
                 //press the log out button in the nav drawer
@@ -94,6 +93,7 @@ public class AppInteractionUtil
     {
         ViewUtil.waitForViewVisible(R.id.drawer_layout, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        dismissShareTheLoveIfNeeded();
     }
 
     /**
@@ -103,5 +103,14 @@ public class AppInteractionUtil
     {
         ViewUtil.waitForViewVisible(R.id.drawer_layout, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.close());
+        dismissShareTheLoveIfNeeded();
+    }
+
+    private static void dismissShareTheLoveIfNeeded()
+    {
+        if (ViewUtil.isViewDisplayed(withText(R.string.referral_dialog_title)))
+        {
+            onView(withId(R.id.dialog_referral_close_button)).perform(click());
+        }
     }
 }
