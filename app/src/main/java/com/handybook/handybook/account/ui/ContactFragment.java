@@ -79,6 +79,7 @@ public class ContactFragment extends InjectedFragment
         mFullNameText.setText(mUser.getFullName());
         mEmailText.setText(mUser.getEmail());
         mPhoneText.setText(mUser.getPhone());
+        mPhoneText.setCountryCode(mUser.getPhonePrefix());
     }
 
     @OnClick(R.id.contact_update_button)
@@ -139,5 +140,4 @@ public class ContactFragment extends InjectedFragment
     {
         return mFullNameText.validate() & mEmailText.validate() & mPhoneText.validate();
     }
-
 }

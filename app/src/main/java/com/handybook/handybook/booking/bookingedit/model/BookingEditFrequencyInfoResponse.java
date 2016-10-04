@@ -14,6 +14,21 @@ public class BookingEditFrequencyInfoResponse
     @SerializedName("current_freq")
     private int mCurrentFrequency;
 
+    public BookingEditFrequencyInfoResponse() { }
+
+    public BookingEditFrequencyInfoResponse(
+            final String weeklyPriceFormatted,
+            final String bimonthlyPriceFormatted,
+            final String monthlyPriceFormatted,
+            final int currentFrequency
+    )
+    {
+        mWeeklyPriceFormatted = weeklyPriceFormatted;
+        mBimonthlyPriceFormatted = bimonthlyPriceFormatted;
+        mMonthlyPriceFormatted = monthlyPriceFormatted;
+        mCurrentFrequency = currentFrequency;
+    }
+
     public String getWeeklyPriceFormatted()
     {
         return mWeeklyPriceFormatted;

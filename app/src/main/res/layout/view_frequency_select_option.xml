@@ -53,14 +53,14 @@
 
             <TextView
                 android:id="@+id/frequency_option_subtitle_text"
-                style="@style/TextView"
+                style="@style/TextView.Headline.XSmall.Blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:freezesText="false"
                 android:maxLines="1"
                 android:text="@string/current"
-                android:textColor="@color/handy_blue"
+                android:textAllCaps="true"
                 android:visibility="gone"
                 tools:visibility="visible"
                 />

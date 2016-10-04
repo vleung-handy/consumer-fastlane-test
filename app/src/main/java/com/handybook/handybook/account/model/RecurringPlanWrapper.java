@@ -10,6 +10,11 @@ public class RecurringPlanWrapper
     @SerializedName("recurring_booking")
     private RecurringBooking mRecurringBooking;
 
+    public RecurringPlanWrapper(final RecurringBooking recurringBooking)
+    {
+        mRecurringBooking = recurringBooking;
+    }
+
     public RecurringBooking getRecurringBooking()
     {
         return mRecurringBooking;

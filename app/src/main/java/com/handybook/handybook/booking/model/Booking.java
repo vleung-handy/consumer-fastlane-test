@@ -575,6 +575,27 @@ public class Booking implements Parcelable
         @SerializedName("longitude")
         private double longitude;
 
+        public Address() {}
+
+        public Address(
+                final String address1,
+                final String address2,
+                final String city,
+                final String state,
+                final String zip,
+                final double latitude,
+                final double longitude
+        )
+        {
+            this.address1 = address1;
+            this.address2 = address2;
+            this.city = city;
+            this.state = state;
+            this.zip = zip;
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+
         public String getAddress1()
         {
             return address1;

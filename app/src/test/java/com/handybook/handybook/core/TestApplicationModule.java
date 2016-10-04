@@ -4,8 +4,15 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.login.LoginManager;
+import com.handybook.handybook.NavMenuTest;
 import com.handybook.handybook.account.ui.AccountFragment;
+import com.handybook.handybook.account.ui.AccountFragmentTest;
 import com.handybook.handybook.account.ui.ContactFragment;
+import com.handybook.handybook.account.ui.ContactFragmentTest;
+import com.handybook.handybook.account.ui.EditPlanAddressFragment;
+import com.handybook.handybook.account.ui.EditPlanFragment;
+import com.handybook.handybook.account.ui.EditPlanFrequencyFragment;
+import com.handybook.handybook.account.ui.PlansFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfileFragment;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
@@ -84,7 +91,6 @@ import com.handybook.handybook.module.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.ui.activity.BaseActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.HelpCenterTest;
-import com.handybook.handybook.user.AccountFragmentTest;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
@@ -169,6 +175,12 @@ import static org.mockito.Mockito.when;
         ProfilePasswordFragment.class,
         ProfileFragment.class,
         PromosFragment.class,
+        NavMenuTest.class,
+        PlansFragment.class,
+        ContactFragmentTest.class,
+        EditPlanFragment.class,
+        EditPlanFrequencyFragment.class,
+        EditPlanAddressFragment.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -229,9 +241,12 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
-    final UserManager provideUserManager()
+    final UserManager provideUserManager(
+            final Bus bus,
+            final SecurePreferencesManager securePreferencesManager
+    )
     {
-        return mock(UserManager.class);
+        return spy(new TestUserManager(context, bus, securePreferencesManager));
     }
 
     @Provides

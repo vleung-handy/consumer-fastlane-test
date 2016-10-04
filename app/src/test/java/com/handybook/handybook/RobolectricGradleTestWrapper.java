@@ -19,7 +19,7 @@ import static org.mockito.Mockito.spy;
 
 @Ignore
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = Build.VERSION_CODES.JELLY_BEAN,
+@Config(sdk = Build.VERSION_CODES.LOLLIPOP_MR1,
         constants = BuildConfig.class,
         application = TestBaseApplication.class,
         packageName = "com.handybook.handybook")

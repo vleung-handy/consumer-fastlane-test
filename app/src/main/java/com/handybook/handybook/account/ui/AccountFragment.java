@@ -158,7 +158,14 @@ public class AccountFragment extends InjectedFragment
     public void activePlansClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.PlanManagementTapped(mPlans.size())));
-        FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
+        if (mPlans.size() == 1)
+        {
+            FragmentUtils.switchToFragment(this, EditPlanFragment.newInstance(mPlans.get(0)), true);
+        }
+        else
+        {
+            FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
+        }
     }
 
     @OnClick(R.id.account_promo_code_layout)
@@ -174,7 +181,7 @@ public class AccountFragment extends InjectedFragment
         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutTapped()));
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext())
                 .setMessage(R.string.want_to_log_out)
-                .setPositiveButton(R.string.log_out, new DialogInterface.OnClickListener()
+                .setPositiveButton(R.string.account_sign_out, new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {

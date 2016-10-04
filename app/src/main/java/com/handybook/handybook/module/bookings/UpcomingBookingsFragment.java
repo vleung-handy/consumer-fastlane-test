@@ -32,16 +32,16 @@ import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.BookingListItem;
 import com.handybook.handybook.ui.view.ExpandableCleaningPlan;
 import com.handybook.handybook.ui.view.NoBookingsView;
 import com.handybook.handybook.ui.view.ShareBannerView;
-import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -596,19 +596,14 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     public final void onStart()
     {
         super.onStart();
-        TypedValue typed_value = new TypedValue();
         // Workaround to be able to display the SwipeRefreshLayout onStart
         // as in: http://stackoverflow.com/a/26860930/486332
-        getActivity().getTheme()
-                     .resolveAttribute(
-                             android.support.v7.appcompat.R.attr.actionBarSize,
-                             typed_value,
-                             true
-                     );
         mSwipeRefreshLayout.setProgressViewOffset(
                 false,
                 0,
-                getResources().getDimensionPixelSize(typed_value.resourceId)
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                                24, getResources().getDisplayMetrics()
+                )
         );
     }
 
