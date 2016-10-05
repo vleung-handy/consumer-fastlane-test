@@ -18,8 +18,5 @@ public abstract class LogEvent extends HandyEvent
     }
 
 
-    public static class SendLogsEvent extends RequestEvent {}
-
-
-    public static class SaveLogsEvent extends RequestEvent {}
+    public static class SendLogsEventStartup extends RequestEvent {}
 }
