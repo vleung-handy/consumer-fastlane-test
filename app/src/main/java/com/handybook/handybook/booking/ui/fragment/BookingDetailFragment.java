@@ -559,6 +559,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                                 TAG,
                                 "onContentAvailable() called with: layerClient = [" + layerClient + "], queryable = [" + queryable + "]"
                         );
+
+                        syncConversation();
                     }
 
                     @Override
