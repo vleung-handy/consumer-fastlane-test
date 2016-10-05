@@ -41,6 +41,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
@@ -173,7 +174,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
      */
     private void syncConversation()
     {
-        Log.d(TAG, "syncConversation() called");
+        Log.d(TAG, "syncConversation() called for conversation: " + mBooking.getConversationId());
         Conversation conversation = mLayerClient.getConversation(Uri.parse(mBooking.getConversationId()));
 
         if (conversation != null)
@@ -243,6 +244,44 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                 new SimpleRecyclerCallback()
                 {
                     @Override
+                    public void onQueryDataSetChanged(final RecyclerViewController recyclerViewController)
+                    {
+                        Log.d(
+                                TAG,
+                                "onQueryDataSetChanged() called with: recyclerViewController = [" + recyclerViewController + "]"
+                        );
+                        syncConversation();
+
+                    }
+
+                    @Override
+                    public void onQueryItemChanged(
+                            final RecyclerViewController recyclerViewController,
+                            final int i
+                    )
+                    {
+                        Log.d(
+                                TAG,
+                                "onQueryItemChanged() called with: recyclerViewController = [" + recyclerViewController + "], i = [" + i + "]"
+                        );
+                        syncConversation();
+                    }
+
+                    @Override
+                    public void onQueryItemRangeChanged(
+                            final RecyclerViewController recyclerViewController,
+                            final int i,
+                            final int i1
+                    )
+                    {
+                        Log.d(
+                                TAG,
+                                "onQueryItemRangeChanged() called with: recyclerViewController = [" + recyclerViewController + "], i = [" + i + "], i1 = [" + i1 + "]"
+                        );
+                        syncConversation();
+                    }
+
+                    @Override
                     public void onQueryItemInserted(
                             final RecyclerViewController recyclerViewController,
                             final int i
@@ -251,6 +290,20 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                         Log.d(
                                 TAG,
                                 "onQueryItemInserted() called with: recyclerViewController = [" + recyclerViewController + "], i = [" + i + "]"
+                        );
+                        syncConversation();
+                    }
+
+                    @Override
+                    public void onQueryItemRangeInserted(
+                            final RecyclerViewController recyclerViewController,
+                            final int i,
+                            final int i1
+                    )
+                    {
+                        Log.d(
+                                TAG,
+                                "onQueryItemRangeInserted() called with: recyclerViewController = [" + recyclerViewController + "], i = [" + i + "], i1 = [" + i1 + "]"
                         );
                         syncConversation();
                     }
@@ -459,10 +512,14 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         else
         {
             Log.d(TAG, "initLayer: Not logged in");
-            final String name = "Jia";
-            final String userId = "27680";
+            final User currentUser = userManager.getCurrentUser();
+
             mLayerHelper.authenticate(
-                    new LayerAuthenticationProvider.Credentials(mLayerAppId, name, userId),
+                    new LayerAuthenticationProvider.Credentials(
+                            mLayerAppId,
+                            currentUser.getFirstName(),
+                            currentUser.getId()
+                    ),
                     new AuthenticationProvider.Callback()
                     {
                         @Override
@@ -475,12 +532,14 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                         @Override
                         public void onError(AuthenticationProvider provider, final String error)
                         {
-                            Log.e(TAG, "Failed to authenticate as `" + name + "`: " + error);
+                            Log.e(
+                                    TAG,
+                                    "Failed to authenticate as `" + currentUser.getFirstName() + "`: " + error
+                            );
                             //TODO: JIA: this should never happen, so if it does, then log something
                         }
                     }
             );
-
         }
     }
 

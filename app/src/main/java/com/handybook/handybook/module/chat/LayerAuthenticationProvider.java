@@ -80,8 +80,8 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
     @Override
     public void onAuthenticationChallenge(LayerClient layerClient, String nonce) {
         Log.d(TAG, "Received challenge: " + nonce);
-//        respondToChallenge(layerClient, nonce);
-        respondToSampleChallenge(layerClient, nonce);
+        respondToChallenge(layerClient, nonce);
+        // respondToSampleChallenge(layerClient, nonce);
     }
 
     @Override
