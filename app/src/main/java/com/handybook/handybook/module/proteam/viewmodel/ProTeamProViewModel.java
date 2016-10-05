@@ -123,6 +123,11 @@ public class ProTeamProViewModel
         return mImageUrl;
     }
 
+    public boolean hasImageUrl()
+    {
+        return mImageUrl != null;
+    }
+
     public interface OnInteractionListener
     {
         void onXClicked(ProTeamPro proTeamPro, ProviderMatchPreference providerMatchPreference);

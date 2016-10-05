@@ -87,13 +87,12 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
             mBookingCountText.setText(mProTeamProViewModel.getBookingFooter());
         }
 
-        final String imageUrl = mProTeamProViewModel.getImageUrl();
         if (mProImage != null)
         {
-            if (imageUrl != null)
+            if (mProTeamProViewModel.hasImageUrl())
             {
                 Picasso.with(mProImage.getContext())
-                       .load(imageUrl)
+                       .load(mProTeamProViewModel.getImageUrl())
                        .placeholder(R.drawable.img_pro_placeholder)
                        .noFade()
                        .into(mProImage);
