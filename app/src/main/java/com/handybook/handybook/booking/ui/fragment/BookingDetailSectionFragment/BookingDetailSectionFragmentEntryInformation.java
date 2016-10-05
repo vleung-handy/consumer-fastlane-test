@@ -1,8 +1,11 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -25,15 +28,25 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
     }
 
     @Override
-    protected int getEntryActionTextResourceId(Booking booking)
+    protected void updateActionTextView(
+            @NonNull final Booking booking, @NonNull final TextView actionTextView
+    )
     {
-        return R.string.edit;
-    }
-
-    @Override
-    protected boolean hasEnabledAction(Booking booking)
-    {
-        return true;
+        if (booking.isPast())
+        {
+            actionTextView.setVisibility(View.GONE);
+            return;
+        }
+        actionTextView.setVisibility(View.VISIBLE);
+        actionTextView.setText(R.string.edit);
+        actionTextView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                onActionClick();
+            }
+        });
     }
 
     @Override
@@ -78,7 +91,6 @@ public class BookingDetailSectionFragmentEntryInformation extends BookingDetailS
         }
     }
 
-    @Override
     protected void onActionClick()
     {
         final Intent intent = new Intent(getActivity(), BookingEditEntryInformationActivity.class);

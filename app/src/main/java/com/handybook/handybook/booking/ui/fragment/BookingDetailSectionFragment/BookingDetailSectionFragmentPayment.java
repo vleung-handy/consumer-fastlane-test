@@ -2,8 +2,8 @@ package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
+import com.handybook.handybook.core.User;
 
 public class BookingDetailSectionFragmentPayment
         extends BookingDetailSectionFragment<BookingDetailSectionPaymentView>
@@ -12,18 +12,6 @@ public class BookingDetailSectionFragmentPayment
     protected int getEntryTitleTextResourceId(Booking booking)
     {
         return R.string.payment;
-    }
-
-    @Override
-    protected int getEntryActionTextResourceId(Booking booking)
-    {
-        return R.string.email_receipt;
-    }
-
-    @Override
-    protected boolean hasEnabledAction(Booking booking)
-    {
-        return false;
     }
 
     @Override
@@ -40,20 +28,30 @@ public class BookingDetailSectionFragmentPayment
         getSectionView().updatePaymentDisplay(booking, user);
     }
 
-    @Override
-    protected void setupClickListeners(Booking booking)
-    {
-        //TODO: Probably some additional constraints on this for certain edit actions
-        if (!booking.isPast())
-        {
-            getSectionView().getEntryActionText().setOnClickListener(actionClicked);
-        }
-    }
+//    @Override
+//    protected void updateActionTextView(
+//            @NonNull final Booking booking, @NonNull final TextView actionTextView
+//    )
+//    {
+//        if (booking.isPast())
+//        {
+//            actionTextView.setVisibility(View.GONE);
+//            return;
+//        }
+//        actionTextView.setVisibility(View.VISIBLE);
+//        actionTextView.setText(R.string.email_receipt);
+//        actionTextView.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(final View v)
+//            {
+//                onActionClick();
+//            }
+//        });
+//    }
 
-
-    @Override
-    protected void onActionClick()
+    private void onActionClick()
     {
-        //TODO: request an emailed receipt
+
     }
 }

@@ -1,6 +1,9 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.view.View;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
@@ -30,18 +33,6 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
     }
 
     @Override
-    protected int getEntryActionTextResourceId(Booking booking)
-    {
-        return R.string.edit;
-    }
-
-    @Override
-    protected boolean hasEnabledAction(Booking booking)
-    {
-        return booking.canEditExtras();
-    }
-
-    @Override
     public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
@@ -49,15 +40,27 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
     }
 
     @Override
-    protected void setupClickListeners(Booking booking)
+    protected void updateActionTextView(
+            @NonNull final Booking booking, @NonNull final TextView actionTextView
+    )
     {
-        if (!booking.isPast())
+        if (!booking.canEditExtras() || booking.isPast())
         {
-            getSectionView().getEntryActionText().setOnClickListener(actionClicked);
+            actionTextView.setVisibility(View.GONE);
+            return;
         }
+        actionTextView.setVisibility(View.VISIBLE);
+        actionTextView.setText(R.string.edit);
+        actionTextView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                onActionClick();
+            }
+        });
     }
 
-    @Override
     protected void onActionClick()
     {
         final Intent intent = new Intent(getActivity(), BookingEditExtrasActivity.class);

@@ -2,10 +2,12 @@ package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment
 
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditPreferencesActivity;
@@ -38,13 +40,6 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
         return R.string.job_details;
     }
 
-    @StringRes
-    @Override
-    protected int getEntryActionTextResourceId(Booking booking)
-    {
-        return R.string.edit;
-    }
-
     @LayoutRes
     @Override
     protected int getFragmentResourceId()
@@ -53,9 +48,25 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
     }
 
     @Override
-    protected boolean hasEnabledAction(Booking booking)
+    protected void updateActionTextView(
+            @NonNull final Booking booking, @NonNull final TextView actionTextView
+    )
     {
-        return true;
+        if (booking.isPast())
+        {
+            actionTextView.setVisibility(View.GONE);
+            return;
+        }
+        actionTextView.setVisibility(View.VISIBLE);
+        actionTextView.setText(R.string.edit);
+        actionTextView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                onActionClick();
+            }
+        });
     }
 
     /**
@@ -181,7 +192,6 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
         preferencesSection.addView(itemView);
     }
 
-    @Override
     protected void onActionClick()
     {
         final Intent intent = new Intent(getActivity(), BookingEditPreferencesActivity.class);

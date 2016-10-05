@@ -1,19 +1,21 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingActionButtonType;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.booking.ui.view.BookingActionButton;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionView;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.Utils;
 import com.squareup.otto.Subscribe;
 
@@ -30,15 +32,6 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
 
     @Bind(R.id.booking_detail_section_view)
     protected BookingDetailSectionView view;
-
-    protected View.OnClickListener actionClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View v)
-        {
-            onActionClick();
-        }
-    };
 
     protected T getSectionView()
     {
@@ -79,8 +72,18 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
                 .inflate(getFragmentResourceId(), container, false);
         ButterKnife.bind(this, view);
         updateDisplay(this.booking, userManager.getCurrentUser());
-        setupClickListeners(this.booking);
         return view;
+    }
+
+    /**
+     * override to change the action text value, visibility and click listener
+     *
+     * @param booking
+     * @param actionTextView
+     */
+    protected void updateActionTextView(@NonNull Booking booking, @NonNull TextView actionTextView)
+    {
+        actionTextView.setVisibility(View.GONE);
     }
 
     protected int getFragmentResourceId()
@@ -91,36 +94,13 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
     public void updateDisplay(Booking booking, User user)
     {
         view.getEntryTitle().setText(getEntryTitleTextResourceId(booking));
-        view.getEntryActionText().setText(getEntryActionTextResourceId(booking));
-        if (!hasEnabledAction(booking) || booking.isPast())
-        {
-            view.getEntryActionText().setVisibility(View.GONE);
-        }
+        updateActionTextView(booking, view.getEntryActionText());
         setupBookingActionButtons(booking);
-    }
-
-    protected void setupClickListeners(Booking booking)
-    {
-        //TODO: Probably some additional constraints on this for certain edit actions?
-        if (!booking.isPast())
-        {
-            view.getEntryActionText().setOnClickListener(actionClicked);
-        }
     }
 
     protected int getEntryTitleTextResourceId(Booking booking)
     {
         return R.string.blank_string;
-    }
-
-    protected int getEntryActionTextResourceId(Booking booking)
-    {
-        return R.string.blank_string;
-    }
-
-    protected boolean hasEnabledAction(Booking booking)
-    {
-        return false;
     }
 
     //TODO: Might put all this booking action button stuff into a child class?, it's a big chunk of
@@ -206,9 +186,6 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
         }
     }
 
-    protected void onActionClick()
-    {
-    }
 
     protected void setActionButtonsEnabled(boolean enabled)
     {
