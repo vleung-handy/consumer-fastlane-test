@@ -28,7 +28,7 @@ public class ProTeamPro implements Parcelable
     private Float mAverageRating;
     @SerializedName("booking_count")
     private Integer mBookingCount;
-    @SerializedName("image_url")
+    @SerializedName("profile_photo_url")
     private String mImageUrl;
 
     protected ProTeamPro(Parcel in)
