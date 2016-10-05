@@ -1,9 +1,10 @@
 package com.handybook.handybook.logger.handylogger;
 
 
-import android.os.AsyncTask;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -11,7 +12,9 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.model.Event;
@@ -26,14 +29,17 @@ import com.squareup.otto.Subscribe;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
 public class EventLogManager
 {
+    private static final int UPLOAD_TIMER_DELAY = 60000; //1 min
+    private static final int UPLOAD_TIMER_DELAY_NO_INTERNET = 15 * 60000; //15 min
     private static final String TAG = EventManager.class.getSimpleName();
-    private static final String SENT_TIMESTAMP_SECS_KEY = "event_bundle_sent_timestamp";
-    private static final int MAX_NUM_PER_BUNDLE = 10;
+    private static final int MAX_NUM_PER_BUNDLE = 50;
     private static final Gson GSON = new Gson();
 
     private static List<EventLogBundle> sEventLogBundles;
@@ -44,7 +50,7 @@ public class EventLogManager
     private final SecurePreferencesManager mSecurePreferencesManager;
 
     private int mSendingLogsCount;
-    private boolean mIsSavingLogs;
+    private Timer mTimer;
 
     @Inject
     public EventLogManager(
@@ -58,98 +64,40 @@ public class EventLogManager
         mFileManager = fileManager;
         mSecurePreferencesManager = securePreferencesManager;
         sEventLogBundles = new ArrayList<>();
-        //Todo, send logs if it exist
-        //Todo, load previous bundle if it exist
+        //Send logs on initialization
+        sendLogsOnInitialization();
     }
 
+    /**
+     *
+     * @param event
+     */
     @Subscribe
     public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
     {
-        if (true)//!BuildConfig.DEBUG)
+        if (!BuildConfig.DEBUG)
+        { return; }
+
+        //Create upload timer when we get a new log and there isn't a timer currently
+        if (mTimer == null)
+        { setUploadTimer(); }
+
+        //If event log bundle is null or we've hit the max num per bundle then we create a new bundle
+        if (sCurrentEventLogBundle == null || sCurrentEventLogBundle.size() >= MAX_NUM_PER_BUNDLE)
         {
-            //If event log bundle is null or we've hit the max num per bundle then we create a new bundle
-            if (sCurrentEventLogBundle == null || sCurrentEventLogBundle.size() >= MAX_NUM_PER_BUNDLE)
-            {
-                //Create new event log bundle and add it to the List
-                sCurrentEventLogBundle = new EventLogBundle(
-                        getUserId(),
-                        new ArrayList<Event>()
-                );
-                sEventLogBundles.add(sCurrentEventLogBundle);
-            }
-
-            sCurrentEventLogBundle.addEvent(new Event(event.getLog()));
-
-            //Save the EventLogBundle to preferences always
-            saveToPreference(PrefsKey.EVENT_LOG_BUNDLES, sEventLogBundles);
-
-            //Todo sammy Timerbased, remove the threshold part
-            //Only send logs if we're currently not sending any
-            if(sCurrentEventLogBundle.size() >= MAX_NUM_PER_BUNDLE && mSendingLogsCount == 0)
-                sendLogsFromPreference();
-
-            //todo sammy do we need this?
-            //log the payload to Crashlytics too
-            try
-            {
-                //putting in try/catch block just in case GSON.toJson throws an exception
-                String eventLogJson = GSON.toJson(event.getLog());
-                String crashlyticsLogString = event.getLog().getEventName() + ": " + eventLogJson;
-                Crashlytics.log(crashlyticsLogString);
-            }
-            catch (Exception e)
-            {
-                Crashlytics.logException(e);
-            }
-
-        }
-    }
-
-    //TODO facebook auth type is wrong?
-
-    @Subscribe
-    public void sendLogsOnStartup(@Nullable final LogEvent.SendLogsEventStartup event)
-    {
-        //TODO sammy get a list of the file system where the logs are stored to see if there is anything to send
-
-        //This should be done on startup onload retrieve previously stored logs and send immediately.
-//        String[] prefBundleString = loadSavedEventLogBundles();
-//
-//        //This means nothing was stored previously in prefs
-//        if (android.text.TextUtils.isEmpty(prefBundleString))
-//        {
-//            return;
-//        }
-//
-//        sendLogs(prefBundleString);
-    }
-
-    public void sendLogsFromPreference()
-    {
-        String logBundles = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES);
-
-        if (!TextUtils.isEmpty(logBundles))
-        {
-            //Save the EventLogBundle to preferences always
-            saveToPreference(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND, sEventLogBundles);
-            sEventLogBundles.clear();
-            sCurrentEventLogBundle = null;
-            //delete the old one immediately
-            removePreference(PrefsKey.EVENT_LOG_BUNDLES);
+            //Create new event log bundle and add it to the List
+            sCurrentEventLogBundle = new EventLogBundle(
+                    getUserId(),
+                    new ArrayList<Event>()
+            );
+            sEventLogBundles.add(sCurrentEventLogBundle);
         }
 
-        // We need to retrieve the logs previously and save them into the preference as send log key
-        // clear out the existing variables for the log manager
-        final String prefBundleString = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
+        sCurrentEventLogBundle.addEvent(new Event(event.getLog()));
 
-        //This means nothing was stored previously in prefs
-        if (!android.text.TextUtils.isEmpty(prefBundleString))
-        {
-            //Call Upload logs task
-            new UploadLogsTask().execute();
-        }
+        //Save the EventLogBundle to preferences always
+        saveToPreference(PrefsKey.EVENT_LOG_BUNDLES, sEventLogBundles);
     }
-
 
     /**
      * @param prefsKey
@@ -172,14 +120,9 @@ public class EventLogManager
      */
     private void saveToPreference(PrefsKey prefsKey, List<EventLogBundle> eventLogBundles)
     {
-        saveToPreference(prefsKey, GSON.toJson(eventLogBundles));
-    }
-
-    private void saveToPreference(PrefsKey prefsKey, String eventLogBundlesString)
-    {
         synchronized (mSecurePreferencesManager)
         {
-            mSecurePreferencesManager.setString(prefsKey, eventLogBundlesString);
+            mSecurePreferencesManager.setString(prefsKey, GSON.toJson(eventLogBundles));
         }
     }
 
@@ -208,107 +151,214 @@ public class EventLogManager
         return 0;
     }
 
-    private class UploadLogsTask extends AsyncTask<Void, Void, Void>
+    //************************************* handle all saving/sending of logs **********************
+    private void setUploadTimer()
     {
-        @Override
-        protected Void doInBackground(Void... params)
+        if (mTimer != null)
+        {
+            mTimer.cancel();
+            mTimer = null;
+        }
+
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                sendLogsFromPreference();
+            }
+            //Check network connection and set timer delay appropriately
+        }, hasNetworkConnection() ? UPLOAD_TIMER_DELAY : UPLOAD_TIMER_DELAY_NO_INTERNET);
+    }
+
+    private void sendLogsOnInitialization()
+    {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                //Check if there was logs that were to be sent but were never saved to file system
+                String logBundles = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
+
+                if (!TextUtils.isEmpty(logBundles))
+                {
+                    //Save the previous ones to file system
+                    saveLogsToFileSystem(logBundles, 0);
+                }
+                //Check regular log bundles from previous run.
+                sendLogsFromPreference();
+            }
+        }).run();
+    }
+
+    /**
+     * Should be triggered from the timer
+     */
+    private void sendLogsFromPreference()
+    {
+        String logBundles = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES);
+
+        if (!TextUtils.isEmpty(logBundles))
+        {
+            //Save the EventLogBundle to preferences always
+            saveToPreference(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND, sEventLogBundles);
+            sEventLogBundles.clear();
+            sCurrentEventLogBundle = null;
+            //delete the old one immediately
+            removePreference(PrefsKey.EVENT_LOG_BUNDLES);
+        }
+
+        // We need to retrieve the logs previously and save them into the preference as send log key
+        // clear out the existing variables for the log manager
+        final String prefBundleString = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
+
+        //This means nothing was stored previously in prefs
+        if (!android.text.TextUtils.isEmpty(prefBundleString))
         {
             String eventLogBundles = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
             //Save this to the file system and remove from original preference
-            if(!TextUtils.isEmpty(eventLogBundles))
+            if (!TextUtils.isEmpty(eventLogBundles))
             {
                 saveLogsToFileSystem(eventLogBundles, 0);
             }
-
-            sendLogs();
-
-            return null;
         }
 
-        @Override
-        protected void onPostExecute(Void result)
-        {
-            //Do nothing here.
-        }
+        sendLogs();
+    }
 
-        private void saveLogsToFileSystem(final String prefBundleString, int retryCount)
+    private void saveLogsToFileSystem(final String prefBundleString, int retryCount)
+    {
+        JsonObject[] eventLogBundles = GSON.fromJson(
+                prefBundleString,
+                JsonObject[].class
+        );
+
+        //Keep a list of the event bundle ids to verify they were all saved
+        List<String> eventBundleIds = new ArrayList<>();
+        for (JsonObject eventLogBundleJson : eventLogBundles)
         {
-            JsonObject[] eventLogBundles = GSON.fromJson(
-                    prefBundleString,
-                    JsonObject[].class
+            String eventBundleId = eventLogBundleJson.get(EventLogBundle.EVENT_BUNDLE_ID_KEY)
+                                                     .getAsString();
+            eventBundleIds.add(eventBundleId);
+            mFileManager.saveLogFile(
+                    eventBundleId,
+                    eventLogBundleJson.toString()
             );
-
-            for (JsonObject eventLogBundleJson : eventLogBundles)
-            {
-                Log.e("BLAH", eventLogBundleJson.toString());
-                String eventBundleId = eventLogBundleJson.get(EventLogBundle.EVENT_BUNDLE_ID_KEY)
-                                                         .getAsString();
-                mFileManager.saveLogFile(
-                        eventBundleId,
-                        eventLogBundleJson.toString()
-                );
-            }
-
-            //This means they were all saved and we can remove the preference from the system
-            // or, if we tried to save the logs 5 times and it fails, then we remove the preference.
-            // must means somethings wrong
-            if (eventLogBundles.length == mFileManager.getLogFileList().length || retryCount > 5)
-            {
-                removePreference(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
-
-                if(retryCount > 5 && eventLogBundles.length != mFileManager.getLogFileList().length) {
-                    Crashlytics.log("Failed to save logs to file system: " + prefBundleString);
-                }
-            } else {
-                //It means not all of it was saved to file system, retry until we hit a limit
-                saveLogsToFileSystem(prefBundleString, retryCount++);
-            }
         }
 
-        private void sendLogs()
+        //Make sure all the files were saved
+        File[] fileList = mFileManager.getLogFileList();
+        for (File file : fileList)
         {
-            try
-            {
-                File[] files = mFileManager.getLogFileList();
-                mSendingLogsCount = files.length;
-                for (final File file : files)
-                {
-                    JsonObject eventLogBundle = GSON.fromJson(
-                            mFileManager.readFile(file),
-                            JsonObject.class
-                    );
-                    mDataManager.postLogs(
-                            eventLogBundle,
-                            new DataManager.Callback<EventLogResponse>()
-                            {
-                                @Override
-                                public void onSuccess(EventLogResponse response)
-                                {
-                                    Log.e("BLAH", "Succesfully uploaded: " + file.getName() + " " +response.getBundleId());
-                                    mFileManager.deleteLogFile(response.getBundleId());
-                                    mSendingLogsCount--;
-                                }
+            eventBundleIds.remove(file.getName());
+        }
 
-                                @Override
-                                public void onError(DataManager.DataManagerError error)
+        //This means they were all saved and we can remove the preference from the system. Can't just compare number of files because
+        // it may contain files that weren't uploaded previously
+        // or, if we tried to save the logs 5 times and it fails, then we remove the preference.
+        // must means somethings wrong
+        if (eventBundleIds.size() == 0 || retryCount > 5)
+        {
+            removePreference(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
+
+            if (retryCount > 5 && eventBundleIds.size() > 0)
+            {
+                Crashlytics.log("Failed to save logs to file system: " + prefBundleString);
+            }
+        }
+        else
+        {
+            //It means not all of it was saved to file system, retry until we hit a limit
+            saveLogsToFileSystem(prefBundleString, retryCount++);
+        }
+    }
+
+    /**
+     * handles sending the logs
+     */
+    private void sendLogs()
+    {
+        //This is jsut in case there's an invalid json file for some reason
+        File invalidFile = null;
+
+        try
+        {
+            File[] files = mFileManager.getLogFileList();
+            mSendingLogsCount = files.length;
+            for (final File file : files)
+            {
+                invalidFile = file;
+                //Get each event log bundle
+                JsonObject eventLogBundle = GSON.fromJson(
+                        mFileManager.readFile(file),
+                        JsonObject.class
+                );
+
+                //Upload logs
+                mDataManager.postLogs(
+                        eventLogBundle,
+                        new DataManager.Callback<EventLogResponse>()
+                        {
+                            @Override
+                            public void onSuccess(EventLogResponse response)
+                            {
+                                Log.d(
+                                        TAG,
+                                        "Succesfully uploaded: " + file.getName() + " " + response.getBundleId()
+                                );
+                                mFileManager.deleteLogFile(response.getBundleId());
+                                finishUpload();
+                            }
+
+                            @Override
+                            public void onError(DataManager.DataManagerError error)
+                            {
+                                Log.d(TAG, "failed: " + error.getType() + file.getName());
+                                finishUpload();
+                            }
+
+                            private void finishUpload()
+                            {
+                                //If uploads are finished
+                                if (--mSendingLogsCount == 0)
                                 {
-                                    Log.e("BLAH", "failed: "+error.getMessage() + file.getName());
-                                    mSendingLogsCount--;
-                                    //todo sammy log this?
+                                    //If there are currently logs, set timer, else clear old timer
+                                    if (sEventLogBundles.size() > 0 || mFileManager.getLogFileList().length > 0)
+                                    {
+                                        setUploadTimer();
+                                    }
+                                    else
+                                    {
+                                        mTimer.cancel();
+                                        mTimer = null;
+                                    }
                                 }
                             }
-                    );
-                }
-            }
-            catch (JsonSyntaxException e)
-            {
-                Crashlytics.logException(e);
-                Log.e(TAG, e.getMessage());
-                //sreset log count
-                mSendingLogsCount = 0;
-                //If there's json exception it means logs aren't valid and clear it out
-                //TODO sammy remove from file system. means not valid
+                        }
+                );
             }
         }
+        catch (JsonSyntaxException e)
+        {
+            Crashlytics.logException(e);
+            Log.e(TAG, e.getMessage());
+            //If there's json exception it means logs aren't valid and clear it out
+            mFileManager.deleteLogFile(invalidFile.getName());
+            //reset log count
+            mSendingLogsCount = 0;
+        }
+    }
+
+    private boolean hasNetworkConnection()
+    {
+        ConnectivityManager cm =
+                (ConnectivityManager) BaseApplication.getContext()
+                                                     .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
     }
 }
