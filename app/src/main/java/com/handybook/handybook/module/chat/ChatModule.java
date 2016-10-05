@@ -3,6 +3,7 @@ package com.handybook.handybook.module.chat;
 import android.content.Context;
 import android.util.Log;
 
+import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.module.chat.builtin.BaseActivity;
 import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
@@ -94,10 +95,13 @@ public final class ChatModule
     }
 
     @Provides @Singleton
-    public AuthenticationProvider providesAuthenticationProvider(Context context)
+    public AuthenticationProvider providesAuthenticationProvider(
+            Context context,
+            DataManager dataManager
+    )
     {
         Log.d(TAG, "providesAuthenticationProvider() called");
-        return new LayerAuthenticationProvider(context);
+        return new LayerAuthenticationProvider(context, dataManager);
     }
 
     @Provides @Singleton

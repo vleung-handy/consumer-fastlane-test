@@ -23,6 +23,7 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.module.chat.LayerResponseWrapper;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
@@ -235,6 +236,14 @@ class HelpCenterResponseHandyRetrofitCallback
     }
 }
 
+
+class LayerAuthTokenRetrofitCallback extends TypedHandyRetrofitCallback<LayerResponseWrapper>
+{
+    public LayerAuthTokenRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
 
 class ConfigurationHandyRetrofitCallback extends TypedHandyRetrofitCallback<Configuration>
 {

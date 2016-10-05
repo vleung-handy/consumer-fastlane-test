@@ -471,6 +471,13 @@ public interface HandyRetrofitService
     @GET("/help/help_info")
     void getHelpCenterInfo(HandyRetrofitCallback cb);
 
+    // Layer
+    @GET("/users/{user_id}/layer_identity_token")
+    void getLayerAuthToken(
+            @Path("user_id") String userId, @Query("nonce") String nonce,
+            HandyRetrofitCallback cb
+    );
+
     final class RateProRequest
     {
         @SerializedName("positive_feedback")

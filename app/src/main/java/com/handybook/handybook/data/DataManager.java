@@ -51,6 +51,7 @@ import com.handybook.handybook.model.request.CreateUserRequest;
 import com.handybook.handybook.model.request.UpdateUserRequest;
 import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.handybook.handybook.model.response.UserExistsResponse;
+import com.handybook.handybook.module.chat.LayerResponseWrapper;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
@@ -1124,6 +1125,14 @@ public class DataManager
                 bookingId,
                 new BookingLocationStatusHandyRetrofitCallback(callback)
         );
+    }
+
+    public void getLayerAuthToken(
+            final String userId, final String nonce,
+            final Callback<LayerResponseWrapper> cb
+    )
+    {
+        mService.getLayerAuthToken(userId, nonce, new LayerAuthTokenRetrofitCallback(cb));
     }
 
     public final void updateBookingEntryInformation(

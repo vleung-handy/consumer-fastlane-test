@@ -460,8 +460,9 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         {
             Log.d(TAG, "initLayer: Not logged in");
             final String name = "Jia";
+            final String userId = "27680";
             mLayerHelper.authenticate(
-                    new LayerAuthenticationProvider.Credentials(mLayerAppId, name),
+                    new LayerAuthenticationProvider.Credentials(mLayerAppId, name, userId),
                     new AuthenticationProvider.Callback()
                     {
                         @Override

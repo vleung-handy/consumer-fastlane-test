@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
+import com.handybook.handybook.data.DataManager;
 import com.layer.sdk.LayerClient;
 import com.layer.sdk.exceptions.LayerException;
 
@@ -26,20 +27,25 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
 
     private final SharedPreferences mPreferences;
     private Callback mCallback;
+    protected DataManager mDataManager;
 
-    public LayerAuthenticationProvider(Context context) {
+    public LayerAuthenticationProvider(Context context, DataManager dataManager)
+    {
         mPreferences = context.getSharedPreferences(LayerAuthenticationProvider.class.getSimpleName(), Context.MODE_PRIVATE);
+        mDataManager = dataManager;
     }
 
     @Override
     public AuthenticationProvider<Credentials> setCredentials(Credentials credentials) {
         if (credentials == null) {
+            //TODO: JIA: beware, this clears all of our preferences too....,
             mPreferences.edit().clear().commit();
             return this;
         }
         mPreferences.edit()
                     .putString("appId", credentials.getLayerAppId())
                     .putString("name", credentials.getUserName())
+                    .putString("userId", credentials.getUserId())
                     .commit();
         return this;
     }
@@ -74,7 +80,8 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
     @Override
     public void onAuthenticationChallenge(LayerClient layerClient, String nonce) {
         Log.d(TAG, "Received challenge: " + nonce);
-        respondToChallenge(layerClient, nonce);
+//        respondToChallenge(layerClient, nonce);
+        respondToSampleChallenge(layerClient, nonce);
     }
 
     @Override
@@ -98,17 +105,24 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
         return true;
     }
 
-    private void respondToChallenge(LayerClient layerClient, String nonce) {
+    private void respondToSampleChallenge(LayerClient layerClient, String nonce)
+    {
         Log.d(TAG, "respondToChallenge: ");
-        Credentials credentials = new Credentials(mPreferences.getString("appId", null), mPreferences.getString("name", null));
-        if (credentials.getUserName() == null || credentials.getLayerAppId() == null) {
+        Credentials credentials = new Credentials(
+                mPreferences.getString("appId", null),
+                mPreferences.getString("name", null),
+                null
+        );
+        if (credentials.getUserName() == null || credentials.getLayerAppId() == null)
+        {
             Log.d(TAG, "No stored credentials to respond to challenge with");
             return;
         }
 
         Log.d(TAG, "respondToChallenge: username: " + credentials.getUserName());
 
-        try {
+        try
+        {
             // Post request
             String url = "https://layer-identity-provider.herokuapp.com/apps/" + credentials.getLayerAppId() + "/atlas_identities";
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -132,11 +146,16 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
 
             // Handle failure
             int statusCode = connection.getResponseCode();
-            if (statusCode != HttpURLConnection.HTTP_OK && statusCode != HttpURLConnection.HTTP_CREATED) {
+            if (statusCode != HttpURLConnection.HTTP_OK && statusCode != HttpURLConnection.HTTP_CREATED)
+            {
                 String error = String.format("Got status %d when requesting authentication for '%s' with nonce '%s' from '%s'",
-                                             statusCode, credentials.getUserName(), nonce, url);
+                                             statusCode,
+                                             credentials.getUserName(),
+                                             nonce,
+                                             url
+                );
                 Log.e(TAG, "respondToChallenge: " + error);
-                if (mCallback != null) mCallback.onError(this, error);
+                if (mCallback != null) { mCallback.onError(this, error); }
                 return;
             }
 
@@ -146,10 +165,11 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
             in.close();
             connection.disconnect();
             JSONObject json = new JSONObject(result);
-            if (json.has("error")) {
+            if (json.has("error"))
+            {
                 String error = json.getString("error");
                 Log.e(TAG, "respondToChallenge: " + error);
-                if (mCallback != null) mCallback.onError(this, error);
+                if (mCallback != null) { mCallback.onError(this, error); }
                 return;
             }
 
@@ -157,24 +177,81 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
             String identityToken = json.optString("identity_token", null);
             Log.d(TAG, "Got identity token: " + identityToken);
             layerClient.answerAuthenticationChallenge(identityToken);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             String error = "Error when authenticating with provider: " + e.getMessage();
             Log.e(TAG, "respondToChallenge: " + error, e);
-            if (mCallback != null) mCallback.onError(this, error);
+            if (mCallback != null) { mCallback.onError(this, error); }
         }
+    }
+
+
+    private void respondToChallenge(final LayerClient layerClient, String nonce)
+    {
+        Log.d(TAG, "respondToChallenge: ");
+        Credentials credentials = new Credentials(
+                mPreferences.getString("appId", null),
+                mPreferences.getString("name", null),
+                mPreferences.getString("userId", null)
+        );
+        if (credentials.getUserName() == null || credentials.getLayerAppId() == null || credentials.getUserId() == null)
+        {
+            Log.d(TAG, "No stored credentials to respond to challenge with");
+            return;
+        }
+
+        Log.d(
+                TAG,
+                "respondToChallenge: using Handy auth server, username: " + credentials.getUserName() + " ID:" + credentials
+                        .getUserId()
+        );
+        mDataManager.getLayerAuthToken(
+                credentials.getUserId(),
+                nonce,
+                new DataManager.Callback<LayerResponseWrapper>()
+                {
+                    @Override
+                    public void onSuccess(final LayerResponseWrapper response)
+                    {
+                        String token = response.getIdentityToken();
+
+                        Log.d(TAG, "onSuccess: Got layer ID token back: " + token);
+                        layerClient.answerAuthenticationChallenge(token);
+
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error)
+                    {
+                        Log.e(TAG, "onError: " + error.getMessage());
+                        if (mCallback != null)
+                        {
+                            mCallback.onError(
+                                    LayerAuthenticationProvider.this,
+                                    error.getMessage()
+                            );
+                        }
+                    }
+                }
+        );
     }
 
     public static class Credentials {
         private final String mLayerAppId;
         private final String mUserName;
+        private final String mUserId;
 
-        public Credentials(Uri layerAppId, String userName) {
-            this(layerAppId == null ? null : layerAppId.getLastPathSegment(), userName);
+        public Credentials(Uri layerAppId, String userName, String userId)
+        {
+            this(layerAppId == null ? null : layerAppId.getLastPathSegment(), userName, userId);
         }
 
-        public Credentials(String layerAppId, String userName) {
+        public Credentials(String layerAppId, String userName, String userId)
+        {
             mLayerAppId = layerAppId == null ? null : (layerAppId.contains("/") ? layerAppId.substring(layerAppId.lastIndexOf("/") + 1) : layerAppId);
             mUserName = userName;
+            mUserId = userId;
         }
 
         public String getUserName() {
@@ -183,6 +260,11 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
 
         public String getLayerAppId() {
             return mLayerAppId;
+        }
+
+        public String getUserId()
+        {
+            return mUserId;
         }
     }
 }
