@@ -1,0 +1,120 @@
+package com.handybook.handybook.manager;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.handybook.handybook.core.BaseApplication;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import static com.crashlytics.android.answers.Answers.TAG;
+
+/**
+ * Created by sng on 10/4/16.
+ */
+
+public class FileManager
+{
+    private static final String LOG_PATH = "handylogs";
+    private static final File FILES_DIRECTORY = BaseApplication.getContext().getFilesDir();
+
+    public File[] getLogFileList() {
+        File f = new File(FILES_DIRECTORY, LOG_PATH);
+        return f.listFiles();
+    }
+
+    public String readLogFile(String fileName) {
+        return readFile(LOG_PATH + fileName);
+    }
+
+    public boolean saveLogFile(String fileName, String fileContext) {
+        //This was simplest way to save in sub directory
+        File rootDir=new File(FILES_DIRECTORY, LOG_PATH);
+        if(!rootDir.exists())
+            rootDir.mkdirs();
+
+        return saveFile(new File(rootDir, fileName), fileContext);
+    }
+
+    public void deleteLogFile(String fileName) {
+        File rootDir=new File(FILES_DIRECTORY, LOG_PATH);
+        new File(rootDir, fileName).delete();
+    }
+
+    public String readFile(File file) {
+        StringBuffer buffer = null;
+        BufferedReader input = null;
+        try {
+            input = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            String line;
+            buffer = new StringBuffer();
+            while ((line = input.readLine()) != null) {
+                buffer.append(line);
+            }
+
+            Log.d(TAG, buffer.toString());
+        } catch (IOException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+
+        return buffer == null ? "" : buffer.toString();
+    }
+
+    public String readFile(String fileName) {
+        return readFile(new File(FILES_DIRECTORY, fileName)); // Pass getFilesDir() and "MyFile" to read file
+    }
+
+    public boolean saveFile(File file, String fileContenxt) {
+        FileOutputStream outputStream = null;
+
+        try {
+            if(!file.exists())
+                file.createNewFile();  // if file already exists will do nothing
+
+            outputStream = new FileOutputStream(file);
+            outputStream.write(fileContenxt.getBytes());
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        } finally
+        {
+            try
+            {
+                if (outputStream != null)
+                    outputStream.close();
+            }
+            catch (IOException e)
+            {
+                //ignore
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param fileName
+     * @param fileContenxt
+     * @return
+     */
+    public boolean saveFile(String fileName, String fileContenxt) {
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = BaseApplication.getContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+            outputStream.write(fileContenxt.getBytes());
+            outputStream.close();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+
+        return false;
+    }
+}

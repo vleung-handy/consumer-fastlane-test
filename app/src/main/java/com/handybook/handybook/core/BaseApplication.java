@@ -1,6 +1,7 @@
 package com.handybook.handybook.core;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -21,6 +22,7 @@ import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
@@ -33,7 +35,6 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.handybook.library.util.DateTimeUtils;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
@@ -62,6 +63,8 @@ public class BaseApplication extends MultiDexApplication
     private static GoogleAnalytics googleAnalytics;
     private static Tracker tracker;
     private static String sDeviceId = "";
+    //This is used for the application context
+    private static BaseApplication sInstance;
 
     protected ObjectGraph graph;
     @Inject
@@ -120,6 +123,7 @@ public class BaseApplication extends MultiDexApplication
     public void onCreate()
     {
         super.onCreate();
+        sInstance = this;
         mApplicationStartTime = new Date();
 
         googleAnalytics = GoogleAnalytics.getInstance(this);
@@ -295,6 +299,10 @@ public class BaseApplication extends MultiDexApplication
     {
         tracker.setScreenName(ScreenName.from(activity));
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    public static Context getContext() {
+        return sInstance;
     }
 
     public static Tracker tracker()

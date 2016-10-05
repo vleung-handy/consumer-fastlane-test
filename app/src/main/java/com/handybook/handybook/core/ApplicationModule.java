@@ -115,6 +115,7 @@ import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.manager.FileManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
@@ -537,6 +538,14 @@ public final class ApplicationModule
         return new BookingManager(bus, securePreferencesManager, dataManager);
     }
 
+
+    @Provides
+    @Singleton
+    final FileManager provideFileManager()
+    {
+        return new FileManager();
+    }
+
     @Provides
     @Singleton
     final BookingEditManager provideBookingEditManager(
@@ -666,10 +675,11 @@ public final class ApplicationModule
     final EventLogManager provideLogEventsManager(
             final Bus bus,
             final DataManager dataManager,
+            final FileManager fileManager,
             final SecurePreferencesManager securePreferencesManager
     )
     {
-        return new EventLogManager(bus, dataManager, securePreferencesManager);
+        return new EventLogManager(bus, dataManager, fileManager, securePreferencesManager);
     }
 
     @Provides
