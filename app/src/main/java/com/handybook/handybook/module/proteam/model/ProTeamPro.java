@@ -51,6 +51,7 @@ public class ProTeamPro implements Parcelable
             mAverageRating = null;
         }
         mBookingCount = in.readInt();
+        mImageUrl = in.readString();
     }
 
     public static final Creator<ProTeamPro> CREATOR = new Creator<ProTeamPro>()
