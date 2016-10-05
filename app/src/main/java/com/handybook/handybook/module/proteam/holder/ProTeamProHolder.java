@@ -42,7 +42,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     @Bind(R.id.booking_count_text)
     TextView mBookingCountText;
     @Nullable
-    @Bind(R.id.pro_team_pro_image)
+    @Bind(R.id.pro_team_pro_card_image)
     ImageView mProImage;
 
     public ProTeamProHolder(

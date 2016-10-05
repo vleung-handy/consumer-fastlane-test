@@ -54,7 +54,7 @@
             >
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/pro_team_pro_image"
+                android:id="@+id/pro_team_pro_card_image"
                 android:layout_width="@dimen/pro_team_pro_image_size"
                 android:layout_height="@dimen/pro_team_pro_image_size"
                 android:layout_centerHorizontal="true"
@@ -67,7 +67,7 @@
                 android:id="@+id/pro_average_rating_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/pro_team_pro_image"
+                android:layout_below="@id/pro_team_pro_card_image"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="-12dp"
                 android:background="@drawable/pill_white"
