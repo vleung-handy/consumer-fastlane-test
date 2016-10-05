@@ -64,7 +64,7 @@
                 />
 
             <LinearLayout
-                android:id="@+id/pro_average_rating_layout"
+                android:id="@+id/pro_team_pro_card_average_rating_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/pro_team_pro_card_image"

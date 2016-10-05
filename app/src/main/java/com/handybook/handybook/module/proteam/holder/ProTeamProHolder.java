@@ -34,7 +34,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     TextView mFooter;
     @Bind(R.id.pro_team_pro_card_checkbox)
     CheckBox mCheckbox;
-    @Bind(R.id.pro_average_rating_layout)
+    @Bind(R.id.pro_team_pro_card_average_rating_layout)
     ViewGroup mProAverageRatingLayout;
     @Bind(R.id.average_rating_text)
     TextView mProAverageRating;
