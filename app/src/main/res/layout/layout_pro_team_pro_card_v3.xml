@@ -50,8 +50,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingBottom="@dimen/default_padding_half"
-            android:paddingEnd="@dimen/default_padding_half"
-            android:paddingRight="@dimen/default_padding_half"
             android:paddingTop="@dimen/default_padding_half"
             >
 
@@ -59,6 +57,7 @@
                 android:id="@+id/pro_team_pro_image"
                 android:layout_width="@dimen/pro_team_pro_image_size"
                 android:layout_height="@dimen/pro_team_pro_image_size"
+                android:layout_centerHorizontal="true"
                 app:civ_border_color="@color/handy_divider_line"
                 app:civ_border_width="1dp"
                 tools:src="@drawable/img_pro_placeholder"
@@ -110,8 +109,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/pro_team_margin"
-            android:layout_marginLeft="@dimen/default_margin_half"
-            android:layout_marginStart="@dimen/default_margin_half"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/pro_team_margin"
             android:layout_weight="1"
             android:orientation="vertical"
