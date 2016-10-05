@@ -36,7 +36,7 @@ import javax.inject.Inject;
 
 public class EventLogManager
 {
-    private static final int UPLOAD_TIMER_DELAY = 60000; //1 min
+    private static final int UPLOAD_TIMER_DELAY = 10000; //1 min
     private static final int UPLOAD_TIMER_DELAY_NO_INTERNET = 15 * 60000; //15 min
     private static final String TAG = EventManager.class.getSimpleName();
     private static final int MAX_NUM_PER_BUNDLE = 50;
@@ -75,7 +75,8 @@ public class EventLogManager
     @Subscribe
     public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
     {
-        if (!BuildConfig.DEBUG)
+        //If debug don't bother logging
+        if (BuildConfig.DEBUG)
         { return; }
 
         //Create upload timer when we get a new log and there isn't a timer currently
