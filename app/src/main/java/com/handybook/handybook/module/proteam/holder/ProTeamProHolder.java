@@ -116,7 +116,6 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         mPretext.setVisibility(View.GONE);
     }
 
-    @Nullable
     @OnClick(R.id.pro_team_pro_card_x)
     void onXClicked()
     {

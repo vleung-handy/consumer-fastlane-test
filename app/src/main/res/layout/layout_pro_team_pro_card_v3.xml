@@ -33,13 +33,26 @@
         android:orientation="horizontal"
         >
 
+        <CheckBox
+            android:id="@+id/pro_team_pro_card_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/default_margin"
+            android:background="@drawable/bg_checkbox_heart_red"
+            android:button="@null"
+            android:saveEnabled="true"
+            tools:checked="true"
+            />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin_half"
-            android:layout_marginStart="@dimen/default_margin_half"
             android:gravity="center"
-            android:padding="@dimen/default_padding_half"
+            android:paddingBottom="@dimen/default_padding_half"
+            android:paddingEnd="@dimen/default_padding_half"
+            android:paddingRight="@dimen/default_padding_half"
+            android:paddingTop="@dimen/default_padding_half"
             >
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -131,17 +144,18 @@
             >
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/pro_team_pro_card_checkbox"
+        <ImageButton
+            android:id="@+id/pro_team_pro_card_x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/default_margin"
-            android:background="@drawable/bg_checkbox_heart_red"
-            android:button="@null"
-            android:saveEnabled="true"
-            tools:checked="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/cd_pro_team_pro_card_remove_pro_icon"
+            android:padding="@dimen/default_padding"
+            android:src="@drawable/ic_pro_team_x_small"
             />
+
     </LinearLayout>
 
 </LinearLayout>
