@@ -75,7 +75,9 @@ public class BookingDetailSectionFragmentProInformation extends
         {
             if (mConfiguration != null
                     && mConfiguration.isMyProTeamEnabled()
-                    && !booking.hasAssignedProvider())
+                    && !booking.hasAssignedProvider()
+                    && booking.getProviderAssignmentInfo() != null
+                    )
             {
                 actionTextView.setText(R.string.manage_pro_team);
                 actionTextView.setOnClickListener(new View.OnClickListener()

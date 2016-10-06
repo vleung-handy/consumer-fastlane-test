@@ -99,8 +99,7 @@ public class Booking implements Parcelable
 
     public ProviderAssignmentInfo getProviderAssignmentInfo()
     {
-        return new ProviderAssignmentInfo(); //TODO revert, test only
-//        return mProviderAssignmentInfo;
+        return mProviderAssignmentInfo;
     }
 
     public String getLockboxCode()
@@ -573,12 +572,6 @@ public class Booking implements Parcelable
 
     public static class ProviderAssignmentInfo implements Parcelable
     {
-        public ProviderAssignmentInfo()//TODO revert, TEST ONLY
-        {
-            mMainText = "Requesting members of your pro team.";
-            mSubText = "We'll let you know when a pro accepts your request";
-            mProTeamMatch = true;
-        }
         @SerializedName("title")
         private String mMainText;
         @SerializedName("subtitle")
