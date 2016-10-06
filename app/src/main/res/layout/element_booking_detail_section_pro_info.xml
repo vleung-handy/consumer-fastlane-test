@@ -3,6 +3,7 @@
     style="@style/BookingDetailSectionView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/element_booking_detail_section_pro_info_layout"
     >
 
     <include layout="@layout/layout_section_separator_view"/>

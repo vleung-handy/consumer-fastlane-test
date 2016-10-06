@@ -27,6 +27,8 @@ import butterknife.OnClick;
 
 public class TipDialogFragment extends BaseDialogFragment
 {
+    public static final String TAG = TipDialogFragment.class.getSimpleName();
+
     static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
     static final String EXTRA_BOOKING_ID = "com.handy.handy.EXTRA_BOOKING_ID";
 

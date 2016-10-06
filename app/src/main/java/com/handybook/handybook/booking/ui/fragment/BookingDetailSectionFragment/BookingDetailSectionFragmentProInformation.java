@@ -34,6 +34,11 @@ public class BookingDetailSectionFragmentProInformation extends
 {
     private Configuration mConfiguration;
 
+    public static BookingDetailSectionFragmentProInformation newInstance()
+    {
+        return new BookingDetailSectionFragmentProInformation();
+    }
+
     @Override
     protected int getFragmentResourceId()
     {
@@ -236,7 +241,7 @@ public class BookingDetailSectionFragmentProInformation extends
                 Integer.parseInt(booking.getId()),
                 booking.getProvider().getFirstName()
         );
-        tipDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+        tipDialogFragment.show(getActivity().getSupportFragmentManager(), TipDialogFragment.TAG);
     }
 
     /*

@@ -50,6 +50,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPayment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformationTest;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
@@ -66,6 +67,7 @@ import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
@@ -168,6 +170,8 @@ import static org.mockito.Mockito.when;
         BookingDetailSectionFragmentAddress.class,
         BookingDetailSectionFragmentBookingActions.class,
         BookingDetailSectionFragmentPayment.class,
+        BookingDetailSectionFragmentProInformationTest.class,
+        TipDialogFragment.class,
         ContactFragment.class,
         ProfileActivity.class,
         AccountFragment.class,

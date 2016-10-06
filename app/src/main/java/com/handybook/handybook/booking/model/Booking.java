@@ -128,7 +128,10 @@ public class Booking implements Parcelable
         mId = id;
     }
 
-    public final boolean isPast()
+    /**
+     * not "final" for unit testing
+     */
+    public boolean isPast()
     {
         return mIsPast == 1;
     }
@@ -155,7 +158,10 @@ public class Booking implements Parcelable
         mBookingTimezone = bookingTimezone;
     }
 
-    public final boolean hasAssignedProvider()
+    /**
+     * not "final" for unit testing
+     */
+    public boolean hasAssignedProvider()
     {
         return mProvider != null && mProvider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED;
     }

@@ -71,7 +71,7 @@ public class Provider implements Serializable
      * @return the provider's first name and last initial in the format: Aaaaa B.
      *
      */
-    public final String getFirstNameAndLastInitial()
+    public String getFirstNameAndLastInitial()
     {
         String firstNameAndLastInitial = "";
         if (!Strings.isNullOrEmpty(mFirstName))
