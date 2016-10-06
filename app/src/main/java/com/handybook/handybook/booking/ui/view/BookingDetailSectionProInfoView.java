@@ -38,17 +38,23 @@ import butterknife.Bind;
     public LinearLayout actionButtonsLayoutSlot2;
 
     /**
-     * part of assigned pro info layout. shown when pro is part of user's pro team
+     * shown when pro is part of user's pro team
      */
     @Bind(R.id.element_booking_detail_section_pro_info_assigned_pro_team_match_indicator)
     View mAssignedProInfoProTeamMatchIndicatorView;
 
 
     /**
-     * part of assigned pro info layout. the pro's display name
+     * the pro's display name
      */
     @Bind(R.id.element_booking_detail_section_pro_info_assigned_pro_name_text)
     TextView mAssignedProInfoNameText;
+
+    /**
+     * wraps the pro name and pro team match indicator
+     */
+    @Bind(R.id.element_booking_detail_section_pro_info_assigned_pro_name_layout)
+    LinearLayout mAssignedProNameLayout;
 
     public BookingDetailSectionProInfoView(final Context context)
     {
@@ -70,9 +76,9 @@ import butterknife.Bind;
         mAssignedProInfoProTeamMatchIndicatorView.setVisibility(visible ? VISIBLE : GONE);
     }
 
-    public void setAssignedProNameTextVisible(boolean visible)
+    public void setAssignedProNameLayoutVisible(boolean visible)
     {
-        mAssignedProInfoNameText.setVisibility(visible ? VISIBLE : GONE);
+        mAssignedProNameLayout.setVisibility(visible ? VISIBLE : GONE);
     }
 
     public void setAssignedProNameText(String assignedProNameText)

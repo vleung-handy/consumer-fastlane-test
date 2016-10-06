@@ -130,7 +130,7 @@ public class BookingDetailSectionFragmentProInformation extends
     private void hideAllClassManagedViews()
     {
         getSectionView().setLegacyNoProViewVisible(false);
-        getSectionView().setAssignedProNameTextVisible(false);
+        getSectionView().setAssignedProNameLayoutVisible(false);
         getSectionView().setAssignedProTeamMatchIndicatorVisible(false);
         getSectionView().getEntryText().setVisibility(View.GONE);
         getSectionView().getEntryTitle().setVisibility(View.GONE);
@@ -160,14 +160,13 @@ public class BookingDetailSectionFragmentProInformation extends
     {
         getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
         getSectionView().setAssignedProNameText(providerName);
-        getSectionView().setAssignedProNameTextVisible(true);
+        getSectionView().setAssignedProNameLayoutVisible(true);
 
         if (providerAssignmentInfo != null)
         {
             if (mConfiguration != null
                     && mConfiguration.isMyProTeamEnabled()
                     && providerAssignmentInfo.isProTeamMatch()
-                    && !userCanLeaveTip(booking)//TODO must revert! this is temporary until can resolve tip and match indicator layout with design
                     )
             {
                 getSectionView().setAssignedProTeamMatchIndicatorVisible(true);
