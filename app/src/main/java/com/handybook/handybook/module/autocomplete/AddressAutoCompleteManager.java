@@ -1,12 +1,11 @@
 package com.handybook.handybook.module.autocomplete;
 
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.AddressAutocompleteLog;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
-/**
- * Created by jtse on 9/24/16.
- */
 public class AddressAutoCompleteManager
 {
     private final PlacesService mService;
@@ -16,7 +15,6 @@ public class AddressAutoCompleteManager
     public AddressAutoCompleteManager(final Bus bus, final PlacesService service)
     {
         this.mBus = bus;
-        this.mBus.register(this);
         this.mService = service;
     }
 
@@ -28,6 +26,12 @@ public class AddressAutoCompleteManager
      */
     PlacePredictionResponse getAddressPrediction(String word)
     {
-        return mService.getAddressPrediction(word);
+        mBus.post(new LogEvent.AddLogEvent(new AddressAutocompleteLog.AddressAutocompleteRequestLog(word)));
+        PlacePredictionResponse response = mService.getAddressPrediction(word);
+
+        int count = (response == null || response.predictions == null) ? 0 : response.predictions.size();
+        mBus.post(new LogEvent.AddLogEvent(new AddressAutocompleteLog.AddressAutocompleteResponseLog(count)));
+
+        return response;
     }
 }
