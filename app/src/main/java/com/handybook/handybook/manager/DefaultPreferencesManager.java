@@ -57,6 +57,11 @@ public class DefaultPreferencesManager
         return mDefaultSharedPreferences.getBoolean(prefsKey.getKey(), defaultValue);
     }
 
+    public void removeValue(@NonNull final PrefsKey prefsKey)
+    {
+        mDefaultSharedPreferences.edit().remove(prefsKey.getKey()).apply();
+    }
+
     public void clearAll()
     {
         mDefaultSharedPreferences.edit().clear().apply();

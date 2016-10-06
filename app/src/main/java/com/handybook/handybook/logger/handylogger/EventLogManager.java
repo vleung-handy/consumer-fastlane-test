@@ -21,8 +21,8 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.model.Event;
 import com.handybook.handybook.logger.handylogger.model.EventLogBundle;
 import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.manager.FileManager;
-import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.newrelic.agent.android.analytics.EventManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -48,7 +48,7 @@ public class EventLogManager
     private final Bus mBus;
     private final DataManager mDataManager;
     private final FileManager mFileManager;
-    private final SecurePreferencesManager mSecurePreferencesManager;
+    private final DefaultPreferencesManager mPreferencesManager;
 
     private int mSendingLogsCount;
     private Timer mTimer;
@@ -56,14 +56,14 @@ public class EventLogManager
     @Inject
     public EventLogManager(
             final Bus bus, final DataManager dataManager, final FileManager fileManager,
-            final SecurePreferencesManager securePreferencesManager
+            final DefaultPreferencesManager preferencesManager
     )
     {
         mBus = bus;
         mBus.register(this);
         mDataManager = dataManager;
         mFileManager = fileManager;
-        mSecurePreferencesManager = securePreferencesManager;
+        mPreferencesManager = preferencesManager;
         sEventLogBundles = new ArrayList<>();
         //Send logs on initialization
         sendLogsOnInitialization();
@@ -112,9 +112,9 @@ public class EventLogManager
      */
     private String loadSavedEventLogBundles(PrefsKey prefsKey)
     {
-        synchronized (mSecurePreferencesManager)
+        synchronized (mPreferencesManager)
         {
-            return mSecurePreferencesManager.getString(prefsKey, null);
+            return mPreferencesManager.getString(prefsKey, null);
         }
     }
 
@@ -126,24 +126,24 @@ public class EventLogManager
      */
     private void saveToPreference(PrefsKey prefsKey, List<EventLogBundle> eventLogBundles)
     {
-        synchronized (mSecurePreferencesManager)
+        synchronized (mPreferencesManager)
         {
-            mSecurePreferencesManager.setString(prefsKey, GSON.toJson(eventLogBundles));
+            mPreferencesManager.setString(prefsKey, GSON.toJson(eventLogBundles));
         }
     }
 
     private void removePreference(PrefsKey prefsKey)
     {
-        synchronized (mSecurePreferencesManager)
+        synchronized (mPreferencesManager)
         {
-            mSecurePreferencesManager.removeValue(prefsKey);
+            mPreferencesManager.removeValue(prefsKey);
         }
     }
 
     private int getUserId()
     {
         User user;
-        if ((user = User.fromJson(mSecurePreferencesManager.getString(PrefsKey.USER))) != null)
+        if ((user = User.fromJson(mPreferencesManager.getString(PrefsKey.USER))) != null)
         {
             try
             {
@@ -366,6 +366,5 @@ public class EventLogManager
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
     }
 }

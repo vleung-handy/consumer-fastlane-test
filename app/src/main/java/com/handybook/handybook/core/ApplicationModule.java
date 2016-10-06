@@ -676,10 +676,10 @@ public final class ApplicationModule
             final Bus bus,
             final DataManager dataManager,
             final FileManager fileManager,
-            final SecurePreferencesManager securePreferencesManager
+            final DefaultPreferencesManager defaultPreferencesManager
     )
     {
-        return new EventLogManager(bus, dataManager, fileManager, securePreferencesManager);
+        return new EventLogManager(bus, dataManager, fileManager, defaultPreferencesManager);
     }
 
     @Provides

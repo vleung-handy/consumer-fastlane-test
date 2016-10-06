@@ -249,10 +249,10 @@ public class TestApplicationModule
             final Bus bus,
             final DataManager dataManager,
             final FileManager fileManager,
-            final SecurePreferencesManager securePreferencesManager
+            final DefaultPreferencesManager defaultPreferencesManager
     )
     {
-        return spy(new EventLogManager(bus, dataManager, fileManager, securePreferencesManager));
+        return spy(new EventLogManager(bus, dataManager, fileManager, defaultPreferencesManager));
     }
 
     @Provides
@@ -277,13 +277,6 @@ public class TestApplicationModule
     final Application provideApplication()
     {
         return mock(Application.class);
-    }
-
-    @Provides
-    @Singleton
-    final com.securepreferences.SecurePreferences providePrefs()
-    {
-        return mock(com.securepreferences.SecurePreferences.class);
     }
 
     @Provides
@@ -318,7 +311,7 @@ public class TestApplicationModule
     @Singleton
     final DefaultPreferencesManager provideDefaultPreferencesManager()
     {
-        return mock(DefaultPreferencesManager.class);
+        return new DefaultPreferencesManager(context);
     }
 
     @Provides

@@ -171,7 +171,8 @@ public class BaseApplication extends MultiDexApplication
         }
         else
         {
-            NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal")).start(this);
+            NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal"))
+                    .start(this);
         }
         if (mSecurePreferencesManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
         {
@@ -301,7 +302,8 @@ public class BaseApplication extends MultiDexApplication
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    public static Context getContext() {
+    public static Context getContext()
+    {
         return sInstance;
     }
 
