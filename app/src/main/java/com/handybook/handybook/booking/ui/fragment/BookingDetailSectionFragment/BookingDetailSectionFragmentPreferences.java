@@ -49,7 +49,8 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
 
     @Override
     protected void updateActionTextView(
-            @NonNull final Booking booking, @NonNull final TextView actionTextView
+            @NonNull final Booking booking,
+            @NonNull final TextView actionTextView
     )
     {
         if (booking.isPast())

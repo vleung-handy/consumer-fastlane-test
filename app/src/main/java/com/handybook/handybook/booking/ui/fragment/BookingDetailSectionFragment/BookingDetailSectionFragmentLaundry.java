@@ -14,29 +14,6 @@ public class BookingDetailSectionFragmentLaundry extends BookingDetailSectionFra
         return R.string.laundry;
     }
 
-//
-//    @Override
-//    protected void updateActionTextView(
-//            @NonNull final Booking booking, @NonNull final TextView actionTextView
-//    )
-//    {
-//        if (booking.isPast())
-//        {
-//            actionTextView.setVisibility(View.GONE);
-//            return;
-//        }
-//        actionTextView.setVisibility(View.VISIBLE);
-//        actionTextView.setText(R.string.set_dropoff);
-//        actionTextView.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(final View v)
-//            {
-//                onActionClick();
-//            }
-//        });
-//    }
-
     @Override
     public void updateDisplay(Booking booking, User user)
     {
@@ -53,8 +30,4 @@ public class BookingDetailSectionFragmentLaundry extends BookingDetailSectionFra
         }
     }
 
-    protected void onActionClick()
-    {
-        //TODO: Edit laundry drop off associated with booking
-    }
 }

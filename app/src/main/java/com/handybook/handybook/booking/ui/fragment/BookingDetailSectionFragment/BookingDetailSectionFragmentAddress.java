@@ -27,13 +27,17 @@ public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFra
         super.updateDisplay(booking, user);
         final Booking.Address address = booking.getAddress();
         getSectionView().getEntryText().setText(TextUtils.formatAddress(address.getAddress1(),
-                address.getAddress2(),
-                address.getCity(), address.getState(), address.getZip()));
+                                                                        address.getAddress2(),
+                                                                        address.getCity(),
+                                                                        address.getState(),
+                                                                        address.getZip()
+        ));
     }
 
     @Override
     protected void updateActionTextView(
-            @NonNull final Booking booking, @NonNull final TextView actionTextView
+            @NonNull final Booking booking,
+            @NonNull final TextView actionTextView
     )
     {
         if (booking.isPast())

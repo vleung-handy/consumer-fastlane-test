@@ -41,7 +41,8 @@ public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFrag
 
     @Override
     protected void updateActionTextView(
-            @NonNull final Booking booking, @NonNull final TextView actionTextView
+            @NonNull final Booking booking,
+            @NonNull final TextView actionTextView
     )
     {
         if (!booking.canEditExtras() || booking.isPast())

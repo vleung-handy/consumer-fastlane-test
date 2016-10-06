@@ -27,31 +27,4 @@ public class BookingDetailSectionFragmentPayment
         super.updateDisplay(booking, user);
         getSectionView().updatePaymentDisplay(booking, user);
     }
-
-//    @Override
-//    protected void updateActionTextView(
-//            @NonNull final Booking booking, @NonNull final TextView actionTextView
-//    )
-//    {
-//        if (booking.isPast())
-//        {
-//            actionTextView.setVisibility(View.GONE);
-//            return;
-//        }
-//        actionTextView.setVisibility(View.VISIBLE);
-//        actionTextView.setText(R.string.email_receipt);
-//        actionTextView.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(final View v)
-//            {
-//                onActionClick();
-//            }
-//        });
-//    }
-
-    private void onActionClick()
-    {
-
-    }
 }

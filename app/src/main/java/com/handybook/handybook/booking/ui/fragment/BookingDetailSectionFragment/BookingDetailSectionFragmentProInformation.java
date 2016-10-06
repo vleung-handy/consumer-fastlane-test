@@ -54,9 +54,12 @@ public class BookingDetailSectionFragmentProInformation extends
 
     @Override
     protected void updateActionTextView(
-            @NonNull final Booking booking, @NonNull final TextView actionTextView
+            @NonNull final Booking booking,
+            @NonNull final TextView actionTextView
     )
     {
+        //this logic is ugly, can we make it more server-driven?
+
         actionTextView.setVisibility(View.GONE);
         if (userCanLeaveTip(booking)) //note that tips can be made when booking.isPast() == true
         {
@@ -75,9 +78,14 @@ public class BookingDetailSectionFragmentProInformation extends
         else if (!booking.isPast())
         {
             if (mConfiguration != null
-                    && mConfiguration.isMyProTeamEnabled()
-                    && !booking.hasAssignedProvider()
+                    && mConfiguration.isMyProTeamEnabled() //don't want to show pro team button when pro team disabled
+                    && !booking.hasAssignedProvider() //don't want to show team management button when booking already has provider
                     && booking.getProviderAssignmentInfo() != null
+                    /*
+                    when provider assignment info is missing, we fall back to a
+                    legacy view that has this same action button in a different location,
+                    so don't want to show two of them
+                     */
                     )
             {
                 //action text should be "manage pro team"
