@@ -22,10 +22,16 @@ public class FileManager
 {
     private static final String LOG_PATH = "handylogs";
     private static final File FILES_DIRECTORY = BaseApplication.getContext().getFilesDir();
+    private final File mLogDirectory;
+
+    public FileManager() {
+        mLogDirectory = new File(FILES_DIRECTORY, LOG_PATH);
+        if(!mLogDirectory.exists())
+            mLogDirectory.mkdirs();
+    }
 
     public File[] getLogFileList() {
-        File f = new File(FILES_DIRECTORY, LOG_PATH);
-        return f.listFiles();
+        return mLogDirectory.listFiles();
     }
 
     public String readLogFile(String fileName) {
@@ -34,16 +40,11 @@ public class FileManager
 
     public boolean saveLogFile(String fileName, String fileContext) {
         //This was simplest way to save in sub directory
-        File rootDir=new File(FILES_DIRECTORY, LOG_PATH);
-        if(!rootDir.exists())
-            rootDir.mkdirs();
-
-        return saveFile(new File(rootDir, fileName), fileContext);
+        return saveFile(new File(mLogDirectory, fileName), fileContext);
     }
 
     public void deleteLogFile(String fileName) {
-        File rootDir=new File(FILES_DIRECTORY, LOG_PATH);
-        new File(rootDir, fileName).delete();
+        new File(mLogDirectory, fileName).delete();
     }
 
     public String readFile(File file) {

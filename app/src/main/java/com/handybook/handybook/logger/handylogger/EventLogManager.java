@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -76,7 +77,7 @@ public class EventLogManager
     public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
     {
         //If debug don't bother logging
-        if (BuildConfig.DEBUG)
+        if (!shouldLog())
         { return; }
 
         //Create upload timer when we get a new log and there isn't a timer currently
@@ -98,6 +99,10 @@ public class EventLogManager
 
         //Save the EventLogBundle to preferences always
         saveToPreference(PrefsKey.EVENT_LOG_BUNDLES, sEventLogBundles);
+    }
+
+    boolean shouldLog() {
+        return !BuildConfig.DEBUG;
     }
 
     /**
@@ -197,7 +202,8 @@ public class EventLogManager
     /**
      * Should be triggered from the timer
      */
-    private void sendLogsFromPreference()
+    @VisibleForTesting
+    void sendLogsFromPreference()
     {
         String logBundles = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES);
 
