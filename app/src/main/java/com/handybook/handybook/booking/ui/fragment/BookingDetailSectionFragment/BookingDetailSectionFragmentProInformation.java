@@ -60,6 +60,7 @@ public class BookingDetailSectionFragmentProInformation extends
         actionTextView.setVisibility(View.GONE);
         if (userCanLeaveTip(booking)) //note that tips can be made when booking.isPast() == true
         {
+            //action text should be "leave a tip"
             actionTextView.setText(R.string.leave_a_tip);
             actionTextView.setOnClickListener(new View.OnClickListener()
             {
@@ -79,6 +80,7 @@ public class BookingDetailSectionFragmentProInformation extends
                     && booking.getProviderAssignmentInfo() != null
                     )
             {
+                //action text should be "manage pro team"
                 actionTextView.setText(R.string.manage_pro_team);
                 actionTextView.setOnClickListener(new View.OnClickListener()
                 {
@@ -138,6 +140,11 @@ public class BookingDetailSectionFragmentProInformation extends
         getSectionView().getEntryTitle().setVisibility(View.GONE);
     }
 
+    /**
+     * updates the entry text with provider assignment text from the server
+     *
+     * @param providerAssignmentInfo
+     */
     private void updateAndShowEntryText(@NonNull Booking.ProviderAssignmentInfo providerAssignmentInfo)
     {
         if (providerAssignmentInfo.getMainText() == null
@@ -154,7 +161,10 @@ public class BookingDetailSectionFragmentProInformation extends
         getSectionView().getEntryText().setVisibility(View.VISIBLE);
     }
 
-    //tODO cleanup
+    /**
+     * shown when there a provider is assigned to the booking
+     * @param providerAssignmentInfo
+     */
     private void showAssignedProviderInfo(
             String providerName,
             @Nullable Booking.ProviderAssignmentInfo providerAssignmentInfo
@@ -171,24 +181,30 @@ public class BookingDetailSectionFragmentProInformation extends
                     && providerAssignmentInfo.isProTeamMatch()
                     )
             {
+                //indicate that this pro is on the user's pro team
                 getSectionView().setAssignedProTeamMatchIndicatorVisible(true);
             }
+
+            //update entry text with provider assignment text from the server
             updateAndShowEntryText(providerAssignmentInfo);
         }
     }
 
-    //TODO cleanup
+    /**
+     * shown when there is no assigned provider yet
+     * @param providerAssignmentInfo
+     */
     private void showPendingProviderInfo(@Nullable Booking.ProviderAssignmentInfo providerAssignmentInfo)
     {
-        //no assigned pro, so don't show the assigned pro layout
         if (providerAssignmentInfo != null)
         {
+            //update entry text with provider assignment text from the server
             getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
             updateAndShowEntryText(providerAssignmentInfo);
         }
         else if (mConfiguration != null && mConfiguration.isMyProTeamEnabled())
         {
-            //fallback view for when there's no provider assignment info object
+            //fallback view for when there's no provider assignment info object and pro teams are enabled
             getSectionView().setLegacyNoProViewVisible(true);
         }
         else
@@ -211,6 +227,7 @@ public class BookingDetailSectionFragmentProInformation extends
 
         if (booking.hasAssignedProvider())
         {
+            //show view for assigned provider
             showAssignedProviderInfo(
                     pro.getFirstNameAndLastInitial(),
                     booking.getProviderAssignmentInfo()
@@ -218,6 +235,7 @@ public class BookingDetailSectionFragmentProInformation extends
         }
         else
         {
+            //show view for pending provider
             showPendingProviderInfo(booking.getProviderAssignmentInfo());
         }
     }
@@ -243,6 +261,13 @@ public class BookingDetailSectionFragmentProInformation extends
                 booking.getProvider().getFirstName()
         );
         tipDialogFragment.show(getActivity().getSupportFragmentManager(), TipDialogFragment.TAG);
+    }
+
+    private void onManageProTeamButtonClicked()
+    {
+        //start pro team activity
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ProTeamOpenTapped()));
+        startActivity(new Intent(getActivity(), ProTeamActivity.class));
     }
 
     /*
@@ -319,13 +344,6 @@ public class BookingDetailSectionFragmentProInformation extends
         final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts =
                 userManager.getCurrentUser().getDefaultTipAmounts();
         return booking.canLeaveTip() && defaultTipAmounts != null && !defaultTipAmounts.isEmpty();
-    }
-
-    private void onManageProTeamButtonClicked()
-    {
-        //start pro team activity
-        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ProTeamOpenTapped()));
-        startActivity(new Intent(getActivity(), ProTeamActivity.class));
     }
 
     private View.OnClickListener contactPhoneClicked = new View.OnClickListener()

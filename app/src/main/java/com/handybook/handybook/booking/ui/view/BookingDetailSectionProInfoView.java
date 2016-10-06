@@ -20,7 +20,7 @@ import butterknife.Bind;
 {
     /**
      * fallback that is shown when there is no pro assigned AND no provider assignment state object
-     * is present
+     * AND pro teams enabled
      */
     @Bind(R.id.element_booking_detail_section_pro_info_no_pro_view)
     View mLegacyNoProView;
@@ -38,7 +38,7 @@ import butterknife.Bind;
     public LinearLayout actionButtonsLayoutSlot2;
 
     /**
-     * shown when pro is part of user's pro team
+     * shown when pro is part of user's pro team AND pro teams enabled
      */
     @Bind(R.id.element_booking_detail_section_pro_info_assigned_pro_team_match_indicator)
     View mAssignedProInfoProTeamMatchIndicatorView;

@@ -76,8 +76,10 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
     }
 
     /**
+     *
      * override to change the action text value, visibility and click listener
      *
+     * note that a detail section can have a few different actions i.e. "leave a tip", "manage pro team"
      * @param booking
      * @param actionTextView
      */
