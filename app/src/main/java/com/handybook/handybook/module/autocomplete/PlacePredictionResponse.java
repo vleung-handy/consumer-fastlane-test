@@ -1,6 +1,9 @@
 package com.handybook.handybook.module.autocomplete;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.util.TextUtils;
 
 import java.io.Serializable;
@@ -15,17 +18,11 @@ public class PlacePredictionResponse implements Serializable
     public ArrayList<PlacePrediction> predictions;
 
     /**
-     * Since we don't have zip, the next best thing is to filter it by city or state
-     *
-     * @param city
-     * @param state
+     * Since we don't have zip in the prediction response,
+     * the next best thing is to filter it by city or state
      */
-    public void filter(String city, String state)
+    public void filter(ZipValidationResponse.ZipArea filterBy)
     {
-        if (TextUtils.isBlank(city) && TextUtils.isBlank(state)) {
-            return;
-        }
-
         for (int i = predictions.size() - 1; i >= 0; i--)
         {
             PlacePrediction p = predictions.get(i);
@@ -47,12 +44,45 @@ public class PlacePredictionResponse implements Serializable
                 continue;
             }
 
-            //if neither city nor state matches, remove it
-            if (!p.getCity().equalsIgnoreCase(city) && p.getState().equalsIgnoreCase(state)) {
+            //if there is something to filter, and it doesn't match, then remove it
+            if (filterBy != null && !isMatchingCityAndState(filterBy, p))
+            {
                 predictions.remove(p);
                 continue;
             }
+
         }
+    }
+
+    /**
+     * If both the city and state matches, then return true;
+     *
+     * @return
+     */
+    private boolean isMatchingCityAndState(
+            @NonNull final ZipValidationResponse.ZipArea zipArea,
+            @NonNull final PlacePrediction prediction
+    )
+    {
+
+        //we only want to filter if it's not blank, otherwise, ignore the filter
+        if (!TextUtils.isBlank(zipArea.getCity()))
+        {
+            if (!zipArea.getCity().equalsIgnoreCase(prediction.getCity()))
+            {
+                return false;
+            }
+        }
+
+        if (!TextUtils.isBlank(zipArea.getState()))
+        {
+            if (!zipArea.getState().equalsIgnoreCase(prediction.getState()))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public List<String> getFullAddresses()

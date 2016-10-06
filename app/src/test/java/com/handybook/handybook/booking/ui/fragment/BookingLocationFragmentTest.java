@@ -77,7 +77,7 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
         );
 
         ZipValidationResponse responseObject = new ZipValidationResponse();
-        responseObject.timeZone = "America/Los_Angeles";
+        responseObject.setTimeZone("America/Los_Angeles");
 
         mCallbackCaptor.getValue().onSuccess(responseObject);
         verify(mMockRequest, atLeast(1)).setZipCode("10001");

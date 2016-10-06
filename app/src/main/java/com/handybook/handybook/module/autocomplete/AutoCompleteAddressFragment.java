@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
@@ -31,17 +32,8 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     @Bind(R.id.text_other)
     public EditText textOther;
 
-    @Bind(R.id.text_city)
-    public StreetAddressInputTextView textCity;
-
-    @Bind(R.id.text_state)
-    public StreetAddressInputTextView textState;
-
-    @Bind(R.id.text_postal)
-    public StreetAddressInputTextView textPostal;
-
     @Inject
-    AddressAutoCompleteManager mDataManager;
+    AddressAutoCompleteManager mAutoCompleteManager;
 
     private PlacesAutoCompleteAdapter mAutoCompleteAdapter;
 
@@ -52,7 +44,14 @@ public class AutoCompleteAddressFragment extends InjectedFragment
         View view = inflater.inflate(R.layout.fragment_auto_complete_address, container, false);
         ButterKnife.bind(this, view);
 
-        mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.auto_complete_list_item, mDataManager);
+        ZipValidationResponse.ZipArea filter = null;
+
+        if (bookingManager.getCurrentRequest() != null)
+        {
+            filter = bookingManager.getCurrentRequest().getZipArea();
+        }
+
+        mAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.auto_complete_list_item, mAutoCompleteManager, filter);
         textStreet.setAdapter(mAutoCompleteAdapter);
         textStreet.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -61,8 +60,6 @@ public class AutoCompleteAddressFragment extends InjectedFragment
             {
                 PlacePrediction prediction = mAutoCompleteAdapter.getPrediction(position);
                 textStreet.setText(prediction.getAddress());
-                textCity.setText(prediction.getCity());
-                textState.setText(prediction.getState());
 
 //                TODO: JIA: test whether this is necessary
 //                mMainContainer.requestFocus();
@@ -78,9 +75,6 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     {
         textStreet.setText(address.getAddress1());
         textOther.setText(address.getAddress2());
-        textCity.setText(address.getCity());
-        textState.setText(address.getState());
-        textPostal.setText(address.getZip());
     }
 
     public void hideKeyboard()
@@ -97,9 +91,6 @@ public class AutoCompleteAddressFragment extends InjectedFragment
         boolean validate = true;
 
         if (!textStreet.validate()) { validate = false; }
-        if (!textCity.validate()) { validate = false; }
-        if (!textState.validate()) { validate = false; }
-        if (!textPostal.validate()) { validate = false; }
 
         return validate;
     }

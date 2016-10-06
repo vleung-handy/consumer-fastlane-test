@@ -6,6 +6,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.handybook.handybook.booking.model.ZipValidationResponse;
+
 import java.util.List;
 
 /**
@@ -21,14 +23,21 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
     int mResource;
 
     AddressAutoCompleteManager mDataManager;
+    ZipValidationResponse.ZipArea mZipAreaFilter;
 
-    public PlacesAutoCompleteAdapter(final Context context, final int resource, final AddressAutoCompleteManager dataManager)
+    public PlacesAutoCompleteAdapter(
+            final Context context,
+            final int resource,
+            final AddressAutoCompleteManager dataManager,
+            final ZipValidationResponse.ZipArea filter
+    )
     {
         super(context, resource);
 
         mContext = context;
         mResource = resource;
         mDataManager = dataManager;
+        mZipAreaFilter = filter;
     }
 
     @Override
@@ -68,6 +77,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
                 if (constraint != null)
                 {
                     PlacePredictionResponse response = mDataManager.getAddressPrediction(constraint.toString());
+                    response.filter(mZipAreaFilter);
                     mPredictions = response.predictions;
                     mPredictionValues = response.getFullAddresses();
                     filterResults.values = mPredictionValues;

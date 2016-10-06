@@ -177,7 +177,8 @@ public final class BookingLocationFragment extends BookingFlowFragment
 
                                 final BookingRequest request = bookingManager.getCurrentRequest();
                                 request.setZipCode(zipCode);
-                                request.setTimeZone(response.timeZone);
+                                request.setZipArea(response.getZipArea());
+                                request.setTimeZone(response.getTimeZone());
                                 if (!allowCallbacks) { return; }
                                 enableInputs();
                                 progressDialog.dismiss();
