@@ -40,7 +40,7 @@ public class EventLogManager
     private static final int UPLOAD_TIMER_DELAY = 10000; //1 min
     private static final int UPLOAD_TIMER_DELAY_NO_INTERNET = 15 * 60000; //15 min
     private static final String TAG = EventManager.class.getSimpleName();
-    private static final int MAX_NUM_PER_BUNDLE = 50;
+    static final int MAX_NUM_PER_BUNDLE = 50;
     private static final Gson GSON = new Gson();
 
     private static List<EventLogBundle> sEventLogBundles;

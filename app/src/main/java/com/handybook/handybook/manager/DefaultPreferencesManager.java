@@ -30,6 +30,11 @@ public class DefaultPreferencesManager
         mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    public boolean contains(@NonNull PrefsKey prefsKey)
+    {
+        return mDefaultSharedPreferences.contains(prefsKey.getKey());
+    }
+
     public void setString(@NonNull final PrefsKey prefsKey, @Nullable final String value)
     {
         mDefaultSharedPreferences.edit().putString(prefsKey.getKey(), value).apply();
