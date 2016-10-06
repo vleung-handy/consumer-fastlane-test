@@ -12,14 +12,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static com.crashlytics.android.answers.Answers.TAG;
-
 /**
  * Created by sng on 10/4/16.
  */
 
 public class FileManager
 {
+    private static final String TAG = FileManager.class.getSimpleName();
     private static final String LOG_PATH = "handylogs";
     private static final File FILES_DIRECTORY = BaseApplication.getContext().getFilesDir();
     private final File mLogDirectory;
