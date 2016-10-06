@@ -70,7 +70,6 @@ public class EventLogManager
     }
 
     /**
-     *
      * @param event
      */
     @Subscribe
@@ -101,7 +100,8 @@ public class EventLogManager
         saveToPreference(PrefsKey.EVENT_LOG_BUNDLES, sEventLogBundles);
     }
 
-    boolean shouldLog() {
+    boolean shouldLog()
+    {
         return !BuildConfig.DEBUG;
     }
 

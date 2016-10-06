@@ -23,70 +23,91 @@ public class FileManager
     private static final File FILES_DIRECTORY = BaseApplication.getContext().getFilesDir();
     private final File mLogDirectory;
 
-    public FileManager() {
+    public FileManager()
+    {
         mLogDirectory = new File(FILES_DIRECTORY, LOG_PATH);
-        if(!mLogDirectory.exists())
-            mLogDirectory.mkdirs();
+        if (!mLogDirectory.exists())
+        { mLogDirectory.mkdirs(); }
     }
 
-    public File[] getLogFileList() {
+    public File[] getLogFileList()
+    {
         return mLogDirectory.listFiles();
     }
 
-    public String readLogFile(String fileName) {
+    public String readLogFile(String fileName)
+    {
         return readFile(LOG_PATH + fileName);
     }
 
-    public boolean saveLogFile(String fileName, String fileContext) {
+    public boolean saveLogFile(String fileName, String fileContext)
+    {
         //This was simplest way to save in sub directory
         return saveFile(new File(mLogDirectory, fileName), fileContext);
     }
 
-    public void deleteLogFile(String fileName) {
+    public void deleteLogFile(String fileName)
+    {
         new File(mLogDirectory, fileName).delete();
     }
 
-    public String readFile(File file) {
+    public String readFile(File file)
+    {
         StringBuffer buffer = null;
         BufferedReader input = null;
-        try {
+        try
+        {
             input = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line;
             buffer = new StringBuffer();
-            while ((line = input.readLine()) != null) {
+            while ((line = input.readLine()) != null)
+            {
                 buffer.append(line);
             }
 
             Log.d(TAG, buffer.toString());
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             Log.e(TAG, e.getLocalizedMessage());
         }
 
         return buffer == null ? "" : buffer.toString();
     }
 
-    public String readFile(String fileName) {
-        return readFile(new File(FILES_DIRECTORY, fileName)); // Pass getFilesDir() and "MyFile" to read file
+    public String readFile(String fileName)
+    {
+        return readFile(new File(
+                FILES_DIRECTORY,
+                fileName
+        )); // Pass getFilesDir() and "MyFile" to read file
     }
 
-    public boolean saveFile(File file, String fileContenxt) {
+    public boolean saveFile(File file, String fileContenxt)
+    {
         FileOutputStream outputStream = null;
 
-        try {
-            if(!file.exists())
+        try
+        {
+            if (!file.exists())
+            {
                 file.createNewFile();  // if file already exists will do nothing
+            }
 
             outputStream = new FileOutputStream(file);
             outputStream.write(fileContenxt.getBytes());
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.e(TAG, e.getLocalizedMessage());
-        } finally
+        }
+        finally
         {
             try
             {
                 if (outputStream != null)
-                    outputStream.close();
+                { outputStream.close(); }
             }
             catch (IOException e)
             {
@@ -98,20 +119,24 @@ public class FileManager
     }
 
     /**
-     *
      * @param fileName
      * @param fileContenxt
      * @return
      */
-    public boolean saveFile(String fileName, String fileContenxt) {
+    public boolean saveFile(String fileName, String fileContenxt)
+    {
         FileOutputStream outputStream;
 
-        try {
-            outputStream = BaseApplication.getContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+        try
+        {
+            outputStream = BaseApplication.getContext()
+                                          .openFileOutput(fileName, Context.MODE_PRIVATE);
             outputStream.write(fileContenxt.getBytes());
             outputStream.close();
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.e(TAG, e.getLocalizedMessage());
         }
 
