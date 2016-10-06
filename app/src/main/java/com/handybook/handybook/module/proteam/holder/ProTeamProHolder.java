@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 public class ProTeamProHolder extends RecyclerView.ViewHolder
         implements CompoundButton.OnCheckedChangeListener
@@ -115,8 +116,21 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         mPretext.setVisibility(View.GONE);
     }
 
+    @Nullable
     @OnClick(R.id.pro_team_pro_card_x)
     void onXClicked()
+    {
+        removePro();
+    }
+
+    @OnLongClick(R.id.pro_team_pro_card)
+    boolean onLongClick()
+    {
+        removePro();
+        return true;
+    }
+
+    private void removePro()
     {
         if (mOnInteractionListener != null)
         {
