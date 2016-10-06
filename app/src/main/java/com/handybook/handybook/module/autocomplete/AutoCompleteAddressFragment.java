@@ -59,8 +59,8 @@ public class AutoCompleteAddressFragment extends InjectedFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                AddressPrediction prediction = mAutoCompleteAdapter.getPrediction(position);
-                textStreet.setText(prediction.getStreetAddress());
+                PlacePrediction prediction = mAutoCompleteAdapter.getPrediction(position);
+                textStreet.setText(prediction.getAddress());
                 textCity.setText(prediction.getCity());
                 textState.setText(prediction.getState());
 

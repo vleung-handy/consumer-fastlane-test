@@ -444,4 +444,5 @@
 
     <string name="booking_details_pro_info_title">Your Pro</string>
     <string name="google_api_endpoint">https://maps.googleapis.com/</string>
+    <string name="places_api_base_url">https://maps.googleapis.com/</string>
 </resources>

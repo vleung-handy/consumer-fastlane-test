@@ -15,7 +15,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
     private static final String TAG = PlacesAutoCompleteAdapter.class.getName();
 
     List<String> mPredictionValues;
-    List<AddressPrediction> mPredictions;
+    List<PlacePrediction> mPredictions;
 
     Context mContext;
     int mResource;
@@ -44,7 +44,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
         return mPredictionValues.get(position);
     }
 
-    public AddressPrediction getPrediction(int position)
+    public PlacePrediction getPrediction(int position)
     {
         return mPredictions.get(position);
     }
@@ -54,6 +54,12 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
     {
         Filter filter = new Filter()
         {
+            /**
+             * Note that this is invoked in a worker thread.
+             *
+             * @param constraint
+             * @return
+             */
             @Override
             protected FilterResults performFiltering(CharSequence constraint)
             {
@@ -61,7 +67,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null)
                 {
-                    AddressPredictionResponse response = mDataManager.getAddressPrediction(constraint.toString());
+                    PlacePredictionResponse response = mDataManager.getAddressPrediction(constraint.toString());
                     mPredictions = response.predictions;
                     mPredictionValues = response.getFullAddresses();
                     filterResults.values = mPredictionValues;
@@ -69,7 +75,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
                 }
 
                 Log.d(TAG, "performFiltering: returning filters of size:" + filterResults.count);
-
                 return filterResults;
             }
 

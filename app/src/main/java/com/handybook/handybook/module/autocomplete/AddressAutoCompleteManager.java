@@ -1,6 +1,5 @@
 package com.handybook.handybook.module.autocomplete;
 
-import com.handybook.handybook.data.HandyRetrofitService;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
@@ -10,18 +9,25 @@ import javax.inject.Inject;
  */
 public class AddressAutoCompleteManager
 {
-    private final HandyRetrofitService mService;
+    private final PlacesService mService;
     private final Bus mBus;
 
     @Inject
-    public AddressAutoCompleteManager(final Bus bus, final HandyRetrofitService service)
+    public AddressAutoCompleteManager(final Bus bus, final PlacesService service)
     {
         this.mBus = bus;
         this.mBus.register(this);
         this.mService = service;
     }
 
-    AddressPredictionResponse getAddressPrediction(String word) {
+    /**
+     * Note: This is a synchronous call, and should not be made from the UI thread.
+     *
+     * @param word
+     * @return
+     */
+    PlacePredictionResponse getAddressPrediction(String word)
+    {
         return mService.getAddressPrediction(word);
     }
 }

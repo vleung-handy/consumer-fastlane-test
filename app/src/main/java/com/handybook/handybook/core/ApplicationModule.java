@@ -122,6 +122,7 @@ import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.autocomplete.AddressAutoCompleteManager;
 import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
+import com.handybook.handybook.module.autocomplete.PlacesService;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.bookings.HistoryFragment;
@@ -345,6 +346,27 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
+    final PlacesService providesPlacesService()
+    {
+        final RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(mContext.getString(R.string.places_api_base_url))
+                .setRequestInterceptor(new RequestInterceptor()
+                {
+                    @Override
+                    public void intercept(RequestFacade request)
+                    {
+                        request.addQueryParam("key", mConfigs.getProperty("google_places_api_key"));
+                    }
+                })
+                .setConverter(new GsonConverter(new GsonBuilder().create()))
+                .setClient(new OkClient((new OkHttpClient())))
+                .build();
+
+        return restAdapter.create(PlacesService.class);
+    }
+
+    @Provides
+    @Singleton
     final HandyRetrofitService provideHandyService(
             final HandyRetrofitEndpoint endpoint,
             final UserManager userManager
@@ -545,7 +567,7 @@ public final class ApplicationModule
     @Singleton
     final AddressAutoCompleteManager provideAddressAutoCompleteManager(
             final Bus bus,
-            final HandyRetrofitService service
+            final PlacesService service
     )
     {
         return new AddressAutoCompleteManager(bus, service);
