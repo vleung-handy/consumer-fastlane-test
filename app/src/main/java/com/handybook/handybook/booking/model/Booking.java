@@ -466,6 +466,7 @@ public class Booking implements Parcelable
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
 
         mEntryMethodOption = (EntryMethodOption) in.readSerializable();
+        mProviderAssignmentInfo = (ProviderAssignmentInfo) in.readSerializable();
     }
 
     public static Booking fromJson(final String json)
@@ -513,6 +514,7 @@ public class Booking implements Parcelable
                 });
         out.writeParcelable(mInstructions, 0);
         out.writeSerializable(mEntryMethodOption);
+        out.writeSerializable(mProviderAssignmentInfo);
     }
 
     @Override
@@ -570,7 +572,7 @@ public class Booking implements Parcelable
         return longValue;
     }
 
-    public static class ProviderAssignmentInfo implements Parcelable
+    public static class ProviderAssignmentInfo implements Serializable
     {
         @SerializedName("title")
         private String mMainText;
@@ -593,42 +595,6 @@ public class Booking implements Parcelable
         {
             return mSubText;
         }
-
-        protected ProviderAssignmentInfo(Parcel in)
-        {
-            mMainText = in.readString();
-            mSubText = in.readString();
-            mProTeamMatch = in.readByte() == 1;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags)
-        {
-            dest.writeString(mMainText);
-            dest.writeString(mSubText);
-            dest.writeByte((byte) (mProTeamMatch ? 1 : 0));
-        }
-
-        @Override
-        public int describeContents()
-        {
-            return 0;
-        }
-
-        public static final Creator<ProviderAssignmentInfo> CREATOR = new Creator<ProviderAssignmentInfo>()
-        {
-            @Override
-            public ProviderAssignmentInfo createFromParcel(Parcel in)
-            {
-                return new ProviderAssignmentInfo(in);
-            }
-
-            @Override
-            public ProviderAssignmentInfo[] newArray(int size)
-            {
-                return new ProviderAssignmentInfo[size];
-            }
-        };
     }
 
     public static class Address implements Parcelable
