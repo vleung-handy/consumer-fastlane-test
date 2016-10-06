@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ProTeam implements Parcelable
 {
-
     @SerializedName(ProTeamCategoryType.Constants.CLEANING)
     private ProTeamCategory mCleaning;
     @SerializedName(ProTeamCategoryType.Constants.HANDYMEN)

@@ -28,6 +28,8 @@ public class ProTeamPro implements Parcelable
     private Float mAverageRating;
     @SerializedName("booking_count")
     private Integer mBookingCount;
+    @SerializedName("profile_photo_url")
+    private String mImageUrl;
 
     protected ProTeamPro(Parcel in)
     {
@@ -49,6 +51,7 @@ public class ProTeamPro implements Parcelable
             mAverageRating = null;
         }
         mBookingCount = in.readInt();
+        mImageUrl = in.readString();
     }
 
     public static final Creator<ProTeamPro> CREATOR = new Creator<ProTeamPro>()
@@ -99,6 +102,11 @@ public class ProTeamPro implements Parcelable
         return mBookingCount;
     }
 
+    public String getImageUrl()
+    {
+        return mImageUrl;
+    }
+
     @Override
     public int describeContents()
     {
@@ -114,6 +122,7 @@ public class ProTeamPro implements Parcelable
         dest.writeLong(mLastSeenAt != null ? mLastSeenAt.getTime() : MILLIS_FOR_NULL_DATE);
         dest.writeFloat(mAverageRating == null ? INVALID_AVERAGE_RATING : mAverageRating);
         dest.writeInt(mBookingCount);
+        dest.writeString(mImageUrl);
     }
 
     @Override

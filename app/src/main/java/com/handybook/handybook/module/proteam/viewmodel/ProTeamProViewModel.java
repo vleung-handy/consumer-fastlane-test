@@ -26,6 +26,7 @@ public class ProTeamProViewModel
     private final Float mAverageRating;
     private final String mBookingFooter;
     private boolean mIsChecked;
+    private String mImageUrl;
 
     private ProTeamProViewModel(
             @NonNull final ProTeamPro proTeamPro,
@@ -55,6 +56,7 @@ public class ProTeamProViewModel
         { mBookingFooter = String.format(Locale.getDefault(), TEMPLATE_BOOKINGS_FOOTER, bookingCount); }
         else
         { mBookingFooter = String.format(Locale.getDefault(), TEMPLATE_BOOKINGS_PLURAL_FOOTER, bookingCount); }
+        mImageUrl = proTeamPro.getImageUrl();
     }
 
     public static ProTeamProViewModel from(
@@ -114,6 +116,16 @@ public class ProTeamProViewModel
     public boolean isFooterVisible()
     {
         return mProTeamPro.getLastSeenAt() != null;
+    }
+
+    public String getImageUrl()
+    {
+        return mImageUrl;
+    }
+
+    public boolean hasImageUrl()
+    {
+        return mImageUrl != null;
     }
 
     public interface OnInteractionListener

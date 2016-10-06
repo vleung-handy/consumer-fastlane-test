@@ -72,6 +72,10 @@ public class User extends Observable
     private boolean mRecurringCancellationsEnabled;
     @SerializedName("enable_recurring_cancellations_email_flow")
     private boolean mRecurringCancellationsEmailFlowEnabled;
+    @SerializedName("pro_team_profile_pictures_enabled")
+    private boolean isProTeamProfilePicturesEnabled;
+
+    public User() {}
 
     public boolean isRecurringCancellationsEnabled()
     {
@@ -345,6 +349,11 @@ public class User extends Observable
     public String getStripeKey()
     {
         return mStripeKey;
+    }
+
+    public boolean isProTeamProfilePicturesEnabled()
+    {
+        return isProTeamProfilePicturesEnabled;
     }
 
     static final class UserSerializer implements JsonSerializer<User>

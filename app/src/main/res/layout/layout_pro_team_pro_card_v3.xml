@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,7 +24,7 @@
         android:id="@+id/pro_team_pro_card_divider_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/horizontal_divider_height"
-        android:background="@color/light_grey"
+        android:background="@color/handy_divider_line"
         />
 
     <LinearLayout
@@ -37,17 +38,76 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/default_margin_half"
-            android:layout_marginStart="@dimen/default_margin_half"
+            android:layout_margin="@dimen/default_margin"
             android:background="@drawable/bg_checkbox_heart_red"
             android:button="@null"
             android:saveEnabled="true"
             tools:checked="true"
             />
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/default_padding_half"
+            android:paddingTop="@dimen/default_padding_half"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/pro_team_pro_card_image"
+                android:layout_width="@dimen/pro_team_pro_image_size"
+                android:layout_height="@dimen/pro_team_pro_image_size"
+                android:layout_centerHorizontal="true"
+                app:civ_border_color="@color/handy_divider_line"
+                app:civ_border_width="1dp"
+                tools:src="@drawable/img_pro_placeholder"
+                />
+
+            <LinearLayout
+                android:id="@+id/pro_team_pro_card_average_rating_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pro_team_pro_card_image"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-12dp"
+                android:background="@drawable/pill_white"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/pro_team_average_rating_star_margin_small"
+                android:paddingEnd="@dimen/pro_team_average_rating_star_margin"
+                android:paddingLeft="@dimen/pro_team_average_rating_star_margin"
+                android:paddingRight="@dimen/pro_team_average_rating_star_margin"
+                android:paddingStart="@dimen/pro_team_average_rating_star_margin"
+                android:paddingTop="@dimen/pro_team_average_rating_star_margin_small"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/pro_team_star_width_height_small"
+                    android:layout_height="@dimen/pro_team_star_width_height_small"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/cd.pro_team_star"
+                    android:src="@drawable/ic_star"
+                    />
+
+                <TextView
+                    android:id="@+id/pro_team_pro_card_average_rating_text"
+                    style="@style/TextView.XSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/pro_team_average_rating_star_margin_small"
+                    android:layout_marginStart="@dimen/pro_team_average_rating_star_margin_small"
+                    android:gravity="center"
+                    android:textColor="@color/handy_tertiary_gray"
+                    tools:text="4.5"
+                    />
+
+            </LinearLayout>
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginBottom="@dimen/pro_team_margin"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
@@ -81,45 +141,6 @@
             android:layout_marginTop="@dimen/pro_team_margin"
             android:orientation="vertical"
             >
-
-            <LinearLayout
-                android:id="@+id/pro_team_pro_card_average_rating_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:orientation="horizontal"
-                >
-
-                <ImageView
-                    android:layout_width="@dimen/pro_team_star_width_height"
-                    android:layout_height="@dimen/pro_team_star_width_height"
-                    android:contentDescription="@string/cd.pro_team_star"
-                    android:src="@drawable/ic_star"
-                    />
-
-                <TextView
-                    android:id="@+id/pro_team_pro_card_average_rating_text"
-                    style="@style/TextView.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/pro_team_average_rating_star_margin"
-                    android:layout_marginStart="@dimen/pro_team_average_rating_star_margin"
-                    tools:text="4.5"
-                    />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/booking_count_text"
-                style="@style/TextView.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/pro_team_bookings_margin"
-                android:textColor="@color/handy_text_gray"
-                tools:text="12 bookings"
-                />
-
         </LinearLayout>
 
         <ImageButton
@@ -133,6 +154,7 @@
             android:padding="@dimen/default_padding"
             android:src="@drawable/ic_pro_team_x_small"
             />
+
     </LinearLayout>
 
 </LinearLayout>

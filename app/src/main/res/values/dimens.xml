@@ -34,7 +34,7 @@
     <dimen name="round_button_stroke">1dp</dimen>
     <dimen name="icon_padding">2dp</dimen>
     <dimen name="framed_icon_inset">8dp</dimen>
-    <dimen name="horizontal_divider_height">2dp</dimen>
+    <dimen name="horizontal_divider_height">1dp</dimen>
     <dimen name="horizontal_divider_height_thin">1dp</dimen>
     <dimen name="gray_horizontal_divider_height">1dp</dimen>
     <dimen name="select_payment_vertical_padding">30dp</dimen>
@@ -58,10 +58,13 @@
     <!-- Pro Team -->
     <dimen name="pro_team_margin">12dp</dimen>
     <dimen name="pro_team_star_width_height">16dp</dimen>
+    <dimen name="pro_team_star_width_height_small">12dp</dimen>
     <dimen name="pro_team_bookings_margin">5dp</dimen>
+    <dimen name="pro_team_pro_image_size">56dp</dimen>
 
     <dimen name="booking_list_item_height">80dp</dimen>
     <dimen name="pro_team_average_rating_star_margin">5dp</dimen>
+    <dimen name="pro_team_average_rating_star_margin_small">2dp</dimen>
 
     <!-- For ratings grid -->
     <dimen name="grid_image_width">80dp</dimen>

@@ -1,17 +1,19 @@
 package com.handybook.handybook.module.proteam.holder;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 
@@ -32,15 +34,16 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     TextView mFooter;
     @Bind(R.id.pro_team_pro_card_checkbox)
     CheckBox mCheckbox;
-    @Bind(R.id.pro_average_rating_layout)
+    @Bind(R.id.pro_team_pro_card_average_rating_layout)
     ViewGroup mProAverageRatingLayout;
-    @Bind(R.id.average_rating_text)
+    @Bind(R.id.pro_team_pro_card_average_rating_text)
     TextView mProAverageRating;
+    @Nullable
     @Bind(R.id.booking_count_text)
     TextView mBookingCountText;
-    @Bind(R.id.pro_team_pro_card_x)
-    ImageButton mXButton;
-
+    @Nullable
+    @Bind(R.id.pro_team_pro_card_image)
+    ImageView mProImage;
 
     public ProTeamProHolder(
             View itemView,
@@ -79,7 +82,26 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
             mProAverageRatingLayout.setVisibility(View.INVISIBLE);
         }
 
-        mBookingCountText.setText(mProTeamProViewModel.getBookingFooter());
+        if (mBookingCountText != null)
+        {
+            mBookingCountText.setText(mProTeamProViewModel.getBookingFooter());
+        }
+
+        if (mProImage != null)
+        {
+            if (mProTeamProViewModel.hasImageUrl())
+            {
+                Picasso.with(mProImage.getContext())
+                       .load(mProTeamProViewModel.getImageUrl())
+                       .placeholder(R.drawable.img_pro_placeholder)
+                       .noFade()
+                       .into(mProImage);
+            }
+            else
+            {
+                mProImage.setImageResource(R.drawable.img_pro_placeholder);
+            }
+        }
         initTextColors();
     }
 
@@ -98,7 +120,10 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     {
         if (mOnInteractionListener != null)
         {
-            mOnInteractionListener.onXClicked(mProTeamProViewModel.getProTeamPro(), mProTeamProViewModel.getProviderMatchPreference());
+            mOnInteractionListener.onXClicked(
+                    mProTeamProViewModel.getProTeamPro(),
+                    mProTeamProViewModel.getProviderMatchPreference()
+            );
         }
     }
 
@@ -129,7 +154,10 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         initTextColors();
         if (mOnInteractionListener != null)
         {
-            mOnInteractionListener.onCheckedChanged(mProTeamProViewModel.getProTeamPro(), isChecked);
+            mOnInteractionListener.onCheckedChanged(
+                    mProTeamProViewModel.getProTeamPro(),
+                    isChecked
+            );
         }
     }
 }
