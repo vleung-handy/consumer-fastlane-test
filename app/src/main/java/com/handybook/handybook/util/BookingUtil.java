@@ -10,8 +10,8 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingService;
+import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
@@ -207,7 +207,7 @@ public class BookingUtil
      * @param rb
      * @return
      */
-    public static String getRecurrenceSubTitle(UserRecurringBooking rb)
+    public static String getRecurrenceSubTitle(RecurringBooking rb)
     {
         return DateTimeUtils.getDayShortMonthDay(rb.getDateStart()) + " @ "
                 + DateTimeUtils.getTime(rb.getDateStart());
@@ -219,7 +219,7 @@ public class BookingUtil
      * @param rb
      * @return
      */
-    public static String getRecurrenceSubTitle2(UserRecurringBooking rb)
+    public static String getRecurrenceSubTitle2(RecurringBooking rb)
     {
         return DateTimeUtils.getTime(rb.getDateStart()) + " - " + rb.getHours() + " hours";
     }
