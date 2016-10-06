@@ -16,7 +16,7 @@ import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequenc
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingQuote;
-import com.handybook.handybook.booking.model.UserRecurringBooking;
+import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.constant.ActivityResult;
@@ -39,7 +39,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 {
     //TODO: need to consolidate all booking edit fragments with booking flow fragments that are used in booking creation
     private Booking mBooking;
-    private UserRecurringBooking mRecurringBooking;
+    private RecurringBooking mRecurringBooking;
     private BookingQuote mBookingQuote;
 
     @Bind(R.id.options_layout)
@@ -50,7 +50,10 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     private BookingEditFrequencyViewModel mBookingEditFrequencyViewModel;
     private BookingOptionsSelectView mOptionsView;
 
-    public static BookingEditFrequencyFragment newInstance(Booking booking, UserRecurringBooking recurringBooking)
+    public static BookingEditFrequencyFragment newInstance(
+            Booking booking,
+            RecurringBooking recurringBooking
+    )
     {
         final BookingEditFrequencyFragment fragment = new BookingEditFrequencyFragment();
         final Bundle args = new Bundle();
@@ -65,7 +68,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        mRecurringBooking = (UserRecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_BOOKING);
+        mRecurringBooking = (RecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_BOOKING);
 
         mBookingQuote = bookingManager.getCurrentQuote();
 
@@ -92,7 +95,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         }
         else if (mRecurringBooking != null)
         {
-            bus.post(new BookingEditEvent.RequestRecurringFrequencyViewModel(mRecurringBooking.getId()));
+            bus.post(new BookingEditEvent.RequestRecurringFrequencyViewModel(Integer.toString(
+                    mRecurringBooking.getId())));
         }
 
     }
@@ -151,7 +155,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         else
         {
             bus.post(new BookingEditEvent.RequestUpdateRecurringFrequency(
-                    mRecurringBooking.getId(),
+                    Integer.toString(mRecurringBooking.getId()),
                     bookingEditFrequencyRequest));
         }
     }

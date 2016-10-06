@@ -9,7 +9,7 @@ public final class UserBookingsWrapper
     @SerializedName("user_bookings")
     private List<Booking> mBookings;
     @SerializedName("user_recurring_bookings")
-    private List<UserRecurringBooking> mRecurringBookings;
+    private List<RecurringBooking> mRecurringBookings;
 
     public UserBookingsWrapper()
     {
@@ -20,7 +20,7 @@ public final class UserBookingsWrapper
         return mBookings;
     }
 
-    public final List<UserRecurringBooking> getRecurringBookings()
+    public final List<RecurringBooking> getRecurringBookings()
     {
         return mRecurringBookings;
     }
