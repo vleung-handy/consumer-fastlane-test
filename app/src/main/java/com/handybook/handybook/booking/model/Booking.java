@@ -94,6 +94,13 @@ public class Booking implements Parcelable
     private Instructions mInstructions;
     @SerializedName("active_booking_status")
     private LocationStatus mActiveBookingLocationStatus;
+    @SerializedName("provider_assignment_state")
+    private ProviderAssignmentInfo mProviderAssignmentInfo;
+
+    public ProviderAssignmentInfo getProviderAssignmentInfo()
+    {
+        return mProviderAssignmentInfo;
+    }
 
     public String getLockboxCode()
     {
@@ -120,7 +127,10 @@ public class Booking implements Parcelable
         mId = id;
     }
 
-    public final boolean isPast()
+    /**
+     * not "final" for unit testing
+     */
+    public boolean isPast()
     {
         return mIsPast == 1;
     }
@@ -147,7 +157,10 @@ public class Booking implements Parcelable
         mBookingTimezone = bookingTimezone;
     }
 
-    public final boolean hasAssignedProvider()
+    /**
+     * not "final" for unit testing
+     */
+    public boolean hasAssignedProvider()
     {
         return mProvider != null && mProvider.getStatus() == Provider.PROVIDER_STATUS_ASSIGNED;
     }
@@ -284,7 +297,6 @@ public class Booking implements Parcelable
     {
 
     }
-
 
     public final static class ExtrasMachineName
     {
@@ -454,6 +466,7 @@ public class Booking implements Parcelable
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
 
         mEntryMethodOption = (EntryMethodOption) in.readSerializable();
+        mProviderAssignmentInfo = (ProviderAssignmentInfo) in.readSerializable();
     }
 
     public static Booking fromJson(final String json)
@@ -501,6 +514,7 @@ public class Booking implements Parcelable
                 });
         out.writeParcelable(mInstructions, 0);
         out.writeSerializable(mEntryMethodOption);
+        out.writeSerializable(mProviderAssignmentInfo);
     }
 
     @Override
@@ -556,6 +570,31 @@ public class Booking implements Parcelable
             Crashlytics.logException(nfe);
         }
         return longValue;
+    }
+
+    public static class ProviderAssignmentInfo implements Serializable
+    {
+        @SerializedName("title")
+        private String mMainText;
+        @SerializedName("subtitle")
+        private String mSubText;
+        @SerializedName("pro_team_match")
+        private boolean mProTeamMatch;
+
+        public boolean isProTeamMatch()
+        {
+            return mProTeamMatch;
+        }
+
+        public String getMainText()
+        {
+            return mMainText;
+        }
+
+        public String getSubText()
+        {
+            return mSubText;
+        }
     }
 
     public static class Address implements Parcelable

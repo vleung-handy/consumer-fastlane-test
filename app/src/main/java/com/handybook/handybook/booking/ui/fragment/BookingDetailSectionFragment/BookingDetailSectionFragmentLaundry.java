@@ -15,18 +15,6 @@ public class BookingDetailSectionFragmentLaundry extends BookingDetailSectionFra
     }
 
     @Override
-    protected int getEntryActionTextResourceId(Booking booking)
-    {
-        return R.string.set_dropoff;
-    }
-
-    @Override
-    protected boolean hasEnabledAction(Booking booking)
-    {
-        return false;
-    }
-
-    @Override
     public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
@@ -42,9 +30,4 @@ public class BookingDetailSectionFragmentLaundry extends BookingDetailSectionFra
         }
     }
 
-    @Override
-    protected void onActionClick()
-    {
-        //TODO: Edit laundry drop off associated with booking
-    }
 }

@@ -1,19 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView
+    style="@style/BookingDetailSectionView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/BookingDetailSectionView"
+    android:id="@+id/element_booking_detail_section_pro_info_layout"
     >
 
     <include layout="@layout/layout_section_separator_view"/>
 
-    <include layout="@layout/layout_section_entry_title"/>
+    <include
+        layout="@layout/layout_section_entry_title"/>
 
     <include layout="@layout/layout_section_action_text"/>
 
-    <include layout="@layout/layout_section_entry_text"/>
+    <LinearLayout
+        android:id="@+id/element_booking_detail_section_pro_info_assigned_pro_name_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_below="@+id/entry_title"
+        android:orientation="horizontal"
+        >
 
-    <include layout="@layout/layout_section_action_buttons"/>
+        <ImageView
+            android:id="@+id/element_booking_detail_section_pro_info_assigned_pro_team_match_indicator"
+            android:layout_width="@dimen/default_icon_size_half"
+            android:layout_height="@dimen/default_icon_size_half"
+            android:src="@drawable/ic_checkbox_heart_checked"
+            android:layout_gravity="center"
+            android:padding="@dimen/icon_padding"
+            android:layout_marginRight="@dimen/default_margin_half"
+            />
+
+        <TextView
+            android:id="@+id/element_booking_detail_section_pro_info_assigned_pro_name_text"
+            style="@style/TextView.Large"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textIsSelectable="false"
+            tools:text="First Last"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:layout_margin="@dimen/default_margin"
+        android:layout_below="@id/element_booking_detail_section_pro_info_assigned_pro_name_layout"
+        android:id="@+id/entry_text"
+        style="@style/TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:textIsSelectable="false"
+        tools:text="something something something"
+        />
 
     <LinearLayout
         android:id="@+id/action_buttons_layout"
@@ -35,7 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            />
 
         <LinearLayout
             android:id="@+id/action_buttons_layout_slot_2"
@@ -43,14 +88,17 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            />
 
     </LinearLayout>
 
-    <!--This view should only be visible if there are no pros assigned. -->
+
+    <!--This view should only be visible if there are no pros assigned,
+        pro teams feature flag is on AND provider assignment state object is not null in the booking. -->
     <!--NOTE: The marginTop should be the same as the one used in layout_section_entry_text-->
     <RelativeLayout
-        android:id="@+id/no_pro_view"
+        android:id="@+id/element_booking_detail_section_pro_info_no_pro_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_border_input"
@@ -103,7 +151,7 @@
             />
 
         <Button
-            android:id="@+id/button_pro_team"
+            android:id="@+id/element_booking_detail_section_pro_info_no_pro_view_pro_team_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

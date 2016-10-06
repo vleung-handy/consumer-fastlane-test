@@ -11,6 +11,9 @@ import com.handybook.handybook.booking.constant.BookingActionButtonType;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 
+/**
+ * these are dynamically generated for booking details
+ */
 public class BookingActionButton extends Button
 {
     public BookingActionButton(Context context)
@@ -52,6 +55,12 @@ public class BookingActionButton extends Button
         {
             setTextAppearance(getContext(), bookingActionButtonType.getTextStyleId());
         }
+        int leftDrawableResourceId = bookingActionButtonType.getLeftDrawableResourceId();
+        if(leftDrawableResourceId > 0)
+        {
+            setCompoundDrawablesWithIntrinsicBounds(bookingActionButtonType.getLeftDrawableResourceId(), 0, 0, 0);
+        }
+
         setText(bookingActionButtonType.getDisplayNameId());
         setId(bookingActionButtonType.getAccessibilityId());
         setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));

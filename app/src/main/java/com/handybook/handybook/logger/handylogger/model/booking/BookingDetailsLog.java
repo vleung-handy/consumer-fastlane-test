@@ -6,11 +6,11 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
 import java.util.Date;
 
 
-public class BookingDetailsLog extends EventLog
+public abstract class BookingDetailsLog extends EventLog
 {
     private static final String EVENT_CONTEXT = "booking_details";
 
-    public BookingDetailsLog(final String eventType)
+    private BookingDetailsLog(final String eventType)
     {
         super(eventType, EVENT_CONTEXT);
     }
@@ -103,6 +103,16 @@ public class BookingDetailsLog extends EventLog
         }
     }
 
+
+    public static class ProTeamOpenTapped extends BookingDetailsLog
+    {
+        private static final String EVENT_TYPE = "pro_team_open_tapped";
+
+        public ProTeamOpenTapped()
+        {
+            super(EVENT_TYPE);
+        }
+    }
 
     public enum EventType
     {

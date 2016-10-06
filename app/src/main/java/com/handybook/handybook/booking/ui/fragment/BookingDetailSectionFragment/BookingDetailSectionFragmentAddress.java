@@ -1,6 +1,9 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.view.View;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
@@ -19,28 +22,41 @@ public class BookingDetailSectionFragmentAddress extends BookingDetailSectionFra
     }
 
     @Override
-    protected int getEntryActionTextResourceId(Booking booking)
-    {
-        return R.string.edit;
-    }
-
-    @Override
-    protected boolean hasEnabledAction(Booking booking)
-    {
-        return true;
-    }
-
-    @Override
     public void updateDisplay(Booking booking, User user)
     {
         super.updateDisplay(booking, user);
         final Booking.Address address = booking.getAddress();
         getSectionView().getEntryText().setText(TextUtils.formatAddress(address.getAddress1(),
-                address.getAddress2(),
-                address.getCity(), address.getState(), address.getZip()));
+                                                                        address.getAddress2(),
+                                                                        address.getCity(),
+                                                                        address.getState(),
+                                                                        address.getZip()
+        ));
     }
 
     @Override
+    protected void updateActionTextView(
+            @NonNull final Booking booking,
+            @NonNull final TextView actionTextView
+    )
+    {
+        if (booking.isPast())
+        {
+            actionTextView.setVisibility(View.GONE);
+            return;
+        }
+        actionTextView.setVisibility(View.VISIBLE);
+        actionTextView.setText(R.string.edit);
+        actionTextView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                onActionClick();
+            }
+        });
+    }
+
     protected void onActionClick()
     {
         final Intent intent = new Intent(getActivity(), BookingEditAddressActivity.class);
