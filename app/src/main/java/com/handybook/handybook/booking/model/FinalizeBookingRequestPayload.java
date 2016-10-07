@@ -98,7 +98,7 @@ public class FinalizeBookingRequestPayload extends Observable
      * @param selectedEntryMethodInputFormValues
      */
     public void setEntryInfo(
-            @BookingInstruction.EntryMethodType String selectedEntryMethodMachineName,
+            String selectedEntryMethodMachineName,
             @NonNull Map<String, String> selectedEntryMethodInputFormValues
     )
     {

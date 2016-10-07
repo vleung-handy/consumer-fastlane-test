@@ -65,7 +65,6 @@ public class EntryMethodOption implements Serializable, Option
         return mSubtitleText;
     }
 
-    @BookingInstruction.EntryMethodType
     public String getMachineName()
     {
         return mMachineName;

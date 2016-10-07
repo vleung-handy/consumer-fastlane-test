@@ -191,7 +191,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
      * @return
      */
     private List<BookingInstruction> getBookingInstructionsListFromInput(
-            @BookingInstruction.EntryMethodType String selectedEntryMethodMachineName,
+            String selectedEntryMethodMachineName,
             @NonNull Map<String, String> selectedEntryMethodInputFormValues
     )
     {
