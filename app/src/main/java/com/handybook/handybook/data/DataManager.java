@@ -1261,7 +1261,13 @@ public class DataManager
             @Override
             protected void success(final JSONObject response)
             {
-                cb.onSuccess(null);
+                try
+                {
+                    cb.onSuccess(new Gson().fromJson(response.toString(), EventLogResponse.class));
+                } catch (Exception e) {
+                    Crashlytics.log("EventLogResponse error: " + response);
+                    cb.onError(null);
+                }
             }
         });
     }

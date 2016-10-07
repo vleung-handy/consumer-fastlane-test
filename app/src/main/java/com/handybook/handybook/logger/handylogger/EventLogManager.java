@@ -323,10 +323,10 @@ public class EventLogManager
                             @Override
                             public void onSuccess(EventLogResponse response)
                             {
-                                Log.d(
-                                        TAG,
-                                        "Succesfully uploaded: " + file.getName() + " " + response.getBundleId()
-                                );
+//                                Log.d(
+//                                        TAG,
+//                                        "Succesfully uploaded: " + file.getName() + " " + response.getBundleId()
+//                                );
                                 mFileManager.deleteLogFile(response.getBundleId());
                                 finishUpload();
                             }
@@ -334,7 +334,7 @@ public class EventLogManager
                             @Override
                             public void onError(DataManager.DataManagerError error)
                             {
-                                Log.d(TAG, "failed: " + error.getType() + file.getName());
+                     //           Log.d(TAG, "failed: " + error.getType() + file.getName());
                                 finishUpload();
                             }
 
