@@ -1,5 +1,8 @@
 package com.handybook.handybook.module.autocomplete;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.AddressAutocompleteLog;
 import com.squareup.otto.Bus;
@@ -8,6 +11,7 @@ import javax.inject.Inject;
 
 public class AddressAutoCompleteManager
 {
+    private static final String TAG = "AddressAutoCompleteMana";
     private final PlacesService mService;
     private final Bus mBus;
 
@@ -24,14 +28,26 @@ public class AddressAutoCompleteManager
      * @param word
      * @return
      */
+    @NonNull
     PlacePredictionResponse getAddressPrediction(String word)
     {
+        Log.d(TAG, "getAddressPrediction() called with: word = [" + word + "]");
+
         mBus.post(new LogEvent.AddLogEvent(new AddressAutocompleteLog.AddressAutocompleteRequestLog(word)));
+
+        if (mService == null)
+        {
+            Log.d(TAG, "getAddressPrediction: mService is null");
+        }
         PlacePredictionResponse response = mService.getAddressPrediction(word);
 
-        int count = (response == null || response.predictions == null) ? 0 : response.predictions.size();
-        mBus.post(new LogEvent.AddLogEvent(new AddressAutocompleteLog.AddressAutocompleteResponseLog(count)));
-
+        if (response == null)
+        {
+            Log.d(TAG, "getAddressPrediction: response is null");
+            response = new PlacePredictionResponse();
+        }
+        Log.d(TAG, "getAddressPrediction: got response");
+        mBus.post(new LogEvent.AddLogEvent(new AddressAutocompleteLog.AddressAutocompleteResponseLog(response.predictions.size())));
         return response;
     }
 }

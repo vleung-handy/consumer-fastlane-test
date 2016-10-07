@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.autocomplete;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
@@ -15,13 +16,14 @@ import java.util.List;
 public class PlacePredictionResponse implements Serializable
 {
     @SerializedName("predictions")
-    public ArrayList<PlacePrediction> predictions;
+    @NonNull
+    public ArrayList<PlacePrediction> predictions = new ArrayList<>();
 
     /**
      * Since we don't have zip in the prediction response,
      * the next best thing is to filter it by city or state
      */
-    public void filter(ZipValidationResponse.ZipArea filterBy)
+    public void filter(@Nullable ZipValidationResponse.ZipArea filterBy)
     {
         for (int i = predictions.size() - 1; i >= 0; i--)
         {
@@ -89,7 +91,7 @@ public class PlacePredictionResponse implements Serializable
     {
         ArrayList<String> rval = new ArrayList();
 
-        if (predictions == null || predictions.isEmpty())
+        if (predictions.isEmpty())
         {
             return rval;
         }

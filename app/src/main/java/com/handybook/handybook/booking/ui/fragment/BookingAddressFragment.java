@@ -133,7 +133,7 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
 
                 if (mAutoCompleteFragment != null)
                 {
-                    transaction.setAddress1(mAutoCompleteFragment.textStreet.getAddress());
+                    transaction.setAddress1(mAutoCompleteFragment.mStreet.getAddress());
                     transaction.setAddress2(mAutoCompleteFragment.textOther.getText().toString());
                 }
 
