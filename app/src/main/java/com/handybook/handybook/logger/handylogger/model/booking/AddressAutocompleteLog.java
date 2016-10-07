@@ -53,4 +53,22 @@ public class AddressAutocompleteLog extends EventLog
         }
     }
 
+
+    /**
+     * Triggered when a user selects one of the options displayed for autocomplete
+     */
+    public static class AddressAutocompleteItemTappedLog extends AddressAutocompleteLog
+    {
+        private static final String EVENT_TYPE = "address_autocomplete_item_tapped";
+
+        @SerializedName("item")
+        private String mItem;
+
+        public AddressAutocompleteItemTappedLog(String item)
+        {
+            super(EVENT_TYPE);
+            mItem = item;
+        }
+    }
+
 }

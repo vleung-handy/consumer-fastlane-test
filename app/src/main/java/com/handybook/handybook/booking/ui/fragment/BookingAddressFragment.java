@@ -114,7 +114,7 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
             mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(filter, null, null);
         }
 
-        getFragmentManager()
+        getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.booking_address_fragment_container, mAutoCompleteFragment)
                 .commitAllowingStateLoss();
