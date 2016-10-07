@@ -443,7 +443,7 @@ public class Booking implements Parcelable
         mPrice = floatData[1];
 
         mStartDate = new Date(in.readLong());
-        mAddress = in.readParcelable(Address.class.getClassLoader());
+        mAddress = (Address) in.readSerializable();
         mProvider = (Provider) in.readSerializable();
         mActiveBookingLocationStatus = (LocationStatus) in.readSerializable();
         mService = in.readParcelable(BookingService.class.getClassLoader());
@@ -498,7 +498,7 @@ public class Booking implements Parcelable
         out.writeIntArray(new int[]{mIsPast, mEntryType});
         out.writeFloatArray(new float[]{mHours, mPrice});
         out.writeLong(mStartDate.getTime());
-        out.writeParcelable(mAddress, 0);
+        out.writeSerializable(mAddress);
         out.writeSerializable(mProvider);
         out.writeSerializable(mActiveBookingLocationStatus);
         out.writeParcelable(mService, 0);
@@ -597,7 +597,8 @@ public class Booking implements Parcelable
         }
     }
 
-    public static class Address implements Parcelable
+
+    public static class Address implements Serializable
     {
         @SerializedName("address1")
         private String address1;
@@ -704,47 +705,6 @@ public class Booking implements Parcelable
         {
             this.longitude = longitude;
         }
-
-        private Address(final Parcel in)
-        {
-            final String[] stringData = new String[5];
-            in.readStringArray(stringData);
-            address1 = stringData[0];
-            address2 = stringData[1];
-            city = stringData[2];
-            state = stringData[3];
-            zip = stringData[4];
-
-            latitude = in.readDouble();
-            longitude = in.readDouble();
-        }
-
-        @Override
-        public final void writeToParcel(final Parcel out, final int flags)
-        {
-            out.writeStringArray(new String[]{address1, address2, city, state, zip});
-            out.writeDouble(latitude);
-            out.writeDouble(longitude);
-        }
-
-        @Override
-        public final int describeContents()
-        {
-            return 0;
-        }
-
-        public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
-        {
-            public Address createFromParcel(final Parcel in)
-            {
-                return new Address(in);
-            }
-
-            public Address[] newArray(final int size)
-            {
-                return new Address[size];
-            }
-        };
 
         @Override
         public String toString()
