@@ -9,9 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
 import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -53,7 +53,7 @@ public class NoBookingsView extends FrameLayout
      *
      * @param bookings
      */
-    public void bindForNoRecurringBookings(@NonNull List<RecurringBooking> bookings)
+    public void bindForNoRecurringBookings(@NonNull List<UserRecurringBooking> bookings)
     {
 
         if (bookings.isEmpty())
@@ -63,16 +63,16 @@ public class NoBookingsView extends FrameLayout
         }
 
         //sort the bookings according to next start date
-        Collections.sort(bookings, new Comparator<RecurringBooking>()
+        Collections.sort(bookings, new Comparator<UserRecurringBooking>()
         {
             @Override
-            public int compare(final RecurringBooking lhs, final RecurringBooking rhs)
+            public int compare(final UserRecurringBooking lhs, final UserRecurringBooking rhs)
             {
                 return lhs.getDateStart().compareTo(rhs.getDateStart());
             }
         });
 
-        RecurringBooking booking = bookings.get(0);
+        UserRecurringBooking booking = bookings.get(0);
 
         mTextDate.setText(DateTimeUtils.getDayMonthDay(booking.getDateStart()));
         mTextTime.setText(BookingUtil.getRecurrenceSubTitle2(booking));

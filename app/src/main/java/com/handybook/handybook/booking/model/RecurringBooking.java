@@ -27,15 +27,6 @@ public class RecurringBooking implements Serializable
     private String mCancelUrl;
     @SerializedName("address_components")
     private Booking.Address mAddress;
-    //This is the recurring series id.
-    @SerializedName("service_name")
-    private String mServiceName;
-    @SerializedName("service_machine")
-    private String mMachineName;
-    @SerializedName("date_start")
-    private Date mDateStart;
-    @SerializedName("recurring_string_short")
-    private String mRecurringStringShort;
 
     public RecurringBooking() { }
 
@@ -113,24 +104,4 @@ public class RecurringBooking implements Serializable
     public void setFrequencyValue(final int frequencyValue) { mFrequencyValue = frequencyValue; }
 
     public void setAddress(final Booking.Address address) { mAddress = address; }
-
-    public String getServiceName()
-    {
-        return mServiceName;
-    }
-
-    public String getMachineName()
-    {
-        return mMachineName;
-    }
-
-    public Date getDateStart()
-    {
-        return mDateStart;
-    }
-
-    public String getRecurringStringShort()
-    {
-        return mRecurringStringShort;
-    }
 }

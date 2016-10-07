@@ -10,7 +10,7 @@ import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.constant.BookingRecurrence.BookingRecurrenceCode;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
 
 public class BookingEditFrequencyViewModel
 {
@@ -41,7 +41,7 @@ public class BookingEditFrequencyViewModel
     public BookingOption getBookingOptionFromBooking(
             final Context context,
             final Booking booking,
-            final RecurringBooking recurringBooking
+            final UserRecurringBooking recurringBooking
     )
     {
         //TODO: mostly duplicated from checkout flow fragment, should reconsider redesigning the options logic
@@ -88,7 +88,7 @@ public class BookingEditFrequencyViewModel
     public final String getServiceShortNameFromBooking(
             final Context context,
             final Booking booking,
-            final RecurringBooking recurringBooking
+            final UserRecurringBooking recurringBooking
     )
     {
         String serviceName = "";

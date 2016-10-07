@@ -11,10 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.model.UserRecurringBooking;
+import com.handybook.handybook.util.BookingUtil;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.UiUtils;
-import com.handybook.handybook.util.BookingUtil;
 
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class ExpandableCleaningPlan extends LinearLayout
 
     public void bind(
             final View.OnClickListener clickListener,
-            final List<RecurringBooking> recurringBookings,
+            final List<UserRecurringBooking> recurringBookings,
             final String activePlanCountTitle
     )
     {
@@ -84,7 +84,7 @@ public class ExpandableCleaningPlan extends LinearLayout
         planContainer.removeAllViews();
         for (int i = 0; i < recurringBookings.size(); i++)
         {
-            RecurringBooking recurringBooking = recurringBookings.get(i);
+            UserRecurringBooking recurringBooking = recurringBookings.get(i);
             View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, planContainer, false);
             view.setTag(recurringBooking);
 
