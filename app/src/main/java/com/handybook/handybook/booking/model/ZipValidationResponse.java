@@ -28,6 +28,17 @@ public class ZipValidationResponse
         @SerializedName("zip")
         private String mZip;
 
+        public ZipArea()
+        {
+        }
+
+        public ZipArea(final String city, final String state, final String zip)
+        {
+            mCity = city;
+            mState = state;
+            mZip = zip;
+        }
+
         public String getZip()
         {
             return mZip;

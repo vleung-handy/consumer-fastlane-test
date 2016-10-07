@@ -61,17 +61,16 @@
 
             </LinearLayout>
 
-            <fragment
-                android:id="@+id/autocomplete_fragment"
+            <FrameLayout
+                android:id="@+id/booking_address_fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/phone_layout"
-                class="com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment"
                 />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/autocomplete_fragment"
+                android:layout_below="@id/booking_address_fragment_container"
                 android:layout_marginTop="@dimen/default_margin" />
 
         </RelativeLayout>

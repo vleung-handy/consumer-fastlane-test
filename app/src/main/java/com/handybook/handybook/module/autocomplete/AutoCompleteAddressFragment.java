@@ -15,7 +15,6 @@ import android.widget.EditText;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 import com.jakewharton.rxbinding.widget.RxTextView;
@@ -42,12 +41,15 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     private static final String TAG = "AutoCompleteAddressFrag";
 
     private static final int DELAY = 500;   //the delay before we fire a request to address autocomplete
+    private static final String KEY_FILTER = "filter";
+    private static final String KEY_ADDR1 = "address1";
+    private static final String KEY_ADDR2 = "address2";
 
     @Bind(R.id.text_street)
     public StreetAddressInputTextView mStreet;
 
     @Bind(R.id.text_other)
-    public EditText textOther;
+    public EditText mOther;
 
     @Inject
     AddressAutoCompleteManager mAutoCompleteManager;
@@ -60,6 +62,22 @@ public class AutoCompleteAddressFragment extends InjectedFragment
 
     ZipValidationResponse.ZipArea mZipFilter = null;
 
+    public static AutoCompleteAddressFragment newInstance(
+            final ZipValidationResponse.ZipArea filter,
+            final String address1,
+            final String address2
+    )
+    {
+        Bundle args = new Bundle();
+        args.putSerializable(KEY_FILTER, filter);
+        args.putString(KEY_ADDR1, address1);
+        args.putString(KEY_ADDR2, address2);
+
+        AutoCompleteAddressFragment fragment = new AutoCompleteAddressFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
@@ -67,10 +85,11 @@ public class AutoCompleteAddressFragment extends InjectedFragment
         View view = inflater.inflate(R.layout.fragment_auto_complete_address, container, false);
         ButterKnife.bind(this, view);
 
-
-        if (bookingManager.getCurrentRequest() != null)
+        if (getArguments() != null)
         {
-            mZipFilter = bookingManager.getCurrentRequest().getZipArea();
+            mZipFilter = (ZipValidationResponse.ZipArea) getArguments().getSerializable(KEY_FILTER);
+            mStreet.setText(getArguments().getString(KEY_ADDR1));
+            mOther.setText(getArguments().getString(KEY_ADDR2));
         }
 
         mListPopupWindow = new ListPopupWindow(getActivity());
@@ -90,20 +109,20 @@ public class AutoCompleteAddressFragment extends InjectedFragment
                 hideKeyboard();
 
                 //skipping the first element fired, because it is triggered by the "setText" above.
-                subscribe(1);
+                subscribe();
             }
         });
 
-        subscribe(0);
+        subscribe();
         return view;
     }
 
-    private void subscribe(int elementToSkip)
+    private void subscribe()
     {
-        Log.d(TAG, "subscribe() called with: elementToSkip = [" + elementToSkip + "]");
+        Log.d(TAG, "subscribe: ");
         subscription = RxTextView.textChanges(mStreet)
                 .debounce(DELAY, TimeUnit.MILLISECONDS)
-                .skip(elementToSkip)
+                .skip(1)
                 .flatMap(new Func1<CharSequence, Observable<List<String>>>()
                 {
                     @Override
@@ -129,7 +148,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment
                         //case this stream terminates. Fail silently and resubscribe.
                         Log.e(TAG, "onError: " + e.getMessage(), e);
                         mListPopupWindow.dismiss();
-                        subscribe(0);
+                        subscribe();
                     }
 
                     @Override
@@ -172,21 +191,6 @@ public class AutoCompleteAddressFragment extends InjectedFragment
 
         Log.d(TAG, "makeApiCall: returning candidates");
         return mPredictionValues;
-    }
-
-    public void bindAddress(final User.Address address)
-    {
-        if (subscription != null)
-        {
-            subscription.unsubscribe();
-        }
-        mStreet.setText(address.getAddress1());
-        textOther.setText(address.getAddress2());
-
-        if (subscription != null)
-        {
-            subscribe(1);       //don't show autocomplete for the setText from this binding
-        }
     }
 
     public void hideKeyboard()

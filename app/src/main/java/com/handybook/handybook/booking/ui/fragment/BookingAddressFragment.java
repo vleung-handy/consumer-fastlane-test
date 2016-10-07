@@ -16,6 +16,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -77,8 +78,11 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();
 
-        mAutoCompleteFragment = (AutoCompleteAddressFragment)
-                getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        ZipValidationResponse.ZipArea filter = null;
+        if (bookingManager.getCurrentRequest() != null)
+        {
+            filter = bookingManager.getCurrentRequest().getZipArea();
+        }
 
         final User user = userManager.getCurrentUser();
         if (user != null)
@@ -89,10 +93,13 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
             mTextPhonePrefix.setText(user.getPhonePrefix());
 
             final User.Address addr = user.getAddress();
-            if (addr != null && mAutoCompleteFragment != null)
+            if (addr != null)
             {
-                //FIXME: JIA: verify that this bindable
-                mAutoCompleteFragment.bindAddress(addr);
+                mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                        filter,
+                        addr.getAddress1(),
+                        addr.getAddress2()
+                );
             }
         }
         else
@@ -101,6 +108,16 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
             mTextPhone.setCountryCode(prefix);
             mTextPhonePrefix.setText(prefix);
         }
+
+        if (mAutoCompleteFragment == null)
+        {
+            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(filter, null, null);
+        }
+
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.booking_address_fragment_container, mAutoCompleteFragment)
+                .commitAllowingStateLoss();
 
         mButtonNext.setOnClickListener(nextClicked);
 
@@ -127,15 +144,13 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressSubmittedLog()));
 
                 final BookingTransaction transaction = bookingManager.getCurrentTransaction();
+
+                transaction.setAddress1(mAutoCompleteFragment.mStreet.getAddress());
+                transaction.setAddress2(mAutoCompleteFragment.mOther.getText().toString());
                 transaction.setFirstName(mTextFullName.getFirstName());
                 transaction.setLastName(mTextFullName.getLastName());
                 transaction.setPhone(mTextPhone.getPhoneNumber());
 
-                if (mAutoCompleteFragment != null)
-                {
-                    transaction.setAddress1(mAutoCompleteFragment.mStreet.getAddress());
-                    transaction.setAddress2(mAutoCompleteFragment.textOther.getText().toString());
-                }
 
                 final Intent intent = new Intent(getActivity(), BookingPaymentActivity.class);
                 startActivity(intent);
