@@ -57,7 +57,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public abstract class MenuDrawerActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener
+        implements NavigationView.OnNavigationItemSelectedListener
 {
     private static final String TAG = MenuDrawerActivity.class.getName();
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
@@ -95,7 +95,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
         }
         FacebookSdk.sdkInitialize(getApplicationContext());
         setupEnvButton();
-        setupNavHeader();
         mNavigationView.setNavigationItemSelectedListener(this);
         int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
         if (selectedMenuId != -1)
@@ -249,12 +248,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
         });
     }
 
-    private void setupNavHeader()
-    {
-        mNavigationView.getHeaderView(0).findViewById(R.id.free_cleanings_nav_header)
-                       .setOnClickListener(this);
-    }
-
     /**
      * This is needed for the little hamburger menu icon to animate when opening and closing the
      * drawer
@@ -299,8 +292,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
         final boolean newAccountEnabled =
                 mConfiguration != null && mConfiguration.isNewAccountEnabled();
 
-        mNavigationView.getHeaderView(0).findViewById(R.id.free_cleanings_nav_header)
-                       .setVisibility(userLoggedIn ? View.VISIBLE : View.GONE);
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_bookings).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_profile).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_free_cleanings).setVisible(userLoggedIn);
@@ -354,8 +345,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 navigateToActivity(UpdatePaymentActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_free_cleanings:
-                mBus.post(new LogEvent.AddLogEvent(new SideMenuLog.ShareButtonTappedLog(
-                        SideMenuLog.ShareButtonTappedLog.BANNER)));
+                mBus.post(new LogEvent.AddLogEvent(new SideMenuLog.ShareButtonTappedLog()));
                 navigateToActivity(ReferralActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_help:
@@ -434,14 +424,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
             Utils.hideSoftKeyboard(this, getCurrentFocus());
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void onClick(final View v)
-    {
-        mBus.post(new LogEvent.AddLogEvent(new SideMenuLog.ShareButtonTappedLog(
-                SideMenuLog.ShareButtonTappedLog.CTA)));
-        navigateToActivity(ReferralActivity.class, R.id.nav_menu_free_cleanings);
     }
 
     public void toggleMenu()

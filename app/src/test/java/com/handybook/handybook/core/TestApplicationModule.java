@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.login.LoginManager;
-import com.handybook.handybook.NavMenuTest;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.account.ui.AccountFragmentTest;
 import com.handybook.handybook.account.ui.ContactFragment;
@@ -179,7 +178,6 @@ import static org.mockito.Mockito.when;
         ProfilePasswordFragment.class,
         ProfileFragment.class,
         PromosFragment.class,
-        NavMenuTest.class,
         PlansFragment.class,
         ContactFragmentTest.class,
         EditPlanFragment.class,
