@@ -98,6 +98,18 @@ public class EventLogManager
 
         //Save the EventLogBundle to preferences always
         saveToPreference(PrefsKey.EVENT_LOG_BUNDLES, sEventLogBundles);
+
+        //log the payload to Crashlytics too, useful for follow steps for debugging when crash
+        try
+        {
+            //putting in try/catch block just in case GSON.toJson throws an exception
+            String eventLogJson = GSON.toJson(event.getLog());
+            Crashlytics.log(event.getLog().getEventName() + ": " + eventLogJson);
+        }
+        catch (Exception e)
+        {
+            Crashlytics.logException(e);
+        }
     }
 
     boolean shouldLog()
