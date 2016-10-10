@@ -15,7 +15,6 @@ import javax.inject.Inject;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.doReturn;
 
 /**
  * Created by sng on 10/6/16.
@@ -35,7 +34,6 @@ public class EventLogManagerTest extends RobolectricGradleTestWrapper
     public void setUp()
     {
         ((TestBaseApplication) RuntimeEnvironment.application.getApplicationContext()).inject(this);
-        doReturn(true).when(mEventLogManager).shouldLog();
     }
 
     @Test

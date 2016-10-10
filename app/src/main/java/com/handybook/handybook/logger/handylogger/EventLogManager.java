@@ -13,7 +13,6 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
@@ -75,9 +74,7 @@ public class EventLogManager
     @Subscribe
     public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
     {
-        //If debug don't bother logging
-        if (!shouldLog())
-        { return; }
+        //Note: Shoudl always log regardless of flavor/variant
 
         //Create upload timer when we get a new log and there isn't a timer currently
         if (mTimer == null)
@@ -110,11 +107,6 @@ public class EventLogManager
         {
             Crashlytics.logException(e);
         }
-    }
-
-    boolean shouldLog()
-    {
-        return !BuildConfig.DEBUG;
     }
 
     /**
@@ -314,6 +306,9 @@ public class EventLogManager
                         mFileManager.readFile(file),
                         JsonObject.class
                 );
+
+                //Add the sent timestamp value
+                eventLogBundle.addProperty(SENT_TIMESTAMP_SECS_KEY, System.currentTimeMillis() / 1000);
 
                 //Upload logs
                 mDataManager.postLogs(
