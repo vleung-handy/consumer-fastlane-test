@@ -106,6 +106,28 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     private boolean mServiceRequestCompleted = false;
     private boolean mBookingsRequestCompleted = false;
 
+    // This listener is added to FragmentManager in onStart() and removed in onStop()
+    private FragmentManager.OnBackStackChangedListener mOnBackStackChangedListener =
+            new FragmentManager.OnBackStackChangedListener()
+            {
+                @Override
+                public void onBackStackChanged()
+                {
+                    int backStackEntryCount = getActivity().getSupportFragmentManager()
+                                                           .getBackStackEntryCount();
+                    // The button needs to be hidden when the option overlay buttons appear
+                    // TODO: This is hacky. It will fail if the UpcomingBookingsFragment is not the first fragment in the stack
+                    if (backStackEntryCount == 0)
+                    {
+                        mAddBookingButton.show();
+                    }
+                    else
+                    {
+                        mAddBookingButton.hide();
+                    }
+                }
+            };
+
     public UpcomingBookingsFragment()
     {
         // Required empty public constructor
@@ -152,25 +174,6 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         {
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
-
-        getActivity().getSupportFragmentManager()
-                     .addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
-                     {
-                         @Override
-                         public void onBackStackChanged()
-                         {
-                             int backStackEntryCount = getActivity().getSupportFragmentManager()
-                                                                    .getBackStackEntryCount();
-                             if (backStackEntryCount == 0)
-                             {
-                                 mAddBookingButton.show();
-                             }
-                             else
-                             {
-                                 mAddBookingButton.hide();
-                             }
-                         }
-                     });
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -619,6 +622,16 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                                                 24, getResources().getDisplayMetrics()
                 )
         );
+        getActivity().getSupportFragmentManager()
+                     .addOnBackStackChangedListener(mOnBackStackChangedListener);
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        getActivity().getSupportFragmentManager()
+                     .removeOnBackStackChangedListener(mOnBackStackChangedListener);
     }
 
     @Override
