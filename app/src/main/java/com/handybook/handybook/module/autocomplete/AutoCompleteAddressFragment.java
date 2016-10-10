@@ -39,8 +39,6 @@ import rx.functions.Func1;
 
 /**
  * This is a fragment that supports autocomplete of address fields.
- *
- * FIXME: JIA: make sure this works for international addresses as well. Canada, London, etc.
  */
 public class AutoCompleteAddressFragment extends InjectedFragment
 {
@@ -50,10 +48,10 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     private static final String KEY_ADDR2 = "address2";
     private static final String KEY_CONFIGURATION = "configuration";
 
-    @Bind(R.id.text_street)
+    @Bind(R.id.autocomplete_address_text_street)
     public StreetAddressInputTextView mStreet;
 
-    @Bind(R.id.text_other)
+    @Bind(R.id.autocomplete_address_text_other)
     public EditText mOther;
 
     @Inject
@@ -88,7 +86,11 @@ public class AutoCompleteAddressFragment extends InjectedFragment
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState
+    )
     {
         View view = inflater.inflate(R.layout.fragment_auto_complete_address, container, false);
         ButterKnife.bind(this, view);
@@ -137,39 +139,39 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     private void subscribe()
     {
         subscription = RxTextView.textChanges(mStreet)
-                .debounce(DELAY, TimeUnit.MILLISECONDS)
-                .skip(1)
-                .flatMap(new Func1<CharSequence, Observable<List<String>>>()
-                {
-                    @Override
-                    public Observable<List<String>> call(CharSequence charSequence)
-                    {
-                        return Observable.just(makeApiCall(charSequence.toString()));
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<String>>()
-                {
-                    @Override
-                    public void onCompleted()
-                    {
-                    }
+                                 .debounce(DELAY, TimeUnit.MILLISECONDS)
+                                 .skip(1)
+                                 .flatMap(new Func1<CharSequence, Observable<List<String>>>()
+                                 {
+                                     @Override
+                                     public Observable<List<String>> call(CharSequence charSequence)
+                                     {
+                                         return Observable.just(makeApiCall(charSequence.toString()));
+                                     }
+                                 })
+                                 .observeOn(AndroidSchedulers.mainThread())
+                                 .subscribe(new Subscriber<List<String>>()
+                                 {
+                                     @Override
+                                     public void onCompleted()
+                                     {
+                                     }
 
-                    @Override
-                    public void onError(final Throwable e)
-                    {
-                        //sometimes, we get an RetrofitError: thread interrupted, in which
-                        //case this stream terminates. Fail silently and resubscribe.
-                        mListPopupWindow.dismiss();
-                        subscribe();
-                    }
+                                     @Override
+                                     public void onError(final Throwable e)
+                                     {
+                                         //sometimes, we get an RetrofitError: thread interrupted, in which
+                                         //case this stream terminates. Fail silently and resubscribe.
+                                         mListPopupWindow.dismiss();
+                                         subscribe();
+                                     }
 
-                    @Override
-                    public void onNext(@NonNull final List<String> strings)
-                    {
-                        onAutoCompleteResultsReceived(strings);
-                    }
-                });
+                                     @Override
+                                     public void onNext(@NonNull final List<String> strings)
+                                     {
+                                         onAutoCompleteResultsReceived(strings);
+                                     }
+                                 });
     }
 
     @VisibleForTesting
@@ -181,7 +183,11 @@ public class AutoCompleteAddressFragment extends InjectedFragment
         }
         else
         {
-            mListPopupWindow.setAdapter(new ArrayAdapter<>(AutoCompleteAddressFragment.this.getActivity(), android.R.layout.simple_list_item_1, strings));
+            mListPopupWindow.setAdapter(new ArrayAdapter<>(
+                    AutoCompleteAddressFragment.this.getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    strings
+            ));
             mListPopupWindow.show();
         }
     }
@@ -209,7 +215,8 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     {
         if (getActivity() != null && getView() != null)
         {
-            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         }
     }

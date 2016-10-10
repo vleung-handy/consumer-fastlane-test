@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -11,9 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
@@ -28,7 +24,7 @@ import com.handybook.handybook.ui.widget.PhoneInputTextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingAddressFragment extends BookingFlowFragment implements GoogleApiClient.OnConnectionFailedListener
+public final class BookingAddressFragment extends BookingFlowFragment
 {
     @Bind(R.id.main_container)
     View mMainContainer;
@@ -163,10 +159,4 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
             }
         }
     };
-
-    @Override
-    public void onConnectionFailed(@NonNull final ConnectionResult connectionResult)
-    {
-        Crashlytics.logException(new RuntimeException(getString(R.string.error_connect_gps)));
-    }
 }

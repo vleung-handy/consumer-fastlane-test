@@ -3,9 +3,6 @@ package com.handybook.handybook.module.autocomplete;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
-/**
- * Created by jtse on 10/6/16.
- */
 public interface PlacesService
 {
     /**

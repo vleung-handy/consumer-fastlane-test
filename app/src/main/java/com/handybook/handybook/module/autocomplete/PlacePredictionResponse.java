@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- */
 public class PlacePredictionResponse implements Serializable
 {
     @SerializedName("predictions")
@@ -95,7 +93,6 @@ public class PlacePredictionResponse implements Serializable
         }
 
         return rval;
-
     }
 
 }

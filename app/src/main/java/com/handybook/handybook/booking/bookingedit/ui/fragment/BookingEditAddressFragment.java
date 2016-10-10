@@ -104,8 +104,10 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
                 mZipCodeInputTextView.getZipCode()
         );
         showUiBlockers();
-        bus.post(new BookingEditEvent.RequestEditBookingAddress(Integer.parseInt(mBooking.getId()),
-                bookingEditAddressRequest));
+        bus.post(new BookingEditEvent.RequestEditBookingAddress(
+                Integer.parseInt(mBooking.getId()),
+                bookingEditAddressRequest
+        ));
     }
 
     private boolean validateFields()

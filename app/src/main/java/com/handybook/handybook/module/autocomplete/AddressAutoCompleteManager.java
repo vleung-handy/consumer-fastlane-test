@@ -29,14 +29,18 @@ public class AddressAutoCompleteManager
     @NonNull
     public PlacePredictionResponse getAddressPrediction(String word)
     {
-        mBus.post(new LogEvent.AddLogEvent(new AddressAutocompleteLog.AddressAutocompleteRequestLog(word)));
+        mBus.post(new LogEvent.AddLogEvent(
+                new AddressAutocompleteLog.AddressAutocompleteRequestLog(word)
+        ));
         PlacePredictionResponse response = mService.getAddressPrediction(word);
 
         if (response == null)
         {
             response = new PlacePredictionResponse();
         }
-        mBus.post(new LogEvent.AddLogEvent(new AddressAutocompleteLog.AddressAutocompleteResponseLog(response.predictions.size())));
+        mBus.post(new LogEvent.AddLogEvent(
+                new AddressAutocompleteLog.AddressAutocompleteResponseLog(response.predictions.size())
+        ));
         return response;
     }
 }
