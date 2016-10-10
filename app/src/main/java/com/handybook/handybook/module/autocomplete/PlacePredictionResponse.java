@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
-import com.handybook.handybook.util.TextUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

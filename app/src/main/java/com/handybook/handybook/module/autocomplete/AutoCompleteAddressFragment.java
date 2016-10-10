@@ -16,9 +16,9 @@ import android.widget.EditText;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.AddressAutocompleteLog;
-import com.handybook.handybook.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 

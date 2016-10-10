@@ -92,7 +92,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
 
     private void sendEditAddressRequest()
     {
-        BookingEditAddressRequest bookingEditAddressRequest = new BookingEditAddressRequest(
+        EditAddressRequest bookingEditAddressRequest = new EditAddressRequest(
                 mAutoCompleteFragment.mStreet.getAddress(),
                 mAutoCompleteFragment.mOther.getText().toString(),
                 mZipCodeInputTextView.getZipCode()

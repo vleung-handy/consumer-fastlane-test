@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.TestBaseApplication;
-import com.handybook.handybook.util.IOUtils;
+import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
  */
 public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrapper
 {
-    private static final String TAG = "AutoCompleteAddressFrag";
     private static final String ADDRESS_LINE_1 = "1720 77th Street";
 
     private AutoCompleteAddressFragment mFragment;
