@@ -40,10 +40,10 @@ public class FileManager
         return readFile(LOG_PATH + fileName);
     }
 
-    public boolean saveLogFile(String fileName, String fileContext)
+    public boolean saveLogFile(String fileName, String fileContent)
     {
         //This was simplest way to save in sub directory
-        return saveFile(new File(mLogDirectory, fileName), fileContext);
+        return saveFile(new File(mLogDirectory, fileName), fileContent);
     }
 
     public void deleteLogFile(String fileName)
@@ -83,7 +83,7 @@ public class FileManager
         )); // Pass getFilesDir() and "MyFile" to read file
     }
 
-    public boolean saveFile(File file, String fileContenxt)
+    public boolean saveFile(File file, String fileContent)
     {
         FileOutputStream outputStream = null;
 
@@ -95,7 +95,7 @@ public class FileManager
             }
 
             outputStream = new FileOutputStream(file);
-            outputStream.write(fileContenxt.getBytes());
+            outputStream.write(fileContent.getBytes());
             return true;
         }
         catch (Exception e)
@@ -120,10 +120,10 @@ public class FileManager
 
     /**
      * @param fileName
-     * @param fileContenxt
+     * @param fileContent
      * @return
      */
-    public boolean saveFile(String fileName, String fileContenxt)
+    public boolean saveFile(String fileName, String fileContent)
     {
         FileOutputStream outputStream;
 
@@ -131,7 +131,7 @@ public class FileManager
         {
             outputStream = BaseApplication.getContext()
                                           .openFileOutput(fileName, Context.MODE_PRIVATE);
-            outputStream.write(fileContenxt.getBytes());
+            outputStream.write(fileContent.getBytes());
             outputStream.close();
             return true;
         }

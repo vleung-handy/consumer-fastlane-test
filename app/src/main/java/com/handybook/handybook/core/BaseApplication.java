@@ -64,7 +64,7 @@ public class BaseApplication extends MultiDexApplication
     private static Tracker tracker;
     private static String sDeviceId = "";
     //This is used for the application context
-    private static BaseApplication sInstance;
+    private static Context sContext;
 
     protected ObjectGraph graph;
     @Inject
@@ -123,7 +123,7 @@ public class BaseApplication extends MultiDexApplication
     public void onCreate()
     {
         super.onCreate();
-        sInstance = this;
+        sContext = getApplicationContext();
         mApplicationStartTime = new Date();
 
         googleAnalytics = GoogleAnalytics.getInstance(this);
@@ -302,9 +302,13 @@ public class BaseApplication extends MultiDexApplication
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
+    /**
+     * Should be careful not to store the application context in a local variable, otherwise memory won't release
+     * @return
+     */
     public static Context getContext()
     {
-        return sInstance;
+        return sContext;
     }
 
     public static Tracker tracker()
