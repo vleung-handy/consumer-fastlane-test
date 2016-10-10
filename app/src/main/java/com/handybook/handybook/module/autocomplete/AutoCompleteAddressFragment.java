@@ -2,7 +2,9 @@ package com.handybook.handybook.module.autocomplete;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,8 @@ import rx.functions.Func1;
 
 /**
  * This is a fragment that supports autocomplete of address fields.
+ *
+ * FIXME: JIA: make sure this works for international addresses as well. Canada, London, etc.
  */
 public class AutoCompleteAddressFragment extends InjectedFragment
 {
@@ -53,7 +57,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     @Inject
     AddressAutoCompleteManager mAutoCompleteManager;
 
-    private ListPopupWindow mListPopupWindow;
+    protected ListPopupWindow mListPopupWindow;
     Subscription subscription;
 
     List<String> mPredictionValues;
@@ -152,22 +156,30 @@ public class AutoCompleteAddressFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onNext(final List<String> strings)
+                    public void onNext(@NonNull final List<String> strings)
                     {
-                        if (strings.isEmpty())
-                        {
-                            mListPopupWindow.dismiss();
-                        }
-                        else
-                        {
-                            mListPopupWindow.setAdapter(new ArrayAdapter<>(AutoCompleteAddressFragment.this.getActivity(), android.R.layout.simple_list_item_1, strings));
-                            mListPopupWindow.show();
-                        }
+                        onAutoCompleteResultsReceived(strings);
                     }
                 });
     }
 
-    private List<String> makeApiCall(String string)
+    @VisibleForTesting
+    void onAutoCompleteResultsReceived(@NonNull final List<String> strings)
+    {
+        if (strings.isEmpty())
+        {
+            mListPopupWindow.dismiss();
+        }
+        else
+        {
+            mListPopupWindow.setAdapter(new ArrayAdapter<>(AutoCompleteAddressFragment.this.getActivity(), android.R.layout.simple_list_item_1, strings));
+            mListPopupWindow.show();
+        }
+    }
+
+    @VisibleForTesting
+    @NonNull
+    List<String> makeApiCall(String string)
     {
         if (string == null || string.trim().length() < 3)
         {

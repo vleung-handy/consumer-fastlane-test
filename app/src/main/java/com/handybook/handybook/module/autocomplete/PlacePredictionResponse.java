@@ -21,7 +21,7 @@ public class PlacePredictionResponse implements Serializable
 
     /**
      * Since we don't have zip in the prediction response,
-     * the next best thing is to filter it by city or state
+     * the next best thing is to filter it by city
      */
     public void filter(@Nullable ZipValidationResponse.ZipArea filterBy)
     {
@@ -47,7 +47,7 @@ public class PlacePredictionResponse implements Serializable
             }
 
             //if there is something to filter, and it doesn't match, then remove it
-            if (filterBy != null && !isMatchingCityAndState(filterBy, p))
+            if (filterBy != null && !isMatchingCity(filterBy, p))
             {
                 predictions.remove(p);
                 continue;
@@ -57,11 +57,11 @@ public class PlacePredictionResponse implements Serializable
     }
 
     /**
-     * If both the city and state matches, then return true;
+     * If the city matches, then return true;
      *
      * @return
      */
-    private boolean isMatchingCityAndState(
+    private boolean isMatchingCity(
             @NonNull final ZipValidationResponse.ZipArea zipArea,
             @NonNull final PlacePrediction prediction
     )
@@ -76,17 +76,10 @@ public class PlacePredictionResponse implements Serializable
             }
         }
 
-        if (!TextUtils.isBlank(zipArea.getState()))
-        {
-            if (!zipArea.getState().equalsIgnoreCase(prediction.getState()))
-            {
-                return false;
-            }
-        }
-
         return true;
     }
 
+    @NonNull
     public List<String> getFullAddresses()
     {
         ArrayList<String> rval = new ArrayList();

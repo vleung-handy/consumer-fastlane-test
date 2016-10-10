@@ -27,7 +27,7 @@ public class AddressAutoCompleteManager
      * @return
      */
     @NonNull
-    PlacePredictionResponse getAddressPrediction(String word)
+    public PlacePredictionResponse getAddressPrediction(String word)
     {
         mBus.post(new LogEvent.AddLogEvent(new AddressAutocompleteLog.AddressAutocompleteRequestLog(word)));
         PlacePredictionResponse response = mService.getAddressPrediction(word);
