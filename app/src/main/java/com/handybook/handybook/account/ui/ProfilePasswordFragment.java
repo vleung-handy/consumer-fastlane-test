@@ -36,16 +36,21 @@ public class ProfilePasswordFragment extends InjectedFragment
     PasswordInputTextView oldPasswordtext;
     @Bind(R.id.profile_new_password_text)
     PasswordInputTextView newPasswordtext;
+    @Bind(R.id.profile_new_password_confirmation_text)
+    PasswordInputTextView newPasswordConfirmationText;
     @Bind(R.id.profile_password_update_button)
     Button mPasswordUpdateButton;
 
     private static final String STATE_OLD_PWD_HIGHLIGHT = "OLD_PWD_HIGHLIGHT";
     private static final String STATE_NEW_PWD_HIGHLIGHT = "NEW_PWD_HIGHLIGHT";
+    private static final String STATE_NEW_PWD_CONFIRMATION_HIGHLIGHT = "NEW_PWD_CONFIRMATION_HIGHLIGHT";
     private static final String STATE_LOADED_USER = "LOADED_USER";
 
     private User user;
     private boolean loadedUserInfo;
     private boolean updatingInfo;
+
+    private static final int NEW_PASSWORD_MINIMUM_CHAR_LENGTH = 8;
 
 
     public static ProfilePasswordFragment newInstance()
@@ -79,6 +84,7 @@ public class ProfilePasswordFragment extends InjectedFragment
         mPasswordUpdateButton.setOnClickListener(this);
         oldPasswordtext.addTextChangedListener(this);
         newPasswordtext.addTextChangedListener(this);
+        newPasswordConfirmationText.addTextChangedListener(this);
 
         return view;
     }
@@ -96,6 +102,10 @@ public class ProfilePasswordFragment extends InjectedFragment
             if (savedInstanceState.getBoolean(STATE_NEW_PWD_HIGHLIGHT))
             {
                 newPasswordtext.highlight();
+            }
+            if (savedInstanceState.getBoolean(STATE_NEW_PWD_CONFIRMATION_HIGHLIGHT))
+            {
+                newPasswordConfirmationText.highlight();
             }
             loadedUserInfo = savedInstanceState.getBoolean(STATE_LOADED_USER);
         }
@@ -132,6 +142,10 @@ public class ProfilePasswordFragment extends InjectedFragment
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_OLD_PWD_HIGHLIGHT, oldPasswordtext.isHighlighted());
         outState.putBoolean(STATE_NEW_PWD_HIGHLIGHT, newPasswordtext.isHighlighted());
+        outState.putBoolean(
+                STATE_NEW_PWD_CONFIRMATION_HIGHLIGHT,
+                newPasswordConfirmationText.isHighlighted()
+        );
         outState.putBoolean(STATE_LOADED_USER, loadedUserInfo);
     }
 
@@ -157,12 +171,10 @@ public class ProfilePasswordFragment extends InjectedFragment
     @Override
     public void afterTextChanged(final Editable s)
     {
-        if (oldPasswordtext.getText().toString().length() < 1
-                && newPasswordtext.getText().toString().length() < 1)
-        {
-            oldPasswordtext.unHighlight();
-            newPasswordtext.unHighlight();
-        }
+        //user changed the text, remove highlights
+        oldPasswordtext.unHighlight();
+        newPasswordtext.unHighlight();
+        newPasswordConfirmationText.unHighlight();
     }
     //endregion
 
@@ -179,13 +191,9 @@ public class ProfilePasswordFragment extends InjectedFragment
 
             UpdateUserRequest updateUserRequest = new UpdateUserRequest();
             updateUserRequest.setUserId(user.getId());
-            if (oldPasswordtext.getPassword().length() > 0
-                    && newPasswordtext.getPassword().length() > 0)
-            {
-                updateUserRequest.setCurrentPassword(oldPasswordtext.getPassword());
-                updateUserRequest.setPassword(newPasswordtext.getPassword());
-                updateUserRequest.setPasswordConfirmation(newPasswordtext.getPassword());
-            }
+            updateUserRequest.setCurrentPassword(oldPasswordtext.getPassword());
+            updateUserRequest.setPassword(newPasswordtext.getPassword());
+            updateUserRequest.setPasswordConfirmation(newPasswordConfirmationText.getPassword());
 
             updatingInfo = true;
             bus.post(new UserEvent.RequestUserPasswordUpdate(
@@ -249,38 +257,41 @@ public class ProfilePasswordFragment extends InjectedFragment
     //region Private Fragment methods
     private boolean validateFields()
     {
-        boolean validate = true;
-
         final String oldPwd = oldPasswordtext.getPassword();
         final String newPwd = newPasswordtext.getPassword();
+        final String newPwdConfirmation = newPasswordConfirmationText.getPassword();
 
-        if (oldPwd.length() > 0 || newPwd.length() > 0)
+        //if any of the password fields are empty
+        if (oldPwd.isEmpty() || newPwd.isEmpty() || newPwdConfirmation.isEmpty())
         {
-            if (!oldPasswordtext.validate()) { validate = false; }
-            if (!newPasswordtext.validate()) { validate = false; }
+            //highlight the fields that are empty
+            if (oldPwd.isEmpty()) { oldPasswordtext.highlight(); }
+            if (newPwd.isEmpty()) { newPasswordtext.highlight(); }
+            if (newPwdConfirmation.isEmpty()) { newPasswordConfirmationText.highlight(); }
 
-            if (oldPwd.length() < 1 || newPwd.length() < 1)
-            {
-                validate = false;
-                toast.setText(getString(R.string.update_pwd_error));
-                toast.show();
-            }
-            else if (newPwd.length() < 8)
-            {
-                validate = false;
-                newPasswordtext.highlight();
-                toast.setText(getString(R.string.pwd_length_error));
-                toast.show();
-            }
-            else if (!oldPasswordtext.validate())
-            {
-                validate = false;
-                toast.setText(getString(R.string.update_pwd_error));
-                toast.show();
-            }
+            //show message that notifies user that all fields must be filled out
+            showToast(R.string.update_pwd_missing_input_error);
         }
+        //else if the new password is too short
+        else if (newPwd.length() < NEW_PASSWORD_MINIMUM_CHAR_LENGTH)
+        {
+            newPasswordtext.highlight();
+            showToast(R.string.pwd_length_error);
+        }
+        //else if the new password does not equal the confirmation
+        else if (!newPwd.equals(newPwdConfirmation))
+        {
+            newPasswordtext.highlight();
+            newPasswordConfirmationText.highlight();
+            showToast(R.string.new_password_confirmation_error);
+        }
+        else
+        {
+            //no error
+            return true;
 
-        return validate;
+        }
+        return false;
     }
 
     private void loadUserInfo()
@@ -297,6 +308,8 @@ public class ProfilePasswordFragment extends InjectedFragment
         oldPasswordtext.setText("");
         newPasswordtext.unHighlight();
         newPasswordtext.setText("");
+        newPasswordConfirmationText.unHighlight();
+        newPasswordConfirmationText.setText("");
     }
 
     private void userSuccessCallback()
