@@ -98,7 +98,8 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
                 mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                         filter,
                         addr.getAddress1(),
-                        addr.getAddress2()
+                        addr.getAddress2(),
+                        configurationManager.getCachedConfiguration()
                 );
             }
         }
@@ -111,7 +112,12 @@ public final class BookingAddressFragment extends BookingFlowFragment implements
 
         if (mAutoCompleteFragment == null)
         {
-            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(filter, null, null);
+            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                    filter,
+                    null,
+                    null,
+                    configurationManager.getCachedConfiguration()
+            );
         }
 
         getChildFragmentManager()

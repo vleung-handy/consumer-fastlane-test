@@ -19,6 +19,7 @@ import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.AddressAutocompleteLog;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
@@ -47,6 +48,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     private static final String KEY_FILTER = "filter";
     private static final String KEY_ADDR1 = "address1";
     private static final String KEY_ADDR2 = "address2";
+    private static final String KEY_CONFIGURATION = "configuration";
 
     @Bind(R.id.text_street)
     public StreetAddressInputTextView mStreet;
@@ -64,17 +66,20 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     List<PlacePrediction> mPredictions;
 
     ZipValidationResponse.ZipArea mZipFilter = null;
+    Configuration mConfiguration;
 
     public static AutoCompleteAddressFragment newInstance(
             final ZipValidationResponse.ZipArea filter,
             final String address1,
-            final String address2
+            final String address2,
+            final Configuration config
     )
     {
         Bundle args = new Bundle();
         args.putSerializable(KEY_FILTER, filter);
         args.putString(KEY_ADDR1, address1);
         args.putString(KEY_ADDR2, address2);
+        args.putSerializable(KEY_CONFIGURATION, config);
 
         AutoCompleteAddressFragment fragment = new AutoCompleteAddressFragment();
         fragment.setArguments(args);
@@ -93,35 +98,39 @@ public class AutoCompleteAddressFragment extends InjectedFragment
             mZipFilter = (ZipValidationResponse.ZipArea) getArguments().getSerializable(KEY_FILTER);
             mStreet.setText(getArguments().getString(KEY_ADDR1));
             mOther.setText(getArguments().getString(KEY_ADDR2));
+            mConfiguration = (Configuration) getArguments().getSerializable(KEY_CONFIGURATION);
         }
 
-        mListPopupWindow = new ListPopupWindow(getActivity());
-        mListPopupWindow.setAnchorView(mStreet);
-        mListPopupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
-        mListPopupWindow.setModal(false);
-        mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        if (mConfiguration != null && mConfiguration.isAddressAutoCompleteEnabled())
         {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            mListPopupWindow = new ListPopupWindow(getActivity());
+            mListPopupWindow.setAnchorView(mStreet);
+            mListPopupWindow.setWidth(ListPopupWindow.MATCH_PARENT);
+            mListPopupWindow.setModal(false);
+            mListPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
-                subscription.unsubscribe();
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    subscription.unsubscribe();
 
-                String prediction = mPredictions.get(position).getAddress();
-                bus.post(new LogEvent.AddLogEvent(
-                        new AddressAutocompleteLog.AddressAutocompleteItemTappedLog(prediction)
-                ));
+                    String prediction = mPredictions.get(position).getAddress();
+                    bus.post(new LogEvent.AddLogEvent(
+                            new AddressAutocompleteLog.AddressAutocompleteItemTappedLog(prediction)
+                    ));
 
-                mStreet.setText(prediction);
-                mStreet.setSelection(mStreet.getText().length());
-                mListPopupWindow.dismiss();
-                hideKeyboard();
+                    mStreet.setText(prediction);
+                    mStreet.setSelection(mStreet.getText().length());
+                    mListPopupWindow.dismiss();
+                    hideKeyboard();
 
-                //skipping the first element fired, because it is triggered by the "setText" above.
-                subscribe();
-            }
-        });
+                    //skipping the first element fired, because it is triggered by the "setText" above.
+                    subscribe();
+                }
+            });
 
-        subscribe();
+            subscribe();
+        }
         return view;
     }
 

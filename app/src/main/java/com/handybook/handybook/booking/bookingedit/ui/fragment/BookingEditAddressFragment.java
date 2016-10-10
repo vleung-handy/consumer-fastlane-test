@@ -72,14 +72,20 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
                             mBooking.getAddress().getZip()
                     ),
                     mBooking.getAddress().getAddress1(),
-                    mBooking.getAddress().getAddress2()
+                    mBooking.getAddress().getAddress2(),
+                    configurationManager.getCachedConfiguration()
             );
 
             mZipCodeInputTextView.setText(mBooking.getAddress().getZip());
         }
         else
         {
-            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(null, null, null);
+            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                    null,
+                    null,
+                    null,
+                    configurationManager.getCachedConfiguration()
+            );
         }
 
         getChildFragmentManager()

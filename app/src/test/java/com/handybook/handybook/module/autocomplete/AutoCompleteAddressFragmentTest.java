@@ -7,6 +7,7 @@ import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.library.util.IOUtils;
+import com.handybook.handybook.module.configuration.model.Configuration;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import javax.inject.Inject;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -54,7 +56,9 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
 
         when(mDataManager.getAddressPrediction("1720")).thenReturn(predictionResponse1720);
 
-        mFragment = AutoCompleteAddressFragment.newInstance(null, ADDRESS_LINE_1, "");
+        Configuration config = mock(Configuration.class);
+        when(config.isAddressAutoCompleteEnabled()).thenReturn(true);
+        mFragment = AutoCompleteAddressFragment.newInstance(null, ADDRESS_LINE_1, "", config);
 
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }

@@ -3,7 +3,9 @@ package com.handybook.handybook.module.configuration.model;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
-public class Configuration
+import java.io.Serializable;
+
+public class Configuration implements Serializable
 {
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -21,6 +23,8 @@ public class Configuration
     private boolean mNativeHelpCenterEnabled;
     @SerializedName("new_account_enabled")
     private boolean mNewAccountEnabled;
+    @SerializedName("address_autocomplete_enabled")
+    private boolean mAddressAutoCompleteEnabled;
 
     @SerializedName("upcoming_and_past_bookings_enabled")
     private boolean mUpcomingAndPastBookingsEnabled;
@@ -61,6 +65,11 @@ public class Configuration
     }
 
     public boolean isNewAccountEnabled() { return mNewAccountEnabled; }
+
+    public boolean isAddressAutoCompleteEnabled()
+    {
+        return mAddressAutoCompleteEnabled;
+    }
 
     public String toJson()
     {
