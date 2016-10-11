@@ -115,6 +115,7 @@ import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.manager.AppseeManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.manager.FileManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
@@ -529,6 +530,17 @@ public final class ApplicationModule
     )
     {
         return new DataManager(service, endpoint, securePreferencesManager);
+    }
+
+    @Provides
+    @Singleton
+    final AppseeManager provideAppseeManager(final ConfigurationManager configurationManager)
+    {
+        String appseeApiKey = mConfigs.getProperty
+                (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
+                         "app_see_key"
+                         : "app_see_key_internal");
+        return new AppseeManager(appseeApiKey, configurationManager);
     }
 
     @Provides

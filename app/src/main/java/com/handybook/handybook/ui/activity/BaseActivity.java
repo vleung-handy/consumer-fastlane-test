@@ -32,8 +32,10 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
+import com.handybook.handybook.manager.AppseeManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.configuration.model.Configuration;
@@ -41,7 +43,6 @@ import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
-import com.handybook.handybook.library.util.FragmentUtils;
 import com.squareup.otto.Bus;
 import com.yozio.android.Yozio;
 
@@ -70,6 +71,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Inject
     NavigationManager mNavigationManager;
     @Inject
+    AppseeManager mAppseeManager;
+    @Inject
     protected Bus mBus;
 
     private RequiredModalsEventListener mRequiredModalsEventListener;
@@ -95,6 +98,20 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
         }
+
+        /*
+        start screen recording.
+        according to docs, this call should ONLY be made from Activity.onCreate() or Activity.onResume()
+
+        although it is only necessary to start Appsee in activities that are entry points to the app
+        (SplashActivity, ServiceCategoriesActivity), putting this here because
+        we may want to start/stop recording when configs change between activities
+
+        note that because config response isn't guaranteed at this point,
+        recording might not start until the next activity in which configs are present.
+        consider refactoring the way we deal with configs so that it's similar to portal
+         */
+        mAppseeManager.startOrStopRecordingAsNecessary();
     }
 
     @Override

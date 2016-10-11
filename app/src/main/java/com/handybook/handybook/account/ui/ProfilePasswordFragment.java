@@ -78,7 +78,6 @@ public class ProfilePasswordFragment extends InjectedFragment
                                                false
                                        );
         ButterKnife.bind(this, view);
-
         setupToolbar(mToolbar, getString(R.string.account_update_password));
 
         mPasswordUpdateButton.setOnClickListener(this);
