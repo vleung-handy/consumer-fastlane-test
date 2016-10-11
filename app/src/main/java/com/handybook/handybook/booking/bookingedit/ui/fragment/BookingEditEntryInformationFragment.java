@@ -22,6 +22,8 @@ import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +103,8 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                     {
                         removeUiBlockers();
                         mEntryMethodsInfoView.updateViewForModel(response, getContext());
+
+                        onEntryMethodsViewUpdated(response);
                     }
 
                     @Override
@@ -111,6 +115,36 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                     }
                 }
         );
+    }
+
+    /**
+     * called when the entry methods view is updated with new data
+     * <p>
+     * currently just logs
+     *
+     * @param entryMethodsInfo
+     */
+    private void onEntryMethodsViewUpdated(@NonNull EntryMethodsInfo entryMethodsInfo)
+    {
+        //log entry method recommendation shown
+        if (entryMethodsInfo.getEntryMethodOptions() == null) { return; }
+        for (EntryMethodOption entryMethodOption : entryMethodsInfo.getEntryMethodOptions())
+        {
+            /*
+            in logging terms, whether an entry method is "recommended"
+            is whether the entry method option subtitle is present
+            ex. "Chosen by 13 of your neighbors"
+             */
+            if (!android.text.TextUtils.isEmpty(entryMethodOption.getSubtitleText()))
+            {
+                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.EntryMethodLog.
+                        RecommendationShown(
+                        booking.getId(),
+                        booking.isRecurring(),
+                        entryMethodOption.getMachineName()
+                )));
+            }
+        }
     }
 
     @Override
@@ -141,7 +175,20 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         BookingEditEntryInformationRequest editEntryInformationTransaction =
                 new BookingEditEntryInformationRequest(bookingInstructions, true);
 
-        requestUpdateEntryMethodsInfo(booking.getId(), editEntryInformationTransaction);
+        /*
+        in logging terms, entry method info is "submitted"
+        when the user clicks next, not when the network call itself is made
+        */
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.EntryMethodLog.InfoSubmitted(
+                booking.getId(),
+                booking.isRecurring(),
+                selectedEntryMethodOption.getMachineName()
+        )));
+
+        requestUpdateEntryMethodsInfo(
+                booking.getId(),
+                editEntryInformationTransaction
+        );
     }
 
     /**

@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.constant.BookingRecurrence;
+import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.EntryMethodOption;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.model.Instructions;
@@ -101,6 +104,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         if (entryMethodsInfo != null)
         {
             mEntryMethodsInfoView.updateViewForModel(entryMethodsInfo, getContext());
+            onEntryMethodsViewUpdated(entryMethodsInfo);
             mNextButton.setOnClickListener(nextClicked);
         }
         else
@@ -110,6 +114,40 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             Toast.makeText(getContext(), R.string.default_error_string, Toast.LENGTH_SHORT).show();
         }
         return view;
+    }
+
+    /**
+     * called when the entry methods view is updated with new data
+     * <p>
+     * currently just logs
+     *
+     * @param entryMethodsInfo
+     */
+    private void onEntryMethodsViewUpdated(@NonNull EntryMethodsInfo entryMethodsInfo)
+    {
+        //log entry method recommendation shown
+        BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
+        if (bookingTransaction == null || entryMethodsInfo.getEntryMethodOptions() == null)
+        {
+            return;
+        }
+        for (EntryMethodOption entryMethodOption : entryMethodsInfo.getEntryMethodOptions())
+        {
+            /*
+            in logging terms, whether an entry method is "recommended"
+            is whether the entry method option subtitle is present
+            ex. "Chosen by 13 of your neighbors"
+             */
+            if (!android.text.TextUtils.isEmpty(entryMethodOption.getSubtitleText()))
+            {
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.EntryMethodLog.
+                        RecommendationShown(
+                        String.valueOf(bookingTransaction.getBookingId()),
+                        bookingTransaction.getRecurringFrequency() != BookingRecurrence.ONE_TIME,
+                        entryMethodOption.getMachineName()
+                )));
+            }
+        }
     }
 
     @Override
@@ -171,6 +209,19 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
                         selectedEntryMethodInputFormValues
 
                 );
+
+                //business expects the "submitted" event to be logged when the user clicks next
+                BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
+                if (bookingTransaction != null)
+                {
+                    bus.post(new LogEvent.AddLogEvent(
+                            new BookingFunnelLog.EntryMethodLog.InfoSubmitted(
+                                    String.valueOf(bookingTransaction.getBookingId()),
+                                    bookingTransaction.getRecurringFrequency() != BookingRecurrence.ONE_TIME,
+                                    selectedEntryMethodOption.getMachineName()
+                            )));
+                }
+
 
                 bus.post(new LogEvent.AddLogEvent(
                         new BookingFunnelLog.BookingAccessInformationSubmittedLog(
