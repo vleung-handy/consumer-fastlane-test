@@ -76,7 +76,7 @@
                     <LinearLayout
                         android:id="@+id/recent_booking_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/help_center_cell_height"
+                        android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:orientation="horizontal"
                         android:padding="@dimen/default_padding"
@@ -199,7 +199,7 @@
                 <LinearLayout
                     android:id="@+id/help_center_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/help_center_cell_height"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:orientation="horizontal"
                     android:padding="@dimen/default_padding"
