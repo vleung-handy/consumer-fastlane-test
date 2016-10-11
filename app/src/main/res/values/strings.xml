@@ -28,7 +28,10 @@
     <string name="change_password">CHANGE PASSWORD</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
+    <string name="new_password_confirmation">Confirm New Password</string>
+    <string name="new_password_confirmation_error">Passwords don\'t match</string>
     <string name="update_pwd_error">To update password you need to enter old and new passwords.</string>
+    <string name="update_pwd_missing_input_error">Looks like you\'re missing something. Please enter all fields.</string>
     <string name="pwd_length_error">Your password must be at least 8 characters.</string>
     <string name="info_updated">Your information has been updated.</string>
     <string name="env_format"
