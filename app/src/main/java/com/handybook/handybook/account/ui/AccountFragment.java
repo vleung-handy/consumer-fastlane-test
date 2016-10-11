@@ -115,6 +115,7 @@ public class AccountFragment extends InjectedFragment
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
+                mActivePlansLayout.setEnabled(false);
                 removeUiBlockers();
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
