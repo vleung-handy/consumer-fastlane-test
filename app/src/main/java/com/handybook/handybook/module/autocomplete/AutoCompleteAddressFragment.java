@@ -58,7 +58,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     AddressAutoCompleteManager mAutoCompleteManager;
 
     protected ListPopupWindow mListPopupWindow;
-    Subscription subscription;
+    Subscription mSubscription;
 
     List<String> mPredictionValues;
     List<PlacePrediction> mPredictions;
@@ -114,7 +114,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
-                    subscription.unsubscribe();
+                    mSubscription.unsubscribe();
 
                     String prediction = mPredictions.get(position).getAddress();
                     bus.post(new LogEvent.AddLogEvent(
@@ -138,10 +138,10 @@ public class AutoCompleteAddressFragment extends InjectedFragment
 
     private void subscribe()
     {
-        subscription = RxTextView.textChanges(mStreet)
-                                 .debounce(DELAY, TimeUnit.MILLISECONDS)
-                                 .skip(1)
-                                 .flatMap(new Func1<CharSequence, Observable<List<String>>>()
+        mSubscription = RxTextView.textChanges(mStreet)
+                                  .debounce(DELAY, TimeUnit.MILLISECONDS)
+                                  .skip(1)
+                                  .flatMap(new Func1<CharSequence, Observable<List<String>>>()
                                  {
                                      @Override
                                      public Observable<List<String>> call(CharSequence charSequence)
@@ -149,8 +149,8 @@ public class AutoCompleteAddressFragment extends InjectedFragment
                                          return Observable.just(makeApiCall(charSequence.toString()));
                                      }
                                  })
-                                 .observeOn(AndroidSchedulers.mainThread())
-                                 .subscribe(new Subscriber<List<String>>()
+                                  .observeOn(AndroidSchedulers.mainThread())
+                                  .subscribe(new Subscriber<List<String>>()
                                  {
                                      @Override
                                      public void onCompleted()
@@ -218,6 +218,16 @@ public class AutoCompleteAddressFragment extends InjectedFragment
             InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+        if (mSubscription != null && !mSubscription.isUnsubscribed())
+        {
+            mSubscription.unsubscribe();
         }
     }
 
