@@ -33,7 +33,7 @@ android {
     buildToolsVersion '24.0.2'
     defaultConfig {
         applicationId 'com.handy.handy'
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 24
         versionName '1.27.0'
         versionCode computeVersionCode(versionName)
