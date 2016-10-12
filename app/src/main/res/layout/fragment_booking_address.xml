@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_above="@+id/button_next"
+        android:layout_above="@+id/next_button"
         >
 
         <RelativeLayout
@@ -78,7 +78,7 @@
     </ScrollView>
 
     <Button
-        android:id="@id/button_next"
+        android:id="@id/next_button"
         android:text="@string/next"
         style="@style/Button.Green"
         />

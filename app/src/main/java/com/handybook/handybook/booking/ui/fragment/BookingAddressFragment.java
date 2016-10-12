@@ -29,7 +29,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
     @Bind(R.id.main_container)
     View mMainContainer;
 
-    @Bind(R.id.button_next)
+    @Bind(R.id.next_button)
     Button mButtonNext;
 
     @Bind(R.id.text_fullname)
