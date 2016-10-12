@@ -1,6 +1,5 @@
 package com.handybook.handybook.module.autocomplete;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,7 +8,6 @@ import android.support.v7.widget.ListPopupWindow;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -17,6 +15,7 @@ import android.widget.EditText;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.AddressAutocompleteLog;
 import com.handybook.handybook.module.configuration.model.Configuration;
@@ -215,9 +214,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment
     {
         if (getActivity() != null && getView() != null)
         {
-            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            UiUtils.dismissKeyboard(getActivity());
         }
     }
 
