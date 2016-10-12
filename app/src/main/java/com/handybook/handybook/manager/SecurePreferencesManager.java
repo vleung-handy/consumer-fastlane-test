@@ -203,6 +203,15 @@ public class SecurePreferencesManager
         }
     }
 
+    /**
+     *
+     * @param prefsKey
+     * @return true if secure preferences contains key, otherwise false
+     */
+    public boolean containsValue(@NonNull final PrefsKey prefsKey) {
+        return mSecurePreferences.containsKey(prefsKey.getKey());
+    }
+
     public void clearAll()
     {
         mSecurePreferences.clear();

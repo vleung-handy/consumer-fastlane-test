@@ -75,8 +75,11 @@ import com.handybook.handybook.data.HandyRetrofitService;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
+import com.handybook.handybook.logger.handylogger.EventLogManager;
+import com.handybook.handybook.logger.handylogger.EventLogManagerTest;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.manager.FileManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.module.autocomplete.AddressAutoCompleteManager;
@@ -189,6 +192,7 @@ import static org.mockito.Mockito.when;
         EditPlanFragment.class,
         EditPlanFrequencyFragment.class,
         EditPlanAddressFragment.class,
+        EventLogManagerTest.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -263,6 +267,18 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
+    final EventLogManager provideLogEventsManager(
+            final Bus bus,
+            final DataManager dataManager,
+            final FileManager fileManager,
+            final DefaultPreferencesManager defaultPreferencesManager
+    )
+    {
+        return spy(new EventLogManager(bus, dataManager, fileManager, defaultPreferencesManager));
+    }
+
+    @Provides
+    @Singleton
     final UserManager provideUserManager(
             final Bus bus,
             final SecurePreferencesManager securePreferencesManager
@@ -287,16 +303,16 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
-    final com.securepreferences.SecurePreferences providePrefs()
+    final BookingManager provideBookingManager()
     {
-        return mock(com.securepreferences.SecurePreferences.class);
+        return mock(BookingManager.class);
     }
 
     @Provides
     @Singleton
-    final BookingManager provideBookingManager()
+    final FileManager provideFileManager()
     {
-        return mock(BookingManager.class);
+        return new FileManager();
     }
 
     @Provides
@@ -317,7 +333,7 @@ public class TestApplicationModule
     @Singleton
     final DefaultPreferencesManager provideDefaultPreferencesManager()
     {
-        return mock(DefaultPreferencesManager.class);
+        return new DefaultPreferencesManager(context);
     }
 
     @Provides

@@ -1,6 +1,7 @@
 package com.handybook.handybook.core;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -21,6 +22,7 @@ import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
@@ -33,7 +35,6 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.handybook.library.util.DateTimeUtils;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
@@ -60,8 +61,10 @@ public class BaseApplication extends MultiDexApplication
      */
     private static final long NEWLY_LAUNCH_THRESHOLD_IN_SECONDS = 5;
     private static GoogleAnalytics googleAnalytics;
-    private static Tracker tracker;
+    private static Tracker sTracker;
     private static String sDeviceId = "";
+    //This is used for the application context
+    private static Context sContext;
 
     protected ObjectGraph graph;
     @Inject
@@ -120,13 +123,14 @@ public class BaseApplication extends MultiDexApplication
     public void onCreate()
     {
         super.onCreate();
+        sContext = getApplicationContext();
         mApplicationStartTime = new Date();
 
         googleAnalytics = GoogleAnalytics.getInstance(this);
-        tracker = googleAnalytics.newTracker(R.xml.global_tracker);
-        tracker.enableExceptionReporting(true);
-        tracker.enableAdvertisingIdCollection(true);
-        tracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
+        sTracker = googleAnalytics.newTracker(R.xml.global_tracker);
+        sTracker.enableExceptionReporting(true);
+        sTracker.enableAdvertisingIdCollection(true);
+        sTracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
         sDeviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
@@ -134,7 +138,7 @@ public class BaseApplication extends MultiDexApplication
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
-            tracker.setClientId(user.getId());
+            sTracker.setClientId(user.getId());
         }
         initFabric();
         initButton();
@@ -167,7 +171,8 @@ public class BaseApplication extends MultiDexApplication
         }
         else
         {
-            NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal")).start(this);
+            NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal"))
+                    .start(this);
         }
         if (mSecurePreferencesManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
         {
@@ -293,13 +298,22 @@ public class BaseApplication extends MultiDexApplication
 
     private static void trackScreen(final Activity activity)
     {
-        tracker.setScreenName(ScreenName.from(activity));
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        sTracker.setScreenName(ScreenName.from(activity));
+        sTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    /**
+     * Should be careful not to store the application context in a local variable, otherwise memory won't release
+     * @return
+     */
+    public static Context getContext()
+    {
+        return sContext;
     }
 
     public static Tracker tracker()
     {
-        return tracker;
+        return sTracker;
     }
 
     public static String getDeviceId() { return sDeviceId; }
