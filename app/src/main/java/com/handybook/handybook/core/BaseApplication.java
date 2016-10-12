@@ -61,7 +61,7 @@ public class BaseApplication extends MultiDexApplication
      */
     private static final long NEWLY_LAUNCH_THRESHOLD_IN_SECONDS = 5;
     private static GoogleAnalytics googleAnalytics;
-    private static Tracker tracker;
+    private static Tracker sTracker;
     private static String sDeviceId = "";
     //This is used for the application context
     private static Context sContext;
@@ -127,10 +127,10 @@ public class BaseApplication extends MultiDexApplication
         mApplicationStartTime = new Date();
 
         googleAnalytics = GoogleAnalytics.getInstance(this);
-        tracker = googleAnalytics.newTracker(R.xml.global_tracker);
-        tracker.enableExceptionReporting(true);
-        tracker.enableAdvertisingIdCollection(true);
-        tracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
+        sTracker = googleAnalytics.newTracker(R.xml.global_tracker);
+        sTracker.enableExceptionReporting(true);
+        sTracker.enableAdvertisingIdCollection(true);
+        sTracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
         sDeviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
@@ -138,7 +138,7 @@ public class BaseApplication extends MultiDexApplication
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
-            tracker.setClientId(user.getId());
+            sTracker.setClientId(user.getId());
         }
         initFabric();
         initButton();
@@ -298,8 +298,8 @@ public class BaseApplication extends MultiDexApplication
 
     private static void trackScreen(final Activity activity)
     {
-        tracker.setScreenName(ScreenName.from(activity));
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        sTracker.setScreenName(ScreenName.from(activity));
+        sTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /**
@@ -313,7 +313,7 @@ public class BaseApplication extends MultiDexApplication
 
     public static Tracker tracker()
     {
-        return tracker;
+        return sTracker;
     }
 
     public static String getDeviceId() { return sDeviceId; }
