@@ -93,7 +93,6 @@
     <dimen name="recent_booking_time_margin_top">2dp</dimen>
     <dimen name="suggested_actions_margin_top">24dp</dimen>
     <dimen name="help_center_image_width_height">20dp</dimen>
-    <dimen name="help_center_cell_height">72dp</dimen>
 
     <!-- New Account Page -->
     <dimen name="account.description_top_padding">2dp</dimen>

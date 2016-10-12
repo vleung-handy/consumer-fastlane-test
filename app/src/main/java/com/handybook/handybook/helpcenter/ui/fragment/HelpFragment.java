@@ -82,11 +82,15 @@ public class HelpFragment extends InjectedFragment
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
+    public View onCreateView(
+            final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState
+    )
     {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_help, container, false);
+                                       .inflate(R.layout.fragment_help, container, false);
         ButterKnife.bind(this, view);
 
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
@@ -110,7 +114,7 @@ public class HelpFragment extends InjectedFragment
         {
             Intent intent = new Intent(getContext(), BookingDetailActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(BundleKeys.BOOKING, mBooking);
             startActivity(intent);
         }
@@ -122,7 +126,9 @@ public class HelpFragment extends InjectedFragment
         if (mBooking != null)
         {
             showUiBlockers();
-            dataManager.getBookingMilestones(mBooking.getId(), new DataManager.Callback<JobStatus>()
+            dataManager.getBookingMilestones(
+                    mBooking.getId(),
+                    new DataManager.Callback<JobStatus>()
                     {
                         @Override
                         public void onSuccess(JobStatus status)
@@ -157,8 +163,10 @@ public class HelpFragment extends InjectedFragment
     {
         Bundle args = new Bundle();
         args.putString(BundleKeys.HELP_CENTER_URL, mHelpCenterUrl);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                HelpWebViewFragment.newInstance(args)).addToBackStack(null).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(
+                R.id.fragment_container,
+                HelpWebViewFragment.newInstance(args)
+        ).addToBackStack(null).commit();
     }
 
     @Subscribe
@@ -187,9 +195,11 @@ public class HelpFragment extends InjectedFragment
                         df.setMinimumFractionDigits(0);
                         df.setMaximumFractionDigits(1);
                         mRecentBookingTimeText.setText(
-                                getString(R.string.help_booking_time_dash_formatted,
+                                getString(
+                                        R.string.help_booking_time_dash_formatted,
                                         bookingTime.toLowerCase(),
-                                        df.format(mBooking.getHours())));
+                                        df.format(mBooking.getHours())
+                                ));
                     }
                 }
 
@@ -208,10 +218,17 @@ public class HelpFragment extends InjectedFragment
             ArrayList<HelpCenterResponse.Link> links = response.getLinks();
             if (links != null && !links.isEmpty())
             {
+                mSuggestedActionsLayout.removeAllViews();
+
                 for (HelpCenterResponse.Link link : links)
                 {
                     HelpCenterActionItemView view = new HelpCenterActionItemView(getContext());
-                    view.setDisplay(link.getText(), link.getSubtext(), link.getLink(), link.getIcon());
+                    view.setDisplay(
+                            link.getText(),
+                            link.getSubtext(),
+                            link.getLink(),
+                            link.getIcon()
+                    );
                     mSuggestedActionsLayout.addView(view);
                 }
             }
