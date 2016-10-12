@@ -44,7 +44,7 @@ public class BookingFunnelLog extends EventLog
         private final String mBookingId;
 
         @SerializedName("is_recurring")
-        private final boolean mIsRecurring;
+        private final boolean mIsBookingRecurring;
 
         @SerializedName("entry_method")
         private final String mEntryMethodMachineName;
@@ -52,13 +52,13 @@ public class BookingFunnelLog extends EventLog
         private EntryMethodLog(
                 final String eventTypeSuffix,
                 final String bookingId,
-                final boolean isRecurring,
+                final boolean isBookingRecurring,
                 final String entryMethodMachineName
         )
         {
             super(EVENT_TYPE_PREFIX + eventTypeSuffix);
             mBookingId = bookingId;
-            mIsRecurring = isRecurring;
+            mIsBookingRecurring = isBookingRecurring;
             mEntryMethodMachineName = entryMethodMachineName;
         }
 
@@ -73,11 +73,11 @@ public class BookingFunnelLog extends EventLog
 
             public RecommendationShown(
                     final String bookingId,
-                    final boolean isRecurring,
+                    final boolean isBookingRecurring,
                     final String entryMethodMachineName
             )
             {
-                super(EVENT_TYPE_SUFFIX, bookingId, isRecurring, entryMethodMachineName);
+                super(EVENT_TYPE_SUFFIX, bookingId, isBookingRecurring, entryMethodMachineName);
             }
         }
 
@@ -92,11 +92,11 @@ public class BookingFunnelLog extends EventLog
 
             public InfoSubmitted(
                     final String bookingId,
-                    final boolean isRecurring,
+                    final boolean isBookingRecurring,
                     final String entryMethodMachineName
             )
             {
-                super(EVENT_TYPE_SUFFIX, bookingId, isRecurring, entryMethodMachineName);
+                super(EVENT_TYPE_SUFFIX, bookingId, isBookingRecurring, entryMethodMachineName);
             }
         }
     }
