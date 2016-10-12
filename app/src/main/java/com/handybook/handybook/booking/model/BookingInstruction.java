@@ -48,7 +48,7 @@ public class BookingInstruction implements Parcelable
             @Nullable final Long id,
             @BookingInstructionMachineName final String machineName,
             final String title,
-            @BookingInstructionType final String instructionType,
+            final String instructionType,
             final String description,
             final Boolean isRequested
     )
@@ -212,46 +212,5 @@ public class BookingInstruction implements Parcelable
         public static final String BATHROOM = "bathroom";
         public static final String FLOORS = "floors";
         public static final String GENERAL = "general";
-
-
-        public static final class EntryMethod
-        {
-            public static final String DOORMAN = "doorman";
-            public static final String AT_HOME = "at_home";
-            public static final String HIDE_KEY = "hide_key";
-            public static final String LOCKBOX = "lockbox";
-        }
     }
-
-
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({
-            InstructionType.KITCHEN,
-            InstructionType.BEDROOM,
-            InstructionType.BATHROOM,
-            InstructionType.FLOORS,
-            InstructionType.GENERAL,
-
-            InstructionType.EntryMethod.AT_HOME,
-            InstructionType.EntryMethod.DOORMAN,
-            InstructionType.EntryMethod.HIDE_KEY,
-            InstructionType.EntryMethod.LOCKBOX,
-    })
-    public @interface BookingInstructionType
-    {
-    }
-
-
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({
-            InstructionType.EntryMethod.AT_HOME,
-            InstructionType.EntryMethod.DOORMAN,
-            InstructionType.EntryMethod.HIDE_KEY,
-            InstructionType.EntryMethod.LOCKBOX,
-    })
-    public @interface EntryMethodType
-    {
-    }
-
-
 }
