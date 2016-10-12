@@ -52,7 +52,7 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     public void shouldNotRequestEditAddressWhenInputInvalidAndSubmitButtonPressed() throws Exception
     {
         reset(mFragment.bus);
-        mFragment.mStreetAddressInputTextView1.setText("");
+        mFragment.mAutoCompleteFragment.mStreet.setText("");
         mFragment.onNextButtonClick();
         verifyZeroInteractions(mFragment.bus);
     }
@@ -60,7 +60,7 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldRequestEditAddressWhenSubmitButtonPressed() throws Exception
     {
-        mFragment.mStreetAddressInputTextView1.setText("2 Test Drive");
+        mFragment.mAutoCompleteFragment.mStreet.setText("2 Test Drive");
         mFragment.onNextButtonClick();
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEditEvent.RequestEditBookingAddress.class));
     }

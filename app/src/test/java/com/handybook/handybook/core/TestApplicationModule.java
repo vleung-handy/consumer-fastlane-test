@@ -79,6 +79,10 @@ import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.StripeManager;
+import com.handybook.handybook.module.autocomplete.AddressAutoCompleteManager;
+import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
+import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragmentTest;
+import com.handybook.handybook.module.autocomplete.PlacesService;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
@@ -108,6 +112,8 @@ import static org.mockito.Mockito.when;
 @Module(injects = {
         TestBaseApplication.class,
         ActiveBookingFragment.class,
+        AutoCompleteAddressFragment.class,
+        AutoCompleteAddressFragmentTest.class,
         BaseActivity.class,
         BookingEditFrequencyActivity.class,
         BookingEditFrequencyFragment.class,
@@ -228,6 +234,20 @@ public class TestApplicationModule
     final HandyRetrofitService provideHandyService()
     {
         return mock(HandyRetrofitService.class);
+    }
+
+    @Provides
+    @Singleton
+    final PlacesService providesPlacesService()
+    {
+        return mock(PlacesService.class);
+    }
+
+    @Provides
+    @Singleton
+    final AddressAutoCompleteManager providesAddressAutoCompleteManager()
+    {
+        return mock(AddressAutoCompleteManager.class);
     }
 
     @Provides

@@ -6,16 +6,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
+import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
 import com.squareup.otto.Subscribe;
 
@@ -25,10 +25,7 @@ import butterknife.OnClick;
 
 public final class BookingEditAddressFragment extends BookingFlowFragment
 {
-    @Bind(R.id.street_addr_text)
-    StreetAddressInputTextView mStreetAddressInputTextView1;
-    @Bind(R.id.other_addr_text)
-    EditText mStreetAddressInputTextView2;
+
     @Bind(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
 
@@ -36,6 +33,8 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     Toolbar mToolbar;
 
     private Booking mBooking;
+
+    AutoCompleteAddressFragment mAutoCompleteFragment;
 
     public static BookingEditAddressFragment newInstance(Booking booking)
     {
@@ -66,33 +65,54 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
 
         if (mBooking.getAddress() != null)
         {
-            //initialize with the booking's current address
-            mStreetAddressInputTextView1.setText(mBooking.getAddress().getAddress1());
-            mStreetAddressInputTextView2.setText(mBooking.getAddress().getAddress2());
+            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                    new ZipValidationResponse.ZipArea(
+                            mBooking.getAddress().getCity(),
+                            mBooking.getAddress().getState(),
+                            mBooking.getAddress().getZip()
+                    ),
+                    mBooking.getAddress().getAddress1(),
+                    mBooking.getAddress().getAddress2(),
+                    configurationManager.getCachedConfiguration()
+            );
+
             mZipCodeInputTextView.setText(mBooking.getAddress().getZip());
         }
+        else
+        {
+            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                    null,
+                    null,
+                    null,
+                    configurationManager.getCachedConfiguration()
+            );
+        }
+
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.edit_booking_address_fragment_container, mAutoCompleteFragment)
+                .commitAllowingStateLoss();
 
         return view;
     }
 
     private void sendEditAddressRequest()
     {
-        EditAddressRequest editAddressRequest = new EditAddressRequest(
-                mStreetAddressInputTextView1.getAddress(),
-                mStreetAddressInputTextView2.getText().toString(),
+        EditAddressRequest bookingEditAddressRequest = new EditAddressRequest(
+                mAutoCompleteFragment.mStreet.getAddress(),
+                mAutoCompleteFragment.mOther.getText().toString(),
                 mZipCodeInputTextView.getZipCode()
         );
         showUiBlockers();
         bus.post(new BookingEditEvent.RequestEditBookingAddress(
                 Integer.parseInt(mBooking.getId()),
-                editAddressRequest
+                bookingEditAddressRequest
         ));
     }
 
     private boolean validateFields()
     {
-        return (mStreetAddressInputTextView1.validate()
-                && mZipCodeInputTextView.validate());
+        return (mAutoCompleteFragment.validateFields() && mZipCodeInputTextView.validate());
     }
 
     @OnClick(R.id.next_button)

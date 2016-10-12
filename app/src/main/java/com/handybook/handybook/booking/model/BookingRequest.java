@@ -23,6 +23,7 @@ public class BookingRequest extends Observable
     public static final String KEY_UNIQ = "uniq";
     public static final String KEY_SERVICE_ID = "service_id";
     public static final String KEY_ZIPCODE = "zipcode";
+    public static final String KEY_ZIP_AREA = "zip_area";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_USER_ID = "user_id";
     public static final String KEY_SERVICE_ATTRIBUTES = "service_attributes";
@@ -35,8 +36,15 @@ public class BookingRequest extends Observable
     private int mServiceId;
     @SerializedName(KEY_UNIQ)
     private String mUniq;
+
+    //zipCode is needed for POSTing to the server
     @SerializedName(KEY_ZIPCODE)
     private String mZipCode;
+
+    //zip area is a convenience method for holding information relevant to the current booking request
+    @SerializedName(KEY_ZIP_AREA)
+    private ZipValidationResponse.ZipArea mZipArea;
+
     @SerializedName(KEY_EMAIL)
     private String mEmail;
     @SerializedName(KEY_USER_ID)
@@ -84,6 +92,17 @@ public class BookingRequest extends Observable
     public void setZipCode(final String zipCode)
     {
         mZipCode = zipCode;
+        triggerObservers();
+    }
+
+    public ZipValidationResponse.ZipArea getZipArea()
+    {
+        return mZipArea;
+    }
+
+    public void setZipArea(final ZipValidationResponse.ZipArea zipArea)
+    {
+        mZipArea = zipArea;
         triggerObservers();
     }
 
@@ -227,6 +246,7 @@ public class BookingRequest extends Observable
             jsonObj.add(KEY_SERVICE_ID, context.serialize(value.getServiceId()));
             jsonObj.add(KEY_UNIQ, context.serialize(value.getUniq()));
             jsonObj.add(KEY_ZIPCODE, context.serialize(value.getZipCode()));
+            jsonObj.add(KEY_ZIP_AREA, context.serialize(value.getZipArea()));
             jsonObj.add(KEY_EMAIL, context.serialize(value.getEmail()));
             jsonObj.add(KEY_USER_ID, context.serialize(value.getUserId()));
             jsonObj.add(KEY_SERVICE_ATTRIBUTES, context.serialize(value.getOptions()));

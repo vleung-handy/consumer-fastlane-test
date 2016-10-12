@@ -395,7 +395,6 @@
     <string name="missing_booking_location">We\'re having trouble displaying your address on the map.</string>
     <string name="missing_provider_location">We can\'t locate your pro right now, but you can try contacting them directly for an update.</string>
 
-
     <!-- Help Center -->
     <string name="recent_booking">Recent Booking</string>
     <string name="help_booking_time_dash_formatted">%1$s \u2013 %2$s hours</string>
@@ -440,4 +439,5 @@
     <string name="nav.invite_friends">Invite Friends</string>
 
     <string name="booking_details_pro_info_title">Your Pro</string>
+    <string name="places_api_base_url">https://maps.googleapis.com/</string>
 </resources>

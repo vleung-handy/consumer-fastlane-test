@@ -8,43 +8,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.ui.widget.PhoneInputTextView;
-import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class BookingAddressFragment extends BookingFlowFragment
 {
-    private static final String STATE_FULLNAME_HIGHLIGHT = "FULLNAME_HIGHLIGHT";
-    private static final String STATE_ADDR1_HIGHLIGHT = "ADDR1_HIGHLIGHT";
-    private static final String STATE_PHONE_HIGHLIGHT = "PHONE_HIGHLIGHT";
+    @Bind(R.id.main_container)
+    View mMainContainer;
 
     @Bind(R.id.next_button)
-    Button nextButton;
-    @Bind(R.id.fullname_text)
-    FullNameInputTextView fullNameText;
-    @Bind(R.id.street_addr_text)
-    StreetAddressInputTextView streetAddrText;
-    @Bind(R.id.other_addr_text)
-    EditText otherAddrText;
-    @Bind(R.id.phone_prefix_text)
-    TextView phonePrefixText;
-    @Bind(R.id.phone_text)
-    PhoneInputTextView phoneText;
+    Button mButtonNext;
+
+    @Bind(R.id.text_fullname)
+    FullNameInputTextView mTextFullName;
+
+    @Bind(R.id.text_phone_prefix)
+    TextView mTextPhonePrefix;
+
+    @Bind(R.id.text_phone)
+    PhoneInputTextView mTextPhone;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
+    AutoCompleteAddressFragment mAutoCompleteFragment;
+
 
     public static BookingAddressFragment newInstance()
     {
@@ -73,65 +74,65 @@ public final class BookingAddressFragment extends BookingFlowFragment
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.info_header_layout, header).commit();
 
+        ZipValidationResponse.ZipArea filter = null;
+        if (bookingManager.getCurrentRequest() != null)
+        {
+            filter = bookingManager.getCurrentRequest().getZipArea();
+        }
+
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
-            fullNameText.setText(user.getFirstName() + " " + user.getLastName());
-            phoneText.setCountryCode(user.getPhonePrefix());
-            phoneText.setText(user.getPhone());
-            phonePrefixText.setText(user.getPhonePrefix());
+            mTextFullName.setText(user.getFirstName() + " " + user.getLastName());
+            mTextPhone.setCountryCode(user.getPhonePrefix());
+            mTextPhone.setText(user.getPhone());
+            mTextPhonePrefix.setText(user.getPhonePrefix());
 
             final User.Address addr = user.getAddress();
             if (addr != null)
             {
-                streetAddrText.setText(addr.getAddress1());
-                otherAddrText.setText(addr.getAddress2());
+                mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                        filter,
+                        addr.getAddress1(),
+                        addr.getAddress2(),
+                        configurationManager.getCachedConfiguration()
+                );
             }
         }
         else
         {
             final String prefix = bookingManager.getCurrentQuote().getPhonePrefix();
-            phoneText.setCountryCode(prefix);
-            phonePrefixText.setText(prefix);
+            mTextPhone.setCountryCode(prefix);
+            mTextPhonePrefix.setText(prefix);
         }
 
-        nextButton.setOnClickListener(nextClicked);
-        return view;
-    }
-
-    @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null)
+        if (mAutoCompleteFragment == null)
         {
-            if (savedInstanceState.getBoolean(STATE_FULLNAME_HIGHLIGHT))
-            {
-                fullNameText.highlight();
-            }
-            if (savedInstanceState.getBoolean(STATE_ADDR1_HIGHLIGHT))
-            {
-                streetAddrText.highlight();
-            }
-            if (savedInstanceState.getBoolean(STATE_PHONE_HIGHLIGHT)) { phoneText.highlight(); }
+            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                    filter,
+                    null,
+                    null,
+                    configurationManager.getCachedConfiguration()
+            );
         }
-    }
 
-    @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_FULLNAME_HIGHLIGHT, fullNameText.isHighlighted());
-        outState.putBoolean(STATE_ADDR1_HIGHLIGHT, streetAddrText.isHighlighted());
-        outState.putBoolean(STATE_PHONE_HIGHLIGHT, phoneText.isHighlighted());
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.booking_address_fragment_container, mAutoCompleteFragment)
+                .commitAllowingStateLoss();
+
+        mButtonNext.setOnClickListener(nextClicked);
+
+        return view;
     }
 
     private boolean validateFields()
     {
-        boolean validate = true;
-        if (!fullNameText.validate()) { validate = false; }
-        if (!streetAddrText.validate()) { validate = false; }
-        if (!phoneText.validate()) { validate = false; }
+        boolean validate = mAutoCompleteFragment.validateFields();
+
+        if (!mTextFullName.validate()) { validate = false; }
+        if (!mTextPhone.validate()) { validate = false; }
+
         return validate;
     }
 
@@ -145,11 +146,13 @@ public final class BookingAddressFragment extends BookingFlowFragment
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressSubmittedLog()));
 
                 final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-                transaction.setFirstName(fullNameText.getFirstName());
-                transaction.setLastName(fullNameText.getLastName());
-                transaction.setAddress1(streetAddrText.getAddress());
-                transaction.setAddress2(otherAddrText.getText().toString());
-                transaction.setPhone(phoneText.getPhoneNumber());
+
+                transaction.setAddress1(mAutoCompleteFragment.mStreet.getAddress());
+                transaction.setAddress2(mAutoCompleteFragment.mOther.getText().toString());
+                transaction.setFirstName(mTextFullName.getFirstName());
+                transaction.setLastName(mTextFullName.getLastName());
+                transaction.setPhone(mTextPhone.getPhoneNumber());
+
 
                 final Intent intent = new Intent(getActivity(), BookingPaymentActivity.class);
                 startActivity(intent);
