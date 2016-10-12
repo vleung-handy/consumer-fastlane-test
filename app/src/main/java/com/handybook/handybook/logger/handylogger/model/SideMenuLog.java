@@ -27,4 +27,16 @@ public abstract class SideMenuLog extends EventLog
             mShareButtonType = BANNER;
         }
     }
+
+
+    public static class HelpCenterTappedLog extends SideMenuLog
+    {
+
+        public static final String EVENT_TYPE = "help_center_tapped";
+
+        public HelpCenterTappedLog()
+        {
+            super(EVENT_TYPE);
+        }
+    }
 }

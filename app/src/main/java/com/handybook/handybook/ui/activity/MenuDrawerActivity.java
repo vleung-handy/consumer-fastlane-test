@@ -349,6 +349,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 navigateToActivity(ReferralActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_help:
+                mBus.post(new LogEvent.AddLogEvent(new SideMenuLog.HelpCenterTappedLog()));
                 navigateToActivity(HelpActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_promotions:
