@@ -21,6 +21,8 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.HelpCenterLog;
 import com.handybook.handybook.model.response.HelpCenterResponse;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.HelpCenterActionItemView;
@@ -112,6 +114,13 @@ public class HelpFragment extends InjectedFragment
     {
         if (mBooking != null)
         {
+            final String bookingId = mBooking.getId();
+            if (!Strings.isNullOrEmpty(bookingId))
+            {
+                bus.post(new LogEvent.AddLogEvent(
+                        new HelpCenterLog.BookingDetailsTappedLog(bookingId)));
+            }
+
             Intent intent = new Intent(getContext(), BookingDetailActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
                                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -126,6 +135,14 @@ public class HelpFragment extends InjectedFragment
         if (mBooking != null)
         {
             showUiBlockers();
+
+            final String bookingId = mBooking.getId();
+            if (!Strings.isNullOrEmpty(bookingId))
+            {
+                bus.post(new LogEvent.AddLogEvent(
+                        new HelpCenterLog.ReportIssueTapped(bookingId)));
+            }
+
             dataManager.getBookingMilestones(
                     mBooking.getId(),
                     new DataManager.Callback<JobStatus>()
@@ -161,6 +178,8 @@ public class HelpFragment extends InjectedFragment
     @OnClick(R.id.help_center_layout)
     public void helpCenterOptionClicked()
     {
+        bus.post(new LogEvent.AddLogEvent(new HelpCenterLog.HelpCenterTappedLog()));
+
         Bundle args = new Bundle();
         args.putString(BundleKeys.HELP_CENTER_URL, mHelpCenterUrl);
         getActivity().getSupportFragmentManager().beginTransaction().replace(
@@ -222,7 +241,10 @@ public class HelpFragment extends InjectedFragment
 
                 for (HelpCenterResponse.Link link : links)
                 {
-                    HelpCenterActionItemView view = new HelpCenterActionItemView(getContext());
+                    HelpCenterActionItemView view = new HelpCenterActionItemView(
+                            getContext(),
+                            bus
+                    );
                     view.setDisplay(
                             link.getText(),
                             link.getSubtext(),
