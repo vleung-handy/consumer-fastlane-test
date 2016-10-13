@@ -37,7 +37,7 @@ public class DefaultPreferencesManager
 
     public void setString(@NonNull final PrefsKey prefsKey, @Nullable final String value)
     {
-        mDefaultSharedPreferences.edit().putString(prefsKey.getKey(), value).commit();
+        mDefaultSharedPreferences.edit().putString(prefsKey.getKey(), value).apply();
     }
 
     @Nullable
@@ -54,7 +54,7 @@ public class DefaultPreferencesManager
 
     public void setBoolean(@NonNull final PrefsKey prefsKey, final boolean value)
     {
-        mDefaultSharedPreferences.edit().putBoolean(prefsKey.getKey(), value).commit();
+        mDefaultSharedPreferences.edit().putBoolean(prefsKey.getKey(), value).apply();
     }
 
     public boolean getBoolean(@NonNull final PrefsKey prefsKey, final boolean defaultValue)
@@ -64,11 +64,11 @@ public class DefaultPreferencesManager
 
     public void removeValue(@NonNull final PrefsKey prefsKey)
     {
-        mDefaultSharedPreferences.edit().remove(prefsKey.getKey()).commit();
+        mDefaultSharedPreferences.edit().remove(prefsKey.getKey()).apply();
     }
 
     public void clearAll()
     {
-        mDefaultSharedPreferences.edit().clear().commit();
+        mDefaultSharedPreferences.edit().clear().apply();
     }
 }

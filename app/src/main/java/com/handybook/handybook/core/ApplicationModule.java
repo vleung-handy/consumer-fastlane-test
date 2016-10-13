@@ -712,10 +712,11 @@ public final class ApplicationModule
             final Bus bus,
             final DataManager dataManager,
             final FileManager fileManager,
-            final DefaultPreferencesManager defaultPreferencesManager
+            final DefaultPreferencesManager defaultPreferencesManager,
+            final UserManager userManager
     )
     {
-        return new EventLogManager(bus, dataManager, fileManager, defaultPreferencesManager);
+        return new EventLogManager(bus, dataManager, fileManager, defaultPreferencesManager, userManager);
     }
 
     @Provides

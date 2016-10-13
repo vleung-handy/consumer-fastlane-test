@@ -91,6 +91,17 @@ public class EventLogManagerTest extends RobolectricGradleTestWrapper
     }
 
     private LogEvent.AddLogEvent getLogEvent(String eventName) {
-        return new LogEvent.AddLogEvent(new EventLog(eventName, "context") {});
+        return new LogEvent.AddLogEvent(new TestEventLog(eventName, "context"));
+    }
+
+    /**
+     * This is needed for the gson to serialize correctly because anonymous class doesn't require constructor
+     */
+    private class TestEventLog extends EventLog {
+
+        public TestEventLog(final String eventType, final String eventContext)
+        {
+            super(eventType, eventContext);
+        }
     }
 }
