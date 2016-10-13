@@ -192,8 +192,8 @@ public class EventLogManager
 
     private int getUserId()
     {
-        User user;
-        if ((user = User.fromJson(mPrefsManager.getString(PrefsKey.USER))) != null)
+        User user = mUserManager.getCurrentUser();
+        if (user != null)
         {
             try
             {
