@@ -3,8 +3,6 @@ package com.handybook.handybook.library.util;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-import com.handybook.handybook.BuildConfig;
-
 import java.util.Properties;
 
 public final class PropertiesReader {
@@ -17,10 +15,5 @@ public final class PropertiesReader {
             throw new RuntimeException("Error loading properties file: " + fileName);
         }
         return properties;
-    }
-
-    public static Properties getConfigProperties(Context context)
-    {
-        return getProperties(context, "config." + BuildConfig.BUILD_TYPE + ".properties");
     }
 }
