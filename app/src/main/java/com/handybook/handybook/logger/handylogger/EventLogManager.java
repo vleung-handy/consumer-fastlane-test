@@ -44,12 +44,11 @@ import javax.inject.Inject;
 
 public class EventLogManager
 {
-    private static final int UPLOAD_TIMER_DELAY_MS = 60000; //1 min
     private static final int DEFAULT_USER_ID = -1;
     private static final int MAX_RETRY_COUNT = 5;
     private static final String SENT_TIMESTAMP_SECS_KEY = "event_bundle_sent_timestamp";
-    private static final int UPLOAD_TIMER_DELAY = 60000; //1 min
-    private static final int UPLOAD_TIMER_DELAY_NO_INTERNET_MS = 15 * UPLOAD_TIMER_DELAY; //15 min
+    private static final int UPLOAD_TIMER_DELAY_MS = 60000; //1 min
+    private static final int UPLOAD_TIMER_DELAY_NO_INTERNET_MS = 15 * UPLOAD_TIMER_DELAY_MS; //15 min
     private static final String TAG = EventLogManager.class.getSimpleName();
     static final int MAX_NUM_PER_BUNDLE = 50;
     private static final Gson GSON = new Gson();
