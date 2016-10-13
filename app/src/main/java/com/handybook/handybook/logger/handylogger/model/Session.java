@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 public class Session implements Serializable
 {
-    private static int SESSION_TIMEOUT = 1 * 60 * 1000; //30 minutes
+    private static int SESSION_TIMEOUT_MS = 30 * 60 * 1000; //30 minutes
     private static final Gson GSON = new Gson();
     private int id;
     private int eventCount;
@@ -67,7 +67,7 @@ public class Session implements Serializable
     public void incrementEventCount(DefaultPreferencesManager prefsManager)
     {
         //If greater then threshold then init a new session
-        if (System.currentTimeMillis() - lastModified > SESSION_TIMEOUT)
+        if (System.currentTimeMillis() - lastModified > SESSION_TIMEOUT_MS)
         {
             //New session must increment the session id
             id++;
