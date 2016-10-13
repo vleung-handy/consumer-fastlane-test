@@ -18,7 +18,7 @@ public class Session implements Serializable
     private static final Gson GSON = new Gson();
     private int id;
     private int eventCount;
-    private long lastModified;
+    private long lastModifiedTimeMs;
 
     private static Session mInstance;
 
@@ -67,7 +67,7 @@ public class Session implements Serializable
     public void incrementEventCount(DefaultPreferencesManager prefsManager)
     {
         //If greater then threshold then init a new session
-        if (System.currentTimeMillis() - lastModified > SESSION_TIMEOUT_MS)
+        if (System.currentTimeMillis() - lastModifiedTimeMs > SESSION_TIMEOUT_MS)
         {
             //New session must increment the session id
             id++;
@@ -86,7 +86,7 @@ public class Session implements Serializable
     private void saveSession(DefaultPreferencesManager prefsManager)
     {
         //update last modified time
-        lastModified = System.currentTimeMillis();
+        lastModifiedTimeMs = System.currentTimeMillis();
         //Save the session on ever change
         prefsManager.setString(PrefsKey.LOG_SESSION, GSON.toJson(this));
     }
