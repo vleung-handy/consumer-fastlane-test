@@ -276,7 +276,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@style/com_facebook_activity_theme"
             />
 
         <!-- Used for install referrer tracking by Yozio -->

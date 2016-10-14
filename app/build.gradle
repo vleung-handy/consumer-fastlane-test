@@ -157,7 +157,7 @@ dependencies {
     compile 'com.stripe:stripe-android:1.0.4'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'com.scottyab:secure-preferences-lib:0.1.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.10.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.16.1'
     compile 'com.airbnb:deeplinkdispatch:1.5.0'
     compile 'com.github.renaudcerrato:ViewPagerIndicator:2.4.1-gradle'
     compile 'com.usebutton:android-sdk:5.0.1'
