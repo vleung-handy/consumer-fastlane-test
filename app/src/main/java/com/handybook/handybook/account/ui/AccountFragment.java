@@ -186,7 +186,7 @@ public class AccountFragment extends InjectedFragment
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutConfirmed()));
+                        bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
                         //log out of Facebook also

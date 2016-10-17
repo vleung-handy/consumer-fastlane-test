@@ -104,11 +104,11 @@ public class AccountLog extends EventLog
     }
 
 
-    public static class LogoutConfirmed extends AccountLog
+    public static class LogoutSuccess extends AccountLog
     {
-        private static final String EVENT_TYPE = "logout_confirmed";
+        private static final String EVENT_TYPE = "logout_success";
 
-        public LogoutConfirmed()
+        public LogoutSuccess()
         {
             super(EVENT_TYPE);
         }
