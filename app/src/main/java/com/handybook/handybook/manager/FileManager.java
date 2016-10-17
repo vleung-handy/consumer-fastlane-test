@@ -26,22 +26,25 @@ public class FileManager
     public FileManager()
     {
         mLogDirectory = new File(FILES_DIRECTORY, LOG_PATH);
-        if (!mLogDirectory.exists()) { mLogDirectory.mkdirs(); }
+        makeLogsDirectoryIfNotExist();
     }
 
     public File[] getLogFileList()
     {
+        makeLogsDirectoryIfNotExist();
         return mLogDirectory.listFiles();
     }
 
     public boolean saveLogFile(String fileName, String fileContent)
     {
+        makeLogsDirectoryIfNotExist();
         //This was simplest way to save in sub directory
         return saveFile(new File(mLogDirectory, fileName), fileContent);
     }
 
     public void deleteLogFile(String fileName)
     {
+        makeLogsDirectoryIfNotExist();
         new File(mLogDirectory, fileName).delete();
     }
 
@@ -103,5 +106,17 @@ public class FileManager
         }
 
         return false;
+    }
+
+    private void makeLogsDirectoryIfNotExist()
+    {
+        if (!mLogDirectory.exists())
+        {
+            //if log directory isn't created, log
+            if (!mLogDirectory.mkdirs())
+            {
+                Crashlytics.log("couldn't make log directory: " + mLogDirectory.getAbsolutePath());
+            }
+        }
     }
 }
