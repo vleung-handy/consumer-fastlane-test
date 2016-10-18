@@ -45,7 +45,6 @@ import javax.inject.Inject;
 public class EventLogManager
 {
     private static final int DEFAULT_USER_ID = -1;
-    private static final int MAX_RETRY_COUNT = 5;
     private static final String SENT_TIMESTAMP_SECS_KEY = "event_bundle_sent_timestamp";
     private static final int UPLOAD_TIMER_DELAY_MS = 60000; //1 min
     private static final int UPLOAD_TIMER_DELAY_NO_INTERNET_MS = 15 * UPLOAD_TIMER_DELAY_MS; //15 min
@@ -240,7 +239,7 @@ public class EventLogManager
                 if (!TextUtils.isEmpty(logBundles))
                 {
                     //Save the previous ones to file system
-                    saveLogsToFileSystem(logBundles, 0);
+                    saveLogsToFileSystem(logBundles);
                 }
                 //Check regular log bundles from previous run.
                 sendLogsFromPreference();
@@ -277,14 +276,14 @@ public class EventLogManager
             //Save this to the file system and remove from original preference
             if (!TextUtils.isEmpty(eventLogBundles))
             {
-                saveLogsToFileSystem(eventLogBundles, 0);
+                saveLogsToFileSystem(eventLogBundles);
             }
         }
 
         sendLogs();
     }
 
-    private void saveLogsToFileSystem(final String prefBundleString, int retryCount)
+    private void saveLogsToFileSystem(final String prefBundleString)
     {
         JsonObject[] eventLogBundles = GSON.fromJson(
                 prefBundleString,
@@ -298,37 +297,20 @@ public class EventLogManager
             String eventBundleId = eventLogBundleJson.get(EventLogBundle.KEY_EVENT_BUNDLE_ID)
                                                      .getAsString();
             eventBundleIds.add(eventBundleId);
-            mFileManager.saveLogFile(
+            boolean fileSaved = mFileManager.saveLogFile(
                     eventBundleId,
                     eventLogBundleJson.toString()
             );
-        }
 
-        //Make sure all the files were saved
-        File[] fileList = mFileManager.getLogFileList();
-        for (File file : fileList)
-        {
-            eventBundleIds.remove(file.getName());
-        }
-
-        //This means they were all saved and we can remove the preference from the system. Can't just compare number of files because
-        // it may contain files that weren't uploaded previously
-        // or, if we tried to save the logs 5 times and it fails, then we remove the preference.
-        // must means somethings wrong
-        if (eventBundleIds.isEmpty() || retryCount > MAX_RETRY_COUNT)
-        {
-            removePreference(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
-
-            if (retryCount > MAX_RETRY_COUNT && !eventBundleIds.isEmpty())
+            // If the file didn't save then we log an exception
+            if(!fileSaved)
             {
-                Crashlytics.log("Failed to save logs to file system: " + prefBundleString);
+                Crashlytics.logException(new Exception("Failed to save log to file system: " + eventLogBundleJson.toString()));
             }
         }
-        else
-        {
-            //It means not all of it was saved to file system, retry until we hit a limit
-            saveLogsToFileSystem(prefBundleString, retryCount++);
-        }
+
+        //Remove preference the preference since it either saved or failed
+        removePreference(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
     }
 
     /**
@@ -342,6 +324,13 @@ public class EventLogManager
         try
         {
             File[] files = mFileManager.getLogFileList();
+            if(files == null) {
+                //Log exception
+                Crashlytics.logException(new Exception("Log Files list returns null. Should not happen"));
+                //Just return. next log event will trigger timer
+                return;
+            }
+
             mSendingLogsCount = files.length;
             for (final File file : files)
             {
