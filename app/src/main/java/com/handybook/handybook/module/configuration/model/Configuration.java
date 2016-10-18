@@ -28,6 +28,8 @@ public class Configuration implements Serializable
 
     @SerializedName("upcoming_and_past_bookings_enabled")
     private boolean mUpcomingAndPastBookingsEnabled;
+    @SerializedName("pro_team_facebook_login_enabled")
+    private boolean mProTeamFacebookLoginEnabled;
     @SerializedName("appsee_analytics_enabled")
     private boolean mAppseeAnalyticsEnabled;
 
@@ -88,4 +90,6 @@ public class Configuration implements Serializable
         return new GsonBuilder()
                 .setDateFormat(DATE_FORMAT).create().fromJson(json, Configuration.class);
     }
+
+    public boolean isProTeamFacebookLoginEnabled() { return mProTeamFacebookLoginEnabled; }
 }

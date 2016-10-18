@@ -24,7 +24,6 @@ import android.webkit.WebStorage;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
@@ -93,7 +92,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
             finish();
             return;
         }
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setupEnvButton();
         mNavigationView.setNavigationItemSelectedListener(this);
         int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);

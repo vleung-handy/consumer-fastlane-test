@@ -22,7 +22,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.handybook.handybook.R;
@@ -122,7 +121,6 @@ public final class LoginFragment extends BookingFlowFragment
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
         mBookingRequest = bookingManager.getCurrentRequest();
@@ -207,7 +205,7 @@ public final class LoginFragment extends BookingFlowFragment
         }
 
         mFbLoginButton.setFragment(this);
-        mFbLoginButton.setReadPermissions("email");
+        mFbLoginButton.setReadPermissions("public_profile", "email", "user_friends");
 
         // Callback registration
         mFbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>()
@@ -335,8 +333,7 @@ public final class LoginFragment extends BookingFlowFragment
     private boolean validateFields()
     {
         if (!mEmailText.validate()) { return false; }
-        if (!mFindUser && !mPasswordText.validate()) { return false; }
-        return true;
+        return !(!mFindUser && !mPasswordText.validate());
     }
 
     @Override

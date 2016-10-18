@@ -9,6 +9,7 @@ import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.FacebookSdk;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -125,6 +126,8 @@ public class BaseApplication extends MultiDexApplication
         super.onCreate();
         sContext = getApplicationContext();
         mApplicationStartTime = new Date();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         googleAnalytics = GoogleAnalytics.getInstance(this);
         sTracker = googleAnalytics.newTracker(R.xml.global_tracker);

@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 
 public abstract class ProTeamPageLog extends EventLog
 {
-    private static final String EVENT_CONTEXT = "pro_team";
+    private static final String EVENT_CONTEXT = "pro_team_management";
 
     public static class Context
     {
@@ -177,6 +177,24 @@ public abstract class ProTeamPageLog extends EventLog
         }
     }
 
+
+    /**
+     * a request to update the pro team is submitted
+     */
+    public static class FacebookConnectTapped extends ProTeamPageLog
+    {
+        private static final String EVENT_TYPE = "facebook_connect_tapped";
+
+        @SerializedName("num_preferred_pros")
+        private final int mNumPreferredPros;
+
+        public FacebookConnectTapped(int numPreferredPros)
+        {
+            super(EVENT_TYPE);
+            mNumPreferredPros = numPreferredPros;
+        }
+    }
+
     public abstract static class BlockProvider extends ProTeamPageLog
     {
         @SerializedName("provider_id")
@@ -266,7 +284,6 @@ public abstract class ProTeamPageLog extends EventLog
                 super(EVENT_TYPE, providerId, providerMatchPreference, providerTeamContext);
             }
         }
-
     }
 
 }

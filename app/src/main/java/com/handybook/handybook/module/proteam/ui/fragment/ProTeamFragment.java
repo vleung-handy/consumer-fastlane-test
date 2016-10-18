@@ -41,8 +41,7 @@ import butterknife.OnClick;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProTeamFragment#newInstance} factory method to
+ * A simple {@link Fragment} subclass. Use the {@link ProTeamFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class ProTeamFragment extends InjectedFragment implements
@@ -75,7 +74,7 @@ public class ProTeamFragment extends InjectedFragment implements
 
     public static ProTeamFragment newInstance()
     {
-       return new ProTeamFragment();
+        return new ProTeamFragment();
     }
 
     @Override
@@ -101,23 +100,23 @@ public class ProTeamFragment extends InjectedFragment implements
                 this
         );
         mViewPager.setAdapter(mTabAdapter);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout)
-                                           {
-                                               @Override
-                                               public void onPageSelected(final int position)
-                                               {
-                                                   super.onPageSelected(position);
+        mViewPager.addOnPageChangeListener(
+                new TabLayout.TabLayoutOnPageChangeListener(mTabLayout)
+                {
+                    @Override
+                    public void onPageSelected(final int position)
+                    {
+                        super.onPageSelected(position);
 
-                                                   //log when displayed service changed
-                                                   ProTeamProListFragment proTeamProListFragment = mTabAdapter.getItem(position);
-                                                   ProTeamCategoryType proTeamCategoryType =
-                                                           proTeamProListFragment.getProTeamCategoryType();
-                                                   bus.post(new LogEvent.AddLogEvent(
-                                                           new ProTeamPageLog.DisplayedServiceChanged(
-                                                                   proTeamCategoryType
-                                                           )));
-                                               }
-                                           }
+                        //log when displayed service changed
+                        ProTeamProListFragment proTeamProListFragment =
+                                mTabAdapter.getItem(position);
+                        ProTeamCategoryType proTeamCategoryType =
+                                proTeamProListFragment.getProTeamCategoryType();
+                        bus.post(new LogEvent.AddLogEvent(
+                                new ProTeamPageLog.DisplayedServiceChanged(proTeamCategoryType)));
+                    }
+                }
         );
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
@@ -136,9 +135,9 @@ public class ProTeamFragment extends InjectedFragment implements
     }
 
     @Override
-    public void onResume()
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
     {
-        super.onResume();
+        super.onViewCreated(view, savedInstanceState);
         requestProTeam();
     }
 
