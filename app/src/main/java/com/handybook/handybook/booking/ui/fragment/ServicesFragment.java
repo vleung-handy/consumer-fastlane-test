@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
 public final class ServicesFragment extends BookingFlowFragment
 {
     private static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
-    private static final int ANIMATION_DELAY = 100;
+    private static final int ANIMATION_DELAY_MS = 100;
 
     private Service mService;
 
@@ -415,7 +415,7 @@ public final class ServicesFragment extends BookingFlowFragment
         {
             View view = mList.getChildAt(i);
             view.animate()
-                .setStartDelay(i * ANIMATION_DELAY)
+                .setStartDelay(i * ANIMATION_DELAY_MS)
                 .setInterpolator(mInterpolator)
                 .alpha(1)
                 .scaleX(1)
