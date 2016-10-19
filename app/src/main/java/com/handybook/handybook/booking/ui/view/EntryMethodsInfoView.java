@@ -167,9 +167,9 @@ public final class EntryMethodsInfoView extends LinearLayout
     @Nullable
     public EntryMethodOption getSelectedEntryMethodOption()
     {
-        int selectedOptionIndex = mOptionsView.getCurrentIndex();
-        if (selectedOptionIndex < 0) { return null; }
-        return mEntryMethodOptions.get(selectedOptionIndex);
+        //return null if mOptionsView wasn't set up (ex. on error), or no option selected
+        if (mOptionsView == null || mOptionsView.getCurrentIndex() < 0) { return null; }
+        return mEntryMethodOptions.get(mOptionsView.getCurrentIndex());
     }
 
     public boolean validateFields()
