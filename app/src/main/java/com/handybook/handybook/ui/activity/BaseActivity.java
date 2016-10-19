@@ -38,7 +38,6 @@ import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.manager.AppseeManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -200,14 +199,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         }
     }
 
-    /**
-     *
-     * @return Returns the Configuration flags returned from the server for the app
-     */
-    public Configuration getConfiguration() {
-        return mConfigurationManager.getPersistentConfiguration();
-    }
-
     private void showRequiredUserModals()
     {
         final FragmentManager fm = getSupportFragmentManager();
@@ -270,9 +261,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             }
 
             @Override
-            public void onError(DataManager.DataManagerError error)
-            {
-            }
+            public void onError(DataManager.DataManagerError error) {}
         });
     }
 

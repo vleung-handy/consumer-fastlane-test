@@ -17,7 +17,7 @@ public final class ProfileActivity extends MenuDrawerActivity
     @Override
     protected final Fragment createFragment()
     {
-        if (getConfiguration() != null && getConfiguration().isNewAccountEnabled())
+        if (mConfigurationManager.getPersistentConfiguration().isNewAccountEnabled())
         {
             return AccountFragment.newInstance();
         }

@@ -29,7 +29,7 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
@@ -39,6 +39,8 @@ import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,6 +48,9 @@ import io.card.payment.CardIOActivity;
 
 public class UpdatePaymentFragment extends InjectedFragment
 {
+    @Inject
+    ConfigurationManager mConfigurationManager;
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.credit_card_text)
@@ -247,8 +252,7 @@ public class UpdatePaymentFragment extends InjectedFragment
         setupToolbar(mToolbar, getString(R.string.payment));
         //Check the configuration if this feature is enabled or not
         //If it's not display hamburger icon, otherwise back button
-        Configuration config = ((MenuDrawerActivity) getActivity()).getConfiguration();
-        if (config == null || !config.isNewAccountEnabled())
+        if (!mConfigurationManager.getPersistentConfiguration().isNewAccountEnabled())
         {
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);

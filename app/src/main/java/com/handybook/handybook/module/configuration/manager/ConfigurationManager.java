@@ -1,5 +1,6 @@
 package com.handybook.handybook.module.configuration.manager;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -116,7 +117,7 @@ public class ConfigurationManager
      *
      * @return
      */
-    @Nullable
+    @NonNull
     public Configuration getPersistentConfiguration()
     {
         Configuration rval = getCachedConfiguration();
@@ -129,6 +130,11 @@ public class ConfigurationManager
             {
                 rval = Configuration.fromJson(json);
             }
+        }
+
+        if (rval == null)
+        {
+            rval = new Configuration();
         }
 
         return rval;
