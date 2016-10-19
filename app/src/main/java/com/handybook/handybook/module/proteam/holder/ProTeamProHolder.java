@@ -27,8 +27,6 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
 {
     private ProTeamProViewModel mProTeamProViewModel;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
-    @Bind(R.id.pro_team_pro_card_pretext)
-    TextView mPretext;
     @Bind(R.id.pro_team_pro_card_pro_title)
     TextView mTitle;
     @Bind(R.id.pro_team_pro_card_pro_footer)
@@ -104,16 +102,6 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
             }
         }
         initTextColors();
-    }
-
-    public void showPretext()
-    {
-        mPretext.setVisibility(View.VISIBLE);
-    }
-
-    public void hidePretext()
-    {
-        mPretext.setVisibility(View.GONE);
     }
 
     @Nullable
