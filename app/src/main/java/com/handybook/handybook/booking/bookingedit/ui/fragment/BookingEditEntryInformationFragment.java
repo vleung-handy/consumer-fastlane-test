@@ -102,10 +102,9 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                     @Override
                     public void onSuccess(final EntryMethodsInfo response)
                     {
-                        removeUiBlockers();
                         mEntryMethodsInfoView.updateViewForModel(response, getContext());
-
                         onEntryMethodsViewUpdated(response);
+                        removeUiBlockers();
                     }
 
                     @Override
