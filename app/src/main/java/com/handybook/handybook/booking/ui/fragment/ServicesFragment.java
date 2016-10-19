@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -8,15 +10,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -24,6 +30,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.view.ServiceView;
+import com.handybook.handybook.library.util.AnimationUtil;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.handybook.handybook.ui.descriptor.ServiceCategoryDescriptor;
@@ -35,6 +42,7 @@ import butterknife.ButterKnife;
 public final class ServicesFragment extends BookingFlowFragment
 {
     private static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
+    private static final int ANIMATION_DELAY = 100;
 
     private Service mService;
 
@@ -54,6 +62,10 @@ public final class ServicesFragment extends BookingFlowFragment
     TextView mTitle;
     @Bind(R.id.subtitle)
     TextView mSubtitle;
+    @Bind(R.id.list_wrapper)
+    LinearLayout mListWrapper;
+
+    Interpolator mInterpolator;
 
     public static ServicesFragment newInstance(final Service service)
     {
@@ -80,6 +92,8 @@ public final class ServicesFragment extends BookingFlowFragment
         {
             bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageShownLog(-1)));
         }
+
+        mInterpolator = new LinearOutSlowInInterpolator();
     }
 
     @Override
@@ -144,18 +158,38 @@ public final class ServicesFragment extends BookingFlowFragment
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             mHeader.setBackgroundResource(descriptor.getBackground());
-            new Handler().postDelayed(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    forceRippleAnimation();
-                }
-            }, 200);
         }
         else
         {
             mHeader.setBackgroundColor(ContextCompat.getColor(getContext(), descriptor.getColor()));
+
+            //just show everything, since there is no shared element transition on the activity level
+            revealHeader();
+        }
+    }
+
+    public void revealHeader()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            AnimationUtil.revealView(
+                    mHeader,
+                    mIcon,
+                    new AccelerateInterpolator(),
+                    getResources().getInteger(R.integer.anim_duration_short),
+                    new AnimatorListenerAdapter()
+                    {
+                        @Override
+                        public void onAnimationEnd(final Animator animation)
+                        {
+                            animateListItems();
+                        }
+                    }
+            );
+        }
+        else
+        {
+            mHeader.setVisibility(View.VISIBLE);
         }
     }
 
@@ -324,9 +358,22 @@ public final class ServicesFragment extends BookingFlowFragment
     {
         super.onActivityCreated(savedInstanceState);
         ServiceView lastViewAdded = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            mListWrapper.setAlpha(0);
+        }
         for (final Service service : mService.getServices())
         {
             ServiceView serviceView = new ServiceView(getActivity());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                //if this is lollipop or higher, we'll set it up for some fancy animations
+                serviceView.setAlpha(0);
+                serviceView.setScaleX(0);
+                serviceView.setScaleY(0);
+            }
             String serviceMachineName = service.getUniq().toUpperCase();
             if (ServiceDescriptor.hasValueOf(serviceMachineName))
             {
@@ -357,4 +404,22 @@ public final class ServicesFragment extends BookingFlowFragment
         }
     }
 
+    private void animateListItems()
+    {
+        mListWrapper
+                .animate()
+                .alpha(1)
+                .start();
+
+        for (int i = 0; i < mList.getChildCount(); i++)
+        {
+            View view = mList.getChildAt(i);
+            view.animate()
+                .setStartDelay(i * ANIMATION_DELAY)
+                .setInterpolator(mInterpolator)
+                .alpha(1)
+                .scaleX(1)
+                .scaleY(1);
+        }
+    }
 }
