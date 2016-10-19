@@ -430,7 +430,8 @@
     <string name="account.update_information">Update Information</string>
     <string name="account.select_plan">Select a Plan</string>
     <string name="account.update_password">Update Password</string>
-    <string name="account.update_plan_address">Update booking plan address</string>
+    <string name="account.update_plan_address_success">Your booking address was updated.</string>
+    <string name="account.update_plan_address_error">Address updated failed. Please try again.</string>
 
     <!-- Nav Drawer -->
     <string name="nav.get_free_cleanings">Get free cleanings!</string>
