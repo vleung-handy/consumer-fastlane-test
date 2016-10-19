@@ -367,10 +367,8 @@
     <string name="pro_team_remove_dialog_title">Remove %1$s?</string>
 
     <string name="cd_pro_team_toolbar_questionmark">Open Pro Team help article icon</string>
-    <string name="pro_team_pro_card_pretext_preferred">Want to book your favorite pros? We\'ll send them your request first.</string>
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
-    <string name="pro_team_subject_to_change">Your Pro Team is subject to change.</string>
     <string name="learn_more">Learn more</string>
     <string name="fragment_referral_copy_invite">Copy:</string>
     <string name="fragment_referral_sms_invite">Text Invite</string>

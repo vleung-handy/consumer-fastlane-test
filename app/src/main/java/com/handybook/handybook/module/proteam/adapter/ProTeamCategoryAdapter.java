@@ -57,15 +57,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
     @Override
     public void onBindViewHolder(final ProTeamProHolder holder, int position)
     {
-        holder.bindProTeamProViewModel(getItem(position));
-        if (position == 0)
-        {
-            holder.showPretext();
-        }
-        else
-        {
-            holder.hidePretext();
-        }
+        holder.bindProTeamProViewModel(mProTeamProViewModels.get(position));
     }
 
     @Override
@@ -106,10 +98,4 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
             }
         }
     }
-
-    private ProTeamProViewModel getItem(final int position)
-    {
-        return mProTeamProViewModels.get(position);
-    }
-
 }
