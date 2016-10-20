@@ -137,6 +137,8 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     public void shouldCompleteBookingAfterGettingStripeToken() throws Exception
     {
         when(mMockReceiveCreateTokenSuccessEvent.getToken().getId()).thenReturn("some_id");
+        when(mMockTransaction.getZipCode()).thenReturn("10003");
+        
         mFragment.onReceiveCreateTokenSuccess(mMockReceiveCreateTokenSuccessEvent);
 
         verify(mMockTransaction).setStripeToken(eq("some_id"));
