@@ -28,6 +28,13 @@ public class Configuration implements Serializable
 
     @SerializedName("upcoming_and_past_bookings_enabled")
     private boolean mUpcomingAndPastBookingsEnabled;
+    @SerializedName("appsee_analytics_enabled")
+    private boolean mAppseeAnalyticsEnabled;
+
+    public boolean isAppseeAnalyticsEnabled()
+    {
+        return mAppseeAnalyticsEnabled;
+    }
 
     public boolean isLockboxEntryMethodEnabled()
     {

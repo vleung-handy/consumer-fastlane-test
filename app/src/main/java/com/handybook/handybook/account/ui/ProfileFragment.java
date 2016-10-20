@@ -92,7 +92,6 @@ public final class ProfileFragment extends InjectedFragment
                 .inflate(R.layout.fragment_profile,container, false);
 
         ButterKnife.bind(this, view);
-
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
         setupToolbar(mToolbar, getString(R.string.account));
         ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);

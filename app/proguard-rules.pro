@@ -16,6 +16,13 @@
 #   public *;
 #}
 
+#Appsee
+-keep class com.appsee.** { *; }
+-dontwarn com.appsee.**
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
+-keepattributes SourceFile,LineNumberTable
+
 #card.io
 -keep class io.card.**
 -keepclassmembers class io.card.** {
@@ -109,6 +116,9 @@
 
 #Crashlytics
 -renamesourcefileattribute SourceFile
+#^Appsee wants the above line removed,
+#but keeping it doesn't seem to affect the functionality we care about
+#and allows us to continuing obfuscating our source file names which is a better security practice
 -keepattributes SourceFile,LineNumberTable
 
 #GSON

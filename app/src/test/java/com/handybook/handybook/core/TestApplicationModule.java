@@ -78,6 +78,7 @@ import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.logger.handylogger.EventLogManagerTest;
 import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.manager.AppseeManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.manager.FileManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
@@ -208,6 +209,13 @@ public class TestApplicationModule
     final Properties providerProperties()
     {
         return mock(Properties.class);
+    }
+
+    @Provides
+    @Singleton
+    final AppseeManager provideAppseeManager()
+    {
+        return mock(AppseeManager.class);
     }
 
     @Provides
