@@ -99,8 +99,10 @@ public final class LoginFragment extends BookingFlowFragment
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
     public static LoginFragment newInstance(
-            final boolean findUser, final String bookingUserName,
-            final String bookingUserEmail, boolean fromBookingFunnel
+            final boolean findUser,
+            final String bookingUserName,
+            final String bookingUserEmail,
+            boolean fromBookingFunnel
     )
     {
         final LoginFragment fragment = new LoginFragment();
@@ -144,11 +146,13 @@ public final class LoginFragment extends BookingFlowFragment
             }
         }
 
-        if(mIsFromBookingFunnel) {
+        if (mIsFromBookingFunnel)
+        {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserContactShownLog()));
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_EMAIL)));
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_FACEBOOK)));
-        } else
+        }
+        else
         {
             bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_EMAIL)));
@@ -163,7 +167,7 @@ public final class LoginFragment extends BookingFlowFragment
     )
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_login, container, false);
+                                       .inflate(R.layout.fragment_login, container, false);
 
         ButterKnife.bind(this, view);
 
@@ -291,12 +295,12 @@ public final class LoginFragment extends BookingFlowFragment
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
         {
             mLoginScrollView.getViewTreeObserver()
-                    .removeOnGlobalLayoutListener(mAutoScrollListener);
+                            .removeOnGlobalLayoutListener(mAutoScrollListener);
         }
         else
         {
             mLoginScrollView.getViewTreeObserver()
-                    .removeGlobalOnLayoutListener(mAutoScrollListener);
+                            .removeGlobalOnLayoutListener(mAutoScrollListener);
         }
         super.onDestroyView();
     }
@@ -366,13 +370,15 @@ public final class LoginFragment extends BookingFlowFragment
                 progressDialog.show();
 
                 final String email = mEmailText.getEmail();
-                if(mIsFromBookingFunnel)
+                if (mIsFromBookingFunnel)
                 {
                     bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginSubmittedLog(
                             email,
                             UserLoginLog.AUTH_TYPE_EMAIL
                     )));
-                }else {
+                }
+                else
+                {
                     bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(
                             email,
                             UserLoginLog.AUTH_TYPE_EMAIL
@@ -391,7 +397,10 @@ public final class LoginFragment extends BookingFlowFragment
 
                             if (userExistsResponse.exists())
                             {
-                                final Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                final Intent intent = new Intent(
+                                        getActivity(),
+                                        LoginActivity.class
+                                );
                                 intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, email);
                                 intent.putExtra(
                                         LoginActivity.EXTRA_BOOKING_USER_NAME,
@@ -443,7 +452,8 @@ public final class LoginFragment extends BookingFlowFragment
                 disableInputs();
                 progressDialog.show();
 
-                dataManager.requestPasswordReset(mEmailText.getText().toString(),
+                dataManager.requestPasswordReset(
+                        mEmailText.getText().toString(),
                         new DataManager.Callback<String>()
                         {
                             @Override
@@ -465,7 +475,8 @@ public final class LoginFragment extends BookingFlowFragment
                                 enableInputs();
                                 dataManagerErrorHandler.handleError(getActivity(), error);
                             }
-                        });
+                        }
+                );
             }
         }
     };
@@ -491,11 +502,15 @@ public final class LoginFragment extends BookingFlowFragment
         final UserDataManager.AuthType authType = event.getAuthType();
         String authTypeForLogger = getAuthTypeForLogger(authType);
 
-        if(mIsFromBookingFunnel)
+        if (mIsFromBookingFunnel)
         {
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginSuccessLog(authTypeForLogger)));
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(authTypeForLogger)));
-        } else {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginSuccessLog(
+                    authTypeForLogger)));
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(
+                    authTypeForLogger)));
+        }
+        else
+        {
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSuccessLog(authTypeForLogger)));
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(authTypeForLogger)));
         }
@@ -517,7 +532,8 @@ public final class LoginFragment extends BookingFlowFragment
         if (mDestinationClass != null)
         {
             activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras(),
-                    null);
+                                        null
+            );
         }
         else
         {
@@ -551,17 +567,20 @@ public final class LoginFragment extends BookingFlowFragment
     )
     {
         String authTypeForLogger = getAuthTypeForLogger(authType);
-        if(mIsFromBookingFunnel)
+        if (mIsFromBookingFunnel)
         {
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginErrorLog(authTypeForLogger,
-                                                                                 error == null ? null : error
-                                                                                         .getMessage()
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginErrorLog(
+                    authTypeForLogger,
+                    error == null ? null : error
+                            .getMessage()
             )));
-        } else
+        }
+        else
         {
-            bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginErrorLog(authTypeForLogger,
-                                                                                 error == null ? null : error
-                                                                                         .getMessage()
+            bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginErrorLog(
+                    authTypeForLogger,
+                    error == null ? null : error
+                            .getMessage()
             )));
         }
         progressDialog.dismiss();

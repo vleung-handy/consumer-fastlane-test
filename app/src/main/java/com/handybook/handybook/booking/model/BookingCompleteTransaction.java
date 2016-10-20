@@ -12,17 +12,22 @@ import java.lang.reflect.Type;
 
 public class BookingCompleteTransaction
 {
-    @SerializedName("id")
+    public static final String ENTRY_METHODS_INFO = "entry_methods_info";
+    public static final String CHARGE = "charge";
+    public static final String ID = "id";
+    public static final String USER_INFO = "user_info";
+    public static final String FIRST_EVER_BOOKING = "first_ever_booking";
+    @SerializedName(ID)
     private int mId;
-    @SerializedName("charge")
+    @SerializedName(CHARGE)
     private int mCharge;
-    @SerializedName("first_ever_booking")
+    @SerializedName(FIRST_EVER_BOOKING)
     private boolean firstEverBooking;
-    @SerializedName("user_info")
+    @SerializedName(USER_INFO)
     private User mUser;
     @SerializedName("instructions")
     private Instructions mInstructions;
-    @SerializedName("entry_methods_info")
+    @SerializedName(ENTRY_METHODS_INFO)
     private EntryMethodsInfo mEntryMethodsInfo;
 
     public EntryMethodsInfo getEntryMethodsInfo()
@@ -88,11 +93,11 @@ public class BookingCompleteTransaction
                                      final JsonSerializationContext context)
         {
             final JsonObject jsonObj = new JsonObject();
-            jsonObj.add("id", context.serialize(value.getId()));
-            jsonObj.add("user_info", context.serialize(value.getUser()));
-            jsonObj.add("entry_methods_info", context.serialize(value.getEntryMethodsInfo()));
-            jsonObj.add("charge", context.serialize(value.getCharge()));
-            jsonObj.add("first_ever_booking", context.serialize(value.isFirstEverBooking()));
+            jsonObj.add(ID, context.serialize(value.getId()));
+            jsonObj.add(USER_INFO, context.serialize(value.getUser()));
+            jsonObj.add(ENTRY_METHODS_INFO, context.serialize(value.getEntryMethodsInfo()));
+            jsonObj.add(CHARGE, context.serialize(value.getCharge()));
+            jsonObj.add(FIRST_EVER_BOOKING, context.serialize(value.isFirstEverBooking()));
             return jsonObj;
         }
     }
@@ -102,7 +107,7 @@ public class BookingCompleteTransaction
     {
         @SerializedName("auth_token")
         private String mAuthToken;
-        @SerializedName("id")
+        @SerializedName(ID)
         private String mId;
 
         public String getAuthToken()
