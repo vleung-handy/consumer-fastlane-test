@@ -118,7 +118,7 @@ public class EventLogManager
             Crashlytics.log(logString);
 
             //Mixpanel tracking info in NOR-1016
-            addMixPanelProperties(new JSONObject(GSON.toJson(eventLog)), eventLog);
+            addMixPanelProperties(eventLogJson, eventLog);
             mMixpanel.track(eventLog.getEventType(), eventLogJson);
         }
         catch (JsonParseException e)
