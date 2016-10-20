@@ -16,7 +16,7 @@ public class EventLogBundle
     @SerializedName("events")
     private List<Event> mEvents;
     @SerializedName("super_properties")
-    private EventSuperProperties mEventSuperProperties;
+    private EventSuperPropertiesBase mEventSuperProperties;
 
 
     /**
