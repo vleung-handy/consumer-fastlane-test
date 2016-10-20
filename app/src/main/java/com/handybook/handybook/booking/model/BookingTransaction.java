@@ -109,7 +109,7 @@ public class BookingTransaction extends Observable {
         triggerObservers();
     }
 
-    public final String getZipCode() {
+    public String getZipCode() {
         return mZipCode;
     }
 
