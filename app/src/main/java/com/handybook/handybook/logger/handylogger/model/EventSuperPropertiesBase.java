@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.core.BaseApplication;
 
-public class EventSuperProperties
+public class EventSuperPropertiesBase
 {
     private static final String ANDROID = "android";
 
@@ -22,10 +22,8 @@ public class EventSuperProperties
     private String mDeviceId;
     @SerializedName("device_model")
     private String mDeviceModel;
-    @SerializedName("user_id")
-    private int mUserid;
 
-    public EventSuperProperties(final int userId)
+    public EventSuperPropertiesBase()
     {
         mProduct = "consumer";
         mPlatform = ANDROID;
@@ -33,6 +31,5 @@ public class EventSuperProperties
         mAppVersion = BuildConfig.VERSION_NAME;
         mDeviceId = BaseApplication.getDeviceId();
         mDeviceModel = BaseApplication.getDeviceModel();
-        mUserid = userId;
     }
 }
