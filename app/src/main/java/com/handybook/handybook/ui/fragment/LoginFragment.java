@@ -36,6 +36,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.handybook.handybook.manager.UserDataManager;
@@ -50,8 +51,11 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.google.common.net.HttpHeaders.FROM;
+
 public final class LoginFragment extends BookingFlowFragment
 {
+    public static final String EXTRA_FROM_BOOKING_FUNNEL = "com.handy.handy.EXTRA_FROM_BOOKING_FUNNEL";
     static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
     static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
     static final String EXTRA_BOOKING_EMAIL = "com.handy.handy.EXTRA_BOOKING_EMAIL";
@@ -62,6 +66,7 @@ public final class LoginFragment extends BookingFlowFragment
     //private UiLifecycleHelper mUiHelper;
     private boolean mHandleFBSessionUpdates = false;
     private boolean mFindUser;
+    private boolean mIsFromBookingFunnel;
     private String mBookingUserName, mBookingUserEmail;
     private BookingRequest mBookingRequest;
 
@@ -95,12 +100,13 @@ public final class LoginFragment extends BookingFlowFragment
 
     public static LoginFragment newInstance(
             final boolean findUser, final String bookingUserName,
-            final String bookingUserEmail
+            final String bookingUserEmail, boolean fromBookingFunnel
     )
     {
         final LoginFragment fragment = new LoginFragment();
         final Bundle args = new Bundle();
 
+        args.putBoolean(EXTRA_FROM_BOOKING_FUNNEL, fromBookingFunnel);
         args.putBoolean(EXTRA_FIND_USER, findUser);
         args.putString(EXTRA_BOOKING_USER_NAME, bookingUserName);
         args.putString(EXTRA_BOOKING_EMAIL, bookingUserEmail);
@@ -123,6 +129,7 @@ public final class LoginFragment extends BookingFlowFragment
         mFindUser = getArguments().getBoolean(EXTRA_FIND_USER);
         mBookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
         mBookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
+        mIsFromBookingFunnel = getArguments().getBoolean(EXTRA_FROM_BOOKING_FUNNEL);
 
         String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
         if (!TextUtils.isEmpty(mDestinationActivity))
@@ -137,9 +144,16 @@ public final class LoginFragment extends BookingFlowFragment
             }
         }
 
-        bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_EMAIL)));
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_FACEBOOK)));
+        if(mIsFromBookingFunnel) {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserContactShownLog()));
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_EMAIL)));
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_FACEBOOK)));
+        } else
+        {
+            bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
+            bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_EMAIL)));
+            bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_FACEBOOK)));
+        }
     }
 
     @Override
@@ -352,7 +366,18 @@ public final class LoginFragment extends BookingFlowFragment
                 progressDialog.show();
 
                 final String email = mEmailText.getEmail();
-                bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(email, UserLoginLog.AUTH_TYPE_EMAIL)));
+                if(mIsFromBookingFunnel)
+                {
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginSubmittedLog(
+                            email,
+                            UserLoginLog.AUTH_TYPE_EMAIL
+                    )));
+                }else {
+                    bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(
+                            email,
+                            UserLoginLog.AUTH_TYPE_EMAIL
+                    )));
+                }
 
                 if (mFindUser)
                 {
@@ -466,8 +491,14 @@ public final class LoginFragment extends BookingFlowFragment
         final UserDataManager.AuthType authType = event.getAuthType();
         String authTypeForLogger = getAuthTypeForLogger(authType);
 
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSuccessLog(authTypeForLogger)));
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(authTypeForLogger)));
+        if(mIsFromBookingFunnel)
+        {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginSuccessLog(authTypeForLogger)));
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(authTypeForLogger)));
+        } else {
+            bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSuccessLog(authTypeForLogger)));
+            bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(authTypeForLogger)));
+        }
 
         configurationManager.invalidateCache();
 
@@ -520,7 +551,19 @@ public final class LoginFragment extends BookingFlowFragment
     )
     {
         String authTypeForLogger = getAuthTypeForLogger(authType);
-        bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginErrorLog(authTypeForLogger, error == null ? null : error.getMessage())));
+        if(mIsFromBookingFunnel)
+        {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginErrorLog(authTypeForLogger,
+                                                                                 error == null ? null : error
+                                                                                         .getMessage()
+            )));
+        } else
+        {
+            bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginErrorLog(authTypeForLogger,
+                                                                                 error == null ? null : error
+                                                                                         .getMessage()
+            )));
+        }
         progressDialog.dismiss();
         enableInputs();
 

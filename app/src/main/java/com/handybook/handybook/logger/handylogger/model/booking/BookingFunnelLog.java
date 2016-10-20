@@ -1,5 +1,6 @@
 package com.handybook.handybook.logger.handylogger.model.booking;
 
+import android.support.annotation.StringDef;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
@@ -8,7 +9,10 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
+import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +20,31 @@ import java.util.List;
 
 public class BookingFunnelLog extends EventLog
 {
+    // For user login logging
+    public static final String AUTH_TYPE_FACEBOOK = "facebook";
+    public static final String AUTH_TYPE_EMAIL = "email";
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+            AUTH_TYPE_EMAIL,
+            AUTH_TYPE_FACEBOOK
+    })
+    public @interface AuthType
+    {
+    }
+
     private static final String EVENT_CONTEXT = "booking_funnel";
+    @SerializedName("auth_type")
+    private String mAuthType;
 
     protected BookingFunnelLog(final String eventType)
     {
         super(eventType, EVENT_CONTEXT);
+    }
+
+    protected BookingFunnelLog(final String eventType, @UserLoginLog.AuthType final String authType )
+    {
+        super(eventType, EVENT_CONTEXT);
+        mAuthType = authType;
     }
 
     public static class BookingZipShownLog extends BookingFunnelLog
@@ -547,7 +571,8 @@ public class BookingFunnelLog extends EventLog
             mCharge = completeTransaction.getCharge();
             mExtras = transaction.getExtraCleaningText();
             mIsCleaningExtrasTried = !TextUtils.isEmpty(mExtras);
-            mIsDynamicPriceShown = bookingQuote.getPeakPriceTable() != null && bookingQuote.getPeakPriceTable().size() > 0;
+            mIsDynamicPriceShown = bookingQuote.getPeakPriceTable() != null && bookingQuote.getPeakPriceTable()
+                                                                                           .size() > 0;
             mExtraHours = extraHours;
             mIsFirstEverBooking = completeTransaction.isFirstEverBooking();
             mFrequency = getFrequencyName(transaction);
@@ -713,6 +738,7 @@ public class BookingFunnelLog extends EventLog
 
     // Referrals
 
+
     public abstract static class ReferralBookingFunnelLog extends BookingFunnelLog
     {
         @SerializedName("coupon_code")
@@ -744,6 +770,69 @@ public class BookingFunnelLog extends EventLog
         public ReferralBookingFunnelCodeAppliedLog(final String couponCode)
         {
             super(EVENT_TYPE, couponCode);
+        }
+    }
+
+
+    //*************************** Dupe of UserLogingLog and UserContactLog ************************
+    //NOTE: Wasn't enough time to do this right, so it's currently duplicates
+    public static class UserLoginShownLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "shown";
+
+        public UserLoginShownLog(@AuthType String authType)
+        {
+            super(EVENT_TYPE, authType);
+        }
+    }
+
+
+    public static class UserLoginSubmittedLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "submitted";
+
+        @SerializedName("email")
+        private String mEmail;
+
+        public UserLoginSubmittedLog(final String email, @AuthType String loginType)
+        {
+            super(EVENT_TYPE, loginType);
+            mEmail = email;
+        }
+    }
+
+    public static class UserLoginSuccessLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "success";
+
+        public UserLoginSuccessLog(@AuthType String authType)
+        {
+            super(EVENT_TYPE, authType);
+        }
+    }
+
+    public static class UserLoginErrorLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "error";
+
+        @SerializedName("error_message")
+        private final String mErrorMessage;
+
+        public UserLoginErrorLog(@AuthType String authType, String errorMessage)
+        {
+            super(EVENT_TYPE, authType);
+            mErrorMessage = errorMessage;
+        }
+    }
+
+
+    public static class UserContactShownLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "shown";
+
+        public UserContactShownLog()
+        {
+            super(EVENT_TYPE);
         }
     }
 }
