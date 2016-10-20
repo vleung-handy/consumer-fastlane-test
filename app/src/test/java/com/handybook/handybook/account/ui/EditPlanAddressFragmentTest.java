@@ -54,7 +54,7 @@ public class EditPlanAddressFragmentTest extends RobolectricGradleTestWrapper
         mFragment.mZipCodeText.setText(zipCode);
         mFragment.getView().findViewById(R.id.plan_address_update_button).performClick();
 
-        String successMessage = mFragment.getString(R.string.account_update_plan_address);
+        String successMessage = mFragment.getString(R.string.account_update_plan_address_success);
         assertEquals(successMessage, ShadowToast.getTextOfLatestToast());
         assertEquals(address1, mPlan.getAddress().getAddress1());
         assertEquals(address2, mPlan.getAddress().getAddress2());

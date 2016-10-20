@@ -136,14 +136,14 @@ public final class EditPlanAddressFragment extends InjectedFragment
     {
         removeUiBlockers();
         mPlan.setAddress(planWrapper.getRecurringBooking().getAddress());
-        showToast(getString(R.string.account_update_plan_address));
+        showToast(getString(R.string.account_update_plan_address_success));
         getFragmentManager().popBackStack();
     }
 
     private void onReceiveEditBookingAddressError(DataManager.DataManagerError error)
     {
         removeUiBlockers();
-        dataManagerErrorHandler.handleError(getActivity(), error);
+        showToast(getString(R.string.account_update_plan_address_error));
     }
 
 }
