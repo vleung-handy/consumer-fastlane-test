@@ -14,6 +14,10 @@ public class BookingCompleteTransaction
 {
     @SerializedName("id")
     private int mId;
+    @SerializedName("charge")
+    private int mCharge;
+    @SerializedName("first_ever_booking")
+    private boolean firstEverBooking;
     @SerializedName("user_info")
     private User mUser;
     @SerializedName("instructions")
@@ -34,6 +38,16 @@ public class BookingCompleteTransaction
     public void setId(final int id)
     {
         mId = id;
+    }
+
+    public int getCharge()
+    {
+        return mCharge;
+    }
+
+    public boolean isFirstEverBooking()
+    {
+        return firstEverBooking;
     }
 
     public User getUser()
@@ -77,6 +91,8 @@ public class BookingCompleteTransaction
             jsonObj.add("id", context.serialize(value.getId()));
             jsonObj.add("user_info", context.serialize(value.getUser()));
             jsonObj.add("entry_methods_info", context.serialize(value.getEntryMethodsInfo()));
+            jsonObj.add("charge", context.serialize(value.getCharge()));
+            jsonObj.add("first_ever_booking", context.serialize(value.isFirstEverBooking()));
             return jsonObj;
         }
     }

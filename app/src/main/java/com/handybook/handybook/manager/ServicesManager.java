@@ -23,6 +23,18 @@ public class ServicesManager
         mBus.register(this);
     }
 
+    public Service getServiceNameByServiceId(int serviceId) {
+        if(mDataManager.getCachedServices() == null)
+            return null;
+
+        for(Service service : mDataManager.getCachedServices()) {
+            if(service.getId() == serviceId)
+                return service;
+        }
+
+        return null;
+    }
+
     @Subscribe
     public void onRequestCachedServices(final BookingEvent.RequestCachedServices event)
     {

@@ -55,7 +55,7 @@ public class BookingTransaction extends Observable {
         triggerObservers();
     }
 
-    final int getServiceId() {
+    public final int getServiceId() {
         return mServiceId;
     }
 
@@ -109,7 +109,7 @@ public class BookingTransaction extends Observable {
         triggerObservers();
     }
 
-    final String getZipCode() {
+    public final String getZipCode() {
         return mZipCode;
     }
 
@@ -118,7 +118,7 @@ public class BookingTransaction extends Observable {
         triggerObservers();
     }
 
-    final String getEmail() {
+    public final String getEmail() {
         return mEmail;
     }
 

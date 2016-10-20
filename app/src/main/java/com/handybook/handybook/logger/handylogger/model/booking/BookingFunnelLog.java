@@ -1,6 +1,12 @@
 package com.handybook.handybook.logger.handylogger.model.booking;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.BookingCompleteTransaction;
+import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import java.util.Date;
@@ -100,6 +106,7 @@ public class BookingFunnelLog extends EventLog
             }
         }
     }
+
 
     public static class BookingZipSubmittedLog extends BookingFunnelLog
     {
@@ -487,6 +494,84 @@ public class BookingFunnelLog extends EventLog
         {
             super(EVENT_TYPE);
             mBookingId = bookingId;
+        }
+    }
+
+
+    public static class BookingRequestMadeLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "booking_made";
+
+        @SerializedName("booking_email")
+        private String mBookingEmail;
+        @SerializedName("booking_id")
+        private int mBookingId;
+        @SerializedName("charge")
+        private int mCharge;
+        @SerializedName("cleaning_extras_tried")
+        private boolean mIsCleaningExtrasTried;
+        @SerializedName("dynamic_price_shown")
+        private boolean mIsDynamicPriceShown;
+        @SerializedName("extra_hours")
+        private float mExtraHours;
+        @SerializedName("extras")
+        private String mExtras;
+        @SerializedName("first_ever_booking")
+        private boolean mIsFirstEverBooking;
+        @SerializedName("frequency")
+        private String mFrequency;
+        @SerializedName("marketing_source")
+        private String mMarketingSource;
+        @SerializedName("price_per_hour")
+        private float mPricePerHour;
+        @SerializedName("repeat_freq")
+        private int mRepeatFreq;
+        @SerializedName("service_type")
+        private String mServiceType;
+        @SerializedName("zip")
+        private int mZip;
+        @SerializedName("coupon_code")
+        private String mCouponCode;
+
+        public BookingRequestMadeLog(
+                final BookingQuote bookingQuote,
+                final BookingTransaction transaction,
+                final BookingCompleteTransaction completeTransaction,
+                final float extraHours,
+                final Service service
+        )
+        {
+            super(EVENT_TYPE);
+            mBookingEmail = transaction.getEmail();
+            mBookingId = transaction.getBookingId();
+            mCharge = completeTransaction.getCharge();
+            mExtras = transaction.getExtraCleaningText();
+            mIsCleaningExtrasTried = !TextUtils.isEmpty(mExtras);
+            mIsDynamicPriceShown = bookingQuote.getPeakPriceTable() != null && bookingQuote.getPeakPriceTable().size() > 0;
+            mExtraHours = extraHours;
+            mIsFirstEverBooking = completeTransaction.isFirstEverBooking();
+            mFrequency = getFrequencyName(transaction);
+            mMarketingSource = transaction.getReferrerToken();
+            mPricePerHour = bookingQuote.getHourlyAmount();
+            mRepeatFreq = transaction.getRecurringFrequency();
+            mServiceType = service == null ? null : service.getName();
+            mZip = Integer.parseInt(transaction.getZipCode());
+            mCouponCode = transaction.promoApplied();
+        }
+
+        private String getFrequencyName(BookingTransaction transaction)
+        {
+            switch (transaction.getRecurringFrequency())
+            {
+                case 4:
+                    return "monthly";
+                case 2:
+                    return "biweekly";
+                case 1:
+                    return "weekly";
+                default:
+                    return "once";
+            }
         }
     }
 

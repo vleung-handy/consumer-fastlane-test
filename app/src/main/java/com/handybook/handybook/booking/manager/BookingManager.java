@@ -10,6 +10,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
@@ -562,6 +563,31 @@ public class BookingManager implements Observer
                     mFinalizeBookingRequestPayload.toJson()
             );
         }
+    }
+
+    /**
+     *
+     * @param transaction
+     * @return Will return the extra hours based off the bookingtransaction and the corresponding bookingQuote. If no extra hours will return 0
+     */
+    public float getExtraHours(BookingTransaction transaction) {
+        if(transaction == null || mBookingQuote == null || TextUtils.isEmpty(transaction.getExtraCleaningText()) || mBookingQuote.getBookingOption() == null)
+            return 0;
+
+        float extraHours = 0;
+        String bookingExtras = transaction.getExtraCleaningText();
+        BookingOption bookingOption = mBookingQuote.getBookingOption();
+        String[] options = bookingOption.getOptions();
+        float[] optionsHours = bookingOption.getHoursInfo();
+
+        for(int i=0; i< options.length; i++) {
+            String option = options[i];
+            if(bookingExtras.contains(option)) {
+                extraHours += optionsHours[i];
+            }
+        }
+
+        return extraHours;
     }
 
     public void setPromoTabCoupon(final String code)
