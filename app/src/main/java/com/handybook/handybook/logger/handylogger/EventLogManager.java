@@ -24,6 +24,8 @@ import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.model.Event;
 import com.handybook.handybook.logger.handylogger.model.EventLogBundle;
 import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
+import com.handybook.handybook.logger.handylogger.model.EventSuperProperties;
+import com.handybook.handybook.logger.handylogger.model.EventSuperPropertiesBase;
 import com.handybook.handybook.logger.handylogger.model.Session;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.manager.FileManager;
@@ -58,10 +60,11 @@ public class EventLogManager
     private final DataManager mDataManager;
     private final FileManager mFileManager;
     private final DefaultPreferencesManager mPrefsManager;
-    private final MixpanelAPI mMixpanel;
+    private MixpanelAPI mMixpanel;
     private Session mSession;
     //Used just for mixed panel
     private UserManager mUserManager;
+    private boolean mIsUserLoggedIn; // This is used for updating mixpanel super property
 
     private int mSendingLogsCount;
     private Timer mTimer;
@@ -84,10 +87,7 @@ public class EventLogManager
         sEventLogBundles = new ArrayList<>();
         //Send logs on initialization
         sendLogsOnInitialization();
-
-        String mixPanelProperty = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ? "mixpanel_api_key" : "mixpanel_api_key_internal";
-        String mixpanelApiKey = PropertiesReader.getProperties(BaseApplication.getContext(), "config.properties").getProperty(mixPanelProperty);
-        mMixpanel = MixpanelAPI.getInstance(BaseApplication.getContext(), mixpanelApiKey);
+        initMixPanel();
 
         //Session
         mSession = Session.getInstance(mPrefsManager);
@@ -118,7 +118,7 @@ public class EventLogManager
             Crashlytics.log(logString);
 
             //Mixpanel tracking info in NOR-1016
-            addMixPanelProperties(eventLogJson, eventLog);
+            addMixPanelProperties(new JSONObject(GSON.toJson(eventLog)), eventLog);
             mMixpanel.track(eventLog.getEventType(), eventLogJson);
         }
         catch (JsonParseException e)
@@ -205,6 +205,7 @@ public class EventLogManager
         }
         return DEFAULT_USER_ID;
     }
+
     //************************************* handle all saving/sending of logs **********************
     private void setUploadTimer()
     {
@@ -297,15 +298,17 @@ public class EventLogManager
             String eventBundleId = eventLogBundleJson.get(EventLogBundle.KEY_EVENT_BUNDLE_ID)
                                                      .getAsString();
             eventBundleIds.add(eventBundleId);
+
             boolean fileSaved = mFileManager.saveLogFile(
                     eventBundleId,
                     eventLogBundleJson.toString()
             );
 
             // If the file didn't save then we log an exception
-            if(!fileSaved)
+            if (!fileSaved)
             {
-                Crashlytics.logException(new Exception("Failed to save log to file system: " + eventLogBundleJson.toString()));
+                Crashlytics.logException(new Exception("Failed to save log to file system: " + eventLogBundleJson
+                        .toString()));
             }
         }
 
@@ -324,9 +327,11 @@ public class EventLogManager
         try
         {
             File[] files = mFileManager.getLogFileList();
-            if(files == null) {
+            if (files == null)
+            {
                 //Log exception
-                Crashlytics.logException(new Exception("Log Files list returns null. Should not happen"));
+                Crashlytics.logException(new Exception(
+                        "Log Files list returns null. Should not happen"));
                 //Just return. next log event will trigger timer
                 return;
             }
@@ -397,8 +402,64 @@ public class EventLogManager
         }
     }
 
+    private void initMixPanel()
+    {
+        //Set up mix panel
+        String mixPanelProperty = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ? "mixpanel_api_key" : "mixpanel_api_key_internal";
+        String mixpanelApiKey = PropertiesReader.getProperties(
+                BaseApplication.getContext(),
+                "config.properties"
+        ).getProperty(mixPanelProperty);
+
+        mMixpanel = MixpanelAPI.getInstance(BaseApplication.getContext(), mixpanelApiKey);
+
+        //Set up super properties for mix panel
+        JSONObject superProperties = null;
+        try
+        {
+            superProperties = new JSONObject(GSON.toJson(new EventSuperPropertiesBase()));
+        }
+        catch (JSONException e)
+        {
+            Crashlytics.logException(e);
+        }
+
+        if (mUserManager.isUserLoggedIn())
+        {
+            mIsUserLoggedIn = true;
+            //Only set this on initialization. Setting it after initialization will break mixpanel
+            mMixpanel.identify(String.valueOf(getUserId()));
+        }
+
+        if (superProperties != null) { mMixpanel.registerSuperProperties(superProperties); }
+    }
+
+    private void addMixPanelUserSuperProperty() {
+
+        //If user is not logged in, check if he's logged in
+        if (!mIsUserLoggedIn)
+        {
+            //If logged in add user id to super properties
+            if (mUserManager.isUserLoggedIn())
+            {
+                try
+                {
+                    JSONObject userIdJson = new JSONObject();
+                    userIdJson.put(EventSuperProperties.USER_ID, getUserId());
+                    mMixpanel.registerSuperProperties(userIdJson);
+                    mIsUserLoggedIn = true;
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     private void addMixPanelProperties(JSONObject eventLogJson, Event event) throws JSONException
     {
+        addMixPanelUserSuperProperty();
 
         //Mixpanel tracking info in NOR-1016
         eventLogJson.put("context", event.getEventContext());

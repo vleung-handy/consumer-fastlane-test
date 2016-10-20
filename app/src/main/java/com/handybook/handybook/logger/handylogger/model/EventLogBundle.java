@@ -18,11 +18,23 @@ public class EventLogBundle
     @SerializedName("super_properties")
     private EventSuperProperties mEventSuperProperties;
 
+
+    /**
+     * If user id greater then 0, then user_id will be part of super properties
+     * @param userId
+     * @param events
+     */
     public EventLogBundle(final int userId, @NonNull final List<Event> events)
     {
         mEventBundleId = createBundleId();
         mEvents = events;
-        mEventSuperProperties = new EventSuperProperties(userId);
+
+        if(userId > 0)
+        {
+            mEventSuperProperties = new EventSuperProperties(userId);
+        }else {
+            mEventSuperProperties = new EventSuperPropertiesBase();
+        }
     }
 
     public String getEventBundleId() {
