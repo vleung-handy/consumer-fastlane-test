@@ -38,6 +38,7 @@ import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
 import com.handybook.handybook.module.bookings.HistoryActivity;
+import com.handybook.handybook.module.chat.LayerHelper;
 import com.handybook.handybook.module.chat.PushNotificationReceiver;
 import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
@@ -66,6 +67,9 @@ public abstract class MenuDrawerActivity extends BaseActivity
 
     @Inject
     EnvironmentModifier mEnvironmentModifier;
+
+    @Inject
+    LayerHelper mLayerHelper;
 
     protected boolean disableDrawer;
     protected Configuration mConfiguration;
@@ -114,6 +118,10 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Subscribe
             public void userAuthUpdated(final UserLoggedInEvent event)
             {
+
+                //TODO: JIA: test this for already logged-in users starting the app from scratch.
+                //If this event is not raised, then we have to make sure we init layer somewhere else
+                mLayerHelper.initLayer();
                 refreshMenu();
                 if (!event.isLoggedIn())
                 {

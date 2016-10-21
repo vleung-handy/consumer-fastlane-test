@@ -3,12 +3,10 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.PopupMenu;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,28 +39,18 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.module.chat.AuthenticationProvider;
-import com.handybook.handybook.module.chat.LayerAuthenticationProvider;
 import com.handybook.handybook.module.chat.LayerHelper;
 import com.handybook.handybook.module.chat.PushNotificationReceiver;
-import com.handybook.handybook.module.chat.SimpleRecyclerCallback;
 import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.layer.sdk.LayerClient;
-import com.layer.sdk.messaging.Conversation;
-import com.layer.sdk.query.Predicate;
-import com.layer.sdk.query.Query;
-import com.layer.sdk.query.Queryable;
-import com.layer.sdk.query.RecyclerViewController;
-import com.layer.sdk.query.SortDescriptor;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -112,7 +100,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     LayerHelper mLayerHelper;
 
     private ArrayList<Service> mServices;
-    private RecyclerViewController<Conversation> mQueryController;
 
     public static BookingDetailFragment newInstance(
             final Booking booking,
@@ -169,150 +156,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         startActivity(intent);
     }
 
-    /**
-     * We only come here if the layer auth is successful
-     */
-    private void syncConversation()
-    {
-        Log.d(TAG, "syncConversation() called for conversation: " + mBooking.getConversationId());
-        Conversation conversation = mLayerClient.getConversation(Uri.parse(mBooking.getConversationId()));
-
-        if (conversation != null)
-        {
-            Log.d(TAG, "syncConversation: conversation is not null");
-            Conversation.HistoricSyncStatus status = conversation.getHistoricSyncStatus();
-
-            if (status == Conversation.HistoricSyncStatus.MORE_AVAILABLE)
-            {
-                Log.d(TAG, "syncConversation: There is more messages available for synching");
-                conversation.syncMoreHistoricMessages(20);
-            }
-
-            if (getActivity() != null)
-            {
-                Log.d(TAG, "syncConversation: making chat icon visible on UI thread");
-                getActivity().runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        mImageChat.setVisibility(View.VISIBLE);
-                    }
-                });
-            }
-        }
-        else
-        {
-            //the conversations haven't been initialized yet. Initialize them.
-            Log.d(TAG, "syncConversation: conversation is NULL");
-            initConversations();
-        }
-
-    }
-
-
-    private void initConversations()
-    {
-        Log.d(TAG, "initConversations: ");
-        if (mQueryController != null)
-        {
-            //only do this once, so we don't get ourselves into an infinite loop type scenario
-            Log.d(
-                    TAG,
-                    "initConversations: query controller has already been created, not doing it again"
-            );
-            return;
-        }
-        Query<Conversation> query = Query.builder(Conversation.class)
-                /* Only show conversations we're still a member of */
-                                         .predicate(new Predicate(
-                                                 Conversation.Property.PARTICIPANT_COUNT,
-                                                 Predicate.Operator.GREATER_THAN,
-                                                 1
-                                         ))
-
-                /* Sort by the last Message's receivedAt time */
-                                         .sortDescriptor(new SortDescriptor(
-                                                 Conversation.Property.LAST_MESSAGE_RECEIVED_AT,
-                                                 SortDescriptor.Order.DESCENDING
-                                         ))
-                                         .build();
-
-        mQueryController = mLayerClient.newRecyclerViewController(
-                query,
-                null,
-                new SimpleRecyclerCallback()
-                {
-                    @Override
-                    public void onQueryDataSetChanged(final RecyclerViewController recyclerViewController)
-                    {
-                        Log.d(
-                                TAG,
-                                "onQueryDataSetChanged() called with: recyclerViewController = [" + recyclerViewController + "]"
-                        );
-                        syncConversation();
-
-                    }
-
-                    @Override
-                    public void onQueryItemChanged(
-                            final RecyclerViewController recyclerViewController,
-                            final int i
-                    )
-                    {
-                        Log.d(
-                                TAG,
-                                "onQueryItemChanged() called with: recyclerViewController = [" + recyclerViewController + "], i = [" + i + "]"
-                        );
-                        syncConversation();
-                    }
-
-                    @Override
-                    public void onQueryItemRangeChanged(
-                            final RecyclerViewController recyclerViewController,
-                            final int i,
-                            final int i1
-                    )
-                    {
-                        Log.d(
-                                TAG,
-                                "onQueryItemRangeChanged() called with: recyclerViewController = [" + recyclerViewController + "], i = [" + i + "], i1 = [" + i1 + "]"
-                        );
-                        syncConversation();
-                    }
-
-                    @Override
-                    public void onQueryItemInserted(
-                            final RecyclerViewController recyclerViewController,
-                            final int i
-                    )
-                    {
-                        Log.d(
-                                TAG,
-                                "onQueryItemInserted() called with: recyclerViewController = [" + recyclerViewController + "], i = [" + i + "]"
-                        );
-                        syncConversation();
-                    }
-
-                    @Override
-                    public void onQueryItemRangeInserted(
-                            final RecyclerViewController recyclerViewController,
-                            final int i,
-                            final int i1
-                    )
-                    {
-                        Log.d(
-                                TAG,
-                                "onQueryItemRangeInserted() called with: recyclerViewController = [" + recyclerViewController + "], i = [" + i + "], i1 = [" + i1 + "]"
-                        );
-                        syncConversation();
-                    }
-                }
-        );
-
-        Log.d(TAG, "initConversations: executing query, look out for events coming back");
-        mQueryController.execute();
-    }
 
     @Override
     public final View onCreateView(
@@ -488,95 +331,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         });
         setupClickListeners();
         addSectionFragments();
-        initLayer();
-    }
-
-    private void initLayer()
-    {
-        if (mConfiguration == null
-                || !mConfiguration.isInAppChatEnabled()
-                || mBooking == null
-                || TextUtils.isEmpty(mBooking.getConversationId())
-                )
-        {
-            //don't init layer if the configuration isn't back, or the booking isn't ready
-            return;
-        }
-
-        if ((mLayerClient != null) && mLayerClient.isAuthenticated())
-        {
-            Log.d(TAG, "initLayer: Already logged in");
-            waitForContent();
-            syncConversation();
-        }
-        else
-        {
-            Log.d(TAG, "initLayer: Not logged in");
-            final User currentUser = userManager.getCurrentUser();
-
-            mLayerHelper.authenticate(
-                    new LayerAuthenticationProvider.Credentials(
-                            mLayerAppId,
-                            currentUser.getFirstName(),
-                            currentUser.getId()
-                    ),
-                    new AuthenticationProvider.Callback()
-                    {
-                        @Override
-                        public void onSuccess(AuthenticationProvider provider, String userId)
-                        {
-                            Log.d(TAG, "AUTH onSuccess: ");
-                            syncConversation();
-                        }
-
-                        @Override
-                        public void onError(AuthenticationProvider provider, final String error)
-                        {
-                            Log.e(
-                                    TAG,
-                                    "Failed to authenticate as `" + currentUser.getFirstName() + "`: " + error
-                            );
-                            //TODO: JIA: this should never happen, so if it does, then log something
-                        }
-                    }
-            );
-        }
-    }
-
-    private void waitForContent()
-    {
-        Log.d(TAG, "waitForContent: ");
-        mLayerClient.waitForContent(
-                Uri.parse(mBooking.getConversationId()),
-                new LayerClient.ContentAvailableCallback()
-                {
-                    @Override
-                    public void onContentAvailable(
-                            final LayerClient layerClient, @NonNull final Queryable queryable
-                    )
-                    {
-                        Log.d(
-                                TAG,
-                                "onContentAvailable() called with: layerClient = [" + layerClient + "], queryable = [" + queryable + "]"
-                        );
-
-                        syncConversation();
-                    }
-
-                    @Override
-                    public void onContentFailed(
-                            final LayerClient layerClient,
-                            final Uri uri,
-                            final Exception e
-                    )
-                    {
-                        Log.d(
-                                TAG,
-                                "onContentFailed() called with: layerClient = [" + layerClient + "], uri = [" + uri + "], e = [" + e + "]"
-                        );
-                    }
-                }
-        );
     }
 
     private void setupClickListeners()
@@ -697,7 +451,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         if (event != null)
         {
             mConfiguration = event.getConfiguration();
-            initLayer();
         }
     }
 

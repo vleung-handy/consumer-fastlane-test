@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.chat.LayerLoginActivity;
 import com.handybook.handybook.module.chat.PushNotificationReceiver;
 import com.layer.atlas.AtlasAddressBar;
 import com.layer.atlas.AtlasHistoricMessagesFetchLayout;
@@ -87,10 +86,7 @@ public class MessagesListActivity extends BaseActivity
 
         if (mLayerAuthProvider.routeLogin(mLayerClient, mLayerAppId))
         {
-            startActivity(new Intent(this, LayerLoginActivity.class));
-
-            if (!isFinishing()) { finish(); }
-            return;
+            throw new RuntimeException("Needs to route login, but not sure what to do here");
         }
 
         mHistoricFetchLayout = ((AtlasHistoricMessagesFetchLayout) findViewById(R.id.historic_sync_layout))
@@ -158,6 +154,8 @@ public class MessagesListActivity extends BaseActivity
         {
             throw new RuntimeException("This should never happen");
         }
+
+        //TODO: JIA: should test this method on a cold start, coming from a push notification
     }
 
     @Override

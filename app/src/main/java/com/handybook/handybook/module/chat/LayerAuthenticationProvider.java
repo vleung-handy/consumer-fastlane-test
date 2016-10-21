@@ -29,6 +29,9 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
     private Callback mCallback;
     protected DataManager mDataManager;
 
+    //TODO: JIA: remove this
+    private boolean mTesting = true;
+
     public LayerAuthenticationProvider(Context context, DataManager dataManager)
     {
         mPreferences = context.getSharedPreferences(LayerAuthenticationProvider.class.getSimpleName(), Context.MODE_PRIVATE);
@@ -80,8 +83,15 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
     @Override
     public void onAuthenticationChallenge(LayerClient layerClient, String nonce) {
         Log.d(TAG, "Received challenge: " + nonce);
-        respondToChallenge(layerClient, nonce);
-        // respondToSampleChallenge(layerClient, nonce);
+
+        if (!mTesting)
+        {
+            respondToChallenge(layerClient, nonce);
+        }
+        else
+        {
+            respondToSampleChallenge(layerClient, nonce);
+        }
     }
 
     @Override

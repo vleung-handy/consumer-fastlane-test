@@ -3,10 +3,12 @@ package com.handybook.handybook.module.chat;
 import android.content.Context;
 import android.util.Log;
 
+import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.module.chat.builtin.BaseActivity;
 import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.layer.atlas.messagetypes.text.TextCellFactory;
 import com.layer.atlas.messagetypes.threepartimage.ThreePartImageUtils;
 import com.layer.atlas.util.picasso.requesthandlers.MessagePartRequestHandler;
@@ -25,7 +27,6 @@ import dagger.Provides;
         library = true,
         complete = false,
         injects = {
-                LayerLoginActivity.class,
                 BaseActivity.class,
                 MessagesListActivity.class,
                 PushNotificationReceiver.class,
@@ -46,16 +47,21 @@ public final class ChatModule
     @Provides
     @Singleton
     @Named("baseUrl")
-    public String baseUrl() {
+    public String baseUrl()
+    {
         return "https://s-handy.handy-internal.com/api/v3/";
     }
 
-    @Provides @Singleton @Named("layerAppId")
-    public String getLayerAppId() {
+    @Provides
+    @Singleton
+    @Named("layerAppId")
+    public String getLayerAppId()
+    {
         return LAYER_APP_ID;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     public LayerClient providesLayerClient(AuthenticationProvider authProvider, Context context)
     {
         Log.d(TAG, "providesLayerClient() called with: authProvider = [" + authProvider + "]");
@@ -68,22 +74,27 @@ public final class ChatModule
                     .autoDownloadMimeTypes(Arrays.asList(
                             TextCellFactory.MIME_TYPE,
                             ThreePartImageUtils.MIME_TYPE_INFO,
-                            ThreePartImageUtils.MIME_TYPE_PREVIEW));
+                            ThreePartImageUtils.MIME_TYPE_PREVIEW
+                    ));
 
         options.useFirebaseCloudMessaging(true);
         LayerClient client = LayerClient.newInstance(context, LAYER_APP_ID, options);
 
-        if (client != null) {
+        if (client != null)
+        {
             Log.d(TAG, "providesLayerClient: registering auth provider " + authProvider.toString());
             client.registerAuthenticationListener(authProvider);
-        } else {
+        }
+        else
+        {
             Log.d(TAG, "providesLayerClient: client is null");
         }
 
         return client;
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     public AuthenticationProvider providesAuthenticationProvider(
             Context context,
             DataManager dataManager
@@ -93,13 +104,20 @@ public final class ChatModule
         return new LayerAuthenticationProvider(context, dataManager);
     }
 
-    @Provides @Singleton
-    public LayerHelper providesLayerHelper(LayerClient layerClient, AuthenticationProvider authProvider) {
+    @Provides
+    @Singleton
+    public LayerHelper providesLayerHelper(
+            LayerClient layerClient,
+            AuthenticationProvider authProvider,
+            ConfigurationManager configManager,
+            UserManager userManager
+    )
+    {
         Log.d(
                 TAG,
                 "providesLayerHelper() called with: layerClient = [" + layerClient + "], authProvider = [" + authProvider + "]"
         );
-        return new LayerHelper(layerClient, authProvider, LAYER_APP_ID);
+        return new LayerHelper(layerClient, authProvider, configManager, userManager, LAYER_APP_ID);
     }
 
     @Provides
