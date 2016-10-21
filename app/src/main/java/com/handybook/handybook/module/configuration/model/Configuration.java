@@ -76,7 +76,7 @@ public class Configuration implements Serializable
     {
         return mInAppChatEnabled;
     }
-    
+
     public String toJson()
     {
         return new GsonBuilder().setDateFormat(DATE_FORMAT).create().toJson(this);

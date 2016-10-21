@@ -13,6 +13,13 @@
             />
 
         <item
+            android:id="@id/nav_menu_chat"
+            android:checked="false"
+            android:icon="@drawable/ic_chat"
+            android:title="Chat (demo)"
+            />
+
+        <item
             android:id="@id/nav_menu_my_bookings"
             android:checked="false"
             android:icon="@drawable/menu_my_bookings"

@@ -67,7 +67,7 @@ public class PushNotificationReceiver extends BroadcastReceiver
 
         ((BaseApplication) context.getApplicationContext()).inject(this);
 
-        final PushNotificationPayload payload = PushNotificationPayload.fromGcmIntentExtras(extras);
+        final PushNotificationPayload payload = PushNotificationPayload.fromLayerPushExtras(extras);
         final Uri conversationId = extras.getParcelable(LAYER_CONVERSATION_KEY);
         final Uri messageId = extras.getParcelable(LAYER_MESSAGE_KEY);
 
@@ -238,8 +238,8 @@ public class PushNotificationReceiver extends BroadcastReceiver
         }
 
         /**
-         * Called when a Conversation is opened or message is marked as read Clears messages map;
-         * sets position to greatest position
+         * Called when a Conversation is opened or message is marked as read
+         * Clears messages map; sets position to greatest position
          *
          * @param conversationId Conversation whose notifications should be cleared
          */

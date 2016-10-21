@@ -2,14 +2,15 @@ package com.handybook.handybook.module.chat.builtin;
 
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.chat.LayerLoginActivity;
 import com.handybook.handybook.module.chat.PushNotificationReceiver;
+import com.layer.atlas.AtlasAddressBar;
 import com.layer.atlas.AtlasHistoricMessagesFetchLayout;
 import com.layer.atlas.AtlasMessageComposer;
 import com.layer.atlas.AtlasMessagesRecyclerView;
@@ -21,22 +22,16 @@ import com.layer.atlas.messagetypes.text.TextCellFactory;
 import com.layer.atlas.messagetypes.text.TextSender;
 import com.layer.atlas.messagetypes.threepartimage.ThreePartImageCellFactory;
 import com.layer.atlas.typingindicators.BubbleTypingIndicatorFactory;
-import com.layer.sdk.changes.LayerChange;
-import com.layer.sdk.changes.LayerChangeEvent;
-import com.layer.sdk.listeners.LayerChangeEventListener;
 import com.layer.sdk.messaging.Conversation;
-import com.layer.sdk.messaging.Identity;
-import com.layer.sdk.messaging.LayerObject;
 
 public class MessagesListActivity extends BaseActivity
 {
     private static final int MESSAGE_SYNC_AMOUNT = 20;
-    private static final String TAG = MessagesListActivity.class.getName();
 
     private UiState mState;
     private Conversation mConversation;
 
-    private Toolbar mAddressBar;
+    private AtlasAddressBar mAddressBar;
     private AtlasHistoricMessagesFetchLayout mHistoricFetchLayout;
     private AtlasMessagesRecyclerView mMessagesList;
     private AtlasTypingIndicator mTypingIndicator;
@@ -49,37 +44,38 @@ public class MessagesListActivity extends BaseActivity
 
     private void setUiState(UiState state)
     {
-//        if (mState == state) return;
-//        mState = state;
-//        switch (state) {
-//            case ADDRESS:
-//                mAddressBar.setVisibility(View.VISIBLE);
-//                mAddressBar.setSuggestionsVisibility(View.VISIBLE);
-//                mHistoricFetchLayout.setVisibility(View.GONE);
-//                mMessageComposer.setVisibility(View.GONE);
-//                break;
-//
-//            case ADDRESS_COMPOSER:
-//                mAddressBar.setVisibility(View.VISIBLE);
-//                mAddressBar.setSuggestionsVisibility(View.VISIBLE);
-//                mHistoricFetchLayout.setVisibility(View.GONE);
-//                mMessageComposer.setVisibility(View.VISIBLE);
-//                break;
-//
-//            case ADDRESS_CONVERSATION_COMPOSER:
-//                mAddressBar.setVisibility(View.VISIBLE);
-//                mAddressBar.setSuggestionsVisibility(View.GONE);
-//                mHistoricFetchLayout.setVisibility(View.VISIBLE);
-//                mMessageComposer.setVisibility(View.VISIBLE);
-//                break;
-//
-//            case CONVERSATION_COMPOSER:
-//                mAddressBar.setVisibility(View.GONE);
-//                mAddressBar.setSuggestionsVisibility(View.GONE);
-//                mHistoricFetchLayout.setVisibility(View.VISIBLE);
-//                mMessageComposer.setVisibility(View.VISIBLE);
-//                break;
-//        }
+        if (mState == state) { return; }
+        mState = state;
+        switch (state)
+        {
+            case ADDRESS:
+                mAddressBar.setVisibility(View.VISIBLE);
+                mAddressBar.setSuggestionsVisibility(View.VISIBLE);
+                mHistoricFetchLayout.setVisibility(View.GONE);
+                mMessageComposer.setVisibility(View.GONE);
+                break;
+
+            case ADDRESS_COMPOSER:
+                mAddressBar.setVisibility(View.VISIBLE);
+                mAddressBar.setSuggestionsVisibility(View.VISIBLE);
+                mHistoricFetchLayout.setVisibility(View.GONE);
+                mMessageComposer.setVisibility(View.VISIBLE);
+                break;
+
+            case ADDRESS_CONVERSATION_COMPOSER:
+                mAddressBar.setVisibility(View.VISIBLE);
+                mAddressBar.setSuggestionsVisibility(View.GONE);
+                mHistoricFetchLayout.setVisibility(View.VISIBLE);
+                mMessageComposer.setVisibility(View.VISIBLE);
+                break;
+
+            case CONVERSATION_COMPOSER:
+                mAddressBar.setVisibility(View.GONE);
+                mAddressBar.setSuggestionsVisibility(View.GONE);
+                mHistoricFetchLayout.setVisibility(View.VISIBLE);
+                mMessageComposer.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     @Override
@@ -87,6 +83,7 @@ public class MessagesListActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
 
+        mAddressBar = ((AtlasAddressBar) findViewById(R.id.conversation_launcher));
 
         if (mLayerAuthProvider.routeLogin(mLayerClient, mLayerAppId))
         {
@@ -96,7 +93,6 @@ public class MessagesListActivity extends BaseActivity
             return;
         }
 
-        mAddressBar = ((Toolbar) findViewById(R.id.toolbar));
         mHistoricFetchLayout = ((AtlasHistoricMessagesFetchLayout) findViewById(R.id.historic_sync_layout))
                 .init(getLayerClient())
                 .setHistoricMessagesPerFetch(MESSAGE_SYNC_AMOUNT);
@@ -110,6 +106,10 @@ public class MessagesListActivity extends BaseActivity
                         new SinglePartImageCellFactory(this, getLayerClient(), getPicasso()),
                         new GenericCellFactory()
                 );
+
+        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/CircularStd-Book.otf");
+        mMessagesList.setTextTypeface(type, type);
+
 
         mTypingIndicator = new AtlasTypingIndicator(this)
                 .init(getLayerClient())
@@ -250,29 +250,4 @@ public class MessagesListActivity extends BaseActivity
         CONVERSATION_COMPOSER
     }
 
-
-    private class IdentityChangeListener implements LayerChangeEventListener.Weak
-    {
-        @Override
-        public void onChangeEvent(LayerChangeEvent layerChangeEvent)
-        {
-            // Don't need to update title if there is no conversation
-            if (mConversation == null)
-            {
-                return;
-            }
-
-            for (LayerChange change : layerChangeEvent.getChanges())
-            {
-                if (change.getObjectType().equals(LayerObject.Type.IDENTITY))
-                {
-                    Identity identity = (Identity) change.getObject();
-                    if (mConversation.getParticipants().contains(identity))
-                    {
-                        setTitle(true);
-                    }
-                }
-            }
-        }
-    }
 }

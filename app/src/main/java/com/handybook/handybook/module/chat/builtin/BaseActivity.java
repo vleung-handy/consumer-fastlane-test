@@ -1,5 +1,6 @@
 package com.handybook.handybook.module.chat.builtin;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends AppCompatActivity
 {
@@ -36,17 +39,27 @@ public abstract class BaseActivity extends AppCompatActivity
         mMenuBackEnabled = menuBackEnabled;
     }
 
+    public BaseActivity()
+    {
+        mLayoutResId = 0;
+        mMenuBackEnabled = true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(mLayoutResId);
 
-        ((BaseApplication) getApplication()).inject(this);
+        if (mLayoutResId != 0)
+        {
+            setContentView(mLayoutResId);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) { return; }
-        if (mMenuBackEnabled) { actionBar.setDisplayHomeAsUpEnabled(true); }
+            ((BaseApplication) getApplication()).inject(this);
+
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar == null) { return; }
+            if (mMenuBackEnabled) { actionBar.setDisplayHomeAsUpEnabled(true); }
+        }
     }
 
     @Override
@@ -90,6 +103,12 @@ public abstract class BaseActivity extends AppCompatActivity
         {
             mLayerClient.authenticate();
         }
+    }
+
+    @Override
+    protected final void attachBaseContext(final Context newBase)
+    {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     protected LayerClient getLayerClient()

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.module.chat.builtin.BaseActivity;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,7 +26,8 @@ import butterknife.OnClick;
  *
  * @Deprecated
  */
-public class LayerLoginActivity extends LayerBaseActivity {
+public class LayerLoginActivity extends BaseActivity
+{
 
     private static final String TAG = LayerLoginActivity.class.getName();
 

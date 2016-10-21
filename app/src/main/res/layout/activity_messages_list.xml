@@ -5,18 +5,10 @@
               android:orientation="vertical"
     >
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.layer.atlas.AtlasAddressBar
+        android:id="@+id/conversation_launcher"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="Conversation between 2 people"
-        android:elevation="@dimen/med_elevation"
-        android:theme="@style/HandyTheme.AppBarOverlay"
-        app:titleTextAppearance="@style/Toolbar.TitleText"
-        app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
-        app:contentInsetStart="0dp"
-        app:navigationIcon="@drawable/ic_back"
-
+        android:layout_height="wrap_content"
         />
 
     <com.layer.atlas.AtlasHistoricMessagesFetchLayout
@@ -30,6 +22,14 @@
             android:id="@+id/messages_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/handy_background_gray"
+            app:myBubbleColor="@color/handy_blue"
+            app:myTextColor="@color/handy_white"
+            app:myTextSize="18sp"
+            app:theirTextSize="18sp"
+            app:theirBubbleColor="@color/handy_white"
+            app:theirTextColor="@color/handy_text_black"
+            app:theme="@style/ChatTheme"
             />
 
     </com.layer.atlas.AtlasHistoricMessagesFetchLayout>
@@ -37,7 +37,8 @@
     <com.layer.atlas.AtlasMessageComposer
         android:id="@+id/message_composer"
         android:layout_width="match_parent"
-        android:minHeight="48dp"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:visibility="gone"
         />
 </LinearLayout>

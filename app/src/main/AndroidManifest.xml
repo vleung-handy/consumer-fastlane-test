@@ -489,21 +489,24 @@
             >
         </activity>
 
-        <!-- Layer's GCM Receiver and Service -->
-        <receiver
-            android:name="com.layer.sdk.services.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND"
+
+        <!-- Services: Layer SDK FCM handling -->
+        <service
+            android:name="com.layer.sdk.services.LayerFcmService"
+            android:exported="false"
             >
-            <intent-filter android:priority="470">
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTER"/>
-
-                <category android:name="${PACKAGE_NAME}"/>
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
-        </receiver>
-
-        <service android:name="com.layer.sdk.services.GcmIntentService"/>
+        </service>
+        <service
+            android:name="com.layer.sdk.services.LayerFcmInstanceIdService"
+            android:exported="false"
+            >
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
 
         <!-- Receiver: Our app notification handling -->
         <receiver

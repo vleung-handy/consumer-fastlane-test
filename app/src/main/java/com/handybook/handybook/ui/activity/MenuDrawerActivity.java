@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -37,6 +38,8 @@ import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
 import com.handybook.handybook.module.bookings.HistoryActivity;
+import com.handybook.handybook.module.chat.PushNotificationReceiver;
+import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
@@ -310,6 +313,18 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 return true;
             case R.id.nav_menu_profile:
                 navigateToActivity(ProfileActivity.class, menuItem.getItemId());
+                return true;
+            case R.id.nav_menu_chat:
+
+                //TODO: JIA: remove this hard coded conversation ID later.
+                Bundle bundle = new Bundle();
+                String conversationId = "layer:///conversations/636a2014-dbd2-4e4e-a430-4131b18d56a9";
+                bundle.putParcelable(
+                        PushNotificationReceiver.LAYER_CONVERSATION_KEY,
+                        Uri.parse(conversationId)
+                );
+
+                navigateToActivity(MessagesListActivity.class, bundle, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_my_bookings:
                 navigateToActivity(BookingsActivity.class, menuItem.getItemId());

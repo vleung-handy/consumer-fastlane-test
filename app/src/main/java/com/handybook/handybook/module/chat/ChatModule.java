@@ -38,13 +38,10 @@ public final class ChatModule
     private static final String TAG = ChatModule.class.getName();
 
     //JIA's project number
-    //private static final String LAYER_APP_ID = "layer:///apps/staging/6178a72e-4e8d-11e6-aca9-940102005074";
+    private static final String LAYER_APP_ID = "layer:///apps/staging/6178a72e-4e8d-11e6-aca9-940102005074";
 
-    //Handy's project number
-    private static final String LAYER_APP_ID = "layer:///apps/staging/17d296fa-4e8f-11e6-aca9-940102005074";
-
-    //JIA's GCM number
-    private static final String GCM_SENDER_ID = "606008763304";
+//    //Handy's project number
+//    private static final String LAYER_APP_ID = "layer:///apps/staging/17d296fa-4e8f-11e6-aca9-940102005074";
 
     @Provides
     @Singleton
@@ -56,14 +53,6 @@ public final class ChatModule
     @Provides @Singleton @Named("layerAppId")
     public String getLayerAppId() {
         return LAYER_APP_ID;
-    }
-
-    @Provides
-    @Singleton
-    @Named("layerGcmId")
-    public String getLayerGcmId()
-    {
-        return GCM_SENDER_ID;
     }
 
     @Provides @Singleton
@@ -81,7 +70,7 @@ public final class ChatModule
                             ThreePartImageUtils.MIME_TYPE_INFO,
                             ThreePartImageUtils.MIME_TYPE_PREVIEW));
 
-        options.googleCloudMessagingSenderId(GCM_SENDER_ID);
+        options.useFirebaseCloudMessaging(true);
         LayerClient client = LayerClient.newInstance(context, LAYER_APP_ID, options);
 
         if (client != null) {
