@@ -48,36 +48,46 @@ public class ReferralsManager
     @Subscribe
     public void onRequestPrepareReferrals(final ReferralsEvent.RequestPrepareReferrals event)
     {
-        final long referralDialogLastRequestedTimeMs =
-                mDefaultPreferencesManager.getLong(
-                        PrefsKey.REFERRAL_DIALOG_LAST_REQUESTED_TIME_MS,
-                        0
-                );
         /**
-         * don't request for the referral dialog more often than every X ms
+         * if the event is for the referral dialog,
+         * only make this request if we didn't make a
+         * request for referral (dialog or not) within the past X ms
+         *
+         * ignore that validation if the event is for the non-dialog referral
          */
-        if (System.currentTimeMillis() - referralDialogLastRequestedTimeMs > REFERRAL_DIALOG_MINIMUM_REQUEST_INTERVAL_MS)
+        if (event.isForDialog())
         {
-            mDefaultPreferencesManager.setLong(
-                    PrefsKey.REFERRAL_DIALOG_LAST_REQUESTED_TIME_MS,
-                    System.currentTimeMillis()
-            );
-            mDataManager.requestPrepareReferrals(new DataManager.Callback<ReferralResponse>()
+            final long referralDialogLastRequestedTimeMs =
+                    mDefaultPreferencesManager.getLong(
+                            PrefsKey.REFERRAL_DIALOG_LAST_REQUESTED_TIME_MS,
+                            0
+                    );
+            if (System.currentTimeMillis() - referralDialogLastRequestedTimeMs < REFERRAL_DIALOG_MINIMUM_REQUEST_INTERVAL_MS)
             {
-                @Override
-                public void onSuccess(final ReferralResponse response)
-                {
-                    mBus.post(new ReferralsEvent.ReceivePrepareReferralsSuccess(
-                            response, event.isForDialog(), event.getSource()));
-                }
-
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-                    mBus.post(new ReferralsEvent.ReceivePrepareReferralsError(error));
-                }
-            });
+                //if this is for the dialog, and a referral request was made within the past X ms, don't make another request
+                return;
+            }
         }
+
+        mDefaultPreferencesManager.setLong(
+                PrefsKey.REFERRAL_DIALOG_LAST_REQUESTED_TIME_MS,
+                System.currentTimeMillis()
+        );
+        mDataManager.requestPrepareReferrals(new DataManager.Callback<ReferralResponse>()
+        {
+            @Override
+            public void onSuccess(final ReferralResponse response)
+            {
+                mBus.post(new ReferralsEvent.ReceivePrepareReferralsSuccess(
+                        response, event.isForDialog(), event.getSource()));
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
+                mBus.post(new ReferralsEvent.ReceivePrepareReferralsError(error));
+            }
+        });
     }
 
     @Subscribe
