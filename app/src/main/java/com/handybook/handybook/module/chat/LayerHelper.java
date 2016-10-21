@@ -122,6 +122,7 @@ public class LayerHelper
         if (config == null || !config.isInAppChatEnabled())
         {
             //don't init layer if the configuration isn't back, or the booking isn't ready
+            Log.d(TAG, "initLayer: config has layer disabled");
             return;
         }
 
@@ -336,4 +337,8 @@ public class LayerHelper
         mQueryController.execute();
     }
 
+    public boolean isConversationsInitialized()
+    {
+        return mConversationsInitialized;
+    }
 }
