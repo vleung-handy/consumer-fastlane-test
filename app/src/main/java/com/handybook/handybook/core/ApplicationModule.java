@@ -701,10 +701,11 @@ public final class ApplicationModule
     @Singleton
     final ReferralsManager provideReferralsManager(
             final Bus bus,
-            final DataManager dataManager
+            final DataManager dataManager,
+            final DefaultPreferencesManager defaultPreferencesManager
     )
     {
-        return new ReferralsManager(bus, dataManager);
+        return new ReferralsManager(bus, dataManager, defaultPreferencesManager);
     }
 
     @Provides
