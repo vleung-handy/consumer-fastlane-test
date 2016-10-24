@@ -35,6 +35,16 @@ public class DefaultPreferencesManager
         return mDefaultSharedPreferences.contains(prefsKey.getKey());
     }
 
+    public long getLong(@NonNull final PrefsKey prefsKey, int defaultValue)
+    {
+        return mDefaultSharedPreferences.getLong(prefsKey.getKey(), defaultValue);
+    }
+
+    public void setLong(@NonNull final PrefsKey prefsKey, final long value)
+    {
+        mDefaultSharedPreferences.edit().putLong(prefsKey.getKey(), value).apply();
+    }
+
     public void setString(@NonNull final PrefsKey prefsKey, @Nullable final String value)
     {
         mDefaultSharedPreferences.edit().putString(prefsKey.getKey(), value).apply();
