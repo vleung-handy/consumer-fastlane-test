@@ -251,9 +251,9 @@ public class EventLogManager
 
         if (!TextUtils.isEmpty(logBundles))
         {
-            //Save the EventLogBundle to preferences always
             synchronized (BundlesWrapper.class)
             {
+                //Save the EventLogBundle to preferences always
                 saveToPreference(
                         PrefsKey.EVENT_LOG_BUNDLES_TO_SEND,
                         BundlesWrapper.BUNDLES
@@ -283,7 +283,7 @@ public class EventLogManager
         sendLogs();
     }
 
-    private void saveLogsToFileSystem(final String prefBundleString)
+    private synchronized void saveLogsToFileSystem(final String prefBundleString)
     {
         JsonObject[] eventLogBundles = GSON.fromJson(
                 prefBundleString,
