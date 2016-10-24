@@ -375,7 +375,7 @@ public final class ApplicationModule
     {
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) && !BuildConfig.DEBUG)
         {
             okHttpClient.setCertificatePinner(new CertificatePinner.Builder()
                                                       .add(
@@ -401,82 +401,46 @@ public final class ApplicationModule
                         .setEndpoint(endpoint)
                         .setRequestInterceptor(new RequestInterceptor()
                         {
-                            final String auth = "Basic " + Base64
-                                    .encodeToString(
-                                            (username + ":" + pwd)
-                                                    .getBytes(),
-                                            Base64.NO_WRAP
-                                    );
+                            final String auth = "Basic " + Base64.encodeToString(
+                                    (username + ":" + pwd).getBytes(),
+                                    Base64.NO_WRAP
+                            );
 
                             @Override
                             public void intercept(
                                     RequestFacade request
                             )
                             {
-                                request.addHeader(
-                                        "Authorization",
-                                        auth
-                                );
-                                request.addHeader(
-                                        "Accept",
-                                        "application/json"
-                                );
-                                request.addQueryParam(
-                                        "client",
-                                        "android"
-                                );
-                                request.addQueryParam(
-                                        "app_version",
-                                        BuildConfig.VERSION_NAME
-                                );
+                                request.addHeader("Authorization", auth);
+                                request.addHeader("Accept", "application/json");
+                                request.addQueryParam("client", "android");
+                                request.addQueryParam("app_version", BuildConfig.VERSION_NAME);
                                 request.addQueryParam(
                                         "app_version_code",
-                                        String.valueOf(
-                                                BuildConfig.VERSION_CODE)
+                                        String.valueOf(BuildConfig.VERSION_CODE)
                                 );
-                                request.addQueryParam(
-                                        "api_sub_version",
-                                        "6.0"
-                                );
-                                request.addQueryParam(
-                                        "app_device_id",
-                                        getDeviceId()
-                                );
-                                request.addQueryParam(
-                                        "app_device_model",
-                                        getDeviceName()
-                                );
-                                request.addQueryParam(
-                                        "app_device_os",
-                                        Build.VERSION.RELEASE
-                                );
-                                final User user = userManager
-                                        .getCurrentUser();
+                                request.addQueryParam("api_sub_version", "6.0");
+                                request.addQueryParam("app_device_id", getDeviceId());
+                                request.addQueryParam("app_device_model", getDeviceName());
+                                request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
+                                final User user = userManager.getCurrentUser();
                                 if (user != null)
                                 {
-                                    request.addQueryParam(
-                                            "app_user_id",
-                                            user.getId()
-                                    );
-                                    String authToken = user
-                                            .getAuthToken();
+                                    request.addQueryParam("app_user_id", user.getId());
+                                    String authToken = user.getAuthToken();
                                     if (authToken != null)
                                     {
-                                        request.addHeader(
-                                                "X-Auth-Token",
-                                                authToken
-                                        );
+                                        request.addHeader("X-Auth-Token", authToken);
                                     }
                                 }
                             }
                         })
                         .setConverter(new GsonConverter(
                                 new GsonBuilder()
-                                        .setDateFormat(
-                                                "yyyy-MM-dd'T'HH:mm:ssZ")
+                                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                                         .setExclusionStrategies(
-                                                BookingRequest
-                                                        .getExclusionStrategy())
+                                                BookingRequest.getExclusionStrategy()
+                                        )
                                         .registerTypeAdapter(
                                                 BookingRequest.class,
                                                 new BookingRequest.BookingRequestSerializer()
@@ -559,8 +523,11 @@ public final class ApplicationModule
     @Singleton
     final SecurePreferences providePrefs()
     {
-        return new SecurePreferences(mContext, null,
-                                     mConfigs.getProperty("secure_prefs_key"), true
+        return new SecurePreferences(
+                mContext,
+                null,
+                mConfigs.getProperty("secure_prefs_key"),
+                true
         );
     }
 
