@@ -7,6 +7,7 @@ import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.account.ui.ContactFragment;
 import com.handybook.handybook.account.ui.EditPlanAddressFragment;
@@ -17,7 +18,6 @@ import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfileFragment;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
 import com.handybook.handybook.account.ui.UpdatePaymentFragment;
-import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
@@ -103,7 +103,6 @@ import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
-import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
@@ -546,7 +545,7 @@ public final class ApplicationModule
     @Provides
     final DataManagerErrorHandler provideDataManagerErrorHandler()
     {
-        return new BaseDataManagerErrorHandler();
+        return new DataManagerErrorHandler();
     }
 
     @Provides

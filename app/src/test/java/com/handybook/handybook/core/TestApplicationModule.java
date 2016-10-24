@@ -67,7 +67,6 @@ import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
-import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
@@ -222,7 +221,7 @@ public class TestApplicationModule
     @Singleton
     final DataManagerErrorHandler provideDataManagerHandler()
     {
-        return mock(BaseDataManagerErrorHandler.class);
+        return mock(DataManagerErrorHandler.class);
     }
 
     @Provides
