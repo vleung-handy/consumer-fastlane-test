@@ -46,27 +46,24 @@ import javax.inject.Inject;
 
 public class EventLogManager
 {
-    private static final int DEFAULT_USER_ID = -1;
-    private static final String SENT_TIMESTAMP_SECS_KEY = "event_bundle_sent_timestamp";
-    private static final int UPLOAD_TIMER_DELAY_MS = 60000; //1 min
-    private static final int UPLOAD_TIMER_DELAY_NO_INTERNET_MS = 15 * UPLOAD_TIMER_DELAY_MS; //15 min
     private static final String TAG = EventLogManager.class.getSimpleName();
-    static final int MAX_NUM_PER_BUNDLE = 50;
-    private static final Gson GSON = new Gson();
+    private static final int DEFAULT_USER_ID = -1;
+    private static final String KEY_SENT_TIMESTAMP_SECS = "event_bundle_sent_timestamp";
+    private static final int UPLOAD_TIMER_DELAY_MS = 60000; //1min
+    private static final int UPLOAD_TIMER_DELAY_NO_INTERNET_MS = 15 * UPLOAD_TIMER_DELAY_MS; //15min
+    static final int MAX_EVENTS_PER_BUNDLE = 50;
 
-    private static List<EventLogBundle> sEventLogBundles;
+    private static final Gson GSON = new Gson();
     private static EventLogBundle sCurrentEventLogBundle;
     private final Bus mBus;
+    private int mSendingLogsCount;
     private final DataManager mDataManager;
     private final FileManager mFileManager;
     private final DefaultPreferencesManager mPrefsManager;
     private MixpanelAPI mMixpanel;
     private Session mSession;
-    //Used just for mixed panel
-    private UserManager mUserManager;
+    private UserManager mUserManager; // Used just for mixed panel
     private boolean mIsUserLoggedIn; // This is used for updating mixpanel super property
-
-    private int mSendingLogsCount;
     private Timer mTimer;
 
     @Inject
@@ -84,18 +81,13 @@ public class EventLogManager
         mFileManager = fileManager;
         mPrefsManager = prefsManager;
         mUserManager = userManager;
-        sEventLogBundles = new ArrayList<>();
         //Send logs on initialization
         sendLogsOnInitialization();
         initMixPanel();
-
         //Session
         mSession = Session.getInstance(mPrefsManager);
     }
 
-    /**
-     * @param event
-     */
     @Subscribe
     public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
     {
@@ -121,24 +113,23 @@ public class EventLogManager
             addMixPanelProperties(eventLogJson, eventLog);
             mMixpanel.track(eventLog.getEventType(), eventLogJson);
         }
-        catch (JsonParseException e)
-        {
-            Crashlytics.logException(e);
-        }
-        catch (JSONException e)
+        catch (JsonParseException | JSONException e)
         {
             Crashlytics.logException(e);
         }
 
         //If event log bundle is null or we've hit the max num per bundle then we create a new bundle
-        if (sCurrentEventLogBundle == null || sCurrentEventLogBundle.size() >= MAX_NUM_PER_BUNDLE)
+        if (sCurrentEventLogBundle == null || sCurrentEventLogBundle.size() >= MAX_EVENTS_PER_BUNDLE)
         {
             //Create new event log bundle and add it to the List
             sCurrentEventLogBundle = new EventLogBundle(
                     getUserId(),
                     new ArrayList<Event>()
             );
-            sEventLogBundles.add(sCurrentEventLogBundle);
+            synchronized (BundlesWrapper.class)
+            {
+                BundlesWrapper.BUNDLES.add(sCurrentEventLogBundle);
+            }
         }
 
         //Prefix event_type with app_lib_
@@ -146,11 +137,13 @@ public class EventLogManager
         sCurrentEventLogBundle.addEvent(eventLog);
 
         //Save the EventLogBundle to preferences always
-        saveToPreference(PrefsKey.EVENT_LOG_BUNDLES, sEventLogBundles);
+        synchronized (BundlesWrapper.class)
+        {
+            saveToPreference(PrefsKey.EVENT_LOG_BUNDLES, BundlesWrapper.BUNDLES);
+        }
     }
 
     /**
-     * @param prefsKey
      * @return The list of Strings if returned, otherwise, null if nothing was saved in that pref
      * previously
      */
@@ -164,9 +157,6 @@ public class EventLogManager
 
     /**
      * Save the List of EventLogBundles to the prefsKey
-     *
-     * @param prefsKey
-     * @param eventLogBundles
      */
     private void saveToPreference(PrefsKey prefsKey, List<EventLogBundle> eventLogBundles)
     {
@@ -177,7 +167,10 @@ public class EventLogManager
         catch (JsonParseException e)
         {
             //If there's an JsonParseException then clear the eventLogBundles because invalid json
-            sEventLogBundles.clear();
+            synchronized (BundlesWrapper.class)
+            {
+                BundlesWrapper.BUNDLES.clear();
+            }
         }
     }
 
@@ -258,9 +251,15 @@ public class EventLogManager
 
         if (!TextUtils.isEmpty(logBundles))
         {
-            //Save the EventLogBundle to preferences always
-            saveToPreference(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND, sEventLogBundles);
-            sEventLogBundles.clear();
+            synchronized (BundlesWrapper.class)
+            {
+                //Save the EventLogBundle to preferences always
+                saveToPreference(
+                        PrefsKey.EVENT_LOG_BUNDLES_TO_SEND,
+                        BundlesWrapper.BUNDLES
+                );
+                BundlesWrapper.BUNDLES.clear();
+            }
             sCurrentEventLogBundle = null;
             //delete the old one immediately
             removePreference(PrefsKey.EVENT_LOG_BUNDLES);
@@ -284,31 +283,25 @@ public class EventLogManager
         sendLogs();
     }
 
-    private void saveLogsToFileSystem(final String prefBundleString)
+    private synchronized void saveLogsToFileSystem(final String prefBundleString)
     {
         JsonObject[] eventLogBundles = GSON.fromJson(
                 prefBundleString,
                 JsonObject[].class
         );
-
-        //Keep a list of the event bundle ids to verify they were all saved
-        List<String> eventBundleIds = new ArrayList<>();
-        for (JsonObject eventLogBundleJson : eventLogBundles)
+        for (JsonObject logBundleJson : eventLogBundles)
         {
-            String eventBundleId = eventLogBundleJson.get(EventLogBundle.KEY_EVENT_BUNDLE_ID)
-                                                     .getAsString();
-            eventBundleIds.add(eventBundleId);
-
-            boolean fileSaved = mFileManager.saveLogFile(
-                    eventBundleId,
-                    eventLogBundleJson.toString()
-            );
-
+            String eventBundleId = logBundleJson.get(EventLogBundle.KEY_EVENT_BUNDLE_ID)
+                                                .getAsString();
+            boolean fileSaved = mFileManager.saveLogFile(eventBundleId, logBundleJson.toString());
             // If the file didn't save then we log an exception
             if (!fileSaved)
             {
-                Crashlytics.logException(new Exception("Failed to save log to file system: " + eventLogBundleJson
-                        .toString()));
+                Crashlytics.logException(
+                        new Exception(
+                                "Failed to save log to file system: " + logBundleJson.toString()
+                        )
+                );
             }
         }
 
@@ -348,7 +341,7 @@ public class EventLogManager
 
                 //Add the sent timestamp value
                 eventLogBundle.addProperty(
-                        SENT_TIMESTAMP_SECS_KEY,
+                        KEY_SENT_TIMESTAMP_SECS,
                         System.currentTimeMillis() / 1000
                 );
 
@@ -376,7 +369,9 @@ public class EventLogManager
                                 if (--mSendingLogsCount == 0)
                                 {
                                     //If there are currently logs, set timer, else clear old timer
-                                    if (!sEventLogBundles.isEmpty() || mFileManager.getLogFileList().length > 0)
+                                    if (!BundlesWrapper.BUNDLES.isEmpty()
+                                            || mFileManager.getLogFileList().length > 0
+                                            )
                                     {
                                         setUploadTimer();
                                     }
@@ -396,7 +391,10 @@ public class EventLogManager
             Crashlytics.logException(e);
             Log.e(TAG, e.getMessage());
             //If there's json exception it means logs aren't valid and clear it out
-            mFileManager.deleteLogFile(invalidFile.getName());
+            if (invalidFile != null)
+            {
+                mFileManager.deleteLogFile(invalidFile.getName());
+            }
             //reset log count
             mSendingLogsCount = 0;
         }
@@ -405,7 +403,9 @@ public class EventLogManager
     private void initMixPanel()
     {
         //Set up mix panel
-        String mixPanelProperty = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ? "mixpanel_api_key" : "mixpanel_api_key_internal";
+        String mixPanelProperty = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
+                ? "mixpanel_api_key"
+                : "mixpanel_api_key_internal";
         String mixpanelApiKey = PropertiesReader.getProperties(
                 BaseApplication.getContext(),
                 "config.properties"
@@ -434,7 +434,8 @@ public class EventLogManager
         if (superProperties != null) { mMixpanel.registerSuperProperties(superProperties); }
     }
 
-    private void addMixPanelUserSuperProperty() {
+    private void addMixPanelUserSuperProperty()
+    {
 
         //If user is not logged in, check if he's logged in
         if (!mIsUserLoggedIn)
@@ -491,5 +492,10 @@ public class EventLogManager
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    private static class BundlesWrapper
+    {
+        static final List<EventLogBundle> BUNDLES = new ArrayList<>();
     }
 }
