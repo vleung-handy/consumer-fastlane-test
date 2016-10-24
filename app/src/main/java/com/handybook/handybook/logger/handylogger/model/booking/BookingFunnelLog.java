@@ -553,7 +553,7 @@ public class BookingFunnelLog extends EventLog
         @SerializedName("service_type")
         private String mServiceType;
         @SerializedName("zip")
-        private int mZip;
+        private String mZip;
         @SerializedName("coupon_code")
         private String mCouponCode;
 
@@ -580,7 +580,7 @@ public class BookingFunnelLog extends EventLog
             mPricePerHour = bookingQuote.getHourlyAmount();
             mRepeatFreq = transaction.getRecurringFrequency();
             mServiceType = service == null ? null : service.getName();
-            mZip = Integer.parseInt(transaction.getZipCode());
+            mZip = transaction.getZipCode();
             mCouponCode = transaction.promoApplied();
         }
 
