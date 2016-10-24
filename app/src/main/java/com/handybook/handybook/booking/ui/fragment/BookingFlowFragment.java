@@ -138,6 +138,7 @@ public class BookingFlowFragment extends InjectedFragment
         {
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra(LoginActivity.EXTRA_FIND_USER, true);
+            intent.putExtra(LoginActivity.EXTRA_FROM_BOOKING_FUNNEL, true);
             startActivity(intent);
             return;
         }

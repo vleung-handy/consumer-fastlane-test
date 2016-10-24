@@ -10,6 +10,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
@@ -119,20 +120,23 @@ public class BookingManager implements Observer
     @Subscribe
     public void onRequestPrerateProInfo(BookingEvent.RequestPrerateProInfo event)
     {
-        mDataManager.requestPrerateProInfo(event.bookingId, new DataManager.Callback<PrerateProInfo>()
-        {
-            @Override
-            public void onSuccess(PrerateProInfo object)
-            {
-                mBus.post(new BookingEvent.ReceivePrerateProInfoSuccess(object));
-            }
+        mDataManager.requestPrerateProInfo(
+                event.bookingId,
+                new DataManager.Callback<PrerateProInfo>()
+                {
+                    @Override
+                    public void onSuccess(PrerateProInfo object)
+                    {
+                        mBus.post(new BookingEvent.ReceivePrerateProInfoSuccess(object));
+                    }
 
-            @Override
-            public void onError(DataManager.DataManagerError error)
-            {
-                mBus.post(new BookingEvent.ReceivePrerateProInfoError(error));
-            }
-        });
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        mBus.post(new BookingEvent.ReceivePrerateProInfoError(error));
+                    }
+                }
+        );
     }
 
     @Subscribe
@@ -179,20 +183,22 @@ public class BookingManager implements Observer
     public void onRequestUpdateBookingNoteToPro(BookingEditEvent.RequestUpdateBookingNoteToPro event)
     {
         mDataManager.updateBookingNoteToPro(event.bookingId, event.descriptionTransaction,
-                new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(final Void response)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess());
-                    }
+                                            new DataManager.Callback<Void>()
+                                            {
+                                                @Override
+                                                public void onSuccess(final Void response)
+                                                {
+                                                    mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess());
+                                                }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProError(error));
-                    }
-                });
+                                                @Override
+                                                public void onError(DataManager.DataManagerError error)
+                                                {
+                                                    mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProError(
+                                                            error));
+                                                }
+                                            }
+        );
     }
 
     /**
@@ -222,7 +228,8 @@ public class BookingManager implements Observer
                             // Mark bookingCardViewModels accordingly and emit it.
                             BookingCardViewModel.List models = getBookingCardViewModelListFromResult(
                                     bookings,
-                                    event.getOnlyBookingValue());
+                                    event.getOnlyBookingValue()
+                            );
                             BaseApplication.tracker().send(
                                     new HitBuilders.TimingBuilder()
                                             .setCategory("Api")
@@ -239,7 +246,8 @@ public class BookingManager implements Observer
                         {
                             mBus.post(new HandyEvent.ResponseEvent.BookingCardViewModelsError(error));
                         }
-                    });
+                    }
+            );
         }
     }
 
@@ -291,7 +299,8 @@ public class BookingManager implements Observer
                         {
                             mBus.post(new BookingEvent.ReceiveBookingsError(error));
                         }
-                    });
+                    }
+            );
         }
     }
 
@@ -564,6 +573,35 @@ public class BookingManager implements Observer
         }
     }
 
+    /**
+     * @param transaction
+     * @return Will return the extra hours based off the bookingtransaction and the corresponding
+     * bookingQuote. If no extra hours will return 0
+     */
+    public float getExtraHours(BookingTransaction transaction)
+    {
+        if (transaction == null || mBookingQuote == null || TextUtils.isEmpty(transaction.getExtraCleaningText()) || mBookingQuote
+                .getBookingOption() == null)
+        { return 0; }
+
+        float extraHours = 0;
+        String bookingExtras = transaction.getExtraCleaningText();
+        BookingOption bookingOption = mBookingQuote.getBookingOption();
+        String[] options = bookingOption.getOptions();
+        float[] optionsHours = bookingOption.getHoursInfo();
+
+        for (int i = 0; i < options.length; i++)
+        {
+            String option = options[i];
+            if (bookingExtras.contains(option))
+            {
+                extraHours += optionsHours[i];
+            }
+        }
+
+        return extraHours;
+    }
+
     public void setPromoTabCoupon(final String code)
     {
         mSecurePreferencesManager.setString(PrefsKey.BOOKING_PROMO_TAB_COUPON, code);
@@ -649,7 +687,9 @@ public class BookingManager implements Observer
     {
         if (!event.getEnvironment().equals(event.getPrevEnvironment()))
         {
-            Crashlytics.logException(new RuntimeException("environmentUpdated: environmentUpdated from: " + event.getPrevEnvironment() + "  to:" + event.getEnvironment()));
+            Crashlytics.logException(new RuntimeException(
+                    "environmentUpdated: environmentUpdated from: " + event.getPrevEnvironment() + "  to:" + event
+                            .getEnvironment()));
             clearAll();
         }
     }
@@ -688,9 +728,8 @@ public class BookingManager implements Observer
 
 
     /**
-     * TODO: no endpoint to only return the recurring bookings, must fetch part of the user
-     * bookings payload for now
-     * TODO: would be nice to have caching
+     * TODO: no endpoint to only return the recurring bookings, must fetch part of the user bookings
+     * payload for now TODO: would be nice to have caching
      *
      * @param event
      */
@@ -738,7 +777,8 @@ public class BookingManager implements Observer
                     {
                         mBus.post(new BookingEvent.FinalizeBookingError());
                     }
-                });
+                }
+        );
     }
 
     @Subscribe
@@ -762,6 +802,7 @@ public class BookingManager implements Observer
                     {
                         mBus.post(new BookingEditEvent.ReceiveEditPreferencesError());
                     }
-                });
+                }
+        );
     }
 }

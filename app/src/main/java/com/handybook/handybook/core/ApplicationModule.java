@@ -103,7 +103,6 @@ import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
-import com.handybook.handybook.data.BaseDataManagerErrorHandler;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.data.HandyRetrofitEndpoint;
@@ -510,7 +509,7 @@ public final class ApplicationModule
     @Provides
     final DataManagerErrorHandler provideDataManagerErrorHandler()
     {
-        return new BaseDataManagerErrorHandler();
+        return new DataManagerErrorHandler();
     }
 
     @Provides
