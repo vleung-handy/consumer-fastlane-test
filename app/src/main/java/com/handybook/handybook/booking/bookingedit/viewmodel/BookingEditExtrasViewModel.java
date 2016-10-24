@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
 import com.handybook.handybook.booking.model.OptionPrice;
 import com.handybook.handybook.booking.model.PriceInfo;
 import com.handybook.handybook.library.util.MathUtils;
@@ -229,7 +229,7 @@ public class BookingEditExtrasViewModel
 
         //round to one decimal place in case there are floating point rounding errors
         hours = MathUtils.roundToDecimalPlaces(hours, 1);
-        return TextUtils.formatNumberToAtMostOneDecimalPlace(hours);
+        return TextUtils.formatToAtMostOneDecimalPlaceUSLocale(hours);
     }
 
 }

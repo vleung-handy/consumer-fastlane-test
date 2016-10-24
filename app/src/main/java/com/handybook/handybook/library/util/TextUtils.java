@@ -12,14 +12,24 @@ import com.handybook.handybook.core.CreditCard;
 
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Locale;
 
 public final class TextUtils
 {
     //TODO: split this class out into more specific ones
-    private static final DecimalFormat AT_MOST_ONE_DECIMAL_PLACE_FORMAT = new DecimalFormat("0.#");
+    /**
+     * making a formatter specifically with US locale because server price table values seem to
+     * always be based on US locale
+     * <p>
+     * if we don't explicitly specify the US locale, then when device is of certain locales like
+     * Italy, this would format 3.5 to "3,5" instead of "3.5", and server would expect "3.5"
+     */
+    private static final DecimalFormat AT_MOST_ONE_DECIMAL_PLACE_US_LOCALE_FORMAT =
+            new DecimalFormat("0.#", DecimalFormatSymbols.getInstance(Locale.US));
 
 
     public static final class Fonts
@@ -57,9 +67,9 @@ public final class TextUtils
         }
     }
 
-    public static String formatNumberToAtMostOneDecimalPlace(final float num)
+    public static String formatToAtMostOneDecimalPlaceUSLocale(final float num)
     {
-        return AT_MOST_ONE_DECIMAL_PLACE_FORMAT.format(num);
+        return AT_MOST_ONE_DECIMAL_PLACE_US_LOCALE_FORMAT.format(num);
     }
 
     public static String formatPrice(
