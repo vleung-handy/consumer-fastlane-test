@@ -1,68 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/handy_bg"
-              android:orientation="vertical"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    android:orientation="vertical"
     >
 
-    <include layout="@layout/toolbar"
-        />
+    <include layout="@layout/toolbar"/>
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/promotions_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/default_padding"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/promotions_apply_button"
+        android:layout_below="@+id/toolbar"
         >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:padding="16dp"
-            android:src="@drawable/ic_price_tag"
-            />
-
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/default_padding"
             >
 
-            <EditText
-                android:id="@+id/promotions_coupon_text"
-                style="@style/EditText.Last.PromoCode"
-                />
-
-            <!--This is a hacky way to get the imageView visually behave like a button-->
-            <FrameLayout
-                android:id="@+id/promotions_coupon_text_clear"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="@dimen/default_margin_half"
-                android:layout_marginRight="@dimen/default_margin_half"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:padding="@dimen/default_padding_half"
-                android:visibility="gone"
-                tools:visibility="visible"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                android:src="@drawable/ic_price_tag"
+                />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 >
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_x_dark"
+                <EditText
+                    android:id="@+id/promotions_coupon_text"
+                    style="@style/EditText.Last.PromoCode"
                     />
+
+                <!--This is a hacky way to get the imageView visually behave like a button-->
+                <FrameLayout
+                    android:id="@+id/promotions_coupon_text_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="@dimen/default_margin_half"
+                    android:layout_marginRight="@dimen/default_margin_half"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/default_padding_half"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    >
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_x_dark"
+                        />
+
+                </FrameLayout>
 
             </FrameLayout>
 
-        </FrameLayout>
-
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/promotions_apply_button"
@@ -70,4 +78,4 @@
         android:text="@string/apply"
         />
 
-</LinearLayout>
+</RelativeLayout>
