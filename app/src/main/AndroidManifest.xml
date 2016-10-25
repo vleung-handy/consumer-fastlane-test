@@ -31,14 +31,12 @@
         android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE"
         android:protectionLevel="signature"
         />
-
     <permission
         android:name="${PACKAGE_NAME}.permission.LAYER_PUSH"
         android:protectionLevel="signature"
         />
 
     <uses-permission android:name="${PACKAGE_NAME}.permission.LAYER_PUSH"/>
-
 
     <application
         android:name=".core.BaseApplication"
@@ -474,7 +472,7 @@
             android:screenOrientation="portrait"
             />
 
-        <!--For Layer-->
+        <!-- For Layer -->
 
         <activity android:name=".module.chat.LayerChatActivity">
         </activity>
@@ -482,13 +480,11 @@
         </activity>
         <activity android:name=".module.chat.LayerLoginActivity">
         </activity>
-
         <activity
             android:name=".module.chat.builtin.MessagesListActivity"
             android:theme="@style/HandyTheme"
             >
         </activity>
-
 
         <!-- Services: Layer SDK FCM handling -->
         <service
@@ -517,16 +513,20 @@
             <!-- Layer SDK broadcasts this, which we use to generate notifications -->
             <intent-filter>
                 <action android:name="com.layer.sdk.PUSH"/>
+
                 <category android:name="${PACKAGE_NAME}"/>
             </intent-filter>
 
             <!-- Our app sets this as a PendingIntent to handle user notification swipe-outs -->
             <intent-filter>
                 <action android:name="${PACKAGE_NAME}.CANCEL_PUSH"/>
+
                 <category android:name="${PACKAGE_NAME}"/>
             </intent-filter>
         </receiver>
 
+        <activity android:name=".module.chat.conversation.ConversationsListActivity">
+        </activity>
     </application>
 
 </manifest>
