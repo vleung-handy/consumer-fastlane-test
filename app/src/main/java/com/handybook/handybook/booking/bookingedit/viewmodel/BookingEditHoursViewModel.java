@@ -178,7 +178,7 @@ public class BookingEditHoursViewModel
         //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
         //round to one decimal place in case there are floating point rounding errors
         hours = MathUtils.roundToDecimalPlaces(hours, 1);
-        return TextUtils.formatNumberToAtMostOneDecimalPlace(hours);
+        return TextUtils.formatToAtMostOneDecimalPlaceUSLocale(hours);
     }
 
     private String getTotalDuePriceFormatted(final String key)
