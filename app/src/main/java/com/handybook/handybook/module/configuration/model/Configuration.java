@@ -23,7 +23,7 @@ public class Configuration implements Serializable
     private boolean mNativeHelpCenterEnabled;
     @SerializedName("new_account_enabled")
     private boolean mNewAccountEnabled;
-    @SerializedName("address_autocomplete_enabled")
+    @SerializedName("address_auto_complete_enabled")
     private boolean mAddressAutoCompleteEnabled;
 
     @SerializedName("upcoming_and_past_bookings_enabled")
