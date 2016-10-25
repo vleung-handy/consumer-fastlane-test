@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -10,9 +11,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -44,11 +47,14 @@ public final class PromosFragment extends BookingFlowFragment
     EditText mPromoText;
     @Bind(R.id.promotions_coupon_text_clear)
     View mPromoTextClearImage;
+    @Bind(R.id.promotions_scroll_view)
+    ScrollView mPromoScrollView;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
     private String mPromoCoupon;
+    private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
     public static PromosFragment newInstance(String extraPromoCode)
     {
@@ -119,8 +125,18 @@ public final class PromosFragment extends BookingFlowFragment
             {
                 mPromoTextClearImage.setVisibility(s.toString()
                                                     .isEmpty() ? View.GONE : View.VISIBLE);
+                mPromoText.setHintTextColor(getResources().getColor(R.color.black_pressed));
             }
         });
+        mAutoScrollListener = new ViewTreeObserver.OnGlobalLayoutListener()
+        {
+            @Override
+            public void onGlobalLayout()
+            {
+                mPromoScrollView.smoothScrollTo(0, mPromoScrollView.getBottom());
+            }
+        };
+        mPromoScrollView.getViewTreeObserver().addOnGlobalLayoutListener(mAutoScrollListener);
         if (mPromoCoupon != null)
         {
             mPromoText.setText(mPromoCoupon);
@@ -216,6 +232,10 @@ public final class PromosFragment extends BookingFlowFragment
             bookingManager.setPromoTabCoupon(null);
             showSnackbar();
         }
+        else
+        {
+            mPromoText.setHintTextColor(getResources().getColor(R.color.error_red));
+        }
     }
 
     private void showSnackbar()
@@ -275,5 +295,21 @@ public final class PromosFragment extends BookingFlowFragment
     {
         super.enableInputs();
         mApplyButton.setClickable(true);
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+        {
+            mPromoScrollView.getViewTreeObserver()
+                            .removeOnGlobalLayoutListener(mAutoScrollListener);
+        }
+        else
+        {
+            mPromoScrollView.getViewTreeObserver()
+                            .removeGlobalOnLayoutListener(mAutoScrollListener);
+        }
+        super.onDestroyView();
     }
 }
