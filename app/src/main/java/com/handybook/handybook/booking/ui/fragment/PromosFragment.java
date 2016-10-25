@@ -121,6 +121,7 @@ public final class PromosFragment extends BookingFlowFragment
             {
                 mPromoTextClearImage.setVisibility(s.toString()
                                                     .isEmpty() ? View.GONE : View.VISIBLE);
+                mPromoText.setHintTextColor(getResources().getColor(R.color.black_pressed));
             }
         });
         mAutoScrollListener = new ViewTreeObserver.OnGlobalLayoutListener()
@@ -226,6 +227,10 @@ public final class PromosFragment extends BookingFlowFragment
             // The user wants to delete the promo code
             bookingManager.setPromoTabCoupon(null);
             showSnackbar();
+        }
+        else
+        {
+            mPromoText.setHintTextColor(getResources().getColor(R.color.error_red));
         }
     }
 
