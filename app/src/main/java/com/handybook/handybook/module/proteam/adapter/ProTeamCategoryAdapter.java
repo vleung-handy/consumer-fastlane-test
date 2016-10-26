@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.module.proteam.holder.ProTeamFacebookHolder;
 import com.handybook.handybook.module.proteam.holder.ProTeamProHolder;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
@@ -19,14 +20,18 @@ import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolder>
+public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
+    private static final int FACEBOOK_HEADER = 1;
+
     @Nullable
     private User mUser;
     private ProTeamCategoryType mProTeamCategoryType;
     private ProTeam mProTeam;
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeamProViewModel.OnInteractionListener mOnXClickedListener;
+    private ProTeamFacebookHolder mFacebookHeaderHolder;
+    private int mHeaderCount = 0;
 
     public ProTeamCategoryAdapter(
             @Nullable final User user,
@@ -42,28 +47,56 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<ProTeamProHolde
         initProTeamProViewModels();
     }
 
-    @Override
-    public ProTeamProHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public void setFacebookHeaderHolder(ProTeamFacebookHolder proTeamFacebookHolder)
     {
-        final int layoutResId = mUser != null && mUser.isProTeamProfilePicturesEnabled() ?
-                R.layout.layout_pro_team_pro_card_v3 : R.layout.layout_pro_team_pro_card_v2;
-        final View itemView = LayoutInflater
-                .from(parent.getContext())
-                .inflate(layoutResId, parent, false);
-        return new ProTeamProHolder(itemView, mOnXClickedListener);
+        mFacebookHeaderHolder = proTeamFacebookHolder;
+        enableFacebookHeader(true);
+    }
+
+    public void enableFacebookHeader(boolean enable)
+    {
+        mHeaderCount = enable ? 1 : 0;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        if (viewType == FACEBOOK_HEADER)
+        {
+            return mFacebookHeaderHolder;
+        }
+        else
+        {
+            final int layoutResId = mUser != null && mUser.isProTeamProfilePicturesEnabled() ?
+                    R.layout.layout_pro_team_pro_card_v3 : R.layout.layout_pro_team_pro_card_v2;
+            final View itemView = LayoutInflater
+                    .from(parent.getContext())
+                    .inflate(layoutResId, parent, false);
+            return new ProTeamProHolder(itemView, mOnXClickedListener);
+        }
     }
 
 
     @Override
-    public void onBindViewHolder(final ProTeamProHolder holder, int position)
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position)
     {
-        holder.bindProTeamProViewModel(mProTeamProViewModels.get(position));
+        if (position >= mHeaderCount)
+        {
+            ((ProTeamProHolder) holder).bindProTeamProViewModel(
+                    mProTeamProViewModels.get(position - mHeaderCount));
+        }
     }
 
     @Override
     public int getItemCount()
     {
-        return mProTeamProViewModels.size();
+        return mProTeamProViewModels.size() + mHeaderCount;
+    }
+
+    @Override
+    public int getItemViewType(final int position)
+    {
+        return position < mHeaderCount ? FACEBOOK_HEADER : super.getItemViewType(position);
     }
 
     private void initProTeamProViewModels()

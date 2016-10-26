@@ -12,15 +12,14 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.LeftIconButton;
+import com.handybook.handybook.ui.activity.LoginActivity;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -111,7 +110,6 @@ public class RedemptionSignUpFragment extends InjectedFragment
         mSenderName = getArguments().getString(KEY_SENDER_NAME);
         mReceiverCouponAmount = getArguments().getString(KEY_RECEIVER_COUPON_AMOUNT);
         mReferralGuid = getArguments().getString(KEY_REFERRAL_GUID);
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         mFacebookCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(
                 mFacebookCallbackManager,

@@ -1,34 +1,41 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.handybook.handybook.R;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.module.proteam.adapter.ProTeamCategoryAdapter;
+import com.handybook.handybook.module.proteam.holder.ProTeamFacebookHolder;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.handybook.handybook.module.proteam.model.ProTeamCategoryType.CLEANING;
+import static com.handybook.handybook.module.proteam.model.ProviderMatchPreference.PREFERRED;
+
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProTeamProListFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A simple {@link Fragment} subclass. Use the {@link ProTeamProListFragment#newInstance} factory
+ * method to create an instance of this fragment.
  */
 public class ProTeamProListFragment extends InjectedFragment
 {
@@ -48,18 +55,28 @@ public class ProTeamProListFragment extends InjectedFragment
     private ProTeamCategoryType mProTeamCategoryType;
     private OnProInteraction mOnProInteraction;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
+    private CallbackManager mFacebookCallbackManager;
+
+    private static boolean sXButtonPressed = false;
 
     {
         mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
         {
             @Override
-            public void onXClicked(final ProTeamPro proTeamPro, final ProviderMatchPreference providerMatchPreference)
+            public void onXClicked(
+                    final ProTeamPro proTeamPro,
+                    final ProviderMatchPreference providerMatchPreference
+            )
             {
                 if (mOnProInteraction == null)
                 {
                     return;
                 }
-                mOnProInteraction.onProRemovalRequested(mProTeamCategoryType, proTeamPro, providerMatchPreference);
+                mOnProInteraction.onProRemovalRequested(
+                        mProTeamCategoryType,
+                        proTeamPro,
+                        providerMatchPreference
+                );
             }
 
             @Override
@@ -69,7 +86,11 @@ public class ProTeamProListFragment extends InjectedFragment
                 {
                     return;
                 }
-                mOnProInteraction.onProCheckboxStateChanged(mProTeamCategoryType, proTeamPro, checked);
+                mOnProInteraction.onProCheckboxStateChanged(
+                        mProTeamCategoryType,
+                        proTeamPro,
+                        checked
+                );
             }
         };
     }
@@ -94,6 +115,19 @@ public class ProTeamProListFragment extends InjectedFragment
     }
 
     @Override
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        final Bundle arguments = getArguments();
+        if (arguments != null)
+        {
+            mProteam = arguments.getParcelable(KEY_PROTEAM);
+            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+        }
+        mFacebookCallbackManager = CallbackManager.Factory.create();
+    }
+
+    @Override
     public View onCreateView(
             LayoutInflater inflater,
             ViewGroup container,
@@ -102,14 +136,16 @@ public class ProTeamProListFragment extends InjectedFragment
     {
         final View view = inflater.inflate(R.layout.fragment_pro_team_pro_list, container, false);
         ButterKnife.bind(this, view);
-        final Bundle arguments = getArguments();
-        if (arguments != null)
-        {
-            mProteam = arguments.getParcelable(KEY_PROTEAM);
-            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
-        }
+
         initialize();
         return view;
+    }
+
+    @Override
+    public final void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void initialize()
@@ -148,14 +184,59 @@ public class ProTeamProListFragment extends InjectedFragment
         {
             return;
         }
-        RecyclerView.Adapter proCardCardAdapter = new ProTeamCategoryAdapter(
+
+        final ProTeamCategoryAdapter proCardCardAdapter = new ProTeamCategoryAdapter(
                 userManager.getCurrentUser(),
                 mProteam,
                 mProTeamCategoryType,
                 mOnInteractionListener
         );
+
+        if (configurationManager.getPersistentConfiguration().isProTeamFacebookLoginEnabled()
+                && mProTeamCategoryType == CLEANING
+                && !sXButtonPressed
+                && AccessToken.getCurrentAccessToken() == null)
+        {
+            addFacebookHeader(proCardCardAdapter);
+        }
         mRecyclerView.setAdapter(proCardCardAdapter);
         proCardCardAdapter.notifyDataSetChanged();
+    }
+
+    private void addFacebookHeader(final ProTeamCategoryAdapter proTeamCategoryAdapter)
+    {
+        View facebookHeaderView = LayoutInflater
+                .from(getContext())
+                .inflate(R.layout.view_pro_team_facebook, null, false);
+        View.OnClickListener logInButtonListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View view)
+            {
+                bus.post(new LogEvent.AddLogEvent(
+                        new ProTeamPageLog.FacebookConnectTapped(
+                                mProteam.getCount(CLEANING, PREFERRED))));
+            }
+        };
+        View.OnClickListener closeButtonListener = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View view)
+            {
+                sXButtonPressed = true;
+                proTeamCategoryAdapter.enableFacebookHeader(false);
+                proTeamCategoryAdapter.notifyDataSetChanged();
+            }
+        };
+        ProTeamFacebookHolder proTeamFacebookHolder = new ProTeamFacebookHolder(
+                facebookHeaderView,
+                this,
+                mFacebookCallbackManager,
+                logInButtonListener,
+                closeButtonListener
+        );
+
+        proTeamCategoryAdapter.setFacebookHeaderHolder(proTeamFacebookHolder);
     }
 
     /**

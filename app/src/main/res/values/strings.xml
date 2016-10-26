@@ -358,6 +358,8 @@
     <string name="cd_star_icon">star</string>
     <string name="cd_pro_team_pro_card_remove_pro_icon">Remove Pro Icon</string>
     <string name="cd_pro_team_empty_view_empty_heart_icon">No Pros Empty heart icon</string>
+
+    <!--Pro Team-->
     <string name="pro_team_empty_card_title_loading">Loading Pro Team</string>
     <string name="pro_team_empty_card_text_loading">Looking up your Pro Team…</string>
     <string name="pro_team_empty_card_title">No pros on your team yet</string>
@@ -365,8 +367,14 @@
     <string name="pro_team_remove_permanent">Yes, and never match us again</string>
     <string name="pro_team_remove_nevermind">Nevermind</string>
     <string name="pro_team_remove_dialog_title">Remove %1$s?</string>
-
     <string name="cd_pro_team_toolbar_questionmark">Open Pro Team help article icon</string>
+    <string name="pro_team_pro_card_pretext_preferred">Want to book your favorite pros? We\'ll send them your request first.</string>
+    <string name="pro_team_find_pros_from_friends">Find the pros your friends already love</string>
+    <string name="pro_team_connect_with_facebook">Connect with Facebook</string>
+    <string name="pro_team_connect_to_facebook">Connected to Facebook</string>
+    <string name="pro_team_see_pro_recommendations">You\'ll see pro recommendations from friends here as we find them.</string>
+    <string name="pro_team_ok">OK, Got it</string>
+
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
     <string name="learn_more">Learn more</string>

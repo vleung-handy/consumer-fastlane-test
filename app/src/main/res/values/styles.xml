@@ -754,5 +754,11 @@
         <item name="android:button">@drawable/round_checkbox</item>
     </style>
 
+
+    <style name="Button.RoundEmptyGray">
+        <item name="android:background">@drawable/button_gray_empty_round</item>
+        <item name="android:textColor">@color/handy_tertiary_gray</item>
+    </style>
+
     <string name="name">Name</string>
 </resources>
