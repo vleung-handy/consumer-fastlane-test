@@ -26,6 +26,10 @@ import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.layer.sdk.LayerClient;
+import com.layer.sdk.messaging.Conversation;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,6 +56,10 @@ public class ProTeamProListFragment extends InjectedFragment
     TextView mEmptyViewText;
 
     private ProTeam mProTeam;
+
+    @Inject
+    LayerClient mLayerClient;
+
     private ProTeamCategoryType mProTeamCategoryType;
     private OnProInteraction mOnProInteraction;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
@@ -191,6 +199,7 @@ public class ProTeamProListFragment extends InjectedFragment
         }
         mRecyclerView.setAdapter(proCardCardAdapter);
         proCardCardAdapter.notifyDataSetChanged();
+
     }
 
     private void addFacebookHeader(final ProTeamCategoryAdapter proTeamCategoryAdapter)
