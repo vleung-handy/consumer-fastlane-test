@@ -33,13 +33,12 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     TextView mFooter;
     @Bind(R.id.pro_team_pro_card_checkbox)
     CheckBox mCheckbox;
+    @Nullable
     @Bind(R.id.pro_team_pro_card_average_rating_layout)
     ViewGroup mProAverageRatingLayout;
+    @Nullable
     @Bind(R.id.pro_team_pro_card_average_rating_text)
     TextView mProAverageRating;
-    @Nullable
-    @Bind(R.id.booking_count_text)
-    TextView mBookingCountText;
     @Nullable
     @Bind(R.id.pro_team_pro_card_image)
     ImageView mProImage;
@@ -67,7 +66,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         mCheckbox.setOnCheckedChangeListener(this);
 
         Float averageRating = mProTeamProViewModel.getAverageRating();
-        if (averageRating != null)
+        if (mProAverageRating != null && averageRating != null)
         {
             averageRating /= 2; // Average rating is out of 10, needs to be out of 5
             DecimalFormat df = new DecimalFormat();
@@ -75,15 +74,9 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
             df.setMaximumFractionDigits(1);
             mProAverageRating.setText(df.format(averageRating));
         }
-        else
+        else if (mProAverageRatingLayout != null)
         {
-
             mProAverageRatingLayout.setVisibility(View.INVISIBLE);
-        }
-
-        if (mBookingCountText != null)
-        {
-            mBookingCountText.setText(mProTeamProViewModel.getBookingFooter());
         }
 
         if (mProImage != null)
