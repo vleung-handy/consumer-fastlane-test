@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <View
+        android:id="@+id/pro_team_pro_card_divider_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/horizontal_divider_height"
+        android:background="@color/handy_divider_line"
+        />
+
+    <RelativeLayout
+        android:id="@+id/pro_team_pro_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        >
+
+        <com.handybook.handybook.ui.view.MiniProProfile
+            android:id="@+id/pro_team_pro_card_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <CheckBox
+            android:id="@+id/pro_team_pro_card_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/default_margin"
+            android:background="@drawable/bg_checkbox_heart_red"
+            android:button="@null"
+            android:saveEnabled="true"
+            tools:checked="true"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

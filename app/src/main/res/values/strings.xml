@@ -447,4 +447,9 @@
 
     <string name="booking_details_pro_info_title">Your Pro</string>
     <string name="places_api_base_url">https://maps.googleapis.com/</string>
+
+    <plurals name="jobs_count">
+        <item quantity="one">%d job</item>
+        <item quantity="other">%d jobs</item>
+    </plurals>
 </resources>

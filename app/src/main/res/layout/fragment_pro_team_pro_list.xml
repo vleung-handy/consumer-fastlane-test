@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingBottom="64dp"
-        tools:listitem="@layout/layout_pro_team_pro_card_v2"
+        tools:listitem="@layout/layout_pro_team_pro_card"
         />
 
     <include layout="@layout/layout_pro_team_empty"/>

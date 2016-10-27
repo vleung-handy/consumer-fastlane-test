@@ -29,7 +29,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private ProTeamCategoryType mProTeamCategoryType;
     private ProTeam mProTeam;
     private List<ProTeamProViewModel> mProTeamProViewModels;
-    private final ProTeamProViewModel.OnInteractionListener mOnXClickedListener;
+    private final ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
     private ProTeamFacebookHolder mFacebookHeaderHolder;
     private int mHeaderCount = 0;
 
@@ -43,7 +43,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mUser = user;
         mProTeamCategoryType = proTeamCategoryType;
         mProTeam = proTeam;
-        mOnXClickedListener = onInteractionListener;
+        mOnInteractionListener = onInteractionListener;
         initProTeamProViewModels();
     }
 
@@ -67,12 +67,11 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
         else
         {
-            final int layoutResId = mUser != null && mUser.isProTeamProfilePicturesEnabled() ?
-                    R.layout.layout_pro_team_pro_card_v3 : R.layout.layout_pro_team_pro_card_v2;
             final View itemView = LayoutInflater
                     .from(parent.getContext())
-                    .inflate(layoutResId, parent, false);
-            return new ProTeamProHolder(itemView, mOnXClickedListener);
+                    .inflate(R.layout.layout_pro_team_pro_card, parent, false);
+            final boolean showProImage = mUser != null && mUser.isProTeamProfilePicturesEnabled();
+            return new ProTeamProHolder(itemView, mOnInteractionListener, showProImage);
         }
     }
 
