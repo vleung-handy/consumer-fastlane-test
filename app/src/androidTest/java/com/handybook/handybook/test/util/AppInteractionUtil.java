@@ -7,6 +7,7 @@ import com.handybook.handybook.test.model.TestUser;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -38,18 +39,23 @@ public class AppInteractionUtil
          TODO see if this happens on the actual cloud test devices
          */
         {
-
             openDrawer();
 
             //log out
             onView(withId(android.R.id.content)).perform(swipeUp());
-            if (ViewUtil.isViewDisplayed(withText(R.string.log_out)))
+            if (!ViewUtil.isViewDisplayed(withText(R.string.log_in)))
             {
-                //press the log out button in the nav drawer
-                onView(withText(R.string.log_out)).perform(click());
+                //press the my account button in the nav drawer
+                onView(withText(R.string.account)).perform(click());
+
+                ViewUtil.waitForViewInScrollViewVisible(
+                        R.id.account_sign_out_button,
+                        ViewUtil.LONG_MAX_WAIT_TIME_MS
+                );
+                onView(withId(R.id.account_sign_out_button)).perform(scrollTo()).perform(click());
 
                 //press the log out button in the confirmation dialog
-                onView(withText(R.string.log_out)).perform(click());
+                onView(withText(R.string.account_sign_out)).perform(click());
                 ViewUtil.waitForTextNotVisible(R.string.log_out, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
                 //drawer will be closed
             }

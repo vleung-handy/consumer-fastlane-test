@@ -44,7 +44,6 @@ public class DeepLinkTest
         uri = Uri.parse("handy://account");
         deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
         mActivityRule.getActivity().startActivity(deepLinkIntent);
-        ViewUtil.waitForViewVisible(R.id.profile_scroll_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         ViewUtil.matchToolbarTitle(R.string.account);
 
         uri = Uri.parse("handy://pro_team");

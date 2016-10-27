@@ -6,7 +6,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
@@ -28,8 +27,6 @@ public class ContactFragment extends InjectedFragment
 {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.contact_update_button)
-    Button mUpdateButton;
     @Bind(R.id.contact_name_text)
     FullNameInputTextView mFullNameText;
     @Bind(R.id.contact_email_text)

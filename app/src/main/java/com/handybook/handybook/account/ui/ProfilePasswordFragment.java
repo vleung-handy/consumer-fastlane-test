@@ -71,12 +71,12 @@ public class ProfilePasswordFragment extends InjectedFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_profile_password,
-                                               container,
-                                               false
-                                       );
+        final View view =
+                LayoutInflater.from(getContext()).inflate(
+                        R.layout.fragment_profile_password,
+                        container,
+                        false
+                );
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.account_update_password));
 
@@ -111,28 +111,11 @@ public class ProfilePasswordFragment extends InjectedFragment
     }
 
     @Override
-    public void onStart()
-    {
-        super.onStart();
-        if (!loadedUserInfo)
-        {
-            loadUserInfo();
-        }
-    }
-
-    @Override
     public void onResume()
     {
         super.onResume();
         bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordShown()));
 
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        progressDialog.dismiss();
     }
 
     @Override
@@ -218,20 +201,7 @@ public class ProfilePasswordFragment extends InjectedFragment
         bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordError()));
         userErrorCallback(event);
     }
-
-    @Subscribe
-    public void onReceiveUserSuccess(HandyEvent.ReceiveUserSuccess event)
-    {
-        userSuccessCallback();
-    }
-
-    @Subscribe
-    public void onReceiveUserError(HandyEvent.ReceiveUserError event)
-    {
-        userErrorCallback(event);
-    }
     //endregion
-
 
     //region InjectedFragment
     @Override
@@ -291,14 +261,6 @@ public class ProfilePasswordFragment extends InjectedFragment
 
         }
         return false;
-    }
-
-    private void loadUserInfo()
-    {
-        clearPasswordFields();
-        disableInputs();
-        progressDialog.show();
-        bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(), null));
     }
 
     private void clearPasswordFields()
