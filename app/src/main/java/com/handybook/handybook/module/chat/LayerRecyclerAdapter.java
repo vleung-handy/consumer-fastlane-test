@@ -1,6 +1,5 @@
 package com.handybook.handybook.module.chat;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
@@ -12,25 +11,22 @@ import com.layer.sdk.query.Query;
 import com.layer.sdk.query.RecyclerViewController;
 import com.layer.sdk.query.SortDescriptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by jtse on 10/26/16.
  */
-public abstract class BaseLayerRecyclerAdapter<VH extends RecyclerView.ViewHolder>
+public abstract class LayerRecyclerAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH>
         implements RecyclerViewController.Callback
 {
-    private Context mContext;
     protected final LayerClient mLayerClient;
     private final RecyclerViewController<Conversation> mQueryController;
     private long mInitialHistory = 20;
 
-    protected BaseLayerRecyclerAdapter(
-            @NonNull Context context,
-            @NonNull final LayerClient layerClient
-    )
+    protected LayerRecyclerAdapter(@NonNull final LayerClient layerClient)
     {
-        mContext = context;
-
         Query<Conversation> query = Query.builder(Conversation.class)
                 /* Only show conversations we're still a member of */
                                          .predicate(new Predicate(
@@ -73,6 +69,18 @@ public abstract class BaseLayerRecyclerAdapter<VH extends RecyclerView.ViewHolde
 //        mInitialHistory = initialHistory;
 //        return this;
 //    }
+
+    public List<Conversation> getAllConversations()
+    {
+        List<Conversation> conversations = new ArrayList<>();
+
+        for (int i = 0; i < mQueryController.getItemCount(); i++)
+        {
+            conversations.add(getConversationItem(i));
+        }
+
+        return conversations;
+    }
 
     public Conversation getConversationItem(int position)
     {
@@ -117,6 +125,8 @@ public abstract class BaseLayerRecyclerAdapter<VH extends RecyclerView.ViewHolde
         }).start();
     }
 
+    protected abstract void onConversationUpdated();
+
     //==============================================================================================
     // UI update callbacks
     //==============================================================================================
@@ -125,13 +135,15 @@ public abstract class BaseLayerRecyclerAdapter<VH extends RecyclerView.ViewHolde
     public void onQueryDataSetChanged(RecyclerViewController controller)
     {
         syncInitialMessages(0, getItemCount());
-        notifyDataSetChanged();
+        onConversationUpdated();
+//        notifyDataSetChanged();
     }
 
     @Override
     public void onQueryItemChanged(RecyclerViewController controller, int position)
     {
-        notifyItemChanged(position);
+        onConversationUpdated();
+//        notifyItemChanged(position);
     }
 
     @Override
@@ -141,14 +153,16 @@ public abstract class BaseLayerRecyclerAdapter<VH extends RecyclerView.ViewHolde
             int itemCount
     )
     {
-        notifyItemRangeChanged(positionStart, itemCount);
+        onConversationUpdated();
+//        notifyItemRangeChanged(positionStart, itemCount);
     }
 
     @Override
     public void onQueryItemInserted(RecyclerViewController controller, int position)
     {
         syncInitialMessages(position, 1);
-        notifyItemInserted(position);
+        onConversationUpdated();
+//        notifyItemInserted(position);
     }
 
     @Override
@@ -159,13 +173,15 @@ public abstract class BaseLayerRecyclerAdapter<VH extends RecyclerView.ViewHolde
     )
     {
         syncInitialMessages(positionStart, itemCount);
-        notifyItemRangeInserted(positionStart, itemCount);
+        onConversationUpdated();
+//        notifyItemRangeInserted(positionStart, itemCount);
     }
 
     @Override
     public void onQueryItemRemoved(RecyclerViewController controller, int position)
     {
-        notifyItemRemoved(position);
+        onConversationUpdated();
+//        notifyItemRemoved(position);
     }
 
     @Override
@@ -175,7 +191,8 @@ public abstract class BaseLayerRecyclerAdapter<VH extends RecyclerView.ViewHolde
             int itemCount
     )
     {
-        notifyItemRangeRemoved(positionStart, itemCount);
+        onConversationUpdated();
+//        notifyItemRangeRemoved(positionStart, itemCount);
     }
 
     @Override
@@ -185,6 +202,7 @@ public abstract class BaseLayerRecyclerAdapter<VH extends RecyclerView.ViewHolde
             int toPosition
     )
     {
-        notifyItemMoved(fromPosition, toPosition);
+        onConversationUpdated();
+//        notifyItemMoved(fromPosition, toPosition);
     }
 }

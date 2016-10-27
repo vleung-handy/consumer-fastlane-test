@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.layer.sdk.messaging.Conversation;
 
 public class ProTeamProViewModel
 {
@@ -17,6 +18,7 @@ public class ProTeamProViewModel
     private boolean mIsChecked;
     private boolean mIsHandymanIndicatorEnabled;
     private String mImageUrl;
+    private Conversation mConversation;
 
     private ProTeamProViewModel(
             @NonNull final ProTeamPro proTeamPro,
@@ -100,5 +102,15 @@ public class ProTeamProViewModel
         void onLongClick(ProTeamPro proTeamPro, ProviderMatchPreference providerMatchPreference);
 
         void onCheckedChanged(ProTeamPro proTeamPro, boolean checked);
+    }
+
+    public Conversation getConversation()
+    {
+        return mConversation;
+    }
+
+    public void setConversation(final Conversation conversation)
+    {
+        mConversation = conversation;
     }
 }
