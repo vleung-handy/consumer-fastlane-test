@@ -82,7 +82,7 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView
         mProProfile.setTitle(provider.getFirstNameAndLastInitial());
         mProProfile.setIsProTeam(providerAssignmentInfo.isProTeamMatch());
         mProProfile.setRatingAndJobsCount(provider.getAverageRating(), provider.getBookingCount());
-        if (providerAssignmentInfo.showProfileImage())
+        if (providerAssignmentInfo.shouldShowProfileImage())
         {
             mProProfile.setImage(provider.getImageUrl());
         }

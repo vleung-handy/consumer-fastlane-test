@@ -1,6 +1,8 @@
 package com.handybook.handybook.booking.model;
 
 
+import android.support.annotation.Nullable;
+
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.library.util.StringUtils;
@@ -96,12 +98,13 @@ public class Provider implements Serializable
         return (mFirstName != null ? mFirstName : "") + " " + (mLastName != null ? mLastName : "");
     }
 
-
+    @Nullable
     public Float getAverageRating()
     {
         return mAverageRating;
     }
 
+    @Nullable
     public Integer getBookingCount()
     {
         return mBookingCount;

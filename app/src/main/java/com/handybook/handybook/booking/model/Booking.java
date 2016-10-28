@@ -581,7 +581,7 @@ public class Booking implements Parcelable
         @SerializedName("pro_team_match")
         private boolean mProTeamMatch;
         @SerializedName("show_profile_image")
-        private boolean mShowProfileImage;
+        private boolean shouldShowProfileImage;
 
         public boolean isProTeamMatch()
         {
@@ -598,9 +598,9 @@ public class Booking implements Parcelable
             return mSubText;
         }
 
-        public boolean showProfileImage()
+        public boolean shouldShowProfileImage()
         {
-            return mShowProfileImage;
+            return shouldShowProfileImage;
         }
     }
 

@@ -22,17 +22,17 @@ import butterknife.ButterKnife;
 public class MiniProProfile extends FrameLayout
 {
     @Bind(R.id.mini_pro_profile_title)
-    TextView mTitle;
+    TextView mTitleText;
     @Bind(R.id.mini_pro_profile_rating_and_jobs_count_container)
     ViewGroup mRatingAndJobsCountContainer;
     @Bind(R.id.mini_pro_profile_rating)
-    TextView mRating;
+    TextView mRatingText;
     @Bind(R.id.mini_pro_profile_jobs_count)
-    TextView mJobsCount;
+    TextView mJobsCountText;
     @Bind(R.id.mini_pro_profile_image_container)
-    ViewGroup mImageContainer;
+    ViewGroup mProfileImageContainer;
     @Bind(R.id.mini_pro_profile_image)
-    ImageView mImage;
+    ImageView mProfileImage;
     @Bind(R.id.mini_pro_profile_pro_team_indicator_image)
     View mProTeamIndicatorImage;
     @Bind(R.id.mini_pro_profile_pro_team_indicator_name)
@@ -79,7 +79,7 @@ public class MiniProProfile extends FrameLayout
 
     public void setTitle(final String title)
     {
-        mTitle.setText(title);
+        mTitleText.setText(title);
     }
 
     public void setProTeamIndicatorEnabled(final boolean proTeamIndicatorEnabled)
@@ -97,27 +97,27 @@ public class MiniProProfile extends FrameLayout
             final DecimalFormat format = new DecimalFormat();
             format.setMinimumFractionDigits(1);
             format.setMaximumFractionDigits(1);
-            mRating.setText(format.format(rating));
+            mRatingText.setText(format.format(rating));
 
-            mJobsCount.setText(
+            mJobsCountText.setText(
                     getResources().getQuantityString(R.plurals.jobs_count, jobsCount, jobsCount));
         }
     }
 
     public void setImage(@Nullable final String imageUrl)
     {
-        mImageContainer.setVisibility(VISIBLE);
+        mProfileImageContainer.setVisibility(VISIBLE);
         if (imageUrl != null)
         {
             Picasso.with(getContext())
                    .load(imageUrl)
                    .placeholder(R.drawable.img_pro_placeholder)
                    .noFade()
-                   .into(mImage);
+                   .into(mProfileImage);
         }
         else
         {
-            mImage.setImageResource(R.drawable.img_pro_placeholder);
+            mProfileImage.setImageResource(R.drawable.img_pro_placeholder);
         }
         updateProTeamIndicator();
     }
@@ -134,7 +134,7 @@ public class MiniProProfile extends FrameLayout
         mProTeamIndicatorName.setVisibility(GONE);
         if (mIsProTeam && mIsProTeamIndicatorEnabled)
         {
-            if (mImageContainer.getVisibility() == VISIBLE)
+            if (mProfileImageContainer.getVisibility() == VISIBLE)
             {
                 mProTeamIndicatorImage.setVisibility(VISIBLE);
             }

@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.proteam.viewmodel;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
@@ -52,11 +53,13 @@ public class ProTeamProViewModel
         return mTitle;
     }
 
+    @Nullable
     public Float getAverageRating()
     {
         return mAverageRating;
     }
 
+    @Nullable
     public Integer getJobsCount()
     {
         return mJobsCount;
