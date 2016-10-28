@@ -8,11 +8,15 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.layer.sdk.LayerClient;
+import com.layer.sdk.changes.LayerChangeEvent;
+import com.layer.sdk.listeners.LayerChangeEventListener;
 import com.layer.sdk.messaging.Conversation;
+import com.layer.sdk.messaging.Message;
 import com.layer.sdk.query.Predicate;
 import com.layer.sdk.query.Query;
 import com.layer.sdk.query.RecyclerViewController;
 import com.layer.sdk.query.SortDescriptor;
+import com.squareup.otto.Bus;
 
 /**
  * Created by jtse on 9/22/16.
@@ -29,20 +33,37 @@ public class LayerHelper
     private boolean mConversationsInitialized = false;
     private ConfigurationManager mConfigManager;
     private UserManager mUserManager;
+    private Bus mBus;
+    private long mCurrentUnreadMessages = 0;
 
     public LayerHelper(
             final LayerClient layerClient,
             final AuthenticationProvider layerAuthProvider,
             final ConfigurationManager configManager,
             final UserManager userManager,
+            final Bus bus,
             final String appId
     )
     {
         mLayerClient = layerClient;
         mLayerAuthProvider = layerAuthProvider;
+        mBus = bus;
         mLayerAppId = appId;
         mUserManager = userManager;
         mConfigManager = configManager;
+
+        mLayerClient.registerEventListener(new LayerChangeEventListener()
+        {
+            @Override
+            public void onChangeEvent(final LayerChangeEvent layerChangeEvent)
+            {
+                if (getUnreadMessageCount() != mCurrentUnreadMessages)
+                {
+                    mCurrentUnreadMessages = getUnreadMessageCount();
+                    mBus.post(new LayerEvent(mCurrentUnreadMessages));
+                }
+            }
+        });
     }
 
     /**
@@ -340,5 +361,24 @@ public class LayerHelper
     public boolean isConversationsInitialized()
     {
         return mConversationsInitialized;
+    }
+
+    /**
+     * Fetches the count of all unread messages for the authenticated user
+     *
+     * @return
+     */
+    public long getUnreadMessageCount()
+    {
+        Query query = Query.builder(Message.class)
+                           .predicate(new Predicate(
+                                   Message.Property.IS_UNREAD,
+                                   Predicate.Operator.EQUAL_TO,
+                                   true
+                           ))
+                           .build();
+
+        Long result = mLayerClient.executeQueryForCount(query);
+        return result == null ? 0 : result;
     }
 }

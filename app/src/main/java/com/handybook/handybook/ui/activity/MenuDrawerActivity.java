@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
@@ -38,6 +39,7 @@ import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
 import com.handybook.handybook.module.bookings.HistoryActivity;
+import com.handybook.handybook.module.chat.LayerEvent;
 import com.handybook.handybook.module.chat.LayerHelper;
 import com.handybook.handybook.module.chat.PushNotificationReceiver;
 import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
@@ -127,6 +129,12 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 {
                     navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
                 }
+            }
+
+            @Subscribe
+            public void onLayerEvent(LayerEvent event)
+            {
+                updateLayerActionMenu();
             }
 
             @Subscribe
@@ -284,9 +292,34 @@ public abstract class MenuDrawerActivity extends BaseActivity
     }
 
     /**
+     * This is the little text on the drawer next to the pro team menu item, to show how many unread
+     * messages there are
+     */
+    private void updateLayerActionMenu()
+    {
+        TextView textView = (TextView) mNavigationView
+                .getMenu()
+                .findItem(R.id.nav_menu_my_pro_team)
+                .getActionView();
+
+        Log.d(
+                TAG,
+                "onLayerEvent: there are " + mLayerHelper.getUnreadMessageCount() + " unread messages"
+        );
+        if (mLayerHelper.getUnreadMessageCount() > 0)
+        {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(String.valueOf(mLayerHelper.getUnreadMessageCount()));
+        }
+        else
+        {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
      * Updates the menu item visibilities based on the user's login status
      */
-
     private void refreshMenu()
     {
         final User currentUser = mUserManager.getCurrentUser();

@@ -13,6 +13,7 @@ import com.layer.atlas.messagetypes.text.TextCellFactory;
 import com.layer.atlas.messagetypes.threepartimage.ThreePartImageUtils;
 import com.layer.atlas.util.picasso.requesthandlers.MessagePartRequestHandler;
 import com.layer.sdk.LayerClient;
+import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
@@ -110,14 +111,22 @@ public final class ChatModule
             LayerClient layerClient,
             AuthenticationProvider authProvider,
             ConfigurationManager configManager,
-            UserManager userManager
+            UserManager userManager,
+            Bus bus
     )
     {
         Log.d(
                 TAG,
                 "providesLayerHelper() called with: layerClient = [" + layerClient + "], authProvider = [" + authProvider + "]"
         );
-        return new LayerHelper(layerClient, authProvider, configManager, userManager, LAYER_APP_ID);
+        return new LayerHelper(
+                layerClient,
+                authProvider,
+                configManager,
+                userManager,
+                bus,
+                LAYER_APP_ID
+        );
     }
 
     @Provides

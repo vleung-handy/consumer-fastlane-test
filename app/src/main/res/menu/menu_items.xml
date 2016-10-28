@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <!-- Group ids are required if we want to show a divider between groups-->
     <group
         android:id="@+id/top_group"
@@ -31,6 +33,7 @@
             android:checked="false"
             android:icon="@drawable/menu_pro_team"
             android:title="@string/my_pro_team"
+            app:actionLayout="@layout/chat_menu_item"
             />
 
         <item

@@ -11,7 +11,6 @@ import com.layer.sdk.query.Query;
 import com.layer.sdk.query.RecyclerViewController;
 import com.layer.sdk.query.SortDescriptor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,14 +71,17 @@ public abstract class LayerRecyclerAdapter<VH extends RecyclerView.ViewHolder>
 
     public List<Conversation> getAllConversations()
     {
-        List<Conversation> conversations = new ArrayList<>();
+//TODO: IF this doesn't work, use the commented code below.
+        return mLayerClient.getConversations();
 
-        for (int i = 0; i < mQueryController.getItemCount(); i++)
-        {
-            conversations.add(getConversationItem(i));
-        }
-
-        return conversations;
+//        List<Conversation> conversations = new ArrayList<>();
+//
+//        for (int i = 0; i < mQueryController.getItemCount(); i++)
+//        {
+//            conversations.add(getConversationItem(i));
+//        }
+//
+//        return conversations;
     }
 
     public Conversation getConversationItem(int position)
