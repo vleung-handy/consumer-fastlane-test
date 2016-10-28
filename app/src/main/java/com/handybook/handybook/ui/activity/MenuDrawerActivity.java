@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -18,18 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.WebStorage;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.facebook.login.LoginManager;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
-import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
@@ -37,7 +31,6 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
@@ -287,23 +280,13 @@ public abstract class MenuDrawerActivity extends BaseActivity
     {
         final User currentUser = mUserManager.getCurrentUser();
         final boolean userLoggedIn = currentUser != null;
-        final boolean newAccountEnabled =
-                mConfiguration != null && mConfiguration.isNewAccountEnabled();
 
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_bookings).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_profile).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_free_cleanings).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_log_in).setVisible(!userLoggedIn);
-        mNavigationView.getMenu().findItem(R.id.nav_menu_log_out).setVisible(
-                userLoggedIn && !newAccountEnabled);
-        mNavigationView.getMenu().findItem(R.id.nav_menu_promotions).setVisible(!newAccountEnabled);
-
-        mNavigationView.getMenu().findItem(R.id.nav_menu_payment).setVisible(
-                currentUser != null && currentUser.getStripeKey() != null && !newAccountEnabled);
-
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(
                 userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
-
         mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(
                 mConfiguration != null && mConfiguration.isUpcomingAndPastBookingsEnabled());
     }
@@ -339,9 +322,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
             case R.id.nav_menu_history:
                 navigateToActivity(HistoryActivity.class, menuItem.getItemId());
                 return true;
-            case R.id.nav_menu_payment:
-                navigateToActivity(UpdatePaymentActivity.class, menuItem.getItemId());
-                return true;
             case R.id.nav_menu_free_cleanings:
                 mBus.post(new LogEvent.AddLogEvent(new SideMenuLog.ShareButtonTappedLog()));
                 navigateToActivity(ReferralActivity.class, menuItem.getItemId());
@@ -350,57 +330,10 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 mBus.post(new LogEvent.AddLogEvent(new SideMenuLog.HelpCenterTappedLog()));
                 navigateToActivity(HelpActivity.class, menuItem.getItemId());
                 return true;
-            case R.id.nav_menu_promotions:
-                navigateToActivity(PromosActivity.class, menuItem.getItemId());
-                return true;
-            case R.id.nav_menu_log_out:
-                mDrawerLayout.closeDrawers();
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MenuDrawerActivity.this)
-                        .setMessage(R.string.want_to_log_out)
-                        .setPositiveButton(R.string.log_out, new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                mConfigurationManager.invalidateCache();
-                                mUserManager.setCurrentUser(null);
-                                WebStorage.getInstance().deleteAllData();
-                                new HandyWebView(getApplicationContext()).clearCache(true);
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
-                                {
-                                    CookieManager.getInstance().removeAllCookies(null);
-                                    CookieManager.getInstance().flush();
-                                }
-                                else
-                                {
-                                    CookieSyncManager cookieSyncMngr = CookieSyncManager
-                                            .createInstance(getApplication());
-                                    cookieSyncMngr.startSync();
-                                    CookieManager cookieManager = CookieManager.getInstance();
-                                    cookieManager.removeAllCookie();
-                                    cookieManager.removeSessionCookie();
-                                    cookieSyncMngr.stopSync();
-                                    cookieSyncMngr.sync();
-                                }
-                                //log out of Facebook also
-                                LoginManager.getInstance().logOut();
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                //do nothing if it's canceled
-                            }
-                        });
-
-                alertDialog.show();
-
-                return false;
             case R.id.nav_menu_log_in:
                 navigateToActivity(LoginActivity.class, R.id.nav_menu_log_in);
                 return false;
         }
-
         return true;
     }
 

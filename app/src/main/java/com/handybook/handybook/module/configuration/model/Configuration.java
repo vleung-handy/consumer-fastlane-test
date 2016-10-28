@@ -21,8 +21,6 @@ public class Configuration implements Serializable
     private boolean mLockboxEntryMethodEnabled;
     @SerializedName("native_help_center_enabled")
     private boolean mNativeHelpCenterEnabled;
-    @SerializedName("new_account_enabled")
-    private boolean mNewAccountEnabled;
     @SerializedName("address_auto_complete_enabled")
     private boolean mAddressAutoCompleteEnabled;
 
@@ -72,8 +70,6 @@ public class Configuration implements Serializable
     {
         return mNativeHelpCenterEnabled;
     }
-
-    public boolean isNewAccountEnabled() { return mNewAccountEnabled; }
 
     public boolean isAddressAutoCompleteEnabled()
     {

@@ -89,14 +89,6 @@ public final class PromosFragment extends BookingFlowFragment
 
         setupToolbar(mToolbar, getString(R.string.promotions));
 
-        //Check the configuration if this feature is enabled or not
-        //If it's not display hamburger icon, otherwise back button
-        if (!mConfigurationManager.getPersistentConfiguration().isNewAccountEnabled())
-        {
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
-
         mPromoCoupon = bookingManager.getPromoTabCoupon();
         mPromoText.addTextChangedListener(new TextWatcher()
         {
