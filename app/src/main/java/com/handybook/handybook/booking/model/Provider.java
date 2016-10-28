@@ -17,6 +17,12 @@ public class Provider implements Serializable
     private String mLastName;
     @SerializedName("phone")
     private String mPhone;
+    @SerializedName("average_rating")
+    private Float mAverageRating;
+    @SerializedName("booking_count")
+    private Integer mBookingCount;
+    @SerializedName("profile_photo_url")
+    private String mImageUrl;
 
     public Provider(final int status, final String firstName, final String lastName, final String phone)
     {
@@ -88,6 +94,22 @@ public class Provider implements Serializable
     public final String getFullName()
     {
         return (mFirstName != null ? mFirstName : "") + " " + (mLastName != null ? mLastName : "");
+    }
+
+
+    public Float getAverageRating()
+    {
+        return mAverageRating;
+    }
+
+    public Integer getBookingCount()
+    {
+        return mBookingCount;
+    }
+
+    public String getImageUrl()
+    {
+        return mImageUrl;
     }
 
     public static final int PROVIDER_STATUS_ASSIGNED = 3; //TODO: Not sure what this is, just conjecturing based on code

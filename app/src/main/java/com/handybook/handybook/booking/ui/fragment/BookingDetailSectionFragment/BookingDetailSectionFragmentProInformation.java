@@ -142,7 +142,7 @@ public class BookingDetailSectionFragmentProInformation extends
     private void hideAllClassManagedViews()
     {
         getSectionView().setLegacyNoProViewVisible(false);
-        getSectionView().setAssignedProNameLayoutVisible(false);
+        getSectionView().setProProfileVisible(false);
         getSectionView().setAssignedProTeamMatchIndicatorVisible(false);
         getSectionView().getEntryText().setVisibility(View.GONE);
         getSectionView().getEntryTitle().setVisibility(View.GONE);
@@ -171,16 +171,17 @@ public class BookingDetailSectionFragmentProInformation extends
 
     /**
      * shown when there a provider is assigned to the booking
+     * @param provider
      * @param providerAssignmentInfo
      */
     private void showAssignedProviderInfo(
-            String providerName,
+            Provider provider,
             @Nullable Booking.ProviderAssignmentInfo providerAssignmentInfo
     )
     {
         getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
-        getSectionView().setAssignedProNameText(providerName);
-        getSectionView().setAssignedProNameLayoutVisible(true);
+        getSectionView().setAssignedProInfo(provider, providerAssignmentInfo);
+        getSectionView().setProProfileVisible(true);
 
         if (providerAssignmentInfo != null)
         {
@@ -237,7 +238,7 @@ public class BookingDetailSectionFragmentProInformation extends
         {
             //show view for assigned provider
             showAssignedProviderInfo(
-                    pro.getFirstNameAndLastInitial(),
+                    pro,
                     booking.getProviderAssignmentInfo()
             );
         }

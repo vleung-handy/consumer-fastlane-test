@@ -580,6 +580,8 @@ public class Booking implements Parcelable
         private String mSubText;
         @SerializedName("pro_team_match")
         private boolean mProTeamMatch;
+        @SerializedName("show_profile_image")
+        private boolean mShowProfileImage;
 
         public boolean isProTeamMatch()
         {
@@ -594,6 +596,11 @@ public class Booking implements Parcelable
         public String getSubText()
         {
             return mSubText;
+        }
+
+        public boolean showProfileImage()
+        {
+            return mShowProfileImage;
         }
     }
 
