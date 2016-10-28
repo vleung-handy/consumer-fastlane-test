@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +108,7 @@ public class MiniProProfile extends FrameLayout
     public void setImage(@Nullable final String imageUrl)
     {
         mProfileImageContainer.setVisibility(VISIBLE);
-        if (imageUrl != null)
+        if (!TextUtils.isEmpty(imageUrl))
         {
             Picasso.with(getContext())
                    .load(imageUrl)
