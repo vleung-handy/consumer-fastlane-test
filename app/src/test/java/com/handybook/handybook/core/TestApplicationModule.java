@@ -193,6 +193,7 @@ import static org.mockito.Mockito.when;
         EditPlanFrequencyFragment.class,
         EditPlanAddressFragment.class,
         EventLogManagerTest.class,
+        TestActivity.class,
 }, library = true)
 public class TestApplicationModule
 {

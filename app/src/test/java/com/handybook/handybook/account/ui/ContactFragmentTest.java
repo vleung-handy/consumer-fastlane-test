@@ -59,21 +59,21 @@ public class ContactFragmentTest extends RobolectricGradleTestWrapper
     public void shouldValidateInput()
     {
         mFragment.mFullNameText.setText("");
-        mFragment.mUpdateButton.performClick();
+        mFragment.getView().findViewById(R.id.contact_update_button).performClick();
         verify(mDataManager, never()).updateUser(
                 any(UpdateUserRequest.class), any(String.class), any(DataManager.Callback.class));
         mFragment.mEmailText.setText("");
-        mFragment.mUpdateButton.performClick();
+        mFragment.getView().findViewById(R.id.contact_update_button).performClick();
         verify(mDataManager, never()).updateUser(
                 any(UpdateUserRequest.class), any(String.class), any(DataManager.Callback.class));
         mFragment.mPhoneText.setText("");
-        mFragment.mUpdateButton.performClick();
+        mFragment.getView().findViewById(R.id.contact_update_button).performClick();
         verify(mDataManager, never()).updateUser(
                 any(UpdateUserRequest.class), any(String.class), any(DataManager.Callback.class));
         mFragment.mFullNameText.setText("Test User2");
         mFragment.mEmailText.setText("user2@test.com");
         mFragment.mPhoneText.setText("9876543210");
-        mFragment.mUpdateButton.performClick();
+        mFragment.getView().findViewById(R.id.contact_update_button).performClick();
         verify(mDataManager, atLeastOnce()).updateUser(
                 any(UpdateUserRequest.class), any(String.class), any(DataManager.Callback.class));
     }
