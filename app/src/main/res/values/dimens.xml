@@ -58,9 +58,9 @@
     <!-- Pro Team -->
     <dimen name="pro_team_margin">12dp</dimen>
     <dimen name="pro_team_button_height">32dp</dimen>
+    <dimen name="pro_team_card_min_height">72dp</dimen>
 
     <!-- Mini Pro Profiles -->
-    <dimen name="mini_pro_profile_min_height">72dp</dimen>
     <dimen name="mini_pro_profile_star_size_small">12dp</dimen>
     <dimen name="mini_pro_profile_image_size">56dp</dimen>
     <dimen name="mini_pro_profile_pro_team_indicator_size">12dp</dimen>

@@ -18,7 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/entry_title"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin_half"
+        android:layout_marginStart="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_half"
         />
 
     <TextView
@@ -30,7 +32,11 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/element_booking_detail_section_pro_info_pro_profile"
         android:layout_centerInParent="true"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin_half"
         android:textIsSelectable="false"
         tools:text="something something something"
         />
