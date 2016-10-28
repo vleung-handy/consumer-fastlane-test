@@ -111,7 +111,6 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
-                            mProTeamCategoryType,
                             ProviderMatchPreference.PREFERRED
                     ));
                 }
@@ -123,7 +122,6 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
-                            mProTeamCategoryType,
                             ProviderMatchPreference.INDIFFERENT
                     ));
                 }
