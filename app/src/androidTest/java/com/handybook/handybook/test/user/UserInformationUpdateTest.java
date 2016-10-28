@@ -45,6 +45,7 @@ public class UserInformationUpdateTest
         onView(withText(R.string.account)).perform(click());
 
         // Click into contact info page
+        ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         ViewUtil.waitForViewInScrollViewVisible(
                 R.id.account_contact_info_layout,
                 ViewUtil.LONG_MAX_WAIT_TIME_MS
@@ -81,6 +82,7 @@ public class UserInformationUpdateTest
         onView(withText(R.string.account)).perform(click());
 
         // Click into contact info page
+        ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         ViewUtil.waitForViewInScrollViewVisible(
                 R.id.account_contact_info_layout,
                 ViewUtil.LONG_MAX_WAIT_TIME_MS

@@ -43,6 +43,7 @@ public class PasswordUpdateTest
         onView(withText(R.string.account)).perform(click());
 
         // Click into password page
+        ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         ViewUtil.waitForViewInScrollViewVisible(
                 R.id.account_password_layout,
                 ViewUtil.LONG_MAX_WAIT_TIME_MS
