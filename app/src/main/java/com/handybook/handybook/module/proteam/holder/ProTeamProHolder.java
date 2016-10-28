@@ -18,8 +18,8 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         implements CompoundButton.OnCheckedChangeListener
 {
     private ProTeamProViewModel mProTeamProViewModel;
-    private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
     private boolean mShowProImage;
+    private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
     @Bind(R.id.pro_team_pro_card_checkbox)
     CheckBox mCheckbox;
     @Bind(R.id.pro_team_pro_card_profile)
@@ -27,13 +27,13 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
 
     public ProTeamProHolder(
             View itemView,
-            ProTeamProViewModel.OnInteractionListener onInteractionListener,
-            boolean showProImage
+            boolean showProImage,
+            ProTeamProViewModel.OnInteractionListener onInteractionListener
     )
     {
         super(itemView);
-        mOnInteractionListener = onInteractionListener;
         mShowProImage = showProImage;
+        mOnInteractionListener = onInteractionListener;
         ButterKnife.bind(this, itemView);
     }
 

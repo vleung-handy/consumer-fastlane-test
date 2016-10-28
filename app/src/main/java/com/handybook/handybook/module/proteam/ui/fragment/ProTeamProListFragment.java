@@ -185,10 +185,12 @@ public class ProTeamProListFragment extends InjectedFragment
             return;
         }
 
+        final boolean shouldShowProImage = configurationManager
+                .getPersistentConfiguration().isProTeamProfilePicturesEnabled();
         final ProTeamCategoryAdapter proCardCardAdapter = new ProTeamCategoryAdapter(
-                userManager.getCurrentUser(),
                 mProteam,
                 mProTeamCategoryType,
+                shouldShowProImage,
                 mOnInteractionListener
         );
 

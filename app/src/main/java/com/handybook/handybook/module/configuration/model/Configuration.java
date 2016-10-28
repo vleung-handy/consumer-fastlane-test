@@ -31,6 +31,9 @@ public class Configuration implements Serializable
     @SerializedName("appsee_analytics_enabled")
     private boolean mAppseeAnalyticsEnabled;
 
+    @SerializedName("pro_team_profile_pictures_enabled")
+    private boolean isProTeamProfilePicturesEnabled;
+
     public boolean isAppseeAnalyticsEnabled()
     {
         return mAppseeAnalyticsEnabled;
@@ -88,4 +91,9 @@ public class Configuration implements Serializable
     }
 
     public boolean isProTeamFacebookLoginEnabled() { return mProTeamFacebookLoginEnabled; }
+
+    public boolean isProTeamProfilePicturesEnabled()
+    {
+        return isProTeamProfilePicturesEnabled;
+    }
 }
