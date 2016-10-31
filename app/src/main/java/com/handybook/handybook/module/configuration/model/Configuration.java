@@ -33,6 +33,8 @@ public class Configuration implements Serializable
 
     @SerializedName("pro_team_profile_pictures_enabled")
     private boolean isProTeamProfilePicturesEnabled;
+    @SerializedName("chat_enabled")
+    private boolean mChatEnabled;
 
     public boolean isAppseeAnalyticsEnabled()
     {
@@ -95,5 +97,10 @@ public class Configuration implements Serializable
     public boolean isProTeamProfilePicturesEnabled()
     {
         return isProTeamProfilePicturesEnabled;
+    }
+
+    public boolean isChatEnabled()
+    {
+        return mChatEnabled;
     }
 }

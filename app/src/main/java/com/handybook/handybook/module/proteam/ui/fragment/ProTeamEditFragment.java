@@ -10,11 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
@@ -35,19 +33,21 @@ import butterknife.OnClick;
 
 
 /**
- * A simple {@link Fragment} subclass. Use the {@link ProTeamFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A simple {@link Fragment} subclass. Use the {@link ProTeamEditFragment#newInstance} factory
+ * method to create an instance of this fragment.
  */
-public class ProTeamFragment extends InjectedFragment implements
+public class ProTeamEditFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
+    private static final String KEY_IS_BACK_BUTTON_ENABLED = "is_back_button_enabled";
+
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_list_holder)
     ViewGroup mProTeamListHolder;
-    @Bind(R.id.pro_team_bottom_button)
-    Button mBottomButton;
+
+    private boolean mIsBackButtonEnabled;
 
     private ProTeam mProTeam;
     private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
@@ -56,14 +56,20 @@ public class ProTeamFragment extends InjectedFragment implements
     private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
     private ProTeamProListFragment mProTeamListFragment;
 
-    public ProTeamFragment()
+    public static ProTeamEditFragment newInstance(final boolean isBackButtonEnabled)
     {
-        // Required empty public constructor
+        final ProTeamEditFragment fragment = new ProTeamEditFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putBoolean(KEY_IS_BACK_BUTTON_ENABLED, isBackButtonEnabled);
+        fragment.setArguments(arguments);
+        return fragment;
     }
 
-    public static ProTeamFragment newInstance()
+    @Override
+    public void onCreate(final Bundle savedInstanceState)
     {
-        return new ProTeamFragment();
+        super.onCreate(savedInstanceState);
+        mIsBackButtonEnabled = getArguments().getBoolean(KEY_IS_BACK_BUTTON_ENABLED, false);
     }
 
     @Override
@@ -72,18 +78,31 @@ public class ProTeamFragment extends InjectedFragment implements
             Bundle savedInstanceState
     )
     {
-        final View view = inflater.inflate(R.layout.fragment_pro_team, container, false);
+        final View view = inflater.inflate(R.layout.fragment_pro_team_edit, container, false);
         ButterKnife.bind(this, view);
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
-        activity.setupHamburgerMenu(mToolbar);
         initialize();
         return view;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+        setupToolbar(mToolbar, getString(R.string.edit_pro_team));
+        if (!mIsBackButtonEnabled)
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            activity.setupHamburgerMenu(mToolbar);
+        }
+        else
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_back);
+        }
+    }
+
     private void initialize()
     {
-        setToolbarTitle(getString(R.string.title_activity_pro_team));
         mProTeamListFragment = ProTeamProListFragment.newInstance(
                 mProTeam,
                 ProTeamCategoryType.CLEANING
@@ -93,17 +112,6 @@ public class ProTeamFragment extends InjectedFragment implements
                 .beginTransaction()
                 .replace(R.id.pro_team_list_holder, mProTeamListFragment)
                 .commit();
-        initButtons();
-    }
-
-
-    private void initButtons()
-    {
-        final boolean proTeamChanged = !mCleanersToAdd.isEmpty()
-                || !mCleanersToRemove.isEmpty()
-                || !mHandymenToAdd.isEmpty()
-                || !mHandymenToRemove.isEmpty();
-        mBottomButton.setVisibility(proTeamChanged ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -119,18 +127,19 @@ public class ProTeamFragment extends InjectedFragment implements
         bus.post(new ProTeamEvent.RequestProTeam());
     }
 
-
     @Subscribe
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
         mProTeam = event.getProTeam();
         mProTeamListFragment.setProTeam(mProTeam);
         clearEditHolders();
-        initButtons();
         removeUiBlockers();
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
-                mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT),
+                mProTeam.getCount(
+                        ProTeamCategoryType.CLEANING,
+                        ProviderMatchPreference.INDIFFERENT
+                ),
                 mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.PREFERRED),
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT)
         )));
@@ -148,8 +157,12 @@ public class ProTeamFragment extends InjectedFragment implements
         mProTeam = event.getProTeam();
         mProTeamListFragment.setProTeam(mProTeam);
         clearEditHolders();
-        initButtons();
         removeUiBlockers();
+        if (mIsBackButtonEnabled)
+        {
+            showToast(R.string.pro_team_update_successful);
+            getActivity().onBackPressed();
+        }
     }
 
     private void clearEditHolders()
@@ -166,8 +179,8 @@ public class ProTeamFragment extends InjectedFragment implements
         removeUiBlockers();
     }
 
-    @OnClick(R.id.pro_team_bottom_button)
-    void onBottomButtomClicked()
+    @OnClick(R.id.pro_team_toolbar_save_button)
+    void onSaveButtonClicked()
     {
         bus.post(
                 new ProTeamEvent.RequestProTeamEdit(
@@ -185,7 +198,6 @@ public class ProTeamFragment extends InjectedFragment implements
         )));
         showUiBlockers();
     }
-
 
     /**
      * Implementation of RemoveProDialogFragment listener
@@ -293,7 +305,6 @@ public class ProTeamFragment extends InjectedFragment implements
                     mHandymenToRemove.remove(proTeamPro);
                     break;
             }
-            initButtons();
         }
         else
         {
@@ -308,20 +319,11 @@ public class ProTeamFragment extends InjectedFragment implements
                     mHandymenToAdd.remove(proTeamPro);
                     break;
             }
-            initButtons();
         }
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.EnableButtonTapped(
                 String.valueOf(proTeamPro.getId()),
                 isChecked,
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
-    }
-
-
-    @OnClick(R.id.pro_team_toolbar_questionmark)
-    public void onMenuItemClick()
-    {
-        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.HelpOpenTapped()));
-        startActivity(HelpActivity.DeepLink.PRO_TEAM.getIntent(getActivity()));
     }
 }
