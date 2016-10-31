@@ -1,7 +1,6 @@
 package com.handybook.handybook.module.bookings;
 
 import android.animation.LayoutTransition;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
@@ -38,7 +36,6 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
-import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.BookingListItem;
@@ -464,28 +461,10 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                             @Override
                             public void onClick(final View v)
                             {
-                                Configuration config =
-                                        configurationManager.getPersistentConfiguration();
                                 RecurringBooking rb = (RecurringBooking) v.getTag();
-                                if (config == null || !config.isNewAccountEnabled())
-                                {
-                                    final Intent intent = new Intent(
-                                            UpcomingBookingsFragment.this.getActivity(),
-                                            BookingEditFrequencyActivity.class
-                                    );
-                                    intent.putExtra(BundleKeys.RECURRING_BOOKING, rb);
-                                    Activity activity = UpcomingBookingsFragment.this.getActivity();
-                                    activity.startActivityForResult(
-                                            intent,
-                                            ActivityResult.BOOKING_UPDATED
-                                    );
-                                }
-                                else
-                                {
-                                    EditPlanFragment fragment = EditPlanFragment.newInstance(rb);
-                                    FragmentUtils.switchToFragment(
-                                            UpcomingBookingsFragment.this, fragment, true);
-                                }
+                                EditPlanFragment fragment = EditPlanFragment.newInstance(rb);
+                                FragmentUtils.switchToFragment(
+                                        UpcomingBookingsFragment.this, fragment, true);
                             }
                         },
                         mRecurringBookings,

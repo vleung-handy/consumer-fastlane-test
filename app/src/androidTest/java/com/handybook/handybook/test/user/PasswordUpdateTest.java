@@ -14,8 +14,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -42,11 +42,21 @@ public class PasswordUpdateTest
         ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.account)).perform(click());
 
+        // Click into password page
+        ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewInScrollViewVisible(
+                R.id.account_password_layout,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
+        onView(withId(R.id.account_password_layout)).perform(click());
+
         // Change password
         ViewUtil.waitForViewVisible(R.id.profile_old_password_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         TextViewUtil.updateEditTextView(R.id.profile_old_password_text, TEST_USER.getPassword());
         TextViewUtil.updateEditTextView(R.id.profile_new_password_text, NEW_PASSWORD);
-        onView(withId(R.id.profile_update_button)).perform(click());
+        TextViewUtil.updateEditTextView(R.id.profile_new_password_confirmation_text, NEW_PASSWORD);
+
+        onView(withId(R.id.profile_password_update_button)).perform(click());
 
         ViewUtil.waitForToastMessageVisibility(
                 R.string.info_updated,
@@ -62,6 +72,8 @@ public class PasswordUpdateTest
         );
 
         // Confirm that login with the new password works
+        pressBack();
+        pressBack();
         AppInteractionUtil.logOutAndPassOnboarding();
         TEST_USER.setPassword(NEW_PASSWORD);
         AppInteractionUtil.logIn(TEST_USER);

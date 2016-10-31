@@ -44,12 +44,20 @@ public class UserInformationUpdateTest
         ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.account)).perform(click());
 
+        // Click into contact info page
+        ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewInScrollViewVisible(
+                R.id.account_contact_info_layout,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
+        onView(withId(R.id.account_contact_info_layout)).perform(click());
+
         // Change name, email, phone number and click update
-        ViewUtil.waitForViewVisible(R.id.profile_fullname_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        TextViewUtil.updateEditTextView(R.id.profile_fullname_text, NEW_NAME);
-        TextViewUtil.updateEditTextView(R.id.profile_email_text, NEW_EMAIL);
-        TextViewUtil.updateEditTextView(R.id.profile_phone_text, NEW_PHONE);
-        onView(withId(R.id.profile_update_button)).perform(click());
+        ViewUtil.waitForViewVisible(R.id.contact_name_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        TextViewUtil.updateEditTextView(R.id.contact_name_text, NEW_NAME);
+        TextViewUtil.updateEditTextView(R.id.contact_email_text, NEW_EMAIL);
+        TextViewUtil.updateEditTextView(R.id.contact_phone_text, NEW_PHONE);
+        onView(withId(R.id.contact_update_button)).perform(click());
 
         ViewUtil.waitForToastMessageVisibility(
                 R.string.info_updated,
@@ -65,22 +73,26 @@ public class UserInformationUpdateTest
         );
 
         // Go somewhere else(Make a Booking, in this case) and come back to profile screen
-        ViewUtil.waitForViewVisible(R.id.profile_fullname_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-
+        ViewUtil.waitForViewVisible(R.id.contact_name_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         AppInteractionUtil.openDrawer();
         ViewUtil.waitForTextVisible(R.string.make_a_booking, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.make_a_booking)).perform(click());
-
-        //TODO it actually is stuck on the "my bookings" page which is not "recycler_view"
-        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         AppInteractionUtil.openDrawer();
         ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.account)).perform(click());
 
+        // Click into contact info page
+        ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewInScrollViewVisible(
+                R.id.account_contact_info_layout,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
+        onView(withId(R.id.account_contact_info_layout)).perform(click());
+
         // Confirm that the changes were persisted
-        ViewUtil.waitForViewVisible(R.id.profile_fullname_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        TextViewUtil.assertViewHasText(R.id.profile_fullname_text, NEW_NAME);
-        TextViewUtil.assertViewHasText(R.id.profile_email_text, NEW_EMAIL);
-        TextViewUtil.assertViewHasText(R.id.profile_phone_text, NEW_PHONE_FORMATTED);
+        ViewUtil.waitForViewVisible(R.id.contact_name_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        TextViewUtil.assertViewHasText(R.id.contact_name_text, NEW_NAME);
+        TextViewUtil.assertViewHasText(R.id.contact_email_text, NEW_EMAIL);
+        TextViewUtil.assertViewHasText(R.id.contact_phone_text, NEW_PHONE_FORMATTED);
     }
 }

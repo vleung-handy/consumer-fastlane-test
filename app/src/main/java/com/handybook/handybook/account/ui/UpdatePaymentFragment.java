@@ -30,7 +30,6 @@ import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.ui.widget.CreditCardIconImageView;
@@ -250,13 +249,6 @@ public class UpdatePaymentFragment extends InjectedFragment
         ButterKnife.bind(this, mView);
 
         setupToolbar(mToolbar, getString(R.string.payment));
-        //Check the configuration if this feature is enabled or not
-        //If it's not display hamburger icon, otherwise back button
-        if (!mConfigurationManager.getPersistentConfiguration().isNewAccountEnabled())
-        {
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
 
         final User currentUser = userManager.getCurrentUser();
         final User.CreditCard creditCard = currentUser.getCreditCard();

@@ -41,26 +41,11 @@
             />
 
         <item
-            android:id="@id/nav_menu_promotions"
-            android:checked="false"
-            android:icon="@drawable/menu_promo"
-            android:title="@string/promotions_menu"
-            />
-
-        <item
-            android:id="@id/nav_menu_payment"
-            android:checked="false"
-            android:icon="@drawable/menu_payment"
-            android:title="@string/payment"
-            />
-
-        <item
             android:id="@id/nav_menu_profile"
             android:checked="false"
             android:icon="@drawable/menu_account"
             android:title="@string/account"
             />
-
     </group>
     <group
         android:id="@+id/bottom_group"
@@ -71,13 +56,6 @@
             android:checked="false"
             android:icon="@drawable/menu_help"
             android:title="@string/help"
-            />
-
-        <item
-            android:id="@id/nav_menu_log_out"
-            android:checkable="false"
-            android:icon="@drawable/menu_logout"
-            android:title="@string/log_out"
             />
 
         <item

@@ -2,16 +2,17 @@ package com.handybook.handybook.module.bookings;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
+import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.core.TestActivity;
 import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Ignore;
@@ -22,6 +23,7 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import java.util.List;
 
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -35,7 +37,7 @@ public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper
     protected void setup() throws Exception
     {
         mUpcomingBookingsFragment = UpcomingBookingsFragment.newInstance();
-        SupportFragmentTestUtil.startFragment(mUpcomingBookingsFragment, AppCompatActivity.class);
+        SupportFragmentTestUtil.startFragment(mUpcomingBookingsFragment, TestActivity.class);
 
         String json = IOUtils.getJsonStringForTest("services.json");
         List<Service> services = new Gson().fromJson(
@@ -89,14 +91,9 @@ public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper
         {
             //when the plan is clicked, it should launch the rescheduling activity
             fragment.mExpandableCleaningPlan.planContainer.getChildAt(0).performClick();
-            ShadowActivity shadowActivity = Shadows.shadowOf(fragment.getActivity());
-            Intent startedIntent = shadowActivity.getNextStartedActivity();
-            ShadowIntent shadowIntent = Shadows.shadowOf(startedIntent);
-            assertEquals(
-                    "Should've launched the BookingEditFrequencyActivity, but didn't",
-                    BookingEditFrequencyActivity.class.getName(),
-                    shadowIntent.getIntentClass().getName()
-            );
+            Fragment newFragment = mUpcomingBookingsFragment
+                    .getFragmentManager().findFragmentById(R.id.fragment_container);
+            assertTrue(newFragment instanceof EditPlanFragment);
         }
     }
 

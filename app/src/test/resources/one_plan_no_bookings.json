@@ -8,7 +8,8 @@
       "recurring_string_short": "every 4 weeks",
       "date_start": "2016-09-05T16:00:00-04:00",
       "booking_timezone": "America/New_York",
-      "hours": 3
+      "hours": 3,
+      "next_booking_date": "2016-09-05T16:00:00-04:00"
     }
   ],
   "user_has_recurring_bookings": null,

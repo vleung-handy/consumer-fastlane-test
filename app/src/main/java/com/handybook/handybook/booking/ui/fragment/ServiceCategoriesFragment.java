@@ -326,8 +326,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @OnClick(R.id.coupon_layout)
     public void onCouponClick()
     {
-        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class,
-                R.id.nav_menu_promotions);
+        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
     }
 
     /**
