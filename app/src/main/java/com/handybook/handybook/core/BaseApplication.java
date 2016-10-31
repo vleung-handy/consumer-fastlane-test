@@ -3,6 +3,7 @@ package com.handybook.handybook.core;
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -119,6 +120,7 @@ public class BaseApplication extends MultiDexApplication
     @Inject
     RestAdapter mRestAdapter;
 
+    HandyLayer mHandyLayer;
     LayerHelper mLayerHelper;
 
     private Date mApplicationStartTime;
@@ -243,13 +245,24 @@ public class BaseApplication extends MultiDexApplication
     {
         Log.d(TAG, "initLayer: ");
         User user = userManager.getCurrentUser();
-        HandyUser handyUser = new HandyUser(user.getId(), user.getFullName());
-        mLayerHelper = HandyLayer.init(mRestAdapter, handyUser, bus, this);
+
+        if (user != null)
+        {
+            HandyUser handyUser = new HandyUser(user.getId(), user.getFullName());
+            mHandyLayer = HandyLayer.init(mRestAdapter, handyUser, bus, this);
+        }
+        else
+        {
+            Crashlytics.logException(new RuntimeException(
+                    "Should not be initializing layer, user not logged in."));
+        }
     }
 
-    public LayerHelper getLayerHelper()
+    public
+    @Nullable
+    LayerHelper getLayerHelper()
     {
-        return mLayerHelper;
+        return mHandyLayer == null ? null : mHandyLayer.getLayerHelper();
     }
 
     private void initFabric()

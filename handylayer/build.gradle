@@ -1,12 +1,13 @@
 apply plugin: 'com.android.library'
+apply plugin: 'android-apt'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    compileSdkVersion 24
+    buildToolsVersion '24.0.2'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
 
@@ -40,8 +41,11 @@ dependencies {
     })
 
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
 
     compile 'com.squareup.dagger:dagger:1.2.2'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile project(":layer-atlas-0.3.2")
@@ -51,6 +55,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile('com.layer.sdk:layer-sdk:0.23.1')
 
-    compile 'com.android.support:appcompat-v7:25.0.0'
     testCompile 'junit:junit:4.12'
 }

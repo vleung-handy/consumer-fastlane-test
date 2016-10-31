@@ -94,6 +94,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
             return;
         }
         mLayerHelper = ((BaseApplication) getApplication()).getLayerHelper();
+
         setupEnvButton();
         mNavigationView.setNavigationItemSelectedListener(this);
         int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
@@ -124,6 +125,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 //TODO: JIA: test this for already logged-in users starting the app from scratch.
                 //If this event is not raised, then we have to make sure we init layer somewhere else
                 ((BaseApplication) getApplication()).initLayer();
+                mLayerHelper = ((BaseApplication) getApplication()).getLayerHelper();
+
                 refreshMenu();
                 if (!event.isLoggedIn())
                 {
@@ -302,11 +305,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 .findItem(R.id.nav_menu_my_pro_team)
                 .getActionView();
 
-        Log.d(
-                TAG,
-                "onLayerEvent: there are " + mLayerHelper.getUnreadMessageCount() + " unread messages"
-        );
-        if (mLayerHelper.getUnreadMessageCount() > 0)
+        if (mLayerHelper != null && mLayerHelper.getUnreadMessageCount() > 0)
         {
             textView.setVisibility(View.VISIBLE);
             textView.setText(String.valueOf(mLayerHelper.getUnreadMessageCount()));

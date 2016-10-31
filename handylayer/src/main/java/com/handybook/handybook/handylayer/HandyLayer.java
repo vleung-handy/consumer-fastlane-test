@@ -1,6 +1,5 @@
 package com.handybook.handybook.handylayer;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.squareup.otto.Bus;
@@ -13,7 +12,7 @@ import retrofit.RestAdapter;
 /**
  * Created by jtse on 10/31/16.
  */
-public class HandyLayer extends Application
+public class HandyLayer
 {
     private final RestAdapter mRestAdapter;
     private final HandyUser mUser;
@@ -24,23 +23,22 @@ public class HandyLayer extends Application
     private static HandyLayer mHandyLayer;
 
     @Inject
-    static LayerHelper mLayerHelper;
+    LayerHelper mLayerHelper;
 
-    public static LayerHelper init(
-            RestAdapter restAdapter,
-            HandyUser user,
-            Bus bus,
-            Context context
+    public static HandyLayer init(
+            final RestAdapter restAdapter,
+            final HandyUser user,
+            final Bus bus,
+            final Context context
     )
     {
-
         if (mHandyLayer == null)
         {
             mHandyLayer = new HandyLayer(restAdapter, user, bus, context);
             mHandyLayer.initGraph();
         }
 
-        return mLayerHelper;
+        return mHandyLayer;
     }
 
     public static HandyLayer getInstance()
@@ -62,9 +60,16 @@ public class HandyLayer extends Application
         mContext = context;
     }
 
+
+    public LayerHelper getLayerHelper()
+    {
+        return mLayerHelper;
+    }
+
     private void initGraph()
     {
         graph = ObjectGraph.create(new ChatModule(mRestAdapter, mUser, mBus, mContext));
+        graph.injectStatics();
         inject(this);
     }
 
