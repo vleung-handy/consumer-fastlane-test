@@ -50,7 +50,7 @@ public class DeepLinkTest
         deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
         mActivityRule.getActivity().startActivity(deepLinkIntent);
         ViewUtil.waitForViewVisible(
-                R.id.pro_team_coordinator_layout,
+                R.id.pro_team_tab_layout,
                 ViewUtil.LONG_MAX_WAIT_TIME_MS
         );
         ViewUtil.matchToolbarTitle(R.string.my_pro_team);

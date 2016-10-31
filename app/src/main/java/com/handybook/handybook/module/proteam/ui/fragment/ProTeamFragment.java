@@ -4,7 +4,6 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -48,9 +47,6 @@ public class ProTeamFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
-
-    @Bind(R.id.pro_team_coordinator_layout)
-    CoordinatorLayout mCoordinatorLayout;
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_tab_layout)
@@ -131,7 +127,7 @@ public class ProTeamFragment extends InjectedFragment implements
                 || !mCleanersToRemove.isEmpty()
                 || !mHandymenToAdd.isEmpty()
                 || !mHandymenToRemove.isEmpty();
-        mBottomButton.setVisibility(proTeamChanged ? View.VISIBLE : View.INVISIBLE);
+        mBottomButton.setVisibility(proTeamChanged ? View.VISIBLE : View.GONE);
     }
 
     @Override

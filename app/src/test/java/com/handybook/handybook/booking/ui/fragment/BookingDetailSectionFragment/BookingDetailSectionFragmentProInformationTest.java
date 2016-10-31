@@ -114,7 +114,7 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
                 new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
 
         TextView providerNameText = (TextView) mFragment.getSectionView()
-                                                        .findViewById(R.id.element_booking_detail_section_pro_info_assigned_pro_name_text);
+                                                        .findViewById(R.id.mini_pro_profile_title);
         assertEquals(providerName, providerNameText.getText());
     }
 
@@ -164,7 +164,7 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
                 new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
 
         View proTeamMatchIndicator = mFragment.getSectionView()
-                                              .findViewById(R.id.element_booking_detail_section_pro_info_assigned_pro_team_match_indicator);
+                                              .findViewById(R.id.mini_pro_profile_title);
         assertTrue(proTeamMatchIndicator.getVisibility() == View.VISIBLE);
     }
 

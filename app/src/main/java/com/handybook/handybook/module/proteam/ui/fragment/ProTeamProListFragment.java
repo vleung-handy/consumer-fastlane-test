@@ -63,7 +63,7 @@ public class ProTeamProListFragment extends InjectedFragment
         mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
         {
             @Override
-            public void onXClicked(
+            public void onLongClick(
                     final ProTeamPro proTeamPro,
                     final ProviderMatchPreference providerMatchPreference
             )
@@ -185,10 +185,12 @@ public class ProTeamProListFragment extends InjectedFragment
             return;
         }
 
+        final boolean shouldShowProImage = configurationManager
+                .getPersistentConfiguration().isProTeamProfilePicturesEnabled();
         final ProTeamCategoryAdapter proCardCardAdapter = new ProTeamCategoryAdapter(
-                userManager.getCurrentUser(),
                 mProteam,
                 mProTeamCategoryType,
+                shouldShowProImage,
                 mOnInteractionListener
         );
 

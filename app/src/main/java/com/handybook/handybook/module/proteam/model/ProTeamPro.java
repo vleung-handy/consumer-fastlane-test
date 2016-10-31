@@ -92,11 +92,13 @@ public class ProTeamPro implements Parcelable
         return mLastSeenAt;
     }
 
+    @Nullable
     public Float getAverageRating()
     {
         return mAverageRating;
     }
 
+    @Nullable
     public Integer getBookingCount()
     {
         return mBookingCount;

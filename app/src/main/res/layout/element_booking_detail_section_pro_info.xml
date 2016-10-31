@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView
+    android:id="@+id/element_booking_detail_section_pro_info_layout"
     style="@style/BookingDetailSectionView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/element_booking_detail_section_pro_info_layout"
     >
 
     <include layout="@layout/layout_section_separator_view"/>
@@ -13,48 +13,30 @@
 
     <include layout="@layout/layout_section_action_text"/>
 
-    <LinearLayout
-        android:id="@+id/element_booking_detail_section_pro_info_assigned_pro_name_layout"
+    <com.handybook.handybook.ui.view.MiniProProfile
+        android:id="@+id/element_booking_detail_section_pro_info_pro_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
         android:layout_below="@+id/entry_title"
-        android:orientation="horizontal"
-        >
-
-        <ImageView
-            android:id="@+id/element_booking_detail_section_pro_info_assigned_pro_team_match_indicator"
-            android:layout_width="@dimen/default_icon_size_half"
-            android:layout_height="@dimen/default_icon_size_half"
-            android:src="@drawable/ic_checkbox_heart_checked"
-            android:layout_gravity="center"
-            android:padding="@dimen/icon_padding"
-            android:layout_marginRight="@dimen/default_margin_half"
-            />
-
-        <TextView
-            android:id="@+id/element_booking_detail_section_pro_info_assigned_pro_name_text"
-            style="@style/TextView.Large"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textIsSelectable="false"
-            tools:text="First Last"
-            />
-    </LinearLayout>
+        android:layout_marginLeft="@dimen/default_margin_half"
+        android:layout_marginStart="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_half"
+        />
 
     <TextView
-        android:layout_margin="@dimen/default_margin"
-        android:layout_below="@id/element_booking_detail_section_pro_info_assigned_pro_name_layout"
         android:id="@+id/entry_text"
         style="@style/TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/element_booking_detail_section_pro_info_pro_profile"
         android:layout_centerInParent="true"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin_half"
         android:textIsSelectable="false"
         tools:text="something something something"
         />
@@ -69,8 +51,8 @@
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
         android:baselineAligned="false"
+        android:orientation="horizontal"
         >
 
         <LinearLayout
@@ -101,13 +83,13 @@
         android:id="@+id/element_booking_detail_section_pro_info_no_pro_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_border_input"
         android:layout_below="@id/action_buttons_layout"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/entry_text_top_margin"
+        android:background="@drawable/rounded_border_input"
         android:visibility="gone"
         tools:visibility="visible"
         >
@@ -116,48 +98,48 @@
             android:id="@+id/image_pro"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_check"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/default_margin"
+            android:src="@drawable/ic_check"
             android:tint="@color/handy_green"
             />
 
         <TextView
             android:id="@+id/booking_detail_pro_assignment_pending_text"
+            style="@style/TextView.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/image_pro"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/default_margin"
-            style="@style/TextView.Large"
-            android:textColor="@color/handy_text_black"
+            android:gravity="center"
             android:text="@string/booking_detail_pro_assignment_pending_title"
             android:textAllCaps="false"
-            android:gravity="center"
+            android:textColor="@color/handy_text_black"
             />
 
         <TextView
             android:id="@+id/text_pro_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/booking_detail_pro_assignment_pending_text"
+            android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/default_margin_double"
             android:layout_marginRight="@dimen/default_margin_double"
             android:layout_marginTop="@dimen/default_margin_half"
-            android:textColor="@color/handy_tertiary_gray"
-            android:text="@string/booking_detail_pro_assignment_pending_text"
             android:gravity="center"
+            android:text="@string/booking_detail_pro_assignment_pending_text"
+            android:textColor="@color/handy_tertiary_gray"
             />
 
         <Button
             android:id="@+id/element_booking_detail_section_pro_info_no_pro_view_pro_team_button"
+            style="@style/Button.Link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/text_pro_description"
+            android:layout_centerHorizontal="true"
             android:text="@string/manage_pro_team"
-            style="@style/Button.Link"
             />
     </RelativeLayout>
 
