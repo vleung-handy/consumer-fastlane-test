@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
@@ -19,6 +20,9 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.handylayer.HandyLayer;
+import com.handybook.handybook.handylayer.HandyUser;
+import com.handybook.handybook.handylayer.LayerHelper;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.library.util.DateTimeUtils;
@@ -47,10 +51,13 @@ import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
+import retrofit.RestAdapter;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class BaseApplication extends MultiDexApplication
 {
+    private static final String TAG = BaseApplication.class.getName();
+
     public static final String FLAVOR_PROD = "prod";
     public static final String FLAVOR_STAGE = "stage";
     private static final long GA_SESSION_TIMEOUT_SECONDS = 600L;
@@ -108,6 +115,11 @@ public class BaseApplication extends MultiDexApplication
     ConfigurationManager configurationManager;
     @Inject
     ProTeamManager proTeamManager;
+
+    @Inject
+    RestAdapter mRestAdapter;
+
+    LayerHelper mLayerHelper;
 
     private Date mApplicationStartTime;
     private int started;
@@ -225,6 +237,19 @@ public class BaseApplication extends MultiDexApplication
                 bus.post(new ActivityLifecycleEvent.Destroyed(activity));
             }
         });
+    }
+
+    public void initLayer()
+    {
+        Log.d(TAG, "initLayer: ");
+        User user = userManager.getCurrentUser();
+        HandyUser handyUser = new HandyUser(user.getId(), user.getFullName());
+        mLayerHelper = HandyLayer.init(mRestAdapter, handyUser, bus, this);
+    }
+
+    public LayerHelper getLayerHelper()
+    {
+        return mLayerHelper;
     }
 
     private void initFabric()

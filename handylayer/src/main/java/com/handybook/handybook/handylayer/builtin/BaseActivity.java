@@ -1,19 +1,16 @@
-package com.handybook.handybook.module.chat.builtin;
+package com.handybook.handybook.handylayer.builtin;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
-import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.module.chat.AuthenticationProvider;
+import com.handybook.handybook.handylayer.AuthenticationProvider;
+import com.handybook.handybook.handylayer.HandyLayer;
 import com.layer.sdk.LayerClient;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends AppCompatActivity
 {
@@ -54,7 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity
         {
             setContentView(mLayoutResId);
 
-            ((BaseApplication) getApplication()).inject(this);
+            HandyLayer.getInstance().inject(this);
 
             ActionBar actionBar = getSupportActionBar();
             if (actionBar == null) { return; }
@@ -105,11 +102,12 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    protected final void attachBaseContext(final Context newBase)
-    {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+//
+//    @Override
+//    protected final void attachBaseContext(final Context newBase)
+//    {
+//        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+//    }
 
     protected LayerClient getLayerClient()
     {

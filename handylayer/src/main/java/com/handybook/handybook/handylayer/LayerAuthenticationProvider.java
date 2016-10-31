@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.chat;
+package com.handybook.handybook.handylayer;
 
 
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
-import com.handybook.handybook.data.DataManager;
 import com.layer.sdk.LayerClient;
 import com.layer.sdk.exceptions.LayerException;
 
@@ -18,7 +17,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.handybook.handybook.module.chat.Util.streamToString;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  */
@@ -27,12 +27,12 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
 
     private final SharedPreferences mPreferences;
     private Callback mCallback;
-    protected DataManager mDataManager;
+    protected HandyService mDataManager;
 
     //TODO: JIA: remove this
     private boolean mTesting = true;
 
-    public LayerAuthenticationProvider(Context context, DataManager dataManager)
+    public LayerAuthenticationProvider(Context context, HandyService dataManager)
     {
         mPreferences = context.getSharedPreferences(LayerAuthenticationProvider.class.getSimpleName(), Context.MODE_PRIVATE);
         mDataManager = dataManager;
@@ -171,7 +171,7 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
 
             // Parse response
             InputStream in = new BufferedInputStream(connection.getInputStream());
-            String result = streamToString(in);
+            String result = Util.streamToString(in);
             in.close();
             connection.disconnect();
             JSONObject json = new JSONObject(result);
@@ -219,20 +219,22 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
         mDataManager.getLayerAuthToken(
                 credentials.getUserId(),
                 nonce,
-                new DataManager.Callback<LayerResponseWrapper>()
+                new retrofit.Callback<LayerResponseWrapper>()
                 {
                     @Override
-                    public void onSuccess(final LayerResponseWrapper response)
+                    public void success(
+                            final LayerResponseWrapper layerResponseWrapper,
+                            final Response response
+                    )
                     {
-                        String token = response.getIdentityToken();
+                        String token = layerResponseWrapper.getIdentityToken();
 
                         Log.d(TAG, "onSuccess: Got layer ID token back: " + token);
                         layerClient.answerAuthenticationChallenge(token);
-
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void failure(final RetrofitError error)
                     {
                         Log.e(TAG, "onError: " + error.getMessage());
                         if (mCallback != null)
@@ -243,6 +245,8 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
                             );
                         }
                     }
+
+
                 }
         );
     }

@@ -1,12 +1,8 @@
-package com.handybook.handybook.module.chat;
+package com.handybook.handybook.handylayer;
 
 import android.net.Uri;
 import android.util.Log;
 
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.module.configuration.model.Configuration;
 import com.layer.sdk.LayerClient;
 import com.layer.sdk.changes.LayerChangeEvent;
 import com.layer.sdk.listeners.LayerChangeEventListener;
@@ -31,17 +27,15 @@ public class LayerHelper
     private String mLayerAppId;
     private RecyclerViewController<Conversation> mQueryController;
     private boolean mConversationsInitialized = false;
-    private ConfigurationManager mConfigManager;
-    private UserManager mUserManager;
     private Bus mBus;
     private long mCurrentUnreadMessages = 0;
+    private HandyUser mUser;
 
     public LayerHelper(
             final LayerClient layerClient,
             final AuthenticationProvider layerAuthProvider,
-            final ConfigurationManager configManager,
-            final UserManager userManager,
             final Bus bus,
+            final HandyUser user,
             final String appId
     )
     {
@@ -49,9 +43,7 @@ public class LayerHelper
         mLayerAuthProvider = layerAuthProvider;
         mBus = bus;
         mLayerAppId = appId;
-        mUserManager = userManager;
-        mConfigManager = configManager;
-
+        mUser = mUser;
         mLayerClient.registerEventListener(new LayerChangeEventListener()
         {
             @Override
@@ -64,6 +56,11 @@ public class LayerHelper
                 }
             }
         });
+    }
+
+    public LayerClient getLayerClient()
+    {
+        return mLayerClient;
     }
 
     /**
@@ -139,14 +136,6 @@ public class LayerHelper
      */
     public void initLayer()
     {
-        Configuration config = mConfigManager.getLastKnowConfiguration();
-        if (config == null || !config.isInAppChatEnabled())
-        {
-            //don't init layer if the configuration isn't back, or the booking isn't ready
-            Log.d(TAG, "initLayer: config has layer disabled");
-            return;
-        }
-
         if ((mLayerClient != null) && mLayerClient.isAuthenticated())
         {
             Log.d(TAG, "initLayer: Already logged in");
@@ -155,18 +144,12 @@ public class LayerHelper
         else
         {
             Log.d(TAG, "initLayer: Not logged in");
-            final User user = mUserManager.getCurrentUser();
 
-            if (user == null)
-            {
-                throw new RuntimeException(
-                        "Should not be initializing layer if the user is not logged in");
-            }
             authenticate(
                     new LayerAuthenticationProvider.Credentials(
                             mLayerAppId,
-                            user.getFirstName(),
-                            user.getId()
+                            mUser.getUserName(),
+                            mUser.getId()
                     ),
                     new AuthenticationProvider.Callback()
                     {
@@ -182,7 +165,7 @@ public class LayerHelper
                         {
                             Log.e(
                                     TAG,
-                                    "Failed to authenticate as `" + user.getFirstName() + "`: " + error
+                                    "Failed to authenticate as `" + mUser.getUserName() + "`: " + error
                             );
                             throw new RuntimeException(
                                     "Issue logging onto layer. This should never happen.");

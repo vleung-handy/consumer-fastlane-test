@@ -126,7 +126,6 @@ import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.bookings.HistoryFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
-import com.handybook.handybook.module.chat.ChatModule;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.NotificationsModule;
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
@@ -303,7 +302,6 @@ import retrofit.converter.GsonConverter;
         includes = {
                 HelpModule.class,
                 NotificationsModule.class,
-                ChatModule.class
                 //FIXME add more
         }
 )
@@ -370,9 +368,7 @@ public final class ApplicationModule
         return restAdapter.create(PlacesService.class);
     }
 
-    @Provides
-    @Singleton
-    final HandyRetrofitService provideHandyService(
+    RestAdapter providesRestAdapter(
             final HandyRetrofitEndpoint endpoint,
             final UserManager userManager
     )
@@ -480,11 +476,22 @@ public final class ApplicationModule
                         .setClient(new OkClient(
                                 okHttpClient))
                         .build();
+
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
         {
             restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
         }
+
+        return restAdapter;
+    }
+
+    @Provides
+    @Singleton
+    final HandyRetrofitService provideHandyService(
+            final RestAdapter restAdapter
+    )
+    {
         return restAdapter.create(HandyRetrofitService.class);
     }
 
@@ -721,13 +728,6 @@ public final class ApplicationModule
     )
     {
         return new ProTeamManager(bus, service, userDataManager);
-    }
-
-    @Provides
-    @Singleton
-    public Context provideApplicationContext()
-    {
-        return mContext;
     }
 
     private String getDeviceId()

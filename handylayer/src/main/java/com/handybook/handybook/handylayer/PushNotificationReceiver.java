@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.chat;
+package com.handybook.handybook.handylayer;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,10 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.R;
-import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
+import com.handybook.handybook.handylayer.builtin.MessagesListActivity;
 import com.layer.atlas.util.Util;
 import com.layer.sdk.LayerClient;
 import com.layer.sdk.messaging.Conversation;
@@ -65,7 +62,7 @@ public class PushNotificationReceiver extends BroadcastReceiver
         Bundle extras = intent.getExtras();
         if (extras == null) { return; }
 
-        ((BaseApplication) context.getApplicationContext()).inject(this);
+        HandyLayer.getInstance().inject(this);
 
         final PushNotificationPayload payload = PushNotificationPayload.fromLayerPushExtras(extras);
         final Uri conversationId = extras.getParcelable(LAYER_CONVERSATION_KEY);
@@ -173,7 +170,7 @@ public class PushNotificationReceiver extends BroadcastReceiver
         public Notifications(Context context)
         {
 
-            ((BaseApplication) context.getApplicationContext()).inject(this);
+            HandyLayer.getInstance().inject(this);
 
             mDisableds = context.getSharedPreferences(
                     "notification_disableds",

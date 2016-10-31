@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.chat.builtin;
+package com.handybook.handybook.handylayer.builtin;
 
 
 import android.content.Intent;
@@ -7,8 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
-import com.handybook.handybook.R;
-import com.handybook.handybook.module.chat.PushNotificationReceiver;
+import com.handybook.handybook.handylayer.PushNotificationReceiver;
+import com.handybook.handybook.handylayer.R;
 import com.layer.atlas.AtlasAddressBar;
 import com.layer.atlas.AtlasHistoricMessagesFetchLayout;
 import com.layer.atlas.AtlasMessageComposer;

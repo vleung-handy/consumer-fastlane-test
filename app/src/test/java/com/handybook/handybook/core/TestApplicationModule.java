@@ -89,7 +89,6 @@ import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragmentTe
 import com.handybook.handybook.module.autocomplete.PlacesService;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
-import com.handybook.handybook.module.chat.ChatModule;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.ui.RedemptionActivity;
@@ -111,6 +110,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit.RestAdapter;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -246,6 +246,16 @@ public class TestApplicationModule
     final HandyRetrofitEndpoint provideHandyEndpoint()
     {
         return mock(HandyRetrofitEndpoint.class);
+    }
+
+    @Provides
+    @Singleton
+    RestAdapter providesRestAdapter(
+            final HandyRetrofitEndpoint endpoint,
+            final UserManager userManager
+    )
+    {
+        return mock(RestAdapter.class);
     }
 
     @Provides

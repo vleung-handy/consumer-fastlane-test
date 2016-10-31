@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.chat;
+package com.handybook.handybook.handylayer;
 
 /**
  * Created by jtse on 10/28/16.

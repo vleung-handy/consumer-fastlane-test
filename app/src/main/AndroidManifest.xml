@@ -481,7 +481,7 @@
         <activity android:name=".module.chat.LayerLoginActivity">
         </activity>
         <activity
-            android:name=".module.chat.builtin.MessagesListActivity"
+            android:name=".handylayer.builtin.MessagesListActivity"
             android:theme="@style/HandyTheme"
             >
         </activity>
@@ -506,7 +506,7 @@
 
         <!-- Receiver: Our app notification handling -->
         <receiver
-            android:name=".module.chat.PushNotificationReceiver"
+            android:name=".handylayer.PushNotificationReceiver"
             android:permission="${PACKAGE_NAME}.permission.LAYER_PUSH"
             >
 

@@ -1,1 +1,1 @@
-include ':app', ':layer-atlas-0.3.2'
+include ':app', ':layer-atlas-0.3.2', ':handylayer'

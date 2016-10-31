@@ -1,14 +1,10 @@
-package com.handybook.handybook.module.chat;
+package com.handybook.handybook.handylayer;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.module.chat.builtin.BaseActivity;
-import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.handylayer.builtin.BaseActivity;
+import com.handybook.handybook.handylayer.builtin.MessagesListActivity;
 import com.layer.atlas.messagetypes.text.TextCellFactory;
 import com.layer.atlas.messagetypes.threepartimage.ThreePartImageUtils;
 import com.layer.atlas.util.picasso.requesthandlers.MessagePartRequestHandler;
@@ -23,16 +19,15 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit.RestAdapter;
 
 @Module(
-        library = true,
-        complete = false,
         injects = {
                 BaseActivity.class,
                 MessagesListActivity.class,
                 PushNotificationReceiver.class,
                 PushNotificationReceiver.Notifications.class,
-                InjectedFragment.class
+                HandyLayer.class
         })
 public final class ChatModule
 {
@@ -45,12 +40,22 @@ public final class ChatModule
 //    //Handy's project number
 //    private static final String LAYER_APP_ID = "layer:///apps/staging/17d296fa-4e8f-11e6-aca9-940102005074";
 
-    @Provides
-    @Singleton
-    @Named("baseUrl")
-    public String baseUrl()
+    HandyUser mUser;
+    RestAdapter mRestAdapter;
+    Bus mBus;
+    Context mContext;
+
+    public ChatModule(
+            final RestAdapter restAdapter,
+            final HandyUser user,
+            final Bus bus,
+            final Context context
+    )
     {
-        return "https://s-handy.handy-internal.com/api/v3/";
+        mUser = user;
+        mRestAdapter = restAdapter;
+        mBus = bus;
+        mContext = context;
     }
 
     @Provides
@@ -63,7 +68,7 @@ public final class ChatModule
 
     @Provides
     @Singleton
-    public LayerClient providesLayerClient(AuthenticationProvider authProvider, Context context)
+    public LayerClient providesLayerClient(AuthenticationProvider authProvider)
     {
         Log.d(TAG, "providesLayerClient() called with: authProvider = [" + authProvider + "]");
         LayerClient.Options options = new LayerClient.Options()
@@ -79,7 +84,7 @@ public final class ChatModule
                     ));
 
         options.useFirebaseCloudMessaging(true);
-        LayerClient client = LayerClient.newInstance(context, LAYER_APP_ID, options);
+        LayerClient client = LayerClient.newInstance(mContext, LAYER_APP_ID, options);
 
         if (client != null)
         {
@@ -97,22 +102,18 @@ public final class ChatModule
     @Provides
     @Singleton
     public AuthenticationProvider providesAuthenticationProvider(
-            Context context,
-            DataManager dataManager
+            HandyService dataManager
     )
     {
         Log.d(TAG, "providesAuthenticationProvider() called");
-        return new LayerAuthenticationProvider(context, dataManager);
+        return new LayerAuthenticationProvider(mContext, dataManager);
     }
 
     @Provides
     @Singleton
     public LayerHelper providesLayerHelper(
             LayerClient layerClient,
-            AuthenticationProvider authProvider,
-            ConfigurationManager configManager,
-            UserManager userManager,
-            Bus bus
+            AuthenticationProvider authProvider
     )
     {
         Log.d(
@@ -122,19 +123,25 @@ public final class ChatModule
         return new LayerHelper(
                 layerClient,
                 authProvider,
-                configManager,
-                userManager,
-                bus,
+                mBus,
+                mUser,
                 LAYER_APP_ID
         );
     }
 
     @Provides
     @Singleton
-    public Picasso providesPicasso(LayerClient layerClient, Context context)
+    public HandyService providesHandyService()
+    {
+        return mRestAdapter.create(HandyService.class);
+    }
+
+    @Provides
+    @Singleton
+    public Picasso providesPicasso(LayerClient layerClient)
     {
         Log.d(TAG, "providesPicasso() called with: layerClient = [" + layerClient + "]");
-        return new Picasso.Builder(context)
+        return new Picasso.Builder(mContext)
                 .addRequestHandler(new MessagePartRequestHandler(layerClient))
                 .build();
     }

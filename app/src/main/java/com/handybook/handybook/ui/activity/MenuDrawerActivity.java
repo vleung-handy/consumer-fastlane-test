@@ -32,6 +32,10 @@ import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
+import com.handybook.handybook.handylayer.LayerEvent;
+import com.handybook.handybook.handylayer.LayerHelper;
+import com.handybook.handybook.handylayer.PushNotificationReceiver;
+import com.handybook.handybook.handylayer.builtin.MessagesListActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -39,10 +43,6 @@ import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
 import com.handybook.handybook.module.bookings.HistoryActivity;
-import com.handybook.handybook.module.chat.LayerEvent;
-import com.handybook.handybook.module.chat.LayerHelper;
-import com.handybook.handybook.module.chat.PushNotificationReceiver;
-import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
@@ -70,7 +70,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
     @Inject
     EnvironmentModifier mEnvironmentModifier;
 
-    @Inject
     LayerHelper mLayerHelper;
 
     protected boolean disableDrawer;
@@ -94,6 +93,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
             finish();
             return;
         }
+        mLayerHelper = ((BaseApplication) getApplication()).getLayerHelper();
         setupEnvButton();
         mNavigationView.setNavigationItemSelectedListener(this);
         int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
@@ -123,7 +123,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
 
                 //TODO: JIA: test this for already logged-in users starting the app from scratch.
                 //If this event is not raised, then we have to make sure we init layer somewhere else
-                mLayerHelper.initLayer();
+                ((BaseApplication) getApplication()).initLayer();
                 refreshMenu();
                 if (!event.isLoggedIn())
                 {

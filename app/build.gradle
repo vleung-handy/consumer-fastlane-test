@@ -120,6 +120,8 @@ dependencies {
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     }
     compile project(":layer-atlas-0.3.2")
+    compile project(":handylayer")
+
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:support-v4:$supportLibraryVersion"

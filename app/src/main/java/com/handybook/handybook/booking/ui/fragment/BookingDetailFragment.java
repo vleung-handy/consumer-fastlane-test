@@ -39,18 +39,18 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.module.chat.LayerHelper;
-import com.handybook.handybook.module.chat.PushNotificationReceiver;
-import com.handybook.handybook.module.chat.builtin.MessagesListActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.layer.sdk.LayerClient;
+import com.handybook.shared.LayerHelper;
+import com.handybook.shared.PushNotificationReceiver;
+import com.handybook.shared.builtin.MessagesListActivity;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -58,9 +58,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -89,14 +86,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     @Bind(R.id.image_chat)
     ImageView mImageChat;
 
-    @Inject
-    @Named("layerAppId")
-    String mLayerAppId;
-
-    @Inject
-    LayerClient mLayerClient;
-
-    @Inject
     LayerHelper mLayerHelper;
 
     private ArrayList<Service> mServices;
@@ -134,6 +123,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mBookingId = getArguments().getString(BundleKeys.BOOKING_ID);
         mIsFromBookingFlow = getArguments().getBoolean(BundleKeys.IS_FROM_BOOKING_FLOW, false);
+
+        mLayerHelper = ((BaseApplication) getActivity().getApplication()).getLayerHelper();
 
         if (savedInstanceState != null)
         {
