@@ -4,11 +4,8 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +24,9 @@ import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.view.HandyTabLayout;
 import com.squareup.otto.Subscribe;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import butterknife.Bind;
@@ -49,19 +44,17 @@ public class ProTeamFragment extends InjectedFragment implements
 {
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.pro_team_tab_layout)
-    HandyTabLayout mTabLayout;
-    @Bind(R.id.pro_team_pager)
-    ViewPager mViewPager;
+    @Bind(R.id.pro_team_list_holder)
+    ViewGroup mProTeamListHolder;
     @Bind(R.id.pro_team_bottom_button)
     Button mBottomButton;
 
-    private TabAdapter mTabAdapter;
     private ProTeam mProTeam;
     private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
     private HashSet<ProTeamPro> mCleanersToRemove = new HashSet<>();
     private HashSet<ProTeamPro> mHandymenToAdd = new HashSet<>();
     private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
+    private ProTeamProListFragment mProTeamListFragment;
 
     public ProTeamFragment()
     {
@@ -90,33 +83,16 @@ public class ProTeamFragment extends InjectedFragment implements
 
     private void initialize()
     {
-        mTabAdapter = new TabAdapter(
-                getChildFragmentManager(),
-                mProTeam,
-                this
-        );
-        mViewPager.setAdapter(mTabAdapter);
-        mViewPager.addOnPageChangeListener(
-                new TabLayout.TabLayoutOnPageChangeListener(mTabLayout)
-                {
-                    @Override
-                    public void onPageSelected(final int position)
-                    {
-                        super.onPageSelected(position);
-
-                        //log when displayed service changed
-                        ProTeamProListFragment proTeamProListFragment =
-                                mTabAdapter.getItem(position);
-                        ProTeamCategoryType proTeamCategoryType =
-                                proTeamProListFragment.getProTeamCategoryType();
-                        bus.post(new LogEvent.AddLogEvent(
-                                new ProTeamPageLog.DisplayedServiceChanged(proTeamCategoryType)));
-                    }
-                }
-        );
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
         setToolbarTitle(getString(R.string.title_activity_pro_team));
+        mProTeamListFragment = ProTeamProListFragment.newInstance(
+                mProTeam,
+                ProTeamCategoryType.CLEANING
+        );
+        mProTeamListFragment.setOnProInteraction(this);
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.pro_team_list_holder, mProTeamListFragment)
+                .commit();
         initButtons();
     }
 
@@ -148,11 +124,10 @@ public class ProTeamFragment extends InjectedFragment implements
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
         mProTeam = event.getProTeam();
-        mTabAdapter.setProTeam(mProTeam);
+        mProTeamListFragment.setProTeam(mProTeam);
         clearEditHolders();
         initButtons();
         removeUiBlockers();
-
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT),
@@ -171,7 +146,7 @@ public class ProTeamFragment extends InjectedFragment implements
     public void onReceiveProTeamEditSuccess(final ProTeamEvent.ReceiveProTeamEditSuccess event)
     {
         mProTeam = event.getProTeam();
-        mTabAdapter.setProTeam(mProTeam);
+        mProTeamListFragment.setProTeam(mProTeam);
         clearEditHolders();
         initButtons();
         removeUiBlockers();
@@ -348,59 +323,5 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.HelpOpenTapped()));
         startActivity(HelpActivity.DeepLink.PRO_TEAM.getIntent(getActivity()));
-    }
-
-
-    private static class TabAdapter extends FragmentPagerAdapter
-    {
-        private ArrayList<ProTeamProListFragment> mFragments = new ArrayList<>();
-        private ArrayList<String> mTitles = new ArrayList<>();
-
-        TabAdapter(
-                @NonNull final FragmentManager fm,
-                @Nullable ProTeam proTeam,
-                @Nullable ProTeamProListFragment.OnProInteraction listener
-        )
-        {
-            super(fm);
-            mTitles.add(ProTeamCategoryType.CLEANING.toString());
-            final ProTeamProListFragment cleaning = ProTeamProListFragment.newInstance(
-                    proTeam,
-                    ProTeamCategoryType.CLEANING
-            );
-            mTitles.add(ProTeamCategoryType.HANDYMEN.toString());
-            final ProTeamProListFragment handymen = ProTeamProListFragment.newInstance(
-                    proTeam,
-                    ProTeamCategoryType.HANDYMEN
-            );
-            cleaning.setOnProInteraction(listener);
-            handymen.setOnProInteraction(listener);
-            mFragments.add(cleaning);
-            mFragments.add(handymen);
-        }
-
-        @Override
-        public int getCount()
-        {
-            return mFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position)
-        {
-            return mTitles.get(position);
-        }
-
-        @Override
-        public ProTeamProListFragment getItem(int position)
-        {
-            return mFragments.get(position);
-        }
-
-        void setProTeam(final ProTeam proTeam)
-        {
-            getItem(0).setProTeam(proTeam);
-            getItem(1).setProTeam(proTeam);
-        }
     }
 }
