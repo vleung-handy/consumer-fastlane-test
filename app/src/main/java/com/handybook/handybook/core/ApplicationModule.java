@@ -497,13 +497,16 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final AppseeManager provideAppseeManager(final ConfigurationManager configurationManager)
+    final AppseeManager provideAppseeManager(
+            final ConfigurationManager configurationManager,
+            final FileManager fileManager
+    )
     {
         String appseeApiKey = mConfigs.getProperty
                 (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
                          "app_see_key"
                          : "app_see_key_internal");
-        return new AppseeManager(appseeApiKey, configurationManager);
+        return new AppseeManager(appseeApiKey, configurationManager, fileManager);
     }
 
     @Provides

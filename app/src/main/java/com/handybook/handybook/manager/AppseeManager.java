@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.appsee.Appsee;
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.configuration.model.Configuration;
 
@@ -14,26 +15,71 @@ import com.handybook.handybook.module.configuration.model.Configuration;
 public class AppseeManager
 {
     private final String mAppSeeApiKey;
-    private ConfigurationManager mConfigurationManager;
+    private final ConfigurationManager mConfigurationManager;
+    private final FileManager mFileManager;
+
+    /**
+     * we won't enable appsee recording if device doesn't have at least this much storage space
+     */
+    private static final long LOW_STORAGE_SPACE_THRESHOLD_MEGABYTES = 500; //500mb
 
     public AppseeManager(
             @NonNull final String appseeApiKey,
-            @NonNull final ConfigurationManager configurationManager
+            @NonNull final ConfigurationManager configurationManager,
+            @NonNull final FileManager fileManager
     )
     {
         mAppSeeApiKey = appseeApiKey;
         mConfigurationManager = configurationManager;
+        mFileManager = fileManager;
+    }
+
+    /**
+     * Appsee appears to use default internal storage directory for video storage
+     *
+     * this method should not cause a crash as all exceptions are caught
+     * @return
+     */
+    private boolean isEnoughSpaceAvailableForRecording()
+    {
+        long freeSpaceBytes = mFileManager.getInternalStorageDirectoryFreeSpaceBytes();
+        if (freeSpaceBytes < 0)
+        {
+            addAppseeEvent("unable to get files directory free space");
+        }
+        long freeSpaceMegabytes = freeSpaceBytes / 1000000;
+        return freeSpaceMegabytes >= LOW_STORAGE_SPACE_THRESHOLD_MEGABYTES;
     }
 
     /**
      * @return whether Appsee.start() can be called
      */
-    public boolean isAppseeEnabled()
+    private boolean isAppseeEnabled()
     {
+        boolean isEnoughStorageSpaceAvailableForRecording = isEnoughSpaceAvailableForRecording();
+        if (!isEnoughStorageSpaceAvailableForRecording)
+        {
+            String logErrorMessage = "not enabling Appsee - low disk space (<" + LOW_STORAGE_SPACE_THRESHOLD_MEGABYTES + "mb)";
+            Crashlytics.logException(new Exception(logErrorMessage)); //simple way for us to be aware of how often this happens in practice
+            addAppseeEvent(logErrorMessage); //log in Appsee so we don't get confused when no recording
+        }
         Configuration configuration = mConfigurationManager.getPersistentConfiguration();
-        return configuration != null && configuration.isAppseeAnalyticsEnabled();
+        return configuration != null
+                && configuration.isAppseeAnalyticsEnabled()
+                && isEnoughStorageSpaceAvailableForRecording;
     }
 
+    private void addAppseeEvent(String eventText)
+    {
+        try
+        {
+            Appsee.addEvent(eventText);
+        }
+        catch (Exception e)
+        {
+            Crashlytics.logException(e);
+        }
+    }
     /**
      * starts recording the screen if Appsee is enabled
      * (based on resulting videos, starting recording again after already started will have no effect)
@@ -50,16 +96,38 @@ public class AppseeManager
             return;
         }
 
-        Appsee.start(mAppSeeApiKey);
+        startRecording();
+    }
+
+    /**
+     * starts recording the screen does nothing if recording was already started
+     */
+    private void startRecording()
+    {
+        try
+        {
+            Appsee.start(mAppSeeApiKey);
+        }
+        catch (Exception e)
+        {
+            Crashlytics.logException(e);
+        }
     }
 
     /**
      * stops recording the screen
      * does nothing if recording was not started
      */
-    public void stopRecording()
+    private void stopRecording()
     {
-        Appsee.stop();
+        try
+        {
+            Appsee.stop();
+        }
+        catch (Exception e)
+        {
+            Crashlytics.logException(e);
+        }
     }
 
     /**
@@ -71,11 +139,18 @@ public class AppseeManager
      *
      * @param views
      */
-    public void markViewsAsSensitive(View... views)
+    public static void markViewsAsSensitive(View... views)
     {
         for (View view : views)
         {
-            Appsee.markViewAsSensitive(view);
+            try
+            {
+                Appsee.markViewAsSensitive(view);
+            }
+            catch (Exception e)
+            {
+                Crashlytics.logException(e);
+            }
         }
     }
 }
