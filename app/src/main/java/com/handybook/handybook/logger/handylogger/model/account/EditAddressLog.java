@@ -1,6 +1,5 @@
 package com.handybook.handybook.logger.handylogger.model.account;
 
-import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 /**

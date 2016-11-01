@@ -50,7 +50,6 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.google.common.net.HttpHeaders.FROM;
 
 public final class LoginFragment extends BookingFlowFragment
 {

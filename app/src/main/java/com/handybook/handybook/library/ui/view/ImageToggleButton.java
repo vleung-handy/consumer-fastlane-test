@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -41,7 +42,7 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     private boolean mChecked;
 
     private OnClickListener mListener;
-    private String mTag;
+    private String mTag = "";
 
     public ImageToggleButton(Context context)
     {
@@ -142,12 +143,13 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     }
 
     @Override
+    @NonNull
     public String getTag()
     {
         return mTag;
     }
 
-    public void setTag(final String tag)
+    public void setTag(@NonNull final String tag)
     {
         mTag = tag;
     }
