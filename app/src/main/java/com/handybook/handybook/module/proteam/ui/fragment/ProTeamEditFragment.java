@@ -40,14 +40,14 @@ public class ProTeamEditFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
-    private static final String KEY_IS_BACK_BUTTON_ENABLED = "is_back_button_enabled";
+    private static final String KEY_IS_BACK_NAVIGATION_ENABLED = "is_back_navigation_enabled";
 
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_list_holder)
     ViewGroup mProTeamListHolder;
 
-    private boolean mIsBackButtonEnabled;
+    private boolean mIsBackNavigationEnabled;
 
     private ProTeam mProTeam;
     private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
@@ -56,11 +56,11 @@ public class ProTeamEditFragment extends InjectedFragment implements
     private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
     private ProTeamProListFragment mProTeamListFragment;
 
-    public static ProTeamEditFragment newInstance(final boolean isBackButtonEnabled)
+    public static ProTeamEditFragment newInstance(final boolean isBackNavigationEnabled)
     {
         final ProTeamEditFragment fragment = new ProTeamEditFragment();
         final Bundle arguments = new Bundle();
-        arguments.putBoolean(KEY_IS_BACK_BUTTON_ENABLED, isBackButtonEnabled);
+        arguments.putBoolean(KEY_IS_BACK_NAVIGATION_ENABLED, isBackNavigationEnabled);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -69,7 +69,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mIsBackButtonEnabled = getArguments().getBoolean(KEY_IS_BACK_BUTTON_ENABLED, false);
+        mIsBackNavigationEnabled = getArguments().getBoolean(KEY_IS_BACK_NAVIGATION_ENABLED, false);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
         super.onResume();
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
         setupToolbar(mToolbar, getString(R.string.edit_pro_team));
-        if (!mIsBackButtonEnabled)
+        if (!mIsBackNavigationEnabled)
         {
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             activity.setupHamburgerMenu(mToolbar);
@@ -158,7 +158,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
         mProTeamListFragment.setProTeam(mProTeam);
         clearEditHolders();
         removeUiBlockers();
-        if (mIsBackButtonEnabled)
+        if (mIsBackNavigationEnabled)
         {
             showToast(R.string.pro_team_update_successful);
             getActivity().onBackPressed();
