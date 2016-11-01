@@ -175,9 +175,11 @@ public class ProTeamProListFragment extends InjectedFragment
                 .getPersistentConfiguration().isProTeamProfilePicturesEnabled();
         final ProTeam.ProTeamCategory proTeamCategory = mProTeamCategoryType != null ?
                 mProTeam.getCategory(mProTeamCategoryType) : mProTeam.getAllCategories();
+        final boolean shouldShowHandymanIndicators = mProTeamCategoryType == null;
         final ProTeamCategoryAdapter proCardCardAdapter = new ProTeamCategoryAdapter(
                 proTeamCategory,
                 shouldShowProImage,
+                shouldShowHandymanIndicators,
                 mOnInteractionListener
         );
 

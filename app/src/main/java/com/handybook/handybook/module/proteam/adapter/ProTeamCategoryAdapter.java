@@ -28,15 +28,18 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private final ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
     private ProTeamFacebookHolder mFacebookHeaderHolder;
     private int mHeaderCount = 0;
+    private boolean mShouldShowHandymanIndicators;
 
     public ProTeamCategoryAdapter(
             @Nullable final ProTeam.ProTeamCategory proTeamCategory,
             final boolean shouldShowProImage,
+            final boolean shouldShowHandymanIndicators,
             @NonNull final ProTeamProViewModel.OnInteractionListener onInteractionListener
     )
     {
         mProTeamCategory = proTeamCategory;
         mShouldShowProImage = shouldShowProImage;
+        mShouldShowHandymanIndicators = shouldShowHandymanIndicators;
         mOnInteractionListener = onInteractionListener;
         initProTeamProViewModels();
     }
@@ -103,7 +106,8 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
-                            ProviderMatchPreference.PREFERRED
+                            ProviderMatchPreference.PREFERRED,
+                            mShouldShowHandymanIndicators
                     ));
                 }
             }
@@ -114,7 +118,8 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
-                            ProviderMatchPreference.INDIFFERENT
+                            ProviderMatchPreference.INDIFFERENT,
+                            mShouldShowHandymanIndicators
                     ));
                 }
             }

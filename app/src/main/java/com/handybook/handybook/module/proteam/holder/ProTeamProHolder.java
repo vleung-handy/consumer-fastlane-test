@@ -52,6 +52,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         );
         mProProfile.setIsProTeam(mProTeamProViewModel.isChecked());
         mProProfile.setProTeamIndicatorEnabled(false);
+        mProProfile.setHandymanIndicatorEnabled(mProTeamProViewModel.isHandymanIndicatorEnabled());
 
         if (mShowProImage)
         {

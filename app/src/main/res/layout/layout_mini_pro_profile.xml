@@ -77,6 +77,18 @@
                 />
 
             <ImageView
+                android:id="@+id/mini_pro_profile_handyman_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:src="@drawable/ic_handyman_outline_small"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+            <ImageView
                 android:id="@+id/mini_pro_profile_pro_team_indicator_name"
                 android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size"
                 android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size"

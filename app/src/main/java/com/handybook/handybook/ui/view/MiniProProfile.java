@@ -38,6 +38,8 @@ public class MiniProProfile extends FrameLayout
     View mProTeamIndicatorImage;
     @Bind(R.id.mini_pro_profile_pro_team_indicator_name)
     View mProTeamIndicatorName;
+    @Bind(R.id.mini_pro_profile_handyman_indicator)
+    View mHandymanIndicator;
 
     private boolean mIsProTeam;
     private boolean mIsProTeamIndicatorEnabled;
@@ -87,6 +89,11 @@ public class MiniProProfile extends FrameLayout
     {
         mIsProTeamIndicatorEnabled = proTeamIndicatorEnabled;
         updateProTeamIndicator();
+    }
+
+    public void setHandymanIndicatorEnabled(final boolean handymanIndicatorEnabled)
+    {
+        mHandymanIndicator.setVisibility(handymanIndicatorEnabled ? VISIBLE : GONE);
     }
 
     public void setRatingAndJobsCount(final Float rating, final Integer jobsCount)
