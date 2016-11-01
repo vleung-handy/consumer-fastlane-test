@@ -30,7 +30,7 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
     protected HandyService mDataManager;
 
     //TODO: JIA: remove this
-    private boolean mTesting = false;
+    private boolean mTesting = true;
 
     public LayerAuthenticationProvider(Context context, HandyService dataManager)
     {
@@ -143,10 +143,11 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("X_LAYER_APP_ID", credentials.getLayerAppId());
 
+            //NOTE: JIA: hardcoding name of Jia here, because at the time of initialization, the app doesn't have any username, etc information
             // Credentials
             JSONObject rootObject = new JSONObject()
                     .put("nonce", nonce)
-                    .put("name", credentials.getUserName());
+                    .put("name", "Jia");
 
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
