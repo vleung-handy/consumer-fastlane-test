@@ -38,6 +38,4 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/layout_pro_team_empty"/>
-
 </LinearLayout>

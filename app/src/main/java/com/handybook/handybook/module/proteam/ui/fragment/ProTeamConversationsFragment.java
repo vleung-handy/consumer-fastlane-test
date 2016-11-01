@@ -6,11 +6,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.module.proteam.event.ProTeamEvent;
+import com.handybook.handybook.module.proteam.model.ProTeam;
+import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,10 +26,8 @@ public class ProTeamConversationsFragment extends InjectedFragment
 {
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.pro_team_empty_view_title)
-    TextView mEmptyViewTitle;
-    @Bind(R.id.pro_team_empty_view_text)
-    TextView mEmptyViewContent;
+
+    private ProTeam mProTeam;
 
     public static ProTeamConversationsFragment newInstance()
     {
@@ -51,8 +55,13 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
     {
-        mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
-        mEmptyViewContent.setText(R.string.pro_team_empty_card_text);
+        requestProTeam();
+    }
+
+    private void requestProTeam()
+    {
+        showUiBlockers();
+        bus.post(new ProTeamEvent.RequestProTeam());
     }
 
     @Override
@@ -63,12 +72,34 @@ public class ProTeamConversationsFragment extends InjectedFragment
         ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
     }
 
+    @Subscribe
+    public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
+    {
+        mProTeam = event.getProTeam();
+        removeUiBlockers();
+        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
+                mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
+                mProTeam.getCount(
+                        ProTeamCategoryType.CLEANING,
+                        ProviderMatchPreference.INDIFFERENT
+                ),
+                mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.PREFERRED),
+                mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT)
+        )));
+    }
+
+    @Subscribe
+    public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
+    {
+        removeUiBlockers();
+    }
+
     @OnClick(R.id.pro_team_toolbar_edit_list_button)
     public void onEditListClicked()
     {
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, ProTeamEditFragment.newInstance(true))
+                .add(R.id.fragment_container, ProTeamEditFragment.newInstance(mProTeam))
                 .addToBackStack(null)
                 .commit();
     }

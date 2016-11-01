@@ -376,7 +376,7 @@
     <string name="pro_team_connect_to_facebook">Connected to Facebook</string>
     <string name="pro_team_see_pro_recommendations">You\'ll see pro recommendations from friends here as we find them.</string>
     <string name="pro_team_ok">OK, Got it</string>
-    <string name="pro_team_update_successful">Pro Team updated</string>
+    <string name="pro_team_update_successful">Your Pro Team was updated successfully!</string>
     <string name="pro_team_no_changes">You did not make any changes to your Pro Team</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>

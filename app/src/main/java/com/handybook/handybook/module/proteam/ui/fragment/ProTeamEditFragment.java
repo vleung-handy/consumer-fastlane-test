@@ -21,7 +21,6 @@ import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.squareup.otto.Subscribe;
 
 import java.security.InvalidParameterException;
@@ -40,14 +39,12 @@ public class ProTeamEditFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
-    private static final String KEY_IS_BACK_NAVIGATION_ENABLED = "is_back_navigation_enabled";
+    private static final String KEY_PRO_TEAM = "pro_team";
 
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_list_holder)
     ViewGroup mProTeamListHolder;
-
-    private boolean mIsBackNavigationEnabled;
 
     private ProTeam mProTeam;
     private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
@@ -56,11 +53,11 @@ public class ProTeamEditFragment extends InjectedFragment implements
     private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
     private ProTeamProListFragment mProTeamListFragment;
 
-    public static ProTeamEditFragment newInstance(final boolean isBackNavigationEnabled)
+    public static ProTeamEditFragment newInstance(final ProTeam proTeam)
     {
         final ProTeamEditFragment fragment = new ProTeamEditFragment();
         final Bundle arguments = new Bundle();
-        arguments.putBoolean(KEY_IS_BACK_NAVIGATION_ENABLED, isBackNavigationEnabled);
+        arguments.putParcelable(KEY_PRO_TEAM, proTeam);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -69,7 +66,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mIsBackNavigationEnabled = getArguments().getBoolean(KEY_IS_BACK_NAVIGATION_ENABLED, false);
+        mProTeam = getArguments().getParcelable(KEY_PRO_TEAM);
     }
 
     @Override
@@ -88,18 +85,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onResume()
     {
         super.onResume();
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        if (!mIsBackNavigationEnabled)
-        {
-            setupToolbar(mToolbar, getString(R.string.my_pro_team));
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            activity.setupHamburgerMenu(mToolbar);
-        }
-        else
-        {
-            setupToolbar(mToolbar, getString(R.string.edit_pro_team));
-            mToolbar.setNavigationIcon(R.drawable.ic_back);
-        }
+        setupToolbar(mToolbar, getString(R.string.edit_pro_team));
     }
 
     private void initialize()
@@ -110,43 +96,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
                 .beginTransaction()
                 .replace(R.id.pro_team_list_holder, mProTeamListFragment)
                 .commit();
-    }
-
-    @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-        requestProTeam();
-    }
-
-    private void requestProTeam()
-    {
-        showUiBlockers();
-        bus.post(new ProTeamEvent.RequestProTeam());
-    }
-
-    @Subscribe
-    public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
-    {
-        mProTeam = event.getProTeam();
         mProTeamListFragment.setProTeam(mProTeam);
-        clearEditHolders();
-        removeUiBlockers();
-        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
-                mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
-                mProTeam.getCount(
-                        ProTeamCategoryType.CLEANING,
-                        ProviderMatchPreference.INDIFFERENT
-                ),
-                mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.PREFERRED),
-                mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT)
-        )));
-    }
-
-    @Subscribe
-    public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
-    {
-        removeUiBlockers();
     }
 
     @Subscribe
@@ -157,10 +107,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
         clearEditHolders();
         removeUiBlockers();
         showToast(R.string.pro_team_update_successful);
-        if (mIsBackNavigationEnabled)
-        {
-            getActivity().onBackPressed();
-        }
+        getActivity().onBackPressed();
     }
 
     private void clearEditHolders()
