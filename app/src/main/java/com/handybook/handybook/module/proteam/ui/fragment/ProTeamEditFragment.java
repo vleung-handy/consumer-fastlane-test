@@ -89,24 +89,22 @@ public class ProTeamEditFragment extends InjectedFragment implements
     {
         super.onResume();
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        setupToolbar(mToolbar, getString(R.string.edit_pro_team));
         if (!mIsBackNavigationEnabled)
         {
+            setupToolbar(mToolbar, getString(R.string.my_pro_team));
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             activity.setupHamburgerMenu(mToolbar);
         }
         else
         {
+            setupToolbar(mToolbar, getString(R.string.edit_pro_team));
             mToolbar.setNavigationIcon(R.drawable.ic_back);
         }
     }
 
     private void initialize()
     {
-        mProTeamListFragment = ProTeamProListFragment.newInstance(
-                mProTeam,
-                ProTeamCategoryType.CLEANING
-        );
+        mProTeamListFragment = ProTeamProListFragment.newInstance(mProTeam, null);
         mProTeamListFragment.setOnProInteraction(this);
         getChildFragmentManager()
                 .beginTransaction()
@@ -158,9 +156,9 @@ public class ProTeamEditFragment extends InjectedFragment implements
         mProTeamListFragment.setProTeam(mProTeam);
         clearEditHolders();
         removeUiBlockers();
+        showToast(R.string.pro_team_update_successful);
         if (mIsBackNavigationEnabled)
         {
-            showToast(R.string.pro_team_update_successful);
             getActivity().onBackPressed();
         }
     }
@@ -182,6 +180,14 @@ public class ProTeamEditFragment extends InjectedFragment implements
     @OnClick(R.id.pro_team_toolbar_save_button)
     void onSaveButtonClicked()
     {
+        if (mCleanersToAdd.isEmpty()
+                && mCleanersToRemove.isEmpty()
+                && mHandymenToAdd.isEmpty()
+                && mHandymenToRemove.isEmpty())
+        {
+            showToast(R.string.pro_team_no_changes);
+            return;
+        }
         bus.post(
                 new ProTeamEvent.RequestProTeamEdit(
                         mCleanersToAdd,
@@ -263,7 +269,6 @@ public class ProTeamEditFragment extends InjectedFragment implements
      */
     @Override
     public void onProRemovalRequested(
-            final ProTeamCategoryType proTeamCategoryType,
             final ProTeamPro proTeamPro,
             final ProviderMatchPreference providerMatchPreference
     )
@@ -274,7 +279,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
         fragment.setTitle(title);
         fragment.setProTeamPro(proTeamPro);
         fragment.setProviderMatchPreference(providerMatchPreference);
-        fragment.setProTeamCategoryType(proTeamCategoryType);
+        fragment.setProTeamCategoryType(proTeamPro.getCategoryType());
         fragment.setListener(this);
         fragment.show(fm, RemoveProDialogFragment.TAG);
 
@@ -287,14 +292,13 @@ public class ProTeamEditFragment extends InjectedFragment implements
 
     @Override
     public void onProCheckboxStateChanged(
-            @NonNull final ProTeamCategoryType proTeamCategoryType,
             @NonNull final ProTeamPro proTeamPro,
             final boolean isChecked
     )
     {
         if (isChecked)
         {
-            switch (proTeamCategoryType)
+            switch (proTeamPro.getCategoryType())
             {
                 case CLEANING:
                     mCleanersToAdd.add(proTeamPro);
@@ -308,7 +312,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
         }
         else
         {
-            switch (proTeamCategoryType)
+            switch (proTeamPro.getCategoryType())
             {
                 case CLEANING:
                     mCleanersToRemove.add(proTeamPro);

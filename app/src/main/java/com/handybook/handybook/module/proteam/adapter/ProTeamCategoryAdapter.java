@@ -1,6 +1,7 @@
 package com.handybook.handybook.module.proteam.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.holder.ProTeamFacebookHolder;
 import com.handybook.handybook.module.proteam.holder.ProTeamProHolder;
 import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
@@ -22,8 +22,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 {
     private static final int FACEBOOK_HEADER = 1;
 
-    private ProTeamCategoryType mProTeamCategoryType;
-    private ProTeam mProTeam;
+    private final ProTeam.ProTeamCategory mProTeamCategory;
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private boolean mShouldShowProImage;
     private final ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
@@ -31,14 +30,12 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private int mHeaderCount = 0;
 
     public ProTeamCategoryAdapter(
-            @NonNull final ProTeam proTeam,
-            @NonNull final ProTeamCategoryType proTeamCategoryType,
+            @Nullable final ProTeam.ProTeamCategory proTeamCategory,
             final boolean shouldShowProImage,
             @NonNull final ProTeamProViewModel.OnInteractionListener onInteractionListener
     )
     {
-        mProTeamCategoryType = proTeamCategoryType;
-        mProTeam = proTeam;
+        mProTeamCategory = proTeamCategory;
         mShouldShowProImage = shouldShowProImage;
         mOnInteractionListener = onInteractionListener;
         initProTeamProViewModels();
@@ -97,10 +94,9 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private void initProTeamProViewModels()
     {
         mProTeamProViewModels = new ArrayList<>();
-        final ProTeam.ProTeamCategory proTeamCategory = mProTeam.getCategory(mProTeamCategoryType);
-        if (proTeamCategory != null)
+        if (mProTeamCategory != null)
         {
-            final List<ProTeamPro> preferredPros = proTeamCategory.getPreferred();
+            final List<ProTeamPro> preferredPros = mProTeamCategory.getPreferred();
             if (preferredPros != null)
             {
                 for (ProTeamPro eachPro : preferredPros)
@@ -111,7 +107,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ));
                 }
             }
-            final List<ProTeamPro> indifferentPros = proTeamCategory.getIndifferent();
+            final List<ProTeamPro> indifferentPros = mProTeamCategory.getIndifferent();
             if (indifferentPros != null)
             {
                 for (ProTeamPro eachPro : indifferentPros)

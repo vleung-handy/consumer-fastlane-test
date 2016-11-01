@@ -91,7 +91,11 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
     )
     {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_pro_team, container, false);
+                                       .inflate(
+                                               R.layout.fragment_booking_pro_team,
+                                               container,
+                                               false
+                                       );
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.title_activity_pro_team));
         final FragmentManager fragmentManager = getChildFragmentManager();
@@ -151,7 +155,8 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
         )));
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.ProTeamSubmittedLog(
                 mCleanersToAdd.size(), mCleanersToRemove.size(),
-                mHandymenToAdd.size(), mHandymenToRemove.size())));
+                mHandymenToAdd.size(), mHandymenToRemove.size()
+        )));
         showUiBlockers();
         continueBookingFlow();
     }
@@ -246,14 +251,14 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
      */
     @Override
     public void onProRemovalRequested(
-            final ProTeamCategoryType proTeamCategoryType,
             final ProTeamPro proTeamPro,
             final ProviderMatchPreference providerMatchPreference
     )
     {
         if (proTeamPro == null)
         {
-            Crashlytics.logException(new InvalidParameterException("ProTeamPro cannot be null on pro removal requested"));
+            Crashlytics.logException(new InvalidParameterException(
+                    "ProTeamPro cannot be null on pro removal requested"));
             return;
         }
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Tapped(
@@ -268,7 +273,7 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
         fragment.setTitle(title);
         fragment.setProTeamPro(proTeamPro);
         fragment.setProviderMatchPreference(providerMatchPreference);
-        fragment.setProTeamCategoryType(proTeamCategoryType);
+        fragment.setProTeamCategoryType(proTeamPro.getCategoryType());
         fragment.setListener(this);
         fragment.show(fm, RemoveProDialogFragment.TAG);
     }
@@ -276,14 +281,13 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
 
     @Override
     public void onProCheckboxStateChanged(
-            @NonNull final ProTeamCategoryType proTeamCategoryType,
             @NonNull final ProTeamPro proTeamPro,
             final boolean isChecked
     )
     {
         if (isChecked)
         {
-            switch (proTeamCategoryType)
+            switch (proTeamPro.getCategoryType())
             {
                 case CLEANING:
                     mCleanersToAdd.add(proTeamPro);
@@ -297,7 +301,7 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
         }
         else
         {
-            switch (proTeamCategoryType)
+            switch (proTeamPro.getCategoryType())
             {
                 case CLEANING:
                     mCleanersToRemove.add(proTeamPro);
