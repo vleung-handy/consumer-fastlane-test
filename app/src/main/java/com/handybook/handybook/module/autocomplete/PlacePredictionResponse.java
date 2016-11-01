@@ -48,7 +48,6 @@ public class PlacePredictionResponse implements Serializable
             if (filterBy != null && !isMatchingCity(filterBy, p))
             {
                 predictions.remove(p);
-                continue;
             }
 
         }

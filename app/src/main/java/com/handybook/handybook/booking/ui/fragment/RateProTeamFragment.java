@@ -392,18 +392,16 @@ public class RateProTeamFragment extends Fragment
             //this is the straight forward case where use can either add or block a pro
             if (mToggleButton.isChecked())
             {
-                if (mToggleButton.getTag().equals(TAG_ADD_PRO))
+                switch (mToggleButton.getTag())
                 {
-                    return ProviderMatchPreference.PREFERRED;
-                }
-                else if (mToggleButton.getTag().equals(TAG_BLOCK_PRO))
-                {
-                    return ProviderMatchPreference.NEVER;
-                }
-                else
-                {
-                    Crashlytics.logException(new RuntimeException("This is not supposed to " +
-                                                                          "happen, no tag set for toggle button"));
+                    case TAG_ADD_PRO:
+                        return ProviderMatchPreference.PREFERRED;
+                    case TAG_BLOCK_PRO:
+                        return ProviderMatchPreference.NEVER;
+                    default:
+                        Crashlytics.logException(new RuntimeException(
+                                "This is not supposed to happen, no tag set for toggle button"));
+                        break;
                 }
             }
         }
