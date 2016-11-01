@@ -30,7 +30,7 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
     protected HandyService mDataManager;
 
     //TODO: JIA: remove this
-    private boolean mTesting = true;
+    private boolean mTesting = false;
 
     public LayerAuthenticationProvider(Context context, HandyService dataManager)
     {
@@ -205,7 +205,7 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
                 mPreferences.getString("name", null),
                 mPreferences.getString("userId", null)
         );
-        if (credentials.getUserName() == null || credentials.getLayerAppId() == null || credentials.getUserId() == null)
+        if (credentials.getUserId() == null)
         {
             Log.d(TAG, "No stored credentials to respond to challenge with");
             return;
@@ -213,8 +213,7 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
 
         Log.d(
                 TAG,
-                "respondToChallenge: using Handy auth server, username: " + credentials.getUserName() + " ID:" + credentials
-                        .getUserId()
+                "respondToChallenge: using Handy auth server, ID:" + credentials.getUserId()
         );
         mDataManager.getLayerAuthToken(
                 credentials.getUserId(),

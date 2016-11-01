@@ -36,6 +36,7 @@ public class HandyLayer
         {
             mHandyLayer = new HandyLayer(restAdapter, user, bus, context);
             mHandyLayer.initGraph();
+            mHandyLayer.getLayerHelper().initLayer();
         }
 
         return mHandyLayer;

@@ -43,7 +43,7 @@ public class LayerHelper
         mLayerAuthProvider = layerAuthProvider;
         mBus = bus;
         mLayerAppId = appId;
-        mUser = mUser;
+        mUser = user;
         mLayerClient.registerEventListener(new LayerChangeEventListener()
         {
             @Override
