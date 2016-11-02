@@ -105,6 +105,10 @@ public class AccountFragment extends InjectedFragment
             @Override
             public void onSuccess(final RecurringBookingsResponse response)
             {
+                if (getActivity() == null || !isAdded())
+                {
+                    return; //quick-fix to prevent fragment not attached to activity crash
+                }
                 removeUiBlockers();
                 mPlans = new ArrayList<>(response.getRecurringBookings());
                 mActivePlansText.setText(getString(
@@ -115,6 +119,10 @@ public class AccountFragment extends InjectedFragment
             @Override
             public void onError(final DataManager.DataManagerError error)
             {
+                if (getActivity() == null || !isAdded())
+                {
+                    return; //quick-fix to prevent fragment not attached to activity crash
+                }
                 mActivePlansLayout.setEnabled(false);
                 removeUiBlockers();
                 dataManagerErrorHandler.handleError(getActivity(), error);
