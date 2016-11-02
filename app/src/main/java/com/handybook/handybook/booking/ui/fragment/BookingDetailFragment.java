@@ -137,6 +137,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         }
     }
 
+    //TODO: JIA: remove this, since we don't put it in the booking level yet.
     @OnClick(R.id.image_chat)
     public void chatClicked() {
         Intent intent = new Intent(getActivity(), MessagesListActivity.class);

@@ -71,6 +71,7 @@ public final class ChatModule
     public LayerClient providesLayerClient(AuthenticationProvider authProvider)
     {
         Log.d(TAG, "providesLayerClient() called with: authProvider = [" + authProvider + "]");
+        LayerClient.setLoggingEnabled(mContext, true);
         LayerClient.Options options = new LayerClient.Options()
 
                     /* Fetch the minimum amount per conversation when first authenticated */

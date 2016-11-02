@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.handybook.handybook.handylayer.PushNotificationReceiver;
@@ -26,6 +27,7 @@ import com.layer.sdk.messaging.Conversation;
 public class MessagesListActivity extends BaseActivity
 {
     private static final int MESSAGE_SYNC_AMOUNT = 20;
+    private static final String TAG = MessagesListActivity.class.getName();
 
     private UiState mState;
     private Conversation mConversation;
@@ -118,6 +120,7 @@ public class MessagesListActivity extends BaseActivity
                             boolean active
                     )
                     {
+                        Log.d(TAG, "onTypingActivityChange: ");
                         mMessagesList.setFooterView(active ? typingIndicator : null);
                     }
                 });

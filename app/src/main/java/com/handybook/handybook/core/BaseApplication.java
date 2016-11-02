@@ -245,7 +245,6 @@ public class BaseApplication extends MultiDexApplication
     {
         Log.d(TAG, "initLayer: ");
         User user = userManager.getCurrentUser();
-
         if (user != null)
         {
             HandyUser handyUser = new HandyUser(user.getId(), user.getFullName());
