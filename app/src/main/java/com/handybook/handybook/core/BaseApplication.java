@@ -243,6 +243,10 @@ public class BaseApplication extends MultiDexApplication
 
     public void initLayer()
     {
+        if (mHandyLayer != null) {
+            Log.d(TAG, "initLayer: Layer already inited. Exiting");
+            return;
+        }
         Log.d(TAG, "initLayer: ");
         User user = userManager.getCurrentUser();
         if (user != null)

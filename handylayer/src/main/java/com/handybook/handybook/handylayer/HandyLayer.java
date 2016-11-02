@@ -70,7 +70,6 @@ public class HandyLayer
     private void initGraph()
     {
         graph = ObjectGraph.create(new ChatModule(mRestAdapter, mUser, mBus, mContext));
-        graph.injectStatics();
         inject(this);
     }
 
