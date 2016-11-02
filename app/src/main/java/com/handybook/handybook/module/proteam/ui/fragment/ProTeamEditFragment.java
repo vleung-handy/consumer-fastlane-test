@@ -1,6 +1,8 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
@@ -39,8 +42,6 @@ public class ProTeamEditFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
-    private static final String KEY_PRO_TEAM = "pro_team";
-
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_list_holder)
@@ -57,7 +58,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     {
         final ProTeamEditFragment fragment = new ProTeamEditFragment();
         final Bundle arguments = new Bundle();
-        arguments.putParcelable(KEY_PRO_TEAM, proTeam);
+        arguments.putParcelable(BundleKeys.PRO_TEAM, proTeam);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -66,7 +67,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mProTeam = getArguments().getParcelable(KEY_PRO_TEAM);
+        mProTeam = getArguments().getParcelable(BundleKeys.PRO_TEAM);
     }
 
     @Override
@@ -107,7 +108,19 @@ public class ProTeamEditFragment extends InjectedFragment implements
         clearEditHolders();
         removeUiBlockers();
         showToast(R.string.pro_team_update_successful);
+        updateTargetFragment();
         getActivity().onBackPressed();
+    }
+
+    private void updateTargetFragment()
+    {
+        final Fragment targetFragment = getTargetFragment();
+        if (targetFragment != null)
+        {
+            final Intent data = new Intent();
+            data.putExtra(BundleKeys.PRO_TEAM, mProTeam);
+            targetFragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
+        }
     }
 
     private void clearEditHolders()
