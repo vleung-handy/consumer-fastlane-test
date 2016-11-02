@@ -3,6 +3,7 @@ package com.handybook.handybook.module.proteam.viewmodel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 
@@ -14,11 +15,13 @@ public class ProTeamProViewModel
     private final Float mAverageRating;
     private final Integer mJobsCount;
     private boolean mIsChecked;
+    private boolean mIsHandymanIndicatorEnabled;
     private String mImageUrl;
 
     private ProTeamProViewModel(
             @NonNull final ProTeamPro proTeamPro,
-            @NonNull ProviderMatchPreference providerMatchPreference
+            @NonNull final ProviderMatchPreference providerMatchPreference,
+            final boolean shouldShowHandymanIndicators
     )
     {
         mProTeamPro = proTeamPro;
@@ -27,15 +30,22 @@ public class ProTeamProViewModel
         mTitle = proTeamPro.getName();
         mAverageRating = proTeamPro.getAverageRating();
         mJobsCount = proTeamPro.getBookingCount();
+        mIsHandymanIndicatorEnabled = shouldShowHandymanIndicators &&
+                proTeamPro.getCategoryType() == ProTeamCategoryType.HANDYMEN;
         mImageUrl = proTeamPro.getImageUrl();
     }
 
     public static ProTeamProViewModel from(
             @NonNull final ProTeamPro proTeamPro,
-            @NonNull final ProviderMatchPreference providerMatchPreference
+            @NonNull final ProviderMatchPreference providerMatchPreference,
+            final boolean shouldShowHandymanIndicators
     )
     {
-        return new ProTeamProViewModel(proTeamPro, providerMatchPreference);
+        return new ProTeamProViewModel(
+                proTeamPro,
+                providerMatchPreference,
+                shouldShowHandymanIndicators
+        );
     }
 
     public ProviderMatchPreference getProviderMatchPreference()
@@ -78,6 +88,11 @@ public class ProTeamProViewModel
     public String getImageUrl()
     {
         return mImageUrl;
+    }
+
+    public boolean isHandymanIndicatorEnabled()
+    {
+        return mIsHandymanIndicatorEnabled;
     }
 
     public interface OnInteractionListener

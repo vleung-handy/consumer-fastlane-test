@@ -10,7 +10,11 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static com.handybook.handybook.module.proteam.model.ProviderMatchPreference.INDIFFERENT;
+import static com.handybook.handybook.module.proteam.model.ProviderMatchPreference.PREFERRED;
 
 public class ProTeam implements Parcelable
 {
@@ -18,6 +22,7 @@ public class ProTeam implements Parcelable
     private ProTeamCategory mCleaning;
     @SerializedName(ProTeamCategoryType.Constants.HANDYMEN)
     private ProTeamCategory mHandymen;
+    private ProTeamCategory mAllCategories;
 
     protected ProTeam(Parcel in)
     {
@@ -106,6 +111,44 @@ public class ProTeam implements Parcelable
         return null;
     }
 
+    public ProTeamCategory getAllCategories()
+    {
+        if (mAllCategories != null)
+        {
+            return mAllCategories;
+        }
+        final List<ProTeamPro> preferredPros = new ArrayList<>();
+        final List<ProTeamPro> indifferentPros = new ArrayList<>();
+        if (mCleaning != null)
+        {
+            mergeList(preferredPros, mCleaning.getPreferred());
+            mergeList(indifferentPros, mCleaning.getIndifferent());
+        }
+        if (mHandymen != null)
+        {
+            mergeList(preferredPros, mHandymen.getPreferred());
+            mergeList(indifferentPros, mHandymen.getIndifferent());
+        }
+        Collections.sort(preferredPros);
+        Collections.sort(indifferentPros);
+        mAllCategories = new ProTeamCategory.Builder()
+                .withPreference(PREFERRED, preferredPros)
+                .withPreference(INDIFFERENT, indifferentPros)
+                .build();
+        return mAllCategories;
+    }
+
+    private void mergeList(
+            @NonNull final List<ProTeamPro> to,
+            @Nullable final List<ProTeamPro> from
+    )
+    {
+        if (from != null)
+        {
+            to.addAll(from);
+        }
+    }
+
     public boolean isEmpty()
     {
         return mCleaning.isEmpty() && mHandymen.isEmpty();
@@ -121,6 +164,11 @@ public class ProTeam implements Parcelable
         private List<ProTeamPro> mIndifferent;
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_NEVER)
         private List<ProTeamPro> mNever;
+
+        ProTeamCategory()
+        {
+
+        }
 
         ProTeamCategory(Parcel in)
         {
@@ -205,6 +253,41 @@ public class ProTeam implements Parcelable
                 return false;
             }
             return true;
+        }
+
+        public static class Builder
+        {
+            private final ProTeamCategory mProTeamCategory;
+
+            public Builder()
+            {
+                mProTeamCategory = new ProTeamCategory();
+            }
+
+            public Builder withPreference(
+                    @NonNull final ProviderMatchPreference preference,
+                    @Nullable List<ProTeamPro> pros
+            )
+            {
+                switch (preference)
+                {
+                    case PREFERRED:
+                        mProTeamCategory.mPreferred = pros;
+                        break;
+                    case INDIFFERENT:
+                        mProTeamCategory.mIndifferent = pros;
+                        break;
+                    case NEVER:
+                        mProTeamCategory.mNever = pros;
+                        break;
+                }
+                return this;
+            }
+
+            public ProTeamCategory build()
+            {
+                return mProTeamCategory;
+            }
         }
     }
 }

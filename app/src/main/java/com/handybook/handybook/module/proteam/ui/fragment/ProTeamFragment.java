@@ -4,6 +4,7 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,10 +44,14 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass. Use the {@link ProTeamFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@Deprecated
 public class ProTeamFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
+
+    @Bind(R.id.pro_team_coordinator_layout)
+    CoordinatorLayout mCoordinatorLayout;
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_tab_layout)
@@ -127,7 +132,7 @@ public class ProTeamFragment extends InjectedFragment implements
                 || !mCleanersToRemove.isEmpty()
                 || !mHandymenToAdd.isEmpty()
                 || !mHandymenToRemove.isEmpty();
-        mBottomButton.setVisibility(proTeamChanged ? View.VISIBLE : View.GONE);
+        mBottomButton.setVisibility(proTeamChanged ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -155,7 +160,10 @@ public class ProTeamFragment extends InjectedFragment implements
 
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
-                mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT),
+                mProTeam.getCount(
+                        ProTeamCategoryType.CLEANING,
+                        ProviderMatchPreference.INDIFFERENT
+                ),
                 mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.PREFERRED),
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT)
         )));
@@ -276,7 +284,6 @@ public class ProTeamFragment extends InjectedFragment implements
      */
     @Override
     public void onProRemovalRequested(
-            final ProTeamCategoryType proTeamCategoryType,
             final ProTeamPro proTeamPro,
             final ProviderMatchPreference providerMatchPreference
     )
@@ -287,7 +294,7 @@ public class ProTeamFragment extends InjectedFragment implements
         fragment.setTitle(title);
         fragment.setProTeamPro(proTeamPro);
         fragment.setProviderMatchPreference(providerMatchPreference);
-        fragment.setProTeamCategoryType(proTeamCategoryType);
+        fragment.setProTeamCategoryType(proTeamPro.getCategoryType());
         fragment.setListener(this);
         fragment.show(fm, RemoveProDialogFragment.TAG);
 
@@ -300,14 +307,13 @@ public class ProTeamFragment extends InjectedFragment implements
 
     @Override
     public void onProCheckboxStateChanged(
-            @NonNull final ProTeamCategoryType proTeamCategoryType,
             @NonNull final ProTeamPro proTeamPro,
             final boolean isChecked
     )
     {
         if (isChecked)
         {
-            switch (proTeamCategoryType)
+            switch (proTeamPro.getCategoryType())
             {
                 case CLEANING:
                     mCleanersToAdd.add(proTeamPro);
@@ -322,7 +328,7 @@ public class ProTeamFragment extends InjectedFragment implements
         }
         else
         {
-            switch (proTeamCategoryType)
+            switch (proTeamPro.getCategoryType())
             {
                 case CLEANING:
                     mCleanersToRemove.add(proTeamPro);

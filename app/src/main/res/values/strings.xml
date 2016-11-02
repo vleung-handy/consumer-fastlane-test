@@ -20,6 +20,7 @@
     <string name="share_using">Share using…</string>
     <string name="my_bookings">My Bookings</string>
     <string name="my_pro_team">My Pro Team</string>
+    <string name="edit_pro_team">Edit Pro Team</string>
     <string name="history">History</string>
     <string name="account">My Account</string>
     <string name="want_to_log_out">Are you sure you want to log out?</string>
@@ -139,6 +140,7 @@
     <string name="item">Item</string>
     <string name="amount">Amount</string>
     <string name="title">Title</string>
+    <string name="edit_list">Edit List</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>
@@ -374,6 +376,8 @@
     <string name="pro_team_connect_to_facebook">Connected to Facebook</string>
     <string name="pro_team_see_pro_recommendations">You\'ll see pro recommendations from friends here as we find them.</string>
     <string name="pro_team_ok">OK, Got it</string>
+    <string name="pro_team_update_successful">Your Pro Team was updated successfully!</string>
+    <string name="pro_team_no_changes">You did not make any changes to your Pro Team</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 

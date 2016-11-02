@@ -12,6 +12,7 @@ import com.handybook.handybook.ui.view.MiniProProfile;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 public class ProTeamProHolder extends RecyclerView.ViewHolder
@@ -52,6 +53,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         );
         mProProfile.setIsProTeam(mProTeamProViewModel.isChecked());
         mProProfile.setProTeamIndicatorEnabled(false);
+        mProProfile.setHandymanIndicatorEnabled(mProTeamProViewModel.isHandymanIndicatorEnabled());
 
         if (mShowProImage)
         {
@@ -70,6 +72,12 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
             );
         }
         return true;
+    }
+
+    @OnClick(R.id.pro_team_pro_card)
+    void onClick()
+    {
+        mCheckbox.setChecked(!mCheckbox.isChecked());
     }
 
     @Override

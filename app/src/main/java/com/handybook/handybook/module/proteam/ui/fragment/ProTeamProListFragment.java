@@ -51,7 +51,7 @@ public class ProTeamProListFragment extends InjectedFragment
     @Bind(R.id.pro_team_empty_view_text)
     TextView mEmptyViewText;
 
-    private ProTeam mProteam;
+    private ProTeam mProTeam;
     private ProTeamCategoryType mProTeamCategoryType;
     private OnProInteraction mOnProInteraction;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
@@ -72,11 +72,7 @@ public class ProTeamProListFragment extends InjectedFragment
                 {
                     return;
                 }
-                mOnProInteraction.onProRemovalRequested(
-                        mProTeamCategoryType,
-                        proTeamPro,
-                        providerMatchPreference
-                );
+                mOnProInteraction.onProRemovalRequested(proTeamPro, providerMatchPreference);
             }
 
             @Override
@@ -86,24 +82,14 @@ public class ProTeamProListFragment extends InjectedFragment
                 {
                     return;
                 }
-                mOnProInteraction.onProCheckboxStateChanged(
-                        mProTeamCategoryType,
-                        proTeamPro,
-                        checked
-                );
+                mOnProInteraction.onProCheckboxStateChanged(proTeamPro, checked);
             }
         };
     }
 
-    public ProTeamProListFragment()
-    {
-        // Required empty public constructor
-
-    }
-
     public static ProTeamProListFragment newInstance(
-            @Nullable ProTeam proTeam,
-            @NonNull ProTeamCategoryType proTeamCategoryType
+            @NonNull ProTeam proTeam,
+            @Nullable ProTeamCategoryType proTeamCategoryType
     )
     {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
@@ -121,7 +107,7 @@ public class ProTeamProListFragment extends InjectedFragment
         final Bundle arguments = getArguments();
         if (arguments != null)
         {
-            mProteam = arguments.getParcelable(KEY_PROTEAM);
+            mProTeam = arguments.getParcelable(KEY_PROTEAM);
             mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
         }
         mFacebookCallbackManager = CallbackManager.Factory.create();
@@ -160,7 +146,7 @@ public class ProTeamProListFragment extends InjectedFragment
         {
             return;
         }
-        if (mProteam == null)
+        if (mProTeam == null)
         {
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
@@ -180,22 +166,24 @@ public class ProTeamProListFragment extends InjectedFragment
         }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setEmptyView(mEmptyView);
-        if (mProteam == null)
+        if (mProTeam == null)
         {
             return;
         }
 
         final boolean shouldShowProImage = configurationManager
                 .getPersistentConfiguration().isProTeamProfilePicturesEnabled();
+        final ProTeam.ProTeamCategory proTeamCategory = mProTeamCategoryType != null ?
+                mProTeam.getCategory(mProTeamCategoryType) : mProTeam.getAllCategories();
+        final boolean shouldShowHandymanIndicators = mProTeamCategoryType == null;
         final ProTeamCategoryAdapter proCardCardAdapter = new ProTeamCategoryAdapter(
-                mProteam,
-                mProTeamCategoryType,
+                proTeamCategory,
                 shouldShowProImage,
+                shouldShowHandymanIndicators,
                 mOnInteractionListener
         );
 
         if (configurationManager.getPersistentConfiguration().isProTeamFacebookLoginEnabled()
-                && mProTeamCategoryType == CLEANING
                 && !sXButtonPressed
                 && AccessToken.getCurrentAccessToken() == null)
         {
@@ -217,7 +205,7 @@ public class ProTeamProListFragment extends InjectedFragment
             {
                 bus.post(new LogEvent.AddLogEvent(
                         new ProTeamPageLog.FacebookConnectTapped(
-                                mProteam.getCount(CLEANING, PREFERRED))));
+                                mProTeam.getCount(CLEANING, PREFERRED))));
             }
         };
         View.OnClickListener closeButtonListener = new View.OnClickListener()
@@ -241,19 +229,9 @@ public class ProTeamProListFragment extends InjectedFragment
         proTeamCategoryAdapter.setFacebookHeaderHolder(proTeamFacebookHolder);
     }
 
-    /**
-     * for logging purposes
-     *
-     * @return
-     */
-    public ProTeamCategoryType getProTeamCategoryType()
-    {
-        return mProTeamCategoryType;
-    }
-
     public void setProTeam(final ProTeam proTeam)
     {
-        mProteam = proTeam;
+        mProTeam = proTeam;
         initialize();
     }
 
@@ -262,19 +240,22 @@ public class ProTeamProListFragment extends InjectedFragment
         mOnProInteraction = onProInteraction;
     }
 
+    public ProTeamCategoryType getProTeamCategoryType()
+    {
+        return mProTeamCategoryType;
+    }
+
     /**
      * Implement this interface to be notified when user clicks on one of the pro cards.
      */
     public interface OnProInteraction
     {
         void onProRemovalRequested(
-                ProTeamCategoryType proTeamCategoryType,
                 ProTeamPro proTeamPro,
                 ProviderMatchPreference providerMatchPreference
         );
 
         void onProCheckboxStateChanged(
-                ProTeamCategoryType proTeamCategoryType,
                 ProTeamPro proTeamPro,
                 boolean state
         );

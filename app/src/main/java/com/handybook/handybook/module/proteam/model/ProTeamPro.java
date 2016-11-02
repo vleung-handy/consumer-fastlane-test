@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Object describing one provider in a ProTeam
  */
-public class ProTeamPro implements Parcelable
+public class ProTeamPro implements Parcelable, Comparable
 {
     private static final int MILLIS_FOR_NULL_DATE = -1;
     private static final float INVALID_AVERAGE_RATING = -1;
@@ -20,6 +20,8 @@ public class ProTeamPro implements Parcelable
     private int mId;
     @SerializedName("name")
     private String mName;
+    @SerializedName("team_type")
+    private ProTeamCategoryType mCategoryType;
     @SerializedName("description")
     private String mDescription;
     @SerializedName("last_seen_at")
@@ -35,6 +37,7 @@ public class ProTeamPro implements Parcelable
     {
         mId = in.readInt();
         mName = in.readString();
+        mCategoryType = (ProTeamCategoryType) in.readSerializable();
         mDescription = in.readString();
         final long millis = in.readLong();
         if (millis == MILLIS_FOR_NULL_DATE) // null date was stored
@@ -80,6 +83,11 @@ public class ProTeamPro implements Parcelable
         return mName;
     }
 
+    public ProTeamCategoryType getCategoryType()
+    {
+        return mCategoryType;
+    }
+
     @Nullable
     public String getDescription()
     {
@@ -120,6 +128,7 @@ public class ProTeamPro implements Parcelable
     {
         dest.writeInt(mId);
         dest.writeString(mName);
+        dest.writeSerializable(mCategoryType);
         dest.writeString(mDescription);
         dest.writeLong(mLastSeenAt != null ? mLastSeenAt.getTime() : MILLIS_FOR_NULL_DATE);
         dest.writeFloat(mAverageRating == null ? INVALID_AVERAGE_RATING : mAverageRating);
@@ -131,5 +140,22 @@ public class ProTeamPro implements Parcelable
     public String toString()
     {
         return "[" + mName + "]";
+    }
+
+    @Override
+    public int compareTo(final Object object)
+    {
+        if (object instanceof ProTeamPro)
+        {
+            final ProTeamPro otherProTeamPro = (ProTeamPro) object;
+            if (mLastSeenAt == null && otherProTeamPro.mLastSeenAt == null) { return 0; }
+            if (otherProTeamPro.mLastSeenAt == null) { return 1; }
+            if (mLastSeenAt == null) { return -1; }
+            return mLastSeenAt.compareTo(otherProTeamPro.mLastSeenAt);
+        }
+        else
+        {
+            return 1;
+        }
     }
 }
