@@ -101,6 +101,8 @@ public class Configuration implements Serializable
 
     public boolean isProTeamChatEnabled()
     {
-        return mProTeamChatEnabled;
+        return false;
+        // FIXME: Uncomment next line once pro team chat is ready
+        // return mProTeamChatEnabled;
     }
 }
