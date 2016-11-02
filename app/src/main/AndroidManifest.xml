@@ -473,13 +473,6 @@
             />
 
         <!-- For Layer -->
-
-        <activity android:name=".module.chat.LayerChatActivity">
-        </activity>
-        <activity android:name=".module.chat.LayerConversationActivity">
-        </activity>
-        <activity android:name=".module.chat.LayerLoginActivity">
-        </activity>
         <activity
             android:name=".handylayer.builtin.MessagesListActivity"
             android:theme="@style/HandyTheme"
@@ -525,8 +518,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".module.chat.conversation.ConversationsListActivity">
-        </activity>
     </application>
 
 </manifest>

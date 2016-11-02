@@ -28,7 +28,6 @@ import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.layer.sdk.LayerClient;
-import com.layer.sdk.messaging.Conversation;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,10 +53,8 @@ public class ProTeamProListFragment extends InjectedFragment
     @Bind(R.id.pro_team_empty_view_text)
     TextView mEmptyViewText;
 
+    private LayerClient mLayerClient;
     private ProTeam mProTeam;
-
-    LayerClient mLayerClient;
-
     private ProTeamCategoryType mProTeamCategoryType;
     private OnProInteraction mOnProInteraction;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
@@ -131,13 +128,6 @@ public class ProTeamProListFragment extends InjectedFragment
 
         mLayerClient = ((BaseApplication) getActivity().getApplication()).getLayerHelper()
                                                                          .getLayerClient();
-
-        final Bundle arguments = getArguments();
-        if (arguments != null)
-        {
-            mProteam = arguments.getParcelable(KEY_PROTEAM);
-            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
-        }
 
         initialize();
         return view;

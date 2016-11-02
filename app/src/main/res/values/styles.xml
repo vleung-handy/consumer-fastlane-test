@@ -769,7 +769,6 @@
         <item name="android:textColor">@color/handy_tertiary_gray</item>
     </style>
 
-    <string name="name">Name</string>
     <!--20sp-->
     <style name="ChatHeaderStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:gravity">center</item>

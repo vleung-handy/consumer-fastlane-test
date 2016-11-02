@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -34,8 +33,6 @@ import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.handylayer.LayerEvent;
 import com.handybook.handybook.handylayer.LayerHelper;
-import com.handybook.handybook.handylayer.PushNotificationReceiver;
-import com.handybook.handybook.handylayer.builtin.MessagesListActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -331,6 +328,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(
                 userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
         mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(userLoggedIn);
+        updateLayerActionMenu();
     }
 
     /**
@@ -353,18 +351,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 return true;
             case R.id.nav_menu_profile:
                 navigateToActivity(ProfileActivity.class, menuItem.getItemId());
-                return true;
-            case R.id.nav_menu_chat:
-
-                //TODO: JIA: remove this hard coded conversation ID later.
-                Bundle bundle = new Bundle();
-                String conversationId = "layer:///conversations/636a2014-dbd2-4e4e-a430-4131b18d56a9";
-                bundle.putParcelable(
-                        PushNotificationReceiver.LAYER_CONVERSATION_KEY,
-                        Uri.parse(conversationId)
-                );
-
-                navigateToActivity(MessagesListActivity.class, bundle, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_my_bookings:
                 navigateToActivity(BookingsActivity.class, menuItem.getItemId());

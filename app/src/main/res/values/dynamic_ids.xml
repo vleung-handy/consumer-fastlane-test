@@ -2,8 +2,6 @@
 <resources>
     <item name="nav_menu_home"
           type="id"/>
-    <item name="nav_menu_chat"
-          type="id"/>
     <item name="nav_menu_profile"
           type="id"/>
     <item name="nav_menu_my_bookings"

@@ -368,7 +368,9 @@ public final class ApplicationModule
         return restAdapter.create(PlacesService.class);
     }
 
-    RestAdapter providesRestAdapter(
+    @Provides
+    @Singleton
+    final RestAdapter providesRestAdapter(
             final HandyRetrofitEndpoint endpoint,
             final UserManager userManager
     )
