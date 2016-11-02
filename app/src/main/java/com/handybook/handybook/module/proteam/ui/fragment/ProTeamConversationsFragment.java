@@ -1,5 +1,7 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.constant.RequestCode;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
@@ -52,12 +56,6 @@ public class ProTeamConversationsFragment extends InjectedFragment
         return view;
     }
 
-    @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
-        requestProTeam();
-    }
-
     private void requestProTeam()
     {
         showUiBlockers();
@@ -70,6 +68,10 @@ public class ProTeamConversationsFragment extends InjectedFragment
         super.onResume();
         setupToolbar(mToolbar, getString(R.string.my_pro_team));
         ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        if (mProTeam == null)
+        {
+            requestProTeam();
+        }
     }
 
     @Subscribe
@@ -97,10 +99,26 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @OnClick(R.id.pro_team_toolbar_edit_list_button)
     public void onEditListClicked()
     {
+        final ProTeamEditFragment proTeamEditFragment = ProTeamEditFragment.newInstance(mProTeam);
+        proTeamEditFragment.setTargetFragment(this, RequestCode.EDIT_PRO_TEAM);
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, ProTeamEditFragment.newInstance(mProTeam))
+                .add(R.id.fragment_container, proTeamEditFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == RequestCode.EDIT_PRO_TEAM)
+        {
+            final ProTeam updatedProTeam = data.getParcelableExtra(BundleKeys.PRO_TEAM);
+            if (updatedProTeam != null)
+            {
+                mProTeam = updatedProTeam;
+            }
+        }
     }
 }
