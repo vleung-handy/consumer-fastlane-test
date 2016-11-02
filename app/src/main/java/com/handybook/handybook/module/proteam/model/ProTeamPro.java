@@ -151,7 +151,7 @@ public class ProTeamPro implements Parcelable, Comparable
             if (mLastSeenAt == null && otherProTeamPro.mLastSeenAt == null) { return 0; }
             if (otherProTeamPro.mLastSeenAt == null) { return 1; }
             if (mLastSeenAt == null) { return -1; }
-            return mLastSeenAt.compareTo(otherProTeamPro.mLastSeenAt);
+            return otherProTeamPro.mLastSeenAt.compareTo(mLastSeenAt);
         }
         else
         {
