@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -27,7 +26,6 @@ import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
-import com.layer.sdk.LayerClient;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,7 +51,6 @@ public class ProTeamProListFragment extends InjectedFragment
     @Bind(R.id.pro_team_empty_view_text)
     TextView mEmptyViewText;
 
-    private LayerClient mLayerClient;
     private ProTeam mProTeam;
     private ProTeamCategoryType mProTeamCategoryType;
     private OnProInteraction mOnProInteraction;
@@ -125,9 +122,6 @@ public class ProTeamProListFragment extends InjectedFragment
     {
         final View view = inflater.inflate(R.layout.fragment_pro_team_pro_list, container, false);
         ButterKnife.bind(this, view);
-
-        mLayerClient = ((BaseApplication) getActivity().getApplication()).getLayerHelper()
-                                                                         .getLayerClient();
 
         initialize();
         return view;

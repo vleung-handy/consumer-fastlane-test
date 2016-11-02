@@ -4,15 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.constant.RequestCode;
+import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.handylayer.PushNotificationReceiver;
+import com.handybook.handybook.handylayer.builtin.MessagesListActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
@@ -20,6 +27,9 @@ import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
+import com.layer.sdk.LayerClient;
+import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -31,7 +41,22 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
 
+    @Bind(R.id.pro_team_recycler_view)
+    EmptiableRecyclerView mRecyclerView;
+
+    @Bind(R.id.pro_team_empty_view)
+    View mEmptyView;
+
+    @Bind(R.id.pro_team_empty_view_title)
+    TextView mEmptyViewTitle;
+
+    @Bind(R.id.pro_team_empty_view_text)
+    TextView mEmptyViewText;
+
+    ProConversationAdapter mAdapter;
+
     private ProTeam mProTeam;
+    private LayerClient mLayerClient;
 
     public static ProTeamConversationsFragment newInstance()
     {
@@ -53,7 +78,77 @@ public class ProTeamConversationsFragment extends InjectedFragment
         );
         ButterKnife.bind(this, view);
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
+
+        mLayerClient = ((BaseApplication) getActivity().getApplication()).getLayerHelper()
+                                                                         .getLayerClient();
+        initEmptyView();
+        initRecyclerView();
         return view;
+    }
+
+    private void initRecyclerView()
+    {
+        if (mRecyclerView == null || mProTeam == null)
+        {
+            return;
+        }
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setEmptyView(mEmptyView);
+        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+
+        mAdapter = new ProConversationAdapter(
+                mProTeam.getAllCategories(),
+                mLayerClient,
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final View v)
+                    {
+                        int pos = mRecyclerView.getChildAdapterPosition(v);
+                        Conversation conversation = mAdapter.getItem(pos).getConversation();
+
+                        if (conversation != null)
+                        {
+                            Intent intent = new Intent(getActivity(), MessagesListActivity.class);
+                            intent.putExtra(
+                                    PushNotificationReceiver.LAYER_CONVERSATION_KEY,
+                                    conversation.getId()
+                            );
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            Snackbar.make(
+                                    mRecyclerView,
+                                    "There isn't a conversation started with this pro yet.",
+                                    Snackbar.LENGTH_SHORT
+                            ).show();
+                        }
+                    }
+                }
+        );
+
+        mAdapter.refreshLayer();
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    private void initEmptyView()
+    {
+        if (mEmptyViewTitle == null || mEmptyViewText == null)
+        {
+            return;
+        }
+        if (mProTeam == null)
+        {
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
+        }
+        else
+        {
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text);
+        }
     }
 
     private void requestProTeam()
@@ -88,6 +183,8 @@ public class ProTeamConversationsFragment extends InjectedFragment
                 mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.PREFERRED),
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT)
         )));
+
+        initRecyclerView();
     }
 
     @Subscribe

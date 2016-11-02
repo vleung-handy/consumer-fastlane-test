@@ -17,6 +17,7 @@
     <dimen name="default_padding_eighth">2dp</dimen>
     <dimen name="default_padding_quarter">4dp</dimen>
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="negative_default_padding">-16dp</dimen>
     <dimen name="default_padding_medium">24dp</dimen>
     <dimen name="default_padding_double">32dp</dimen>
     <dimen name="default_padding_4x">64dp</dimen>
