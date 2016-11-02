@@ -97,20 +97,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
         }
-
-        /*
-        start screen recording.
-        according to docs, this call should ONLY be made from Activity.onCreate() or Activity.onResume()
-
-        although it is only necessary to start Appsee in activities that are entry points to the app
-        (SplashActivity, ServiceCategoriesActivity), putting this here because
-        we may want to start/stop recording when configs change between activities
-
-        note that because config response isn't guaranteed at this point,
-        recording might not start until the next activity in which configs are present.
-        consider refactoring the way we deal with configs so that it's similar to portal
-         */
-        mAppseeManager.startOrStopRecordingAsNecessary();
     }
 
     @Override
@@ -121,6 +107,19 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         {
             mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(false, false)));
         }
+        /*
+        start/stop screen recording
+        according to docs, this call should ONLY be made from Activity.onCreate() or Activity.onResume()
+
+        although it is only necessary to start Appsee in activities that are entry points to the app
+        (SplashActivity, ServiceCategoriesActivity), putting this here because
+        we may want to start/stop recording when configs or storage space change
+
+        note that because config response isn't guaranteed at this point,
+        recording might not start until the next call of onResume() in which configs are present.
+        consider refactoring the way we deal with configs so that it's similar to portal
+         */
+        mAppseeManager.startOrStopRecordingAsNecessary();
     }
 
     @Override
