@@ -4,6 +4,7 @@ package com.handybook.handybook.logger.handylogger;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.util.PropertiesReader;
+import com.handybook.handybook.library.util.SystemUtils;
 import com.handybook.handybook.logger.handylogger.model.Event;
 import com.handybook.handybook.logger.handylogger.model.EventLogBundle;
 import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
@@ -55,6 +57,7 @@ public class EventLogManager
 
     private static final Gson GSON = new Gson();
     private static EventLogBundle sCurrentEventLogBundle;
+    private final Context mContext;
     private final Bus mBus;
     private int mSendingLogsCount;
     private final DataManager mDataManager;
@@ -68,6 +71,7 @@ public class EventLogManager
 
     @Inject
     public EventLogManager(
+            final Context context,
             final Bus bus,
             final DataManager dataManager,
             final FileManager fileManager,
@@ -75,6 +79,7 @@ public class EventLogManager
             final UserManager userManager
     )
     {
+        mContext = context;
         mBus = bus;
         mBus.register(this);
         mDataManager = dataManager;
@@ -124,7 +129,12 @@ public class EventLogManager
             //Create new event log bundle and add it to the List
             sCurrentEventLogBundle = new EventLogBundle(
                     getUserId(),
-                    new ArrayList<Event>()
+                    new ArrayList<Event>(),
+                    Build.VERSION.RELEASE,
+                    BuildConfig.VERSION_NAME,
+                    SystemUtils.getDeviceId(mContext),
+                    SystemUtils.getDeviceModel(),
+                    mPrefsManager.getInstallationId()
             );
             synchronized (BundlesWrapper.class)
             {
@@ -400,24 +410,31 @@ public class EventLogManager
         }
     }
 
-    private void initMixPanel()
+    // This should be called from BaseApplication after
+    public void initMixPanel()
     {
         //Set up mix panel
         String mixPanelProperty = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 ? "mixpanel_api_key"
                 : "mixpanel_api_key_internal";
         String mixpanelApiKey = PropertiesReader.getProperties(
-                BaseApplication.getContext(),
+                mContext,
                 "config.properties"
         ).getProperty(mixPanelProperty);
 
-        mMixpanel = MixpanelAPI.getInstance(BaseApplication.getContext(), mixpanelApiKey);
+        mMixpanel = MixpanelAPI.getInstance(mContext, mixpanelApiKey);
 
         //Set up super properties for mix panel
         JSONObject superProperties = null;
         try
         {
-            superProperties = new JSONObject(GSON.toJson(new EventSuperPropertiesBase()));
+            superProperties = new JSONObject(GSON.toJson(new EventSuperPropertiesBase(
+                    Build.VERSION.RELEASE,
+                    BuildConfig.VERSION_NAME,
+                    SystemUtils.getDeviceId(mContext),
+                    SystemUtils.getDeviceModel(),
+                    mPrefsManager.getInstallationId()
+            )));
         }
         catch (JSONException e)
         {
@@ -487,8 +504,7 @@ public class EventLogManager
     private boolean hasNetworkConnection()
     {
         ConnectivityManager cm =
-                (ConnectivityManager) BaseApplication.getContext()
-                                                     .getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();

@@ -1,9 +1,9 @@
 package com.handybook.handybook.manager;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.core.BaseApplication;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,12 +20,13 @@ public class FileManager
 {
     private static final String TAG = FileManager.class.getSimpleName();
     private static final String LOG_PATH = "handylogs";
-    private static final File FILES_DIRECTORY = BaseApplication.getContext().getFilesDir();
+    private final File mFilesDirectory;
     private final File mLogDirectory;
 
-    public FileManager()
+    public FileManager(Context context)
     {
-        mLogDirectory = new File(FILES_DIRECTORY, LOG_PATH);
+        mFilesDirectory = context.getFilesDir();
+        mLogDirectory = new File(mFilesDirectory, LOG_PATH);
         makeLogsDirectoryIfNotExist();
     }
 
@@ -38,7 +39,7 @@ public class FileManager
     {
         try
         {
-            return FILES_DIRECTORY.getFreeSpace();
+            return mFilesDirectory.getFreeSpace();
         }
         catch (Exception e)
         {

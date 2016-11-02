@@ -1,8 +1,6 @@
 package com.handybook.handybook.core;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
@@ -26,6 +24,7 @@ import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.manager.AppBlockManager;
+import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
@@ -63,9 +62,7 @@ public class BaseApplication extends MultiDexApplication
     private static final long NEWLY_LAUNCH_THRESHOLD_IN_SECONDS = 5;
     private static GoogleAnalytics googleAnalytics;
     private static Tracker sTracker;
-    private static String sDeviceId = "";
     //This is used for the application context
-    private static Context sContext;
 
     protected ObjectGraph graph;
     @Inject
@@ -84,6 +81,8 @@ public class BaseApplication extends MultiDexApplication
     HelpContactManager helpContactManager;
     @Inject
     SecurePreferencesManager mSecurePreferencesManager;
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
     @Inject
     AppBlockManager appBlockManager;
     @Inject
@@ -124,7 +123,7 @@ public class BaseApplication extends MultiDexApplication
     public void onCreate()
     {
         super.onCreate();
-        sContext = getApplicationContext();
+        createObjectGraph();
         mApplicationStartTime = new Date();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -134,10 +133,7 @@ public class BaseApplication extends MultiDexApplication
         sTracker.enableExceptionReporting(true);
         sTracker.enableAdvertisingIdCollection(true);
         sTracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
-        sDeviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
         //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
-        createObjectGraph();
         final User user = userManager.getCurrentUser();
         if (user != null)
         {
@@ -309,31 +305,9 @@ public class BaseApplication extends MultiDexApplication
      * Should be careful not to store the application context in a local variable, otherwise memory won't release
      * @return
      */
-    public static Context getContext()
-    {
-        return sContext;
-    }
-
     public static Tracker tracker()
     {
         return sTracker;
-    }
-
-    public static String getDeviceId() { return sDeviceId; }
-
-    public static String getDeviceModel()
-    {
-        final String manufacturer = Build.MANUFACTURER;
-        final String model = Build.MODEL;
-
-        if (model.startsWith(manufacturer))
-        {
-            return model;
-        }
-        else
-        {
-            return manufacturer + " " + model;
-        }
     }
 
     /**
