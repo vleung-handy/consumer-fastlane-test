@@ -2,7 +2,6 @@ package com.handybook.handybook.handylayer;
 
 import retrofit.Callback;
 import retrofit.http.GET;
-import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**
@@ -10,9 +9,9 @@ import retrofit.http.Query;
  */
 public interface HandyService
 {
-    @GET("/users/{user_id}/layer_identity_token")
+    @GET("/layer/identity_token")
     void getLayerAuthToken(
-            @Path("user_id") String userId,
+            @Query("auth_token") String authToken,
             @Query("nonce") String nonce,
             Callback<LayerResponseWrapper> callback
     );

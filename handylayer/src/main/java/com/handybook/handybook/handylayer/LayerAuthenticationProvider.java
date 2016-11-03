@@ -30,7 +30,7 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
     protected HandyService mDataManager;
 
     //TODO: JIA: remove this
-    private boolean mTesting = true;
+    private boolean mTesting = false;
 
     public LayerAuthenticationProvider(Context context, HandyService dataManager)
     {
@@ -276,6 +276,7 @@ public class LayerAuthenticationProvider implements AuthenticationProvider<Layer
             return mLayerAppId;
         }
 
+//        TODO: JIA: rename this, it's actually the authToken for production handy
         public String getUserId()
         {
             return mUserId;

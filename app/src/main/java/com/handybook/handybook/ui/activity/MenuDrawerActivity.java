@@ -124,7 +124,9 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 //If this event is not raised, then we have to make sure we init layer somewhere else
 
                 User user = mUserManager.getCurrentUser();
-                HandyUser handyUser = new HandyUser(user.getId(), user.getFullName());
+
+                //TODO: JIA: this is confusing as hell, rename it so that it's not user id, it's the auth token
+                HandyUser handyUser = new HandyUser(user.getAuthToken(), user.getFullName());
 
                 ((BaseApplication) getApplication()).getLayerHelper().initLayer(handyUser);
                 refreshMenu();
