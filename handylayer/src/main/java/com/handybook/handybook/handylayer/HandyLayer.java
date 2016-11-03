@@ -26,7 +26,7 @@ public class HandyLayer
     @Inject
     LayerHelper mLayerHelper;
 
-    public static HandyLayer init(
+    public static LayerHelper init(
             final RestAdapter restAdapter,
             final Bus bus,
             final Application application
@@ -39,7 +39,7 @@ public class HandyLayer
             mHandyLayer.initGraph();
         }
 
-        return mHandyLayer;
+        return mHandyLayer.mLayerHelper;
     }
 
     public static HandyLayer getInstance()
@@ -57,11 +57,6 @@ public class HandyLayer
         mRestAdapter = restAdapter;
         mBus = bus;
         mContext = context;
-    }
-
-    public LayerHelper getLayerHelper()
-    {
-        return mLayerHelper;
     }
 
     private void initGraph()

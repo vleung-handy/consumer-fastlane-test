@@ -3,9 +3,9 @@ package com.handybook.handybook.core;
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
@@ -118,7 +118,6 @@ public class BaseApplication extends MultiDexApplication
     @Inject
     RestAdapter mRestAdapter;
 
-    HandyLayer mHandyLayer;
     LayerHelper mLayerHelper;
 
     private Date mApplicationStartTime;
@@ -238,14 +237,12 @@ public class BaseApplication extends MultiDexApplication
             }
         });
 
-        mHandyLayer = HandyLayer.init(mRestAdapter, bus, this);
+        mLayerHelper = HandyLayer.init(mRestAdapter, bus, this);
     }
 
-    public
-    @NonNull
-    HandyLayer getHandyLayer()
+    public LayerHelper getLayerHelper()
     {
-        return mHandyLayer;
+        return mLayerHelper;
     }
 
     private void initFabric()

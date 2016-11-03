@@ -91,6 +91,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
             finish();
             return;
         }
+        mLayerHelper = ((BaseApplication) getApplication()).getLayerHelper();
 
         setupEnvButton();
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -125,9 +126,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 User user = mUserManager.getCurrentUser();
                 HandyUser handyUser = new HandyUser(user.getId(), user.getFullName());
 
-                ((BaseApplication) getApplication()).getHandyLayer()
-                                                    .getLayerHelper()
-                                                    .initLayer(handyUser);
+                ((BaseApplication) getApplication()).getLayerHelper().initLayer(handyUser);
                 refreshMenu();
                 if (!event.isLoggedIn())
                 {
@@ -138,6 +137,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Subscribe
             public void onLayerEvent(LayerEvent event)
             {
+                Log.d(TAG, "onLayerEvent: ");
                 updateLayerActionMenu();
             }
 
@@ -306,7 +306,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 .findItem(R.id.nav_menu_my_pro_team)
                 .getActionView();
 
-        if (mLayerHelper != null && mLayerHelper.getUnreadMessageCount() > 0)
+        if (mLayerHelper.getUnreadMessageCount() > 0)
         {
             textView.setVisibility(View.VISIBLE);
             textView.setText(String.valueOf(mLayerHelper.getUnreadMessageCount()));

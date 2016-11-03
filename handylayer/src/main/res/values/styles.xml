@@ -16,6 +16,11 @@
            parent="BaseTheme"/>
 
 
+    <style name="HandyTheme.AppBarOverlay">
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:textColorPrimary">@color/handy_white</item>
+    </style>
+
     <style name="ChatTheme"
            parent="HandyTheme">
         <!-- Customize your theme here. -->
@@ -39,6 +44,11 @@
            parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@color/handy_white</item>
+    </style>
+
+    <style name="Toolbar.TitleText"
+           parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
 </resources>

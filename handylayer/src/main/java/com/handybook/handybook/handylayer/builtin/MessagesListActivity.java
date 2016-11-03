@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
 import com.handybook.handybook.handylayer.PushNotificationReceiver;
 import com.handybook.handybook.handylayer.R;
-import com.layer.atlas.AtlasAddressBar;
+import com.handybook.handybook.handylayer.Util;
 import com.layer.atlas.AtlasHistoricMessagesFetchLayout;
 import com.layer.atlas.AtlasMessageComposer;
 import com.layer.atlas.AtlasMessagesRecyclerView;
@@ -23,16 +24,19 @@ import com.layer.atlas.messagetypes.text.TextSender;
 import com.layer.atlas.messagetypes.threepartimage.ThreePartImageCellFactory;
 import com.layer.atlas.typingindicators.BubbleTypingIndicatorFactory;
 import com.layer.sdk.messaging.Conversation;
+import com.layer.sdk.messaging.Identity;
 
+/**
+ * TODO: JIA: setup fabric in this library
+ */
 public class MessagesListActivity extends BaseActivity
 {
     private static final int MESSAGE_SYNC_AMOUNT = 20;
     private static final String TAG = MessagesListActivity.class.getName();
 
-    private UiState mState;
     private Conversation mConversation;
 
-    private AtlasAddressBar mAddressBar;
+    private Toolbar mToolbar;
     private AtlasHistoricMessagesFetchLayout mHistoricFetchLayout;
     private AtlasMessagesRecyclerView mMessagesList;
     private AtlasTypingIndicator mTypingIndicator;
@@ -43,55 +47,29 @@ public class MessagesListActivity extends BaseActivity
         super(R.layout.activity_messages_list, true);
     }
 
-    private void setUiState(UiState state)
-    {
-        if (mState == state) { return; }
-        mState = state;
-        switch (state)
-        {
-            case ADDRESS:
-                mAddressBar.setVisibility(View.VISIBLE);
-                mAddressBar.setSuggestionsVisibility(View.VISIBLE);
-                mHistoricFetchLayout.setVisibility(View.GONE);
-                mMessageComposer.setVisibility(View.GONE);
-                break;
-
-            case ADDRESS_COMPOSER:
-                mAddressBar.setVisibility(View.VISIBLE);
-                mAddressBar.setSuggestionsVisibility(View.VISIBLE);
-                mHistoricFetchLayout.setVisibility(View.GONE);
-                mMessageComposer.setVisibility(View.VISIBLE);
-                break;
-
-            case ADDRESS_CONVERSATION_COMPOSER:
-                mAddressBar.setVisibility(View.VISIBLE);
-                mAddressBar.setSuggestionsVisibility(View.GONE);
-                mHistoricFetchLayout.setVisibility(View.VISIBLE);
-                mMessageComposer.setVisibility(View.VISIBLE);
-                break;
-
-            case CONVERSATION_COMPOSER:
-                mAddressBar.setVisibility(View.GONE);
-                mAddressBar.setSuggestionsVisibility(View.GONE);
-                mHistoricFetchLayout.setVisibility(View.VISIBLE);
-                mMessageComposer.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        mAddressBar = ((AtlasAddressBar) findViewById(R.id.conversation_launcher));
 
         if (mLayerAuthProvider.routeLogin(mLayerClient, mLayerAppId))
         {
             throw new RuntimeException("Needs to route login, but not sure what to do here");
         }
 
-        mHistoricFetchLayout = ((AtlasHistoricMessagesFetchLayout) findViewById(R.id.historic_sync_layout))
+        setSupportActionBar(mToolbar);
+
+        mToolbar = (Toolbar) findViewById(R.id.messages_toolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onBackPressed();
+            }
+        });
+
+        mHistoricFetchLayout = ((AtlasHistoricMessagesFetchLayout) findViewById(R.id.messages_historic_sync_layout))
                 .init(getLayerClient())
                 .setHistoricMessagesPerFetch(MESSAGE_SYNC_AMOUNT);
 
@@ -125,21 +103,10 @@ public class MessagesListActivity extends BaseActivity
                     }
                 });
 
-        mMessageComposer = ((AtlasMessageComposer) findViewById(R.id.message_composer))
+        mMessageComposer = ((AtlasMessageComposer) findViewById(R.id.messages_composer))
                 .init(getLayerClient())
-                .setTextSender(new TextSender())
-                .setOnMessageEditTextFocusChangeListener(new View.OnFocusChangeListener()
-                {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus)
-                    {
-                        if (hasFocus)
-                        {
-                            setUiState(UiState.CONVERSATION_COMPOSER);
-                            setTitle(true);
-                        }
-                    }
-                });
+                .setTextSender(new TextSender());
+
 
         // Get or create Conversation from Intent extras
         Conversation conversation;
@@ -150,7 +117,7 @@ public class MessagesListActivity extends BaseActivity
             {
                 Uri conversationId = intent.getParcelableExtra(PushNotificationReceiver.LAYER_CONVERSATION_KEY);
                 conversation = getLayerClient().getConversation(conversationId);
-                setConversation(conversation, conversation != null);
+                setConversation(conversation);
             }
         }
         else
@@ -167,7 +134,6 @@ public class MessagesListActivity extends BaseActivity
         // Clear any notifications for this conversation
         PushNotificationReceiver.getNotifications(this).clear(mConversation);
         super.onResume();
-        setTitle(mConversation != null);
     }
 
     @Override
@@ -188,40 +154,19 @@ public class MessagesListActivity extends BaseActivity
         }
     }
 
-    public void setTitle(boolean useConversation)
-    {
-        setTitle("Conversation between 2 people");
-    }
 
-    private void setConversation(Conversation conversation, boolean hideLauncher)
+    private void setConversation(Conversation conversation)
     {
         mConversation = conversation;
         mHistoricFetchLayout.setConversation(conversation);
         mMessagesList.setConversation(conversation);
         mTypingIndicator.setConversation(conversation);
         mMessageComposer.setConversation(conversation);
+        Identity id = Util.getOpposingParticipant(conversation);
 
-        // UI state
-        if (conversation == null)
+        if (id != null)
         {
-            setUiState(UiState.ADDRESS);
-            return;
-        }
-
-        if (hideLauncher)
-        {
-            setUiState(UiState.CONVERSATION_COMPOSER);
-            return;
-        }
-
-        if (conversation.getHistoricSyncStatus() == Conversation.HistoricSyncStatus.INVALID)
-        {
-            // New "temporary" conversation
-            setUiState(UiState.ADDRESS_COMPOSER);
-        }
-        else
-        {
-            setUiState(UiState.ADDRESS_CONVERSATION_COMPOSER);
+            mToolbar.setTitle(id.getDisplayName());
         }
     }
 

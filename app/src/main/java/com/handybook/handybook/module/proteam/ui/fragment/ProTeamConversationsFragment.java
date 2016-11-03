@@ -81,7 +81,6 @@ public class ProTeamConversationsFragment extends InjectedFragment
 
         mLayerClient = ((BaseApplication) getActivity()
                 .getApplication())
-                .getHandyLayer()
                 .getLayerHelper()
                 .getLayerClient();
 

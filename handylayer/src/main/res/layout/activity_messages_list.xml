@@ -5,14 +5,19 @@
               android:orientation="vertical"
     >
 
-    <com.layer.atlas.AtlasAddressBar
-        android:id="@+id/conversation_launcher"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/messages_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="@dimen/med_elevation"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:contentInsetStart="0dp"
+        app:navigationIcon="@drawable/ic_back"
         />
 
     <com.layer.atlas.AtlasHistoricMessagesFetchLayout
-        android:id="@+id/historic_sync_layout"
+        android:id="@+id/messages_historic_sync_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -35,10 +40,9 @@
     </com.layer.atlas.AtlasHistoricMessagesFetchLayout>
 
     <com.layer.atlas.AtlasMessageComposer
-        android:id="@+id/message_composer"
+        android:id="@+id/messages_composer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
-        android:visibility="gone"
         />
 </LinearLayout>

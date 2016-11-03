@@ -60,20 +60,6 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public void setTitle(CharSequence title)
-    {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null)
-        {
-            super.setTitle(title);
-        }
-        else
-        {
-            actionBar.setTitle(title);
-        }
-    }
-
-    @Override
     public void setTitle(int titleId)
     {
         ActionBar actionBar = getSupportActionBar();
