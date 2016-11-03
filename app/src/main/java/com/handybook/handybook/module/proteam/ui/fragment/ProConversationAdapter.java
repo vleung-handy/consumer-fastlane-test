@@ -33,7 +33,11 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
     private final LayerClient mLayerClient;
     private final View.OnClickListener mOnClickListener;
 
+    //TODO: JIA: remove this after friday demo
+    private boolean mIsDemo;
+
     public ProConversationAdapter(
+            boolean isDemo,
             @Nullable final ProTeam.ProTeamCategory proTeamCategory,
             @NonNull final LayerClient layerClient,
             @NonNull final View.OnClickListener onClickListener
@@ -43,6 +47,7 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
         mProTeamCategory = proTeamCategory;
         mLayerClient = layerClient;
         mOnClickListener = onClickListener;
+        mIsDemo = isDemo;
         initProTeamProViewModels();
     }
 
@@ -88,50 +93,65 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
     @Override
     protected void onConversationUpdated()
     {
-        if (mProTeamProViewModels == null || mProTeamProViewModels.isEmpty())
-        {
-            Log.d(TAG, "onConversationUpdated: Pro team not initialized yet, don't do anything.");
-            return;
+        if (!mIsDemo) {
+            if (mProTeamProViewModels == null || mProTeamProViewModels.isEmpty())
+            {
+                Log.d(TAG, "onConversationUpdated: Pro team not initialized yet, don't do anything.");
+                return;
+            }
         }
+
         //get a list of all conversations and see if we can match them with the pro teams
         List<Conversation> allConversations = getAllConversations();
 
-        //update each pro team model with the correct conversation
-        for (final ProTeamProViewModel model : mProTeamProViewModels)
+
+        if (!mIsDemo)
         {
-            if (model.getConversation() == null)
+            //update each pro team model with the correct conversation
+            for (final ProTeamProViewModel model : mProTeamProViewModels)
             {
-                //if there isn't a conversation tied to the pro, check to see if there is one
-                //that just got created.
-
-                int proId = model.getProTeamPro().getId();
-                for (final Conversation convo : allConversations)
+                if (model.getConversation() == null)
                 {
-                    boolean conversationSet = false;
-                    for (final Identity participant : convo.getParticipants())
-                    {
-                        //TODO: JIA: this is a hardcoded criteria, remove this
-                        if (proId == 27698 && participant.getUserId().equals("19"))
-                        {
-                            //this the conversation with DanH
-                            model.setConversation(convo);
-                            conversationSet = true;
-                            break;
-                        }
-                        else if (proId == 27685 && participant.getUserId().equals("17"))
-                        {
-                            //27685 is mark S in staging, and 17 is "MarkyS" (case sensitive) in the sample app
-                            model.setConversation(convo);
-                            conversationSet = true;
-                            break;
-                        }
+                    //if there isn't a conversation tied to the pro, check to see if there is one
+                    //that just got created.
 
-                    }
-                    if (conversationSet)
+                    int proId = model.getProTeamPro().getId();
+                    for (final Conversation convo : allConversations)
                     {
-                        break;
+                        boolean conversationSet = false;
+                        for (final Identity participant : convo.getParticipants())
+                        {
+                            //TODO: JIA: this is a hardcoded criteria, remove this
+                            if (proId == 27698 && participant.getUserId().equals("19"))
+                            {
+                                //this the conversation with DanH
+                                model.setConversation(convo);
+                                conversationSet = true;
+                                break;
+                            }
+                            else if (proId == 27685 && participant.getUserId().equals("17"))
+                            {
+                                //27685 is mark S in staging, and 17 is "MarkyS" (case sensitive) in the sample app
+                                model.setConversation(convo);
+                                conversationSet = true;
+                                break;
+                            }
+
+                        }
+                        if (conversationSet)
+                        {
+                            break;
+                        }
                     }
                 }
+            }
+        } else {
+            //if this is for demo, we just show conversations verbatim.
+            mProTeamProViewModels = new ArrayList<>();
+            for (final Conversation convo : allConversations) {
+                ProTeamProViewModel model = new ProTeamProViewModel();
+                model.setConversation(convo);
+                mProTeamProViewModels.add(model);
             }
         }
 

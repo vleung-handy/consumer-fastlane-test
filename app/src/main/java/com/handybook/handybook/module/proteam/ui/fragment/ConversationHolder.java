@@ -102,8 +102,19 @@ public class ConversationHolder extends RecyclerView.ViewHolder
             break;
         }
 
-        mTextTimestamp.setText(DateTimeUtils.getTime(mProTeamProViewModel.getConversation()
-                                                                         .getLastMessage()
-                                                                         .getSentAt()));
+        if (mProTeamProViewModel.getConversation().getLastMessage() != null) {
+            mTextTimestamp.setText(
+                    DateTimeUtils.getTime(
+                            mProTeamProViewModel
+                                    .getConversation()
+                                    .getLastMessage()
+                                    .getSentAt()
+                        )
+                );
+
+            mTextTimestamp.setVisibility(View.VISIBLE);
+        } else {
+            mTextTimestamp.setVisibility(View.GONE);
+        }
     }
 }

@@ -50,6 +50,16 @@ public class ProTeamProViewModel
         );
     }
 
+    //TODO JIA: delete this fake constructor
+    public ProTeamProViewModel()
+    {
+        mProTeamPro = null;
+        mProviderMatchPreference = null;
+        mTitle = null;
+        mAverageRating = null;
+        mJobsCount = null;
+    }
+
     public ProviderMatchPreference getProviderMatchPreference()
     {
         return mProviderMatchPreference;

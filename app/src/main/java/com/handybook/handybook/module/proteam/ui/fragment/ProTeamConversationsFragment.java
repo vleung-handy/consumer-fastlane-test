@@ -58,6 +58,9 @@ public class ProTeamConversationsFragment extends InjectedFragment
     private ProTeam mProTeam;
     private LayerClient mLayerClient;
 
+    //TODO: JIA: dummy flag for friday's demo day.
+    private boolean mIsDemo = true;
+
     public static ProTeamConversationsFragment newInstance()
     {
         return new ProTeamConversationsFragment();
@@ -99,8 +102,19 @@ public class ProTeamConversationsFragment extends InjectedFragment
         mRecyclerView.setEmptyView(mEmptyView);
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
+        ProTeam.ProTeamCategory allCategories = mProTeam.getAllCategories();
+        if (mIsDemo) {
+            if (allCategories.getPreferred() != null) {
+                allCategories.getPreferred().removeAll(allCategories.getPreferred());
+            }
+            if (allCategories.getIndifferent() != null) {
+                allCategories.getIndifferent().removeAll(allCategories.getIndifferent());
+            }
+        }
+
         mAdapter = new ProConversationAdapter(
-                mProTeam.getAllCategories(),
+                mIsDemo,
+                allCategories,
                 mLayerClient,
                 new View.OnClickListener()
                 {
