@@ -3,6 +3,7 @@ package com.handybook.handybook.module.referral.ui;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public class ReferralActivity extends MenuDrawerActivity
@@ -16,7 +17,9 @@ public class ReferralActivity extends MenuDrawerActivity
     @Override
     protected Fragment createFragment()
     {
-        return ReferralFragment.newInstance();
+        return ReferralFragment.newInstance(
+                getIntent().getStringExtra(BundleKeys.REFERRAL_PAGE_SOURCE)
+        );
     }
 
     @Override

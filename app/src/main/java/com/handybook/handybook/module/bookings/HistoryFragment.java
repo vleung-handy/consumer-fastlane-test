@@ -21,13 +21,13 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.PastBookingsLog;
-import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
-import com.handybook.handybook.module.referral.ui.ReferralActivity;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.PastBookingsLog;
+import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
+import com.handybook.handybook.module.referral.ui.ReferralActivity;
+import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
 import com.squareup.otto.Subscribe;
 
@@ -65,7 +65,11 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState)
+    public View onCreateView(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState
+    )
     {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         ButterKnife.bind(this, view);
@@ -172,8 +176,13 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
     @OnClick(R.id.bookings_share_button)
     public void onShareButtonClicked()
     {
-        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareButtonPressedLog()));
-        startActivity(new Intent(getActivity(), ReferralActivity.class));
+        bus.post(new LogEvent.AddLogEvent(new PastBookingsLog.PastBookingsShareMenuPressedLog()));
+        Intent intent = new Intent(getContext(), ReferralActivity.class);
+        intent.putExtra(
+                BundleKeys.REFERRAL_PAGE_SOURCE,
+                ShareModalLog.NativeShareTappedLog.SRC_PAST_BOOKINGS
+        );
+        startActivity(intent);
     }
 
     @Override

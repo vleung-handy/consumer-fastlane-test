@@ -13,11 +13,11 @@ public class UpcomingBookingsLog extends EventLog
         super(eventType, EVENT_CONTEXT);
     }
 
-    public static class UpcomingBookingsShareButtonPressedLog extends UpcomingBookingsLog
+    public static class UpcomingBookingsShareMenuPressedLog extends UpcomingBookingsLog
     {
-        private static final String EVENT_TYPE = "share_button_tapped";
+        private static final String EVENT_TYPE = "share_menu_tapped";
 
-        public UpcomingBookingsShareButtonPressedLog()
+        public UpcomingBookingsShareMenuPressedLog()
         {
             super(EVENT_TYPE);
         }

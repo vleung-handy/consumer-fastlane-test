@@ -12,7 +12,10 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -20,10 +23,6 @@ import com.handybook.handybook.module.referral.model.ReferralChannels;
 import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
-import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.library.util.TextUtils;
-import com.handybook.handybook.library.util.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,8 +30,6 @@ import butterknife.OnClick;
 
 public class ReferralDialogFragment extends BaseDialogFragment
 {
-
-
     public static final String TAG = ReferralDialogFragment.class.getSimpleName();
 
     @Bind(R.id.dialog_referral_subtitle)
@@ -178,20 +175,24 @@ public class ReferralDialogFragment extends BaseDialogFragment
             switch (mSource)
             {
                 case POST_BOOKING:
-                    mBus.post(new LogEvent.AddLogEvent(
-                            new ShareModalLog.PostBookingShareButtonTappedLog(
-                                    referralMedium, identifier,
-                                    couponCode, mReferralDescriptor.getSenderCreditAmount(),
-                                    mReferralDescriptor.getReceiverCouponAmount()
-                            )));
+                    mEventLogManager.addLog(new ShareModalLog.PostBookingShareButtonTappedLog(
+                            referralMedium,
+                            identifier,
+                            couponCode,
+                            null,
+                            mReferralDescriptor.getSenderCreditAmount(),
+                            mReferralDescriptor.getReceiverCouponAmount()
+                    ));
                     break;
                 case POST_RATING:
-                    mBus.post(new LogEvent.AddLogEvent(
-                            new ShareModalLog.PostRatingShareButtonTappedLog(
-                                    referralMedium, identifier,
-                                    couponCode, mReferralDescriptor.getSenderCreditAmount(),
-                                    mReferralDescriptor.getReceiverCouponAmount()
-                            )));
+                    mEventLogManager.addLog(new ShareModalLog.PostRatingShareButtonTappedLog(
+                            referralMedium,
+                            identifier,
+                            couponCode,
+                            null,
+                            mReferralDescriptor.getSenderCreditAmount(),
+                            mReferralDescriptor.getReceiverCouponAmount()
+                    ));
                     break;
                 default:
                     break;

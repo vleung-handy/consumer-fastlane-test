@@ -36,6 +36,7 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
+import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.BookingListItem;
@@ -193,7 +194,12 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             public void onClick(final View v)
             {
                 bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareBannerTappedLog()));
-                startActivity(new Intent(getActivity(), ReferralActivity.class));
+                Intent intent = new Intent(getActivity(), ReferralActivity.class);
+                intent.putExtra(
+                        BundleKeys.REFERRAL_PAGE_SOURCE,
+                        ShareModalLog.SRC_UPCOMING_BOOKINGS
+                );
+                startActivity(intent);
             }
         });
 
@@ -242,8 +248,13 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @OnClick(R.id.bookings_share_button)
     public void onShareButtonClicked()
     {
-        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareButtonPressedLog()));
-        startActivity(new Intent(getActivity(), ReferralActivity.class));
+        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareMenuPressedLog()));
+        Intent intent = new Intent(getActivity(), ReferralActivity.class);
+        intent.putExtra(
+                BundleKeys.REFERRAL_PAGE_SOURCE,
+                ShareModalLog.NativeShareTappedLog.SRC_UPCOMING_BOOKINGS
+        );
+        startActivity(intent);
     }
 
     protected void loadBookings()

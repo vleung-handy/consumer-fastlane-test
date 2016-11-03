@@ -2,7 +2,6 @@ package com.handybook.handybook.library.ui.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,9 +18,10 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.library.util.ValidationUtils;
+import com.handybook.handybook.logger.handylogger.EventLogManager;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
@@ -37,7 +37,6 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     protected ProgressDialog progressDialog; //TODO: we should take this out of this class
     protected Toast toast;
 
-    //UPGRADE: Move away from direct calls to these and go through the bus
     @Inject
     protected BookingManager bookingManager;
     @Inject
@@ -50,9 +49,10 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     protected NavigationManager navigationManager;
     @Inject
     protected ConfigurationManager configurationManager;
+    @Inject
+    protected EventLogManager mEventLogManager;
 
     //TODO: acknowledged this is not ideal
-    @VisibleForTesting
     @Inject
     public Bus bus;
 
