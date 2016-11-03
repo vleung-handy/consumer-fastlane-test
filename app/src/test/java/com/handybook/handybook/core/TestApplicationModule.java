@@ -79,6 +79,7 @@ import com.handybook.handybook.logger.handylogger.EventLogManagerTest;
 import com.handybook.handybook.manager.AppBlockManager;
 import com.handybook.handybook.manager.AppseeManager;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.manager.DefaultPreferencesManagerTest;
 import com.handybook.handybook.manager.FileManager;
 import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.StripeManager;
@@ -194,6 +195,7 @@ import static org.mockito.Mockito.when;
         EditPlanAddressFragment.class,
         EventLogManagerTest.class,
         TestActivity.class,
+        DefaultPreferencesManagerTest.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -283,7 +285,14 @@ public class TestApplicationModule
             final UserManager userManager
     )
     {
-        return spy(new EventLogManager(bus, dataManager, fileManager, defaultPreferencesManager, userManager));
+        return spy(new EventLogManager(
+                context,
+                bus,
+                dataManager,
+                fileManager,
+                defaultPreferencesManager,
+                userManager
+        ));
     }
 
     @Provides
@@ -321,7 +330,7 @@ public class TestApplicationModule
     @Singleton
     final FileManager provideFileManager()
     {
-        return new FileManager();
+        return new FileManager(context);
     }
 
     @Provides

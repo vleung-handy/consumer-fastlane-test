@@ -1,14 +1,11 @@
 package com.handybook.handybook.logger.handylogger.model;
 
-import android.os.Build;
-
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.core.BaseApplication;
 
 public class EventSuperPropertiesBase
 {
     private static final String ANDROID = "android";
+    private static final String CONSUMER = "consumer";
 
     @SerializedName("product_type")
     private String mProduct;
@@ -22,14 +19,20 @@ public class EventSuperPropertiesBase
     private String mDeviceId;
     @SerializedName("device_model")
     private String mDeviceModel;
+    @SerializedName("installation_id")
+    private String mInstallationId;
 
-    public EventSuperPropertiesBase()
+    public EventSuperPropertiesBase(
+            String osVersion, String appVersion, String deviceId,
+            String deviceModel, String installationId
+    )
     {
-        mProduct = "consumer";
+        mProduct = CONSUMER;
         mPlatform = ANDROID;
-        mOsVersion = Build.VERSION.RELEASE;
-        mAppVersion = BuildConfig.VERSION_NAME;
-        mDeviceId = BaseApplication.getDeviceId();
-        mDeviceModel = BaseApplication.getDeviceModel();
+        mOsVersion = osVersion;
+        mAppVersion = appVersion;
+        mDeviceId = deviceId;
+        mDeviceModel = deviceModel;
+        mInstallationId = installationId;
     }
 }

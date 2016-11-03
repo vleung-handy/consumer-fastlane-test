@@ -554,7 +554,7 @@ public final class ApplicationModule
     @Singleton
     final FileManager provideFileManager()
     {
-        return new FileManager();
+        return new FileManager(mContext);
     }
 
     @Provides
@@ -702,7 +702,14 @@ public final class ApplicationModule
             final UserManager userManager
     )
     {
-        return new EventLogManager(bus, dataManager, fileManager, defaultPreferencesManager, userManager);
+        return new EventLogManager(
+                mContext,
+                bus,
+                dataManager,
+                fileManager,
+                defaultPreferencesManager,
+                userManager
+        );
     }
 
     @Provides

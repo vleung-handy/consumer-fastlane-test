@@ -8,9 +8,16 @@ public class EventSuperProperties extends EventSuperPropertiesBase
     @SerializedName(USER_ID)
     private int mUserid;
 
-    public EventSuperProperties(final int userId)
+    public EventSuperProperties(
+            int userId,
+            String osVersion,
+            String appVersion,
+            String deviceId,
+            String deviceModel,
+            String installationId
+    )
     {
-        super();
+        super(osVersion, appVersion, deviceId, deviceModel, installationId);
         mUserid = userId;
     }
 }

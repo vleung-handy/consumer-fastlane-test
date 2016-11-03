@@ -3,7 +3,6 @@ package com.handybook.handybook.logger.handylogger.model;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.core.BaseApplication;
 
 import java.util.List;
 
@@ -21,36 +20,47 @@ public class EventLogBundle
 
     /**
      * If user id greater then 0, then user_id will be part of super properties
+     *
      * @param userId
      * @param events
      */
-    public EventLogBundle(final int userId, @NonNull final List<Event> events)
+    public EventLogBundle(
+            final int userId,
+            @NonNull final List<Event> events,
+            @NonNull final String osVersion,
+            @NonNull final String appVersion,
+            @NonNull final String deviceId,
+            @NonNull final String deviceModel,
+            @NonNull final String installationId
+    )
     {
-        mEventBundleId = createBundleId();
+        mEventBundleId = System.currentTimeMillis() + "+" + deviceId;
         mEvents = events;
 
-        if(userId > 0)
+        if (userId > 0)
         {
-            mEventSuperProperties = new EventSuperProperties(userId);
-        }else {
-            mEventSuperProperties = new EventSuperPropertiesBase();
+            mEventSuperProperties = new EventSuperProperties(
+                    userId, osVersion, appVersion, deviceId, deviceModel, installationId);
+        }
+        else
+        {
+            mEventSuperProperties = new EventSuperPropertiesBase(
+                    osVersion, appVersion, deviceId, deviceModel, installationId);
         }
     }
 
-    public String getEventBundleId() {
+    public String getEventBundleId()
+    {
         return mEventBundleId;
     }
 
-    public void addEvent(Event event) {
+    public void addEvent(Event event)
+    {
         mEvents.add(event);
     }
 
-    public int size() {
-        return mEvents.size();
-    }
-
-    private String createBundleId()
+    public int size()
     {
-        return System.currentTimeMillis() + "+" + BaseApplication.getDeviceId();
+        return mEvents.size();
     }
 }
