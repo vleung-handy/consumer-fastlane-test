@@ -39,7 +39,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
@@ -86,8 +85,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     @Bind(R.id.image_chat)
     ImageView mImageChat;
 
-    LayerHelper mLayerHelper;
-
     private ArrayList<Service> mServices;
 
     public static BookingDetailFragment newInstance(
@@ -123,8 +120,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mBookingId = getArguments().getString(BundleKeys.BOOKING_ID);
         mIsFromBookingFlow = getArguments().getBoolean(BundleKeys.IS_FROM_BOOKING_FLOW, false);
-
-        mLayerHelper = ((BaseApplication) getActivity().getApplication()).getLayerHelper();
 
         if (savedInstanceState != null)
         {

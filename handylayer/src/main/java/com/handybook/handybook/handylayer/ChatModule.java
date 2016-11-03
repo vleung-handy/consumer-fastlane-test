@@ -40,19 +40,16 @@ public final class ChatModule
 //    //Handy's project number
 //    private static final String LAYER_APP_ID = "layer:///apps/staging/4ad25df6-9ab6-11e6-ae69-9937161a279e";
 
-    HandyUser mUser;
     RestAdapter mRestAdapter;
     Bus mBus;
     Context mContext;
 
     public ChatModule(
             final RestAdapter restAdapter,
-            final HandyUser user,
             final Bus bus,
             final Context context
     )
     {
-        mUser = user;
         mRestAdapter = restAdapter;
         mBus = bus;
         mContext = context;
@@ -125,7 +122,6 @@ public final class ChatModule
                 layerClient,
                 authProvider,
                 mBus,
-                mUser,
                 LAYER_APP_ID
         );
     }

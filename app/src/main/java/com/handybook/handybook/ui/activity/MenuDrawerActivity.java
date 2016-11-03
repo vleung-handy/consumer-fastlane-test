@@ -31,6 +31,7 @@ import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
+import com.handybook.handybook.handylayer.HandyUser;
 import com.handybook.handybook.handylayer.LayerEvent;
 import com.handybook.handybook.handylayer.LayerHelper;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
@@ -90,7 +91,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
             finish();
             return;
         }
-        mLayerHelper = ((BaseApplication) getApplication()).getLayerHelper();
 
         setupEnvButton();
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -121,9 +121,13 @@ public abstract class MenuDrawerActivity extends BaseActivity
 
                 //TODO: JIA: test this for already logged-in users starting the app from scratch.
                 //If this event is not raised, then we have to make sure we init layer somewhere else
-                ((BaseApplication) getApplication()).initLayer();
-                mLayerHelper = ((BaseApplication) getApplication()).getLayerHelper();
 
+                User user = mUserManager.getCurrentUser();
+                HandyUser handyUser = new HandyUser(user.getId(), user.getFullName());
+
+                ((BaseApplication) getApplication()).getHandyLayer()
+                                                    .getLayerHelper()
+                                                    .initLayer(handyUser);
                 refreshMenu();
                 if (!event.isLoggedIn())
                 {

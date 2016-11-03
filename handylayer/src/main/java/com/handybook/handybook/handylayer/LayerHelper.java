@@ -29,13 +29,11 @@ public class LayerHelper
     private boolean mConversationsInitialized = false;
     private Bus mBus;
     private long mCurrentUnreadMessages = 0;
-    private HandyUser mUser;
 
     public LayerHelper(
             final LayerClient layerClient,
             final AuthenticationProvider layerAuthProvider,
             final Bus bus,
-            final HandyUser user,
             final String appId
     )
     {
@@ -43,7 +41,6 @@ public class LayerHelper
         mLayerAuthProvider = layerAuthProvider;
         mBus = bus;
         mLayerAppId = appId;
-        mUser = user;
         mLayerClient.registerEventListener(new LayerChangeEventListener()
         {
             @Override
@@ -134,7 +131,7 @@ public class LayerHelper
      * //TODO: JIA: potentially investigate the issue of a different user logging into the app, then
      * we need to de-auth layer and reauth?
      */
-    public void initLayer()
+    public void initLayer(final HandyUser user)
     {
         if ((mLayerClient != null) && mLayerClient.isAuthenticated())
         {
@@ -148,8 +145,8 @@ public class LayerHelper
             authenticate(
                     new LayerAuthenticationProvider.Credentials(
                             mLayerAppId,
-                            mUser.getUserName(),
-                            mUser.getId()
+                            user.getUserName(),
+                            user.getId()
                     ),
                     new AuthenticationProvider.Callback()
                     {
@@ -165,7 +162,7 @@ public class LayerHelper
                         {
                             Log.e(
                                     TAG,
-                                    "Failed to authenticate as `" + mUser.getUserName() + "`: " + error
+                                    "Failed to authenticate as `" + user.getUserName() + "`: " + error
                             );
                             throw new RuntimeException(
                                     "Issue logging onto layer. This should never happen.");

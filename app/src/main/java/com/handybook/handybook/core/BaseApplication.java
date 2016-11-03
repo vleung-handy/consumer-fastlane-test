@@ -3,10 +3,9 @@ package com.handybook.handybook.core;
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
@@ -22,7 +21,6 @@ import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.handylayer.HandyLayer;
-import com.handybook.handybook.handylayer.HandyUser;
 import com.handybook.handybook.handylayer.LayerHelper;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
@@ -239,33 +237,15 @@ public class BaseApplication extends MultiDexApplication
                 bus.post(new ActivityLifecycleEvent.Destroyed(activity));
             }
         });
-    }
 
-    public void initLayer()
-    {
-        if (mHandyLayer != null) {
-            Log.d(TAG, "initLayer: Layer already inited. Exiting");
-            return;
-        }
-        Log.d(TAG, "initLayer: ");
-        User user = userManager.getCurrentUser();
-        if (user != null)
-        {
-            HandyUser handyUser = new HandyUser(user.getId(), user.getFullName());
-            mHandyLayer = HandyLayer.init(mRestAdapter, handyUser, bus, this);
-        }
-        else
-        {
-            Crashlytics.logException(new RuntimeException(
-                    "Should not be initializing layer, user not logged in."));
-        }
+        mHandyLayer = HandyLayer.init(mRestAdapter, bus, this);
     }
 
     public
-    @Nullable
-    LayerHelper getLayerHelper()
+    @NonNull
+    HandyLayer getHandyLayer()
     {
-        return mHandyLayer == null ? null : mHandyLayer.getLayerHelper();
+        return mHandyLayer;
     }
 
     private void initFabric()

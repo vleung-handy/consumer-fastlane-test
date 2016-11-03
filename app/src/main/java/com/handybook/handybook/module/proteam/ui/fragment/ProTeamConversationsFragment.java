@@ -79,8 +79,12 @@ public class ProTeamConversationsFragment extends InjectedFragment
         ButterKnife.bind(this, view);
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
 
-        mLayerClient = ((BaseApplication) getActivity().getApplication()).getLayerHelper()
-                                                                         .getLayerClient();
+        mLayerClient = ((BaseApplication) getActivity()
+                .getApplication())
+                .getHandyLayer()
+                .getLayerHelper()
+                .getLayerClient();
+
         initEmptyView();
         initRecyclerView();
         return view;
