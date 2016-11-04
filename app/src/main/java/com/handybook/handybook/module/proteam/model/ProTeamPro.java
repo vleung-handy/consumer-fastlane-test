@@ -63,7 +63,8 @@ public class ProTeamPro implements Serializable, Comparable
         return mAverageRating;
     }
 
-    public int getBookingCount()
+    @Nullable
+    public Integer getBookingCount()
     {
         return mBookingCount;
     }
