@@ -24,6 +24,7 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.library.util.SystemUtils;
 import com.handybook.handybook.logger.handylogger.model.Event;
+import com.handybook.handybook.logger.handylogger.model.EventLog;
 import com.handybook.handybook.logger.handylogger.model.EventLogBundle;
 import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
 import com.handybook.handybook.logger.handylogger.model.EventSuperProperties;
@@ -96,8 +97,13 @@ public class EventLogManager
     @Subscribe
     public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
     {
+        addLog(event.getLog());
+    }
+
+    public synchronized void addLog(@NonNull EventLog log)
+    {
         mSession.incrementEventCount(mPrefsManager);
-        Event eventLog = new Event(event.getLog(), mSession.getId(), mSession.getEventCount());
+        Event eventLog = new Event(log, mSession.getId(), mSession.getEventCount());
 
         //log the payload to Crashlytics too
         //Note: Should always log regardless of flavor/variant
@@ -110,8 +116,8 @@ public class EventLogManager
         {
             //putting in try/catch block just in case GSON.toJson throws an exception
             //Get the log only to log
-            JSONObject eventLogJson = new JSONObject(GSON.toJson(event.getLog()));
-            String logString = event.getLog().getEventName() + ": " + eventLogJson.toString();
+            JSONObject eventLogJson = new JSONObject(GSON.toJson(log));
+            String logString = log.getEventName() + ": " + eventLogJson.toString();
             Crashlytics.log(logString);
 
             //Mixpanel tracking info in NOR-1016

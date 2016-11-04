@@ -30,4 +30,15 @@ public class PastBookingsLog extends EventLog
             mBookingId = bookingId;
         }
     }
+
+
+    public static class PastBookingsShareMenuPressedLog extends UpcomingBookingsLog
+    {
+        private static final String EVENT_TYPE = "share_menu_tapped";
+
+        public PastBookingsShareMenuPressedLog()
+        {
+            super(EVENT_TYPE);
+        }
+    }
 }

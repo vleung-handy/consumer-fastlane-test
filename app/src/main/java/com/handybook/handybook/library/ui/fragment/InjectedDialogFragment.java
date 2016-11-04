@@ -10,6 +10,7 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataManagerErrorHandler;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
+import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
@@ -25,6 +26,8 @@ public class InjectedDialogFragment extends DialogFragment
     protected BookingManager bookingManager;
     @Inject
     protected UserManager userManager;
+    @Inject
+    protected EventLogManager mEventLogManager;
     @Inject
     protected DataManager dataManager;
     @Inject

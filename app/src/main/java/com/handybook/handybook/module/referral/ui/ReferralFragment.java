@@ -19,9 +19,15 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
+import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
 import com.handybook.handybook.module.referral.model.ReferralChannels;
@@ -29,11 +35,6 @@ import com.handybook.handybook.module.referral.model.ReferralDescriptor;
 import com.handybook.handybook.module.referral.model.ReferralInfo;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.library.util.TextUtils;
-import com.handybook.handybook.library.util.Utils;
-import com.handybook.handybook.library.util.ValidationUtils;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -68,13 +69,24 @@ public class ReferralFragment extends InjectedFragment
     private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
     private boolean mIsReferralInfoFresh = false;
+    private String mSource;
 
-    public static Fragment newInstance()
+    public static Fragment newInstance(final @Nullable String source)
     {
-        return new ReferralFragment();
+        ReferralFragment fragment = new ReferralFragment();
+        Bundle args = new Bundle();
+        args.putString(BundleKeys.REFERRAL_PAGE_SOURCE, source);
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    @Nullable
+    @Override
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        mSource = getArguments().getString(BundleKeys.REFERRAL_PAGE_SOURCE);
+    }
+
     @Override
     public View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
@@ -312,13 +324,14 @@ public class ReferralFragment extends InjectedFragment
             String couponCode = StringUtils.replaceWithEmptyIfNull(mReferralDescriptor.getCouponCode());
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
 
-            mBus.post(new LogEvent.AddLogEvent(
-                    new NativeShareLog.NativeShareButtonTapped(referralMedium,
-                                                               identifier,
-                                                               couponCode,
-                                                               mReferralDescriptor.getSenderCreditAmount(),
-                                                               mReferralDescriptor.getReceiverCouponAmount()
-                    )));
+            mEventLogManager.addLog(new ShareModalLog.NativeShareTappedLog(
+                    referralMedium,
+                    identifier,
+                    couponCode,
+                    mSource,
+                    mReferralDescriptor.getSenderCreditAmount(),
+                    mReferralDescriptor.getReceiverCouponAmount()
+            ));
         }
     }
 }
