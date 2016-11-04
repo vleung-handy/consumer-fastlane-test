@@ -20,8 +20,6 @@ import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.event.ActivityLifecycleEvent;
 import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.handylayer.HandyLayer;
-import com.handybook.handybook.handylayer.LayerHelper;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.library.util.DateTimeUtils;
@@ -38,6 +36,9 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
+import com.handybook.shared.HandyLayer;
+import com.handybook.shared.LayerHelper;
+import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;

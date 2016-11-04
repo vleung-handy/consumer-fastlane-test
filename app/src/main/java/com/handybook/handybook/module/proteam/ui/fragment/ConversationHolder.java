@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
-import com.layer.atlas.util.Util;
+import com.handybook.shared.LayerUtil;
 import com.layer.sdk.messaging.Identity;
 import com.layer.sdk.messaging.Message;
 import com.squareup.picasso.Picasso;
@@ -83,7 +83,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         Message lastMessage = mProTeamProViewModel.getConversation().getLastMessage();
         if (lastMessage != null)
         {
-            String message = Util.getLastMessageString(mTextMessage.getContext(), lastMessage);
+            String message = LayerUtil.getLastMessageString(mTextMessage.getContext(), lastMessage);
             mTextMessage.setText(message);
         }
         else

@@ -472,12 +472,6 @@
             android:screenOrientation="portrait"
             />
 
-        <!-- For Layer -->
-        <activity
-            android:name=".handylayer.builtin.MessagesListActivity"
-            android:theme="@style/HandyTheme"
-            >
-        </activity>
 
         <!-- Services: Layer SDK FCM handling -->
         <service

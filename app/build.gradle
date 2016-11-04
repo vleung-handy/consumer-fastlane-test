@@ -47,6 +47,7 @@ android {
         debug {
             minifyEnabled false
             signingConfig signingConfigs.debug
+            applicationIdSuffix '.chat'
         }
     }
     productFlavors {
@@ -89,6 +90,7 @@ ext {
 
 repositories {
     maven { url "https://raw.githubusercontent.com/layerhq/releases-android/master/releases/" }
+    maven { url "https://raw.githubusercontent.com/layerhq/Atlas-Android/master/releases/" }
 }
 
 dependencies {
@@ -119,8 +121,6 @@ dependencies {
         exclude module: 'recyclerview-v7'
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     }
-    compile project(":layer-atlas-0.3.2")
-    compile project(":handylayer")
 
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile "com.android.support:design:$supportLibraryVersion"
@@ -174,10 +174,13 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 
+    //layer chat
+    compile 'com.layer.atlas:layer-atlas:0.3.2'
     compile('com.layer.sdk:layer-sdk:0.23.1') {
         exclude group: 'com.google.firebase', module: 'firebase-messaging'
         exclude group: 'com.google.firebase', module: 'firebase-core'
     }
+    compile(name: 'handy-shared', ext: 'aar')
 
     apt 'com.airbnb:deeplinkdispatch-processor:1.5.0'
 

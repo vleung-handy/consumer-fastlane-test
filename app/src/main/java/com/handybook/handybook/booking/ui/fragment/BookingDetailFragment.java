@@ -47,7 +47,6 @@ import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.shared.LayerHelper;
 import com.handybook.shared.PushNotificationReceiver;
 import com.handybook.shared.builtin.MessagesListActivity;
 import com.squareup.otto.Subscribe;
