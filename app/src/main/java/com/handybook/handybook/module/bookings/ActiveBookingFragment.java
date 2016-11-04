@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.JobStatus;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.ActivityResult;
@@ -41,6 +42,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.MapPlaceholderView;
+import com.handybook.handybook.ui.view.MiniProProfile;
 import com.handybook.handybook.ui.view.MissingLocationView;
 import com.handybook.handybook.util.BookingUtil;
 import com.handybook.handybook.library.util.DateTimeUtils;
@@ -69,8 +71,8 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @Bind(R.id.active_booking_map_divider)
     View mMapDivider;
 
-    @Bind(R.id.active_booking_provider_name)
-    TextView mTextProviderName;
+    @Bind(R.id.active_booking_provider_profile)
+    MiniProProfile mProProfile;
 
     @Bind(R.id.text_booking_title)
     TextView mTextBookingTitle;
@@ -199,16 +201,29 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
      */
     private void toggleProviderSection()
     {
-        if (mBooking.getProvider() != null && !TextUtils.isEmpty(mBooking.getProvider()
-                                                                         .getFullName()
-                                                                         .trim()))
+        final Provider provider = mBooking.getProvider();
+        if (provider != null && !TextUtils.isEmpty(provider.getFullName().trim()))
         {
             mProfileContainer.setVisibility(View.VISIBLE);
             mProfileContainerDivider.setVisibility(View.VISIBLE);
-            mProviderName = mBooking.getProvider().getFirstNameAndLastInitial();
-            mTextProviderName.setText(mProviderName);
 
-            if (!TextUtils.isEmpty(mBooking.getProvider().getPhone()))
+            mProviderName = provider.getFirstNameAndLastInitial();
+            mProProfile.setTitle(mProviderName);
+            final Booking.ProviderAssignmentInfo providerAssignmentInfo =
+                    mBooking.getProviderAssignmentInfo();
+            if (providerAssignmentInfo != null)
+            {
+                mProProfile.setProTeamIndicatorEnabled(true);
+                mProProfile.setIsProTeam(providerAssignmentInfo.isProTeamMatch());
+                if (providerAssignmentInfo.shouldShowProfileImage())
+                {
+                    mProProfile.setImage(provider.getImageUrl());
+                }
+            }
+            mProProfile.setRatingAndJobsCount(provider.getAverageRating(),
+                                              provider.getBookingCount());
+
+            if (!TextUtils.isEmpty(provider.getPhone()))
             {
                 mTextCall.setVisibility(View.VISIBLE);
                 mTextText.setVisibility(View.VISIBLE);
