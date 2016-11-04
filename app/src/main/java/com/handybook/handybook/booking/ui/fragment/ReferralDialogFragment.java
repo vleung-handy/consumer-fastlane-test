@@ -16,6 +16,7 @@ import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
@@ -175,24 +176,24 @@ public class ReferralDialogFragment extends BaseDialogFragment
             switch (mSource)
             {
                 case POST_BOOKING:
-                    mEventLogManager.addLog(new ShareModalLog.PostBookingShareButtonTappedLog(
+                    mBus.post(new LogEvent.AddLogEvent(new ShareModalLog.PostBookingShareButtonTappedLog(
                             referralMedium,
                             identifier,
                             couponCode,
                             null,
                             mReferralDescriptor.getSenderCreditAmount(),
                             mReferralDescriptor.getReceiverCouponAmount()
-                    ));
+                    )));
                     break;
                 case POST_RATING:
-                    mEventLogManager.addLog(new ShareModalLog.PostRatingShareButtonTappedLog(
+                    mBus.post(new LogEvent.AddLogEvent(new ShareModalLog.PostRatingShareButtonTappedLog(
                             referralMedium,
                             identifier,
                             couponCode,
                             null,
                             mReferralDescriptor.getSenderCreditAmount(),
                             mReferralDescriptor.getReceiverCouponAmount()
-                    ));
+                    )));
                     break;
                 default:
                     break;
