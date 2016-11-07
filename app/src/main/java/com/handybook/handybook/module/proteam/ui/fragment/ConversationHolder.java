@@ -11,6 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.LayerUtil;
+import com.layer.atlas.util.picasso.transformations.CircleTransform;
 import com.layer.sdk.messaging.Identity;
 import com.layer.sdk.messaging.Message;
 import com.squareup.picasso.Picasso;
@@ -61,6 +62,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
                    .load(mProTeamProViewModel.getImageUrl())
                    .placeholder(R.drawable.img_pro_placeholder)
                    .noFade()
+                   .transform(new CircleTransform(mProTeamProViewModel.getImageUrl()))
                    .into(mImageView);
         }
         else

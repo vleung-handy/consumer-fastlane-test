@@ -99,7 +99,8 @@ public class ProTeamProViewModel
 
     public String getImageUrl()
     {
-        return mImageUrl;
+        //FIXME: JIA: remove this hard coded URL of Howard
+        return "https://avatars.slack-edge.com/2015-10-27/13336893041_5c092cabebcd34fbea0e_192.jpg";
     }
 
     public boolean isHandymanIndicatorEnabled()
