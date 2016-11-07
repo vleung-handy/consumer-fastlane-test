@@ -9,7 +9,7 @@
     tools:context=".module.proteam.ui.activity.ProTeamActivity"
     >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
@@ -17,8 +17,10 @@
         >
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/pro_team_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:theme="@style/HandyTheme.AppBarOverlay"
             >
 
@@ -66,18 +68,21 @@
             android:id="@+id/pro_team_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_above="@+id/pro_team_bottom_button"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_below="@+id/pro_team_app_bar"
             >
         </android.support.v4.view.ViewPager>
 
         <Button
             android:id="@+id/pro_team_bottom_button"
             style="@style/Button.Green"
+            android:layout_alignParentBottom="true"
             android:clickable="false"
             android:text="@string/save"
             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

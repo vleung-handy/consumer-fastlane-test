@@ -2,6 +2,7 @@ package com.handybook.handybook.module.bookings;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.R;
@@ -71,7 +72,7 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         SupportFragmentTestUtil.startFragment(mActiveFragment);
 
         assertEquals(mActiveFragment.mProfileContainer.getVisibility(), View.VISIBLE);
-        assertEquals(mActiveFragment.mTextProviderName.getText().toString(), "Marky S.");
+        assertEquals(((TextView) mActiveFragment.mProProfile.findViewById(R.id.mini_pro_profile_title)).getText(), "Marky S.");
         assertEquals(mActiveFragment.mTextCall.getVisibility(), View.VISIBLE);
         assertEquals(mActiveFragment.mTextText.getVisibility(), View.VISIBLE);
         assertEquals(mActiveFragment.mMapDivider.getVisibility(), View.VISIBLE);
@@ -91,7 +92,7 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         SupportFragmentTestUtil.startFragment(mNoProviderFragment);
 
         assertEquals(mNoProviderFragment.mProfileContainer.getVisibility(), View.GONE);
-        assertEquals(mNoProviderFragment.mTextProviderName.getText().toString(), "");
+        assertEquals(((TextView) mNoProviderFragment.mProProfile.findViewById(R.id.mini_pro_profile_title)).getText(), "");
         assertEquals(mNoProviderFragment.mTextCall.getVisibility(), View.GONE);
         assertEquals(mNoProviderFragment.mTextText.getVisibility(), View.GONE);
     }

@@ -132,7 +132,7 @@ public class ProTeamFragment extends InjectedFragment implements
                 || !mCleanersToRemove.isEmpty()
                 || !mHandymenToAdd.isEmpty()
                 || !mHandymenToRemove.isEmpty();
-        mBottomButton.setVisibility(proTeamChanged ? View.VISIBLE : View.INVISIBLE);
+        mBottomButton.setVisibility(proTeamChanged ? View.VISIBLE : View.GONE);
     }
 
     @Override
