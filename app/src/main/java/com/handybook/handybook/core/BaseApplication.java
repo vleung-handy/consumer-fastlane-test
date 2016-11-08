@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
@@ -36,7 +35,6 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.shared.HandyLayer;
 import com.handybook.shared.LayerHelper;
 import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
@@ -238,7 +236,8 @@ public class BaseApplication extends MultiDexApplication
             }
         });
 
-        mLayerHelper = HandyLayer.init(mRestAdapter, bus, this);
+//        TODO: JIA: DO NOT initialize layer. Going in DARK at the moment.
+//        mLayerHelper = HandyLayer.init(mRestAdapter, bus, this);
     }
 
     public LayerHelper getLayerHelper()
