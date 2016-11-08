@@ -20,9 +20,6 @@ import com.layer.sdk.messaging.Identity;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jtse on 11/2/16.
- */
 public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHolder>
 {
     private static final String TAG = ProConversationAdapter.class.getName();

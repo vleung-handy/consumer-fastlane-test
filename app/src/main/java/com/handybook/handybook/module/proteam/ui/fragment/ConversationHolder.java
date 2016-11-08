@@ -45,9 +45,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         mLayerIdentity = identity;
     }
 
-    public void bind(
-            @NonNull final ProTeamProViewModel proTeamProViewModel
-    )
+    public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel)
     {
         mProTeamProViewModel = proTeamProViewModel;
 
@@ -89,6 +87,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         }
         HashSet<Identity> participants = new HashSet<>(mProTeamProViewModel.getConversation()
                                                                            .getParticipants());
+
         participants.remove(mLayerIdentity);
 
         for (final Identity id : participants)
