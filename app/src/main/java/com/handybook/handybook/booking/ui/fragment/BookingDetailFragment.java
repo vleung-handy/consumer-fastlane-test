@@ -1,20 +1,17 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.common.base.Strings;
@@ -47,8 +44,6 @@ import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.shared.PushNotificationReceiver;
-import com.handybook.shared.builtin.MessagesListActivity;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -63,8 +58,6 @@ import butterknife.OnClick;
 
 public final class BookingDetailFragment extends InjectedFragment implements PopupMenu.OnMenuItemClickListener
 {
-    private static final String TAG = BookingDetailFragment.class.getName();
-
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
     private static final String STATE_SERVICES = "STATE_SERVICES";
 
@@ -80,9 +73,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     BookingDetailView mBookingDetailView;
     @Bind(R.id.nav_help)
     TextView mHelp;
-
-    @Bind(R.id.image_chat)
-    ImageView mImageChat;
 
     private ArrayList<Service> mServices;
 
@@ -130,18 +120,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             mServices = (ArrayList<Service>) savedInstanceState.getSerializable(STATE_SERVICES);
         }
     }
-
-    //TODO: JIA: remove this, since we don't put it in the booking level yet.
-    @OnClick(R.id.image_chat)
-    public void chatClicked() {
-        Intent intent = new Intent(getActivity(), MessagesListActivity.class);
-        intent.putExtra(
-                PushNotificationReceiver.LAYER_CONVERSATION_KEY,
-                Uri.parse(mBooking.getConversationId())
-        );
-        startActivity(intent);
-    }
-
 
     @Override
     public final View onCreateView(
@@ -267,7 +245,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private void setupForBooking(Booking booking)
     {
-        Log.d(TAG, "setupForBooking: ");
         mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.GONE);
         mBookingDetailView.updateDisplay(booking, mServices);
         mBookingDetailView.updateReportIssueButton(mBooking, new View.OnClickListener()

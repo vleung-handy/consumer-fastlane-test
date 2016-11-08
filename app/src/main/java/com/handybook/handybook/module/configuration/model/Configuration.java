@@ -22,9 +22,6 @@ public class Configuration implements Serializable
     @SerializedName("address_auto_complete_enabled")
     private boolean mAddressAutoCompleteEnabled;
 
-    //    TODO: FIXME: JIA: make sure this respects the true config param value that is coming back from the server
-    private boolean mInAppChatEnabled = true;
-
     @SerializedName("upcoming_and_past_bookings_enabled")
     private boolean mUpcomingAndPastBookingsEnabled;
 
@@ -70,11 +67,6 @@ public class Configuration implements Serializable
     public boolean isAddressAutoCompleteEnabled()
     {
         return mAddressAutoCompleteEnabled;
-    }
-
-    public boolean isInAppChatEnabled()
-    {
-        return mInAppChatEnabled;
     }
 
     public String toJson()

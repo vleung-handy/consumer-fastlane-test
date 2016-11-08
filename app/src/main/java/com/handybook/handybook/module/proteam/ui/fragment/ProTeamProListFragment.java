@@ -191,7 +191,6 @@ public class ProTeamProListFragment extends InjectedFragment
         }
         mRecyclerView.setAdapter(proCardCardAdapter);
         proCardCardAdapter.notifyDataSetChanged();
-
     }
 
     private void addFacebookHeader(final ProTeamCategoryAdapter proTeamCategoryAdapter)

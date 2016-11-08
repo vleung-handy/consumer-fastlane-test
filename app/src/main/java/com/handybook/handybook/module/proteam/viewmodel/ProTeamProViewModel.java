@@ -50,7 +50,7 @@ public class ProTeamProViewModel
         );
     }
 
-    //TODO JIA: delete this fake constructor
+    //TODO JIA: delete this fake constructor once demo is over
     public ProTeamProViewModel()
     {
         mProTeamPro = null;

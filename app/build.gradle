@@ -47,7 +47,6 @@ android {
         debug {
             minifyEnabled false
             signingConfig signingConfigs.debug
-            applicationIdSuffix '.chat'
         }
     }
     productFlavors {

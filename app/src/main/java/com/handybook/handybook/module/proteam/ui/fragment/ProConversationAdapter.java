@@ -1,6 +1,5 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -155,31 +154,6 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
             }
         }
 
-        //TODO: JIA: if we ever need to sort this, the code below will help, but it gets a little inconsistent
-//because the monolith returns unsorted things, and we can't display anything until we get the
-//layer stuff to return conversations before we can sort.
-
-//        //now sort the pro team models, by the order of the conversation it should be showing
-//        //the top N conversations should match the top N pro team members
-//        //this assumes there are no conversations that does not belong to a pro
-//        for (int i = 0; i < allConversations.size(); i++)
-//        {
-//            Conversation conversation = mProTeamProViewModels.get(i).getConversation();
-//            if (conversation != null && !conversation.getId()
-//                                                     .equals(allConversations.get(i).getId()))
-//            {
-//                swapProIndexes(i, allConversations.get(i).getId());
-//            }
-//
-//            //TODO: JIA: this is really just testing code. Remove this later.
-//            conversation = mProTeamProViewModels.get(i).getConversation();
-//            if (conversation != null && !conversation.getId()
-//                                                     .equals(allConversations.get(i).getId()))
-//            {
-//                throw new RuntimeException("There was an issue sorting the list of pro team");
-//            }
-//        }
-
         notifyDataSetChanged();
     }
 
@@ -211,28 +185,4 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
     {
         return mProTeamProViewModels.get(position);
     }
-
-
-    /**
-     * Loops through the list of pro team members, starting at the currentProIndex until it finds a
-     * member with the given conversationId. That member will now be inserted at the
-     * currentProIndex
-     *
-     * @param currentProIndex
-     * @param conversationId
-     */
-    private void swapProIndexes(int currentProIndex, Uri conversationId)
-    {
-        for (int i = currentProIndex; i < mProTeamProViewModels.size(); i++)
-        {
-            Conversation conversation = mProTeamProViewModels.get(i).getConversation();
-            if (conversation != null && conversation.getId().equals(conversationId))
-            {
-                ProTeamProViewModel removed = mProTeamProViewModels.remove(i);
-                mProTeamProViewModels.add(currentProIndex, removed);
-                break;
-            }
-        }
-    }
-
 }

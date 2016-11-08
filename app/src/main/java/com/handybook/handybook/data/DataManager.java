@@ -1125,14 +1125,6 @@ public class DataManager
                 new BookingLocationStatusHandyRetrofitCallback(callback)
         );
     }
-//
-//    public void getLayerAuthToken(
-//            final String userId, final String nonce,
-//            final Callback<LayerResponseWrapper> cb
-//    )
-//    {
-//        mService.getLayerAuthToken(userId, nonce, new LayerAuthTokenRetrofitCallback(cb));
-//    }
 
     public final void updateBookingEntryInformation(
             String bookingId,
