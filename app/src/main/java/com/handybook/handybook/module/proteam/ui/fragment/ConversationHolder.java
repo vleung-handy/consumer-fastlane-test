@@ -21,11 +21,6 @@ import java.util.HashSet;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.handybook.handybook.core.BaseApplication.getContext;
-
-/**
- * Created by jtse on 11/2/16.
- */
 public class ConversationHolder extends RecyclerView.ViewHolder
 {
     @Bind(R.id.conversation_image)
@@ -58,7 +53,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
 
         if (!TextUtils.isEmpty(mProTeamProViewModel.getImageUrl()))
         {
-            Picasso.with(getContext())
+            Picasso.with(mImageView.getContext())
                    .load(mProTeamProViewModel.getImageUrl())
                    .placeholder(R.drawable.img_pro_placeholder)
                    .noFade()

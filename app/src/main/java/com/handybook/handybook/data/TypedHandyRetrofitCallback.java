@@ -28,7 +28,6 @@ import com.handybook.handybook.module.notifications.feed.model.HandyNotification
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.module.referral.model.ReferralResponse;
-import com.handybook.shared.LayerResponseWrapper;
 
 import org.json.JSONObject;
 
@@ -231,15 +230,6 @@ class HelpCenterResponseHandyRetrofitCallback
         extends TypedHandyRetrofitCallback<HelpCenterResponse>
 {
     HelpCenterResponseHandyRetrofitCallback(final DataManager.Callback callback)
-    {
-        super(callback);
-    }
-}
-
-
-class LayerAuthTokenRetrofitCallback extends TypedHandyRetrofitCallback<LayerResponseWrapper>
-{
-    public LayerAuthTokenRetrofitCallback(final DataManager.Callback callback)
     {
         super(callback);
     }
