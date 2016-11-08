@@ -20,13 +20,13 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.view.HandyTabLayout;
-import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -170,7 +170,7 @@ public class BookingsFragment extends InjectedFragment
     @OnClick(R.id.bookings_share_button)
     public void onShareButtonClicked()
     {
-        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareButtonPressedLog()));
+        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareMenuPressedLog()));
         startActivity(new Intent(getActivity(), ReferralActivity.class));
     }
 
