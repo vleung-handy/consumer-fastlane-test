@@ -16,8 +16,6 @@ import com.layer.sdk.messaging.Identity;
 import com.layer.sdk.messaging.Message;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashSet;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -35,14 +33,12 @@ public class ConversationHolder extends RecyclerView.ViewHolder
     @Bind(R.id.conversation_timestamp)
     TextView mTextTimestamp;
 
-    private Identity mLayerIdentity;
     private ProTeamProViewModel mProTeamProViewModel;
 
     public ConversationHolder(final View itemView, @NonNull final Identity identity)
     {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        mLayerIdentity = identity;
     }
 
     public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel)
@@ -64,14 +60,15 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         }
 
         mTextTitle.setText(mProTeamProViewModel.getTitle());
+        mTextMessage.setText("Click to start a conversation!");
         bindWithLayer();
     }
-
 
     private void bindWithLayer()
     {
         if (mProTeamProViewModel.getConversation() == null)
         {
+            //there is no conversation to bind, just don't do anything.
             return;
         }
 
@@ -80,22 +77,6 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         {
             String message = LayerUtil.getLastMessageString(mTextMessage.getContext(), lastMessage);
             mTextMessage.setText(message);
-        }
-        else
-        {
-            mTextMessage.setText("Click to start a conversation!");
-        }
-        HashSet<Identity> participants = new HashSet<>(mProTeamProViewModel.getConversation()
-                                                                           .getParticipants());
-
-        participants.remove(mLayerIdentity);
-
-        for (final Identity id : participants)
-        {
-            //TODO: JIA: make sure there won't be more than one participants here. In case Handy CS
-            //wants to be a part of this too.
-            mTextTitle.setText(id.getDisplayName());
-            break;
         }
 
         if (mProTeamProViewModel.getConversation().getLastMessage() != null) {

@@ -2,7 +2,6 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,8 @@ import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.shared.LayerHelper;
 import com.handybook.shared.LayerRecyclerAdapter;
-import com.layer.sdk.LayerClient;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
 
@@ -26,30 +25,28 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
 
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeam.ProTeamCategory mProTeamCategory;
-    private final LayerClient mLayerClient;
+    private final LayerHelper mLayerHelper;
     private final View.OnClickListener mOnClickListener;
-
-    //TODO: JIA: remove this after friday demo
-    private boolean mIsDemo;
+    private List<String> mChatEligibleMemberIds;
 
     public ProConversationAdapter(
-            boolean isDemo,
             @Nullable final ProTeam.ProTeamCategory proTeamCategory,
-            @NonNull final LayerClient layerClient,
+            @NonNull final LayerHelper layerHelper,
             @NonNull final View.OnClickListener onClickListener
     )
     {
-        super(layerClient);
+        super(layerHelper);
         mProTeamCategory = proTeamCategory;
-        mLayerClient = layerClient;
+        mLayerHelper = layerHelper;
         mOnClickListener = onClickListener;
-        mIsDemo = isDemo;
         initProTeamProViewModels();
     }
 
     private void initProTeamProViewModels()
     {
         mProTeamProViewModels = new ArrayList<>();
+        mChatEligibleMemberIds = new ArrayList<>();
+
         if (mProTeamCategory != null)
         {
             final List<ProTeamPro> preferredPros = mProTeamCategory.getPreferred();
@@ -62,6 +59,11 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
                             ProviderMatchPreference.PREFERRED,
                             false
                     ));
+
+                    if (eachPro.isChatEnabled())
+                    {
+                        mChatEligibleMemberIds.add(eachPro.getLayerUserId());
+                    }
                 }
             }
             final List<ProTeamPro> indifferentPros = mProTeamCategory.getIndifferent();
@@ -89,65 +91,38 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
     @Override
     protected void onConversationUpdated()
     {
-        if (!mIsDemo) {
-            if (mProTeamProViewModels == null || mProTeamProViewModels.isEmpty())
-            {
-                Log.d(TAG, "onConversationUpdated: Pro team not initialized yet, don't do anything.");
-                return;
-            }
-        }
-
         //get a list of all conversations and see if we can match them with the pro teams
-        List<Conversation> allConversations = getAllConversations();
+        List<Conversation> conversations = mLayerHelper.getAllConversationsWith(
+                mChatEligibleMemberIds);
 
-
-        if (!mIsDemo)
+        //update each pro team model with the correct conversation
+        for (final ProTeamProViewModel model : mProTeamProViewModels)
         {
-            //update each pro team model with the correct conversation
-            for (final ProTeamProViewModel model : mProTeamProViewModels)
+            if (model.getConversation() == null)
             {
-                if (model.getConversation() == null)
+                //if there isn't a conversation tied to the pro, check to see if there is one
+                //that just got created.
+
+                String proId = model.getProTeamPro().getLayerUserId();
+                for (final Conversation convo : conversations)
                 {
-                    //if there isn't a conversation tied to the pro, check to see if there is one
-                    //that just got created.
-
-                    int proId = model.getProTeamPro().getId();
-                    for (final Conversation convo : allConversations)
+                    boolean conversationSet = false;
+                    for (final Identity participant : convo.getParticipants())
                     {
-                        boolean conversationSet = false;
-                        for (final Identity participant : convo.getParticipants())
+                        //TODO: JIA: this is a hardcoded criteria, remove this
+                        if (participant.getUserId().equals(proId))
                         {
-                            //TODO: JIA: this is a hardcoded criteria, remove this
-                            if (proId == 27698 && participant.getUserId().equals("19"))
-                            {
-                                //this the conversation with DanH
-                                model.setConversation(convo);
-                                conversationSet = true;
-                                break;
-                            }
-                            else if (proId == 27685 && participant.getUserId().equals("17"))
-                            {
-                                //27685 is mark S in staging, and 17 is "MarkyS" (case sensitive) in the sample app
-                                model.setConversation(convo);
-                                conversationSet = true;
-                                break;
-                            }
-
-                        }
-                        if (conversationSet)
-                        {
+                            //this the conversation with DanH
+                            model.setConversation(convo);
+                            conversationSet = true;
                             break;
                         }
                     }
+                    if (conversationSet)
+                    {
+                        break;
+                    }
                 }
-            }
-        } else {
-            //if this is for demo, we just show conversations verbatim.
-            mProTeamProViewModels = new ArrayList<>();
-            for (final Conversation convo : allConversations) {
-                ProTeamProViewModel model = new ProTeamProViewModel();
-                model.setConversation(convo);
-                mProTeamProViewModels.add(model);
             }
         }
 
@@ -162,7 +137,10 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
                 .inflate(R.layout.layout_pro_team_conversation_item, parent, false);
         itemView.setOnClickListener(mOnClickListener);
 
-        return new ConversationHolder(itemView, mLayerClient.getAuthenticatedUser());
+        return new ConversationHolder(
+                itemView,
+                mLayerHelper.getLayerClient().getAuthenticatedUser()
+        );
     }
 
     @Override

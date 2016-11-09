@@ -50,16 +50,6 @@ public class ProTeamProViewModel
         );
     }
 
-    //TODO JIA: delete this fake constructor once demo is over
-    public ProTeamProViewModel()
-    {
-        mProTeamPro = null;
-        mProviderMatchPreference = null;
-        mTitle = null;
-        mAverageRating = null;
-        mJobsCount = null;
-    }
-
     public ProviderMatchPreference getProviderMatchPreference()
     {
         return mProviderMatchPreference;
@@ -99,8 +89,7 @@ public class ProTeamProViewModel
 
     public String getImageUrl()
     {
-        //FIXME: JIA: remove this hard coded URL of Howard
-        return "https://avatars.slack-edge.com/2015-10-27/13336893041_5c092cabebcd34fbea0e_192.jpg";
+        return mImageUrl;
     }
 
     public boolean isHandymanIndicatorEnabled()

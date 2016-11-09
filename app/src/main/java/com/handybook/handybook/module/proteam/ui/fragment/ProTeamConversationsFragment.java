@@ -26,9 +26,9 @@ import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
+import com.handybook.shared.LayerHelper;
 import com.handybook.shared.PushNotificationReceiver;
 import com.handybook.shared.builtin.MessagesListActivity;
-import com.layer.sdk.LayerClient;
 import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
 
@@ -56,10 +56,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     ProConversationAdapter mAdapter;
 
     private ProTeam mProTeam;
-    private LayerClient mLayerClient;
-
-    //TODO: JIA: dummy flag for friday's demo day.
-    private boolean mIsDemo = true;
+    private LayerHelper mLayerHelper;
 
     public static ProTeamConversationsFragment newInstance()
     {
@@ -82,10 +79,9 @@ public class ProTeamConversationsFragment extends InjectedFragment
         ButterKnife.bind(this, view);
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
 
-        mLayerClient = ((BaseApplication) getActivity()
+        mLayerHelper = ((BaseApplication) getActivity()
                 .getApplication())
-                .getLayerHelper()
-                .getLayerClient();
+                .getLayerHelper();
 
         initEmptyView();
         initRecyclerView();
@@ -103,19 +99,10 @@ public class ProTeamConversationsFragment extends InjectedFragment
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
         ProTeam.ProTeamCategory allCategories = mProTeam.getAllCategories();
-        if (mIsDemo) {
-            if (allCategories.getPreferred() != null) {
-                allCategories.getPreferred().removeAll(allCategories.getPreferred());
-            }
-            if (allCategories.getIndifferent() != null) {
-                allCategories.getIndifferent().removeAll(allCategories.getIndifferent());
-            }
-        }
 
         mAdapter = new ProConversationAdapter(
-                mIsDemo,
                 allCategories,
-                mLayerClient,
+                mLayerHelper,
                 new View.OnClickListener()
                 {
                     @Override

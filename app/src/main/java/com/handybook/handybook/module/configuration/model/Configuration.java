@@ -89,8 +89,7 @@ public class Configuration implements Serializable
 
     public boolean isProTeamChatEnabled()
     {
-        //FIXME: JIA: Uncomment next line once pro team chat is ready
-        //Hard coding to FALSE, so it can remain dark
-        return false;
+        //FIXME: JIA: remove this hard coding
+        return true;
     }
 }
