@@ -15,7 +15,7 @@ import com.handybook.handybook.data.DataManager;
 
 import butterknife.ButterKnife;
 
-public class SplashActivity extends BaseActivity {
+public class OldDeeplinkSplashActivity extends BaseActivity {
     private static final String STATE_LAUNCHED_NEXT = "LAUNCHED_NEXT";
 
     private User user;
@@ -101,7 +101,7 @@ public class SplashActivity extends BaseActivity {
                             public void onSuccess(final String notice) {
                                 if (!allowCallbacks) return;
 
-                                final Intent intent = new Intent(SplashActivity.this, BookingDateActivity.class);
+                                final Intent intent = new Intent(OldDeeplinkSplashActivity.this, BookingDateActivity.class);
                                 intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
                                 intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
                                 startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
@@ -110,7 +110,7 @@ public class SplashActivity extends BaseActivity {
                             @Override
                             public void onError(final DataManager.DataManagerError error) {
                                 if (!allowCallbacks) return;
-                                mDataManagerErrorHandler.handleError(SplashActivity.this, error);
+                                mDataManagerErrorHandler.handleError(OldDeeplinkSplashActivity.this, error);
                                 openServiceCategoriesActivity();
                             }
                         });
@@ -119,7 +119,7 @@ public class SplashActivity extends BaseActivity {
                     @Override
                     public void onError(final DataManager.DataManagerError error) {
                         if (!allowCallbacks) return;
-                        mDataManagerErrorHandler.handleError(SplashActivity.this, error);
+                        mDataManagerErrorHandler.handleError(OldDeeplinkSplashActivity.this, error);
                         openServiceCategoriesActivity();
                     }
                 });

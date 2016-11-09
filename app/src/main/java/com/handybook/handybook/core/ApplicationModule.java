@@ -147,8 +147,8 @@ import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.activity.OldDeeplinkSplashActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
-import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.activity.WebViewActivity;
 import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
@@ -230,7 +230,7 @@ import retrofit.converter.GsonConverter;
         LaundryDropOffDialogFragment.class,
         LaundryInfoDialogFragment.class,
         AddLaundryDialogFragment.class,
-        SplashActivity.class,
+        OldDeeplinkSplashActivity.class,
         BookingDetailSectionFragment.class,
         BookingDetailSectionFragmentAddress.class,
         BookingDetailSectionFragmentEntryInformation.class,
