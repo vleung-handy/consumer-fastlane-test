@@ -324,14 +324,14 @@ public class ReferralFragment extends InjectedFragment
             String couponCode = StringUtils.replaceWithEmptyIfNull(mReferralDescriptor.getCouponCode());
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
 
-            mEventLogManager.addLog(new ShareModalLog.NativeShareTappedLog(
+            mBus.post(new LogEvent.AddLogEvent(new ShareModalLog.NativeShareTappedLog(
                     referralMedium,
                     identifier,
                     couponCode,
                     mSource,
                     mReferralDescriptor.getSenderCreditAmount(),
                     mReferralDescriptor.getReceiverCouponAmount()
-            ));
+            )));
         }
     }
 }

@@ -97,11 +97,7 @@ public class EventLogManager
     @Subscribe
     public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
     {
-        addLog(event.getLog());
-    }
-
-    public synchronized void addLog(@NonNull EventLog log)
-    {
+        EventLog log = event.getLog();
         mSession.incrementEventCount(mPrefsManager);
         Event eventLog = new Event(log, mSession.getId(), mSession.getEventCount());
 
