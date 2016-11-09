@@ -20,6 +20,7 @@
         android:layout_marginStart="@dimen/default_margin_half"
         android:layout_gravity="center_vertical"
         android:src="@drawable/ic_question_mark_grey_outline"
+        android:contentDescription="@string/cd_view_payment_questionmark_icon"
         />
 
     <android.support.v4.widget.Space
