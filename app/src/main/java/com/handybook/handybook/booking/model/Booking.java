@@ -770,6 +770,16 @@ public class Booking implements Parcelable
                 return new LineItem[size];
             }
         };
+
+        public boolean hasHelpText()
+        {
+            return !(mHelpText == null || mHelpText.isEmpty());
+        }
+
+        public String getHelpText()
+        {
+            return mHelpText;
+        }
     }
 
 
