@@ -95,7 +95,7 @@ dependencies {
     //Mixpanel, remove once we figure out where are we losing events
     compile "com.mixpanel.android:mixpanel-android:4.9.2"
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.3@aar') {
         transitive = true;
     }
     androidTestCompile('com.android.support.test:runner:0.5') {
