@@ -17,20 +17,14 @@ public class Configuration implements Serializable
     private boolean mMyProTeamEnabled;
     @SerializedName("show_reschedule_flow_on_cancel")
     private boolean mShowRescheduleFlowOnCancel;
-    @SerializedName("lockbox_entry_method_enabled")
-    private boolean mLockboxEntryMethodEnabled;
     @SerializedName("native_help_center_enabled")
     private boolean mNativeHelpCenterEnabled;
     @SerializedName("address_auto_complete_enabled")
     private boolean mAddressAutoCompleteEnabled;
-
-    @SerializedName("upcoming_and_past_bookings_enabled")
-    private boolean mUpcomingAndPastBookingsEnabled;
     @SerializedName("pro_team_facebook_login_enabled")
     private boolean mProTeamFacebookLoginEnabled;
     @SerializedName("appsee_analytics_enabled")
     private boolean mAppseeAnalyticsEnabled;
-
     @SerializedName("pro_team_profile_pictures_enabled")
     private boolean isProTeamProfilePicturesEnabled;
     @SerializedName("pro_team_chat_enabled")
@@ -39,11 +33,6 @@ public class Configuration implements Serializable
     public boolean isAppseeAnalyticsEnabled()
     {
         return mAppseeAnalyticsEnabled;
-    }
-
-    public boolean isLockboxEntryMethodEnabled()
-    {
-        return mLockboxEntryMethodEnabled;
     }
 
     public String getHelpCenterUrl()
@@ -59,11 +48,6 @@ public class Configuration implements Serializable
     public boolean isShowRescheduleFlowOnCancel()
     {
         return mShowRescheduleFlowOnCancel;
-    }
-
-    public boolean isUpcomingAndPastBookingsEnabled()
-    {
-        return mUpcomingAndPastBookingsEnabled;
     }
 
     public boolean isMyProTeamEnabled()

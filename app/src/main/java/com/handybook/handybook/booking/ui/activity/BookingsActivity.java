@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
-import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 public final class BookingsActivity extends MenuDrawerActivity
@@ -20,17 +18,7 @@ public final class BookingsActivity extends MenuDrawerActivity
 
     @Override
     protected final Fragment createFragment() {
-
-        Configuration config = mConfigurationManager.getPersistentConfiguration();
-        if (config != null && config.isUpcomingAndPastBookingsEnabled())
-        {
-            return UpcomingBookingsFragment.newInstance();
-        }
-        else
-        {
-            return BookingsFragment.newInstance();
-        }
-
+        return UpcomingBookingsFragment.newInstance();
     }
 
     @Override
@@ -38,7 +26,7 @@ public final class BookingsActivity extends MenuDrawerActivity
     {
         //if the over lay fragment is showing, dismiss it and swallow the back press
         ServiceCategoriesOverlayFragment frag = (ServiceCategoriesOverlayFragment) getSupportFragmentManager()
-                .findFragmentByTag(BookingsFragment.mOverlayFragmentTag);
+                .findFragmentByTag(UpcomingBookingsFragment.mOverlayFragmentTag);
         if (frag != null)
         {
             frag.animateAndDismissFragment();
