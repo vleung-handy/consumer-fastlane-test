@@ -149,6 +149,7 @@ import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OldDeeplinkSplashActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
+import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.activity.WebViewActivity;
 import com.handybook.handybook.ui.fragment.BlockingUpdateFragment;
@@ -174,6 +175,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(injects = {
+        SplashActivity.class,
         ServiceCategoriesFragment.class,
         LoginFragment.class,
         ProfileFragment.class,

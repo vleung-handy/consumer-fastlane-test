@@ -24,7 +24,7 @@ public class OldDeeplinkSplashActivity extends BaseActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_olddeeplinksplash);
         ButterKnife.bind(this);
 
         if (savedInstanceState != null)

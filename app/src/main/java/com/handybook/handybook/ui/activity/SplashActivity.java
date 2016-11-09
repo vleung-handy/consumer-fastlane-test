@@ -29,9 +29,9 @@ import javax.inject.Inject;
  * This is the first activity that gets hit on start up.
  */
 
-public class StartupActivity extends BaseActivity
+public class SplashActivity extends BaseActivity
 {
-    private static final String TAG = StartupActivity.class.getSimpleName();
+    private static final String TAG = SplashActivity.class.getSimpleName();
     @Inject
     SecurePreferencesManager mSecurePreferencesManager;
     @Inject
@@ -42,7 +42,7 @@ public class StartupActivity extends BaseActivity
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.startup);
+        setContentView(R.layout.activity_splash);
 
         ((BaseApplication) getApplication()).inject(this);
 
@@ -106,7 +106,7 @@ public class StartupActivity extends BaseActivity
                     if (event != null)
                     {
                         final Intent intent = ServiceCategoriesActivity.getIntent(
-                                StartupActivity.this,
+                                SplashActivity.this,
                                 getIntent()
                         );
                         startActivity(intent);

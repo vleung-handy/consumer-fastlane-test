@@ -22,33 +22,19 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity
     @Inject
     SecurePreferencesManager mSecurePreferencesManager;
 
+    public static Intent getIntent(Activity activity, Intent startupIntent) {
+        Intent intent = new Intent(activity, ServiceCategoriesActivity.class);
+        if(startupIntent != null)
+        {
+            intent.putExtras(startupIntent);
+        }
+        return intent;
+    }
+
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (mSecurePreferencesManager.getBoolean(PrefsKey.APP_FIRST_LAUNCH, true))
-        {
-            mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(true, true)));
-            mSecurePreferencesManager.setBoolean(PrefsKey.APP_FIRST_LAUNCH, false);
-        }
-        else
-        {
-            mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(false, true)));
-        }
-        Button.checkForDeepLink(this, new Button.DeepLinkListener()
-        {
-            @Override
-            public void onDeepLink(final Intent intent)
-            {
-                startActivity(intent);
-            }
-
-            @Override
-            public void onNoDeepLink()
-            {
-
-            }
-        });
     }
 
     @Override

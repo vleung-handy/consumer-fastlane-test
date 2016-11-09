@@ -38,13 +38,13 @@
         android:label="@string/app_name"
         android:theme="@style/HandyTheme"
         >
-        <!-- This StartupTheme is to have the handy logo on startup. Note: The theme can be used for all fragments -->
         <activity
-            android:name=".booking.ui.activity.ServiceCategoriesActivity"
+            android:name=".ui.activity.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/StartupTheme"
             >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -64,7 +64,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.activity.OldDeeplinkSplashActivity"
             android:screenOrientation="portrait"
             >
             <intent-filter>
@@ -85,6 +85,11 @@
                     />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".booking.ui.activity.ServiceCategoriesActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
@@ -224,9 +229,9 @@
             />
         <activity
             android:name=".module.proteam.ui.activity.ProTeamActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_pro_team"
             android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/HandyTheme"
             >
             <meta-data
@@ -237,8 +242,8 @@
 
         <activity
             android:name=".ui.activity.BlockingActivity"
-            android:screenOrientation="portrait"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             />
         <!-- Required by the DeepLinkDispatch library -->
         <activity
