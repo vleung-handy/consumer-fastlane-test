@@ -25,8 +25,7 @@ import com.usebutton.sdk.Button;
 import javax.inject.Inject;
 
 /**
- * Created by sng on 10/18/16.
- * This is the first activity that gets hit on start up.
+ * Created by sng on 10/18/16. This is the first activity that gets hit on start up.
  */
 
 public class SplashActivity extends BaseActivity
@@ -46,7 +45,10 @@ public class SplashActivity extends BaseActivity
 
         ((BaseApplication) getApplication()).inject(this);
 
+        //Initialize facebook sdk
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        //check if this is first launch
         if (mSecurePreferencesManager.getBoolean(PrefsKey.APP_FIRST_LAUNCH, true))
         {
             mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(true, true)));
@@ -57,7 +59,7 @@ public class SplashActivity extends BaseActivity
             mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(false, true)));
         }
 
-        //TODO sammy what does this do?
+        //This is used to check for referral deeplinks
         Button.checkForDeepLink(this, new Button.DeepLinkListener()
         {
             @Override
@@ -135,13 +137,14 @@ public class SplashActivity extends BaseActivity
     @Override
     public void showSplashPromo(@NonNull final SplashPromo splashPromo)
     {
-        //Startup Activity doesn't need this. Do nothing.
+        //Splash Activity doesn't need this. Do nothing.
+        //Splash promo is really used for Mobile promo pages on the main section
     }
 
     @Override
     public void showBlockingScreen()
     {
-        //Startup Activity doesn't need this. Do nothing.
+        //Splash Activity doesn't need this. Do nothing.
     }
 
     @Override
@@ -149,6 +152,6 @@ public class SplashActivity extends BaseActivity
             final ReferralResponse referralResponse, final ReferralsManager.Source source
     )
     {
-        //Startup Activity doesn't need this. Do nothing.
+        //Splash Activity doesn't need this. Do nothing.
     }
 }
