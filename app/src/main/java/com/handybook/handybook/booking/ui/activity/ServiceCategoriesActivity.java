@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,13 +8,9 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
-import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.deeplink.DeepLinkParams;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.usebutton.sdk.Button;
 
 import javax.inject.Inject;
 
