@@ -5,7 +5,6 @@ import static org.gradle.logging.StyledTextOutput.Style
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'io.fabric'
-apply plugin: 'newrelic'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
@@ -149,7 +148,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-    compile 'com.newrelic.agent.android:android-agent:5.3.2'
     compile 'io.card:android-sdk:5.3.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.stripe:stripe-android:1.0.4'
