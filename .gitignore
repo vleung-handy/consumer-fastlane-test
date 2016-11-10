@@ -61,3 +61,6 @@ crashlytics.properties
 crashlytics-build.properties
 **.DS_Store
 
+
+#### Pycharm .idea folder
+scripts/.idea
