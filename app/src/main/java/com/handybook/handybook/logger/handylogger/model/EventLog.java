@@ -12,6 +12,7 @@ public abstract class EventLog
     private int mSessionEventCount;
     @SerializedName("session_id")
     private long mSessionId;
+
     public EventLog(final String eventType, final String eventContext)
     {
         mEventType = eventType;
