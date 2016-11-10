@@ -2,10 +2,16 @@ package com.handybook.handybook.logger.handylogger.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.UUID;
+
 public class Event
 {
+    @SerializedName("event_timestamp_ms")
+    private long mTimestampMillis;
     @SerializedName("event_timestamp")
     private long mTimestampSecs;
+    @SerializedName("event_id")
+    private String mId;
     @SerializedName("event_type")
     private String mEventType;
     @SerializedName("event_context")
@@ -15,7 +21,9 @@ public class Event
 
     public Event(final EventLog eventLog, long sessionId, int sessionEventCount)
     {
+        mTimestampMillis = System.currentTimeMillis();
         mTimestampSecs = System.currentTimeMillis() / 1000;
+        mId = UUID.randomUUID().toString();
         mEventType = eventLog.getEventType();
         mEventContext = eventLog.getEventContext();
         mEventLog = eventLog;
