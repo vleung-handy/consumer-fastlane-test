@@ -44,7 +44,6 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass. Use the {@link ProTeamFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@Deprecated
 public class ProTeamFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener

@@ -237,8 +237,10 @@ public class BaseApplication extends MultiDexApplication
             }
         });
 
-//        TODO: put this behind a config parameter, so that we don't do this if we're not allowed to chat
-        mLayerHelper = HandyLayer.init(mRestAdapter, bus, this);
+        if (configurationManager.getPersistentConfiguration().isProTeamChatEnabled())
+        {
+            mLayerHelper = HandyLayer.init(mRestAdapter, bus, this);
+        }
     }
 
     public LayerHelper getLayerHelper()

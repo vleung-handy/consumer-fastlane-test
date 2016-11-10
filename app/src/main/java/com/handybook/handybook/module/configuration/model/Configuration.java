@@ -31,8 +31,10 @@ public class Configuration implements Serializable
     private boolean mAppseeAnalyticsEnabled;
     @SerializedName("pro_team_profile_pictures_enabled")
     private boolean isProTeamProfilePicturesEnabled;
+
+    //default this to false
     @SerializedName("pro_team_chat_enabled")
-    private boolean mProTeamChatEnabled;
+    private boolean mProTeamChatEnabled = false;
 
     public boolean isAppseeAnalyticsEnabled()
     {
