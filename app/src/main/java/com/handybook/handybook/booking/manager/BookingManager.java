@@ -1,12 +1,10 @@
 package com.handybook.handybook.booking.manager;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.HitBuilders;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
@@ -20,21 +18,17 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
-import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.BookingFlowClearedEvent;
 import com.handybook.handybook.event.EnvironmentUpdatedEvent;
-import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.UserLoggedInEvent;
 import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -200,80 +194,6 @@ public class BookingManager implements Observer
                                             }
         );
     }
-
-    /**
-     * Use the onRequestBookings()
-     *
-     * @param event
-     */
-    @Deprecated
-    @Subscribe
-    public void onRequestBookingCardViewModels(
-            @NonNull final HandyEvent.RequestEvent.BookingCardViewModelsEvent event
-    )
-    {
-        final long nanosNow = System.nanoTime();
-        if (null != event.getOnlyBookingValue())
-        {
-            mDataManager.getBookings(
-                    event.getUser(),
-                    event.getOnlyBookingValue(),
-                    new DataManager.Callback<UserBookingsWrapper>()
-                    {
-                        @Override
-                        public void onSuccess(final UserBookingsWrapper result)
-                        {
-                            final List<Booking> bookings = result.getBookings();
-                            Collections.sort(bookings, Booking.COMPARATOR_DATE);
-                            // Mark bookingCardViewModels accordingly and emit it.
-                            BookingCardViewModel.List models = getBookingCardViewModelListFromResult(
-                                    bookings,
-                                    event.getOnlyBookingValue()
-                            );
-                            BaseApplication.tracker().send(
-                                    new HitBuilders.TimingBuilder()
-                                            .setCategory("Api")
-                                            .setValue((System.nanoTime() - nanosNow) / 1000000)
-                                            .setVariable("Bookings")
-                                            .setLabel(event.getOnlyBookingValue())
-                                            .build()
-                            );
-                            mBus.post(new HandyEvent.ResponseEvent.BookingCardViewModels(models));
-                        }
-
-                        @Override
-                        public void onError(DataManager.DataManagerError error)
-                        {
-                            mBus.post(new HandyEvent.ResponseEvent.BookingCardViewModelsError(error));
-                        }
-                    }
-            );
-        }
-    }
-
-    private BookingCardViewModel.List getBookingCardViewModelListFromResult(
-            @NonNull List<Booking> bookings,
-            @Booking.List.OnlyBookingValues @NonNull String onlyBookingValue
-    )
-    {
-        BookingCardViewModel.List models = BookingCardViewModel.List.empty();
-        switch (onlyBookingValue)
-        {
-            case Booking.List.VALUE_ONLY_BOOKINGS_PAST:
-                models = BookingCardViewModel.List
-                        .from(bookings, BookingCardViewModel.List.TYPE_PAST);
-                break;
-            case Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING:
-                models = BookingCardViewModel.List
-                        .from(bookings, BookingCardViewModel.List.TYPE_UPCOMING);
-                break;
-            default:
-                Crashlytics.logException(
-                        new RuntimeException("Unrecognized booking list type: " + onlyBookingValue));
-        }
-        return models;
-    }
-
 
     @Subscribe
     public void onRequestBookings(final BookingEvent.RequestBookings event)

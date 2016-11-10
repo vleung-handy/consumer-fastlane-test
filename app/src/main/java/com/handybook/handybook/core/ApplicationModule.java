@@ -76,7 +76,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingEntryInfoFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
-import com.handybook.handybook.booking.ui.fragment.BookingListFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPasswordPromptFragment;
@@ -85,7 +84,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
-import com.handybook.handybook.booking.ui.fragment.BookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
 import com.handybook.handybook.booking.ui.fragment.EmailCancellationDialogFragment;
@@ -179,12 +177,10 @@ import retrofit.converter.GsonConverter;
         ServiceCategoriesFragment.class,
         LoginFragment.class,
         ProfileFragment.class,
-        BookingsFragment.class,
         UpcomingBookingsFragment.class,
         HistoryFragment.class,
         ActiveBookingFragment.class,
         AutoCompleteAddressFragment.class,
-        BookingListFragment.class,
         BookingDetailFragment.class,
         ServiceCategoriesFragment.class,
         ServicesFragment.class,
