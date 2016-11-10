@@ -8,7 +8,6 @@ import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.core.TestBaseApplication;
@@ -110,24 +109,6 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
                 new BookingEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
 
         assertThat("There should only be one item", mFragment.mAdapter.getItemCount() == 1);
-    }
-
-    /**
-     * Tests that a logged in user with bookings needs to go to the bookings page
-     */
-    @Test
-    public void testLoggedInWithBookings()
-    {
-        when(mAnalytics.getUpcomingBookings()).thenReturn(3);
-        when(mUserWithBooking.getAnalytics()).thenReturn(mAnalytics);
-        when(mUserManager.getCurrentUser()).thenReturn(mUserWithBooking);
-
-        mTestBaseApplication.setNewlyLaunched(true);
-
-        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
-        Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingsActivity.class.getName()));
     }
 
     /**
