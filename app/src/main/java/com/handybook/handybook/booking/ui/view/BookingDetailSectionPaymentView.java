@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
@@ -26,11 +27,9 @@ import java.util.Comparator;
 import butterknife.Bind;
 
 
-/**
- * Created by cdavis on 9/1/15.
- */
 public class BookingDetailSectionPaymentView extends BookingDetailSectionView
 {
+
     @Bind(R.id.pay_lines_section)
     public LinearLayout paymentLinesSection;
 
@@ -111,12 +110,14 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
                         @Override
                         public void onClick(final View v)
                         {
-                            final PriceLineHelpTextDialog priceLineHelpTextDialog =
-                                    PriceLineHelpTextDialog.newInstance(line.getHelpText());
-                            priceLineHelpTextDialog.show(
-                                    ((AppCompatActivity) getContext()).getSupportFragmentManager(),
-                                    "PriceLineHelpTextDialog"
-                            );
+                            final FragmentManager fm = ((AppCompatActivity) getContext())
+                                    .getSupportFragmentManager();
+                            if (fm.findFragmentByTag(PriceLineHelpTextDialog.TAG) == null)
+                            {
+                                PriceLineHelpTextDialog
+                                        .newInstance(line.getHelpText())
+                                        .show(fm, PriceLineHelpTextDialog.TAG);
+                            }
                         }
                     });
 
@@ -148,6 +149,8 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
     public static class PriceLineHelpTextDialog extends DialogFragment
     {
         public static final String KEY_MESSAGE = "PLHTD:Message";
+        public static final String TAG = "PriceLineHelpTextDialog";
+
 
         public static PriceLineHelpTextDialog newInstance(final String text)
         {
