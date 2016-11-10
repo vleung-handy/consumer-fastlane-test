@@ -497,6 +497,7 @@
             android:permission="${PACKAGE_NAME}.permission.LAYER_PUSH"
             >
 
+            <!--TODO: JIA: figure out how we can "darkify" this-->
             <!-- Layer SDK broadcasts this, which we use to generate notifications -->
             <intent-filter>
                 <action android:name="com.layer.sdk.PUSH"/>

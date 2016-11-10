@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import com.handybook.handybook.constant.RequestCode;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
-import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
@@ -135,12 +133,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
                             ).show();
                         }
                     }
-                },
-                ContextCompat.getColor(getActivity(), R.color.handy_tertiary_gray),
-                ContextCompat.getColor(getActivity(), R.color.handy_text_black),
-                TextUtils.get(getActivity(), TextUtils.Fonts.CIRCULAR_BOLD),
-                TextUtils.get(getActivity(), TextUtils.Fonts.CIRCULAR_BOOK),
-                getString(R.string.new_conversation_text)
+                }
         );
 
         mAdapter.refreshLayer();

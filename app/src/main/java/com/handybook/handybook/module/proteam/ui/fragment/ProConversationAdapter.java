@@ -1,7 +1,5 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
-import android.graphics.Typeface;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -23,44 +21,22 @@ import java.util.List;
 
 public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHolder>
 {
-    private static final String TAG = ProConversationAdapter.class.getName();
-
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeam.ProTeamCategory mProTeamCategory;
     private final LayerHelper mLayerHelper;
     private final View.OnClickListener mOnClickListener;
     private List<String> mChatEligibleMemberIds;
 
-
-    @ColorInt
-    private int mHandyTertiaryGray;
-    @ColorInt
-    private int mHandyTextBlack;
-
-    private Typeface mBoldTypeFace;
-    private Typeface mNormalTypeFace;
-    private String mNewConversationMessage;
-
     public ProConversationAdapter(
             @Nullable final ProTeam.ProTeamCategory proTeamCategory,
             @NonNull final LayerHelper layerHelper,
-            @NonNull final View.OnClickListener onClickListener,
-            @ColorInt final int handyTertiaryGray,
-            @ColorInt final int handyTextBlack,
-            @NonNull final Typeface boldTypeFace,
-            @NonNull final Typeface normalTypeFace,
-            @NonNull final String newConversationMessage
+            @NonNull final View.OnClickListener onClickListener
     )
     {
         super(layerHelper);
         mProTeamCategory = proTeamCategory;
         mLayerHelper = layerHelper;
         mOnClickListener = onClickListener;
-        mHandyTertiaryGray = handyTertiaryGray;
-        mHandyTextBlack = handyTextBlack;
-        mBoldTypeFace = boldTypeFace;
-        mNormalTypeFace = normalTypeFace;
-        mNewConversationMessage = newConversationMessage;
         initProTeamProViewModels();
     }
 
@@ -125,14 +101,14 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
                 //if there isn't a conversation tied to the pro, check to see if there is one
                 //that just got created.
 
-                String proId = model.getProTeamPro().getLayerUserId();
+                String proLayerId = model.getProTeamPro().getLayerUserId();
                 for (final Conversation convo : conversations)
                 {
                     boolean conversationSet = false;
                     for (final Identity participant : convo.getParticipants())
                     {
                         //TODO: JIA: this is a hardcoded criteria, remove this
-                        if (participant.getUserId().equals(proId))
+                        if (participant.getUserId().equals(proLayerId))
                         {
                             //this the conversation with DanH
                             model.setConversation(convo);
@@ -159,14 +135,7 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
                 .inflate(R.layout.layout_pro_team_conversation_item, parent, false);
         itemView.setOnClickListener(mOnClickListener);
 
-        return new ConversationHolder(
-                itemView,
-                mHandyTertiaryGray,
-                mHandyTextBlack,
-                mBoldTypeFace,
-                mNormalTypeFace,
-                mNewConversationMessage
-        );
+        return new ConversationHolder(itemView);
     }
 
     @Override

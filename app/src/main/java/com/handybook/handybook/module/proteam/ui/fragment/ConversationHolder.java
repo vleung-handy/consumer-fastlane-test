@@ -1,8 +1,10 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -48,23 +50,24 @@ public class ConversationHolder extends RecyclerView.ViewHolder
     private Typeface mNormalTypeFace;
     private String mNewConversationMessage;
 
-    public ConversationHolder(
-            final View itemView,
-            @ColorInt final int handyTertiaryGray,
-            @ColorInt final int handyTextBlack,
-            @NonNull final Typeface boldTypeFace,
-            @NonNull final Typeface normalTypeFace,
-            @NonNull final String newConversationMessage
-    )
+    public ConversationHolder(final View itemView)
     {
         super(itemView);
         ButterKnife.bind(this, itemView);
 
-        mHandyTertiaryGray = handyTertiaryGray;
-        mHandyTextBlack = handyTextBlack;
-        mBoldTypeFace = boldTypeFace;
-        mNormalTypeFace = normalTypeFace;
-        mNewConversationMessage = newConversationMessage;
+        Context context = itemView.getContext();
+
+        mHandyTertiaryGray = ContextCompat.getColor(context, R.color.handy_tertiary_gray);
+        mHandyTextBlack = ContextCompat.getColor(context, R.color.handy_text_black);
+        mBoldTypeFace = com.handybook.handybook.library.util.TextUtils.get(
+                context,
+                com.handybook.handybook.library.util.TextUtils.Fonts.CIRCULAR_BOLD
+        );
+        mNormalTypeFace = com.handybook.handybook.library.util.TextUtils.get(
+                context,
+                com.handybook.handybook.library.util.TextUtils.Fonts.CIRCULAR_BOOK
+        );
+        mNewConversationMessage = context.getString(R.string.new_conversation_text);
     }
 
     public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel)
@@ -111,18 +114,21 @@ public class ConversationHolder extends RecyclerView.ViewHolder
             mTextMessage.setTextColor(mHandyTextBlack);
         }
 
-        if (mProTeamProViewModel.getConversation().getLastMessage() != null) {
+        if (mProTeamProViewModel.getConversation().getLastMessage() != null)
+        {
             mTextTimestamp.setText(
                     DateTimeUtils.getTime(
                             mProTeamProViewModel
                                     .getConversation()
                                     .getLastMessage()
                                     .getSentAt()
-                        )
-                );
+                    )
+            );
 
             mTextTimestamp.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else
+        {
             mTextTimestamp.setVisibility(View.GONE);
         }
 
