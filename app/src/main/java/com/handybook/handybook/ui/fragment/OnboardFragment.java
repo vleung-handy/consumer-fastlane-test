@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.ui.activity.LoginActivity;
-import com.handybook.handybook.ui.activity.SplashActivity;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import javax.inject.Inject;
@@ -71,7 +71,7 @@ public final class OnboardFragment extends BookingFlowFragment
             public void onClick(final View v)
             {
                 mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
-                final Intent intent = new Intent(getActivity(), SplashActivity.class);
+                final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
