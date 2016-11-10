@@ -22,7 +22,7 @@ public class Event
     public Event(final EventLog eventLog, long sessionId, int sessionEventCount)
     {
         mTimestampMillis = System.currentTimeMillis();
-        mTimestampSecs = System.currentTimeMillis() / 1000;
+        mTimestampSecs = mTimestampMillis / 1000;
         mId = UUID.randomUUID().toString();
         mEventType = eventLog.getEventType();
         mEventContext = eventLog.getEventContext();
