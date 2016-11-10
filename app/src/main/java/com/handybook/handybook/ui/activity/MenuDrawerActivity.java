@@ -125,12 +125,13 @@ public abstract class MenuDrawerActivity extends BaseActivity
 
                 User user = mUserManager.getCurrentUser();
 
-                //TODO: JIA: this is confusing as hell, rename it so that it's not user id, it's the auth token
+                //if layer helper is null, that means this feature is probably in the dark
+                if (((BaseApplication) getApplication()).getLayerHelper() != null)
+                {
+                    HandyUser handyUser = new HandyUser(user.getAuthToken(), user.getFullName());
+                    ((BaseApplication) getApplication()).getLayerHelper().initLayer(handyUser);
+                }
 
-//TODO: JIA: this code is commented out, to ensure Layer can be released in the dark.
-                HandyUser handyUser = new HandyUser(user.getAuthToken(), user.getFullName());
-
-                ((BaseApplication) getApplication()).getLayerHelper().initLayer(handyUser);
                 refreshMenu();
                 if (!event.isLoggedIn())
                 {
@@ -310,7 +311,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 .findItem(R.id.nav_menu_my_pro_team)
                 .getActionView();
 
-        //TODO: JIA: mLayerHelper is null when this feature is in the dark. Remove when go live.
+        //TODO: JIA: mLayerHelper is null when this feature is in the dark.
         if (mLayerHelper != null && mLayerHelper.getUnreadMessageCount() > 0)
         {
             textView.setVisibility(View.VISIBLE);
