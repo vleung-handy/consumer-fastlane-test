@@ -1,8 +1,16 @@
 package com.handybook.handybook.booking.ui.view;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,11 +27,9 @@ import java.util.Comparator;
 import butterknife.Bind;
 
 
-/**
- * Created by cdavis on 9/1/15.
- */
 public class BookingDetailSectionPaymentView extends BookingDetailSectionView
 {
+
     @Bind(R.id.pay_lines_section)
     public LinearLayout paymentLinesSection;
 
@@ -40,7 +46,11 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
         super(context, attrs);
     }
 
-    public BookingDetailSectionPaymentView(final Context context, final AttributeSet attrs, final int defStyle)
+    public BookingDetailSectionPaymentView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle
+    )
     {
         super(context, attrs, defStyle);
     }
@@ -49,7 +59,8 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
     public void updatePaymentDisplay(final Booking booking, final User user)
     {
         final String price = TextUtils.formatPrice(booking.getPrice(),
-                user.getCurrencyChar(), null);
+                                                   user.getCurrencyChar(), null
+        );
         totalText.setText(price);
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
@@ -78,12 +89,43 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
             {
                 paymentLineView = inflate(R.layout.view_payment_line, paymentLinesSection);
 
-                final TextView labelText = (TextView) paymentLineView.findViewById(R.id.label_text);
-                final TextView amountText = (TextView) paymentLineView.findViewById(R.id.amount_text);
+                final TextView labelText = (TextView) paymentLineView.findViewById(
+                        R.id.view_payment_line_label_text
+                );
+                final TextView amountText = (TextView) paymentLineView.findViewById(
+                        R.id.view_payment_line_amount_text
+                );
+                final ImageView questionMark = (ImageView) paymentLineView.findViewById(
+                        R.id.view_payment_line_question_mark
+                );
                 final Booking.LineItem line = paymentInfo.get(i);
 
                 labelText.setText(line.getLabel());
                 amountText.setText(line.getAmount());
+                if (line.hasHelpText())
+                {
+                    questionMark.setVisibility(VISIBLE);
+                    paymentLineView.setOnClickListener(new OnClickListener()
+                    {
+                        @Override
+                        public void onClick(final View v)
+                        {
+                            final FragmentManager fm = ((AppCompatActivity) getContext())
+                                    .getSupportFragmentManager();
+                            if (fm.findFragmentByTag(PriceLineHelpTextDialog.TAG) == null)
+                            {
+                                PriceLineHelpTextDialog
+                                        .newInstance(line.getHelpText())
+                                        .show(fm, PriceLineHelpTextDialog.TAG);
+                            }
+                        }
+                    });
+
+                }
+                else
+                {
+                    questionMark.setVisibility(GONE);
+                }
 
                 //Adjust padding for the payment line view for any that are not the last
                 if (i < paymentInfo.size() - 1)
@@ -104,4 +146,45 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
         }
     }
 
+    public static class PriceLineHelpTextDialog extends DialogFragment
+    {
+        public static final String KEY_MESSAGE = "PLHTD:Message";
+        public static final String TAG = "PriceLineHelpTextDialog";
+
+
+        public static PriceLineHelpTextDialog newInstance(final String text)
+        {
+            PriceLineHelpTextDialog dialogFragment = new PriceLineHelpTextDialog();
+            Bundle args = new Bundle();
+            args.putString(KEY_MESSAGE, text);
+            dialogFragment.setArguments(args);
+            return dialogFragment;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState)
+        {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            String message = "";
+            if (getArguments() == null)
+            {
+                dismiss();
+                throw new RuntimeException("Use newInstance() to initialize this dialog!");
+            }
+            else
+            {
+                message = getArguments().getString(KEY_MESSAGE);
+            }
+            builder.setMessage(message)
+                   .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+                   {
+                       public void onClick(DialogInterface dialog, int id)
+                       {
+                           dialog.dismiss();
+                       }
+                   });
+            return builder.create();
+        }
+    }
 }

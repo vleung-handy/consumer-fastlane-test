@@ -451,6 +451,7 @@
 
     <string name="booking_details_pro_info_title">Your Pro</string>
     <string name="places_api_base_url">https://maps.googleapis.com/</string>
+    <string name="cd_view_payment_questionmark_icon">Questionmark icon</string>
 
     <plurals name="jobs_count">
         <item quantity="one">%d job</item>
