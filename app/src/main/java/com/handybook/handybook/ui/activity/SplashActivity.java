@@ -36,6 +36,7 @@ public class SplashActivity extends BaseActivity
     @Inject
     protected UserManager userManager;
     private Object mBusEventListener;
+    private Object mBusErrorEventListener;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -116,6 +117,23 @@ public class SplashActivity extends BaseActivity
                     }
                 }
             };
+
+            mBusErrorEventListener = new Object()
+            {
+                @Subscribe
+                public void onReceiveConfigurationError(ConfigurationEvent.ReceiveConfigurationError event)
+                {
+                    if (event != null)
+                    {
+                        final Intent intent = ServiceCategoriesActivity.getIntent(
+                                SplashActivity.this,
+                                getIntent()
+                        );
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            };
         }
     }
 
@@ -124,6 +142,7 @@ public class SplashActivity extends BaseActivity
     {
         super.onResume();
         if (mBusEventListener != null) { mBus.register(mBusEventListener); }
+        if (mBusErrorEventListener != null) { mBus.register(mBusErrorEventListener); }
         mBus.post(new ConfigurationEvent.RequestConfiguration());
     }
 
@@ -132,6 +151,7 @@ public class SplashActivity extends BaseActivity
     {
         super.onPause();
         if (mBusEventListener != null) { mBus.unregister(mBusEventListener); }
+        if (mBusErrorEventListener != null) { mBus.unregister(mBusErrorEventListener); }
     }
 
     @Override
