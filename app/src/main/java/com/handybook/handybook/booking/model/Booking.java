@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
+import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
@@ -773,7 +774,7 @@ public class Booking implements Parcelable
 
         public boolean hasHelpText()
         {
-            return !(mHelpText == null || mHelpText.isEmpty());
+            return TextUtils.isEmpty(mHelpText);
         }
 
         public String getHelpText()
