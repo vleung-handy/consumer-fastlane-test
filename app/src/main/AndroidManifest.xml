@@ -493,7 +493,7 @@
 
         <!-- Receiver: Our app notification handling -->
         <receiver
-            android:name=".handylayer.PushNotificationReceiver"
+            android:name="com.handybook.shared.PushNotificationReceiver"
             android:permission="${PACKAGE_NAME}.permission.LAYER_PUSH"
             >
 

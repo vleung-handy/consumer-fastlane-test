@@ -28,8 +28,8 @@ import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
+import com.handybook.shared.LayerConstants;
 import com.handybook.shared.LayerHelper;
-import com.handybook.shared.PushNotificationReceiver;
 import com.handybook.shared.builtin.MessagesListActivity;
 import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
@@ -117,8 +117,12 @@ public class ProTeamConversationsFragment extends InjectedFragment
                         {
                             Intent intent = new Intent(getActivity(), MessagesListActivity.class);
                             intent.putExtra(
-                                    PushNotificationReceiver.LAYER_CONVERSATION_KEY,
+                                    LayerConstants.LAYER_CONVERSATION_KEY,
                                     conversation.getId()
+                            );
+                            intent.putExtra(
+                                    LayerConstants.LAYER_MESSAGE_TITLE,
+                                    mAdapter.getItem(pos).getTitle()
                             );
                             startActivity(intent);
                         }
