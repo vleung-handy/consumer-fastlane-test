@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +19,8 @@ import com.layer.sdk.messaging.Message;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
+import butterknife.BindColor;
+import butterknife.BindString;
 import butterknife.ButterKnife;
 
 public class ConversationHolder extends RecyclerView.ViewHolder
@@ -41,14 +42,19 @@ public class ConversationHolder extends RecyclerView.ViewHolder
 
     private ProTeamProViewModel mProTeamProViewModel;
 
+    @BindColor(R.color.handy_tertiary_gray)
     @ColorInt
-    private int mHandyTertiaryGray;
+    int mHandyTertiaryGray;
+
+    @BindColor(R.color.handy_text_black)
     @ColorInt
-    private int mHandyTextBlack;
+    int mHandyTextBlack;
 
     private Typeface mBoldTypeFace;
     private Typeface mNormalTypeFace;
-    private String mNewConversationMessage;
+
+    @BindString(R.string.new_conversation_text)
+    String mNewConversationMessage;
 
     public ConversationHolder(final View itemView)
     {
@@ -57,8 +63,6 @@ public class ConversationHolder extends RecyclerView.ViewHolder
 
         Context context = itemView.getContext();
 
-        mHandyTertiaryGray = ContextCompat.getColor(context, R.color.handy_tertiary_gray);
-        mHandyTextBlack = ContextCompat.getColor(context, R.color.handy_text_black);
         mBoldTypeFace = com.handybook.handybook.library.util.TextUtils.get(
                 context,
                 com.handybook.handybook.library.util.TextUtils.Fonts.CIRCULAR_BOLD
@@ -67,7 +71,6 @@ public class ConversationHolder extends RecyclerView.ViewHolder
                 context,
                 com.handybook.handybook.library.util.TextUtils.Fonts.CIRCULAR_BOOK
         );
-        mNewConversationMessage = context.getString(R.string.new_conversation_text);
     }
 
     public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel)

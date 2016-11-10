@@ -90,6 +90,7 @@ import com.handybook.handybook.module.autocomplete.PlacesService;
 import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.ui.RedemptionActivity;
 import com.handybook.handybook.module.referral.ui.RedemptionEmailSignUpFragment;
@@ -405,6 +406,17 @@ public class TestApplicationModule
             final DataManager dataManager
     )
     {
-        return spy(new TestConfigurationManager(bus, defaultPreferencesManager, dataManager));
+        TestConfigurationManager configManager = spy(new TestConfigurationManager(
+                bus,
+                defaultPreferencesManager,
+                dataManager
+        ));
+
+        //this is so that we don't init the layer client when we run unit tests
+        Configuration config = mock(Configuration.class);
+        when(config.isProTeamChatEnabled()).thenReturn(false);
+
+        when(configManager.getPersistentConfiguration()).thenReturn(config);
+        return configManager;
     }
 }
