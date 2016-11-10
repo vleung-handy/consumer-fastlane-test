@@ -170,6 +170,7 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
             if (getArguments() == null)
             {
                 dismiss();
+                throw new RuntimeException("Use newInstance() to initialize this dialog!");
             }
             else
             {
