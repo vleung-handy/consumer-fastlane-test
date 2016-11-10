@@ -349,7 +349,7 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final PlacesService providesPlacesService()
+    final PlacesService providePlacesService()
     {
         final RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(mContext.getString(R.string.places_api_base_url))
@@ -370,7 +370,7 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final RestAdapter providesRestAdapter(
+    final RestAdapter provideRestAdapter(
             final HandyRetrofitEndpoint endpoint,
             final UserManager userManager
     )
