@@ -112,12 +112,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         according to docs, this call should ONLY be made from Activity.onCreate() or Activity.onResume()
 
         although it is only necessary to start Appsee in activities that are entry points to the app
-        (SplashActivity, ServiceCategoriesActivity), putting this here because
+        (SplashActivity, OldDeeplinkActivity), putting this here because
         we may want to start/stop recording when configs or storage space change
 
         note that because config response isn't guaranteed at this point,
         recording might not start until the next call of onResume() in which configs are present.
         consider refactoring the way we deal with configs so that it's similar to portal
+
+        NOTE: For emulators, it's not supported so you may see a NullPointerException: APPSEE_NO_CONTEXT
          */
         mAppseeManager.startOrStopRecordingAsNecessary();
     }

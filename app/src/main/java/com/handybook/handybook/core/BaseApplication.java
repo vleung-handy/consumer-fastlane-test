@@ -35,7 +35,6 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.newrelic.agent.android.NewRelic;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -164,15 +163,6 @@ public class BaseApplication extends MultiDexApplication
                         .build()
         );
 
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-        {
-            NewRelic.withApplicationToken(properties.getProperty("new_relic_key")).start(this);
-        }
-        else
-        {
-            NewRelic.withApplicationToken(properties.getProperty("new_relic_key_internal"))
-                    .start(this);
-        }
         if (mSecurePreferencesManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
         {
             mSecurePreferencesManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
