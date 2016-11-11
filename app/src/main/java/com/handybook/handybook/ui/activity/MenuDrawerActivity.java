@@ -317,8 +317,13 @@ public abstract class MenuDrawerActivity extends BaseActivity
         //TODO: JIA: mLayerHelper is null when this feature is in the dark.
         if (mLayerHelper != null && mLayerHelper.getUnreadConversationsCount() > 0)
         {
+            String unreadCount = String.valueOf(mLayerHelper.getUnreadConversationsCount());
+            if (mLayerHelper.getUnreadConversationsCount() > 99)
+            {
+                unreadCount = "99+";
+            }
             textView.setVisibility(View.VISIBLE);
-            textView.setText(String.valueOf(mLayerHelper.getUnreadConversationsCount()));
+            textView.setText(unreadCount);
         }
         else
         {
