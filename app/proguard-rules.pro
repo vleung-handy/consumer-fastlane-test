@@ -23,6 +23,10 @@
 -keep interface android.support.** { *; }
 -keepattributes SourceFile,LineNumberTable
 
+# Layer SDK
+-keep class com.layer.** {*; }
+-dontwarn com.layer.**
+
 #card.io
 -keep class io.card.**
 -keepclassmembers class io.card.** {

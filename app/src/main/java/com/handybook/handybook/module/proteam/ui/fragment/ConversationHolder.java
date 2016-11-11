@@ -120,11 +120,11 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         if (mProTeamProViewModel.getConversation().getLastMessage() != null)
         {
             mTextTimestamp.setText(
-                    DateTimeUtils.getTime(
+                    DateTimeUtils.formatDateToRelativeAccuracy(
                             mProTeamProViewModel
                                     .getConversation()
                                     .getLastMessage()
-                                    .getSentAt()
+                                    .getReceivedAt()
                     )
             );
 

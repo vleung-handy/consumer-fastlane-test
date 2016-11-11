@@ -501,14 +501,7 @@
             <!-- Layer SDK broadcasts this, which we use to generate notifications -->
             <intent-filter>
                 <action android:name="com.layer.sdk.PUSH"/>
-
-                <category android:name="${PACKAGE_NAME}"/>
-            </intent-filter>
-
-            <!-- Our app sets this as a PendingIntent to handle user notification swipe-outs -->
-            <intent-filter>
                 <action android:name="${PACKAGE_NAME}.CANCEL_PUSH"/>
-
                 <category android:name="${PACKAGE_NAME}"/>
             </intent-filter>
         </receiver>
