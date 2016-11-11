@@ -239,7 +239,7 @@ public class BaseApplication extends MultiDexApplication
 
         if (configurationManager.getPersistentConfiguration().isProTeamChatEnabled())
         {
-            mLayerHelper = HandyLayer.init(mRestAdapter, bus, this);
+            mLayerHelper = HandyLayer.init(mRestAdapter, this);
         }
     }
 

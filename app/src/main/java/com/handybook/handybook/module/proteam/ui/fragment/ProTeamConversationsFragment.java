@@ -136,7 +136,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
                 }
         );
 
-        mAdapter.refreshLayer();
+        mAdapter.refreshConversations();
         mRecyclerView.setAdapter(mAdapter);
 
     }

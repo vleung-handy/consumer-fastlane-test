@@ -43,7 +43,6 @@ import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.shared.HandyUser;
-import com.handybook.shared.LayerEvent;
 import com.handybook.shared.LayerHelper;
 import com.squareup.otto.Subscribe;
 
@@ -53,7 +52,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public abstract class MenuDrawerActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LayerHelper.UnreadConversationsCountChangedListener
 {
     private static final String TAG = MenuDrawerActivity.class.getName();
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
@@ -126,10 +126,10 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 User user = mUserManager.getCurrentUser();
 
                 //if layer helper is null, that means this feature is probably in the dark
-                if (((BaseApplication) getApplication()).getLayerHelper() != null)
+                if (mLayerHelper != null)
                 {
                     HandyUser handyUser = new HandyUser(user.getAuthToken(), user.getFullName());
-                    ((BaseApplication) getApplication()).getLayerHelper().initLayer(handyUser);
+                    mLayerHelper.initLayer(handyUser);
                 }
 
                 refreshMenu();
@@ -140,16 +140,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
             }
 
             @Subscribe
-            public void onLayerEvent(LayerEvent event)
-            {
-                Log.d(TAG, "onLayerEvent: ");
-                updateLayerActionMenu();
-            }
-
-            @Subscribe
             public void envUpdated(final EnvironmentUpdatedEvent event)
             {
-                Log.d(TAG, "received EnvironmentUpdatedEvent");
                 setupEnvButton();
             }
 
@@ -289,7 +281,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         super.onResume();
         mBus.register(mBusEventListener);
         mBus.post(new ConfigurationEvent.RequestConfiguration());
-
+        mLayerHelper.registerUnreadConversationsCountChangedListener(this);
         refreshMenu();
     }
 
@@ -298,6 +290,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
     {
         super.onPause();
         mBus.unregister(mBusEventListener);
+        mLayerHelper.unregisterUnreadConversationsCountChangedListener(this);
     }
 
     /**
@@ -312,10 +305,10 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 .getActionView();
 
         //TODO: JIA: mLayerHelper is null when this feature is in the dark.
-        if (mLayerHelper != null && mLayerHelper.getUnreadMessageCount() > 0)
+        if (mLayerHelper != null && mLayerHelper.getUnreadConversationsCount() > 0)
         {
             textView.setVisibility(View.VISIBLE);
-            textView.setText(String.valueOf(mLayerHelper.getUnreadMessageCount()));
+            textView.setText(String.valueOf(mLayerHelper.getUnreadConversationsCount()));
         }
         else
         {
@@ -420,4 +413,9 @@ public abstract class MenuDrawerActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void onUnreadConversationsCountChanged(final long l)
+    {
+        updateLayerActionMenu();
+    }
 }
