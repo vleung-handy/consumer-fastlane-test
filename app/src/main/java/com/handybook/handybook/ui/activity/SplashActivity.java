@@ -46,9 +46,6 @@ public class SplashActivity extends BaseActivity
 
         ((BaseApplication) getApplication()).inject(this);
 
-        //Initialize facebook sdk
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         //check if this is first launch
         if (mSecurePreferencesManager.getBoolean(PrefsKey.APP_FIRST_LAUNCH, true))
         {
