@@ -24,6 +24,7 @@ import com.handybook.handybook.booking.ui.view.ProMilestoneView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
@@ -96,17 +97,19 @@ public final class ReportIssueFragment extends InjectedFragment
         //sometimes, the job status may not be passed in. If not, then fetch it.
         if (mJobStatus == null)
         {
-            dataManager.getBookingMilestones(mBooking.getId(), new DataManager.Callback<JobStatus>()
+            dataManager.getBookingMilestones(
+                    mBooking.getId(),
+                    new FragmentSafeCallback<JobStatus>(ReportIssueFragment.this)
                     {
                         @Override
-                        public void onSuccess(JobStatus status)
+                        public void onCallbackSuccess(JobStatus status)
                         {
                             mJobStatus = status;
                             initialize();
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error)
+                        public void onCallbackError(final DataManager.DataManagerError error)
                         {
                             if (!Strings.isNullOrEmpty(error.getMessage()))
                             {
