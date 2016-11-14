@@ -73,7 +73,6 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
                     new TranslateAnimation(0, 0, 0, toYDelta);
             animation.setDuration(SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS);
             view.startAnimation(animation);
-            view.getTitle().setVisibility(View.INVISIBLE);
             view.setVisibility(View.INVISIBLE);
         }
 
