@@ -472,7 +472,6 @@
             android:screenOrientation="portrait"
             />
 
-
         <!-- Services: Layer SDK FCM handling -->
         <service
             android:name="com.layer.sdk.services.LayerFcmService"
@@ -497,14 +496,21 @@
             android:permission="${PACKAGE_NAME}.permission.LAYER_PUSH"
             >
 
-            <!--TODO: JIA: figure out how we can "darkify" this-->
+            <!-- TODO: JIA: figure out how we can "darkify" this -->
             <!-- Layer SDK broadcasts this, which we use to generate notifications -->
             <intent-filter>
                 <action android:name="com.layer.sdk.PUSH"/>
                 <action android:name="${PACKAGE_NAME}.CANCEL_PUSH"/>
+
                 <category android:name="${PACKAGE_NAME}"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".booking.ui.activity.RescheduleUpcomingActivity">
+        </activity>
+        <activity android:name=".module.proteam.ui.activity.ProMessagesActivity">
+        </activity>
+
 
     </application>
 

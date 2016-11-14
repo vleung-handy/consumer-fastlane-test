@@ -41,7 +41,6 @@ import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
-import com.handybook.shared.HandyUser;
 import com.handybook.shared.LayerHelper;
 import com.squareup.otto.Subscribe;
 
@@ -127,8 +126,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 //if layer helper is null, that means this feature is probably in the dark
                 if (mLayerHelper != null)
                 {
-                    HandyUser handyUser = new HandyUser(user.getAuthToken(), user.getFullName());
-                    mLayerHelper.initLayer(handyUser);
+                    mLayerHelper.initLayer(user.getAuthToken());
                 }
 
                 refreshMenu();

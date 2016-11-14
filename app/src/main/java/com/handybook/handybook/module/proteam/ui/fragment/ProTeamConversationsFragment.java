@@ -24,11 +24,11 @@ import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
 import com.handybook.shared.LayerConstants;
 import com.handybook.shared.LayerHelper;
-import com.handybook.shared.builtin.MessagesListActivity;
 import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
 
@@ -113,7 +113,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
 
                         if (conversation != null)
                         {
-                            Intent intent = new Intent(getActivity(), MessagesListActivity.class);
+                            Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
                             intent.putExtra(
                                     LayerConstants.LAYER_CONVERSATION_KEY,
                                     conversation.getId()
