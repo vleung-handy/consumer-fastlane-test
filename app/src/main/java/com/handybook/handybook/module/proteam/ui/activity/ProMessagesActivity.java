@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
 import com.handybook.shared.builtin.MessagesListActivity;
 import com.layer.atlas.AtlasMessageComposer;
@@ -16,11 +17,14 @@ import com.layer.atlas.AtlasMessageComposer;
  */
 public class ProMessagesActivity extends MessagesListActivity
 {
+    private String mProviderId;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        mProviderId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
 
         //we want to show the reschedule icon in the spot where the attachment icon is, so we
         //need to hijact the hell out of it.
@@ -52,10 +56,14 @@ public class ProMessagesActivity extends MessagesListActivity
                     @Override
                     public void onClick(final View v)
                     {
-                        startActivity(new Intent(
+
+                        Intent intent = new Intent(
                                 ProMessagesActivity.this,
                                 RescheduleUpcomingActivity.class
-                        ));
+                        );
+
+                        intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
+                        startActivity(intent);
                     }
                 });
             }

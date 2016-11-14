@@ -522,6 +522,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     public enum RescheduleType
     {
-        NORMAL, FROM_CANCELATION
+        NORMAL, FROM_CANCELATION, FROM_CHAT
     }
 }

@@ -11,7 +11,11 @@ import android.widget.Toast;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
@@ -40,6 +44,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
     private BookingListAdapter mAdapter;
     private List<Booking> mBookings;
     private ProgressDialog mProgressDialog;
+    private String mProviderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +53,8 @@ public class RescheduleUpcomingActivity extends BaseActivity
         setContentView(R.layout.activity_reschedule_upcoming);
         ButterKnife.bind(this);
         User user = mUserManager.getCurrentUser();
+
+        mProviderId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
 
         mToolbar.setTitle(R.string.reschedule_title);
         setSupportActionBar(mToolbar);
@@ -94,9 +101,30 @@ public class RescheduleUpcomingActivity extends BaseActivity
                  .show();
             return;
         }
+        else
+        {
+            Intent intent = new Intent(this, BookingDateActivity.class);
+            intent.putExtra(
+                    BundleKeys.RESCHEDULE_BOOKING,
+                    mBookings.get(mAdapter.getCheckedIndex())
+            );
+            intent.putExtra(
+                    BundleKeys.RESCHEDULE_TYPE,
+                    BookingDetailFragment.RescheduleType.FROM_CHAT
+            );
+            intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
+            startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+        }
+    }
 
-        //TODO: JIA implement this
-        Toast.makeText(this, "Submit not yet implemented", Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
+        {
+            //reschedule date has been successful, just finish
+            finish();
+        }
     }
 
     public void onBookingReceived(final List<Booking> bookings)

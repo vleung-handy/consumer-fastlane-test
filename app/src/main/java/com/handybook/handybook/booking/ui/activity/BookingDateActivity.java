@@ -25,7 +25,8 @@ public final class BookingDateActivity extends MenuDrawerActivity
             final BookingDetailFragment.RescheduleType type = (BookingDetailFragment.RescheduleType)
                     getIntent().getSerializableExtra(BundleKeys.RESCHEDULE_TYPE);
 
-            return BookingDateFragment.newInstance(rescheduleBooking, notice, type);
+            final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
+            return BookingDateFragment.newInstance(rescheduleBooking, notice, type, providerId);
         }
 
         final ArrayList<BookingOption> postOptions

@@ -44,6 +44,7 @@ public class BundleKeys
 
     public static final String DEEPLINK = "deep_link";
     public static final String USER_ID = "user_id";
+    public static final String PROVIDER_ID = "provider_id";
 
     public static final String SERVICES = "services";
 

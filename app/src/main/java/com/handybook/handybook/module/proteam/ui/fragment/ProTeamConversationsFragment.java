@@ -122,6 +122,10 @@ public class ProTeamConversationsFragment extends InjectedFragment
                                     LayerConstants.LAYER_MESSAGE_TITLE,
                                     mAdapter.getItem(pos).getTitle()
                             );
+                            intent.putExtra(
+                                    BundleKeys.PROVIDER_ID,
+                                    String.valueOf(mAdapter.getItem(pos).getProTeamPro().getId())
+                            );
                             startActivity(intent);
                         }
                         else
