@@ -506,7 +506,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".booking.ui.activity.RescheduleUpcomingActivity">
+        <activity android:name=".module.reschedule.RescheduleUpcomingActivity">
         </activity>
         <activity android:name=".module.proteam.ui.activity.ProMessagesActivity">
         </activity>

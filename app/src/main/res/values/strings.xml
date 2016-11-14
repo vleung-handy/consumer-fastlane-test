@@ -466,5 +466,6 @@
     <string name="notifications_new_messages">%1$d new messages</string>
     <string name="push_notification_no_content_title">New message (tap to sync)</string>
     <string name="new_conversation_text">Message me...</string>
+    <string name="reschedule_title">Select a booking to reschedule</string>
 
 </resources>

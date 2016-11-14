@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.RescheduleUpcomingActivity;
+import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
 import com.handybook.shared.builtin.MessagesListActivity;
 import com.layer.atlas.AtlasMessageComposer;
 

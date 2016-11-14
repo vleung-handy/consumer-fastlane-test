@@ -5,16 +5,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/default_padding"
-    tools:context="com.handybook.handybook.booking.ui.activity.RescheduleUpcomingActivity"
+    android:orientation="vertical"
+    tools:context="com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity"
     >
-    <!--TODO: JIA: finish this part, obviously-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="25sp"
-        android:text="RESCHEDULE THINGS HERE"
+
+    <include layout="@layout/toolbar"
         />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reschedule_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@+id/reschedule_next"
+        />
+
+    <Button
+        android:id="@id/reschedule_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        style="@style/Button.Green"
+        />
 </RelativeLayout>
