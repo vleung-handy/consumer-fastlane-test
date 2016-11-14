@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference;
  *
  * @param <T>
  */
-public abstract class FragmentSafeCallback<T> extends SafeCallback<T>
+public abstract class FragmentSafeCallback<T> extends CancellableCallback<T>
 {
     private WeakReference<Fragment> mFragmentWeakReference;
 

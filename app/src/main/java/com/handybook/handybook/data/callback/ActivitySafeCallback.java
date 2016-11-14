@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference;
  *
  * @param <T>
  */
-public abstract class ActivitySafeCallback<T> extends SafeCallback<T>
+public abstract class ActivitySafeCallback<T> extends CancellableCallback<T>
 {
     private WeakReference<Activity> mActivityWeakReference;
 

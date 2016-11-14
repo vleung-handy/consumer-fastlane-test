@@ -10,7 +10,7 @@ import com.handybook.handybook.data.DataManager;
  *
  * @param <T>
  */
-public abstract class SafeCallback<T> implements DataManager.Callback<T>
+public abstract class CancellableCallback<T> implements DataManager.Callback<T>
 {
     private boolean mIsCancelled = false;
 
