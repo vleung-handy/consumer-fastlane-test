@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
@@ -60,6 +61,13 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             @Override
             public void onClick(final View view)
             {
+                if (bookingManager.getCurrentTransaction() == null)
+                {
+                    //quick-fix for current transaction being null when user clicks "finish" super fast
+                    Crashlytics.logException(new Exception(
+                            "current booking transaction is null on next click"));
+                    return;
+                }
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingShareInfoSubmittedLog()));
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRoutineSubmittedLog()));
 
