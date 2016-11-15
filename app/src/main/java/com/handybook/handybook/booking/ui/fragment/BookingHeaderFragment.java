@@ -108,14 +108,16 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
         final String currChar = quote.getCurrencyChar();
 
-        if (pricing[0] == pricing[1]) {
-            priceText.setText(TextUtils.formatPrice(pricing[0], currChar, null));
-            discountText.setVisibility(View.GONE);
-        }
-        else {
+        if (pricing[1] < pricing[0])
+        {
             priceText.setText(TextUtils.formatPrice(pricing[1], currChar, null));
             discountText.setText(TextUtils.formatPrice(pricing[0], currChar, null));
             discountText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            priceText.setText(TextUtils.formatPrice(pricing[0], currChar, null));
+            discountText.setVisibility(View.GONE);
         }
     }
 }
