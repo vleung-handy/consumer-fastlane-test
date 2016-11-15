@@ -92,6 +92,6 @@ public class Configuration implements Serializable
     public boolean isProTeamChatEnabled()
     {
         //FIXME: JIA: remove this hard coding
-        return true;
+        return false;
     }
 }
