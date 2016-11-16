@@ -74,6 +74,11 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
                             ProviderMatchPreference.INDIFFERENT,
                             false
                     ));
+
+                    if (eachPro.isChatEnabled())
+                    {
+                        mChatEligibleMemberIds.add(eachPro.getLayerUserId());
+                    }
                 }
             }
         }
