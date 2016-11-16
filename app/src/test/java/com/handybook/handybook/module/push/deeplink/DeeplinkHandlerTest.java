@@ -10,6 +10,7 @@ import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.ui.activity.SplashActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -85,7 +86,7 @@ public class DeeplinkHandlerTest extends RobolectricGradleTestWrapper
 
         final Intent launchedIntent = mShadowApplication.getNextStartedActivity();
         assertThat(launchedIntent.getComponent().getClassName(),
-                equalTo(ServiceCategoriesActivity.class.getName()));
+                equalTo(SplashActivity.class.getName()));
         assertThat(launchedIntent.getStringExtra(BundleKeys.BOOKING_ID), equalTo("1234"));
         assertThat(launchedIntent.getStringExtra(BundleKeys.BOOKING_RATE_PRO_NAME),
                 equalTo("John"));

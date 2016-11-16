@@ -37,6 +37,7 @@ import com.handybook.handybook.booking.ui.view.BookingDetailView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
@@ -253,10 +254,10 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             {
                 dataManager.getBookingMilestones(
                         mBooking.getId(),
-                        new DataManager.Callback<JobStatus>()
+                        new FragmentSafeCallback<JobStatus>(BookingDetailFragment.this)
                         {
                             @Override
-                            public void onSuccess(JobStatus status)
+                            public void onCallbackSuccess(JobStatus status)
                             {
                                 Intent intent = new Intent(
                                         getContext(),
@@ -276,7 +277,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                             }
 
                             @Override
-                            public void onError(final DataManager.DataManagerError error)
+                            public void onCallbackError(final DataManager.DataManagerError error)
                             {
                                 if (!Strings.isNullOrEmpty(error.getMessage()))
                                 {

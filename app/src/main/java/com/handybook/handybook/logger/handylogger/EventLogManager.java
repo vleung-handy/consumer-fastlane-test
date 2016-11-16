@@ -350,7 +350,11 @@ public class EventLogManager
                         mFileManager.readFile(file),
                         JsonObject.class
                 );
-
+                if (eventLogBundle == null)
+                {
+                    mFileManager.deleteLogFile(file.getName());
+                    continue;
+                }
                 //Add the sent timestamp value
                 eventLogBundle.addProperty(
                         KEY_SENT_TIMESTAMP_SECS,

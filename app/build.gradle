@@ -5,7 +5,6 @@ import static org.gradle.logging.StyledTextOutput.Style
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'io.fabric'
-apply plugin: 'newrelic'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
@@ -35,7 +34,7 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 16
         targetSdkVersion 24
-        versionName '1.31.0'
+        versionName '1.32.0'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -95,7 +94,7 @@ dependencies {
     //Mixpanel, remove once we figure out where are we losing events
     compile "com.mixpanel.android:mixpanel-android:4.9.2"
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.3@aar') {
         transitive = true;
     }
     androidTestCompile('com.android.support.test:runner:0.5') {
@@ -149,7 +148,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
-    compile 'com.newrelic.agent.android:android-agent:5.3.2'
     compile 'io.card:android-sdk:5.3.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.stripe:stripe-android:1.0.4'

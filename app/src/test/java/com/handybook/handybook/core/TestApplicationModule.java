@@ -98,6 +98,8 @@ import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragment;
 import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.module.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.activity.SplashActivity;
+import com.handybook.handybook.ui.activity.SplashActivityTest;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.HelpCenterTest;
 import com.squareup.otto.Bus;
@@ -196,6 +198,8 @@ import static org.mockito.Mockito.when;
         EventLogManagerTest.class,
         TestActivity.class,
         DefaultPreferencesManagerTest.class,
+        SplashActivity.class,
+        SplashActivityTest.class,
 }, library = true)
 public class TestApplicationModule
 {

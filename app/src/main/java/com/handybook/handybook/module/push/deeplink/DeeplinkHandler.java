@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.ui.activity.SplashActivity;
 
 public class DeeplinkHandler
 {
@@ -46,7 +46,7 @@ public class DeeplinkHandler
     {
         Bundle intentArguments = filterArgumentsByKey(arguments, BundleKeys.BOOKING_ID,
                 BundleKeys.BOOKING_RATE_PRO_NAME);
-        final Intent intent = getLaunchIntent(context, ServiceCategoriesActivity.class,
+        final Intent intent = getLaunchIntent(context, SplashActivity.class,
                 intentArguments);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);

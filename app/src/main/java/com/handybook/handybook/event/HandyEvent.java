@@ -1,10 +1,6 @@
 package com.handybook.handybook.event;
 
-import android.support.annotation.NonNull;
-
 import com.facebook.AccessToken;
-import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.viewmodel.BookingCardViewModel;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.manager.UserDataManager;
@@ -15,39 +11,6 @@ public abstract class HandyEvent
 {
     public abstract static class RequestEvent extends HandyEvent
     {
-        public static class BookingCardViewModelsEvent extends RequestEvent
-        {
-            private User mUser;
-            @Booking.List.OnlyBookingValues
-            private String mOnlyBookingValue;
-
-            public BookingCardViewModelsEvent(
-                    @NonNull final User user,
-                    @NonNull @Booking.List.OnlyBookingValues final String onlyBookingsValue
-            )
-            {
-                mUser = user;
-                mOnlyBookingValue = onlyBookingsValue;
-            }
-
-            public BookingCardViewModelsEvent(@NonNull final User user)
-            {
-                mUser = user;
-            }
-
-            public User getUser()
-            {
-                return mUser;
-            }
-
-            @Booking.List.OnlyBookingValues
-            public String getOnlyBookingValue()
-            {
-                return mOnlyBookingValue;
-            }
-        }
-
-
         public static class HandyNotificationsEvent extends RequestEvent
         {
             private static final long USER_ID_FOR_LOGGED_OUT_USERS = 0;
@@ -114,25 +77,6 @@ public abstract class HandyEvent
         {
             return mPayload;
         }
-
-        public static class BookingCardViewModels extends ResponseEvent<BookingCardViewModel.List>
-        {
-
-            public BookingCardViewModels(BookingCardViewModel.List payload)
-            {
-                super(payload);
-            }
-        }
-
-
-        public static class BookingCardViewModelsError extends ResponseEvent<DataManager.DataManagerError>
-        {
-            public BookingCardViewModelsError(DataManager.DataManagerError payload)
-            {
-                super(payload);
-            }
-        }
-
 
         public static class HandyNotificationsSuccess extends ResponseEvent<HandyNotification.ResultSet>
         {

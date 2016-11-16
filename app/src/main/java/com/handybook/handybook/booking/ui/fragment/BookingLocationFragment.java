@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.proteam.model.ProTeam;
@@ -164,10 +165,10 @@ public final class BookingLocationFragment extends BookingFlowFragment
                         zipCode,
                         userId,
                         request.getPromoCode(),
-                        new DataManager.Callback<ZipValidationResponse>()
+                        new FragmentSafeCallback<ZipValidationResponse>(BookingLocationFragment.this)
                         {
                             @Override
-                            public void onSuccess(ZipValidationResponse response)
+                            public void onCallbackSuccess(ZipValidationResponse response)
                             {
                                 String zipCode = mZipCodeInputTextView.getZipCode();
                                 if (!Strings.isNullOrEmpty(zipCode))
@@ -194,7 +195,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                             }
 
                             @Override
-                            public void onError(final DataManager.DataManagerError error)
+                            public void onCallbackError(final DataManager.DataManagerError error)
                             {
                                 String zipCode = mZipCodeInputTextView.getZipCode();
                                 if (!Strings.isNullOrEmpty(zipCode))

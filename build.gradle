@@ -8,10 +8,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.newrelic.agent.android:agent-gradle-plugin:5.3.2'
         classpath 'io.fabric.tools:gradle:1.21.5'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.0'
     }

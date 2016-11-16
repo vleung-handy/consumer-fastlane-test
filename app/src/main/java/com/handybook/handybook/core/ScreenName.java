@@ -37,7 +37,7 @@ import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OnboardActivity;
-import com.handybook.handybook.ui.activity.SplashActivity;
+import com.handybook.handybook.ui.activity.OldDeeplinkSplashActivity;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public class ScreenName
         sScreenNames.put(MenuDrawerActivity.class.getCanonicalName(), "Menu Drawer");
         sScreenNames.put(OnboardActivity.class.getCanonicalName(), "Onboard");
         sScreenNames.put(ProfileActivity.class.getCanonicalName(), "Profile");
-        sScreenNames.put(SplashActivity.class.getCanonicalName(), "Splash");
+        sScreenNames.put(OldDeeplinkSplashActivity.class.getCanonicalName(), "Splash");
         sScreenNames.put(UpdatePaymentActivity.class.getCanonicalName(), "Update Payment");
 
 

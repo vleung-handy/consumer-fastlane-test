@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
+import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
@@ -135,26 +136,9 @@ public class Booking implements Parcelable
         return mIsPast == 1;
     }
 
-    final void setIsPast(final boolean isPast)
-    {
-        if (isPast)
-        {
-            mIsPast = 1;
-        }
-        else
-        {
-            mIsPast = 0;
-        }
-    }
-
     public String getBookingTimezone()
     {
         return mBookingTimezone;
-    }
-
-    public void setBookingTimezone(final String bookingTimezone)
-    {
-        mBookingTimezone = bookingTimezone;
     }
 
     /**
@@ -191,6 +175,11 @@ public class Booking implements Parcelable
         return mEntryInfo;
     }
 
+    public int getEntryType()
+    {
+        return mEntryType;
+    }
+
     public final String getExtraEntryInfo()
     {
         return mExtraEntryInfo;
@@ -211,7 +200,8 @@ public class Booking implements Parcelable
         return mServiceMachineName;
     }
 
-    //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table , select distinct(machine_name) from service
+    //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table,
+    // select distinct(machine_name) from service
     public static final String SERVICE_CLEANING = "cleaning";
     public static final String SERVICE_HOME_CLEANING = "home_cleaning";
     public static final String SERVICE_OFFICE_CLEANING = "office_cleaning";
@@ -297,6 +287,7 @@ public class Booking implements Parcelable
     {
 
     }
+
 
     public final static class ExtrasMachineName
     {
@@ -472,27 +463,27 @@ public class Booking implements Parcelable
     public static Booking fromJson(final String json)
     {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, Booking.class);
+                                .fromJson(json, Booking.class);
     }
 
     @Override
     public final void writeToParcel(final Parcel out, final int flags)
     {
         out.writeStringArray(new String[]
-                {
-                        mId,
-                        mServiceName,
-                        mServiceMachineName,
-                        mLaundryStatus != null ? mLaundryStatus.name() : "",
-                        mRecurringInfo,
-                        mEntryInfo,
-                        mExtraEntryInfo,
-                        mProNote,
-                        mBilledStatus,
-                        mRecurringId,
-                        mBookingTimezone,
-                        mLockboxCode
-                }
+                                     {
+                                             mId,
+                                             mServiceName,
+                                             mServiceMachineName,
+                                             mLaundryStatus != null ? mLaundryStatus.name() : "",
+                                             mRecurringInfo,
+                                             mEntryInfo,
+                                             mExtraEntryInfo,
+                                             mProNote,
+                                             mBilledStatus,
+                                             mRecurringId,
+                                             mBookingTimezone,
+                                             mLockboxCode
+                                     }
         );
 
         out.writeIntArray(new int[]{mIsPast, mEntryType});
@@ -505,13 +496,13 @@ public class Booking implements Parcelable
         out.writeTypedList(mPaymentInfo);
         out.writeTypedList(mExtrasInfo);
         out.writeBooleanArray(new boolean[]
-                {
-                        mCanEditFrequency,
-                        mCanEditExtras,
-                        mCanEditHours,
-                        mCanLeaveTip,
-                        mMilestonesEnabled,
-                });
+                                      {
+                                              mCanEditFrequency,
+                                              mCanEditExtras,
+                                              mCanEditHours,
+                                              mCanLeaveTip,
+                                              mMilestonesEnabled,
+                                      });
         out.writeParcelable(mInstructions, 0);
         out.writeSerializable(mEntryMethodOption);
         out.writeSerializable(mProviderAssignmentInfo);
@@ -535,11 +526,6 @@ public class Booking implements Parcelable
             return new Booking[size];
         }
     };
-
-    public int getEntryType()
-    {
-        return mEntryType;
-    }
 
     public boolean canEditHours()
     {
@@ -724,44 +710,47 @@ public class Booking implements Parcelable
     public static final class LineItem implements Parcelable
     {
         @SerializedName("order")
-        private int order;
+        private int mOrder;
         @SerializedName("label")
-        private String label;
+        private String mLabel;
+        @SerializedName("help_text")
+        private String mHelpText;
         @SerializedName("amount")
-        private String amount;
+        private String mAmount;
 
         public final int getOrder()
         {
-            return order;
+            return mOrder;
         }
 
         public final String getLabel()
         {
-            return label;
+            return mLabel;
         }
 
         public final String getAmount()
         {
-            return amount;
+            return mAmount;
         }
 
         private LineItem(final Parcel in)
         {
             final int[] intData = new int[1];
             in.readIntArray(intData);
-            order = intData[0];
+            mOrder = intData[0];
 
-            final String[] stringData = new String[2];
+            final String[] stringData = new String[3];
             in.readStringArray(stringData);
-            label = stringData[0];
-            amount = stringData[1];
+            mLabel = stringData[0];
+            mHelpText = stringData[1];
+            mAmount = stringData[2];
         }
 
         @Override
         public final void writeToParcel(final Parcel out, final int flags)
         {
-            out.writeIntArray(new int[]{order});
-            out.writeStringArray(new String[]{label, amount});
+            out.writeIntArray(new int[]{mOrder});
+            out.writeStringArray(new String[]{mLabel, mHelpText, mAmount});
         }
 
         @Override
@@ -782,21 +771,33 @@ public class Booking implements Parcelable
                 return new LineItem[size];
             }
         };
+
+        public boolean hasHelpText()
+        {
+            return !TextUtils.isEmpty(mHelpText);
+        }
+
+        public String getHelpText()
+        {
+            return mHelpText;
+        }
     }
 
 
     public static class ExtraInfo implements Parcelable
     {
         @SerializedName("label")
-        private String label;
+        private String mLabel;
         @SerializedName("image_name")
-        private ExtraInfoImageName imageName;
+        private ExtraInfoImageName mImageName;
 
 
-        public enum ExtraInfoImageName
+        enum ExtraInfoImageName
         {
-            //TODO: Why is the server sending a full imageName name for something that is supposed to be bundled as part of the app? Should just send an identifier or nothing and use label
-            //They are always coming back as _disabled in booking details, not sure why, to investigate? Possibly a hold over from web?
+            //TODO: Why is the server sending a full imageName name for something that is supposed
+            // to be bundled as part of the app? Should just send an identifier or nothing and use label
+            // They are always coming back as _disabled in booking details, not sure why, to
+            // investigate? Possibly a hold over from web?
             @SerializedName("inside_cabinets_extras_disabled.png")INSIDE_CABINETS_DISABLED,
             @SerializedName("inside_fridge_extras_disabled.png")INSIDE_FRIDGE_DISABLED,
             @SerializedName("inside_oven_extras_disabled.png")INSIDE_OVEN_DISABLED,
@@ -811,28 +812,46 @@ public class Booking implements Parcelable
         static
         {
             EXTRAS_ICONS = new HashMap<>();
-            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_CABINETS_DISABLED, R.drawable.ic_booking_extra_cabinets);
-            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_FRIDGE_DISABLED, R.drawable.ic_booking_extra_fridge);
-            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.INSIDE_OVEN_DISABLED, R.drawable.ic_booking_extra_oven);
-            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.LAUNDRY_DISABLED, R.drawable.ic_booking_extra_laundry);
-            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.WINDOWS_DISABLED, R.drawable.ic_booking_extra_window);
-            EXTRAS_ICONS.put(Booking.ExtraInfo.ExtraInfoImageName.DEFAULT_IMAGE_NAME, R.drawable.ic_booking_detail_logo);
+            EXTRAS_ICONS.put(
+                    Booking.ExtraInfo.ExtraInfoImageName.INSIDE_CABINETS_DISABLED,
+                    R.drawable.ic_booking_extra_cabinets
+            );
+            EXTRAS_ICONS.put(
+                    Booking.ExtraInfo.ExtraInfoImageName.INSIDE_FRIDGE_DISABLED,
+                    R.drawable.ic_booking_extra_fridge
+            );
+            EXTRAS_ICONS.put(
+                    Booking.ExtraInfo.ExtraInfoImageName.INSIDE_OVEN_DISABLED,
+                    R.drawable.ic_booking_extra_oven
+            );
+            EXTRAS_ICONS.put(
+                    Booking.ExtraInfo.ExtraInfoImageName.LAUNDRY_DISABLED,
+                    R.drawable.ic_booking_extra_laundry
+            );
+            EXTRAS_ICONS.put(
+                    Booking.ExtraInfo.ExtraInfoImageName.WINDOWS_DISABLED,
+                    R.drawable.ic_booking_extra_window
+            );
+            EXTRAS_ICONS.put(
+                    Booking.ExtraInfo.ExtraInfoImageName.DEFAULT_IMAGE_NAME,
+                    R.drawable.ic_booking_detail_logo
+            );
             //TODO: Need to add missing icons like ladders and painting
         }
 
         public final String getLabel()
         {
-            return label;
+            return mLabel;
         }
 
         public final ExtraInfoImageName getImageName()
         {
-            return imageName;
+            return mImageName;
         }
 
         public final int getImageResource()
         {
-            return getImageResource(imageName);
+            return getImageResource(mImageName);
         }
 
         private int getImageResource(ExtraInfoImageName extraInfoImageName)
@@ -843,7 +862,9 @@ public class Booking implements Parcelable
             }
             else
             {
-                Crashlytics.log("ExtraInfo::getImageResource unsupported image name : " + String.valueOf(extraInfoImageName));
+                Crashlytics.log("ExtraInfo::getImageResource unsupported image name : "
+                                        + String.valueOf(extraInfoImageName)
+                );
                 return 0;
             }
         }
@@ -852,19 +873,21 @@ public class Booking implements Parcelable
         {
             final String[] stringData = new String[2];
             in.readStringArray(stringData);
-            label = stringData[0];
+            mLabel = stringData[0];
             try
             {
-                imageName = ExtraInfoImageName.valueOf(stringData[1]);
+                mImageName = ExtraInfoImageName.valueOf(stringData[1]);
             }
             catch (IllegalArgumentException e)
             {
-                Crashlytics.log("Could not convert string : " + stringData[1] + " to extras image name");
+                Crashlytics.log("Could not convert string : "
+                                        + stringData[1] + " to extras image name"
+                );
             }
 
-            if (imageName == null)
+            if (mImageName == null)
             {
-                imageName = ExtraInfoImageName.DEFAULT_IMAGE_NAME;
+                mImageName = ExtraInfoImageName.DEFAULT_IMAGE_NAME;
             }
         }
 
@@ -872,9 +895,9 @@ public class Booking implements Parcelable
         public final void writeToParcel(final Parcel out, final int flags)
         {
             out.writeStringArray(new String[]{
-                    label,
-                    imageName != null ?
-                            imageName.toString()
+                    mLabel,
+                    mImageName != null ?
+                            mImageName.toString()
                             : ExtraInfoImageName.DEFAULT_IMAGE_NAME.toString()
             });
         }
@@ -971,6 +994,7 @@ public class Booking implements Parcelable
             return mMilestone;
         }
     }
+
 
     public static class Location implements Serializable
     {

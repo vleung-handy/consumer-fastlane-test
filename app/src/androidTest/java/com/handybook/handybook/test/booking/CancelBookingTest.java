@@ -26,6 +26,9 @@ public class CancelBookingTest
     public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
+    /**
+     * this user has only one upcoming booking
+     */
     private static final TestUser TEST_USER = TestUsers.CANCEL_SINGLE_BOOKING_USER;
 
     @Test
@@ -42,15 +45,19 @@ public class CancelBookingTest
         ViewUtil.waitForTextVisible(R.string.my_bookings, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         onView(withText(R.string.my_bookings)).perform(click());
 
-        // Tap on the first booking
-        ViewUtil.waitForViewVisible(R.id.ll_booking_card_booking_row_container,
-                ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        onView(withId(R.id.tv_card_booking_row_title)).check(matches(isDisplayed())); // Check if booking row is there
-        onView(ViewUtil.nthChildOf(withId(R.id.ll_booking_card_booking_row_container), 0))
-                .perform(click());
+        // Tap on the (only) booking
+        ViewUtil.waitForViewVisible(
+                R.id.booking_item_container,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
+        onView(withId(R.id.text_booking_title)).check(matches(isDisplayed())); // Check if booking row is there
+        onView(withId(R.id.booking_item_container)).perform(click());
 
         // Click on cancel booking
-        ViewUtil.waitForViewInScrollViewVisible(R.id.action_button_cancel_booking, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewInScrollViewVisible(
+                R.id.action_button_cancel_booking,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
         onView(withId(R.id.action_button_cancel_booking)).perform(scrollTo()).perform(click());
 
         // Select the first reason and click cancel booking
@@ -59,6 +66,6 @@ public class CancelBookingTest
         onView(withId(R.id.cancel_button)).perform(click());
 
         // If upcoming bookings page is visible and no upcoming bookings displayed, then cancel booking worked
-        onView(withId(R.id.tv_card_booking_row_title)).check(doesNotExist()); // Check if booking row is there
+        onView(withId(R.id.booking_item_container)).check(doesNotExist()); // Check if booking row is there
     }
 }

@@ -9,7 +9,6 @@ import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
@@ -17,6 +16,7 @@ import com.handybook.handybook.module.bookings.HistoryActivity;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
+import com.handybook.handybook.ui.activity.SplashActivity;
 
 import javax.inject.Inject;
 
@@ -54,7 +54,7 @@ public class DeepLinkIntentProvider
             DEEP_LINK_NEW_BASE_URL + "home"})
     public static Intent getHomeIntent(Context context)
     {
-        Intent intent = new Intent(context, ServiceCategoriesActivity.class);
+        Intent intent = new Intent(context, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;

@@ -25,18 +25,13 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
-import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.activity.OnboardActivity;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -113,24 +108,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageShownLog()));
 
-        final User user = userManager.getCurrentUser();
-        if (!mDefaultPreferencesManager.getBoolean(
-                PrefsKey.APP_ONBOARD_SHOWN,
-                false
-        ) && user == null)
-        {
-            final Intent intent = new Intent(getActivity(), OnboardActivity.class);
-            startActivity(intent);
-        }
-        else if (user != null
-                && user.getAnalytics() != null
-                && user.getAnalytics().getUpcomingBookings() > 0
-                && ((BaseApplication) getActivity().getApplication()).isNewlyLaunched())
-        {
-            final Intent intent = new Intent(getActivity(), BookingsActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-        }
     }
 
     @Override

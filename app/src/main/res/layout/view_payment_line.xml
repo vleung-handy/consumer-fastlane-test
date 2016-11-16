@@ -5,15 +5,32 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/label_text"
-        android:layout_width="0dp"
+        android:id="@+id/view_payment_line_label_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="@string/label"
-        style="@style/TextView"/>
+        style="@style/TextView"
+        />
+
+    <ImageView
+        android:id="@+id/view_payment_line_question_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin_half"
+        android:layout_marginStart="@dimen/default_margin_half"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_question_mark_grey_outline"
+        android:contentDescription="@string/cd_view_payment_questionmark_icon"
+        />
+
+    <android.support.v4.widget.Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
 
     <TextView
-        android:id="@+id/amount_text"
+        android:id="@+id/view_payment_line_amount_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/amount"

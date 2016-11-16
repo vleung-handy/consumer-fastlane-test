@@ -19,6 +19,7 @@ import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
@@ -100,15 +101,12 @@ public class AccountFragment extends InjectedFragment
     {
         super.onStart();
         showUiBlockers();
-        dataManager.getRecurringBookings(new DataManager.Callback<RecurringBookingsResponse>()
+        dataManager.getRecurringBookings(new FragmentSafeCallback<RecurringBookingsResponse>(
+                this)
         {
             @Override
-            public void onSuccess(final RecurringBookingsResponse response)
+            public void onCallbackSuccess(final RecurringBookingsResponse response)
             {
-                if (getActivity() == null || !isAdded())
-                {
-                    return; //quick-fix to prevent fragment not attached to activity crash
-                }
                 removeUiBlockers();
                 mPlans = new ArrayList<>(response.getRecurringBookings());
                 mActivePlansText.setText(getString(
@@ -117,12 +115,8 @@ public class AccountFragment extends InjectedFragment
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
+            public void onCallbackError(final DataManager.DataManagerError error)
             {
-                if (getActivity() == null || !isAdded())
-                {
-                    return; //quick-fix to prevent fragment not attached to activity crash
-                }
                 mActivePlansLayout.setEnabled(false);
                 removeUiBlockers();
                 dataManagerErrorHandler.handleError(getActivity(), error);
