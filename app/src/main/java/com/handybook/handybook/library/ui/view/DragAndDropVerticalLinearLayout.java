@@ -421,25 +421,10 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     private void swapViews(final int positionA, final View viewA, final int positionB, final View viewB)
     {
-        removeView(viewA);
-        removeView(viewB);
+        super.removeView(viewA);
+        super.removeView(viewB);
         super.addView(viewA, positionB);
         super.addView(viewB, positionA);
-    }
-
-    /**
-     * Added this because super.removeView for some reason sometimes didn't remove the view from the linearlayout.
-     * Someone on slackoverflow noted that animations could cause a delay
-     * @param view
-     */
-    @Override
-    public void removeView(View view) {
-        super.removeView(view);
-        //Add this as a backup in case. Not sure if it'll 100% fix it. Not sure how to reproduce it
-        ViewGroup parent = (ViewGroup) view.getParent();
-        if (parent != null) {
-            parent.removeView(view);
-        }
     }
 
     private void vibrate()
