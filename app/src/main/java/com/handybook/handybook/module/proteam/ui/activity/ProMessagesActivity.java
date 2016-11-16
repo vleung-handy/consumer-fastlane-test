@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
 import com.handybook.shared.builtin.MessagesListActivity;
-import com.layer.atlas.AtlasMessageComposer;
 
 /**
  * This is a derivation of the MessagesListActivity that allows for a reschedule flow
@@ -37,37 +35,27 @@ public class ProMessagesActivity extends MessagesListActivity
      */
     private void hijackAttachmentButton()
     {
-        //Step 1, get the message composer
-        AtlasMessageComposer messageComposer = (AtlasMessageComposer) findViewById(R.id.messages_composer);
-
         //Step 2, get the attachment button
-        if (messageComposer != null)
+
+        getAttachmentButton().setImageDrawable(ContextCompat.getDrawable(
+                this,
+                R.drawable.ic_calendar_dark
+        ));
+        getAttachmentButton().setOnClickListener(new View.OnClickListener()
         {
-            ImageView mAttachButton = (ImageView) messageComposer.findViewById(com.layer.atlas.R.id.attachment);
-
-            if (mAttachButton != null)
+            @Override
+            public void onClick(final View v)
             {
-                mAttachButton.setImageDrawable(ContextCompat.getDrawable(
-                        this,
-                        R.drawable.ic_calendar_dark
-                ));
-                mAttachButton.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final View v)
-                    {
 
-                        Intent intent = new Intent(
-                                ProMessagesActivity.this,
-                                RescheduleUpcomingActivity.class
-                        );
+                Intent intent = new Intent(
+                        ProMessagesActivity.this,
+                        RescheduleUpcomingActivity.class
+                );
 
-                        intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
-                        startActivity(intent);
-                    }
-                });
+                intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
+                startActivity(intent);
             }
-        }
+        });
 
 
     }

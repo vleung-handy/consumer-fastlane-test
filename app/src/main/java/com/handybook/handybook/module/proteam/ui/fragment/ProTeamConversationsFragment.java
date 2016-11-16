@@ -2,15 +2,16 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
@@ -25,16 +26,24 @@ import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
+import com.handybook.shared.CreateConversationResponse;
+import com.handybook.shared.HandyLayer;
 import com.handybook.shared.LayerConstants;
 import com.handybook.shared.LayerHelper;
 import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
 
+import java.lang.ref.WeakReference;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class ProTeamConversationsFragment extends InjectedFragment
 {
@@ -56,6 +65,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     ProConversationAdapter mAdapter;
 
     private ProTeam mProTeam;
+    private ProTeamProViewModel mSelectedProTeamMember;
     private LayerHelper mLayerHelper;
 
     public static ProTeamConversationsFragment newInstance()
@@ -109,32 +119,21 @@ public class ProTeamConversationsFragment extends InjectedFragment
                     public void onClick(final View v)
                     {
                         int pos = mRecyclerView.getChildAdapterPosition(v);
+                        mSelectedProTeamMember = mAdapter.getItem(pos);
                         Conversation conversation = mAdapter.getItem(pos).getConversation();
 
                         if (conversation != null)
                         {
-                            Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
-                            intent.putExtra(
-                                    LayerConstants.LAYER_CONVERSATION_KEY,
-                                    conversation.getId()
+                            startMessagesActivity(
+                                    conversation.getId(),
+                                    mSelectedProTeamMember.getTitle(),
+                                    String.valueOf(mSelectedProTeamMember.getProTeamPro().getId())
                             );
-                            intent.putExtra(
-                                    LayerConstants.LAYER_MESSAGE_TITLE,
-                                    mAdapter.getItem(pos).getTitle()
-                            );
-                            intent.putExtra(
-                                    BundleKeys.PROVIDER_ID,
-                                    String.valueOf(mAdapter.getItem(pos).getProTeamPro().getId())
-                            );
-                            startActivity(intent);
                         }
                         else
                         {
-                            Snackbar.make(
-                                    mRecyclerView,
-                                    "There isn't a conversation started with this pro yet.",
-                                    Snackbar.LENGTH_SHORT
-                            ).show();
+                            createNewConversation(String.valueOf(mSelectedProTeamMember.getProTeamPro()
+                                                                                       .getId()));
                         }
                     }
                 }
@@ -142,7 +141,55 @@ public class ProTeamConversationsFragment extends InjectedFragment
 
         mAdapter.refreshConversations();
         mRecyclerView.setAdapter(mAdapter);
+    }
 
+    private void startMessagesActivity(Uri conversationId, String title, String providerId)
+    {
+        Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
+        intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);
+        intent.putExtra(LayerConstants.LAYER_MESSAGE_TITLE, title);
+        intent.putExtra(BundleKeys.PROVIDER_ID, providerId);
+        startActivity(intent);
+    }
+
+    /**
+     * Fires off a request to the server to create a new conversation, then once that's created, and
+     * conversation synced, we will launch the ProMessagesActivity for the actual conversation to
+     * happen
+     */
+    private void createNewConversation(String providerId)
+    {
+        progressDialog.show();
+
+        HandyLayer.getInstance()
+                  .getHandyService()
+                  .createConversation(providerId,
+                                      userManager.getCurrentUser().getAuthToken(),
+                                      "",
+                                      new ConversationCallback(this)
+                  );
+    }
+
+    /**
+     * Response successfully received from server in creating a new layer conversation
+     *
+     * @param conversationId
+     */
+    public void onConversationCreated(String conversationId)
+    {
+        startMessagesActivity(
+                Uri.parse(LayerConstants.LAYER_CONVERSATION_URI_PREFIX + conversationId),
+                mSelectedProTeamMember.getTitle(),
+                String.valueOf(mSelectedProTeamMember.getProTeamPro().getId())
+        );
+
+        progressDialog.dismiss();
+    }
+
+    public void onError()
+    {
+        progressDialog.dismiss();
+        Toast.makeText(getContext(), R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
     }
 
     private void initEmptyView()
@@ -227,6 +274,45 @@ public class ProTeamConversationsFragment extends InjectedFragment
             if (updatedProTeam != null)
             {
                 mProTeam = updatedProTeam;
+            }
+        }
+    }
+
+    public class ConversationCallback implements Callback<CreateConversationResponse>
+    {
+
+        private WeakReference<ProTeamConversationsFragment> mFragment;
+
+        public ConversationCallback(ProTeamConversationsFragment fragment)
+        {
+            mFragment = new WeakReference<>(fragment);
+        }
+
+        @Override
+        public void success(
+                final CreateConversationResponse createConversationResponse, final Response response
+        )
+        {
+            if (mFragment.get() != null)
+            {
+                if (createConversationResponse.isSuccess())
+                {
+                    mFragment.get()
+                             .onConversationCreated(createConversationResponse.getConversationId());
+                }
+                else
+                {
+                    mFragment.get().onError();
+                }
+            }
+        }
+
+        @Override
+        public void failure(final RetrofitError error)
+        {
+            if (mFragment.get() != null)
+            {
+                mFragment.get().onError();
             }
         }
     }
