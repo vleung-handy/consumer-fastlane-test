@@ -96,7 +96,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         mTextMessage.setTextColor(mHandyTertiaryGray);
         mTextMessage.setTypeface(mNormalTypeFace);
         mTextTitle.setTypeface(mNormalTypeFace);
-        mUnreadIndicator.setVisibility(View.GONE);
+        mUnreadIndicator.setVisibility(View.INVISIBLE);
 
         bindWithLayer();
     }
@@ -125,7 +125,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
                                     .getConversation()
                                     .getLastMessage()
                                     .getReceivedAt()
-                    )
+                    ).toLowerCase()
             );
 
             mTextTimestamp.setVisibility(View.VISIBLE);

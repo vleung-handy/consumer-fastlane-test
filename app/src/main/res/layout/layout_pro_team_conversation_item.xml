@@ -4,26 +4,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/pro_team_card_min_height"
                 android:clipToPadding="false"
-                android:padding="@dimen/default_padding"
+                android:clipChildren="false"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingEnd="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding_quarter"
     >
-
     <ImageView
         android:id="@+id/conversation_unread_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/unread_indicator_left_margin"
         android:src="@drawable/unread_indicator"
-        android:visibility="gone"
+        android:visibility="invisible"
+        tools:visibility="visible"
         />
 
+    <android.support.v4.widget.Space
+        android:id="@+id/space"
+        android:layout_width="@dimen/default_padding_quarter"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/conversation_unread_indicator"
+        android:layout_centerVertical="true"
+        />
     <ImageView
         android:id="@+id/conversation_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_toRightOf="@id/space"
         android:adjustViewBounds="true"
         android:contentDescription="Pro Team Image"
         android:src="@drawable/img_pro_placeholder"
@@ -38,6 +48,7 @@
         android:layout_toRightOf="@id/conversation_image"
         android:textSize="@dimen/text_size_large"
         tools:text="Jennifer C."
+        android:includeFontPadding="false"
         />
 
     <TextView
@@ -55,6 +66,7 @@
         android:maxLines="1"
         android:textColor="@color/handy_text_black"
         tools:text="Hi, I can't come on friday this week, but I can do it next week"
+        android:includeFontPadding="false"
         />
 
     <TextView
