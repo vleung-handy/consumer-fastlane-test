@@ -80,6 +80,8 @@ public class AppInteractionUtil
     public static void logIn(TestUser testUser)
     {
         openDrawer();
+        //the side menu items are loaded async and sometimes take a little longer to show
+        ViewUtil.waitForTextVisible(R.string.log_in, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(withText(R.string.log_in)).perform(click());
         TextViewUtil.updateEditTextView(R.id.email_text, testUser.getEmail());
         TextViewUtil.updateEditTextView(R.id.password_text, testUser.getPassword());
