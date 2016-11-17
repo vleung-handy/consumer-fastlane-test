@@ -142,25 +142,70 @@ public class UserDataManager
         }).executeAsync();
     }
 
+    public void requestAndSetCurrentUser(
+            @NonNull String userId,
+            @NonNull String authToken,
+            @NonNull final DataManager.Callback<User> callback
+    )
+    {
+        mDataManager.getUser(userId, authToken, new DataManager.Callback<User>()
+        {
+            @Override
+            public void onSuccess(final User response)
+            {
+                /*
+                TODO investigate when we get current user and when we set it
+                to find out what pages are using the cached user and see if we need to make them
+                fetch updated user
+
+                using an extra callback layer so that the user manager can set the current user
+                to keep previous behavior
+                 */
+                mUserManager.setCurrentUser(response);
+                callback.onSuccess(response);
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
+                callback.onError(error);
+            }
+        });
+    }
+
+    /**
+     * ugly to have both direct callback and bus event, but eventually we will probably remove this
+     * and just use the direct callback
+     *
+     * @param event
+     */
     @Subscribe
     public void onRequestUser(final HandyEvent.RequestUser event)
     {
-        mDataManager.getUser(event.getUserId(), event.getAuthToken(),
+        requestAndSetCurrentUser(
+                event.getUserId(),
+                event.getAuthToken(),
                 new DataManager.Callback<User>()
                 {
                     @Override
                     public void onSuccess(final User user)
                     {
-                        mUserManager.setCurrentUser(user);
-                        mBus.post(new HandyEvent.ReceiveUserSuccess(user, event.getAuthType()));
+                        mBus.post(new HandyEvent.ReceiveUserSuccess(
+                                user,
+                                event.getAuthType()
+                        ));
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error)
                     {
-                        mBus.post(new HandyEvent.ReceiveUserError(error, event.getAuthType()));
+                        mBus.post(new HandyEvent.ReceiveUserError(
+                                error,
+                                event.getAuthType()
+                        ));
                     }
-                });
+                }
+        );
     }
 
     @Subscribe

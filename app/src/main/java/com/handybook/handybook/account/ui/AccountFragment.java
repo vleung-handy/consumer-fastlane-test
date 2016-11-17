@@ -3,6 +3,7 @@ package com.handybook.handybook.account.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.login.LoginManager;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.RecurringBooking;
@@ -25,6 +27,7 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
+import com.handybook.handybook.manager.UserDataManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
@@ -42,6 +45,8 @@ public class AccountFragment extends InjectedFragment
     ConfigurationManager mConfigurationManager;
     @Inject
     UserManager mUserManager;
+    @Inject
+    UserDataManager mUserDataManager;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -89,11 +94,12 @@ public class AccountFragment extends InjectedFragment
     )
     {
         super.onViewCreated(view, savedInstanceState);
-        mCreditsText.setText(TextUtils.formatPrice(
-                mUser.getCredits(),
-                mUser.getCurrencyChar(),
-                null
-        ));
+        /*
+        display the credits based on mUser data
+        this can be old, but we will request the most recent user data onResume
+        and show an error if we are unable to get it
+         */
+        setCreditsText(mUser);
     }
 
     @Override
@@ -124,6 +130,15 @@ public class AccountFragment extends InjectedFragment
         });
     }
 
+    private void setCreditsText(@NonNull User user)
+    {
+        mCreditsText.setText(TextUtils.formatPrice(
+                user.getCredits(),
+                user.getCurrencyChar(),
+                null
+        ));
+    }
+
     @Override
     public void onResume()
     {
@@ -133,6 +148,37 @@ public class AccountFragment extends InjectedFragment
         // 2. When you come to fragment first time
         // 3. When you click away from page, but now you hit back and page is shown again
         bus.post(new LogEvent.AddLogEvent(new AccountLog.Shown()));
+
+        /*
+        hotfix to get updated user data
+        looks like previous logic assumed mUser to be non-null here
+        TODO non-blocking loading indicator
+        TODO investigate when UserManager's current user is set and retrieved
+         */
+        mUserDataManager.requestAndSetCurrentUser(
+                mUser.getId(),
+                mUser.getAuthToken(),
+                new FragmentSafeCallback<User>(AccountFragment.this)
+                {
+                    @Override
+                    public void onCallbackSuccess(final User response)
+                    {
+                        mUser = response;
+                        setCreditsText(mUser);
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error)
+                    {
+                        //this will trigger an error toast
+                        dataManagerErrorHandler.handleError(
+                                AccountFragment.this.getContext(),
+                                error
+                        );
+                        Crashlytics.logException(new Exception(error.getMessage()));
+                    }
+                }
+        );
     }
 
     @OnClick(R.id.account_contact_info_layout)
