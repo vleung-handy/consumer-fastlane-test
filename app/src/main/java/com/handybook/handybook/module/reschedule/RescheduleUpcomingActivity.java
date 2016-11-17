@@ -97,7 +97,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
 
         if (mAdapter.getCheckedIndex() < 0)
         {
-            Toast.makeText(this, "Please select a booking to reschedule", Toast.LENGTH_SHORT)
+            Toast.makeText(this, R.string.reschedule_select_booking, Toast.LENGTH_SHORT)
                  .show();
             return;
         }

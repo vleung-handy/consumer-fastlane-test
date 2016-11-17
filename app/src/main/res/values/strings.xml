@@ -466,5 +466,6 @@
     <string name="push_notification_no_content_title">New message (tap to sync)</string>
     <string name="new_conversation_text">Message me...</string>
     <string name="reschedule_title">Select a booking to reschedule</string>
+    <string name="reschedule_select_booking">Please select a booking to reschedule</string>
 
 </resources>

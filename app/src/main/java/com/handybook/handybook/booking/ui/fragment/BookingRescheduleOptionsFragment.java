@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
     public static BookingRescheduleOptionsFragment newInstance(
             final Booking booking,
             final Date date,
-            final String providerId
+            @Nullable final String providerId
     )
     {
         final BookingRescheduleOptionsFragment fragment = new BookingRescheduleOptionsFragment();

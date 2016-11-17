@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
@@ -152,7 +153,7 @@ public class BookingFlowFragment extends InjectedFragment
             final Booking booking,
             final Date date,
             final boolean rescheduleAll,
-            final String providerId
+            @Nullable final String providerId
     )
     {
         final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");

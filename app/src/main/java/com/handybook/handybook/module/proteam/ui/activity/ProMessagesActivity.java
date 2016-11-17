@@ -35,8 +35,6 @@ public class ProMessagesActivity extends MessagesListActivity
      */
     private void hijackAttachmentButton()
     {
-        //Step 2, get the attachment button
-
         getAttachmentButton().setImageDrawable(ContextCompat.getDrawable(
                 this,
                 R.drawable.ic_calendar_dark
