@@ -51,6 +51,21 @@ public class Event
         return mEventLog.getSessionId();
     }
 
+    public long getTimestampMillis()
+    {
+        return mTimestampMillis;
+    }
+
+    public long getTimestampSecs()
+    {
+        return mTimestampSecs;
+    }
+
+    public String getId()
+    {
+        return mId;
+    }
+
     public void setEventType(String eventType)
     {
         mEventType = eventType;
