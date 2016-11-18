@@ -2,12 +2,13 @@ package com.handybook.handybook.module.proteam.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
+import com.handybook.shared.AttachmentItemView;
 import com.handybook.shared.builtin.MessagesListActivity;
 
 /**
@@ -24,27 +25,47 @@ public class ProMessagesActivity extends MessagesListActivity
 
         mProviderId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
 
-        //we want to show the reschedule icon in the spot where the attachment icon is, so we
-        //need to hijact the hell out of it.
-        hijackAttachmentButton();
+        setupCustomAttachmentMenus();
     }
 
-    /**
-     * TODO: JIA: maybe put this under some kind of a flag, because not everything can be
-     * "rescheduled"
-     */
-    private void hijackAttachmentButton()
+    private void setupCustomAttachmentMenus()
     {
-        getAttachmentButton().setImageDrawable(ContextCompat.getDrawable(
-                this,
-                R.drawable.ic_calendar_dark
-        ));
-        getAttachmentButton().setOnClickListener(new View.OnClickListener()
+        addAttachmentMenuItem(getRescheduleView());
+        addAttachmentMenuItem(getNewBookingView());
+    }
+
+
+    private AttachmentItemView getNewBookingView()
+    {
+        AttachmentItemView rescheduleView = new AttachmentItemView(this);
+//        TODO: JIA: we need the proper icon from Jaclyn
+        rescheduleView.getAttachmentImage().setImageResource(R.drawable.ic_help_center);
+        rescheduleView.getAttachmentText().setText(getResources().getString(R.string.new_booking));
+        rescheduleView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
             {
+                startActivity(new Intent(
+                        ProMessagesActivity.this,
+                        ServiceCategoriesActivity.class
+                ));
+            }
+        });
 
+        return rescheduleView;
+    }
+
+    private AttachmentItemView getRescheduleView()
+    {
+        AttachmentItemView rescheduleView = new AttachmentItemView(this);
+        rescheduleView.getAttachmentImage().setImageResource(R.drawable.ic_help_past_booking);
+        rescheduleView.getAttachmentText().setText(getResources().getString(R.string.reschedule));
+        rescheduleView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
                 Intent intent = new Intent(
                         ProMessagesActivity.this,
                         RescheduleUpcomingActivity.class
@@ -55,6 +76,7 @@ public class ProMessagesActivity extends MessagesListActivity
             }
         });
 
-
+        return rescheduleView;
     }
 }
+
