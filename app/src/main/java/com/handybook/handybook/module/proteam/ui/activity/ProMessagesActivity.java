@@ -46,6 +46,7 @@ public class ProMessagesActivity extends MessagesListActivity
             @Override
             public void onClick(final View v)
             {
+                getAttachmentMenu().dismiss();
                 startActivity(new Intent(
                         ProMessagesActivity.this,
                         ServiceCategoriesActivity.class
@@ -66,6 +67,7 @@ public class ProMessagesActivity extends MessagesListActivity
             @Override
             public void onClick(final View v)
             {
+                getAttachmentMenu().dismiss();
                 Intent intent = new Intent(
                         ProMessagesActivity.this,
                         RescheduleUpcomingActivity.class
