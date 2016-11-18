@@ -83,6 +83,8 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
                 }
             }
         }
+        onConversationUpdated();
+        setHasStableIds(true);
     }
 
 
@@ -95,6 +97,11 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
         //get a list of all conversations and see if we can match them with the pro teams
         List<Conversation> conversations = mLayerHelper.getAllConversationsWith(
                 mChatEligibleMemberIds);
+
+        if (conversations == null)
+        {
+            return;
+        }
 
         //update each pro team model with the correct conversation
         for (final ProTeamProViewModel model : mProTeamProViewModels)
@@ -162,5 +169,11 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
     public ProTeamProViewModel getItem(final int position)
     {
         return mProTeamProViewModels.get(position);
+    }
+
+    @Override
+    public long getItemId(final int position)
+    {
+        return getItem(position).hashCode();
     }
 }
