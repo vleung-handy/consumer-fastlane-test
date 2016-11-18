@@ -17,6 +17,7 @@ import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHolder>
@@ -87,9 +88,6 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
 
     /**
      * conversations could've changed. See if we need to update the screen.
-     * <p>
-     * //TODO: JIA: finish this once we figure out how to create users (with own user id) on the
-     * client side directly with the Layer API
      */
     @Override
     protected void onConversationUpdated()
@@ -112,7 +110,6 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
                     boolean conversationSet = false;
                     for (final Identity participant : convo.getParticipants())
                     {
-                        //TODO: JIA: this is a hardcoded criteria, remove this
                         if (participant.getUserId().equals(proLayerId))
                         {
                             //this the conversation with DanH
@@ -129,7 +126,13 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
             }
         }
 
+        sortByMessageReadDate();
         notifyDataSetChanged();
+    }
+
+    private void sortByMessageReadDate()
+    {
+        Collections.sort(mProTeamProViewModels, new ProConversationComparator());
     }
 
     @Override
