@@ -38,6 +38,7 @@ import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
@@ -495,10 +496,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     {
         dataManager.getLocationStatus(
                 mBooking.getId(),
-                new DataManager.Callback<Booking.LocationStatus>()
+                new FragmentSafeCallback<Booking.LocationStatus>(this)
                 {
                     @Override
-                    public void onSuccess(final Booking.LocationStatus response)
+                    public void onCallbackSuccess(final Booking.LocationStatus response)
                     {
                         mLocationStatus = response;
                         if (response != null && !isBadLocation(response.getProviderLocation()) && isAttached())
@@ -509,7 +510,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         //don't worry about it.
                     }
