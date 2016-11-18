@@ -3,11 +3,12 @@ package com.handybook.handybook.module.reschedule;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.library.ui.view.CheckableImageButton;
 import com.handybook.handybook.util.BookingUtil;
 
 import butterknife.Bind;
@@ -16,7 +17,7 @@ import butterknife.ButterKnife;
 public class CheckableBookingCardHolder extends RecyclerView.ViewHolder
 {
     @Bind(R.id.booking_item_check)
-    CheckableImageButton mCheckableImageButton;
+    CheckBox mCheckBox;
     @Bind(R.id.booking_title)
     TextView mTitle;
     @Bind(R.id.booking_subtitle)
@@ -24,13 +25,12 @@ public class CheckableBookingCardHolder extends RecyclerView.ViewHolder
 
     public CheckableBookingCardHolder(
             final View itemView,
-            final View.OnClickListener clickListener
+            final CompoundButton.OnCheckedChangeListener checkListener
     )
     {
         super(itemView);
         ButterKnife.bind(this, itemView);
-
-        mCheckableImageButton.setListener(clickListener);
+        mCheckBox.setOnCheckedChangeListener(checkListener);
     }
 
     public void bindToBooking(
@@ -38,9 +38,9 @@ public class CheckableBookingCardHolder extends RecyclerView.ViewHolder
             final boolean checked
     )
     {
-        mCheckableImageButton.setChecked(checked);
+        mCheckBox.setChecked(checked);
         mTitle.setText(BookingUtil.getTitle(booking));
         mSubtitle.setText(BookingUtil.getSubtitle(booking, itemView.getContext()));
-        mCheckableImageButton.setTag(booking);
+        mCheckBox.setTag(booking);
     }
 }

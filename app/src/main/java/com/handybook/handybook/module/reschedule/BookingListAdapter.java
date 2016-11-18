@@ -4,10 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.library.ui.view.CheckableImageButton;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class BookingListAdapter extends RecyclerView.Adapter<CheckableBookingCar
 {
     private List<Booking> mUpcomingBookings;
     private int mCheckedIndex = -1;
+    private boolean mOnBind;
 
     public BookingListAdapter(final List<Booking> upcomingBookings)
     {
@@ -31,42 +32,39 @@ public class BookingListAdapter extends RecyclerView.Adapter<CheckableBookingCar
                                                     false
                                             );
 
-        return new CheckableBookingCardHolder(itemView, new View.OnClickListener()
-        {
-            @Override
-            public void onClick(final View v)
-            {
-                if (v.getTag() != null)
+        return new CheckableBookingCardHolder(
+                itemView,
+                new CompoundButton.OnCheckedChangeListener()
                 {
-                    Booking booking = (Booking) v.getTag();
-                    int index = mUpcomingBookings.indexOf(booking);
-
-                    CheckableImageButton imageButton = (CheckableImageButton) itemView.findViewById(
-                            R.id.booking_item_check);
-
-                    if (mCheckedIndex != index)
+                    @Override
+                    public void onCheckedChanged(
+                            final CompoundButton v,
+                            final boolean isChecked
+                    )
                     {
-                        //that means this index is being checked
-                        if (!imageButton.isChecked())
+                        if (v.getTag() != null && !mOnBind)
                         {
-                            throw new IllegalStateException(
-                                    "The list adapter thinks this item is not checked, but the item thinks it's checked.");
-                        }
-                        mCheckedIndex = index;
+                            Booking booking = (Booking) v.getTag();
+                            int index = mUpcomingBookings.indexOf(booking);
 
-//                        TODO: JIA: nice to have, calling notifyDataSetChanged will nullify any animations that are happening at this point
-                        //including ripple effects. Figure out how to do this elegantly.
-                        notifyDataSetChanged();
-                    }
-                    else
-                    {
-                        //this means the checked item just got clicked, reset the checked index.
-                        mCheckedIndex = -1;
-                        notifyDataSetChanged();
+                            if (isChecked)
+                            {
+                                //TODO: JIA: nice to have, calling notifyDataSetChanged will nullify any animations that are happening at this point
+                                //including ripple effects. Figure out how to do this elegantly.
+
+                                mCheckedIndex = index;
+                                notifyDataSetChanged();
+                            }
+                            else
+                            {
+                                mCheckedIndex = -1;
+                                notifyDataSetChanged();
+                            }
+                        }
+
                     }
                 }
-            }
-        });
+        );
     }
 
     public int getCheckedIndex()
@@ -77,7 +75,9 @@ public class BookingListAdapter extends RecyclerView.Adapter<CheckableBookingCar
     @Override
     public void onBindViewHolder(final CheckableBookingCardHolder holder, final int position)
     {
+        mOnBind = true;
         holder.bindToBooking(mUpcomingBookings.get(position), mCheckedIndex == position);
+        mOnBind = false;
     }
 
     @Override
