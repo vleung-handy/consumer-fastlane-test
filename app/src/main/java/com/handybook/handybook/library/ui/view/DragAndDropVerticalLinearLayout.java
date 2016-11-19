@@ -421,8 +421,8 @@ public class DragAndDropVerticalLinearLayout extends LinearLayout
 
     private void swapViews(final int positionA, final View viewA, final int positionB, final View viewB)
     {
-        super.removeView(viewA); //
-        super.removeView(viewB); //
+        super.removeView(viewA);
+        super.removeView(viewB);
         super.addView(viewA, positionB);
         super.addView(viewB, positionA);
     }
