@@ -3,10 +3,9 @@ package com.handybook.handybook.module.reschedule;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
@@ -18,8 +17,10 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.ui.view.BookingListItem;
 import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
 
 import java.lang.ref.WeakReference;
@@ -27,7 +28,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * This displays a list of future bookings that is qualified to be rescheduled. Used in the context
@@ -36,10 +36,13 @@ import butterknife.OnClick;
 public class RescheduleUpcomingActivity extends BaseActivity
 {
     @Bind(R.id.reschedule_recycler_view)
-    RecyclerView mRecyclerView;
+    EmptiableRecyclerView mRecyclerView;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
+    @Bind(R.id.reschedule_empty_view)
+    RelativeLayout mEmptyView;
 
     private BookingListAdapter mAdapter;
     private List<Booking> mBookings;
@@ -89,32 +92,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
-    }
-
-    @OnClick(R.id.reschedule_next)
-    public void nextClicked()
-    {
-
-        if (mAdapter.getCheckedIndex() < 0)
-        {
-            Toast.makeText(this, R.string.reschedule_select_booking, Toast.LENGTH_SHORT)
-                 .show();
-            return;
-        }
-        else
-        {
-            Intent intent = new Intent(this, BookingDateActivity.class);
-            intent.putExtra(
-                    BundleKeys.RESCHEDULE_BOOKING,
-                    mBookings.get(mAdapter.getCheckedIndex())
-            );
-            intent.putExtra(
-                    BundleKeys.RESCHEDULE_TYPE,
-                    BookingDetailFragment.RescheduleType.FROM_CHAT
-            );
-            intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
-            startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
-        }
+        mRecyclerView.setEmptyView(mEmptyView);
     }
 
     @Override
@@ -132,7 +110,28 @@ public class RescheduleUpcomingActivity extends BaseActivity
         mProgressDialog.dismiss();
         mBookings = bookings;
 
-        mAdapter = new BookingListAdapter(mBookings);
+        mAdapter = new BookingListAdapter(mBookings, new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                Intent intent = new Intent(
+                        RescheduleUpcomingActivity.this,
+                        BookingDateActivity.class
+                );
+                intent.putExtra(
+                        BundleKeys.RESCHEDULE_BOOKING,
+                        ((BookingListItem) v).getBooking()
+                );
+                intent.putExtra(
+                        BundleKeys.RESCHEDULE_TYPE,
+                        BookingDetailFragment.RescheduleType.FROM_CHAT
+                );
+                intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
+                startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 

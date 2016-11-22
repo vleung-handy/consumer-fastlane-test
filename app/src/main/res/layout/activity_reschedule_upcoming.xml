@@ -12,19 +12,30 @@
     <include layout="@layout/toolbar"
         />
 
-    <android.support.v7.widget.RecyclerView
+    <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
         android:id="@+id/reschedule_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_above="@+id/reschedule_next"
+        android:background="@color/handy_bg"
         />
 
-    <Button
-        android:id="@id/reschedule_next"
+    <RelativeLayout
+        android:id="@+id/reschedule_empty_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
-        style="@style/Button.Green"
-        />
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:paddingLeft="@dimen/default_padding_4x"
+        android:paddingRight="@dimen/default_padding_4x"
+        android:visibility="gone"
+        android:background="@color/handy_bg"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="There are no bookings to reschedule. Get this design from Jaclyn, with a CTA for creating new booking"
+            />
+    </RelativeLayout>
 </RelativeLayout>

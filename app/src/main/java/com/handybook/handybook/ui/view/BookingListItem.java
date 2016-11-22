@@ -46,8 +46,23 @@ public class BookingListItem extends FrameLayout
         bindToBooking();
     }
 
+    public void setClickListener(final OnClickListener onClickListener)
+    {
+        mOnClickListener = onClickListener;
+    }
+
+    public void setBooking(final Booking booking)
+    {
+        mBooking = booking;
+    }
+
     public void bindToBooking()
     {
+        if (mBooking == null)
+        {
+            return;
+        }
+
         mImageIcon.setVisibility(View.VISIBLE);
         mImageIcon.setImageResource(BookingUtil.getIconForService(mBooking, BookingUtil.IconType.OUTLINE));
 

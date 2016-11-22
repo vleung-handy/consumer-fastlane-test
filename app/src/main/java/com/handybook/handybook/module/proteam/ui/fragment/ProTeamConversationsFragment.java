@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,10 +47,13 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ProTeamConversationsFragment extends InjectedFragment
+public class ProTeamConversationsFragment extends InjectedFragment implements SwipeRefreshLayout.OnRefreshListener
 {
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
+
+    @Bind(R.id.pro_team_swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Bind(R.id.pro_team_recycler_view)
     EmptiableRecyclerView mRecyclerView;
@@ -89,6 +94,15 @@ public class ProTeamConversationsFragment extends InjectedFragment
         ButterKnife.bind(this, view);
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
 
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.handy_service_handyman,
+                R.color.handy_service_electrician,
+                R.color.handy_service_cleaner,
+                R.color.handy_service_painter,
+                R.color.handy_service_plumber
+        );
+
         mLayerHelper = ((BaseApplication) getActivity()
                 .getApplication())
                 .getLayerHelper();
@@ -108,6 +122,23 @@ public class ProTeamConversationsFragment extends InjectedFragment
         mRecyclerView.setEmptyView(mEmptyView);
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
+        // Only allow SwipeRefresh when Recycler scrolled all the way up
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
+            {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(-1))
+                {
+                    mSwipeRefreshLayout.setEnabled(true);
+                }
+                else
+                {
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+            }
+        });
         ProTeam.ProTeamCategory allCategories = mProTeam.getAllCategories();
 
         mAdapter = new ProConversationAdapter(
@@ -212,7 +243,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
 
     private void requestProTeam()
     {
-        showUiBlockers();
+        mSwipeRefreshLayout.setRefreshing(true);
         bus.post(new ProTeamEvent.RequestProTeam());
     }
 
@@ -232,7 +263,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
         mProTeam = event.getProTeam();
-        removeUiBlockers();
+        mSwipeRefreshLayout.setRefreshing(false);
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
                 mProTeam.getCount(
@@ -249,7 +280,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Subscribe
     public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
     {
-        removeUiBlockers();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @OnClick(R.id.pro_team_toolbar_edit_list_button)
@@ -274,11 +305,25 @@ public class ProTeamConversationsFragment extends InjectedFragment
             if (updatedProTeam != null)
             {
                 mProTeam = updatedProTeam;
+                initRecyclerView();
             }
         }
     }
 
-    public class ConversationCallback implements Callback<CreateConversationResponse>
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        requestProTeam();
+    }
+
+    public static class ConversationCallback implements Callback<CreateConversationResponse>
     {
 
         private WeakReference<ProTeamConversationsFragment> mFragment;

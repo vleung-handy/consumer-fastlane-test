@@ -39,13 +39,27 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
-        android:id="@+id/pro_team_recycler_view"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        tools:listitem="@layout/layout_pro_team_pro_card"
-        />
+        >
 
-    <include layout="@layout/layout_pro_team_empty"/>
+        <include layout="@layout/layout_pro_team_empty"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pro_team_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
+                android:id="@+id/pro_team_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                tools:listitem="@layout/layout_pro_team_pro_card"
+                />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
+
 </LinearLayout>

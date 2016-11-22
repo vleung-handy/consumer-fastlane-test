@@ -17,6 +17,7 @@ import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHolder>
@@ -52,14 +53,14 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
             {
                 for (ProTeamPro eachPro : preferredPros)
                 {
-                    mProTeamProViewModels.add(ProTeamProViewModel.from(
-                            eachPro,
-                            ProviderMatchPreference.PREFERRED,
-                            false
-                    ));
-
                     if (eachPro.isChatEnabled())
                     {
+                        //we only want to show on the screen where chat is enabled.
+                        mProTeamProViewModels.add(ProTeamProViewModel.from(
+                                eachPro,
+                                ProviderMatchPreference.PREFERRED,
+                                false
+                        ));
                         mChatEligibleMemberIds.add(eachPro.getLayerUserId());
                     }
                 }
@@ -69,27 +70,26 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
             {
                 for (ProTeamPro eachPro : indifferentPros)
                 {
-                    mProTeamProViewModels.add(ProTeamProViewModel.from(
-                            eachPro,
-                            ProviderMatchPreference.INDIFFERENT,
-                            false
-                    ));
-
                     if (eachPro.isChatEnabled())
                     {
+                        //we only want to show on the screen where chat is enabled.
+                        mProTeamProViewModels.add(ProTeamProViewModel.from(
+                                eachPro,
+                                ProviderMatchPreference.INDIFFERENT,
+                                false
+                        ));
                         mChatEligibleMemberIds.add(eachPro.getLayerUserId());
                     }
                 }
             }
         }
+        onConversationUpdated();
+        setHasStableIds(true);
     }
 
 
     /**
      * conversations could've changed. See if we need to update the screen.
-     * <p>
-     * //TODO: JIA: finish this once we figure out how to create users (with own user id) on the
-     * client side directly with the Layer API
      */
     @Override
     protected void onConversationUpdated()
@@ -97,6 +97,11 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
         //get a list of all conversations and see if we can match them with the pro teams
         List<Conversation> conversations = mLayerHelper.getAllConversationsWith(
                 mChatEligibleMemberIds);
+
+        if (conversations == null)
+        {
+            return;
+        }
 
         //update each pro team model with the correct conversation
         for (final ProTeamProViewModel model : mProTeamProViewModels)
@@ -112,7 +117,6 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
                     boolean conversationSet = false;
                     for (final Identity participant : convo.getParticipants())
                     {
-                        //TODO: JIA: this is a hardcoded criteria, remove this
                         if (participant.getUserId().equals(proLayerId))
                         {
                             //this the conversation with DanH
@@ -129,7 +133,13 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
             }
         }
 
+        sortByMessageReadDate();
         notifyDataSetChanged();
+    }
+
+    private void sortByMessageReadDate()
+    {
+        Collections.sort(mProTeamProViewModels, new ProConversationComparator());
     }
 
     @Override
@@ -159,5 +169,11 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
     public ProTeamProViewModel getItem(final int position)
     {
         return mProTeamProViewModels.get(position);
+    }
+
+    @Override
+    public long getItemId(final int position)
+    {
+        return getItem(position).hashCode();
     }
 }
