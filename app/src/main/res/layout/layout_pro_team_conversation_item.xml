@@ -29,15 +29,32 @@
         android:layout_toRightOf="@id/conversation_unread_indicator"
         android:layout_centerVertical="true"
         />
-    <ImageView
-        android:id="@+id/conversation_image"
+
+    <FrameLayout
+        android:id="@+id/conversation_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/space"
-        android:adjustViewBounds="true"
-        android:contentDescription="Pro Team Image"
-        android:src="@drawable/img_pro_placeholder"
-        />
+        >
+
+        <ImageView
+            android:id="@+id/conversation_image_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="Pro Team Image"
+            android:src="@drawable/img_pro_placeholder"
+            />
+
+        <ImageView
+            android:id="@+id/conversation_image_heart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_heart_small"
+            android:layout_toRightOf="@id/space"
+            android:layout_gravity="top|right"
+            />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/conversation_title"
@@ -45,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_toRightOf="@id/conversation_image"
+        android:layout_toRightOf="@id/conversation_avatar"
         android:textSize="@dimen/text_size_large"
         tools:text="Jennifer C."
         android:includeFontPadding="false"
@@ -60,8 +77,8 @@
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin_double"
         android:layout_marginStart="@dimen/default_margin"
-        android:layout_toEndOf="@id/conversation_image"
-        android:layout_toRightOf="@id/conversation_image"
+        android:layout_toEndOf="@id/conversation_avatar"
+        android:layout_toRightOf="@id/conversation_avatar"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/handy_text_black"

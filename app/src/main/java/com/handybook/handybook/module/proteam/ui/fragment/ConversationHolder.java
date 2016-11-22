@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.LayerUtil;
 import com.layer.atlas.util.picasso.transformations.CircleTransform;
@@ -25,8 +26,11 @@ import butterknife.ButterKnife;
 
 public class ConversationHolder extends RecyclerView.ViewHolder
 {
-    @Bind(R.id.conversation_image)
-    ImageView mImageView;
+    @Bind(R.id.conversation_image_profile)
+    ImageView mImageProfile;
+
+    @Bind(R.id.conversation_image_heart)
+    ImageView mImageHeart;
 
     @Bind(R.id.conversation_unread_indicator)
     ImageView mUnreadIndicator;
@@ -79,16 +83,25 @@ public class ConversationHolder extends RecyclerView.ViewHolder
 
         if (!TextUtils.isEmpty(mProTeamProViewModel.getImageUrl()))
         {
-            Picasso.with(mImageView.getContext())
+            Picasso.with(mImageProfile.getContext())
                    .load(mProTeamProViewModel.getImageUrl())
                    .placeholder(R.drawable.img_pro_placeholder)
                    .noFade()
                    .transform(new CircleTransform(mProTeamProViewModel.getImageUrl()))
-                   .into(mImageView);
+                   .into(mImageProfile);
         }
         else
         {
-            mImageView.setImageResource(R.drawable.img_pro_placeholder);
+            mImageProfile.setImageResource(R.drawable.img_pro_placeholder);
+        }
+
+        if (mProTeamProViewModel.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED)
+        {
+            mImageHeart.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mImageHeart.setVisibility(View.GONE);
         }
 
         mTextTitle.setText(mProTeamProViewModel.getTitle());
