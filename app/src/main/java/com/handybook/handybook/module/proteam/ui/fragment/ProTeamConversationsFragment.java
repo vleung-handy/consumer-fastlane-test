@@ -274,6 +274,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
             if (updatedProTeam != null)
             {
                 mProTeam = updatedProTeam;
+                initRecyclerView();
             }
         }
     }

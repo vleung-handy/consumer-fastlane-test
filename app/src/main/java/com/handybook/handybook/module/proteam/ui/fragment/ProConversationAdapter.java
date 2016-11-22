@@ -53,14 +53,14 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
             {
                 for (ProTeamPro eachPro : preferredPros)
                 {
-                    mProTeamProViewModels.add(ProTeamProViewModel.from(
-                            eachPro,
-                            ProviderMatchPreference.PREFERRED,
-                            false
-                    ));
-
                     if (eachPro.isChatEnabled())
                     {
+                        //we only want to show on the screen where chat is enabled.
+                        mProTeamProViewModels.add(ProTeamProViewModel.from(
+                                eachPro,
+                                ProviderMatchPreference.PREFERRED,
+                                false
+                        ));
                         mChatEligibleMemberIds.add(eachPro.getLayerUserId());
                     }
                 }
@@ -70,14 +70,14 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
             {
                 for (ProTeamPro eachPro : indifferentPros)
                 {
-                    mProTeamProViewModels.add(ProTeamProViewModel.from(
-                            eachPro,
-                            ProviderMatchPreference.INDIFFERENT,
-                            false
-                    ));
-
                     if (eachPro.isChatEnabled())
                     {
+                        //we only want to show on the screen where chat is enabled.
+                        mProTeamProViewModels.add(ProTeamProViewModel.from(
+                                eachPro,
+                                ProviderMatchPreference.INDIFFERENT,
+                                false
+                        ));
                         mChatEligibleMemberIds.add(eachPro.getLayerUserId());
                     }
                 }
