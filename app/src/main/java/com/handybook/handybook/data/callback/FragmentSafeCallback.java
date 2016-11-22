@@ -16,9 +16,7 @@ public abstract class FragmentSafeCallback<T> extends CancellableCallback<T>
 {
     private WeakReference<Fragment> mFragmentWeakReference;
 
-    public FragmentSafeCallback(
-            @NonNull Fragment fragment
-    )
+    public FragmentSafeCallback(@NonNull Fragment fragment)
     {
         mFragmentWeakReference = new WeakReference<>(fragment);
     }
@@ -29,7 +27,7 @@ public abstract class FragmentSafeCallback<T> extends CancellableCallback<T>
         return super.areCallbacksEnabled()
                 && mFragmentWeakReference.get() != null
                 && mFragmentWeakReference.get().getActivity() != null
-                && !mFragmentWeakReference.get().isDetached() && mFragmentWeakReference.get()
-                                                                                       .isAdded();
+                && !mFragmentWeakReference.get().isDetached()
+                && mFragmentWeakReference.get().isAdded();
     }
 }
