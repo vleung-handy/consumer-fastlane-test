@@ -1,83 +1,46 @@
 package com.handybook.handybook.module.reschedule;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
-import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.ui.view.BookingListItem;
 
 import java.util.List;
 
-public class BookingListAdapter extends RecyclerView.Adapter<CheckableBookingCardHolder>
+public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder>
 {
     private List<Booking> mUpcomingBookings;
-    private int mCheckedIndex = -1;
-    private boolean mOnBind;
+    private View.OnClickListener mClickListener;
 
-    public BookingListAdapter(final List<Booking> upcomingBookings)
+    public BookingListAdapter(
+            final List<Booking> upcomingBookings,
+            final View.OnClickListener clickListener
+    )
     {
         mUpcomingBookings = upcomingBookings;
+        mClickListener = clickListener;
     }
 
     @Override
-    public CheckableBookingCardHolder onCreateViewHolder(final ViewGroup parent, final int viewType)
+    public BookingItemHolder onCreateViewHolder(final ViewGroup parent, final int viewType)
     {
-        final View itemView = LayoutInflater.from(parent.getContext())
-                                            .inflate(
-                                                    R.layout.checkable_booking_list_item,
-                                                    parent,
-                                                    false
-                                            );
 
-        return new CheckableBookingCardHolder(
-                itemView,
-                new CompoundButton.OnCheckedChangeListener()
-                {
-                    @Override
-                    public void onCheckedChanged(
-                            final CompoundButton v,
-                            final boolean isChecked
-                    )
-                    {
-                        if (v.getTag() != null && !mOnBind)
-                        {
-                            Booking booking = (Booking) v.getTag();
-                            int index = mUpcomingBookings.indexOf(booking);
+        BookingListItem item = new BookingListItem(parent.getContext(), null, null);
 
-                            if (isChecked)
-                            {
-                                //TODO: JIA: nice to have, calling notifyDataSetChanged will nullify any animations that are happening at this point
-                                //including ripple effects. Figure out how to do this elegantly.
-
-                                mCheckedIndex = index;
-                                notifyDataSetChanged();
-                            }
-                            else
-                            {
-                                mCheckedIndex = -1;
-                                notifyDataSetChanged();
-                            }
-                        }
-
-                    }
-                }
-        );
-    }
-
-    public int getCheckedIndex()
-    {
-        return mCheckedIndex;
+        item.setLayoutParams(new RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+        item.setClickListener(mClickListener);
+        return new BookingItemHolder(item);
     }
 
     @Override
-    public void onBindViewHolder(final CheckableBookingCardHolder holder, final int position)
+    public void onBindViewHolder(final BookingItemHolder holder, final int position)
     {
-        mOnBind = true;
-        holder.bindToBooking(mUpcomingBookings.get(position), mCheckedIndex == position);
-        mOnBind = false;
+        holder.bindToBooking(mUpcomingBookings.get(position));
     }
 
     @Override
