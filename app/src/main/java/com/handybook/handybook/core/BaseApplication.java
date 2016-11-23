@@ -29,6 +29,7 @@ import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
@@ -236,10 +237,12 @@ public class BaseApplication extends MultiDexApplication
             }
         });
 
-        if (configurationManager.getPersistentConfiguration().isProTeamChatEnabled())
-        {
-            mLayerHelper = HandyLayer.init(mRestAdapter, this);
-        }
+        //warms up the configuration cache
+        bus.post(new ConfigurationEvent.RequestConfiguration());
+
+        //we are always going to initiate the layer clients, because Push Notification doesn't work well
+        //when this is initiated outside of application.oncreate();
+        mLayerHelper = HandyLayer.init(mRestAdapter, this);
     }
 
     public LayerHelper getLayerHelper()

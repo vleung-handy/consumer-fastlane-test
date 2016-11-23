@@ -117,19 +117,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Subscribe
             public void userAuthUpdated(final UserLoggedInEvent event)
             {
-
-                //TODO: JIA: test this for already logged-in users starting the app from scratch.
-                //If this event is not raised, then we have to make sure we init layer somewhere else
-
-                User user = mUserManager.getCurrentUser();
-
-                //if layer helper is null, that means this feature is probably in the dark
-                if (mLayerHelper != null)
-                {
-                    mLayerHelper.initLayer(user.getAuthToken());
-                }
-
-                refreshMenu();
+                checkLayerInitiation();
                 if (!event.isLoggedIn())
                 {
                     navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
@@ -150,13 +138,37 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 if (event != null)
                 {
                     mConfiguration = event.getConfiguration();
+                    checkLayerInitiation();
                     refreshMenu();
                 }
             }
         };
 
-        if (mLayerHelper != null) {
-            mLayerHelper.registerUnreadConversationsCountChangedListener(this);
+        mLayerHelper.registerUnreadConversationsCountChangedListener(this);
+    }
+
+    /**
+     * Layer needs to be initialized under these 2 conditions, and we have to check these conditions
+     * on user events (login, logout), and if the config parameter changes
+     */
+    private void checkLayerInitiation()
+    {
+        if (mConfiguration == null || !mConfiguration.isProTeamChatEnabled())
+        {
+            //Layer should be disabled.
+            mLayerHelper.deauthenticate();
+            refreshMenu();
+        }
+        else
+        {
+            //chat is enabled, so we'll login if the user is available
+            User user = mUserManager.getCurrentUser();
+
+            if (user != null)
+            {
+                mLayerHelper.initLayer(user.getAuthToken());
+                refreshMenu();
+            }
         }
     }
 
@@ -296,9 +308,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
     protected void onDestroy()
     {
         super.onDestroy();
-        if (mLayerHelper != null) {
-            mLayerHelper.unregisterUnreadConversationsCountChangedListener(this);
-        }
+        mLayerHelper.unregisterUnreadConversationsCountChangedListener(this);
     }
 
     /**
@@ -313,7 +323,9 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 .getActionView();
 
         //TODO: JIA: mLayerHelper is null when this feature is in the dark.
-        if (mLayerHelper != null && mLayerHelper.getUnreadConversationsCount() > 0)
+        if (mConfiguration != null
+                && mConfiguration.isProTeamChatEnabled()
+                && mLayerHelper.getUnreadConversationsCount() > 0)
         {
             String unreadCount = String.valueOf(mLayerHelper.getUnreadConversationsCount());
             if (mLayerHelper.getUnreadConversationsCount() > 99)
