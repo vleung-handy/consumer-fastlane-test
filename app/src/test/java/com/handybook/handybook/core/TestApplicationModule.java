@@ -91,6 +91,7 @@ import com.handybook.handybook.module.bookings.ActiveBookingFragment;
 import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.module.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.ui.RedemptionActivity;
 import com.handybook.handybook.module.referral.ui.RedemptionEmailSignUpFragment;
@@ -103,6 +104,7 @@ import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.activity.SplashActivityTest;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.HelpCenterTest;
+import com.handybook.shared.LayerHelper;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
@@ -202,6 +204,7 @@ import static org.mockito.Mockito.when;
         DefaultPreferencesManagerTest.class,
         SplashActivity.class,
         SplashActivityTest.class,
+        ProTeamConversationsFragment.class,
 }, library = true)
 public class TestApplicationModule
 {
@@ -389,6 +392,13 @@ public class TestApplicationModule
     final StripeManager provideStripeManager()
     {
         return mock(StripeManager.class);
+    }
+
+    @Provides
+    @Singleton
+    final LayerHelper provideLayerHelper()
+    {
+        return mock(LayerHelper.class);
     }
 
     @Provides

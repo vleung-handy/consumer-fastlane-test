@@ -36,8 +36,6 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.shared.HandyLayer;
-import com.handybook.shared.LayerHelper;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -117,8 +115,6 @@ public class BaseApplication extends MultiDexApplication
 
     @Inject
     RestAdapter mRestAdapter;
-
-    LayerHelper mLayerHelper;
 
     private Date mApplicationStartTime;
     private int started;
@@ -240,14 +236,6 @@ public class BaseApplication extends MultiDexApplication
         //warms up the configuration cache
         bus.post(new ConfigurationEvent.RequestConfiguration());
 
-        //we are always going to initiate the layer clients, because Push Notification doesn't work well
-        //when this is initiated outside of application.oncreate();
-        mLayerHelper = HandyLayer.init(mRestAdapter, this);
-    }
-
-    public LayerHelper getLayerHelper()
-    {
-        return mLayerHelper;
     }
 
     private void initFabric()

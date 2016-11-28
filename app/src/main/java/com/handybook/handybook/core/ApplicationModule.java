@@ -1,5 +1,6 @@
 package com.handybook.handybook.core;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
@@ -159,6 +160,8 @@ import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
+import com.handybook.shared.HandyLayer;
+import com.handybook.shared.LayerHelper;
 import com.squareup.okhttp.CertificatePinner;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -633,6 +636,15 @@ public final class ApplicationModule
     )
     {
         return new DeepLinkIntentProvider(userManager);
+    }
+
+    @Provides
+    @Singleton
+    final LayerHelper provideHandyLayer(
+            RestAdapter restAdapter
+    )
+    {
+        return HandyLayer.init(restAdapter, (Application) mContext);
     }
 
     @Provides

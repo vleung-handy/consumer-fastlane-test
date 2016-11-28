@@ -66,6 +66,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
     @Inject
     EnvironmentModifier mEnvironmentModifier;
 
+    @Inject
     LayerHelper mLayerHelper;
 
     protected boolean disableDrawer;
@@ -89,7 +90,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
             finish();
             return;
         }
-        mLayerHelper = ((BaseApplication) getApplication()).getLayerHelper();
 
         setupEnvButton();
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -322,7 +322,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 .findItem(R.id.nav_menu_my_pro_team)
                 .getActionView();
 
-        //TODO: JIA: mLayerHelper is null when this feature is in the dark.
         if (mConfiguration != null
                 && mConfiguration.isProTeamChatEnabled()
                 && mLayerHelper.getUnreadConversationsCount() > 0)
