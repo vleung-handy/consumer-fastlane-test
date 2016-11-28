@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
@@ -48,7 +49,8 @@ public class ProTeamActivity extends MenuDrawerActivity
     @Override
     protected Fragment createFragment()
     {
-        if (mConfigurationManager.getPersistentConfiguration().isProTeamChatEnabled())
+        if (mConfigurationManager.getPersistentConfiguration().isProTeamChatEnabled()
+                && ((BaseApplication) getApplication()).getLayerHelper() != null)
         {
             return ProTeamConversationsFragment.newInstance();
         }

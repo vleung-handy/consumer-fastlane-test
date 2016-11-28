@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -37,5 +38,28 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <include layout="@layout/layout_pro_team_empty"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pro_team_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
+                android:id="@+id/pro_team_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                tools:listitem="@layout/layout_pro_team_pro_card"
+                />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
 
 </LinearLayout>

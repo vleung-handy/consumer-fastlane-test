@@ -62,7 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Inject
     protected DefaultPreferencesManager mDefaultPreferencesManager;
     @Inject
-    DataManager mDataManager;
+    protected DataManager mDataManager;
     @Inject
     protected ConfigurationManager mConfigurationManager;
     @Inject

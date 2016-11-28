@@ -144,6 +144,7 @@ import com.handybook.handybook.module.referral.ui.RedemptionFragment;
 import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragment;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.module.referral.ui.ReferralFragment;
+import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -297,6 +298,7 @@ import retrofit.converter.GsonConverter;
         EditPlanFragment.class,
         EditPlanAddressFragment.class,
         EditPlanFrequencyFragment.class,
+        RescheduleUpcomingActivity.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
@@ -349,7 +351,7 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final PlacesService providesPlacesService()
+    final PlacesService providePlacesService()
     {
         final RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(mContext.getString(R.string.places_api_base_url))
@@ -370,7 +372,7 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HandyRetrofitService provideHandyService(
+    final RestAdapter provideRestAdapter(
             final HandyRetrofitEndpoint endpoint,
             final UserManager userManager
     )
@@ -478,11 +480,22 @@ public final class ApplicationModule
                         .setClient(new OkClient(
                                 okHttpClient))
                         .build();
+
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 || BuildConfig.BUILD_TYPE.equals("debug"))
         {
             restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
         }
+
+        return restAdapter;
+    }
+
+    @Provides
+    @Singleton
+    final HandyRetrofitService provideHandyService(
+            final RestAdapter restAdapter
+    )
+    {
         return restAdapter.create(HandyRetrofitService.class);
     }
 
@@ -720,7 +733,6 @@ public final class ApplicationModule
     {
         return new ProTeamManager(bus, service, userDataManager);
     }
-
 
     private String getDeviceId()
     {

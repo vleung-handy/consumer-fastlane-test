@@ -14,10 +14,10 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -194,7 +194,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
                         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackSubmittedLog(
                                 mBookingToReschedule.getStartDate(), date
                         )));
-                        rescheduleBooking(mBookingToReschedule, date, mIsForRescheduleAll);
+                        rescheduleBooking(mBookingToReschedule, date, mIsForRescheduleAll, null);
                     }
                     else
                     {

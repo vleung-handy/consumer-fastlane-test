@@ -293,8 +293,12 @@ public interface HandyRetrofitService
     @FormUrlEncoded
     @POST("/bookings/{booking}/reschedule")
     void rescheduleBooking(
-            @Path("booking") String bookingId, @Field("new_date") String date,
-            @Field("reschedule_all") int rescheduleAll, @Field("user_id") String userId,
+            @Path("booking") String bookingId,
+            @Field("new_date") String date,
+            @Field("reschedule_all") int rescheduleAll,
+            @Field("user_id") String userId,
+            @Field("provider_id") String providerId,
+            @Field("chat_reschedule_agreement") int chatRescheduleAgreeemnt,
             HandyRetrofitCallback cb
     );
 

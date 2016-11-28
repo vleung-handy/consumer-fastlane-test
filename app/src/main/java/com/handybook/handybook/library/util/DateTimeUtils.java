@@ -1,6 +1,8 @@
 package com.handybook.handybook.library.util;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.format.DateUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,15 +16,22 @@ public class DateTimeUtils
     public final static int MILLISECONDS_IN_SECOND = 1000;
     public final static int SECONDS_IN_MINUTE = 60;
     public final static int MINUTES_IN_HOUR = 60;
+
+    public final static SimpleDateFormat CLOCK_FORMATTER_12HR =
+            new SimpleDateFormat("h:mm a", Locale.getDefault());
+
     public final static SimpleDateFormat SHORT_DAY_MONTH_DATE_AT_TIME_FORMATTER =
             new SimpleDateFormat("EEE, MMM d '@' h:mm a");
+
+    public final static SimpleDateFormat MONTH_DATE_FORMATTER =
+            new SimpleDateFormat("MMMM d", Locale.getDefault());
 
     public final static SimpleDateFormat DAY_MONTH_DATE_AT_TIME_FORMATTER =
             new SimpleDateFormat("EEEE, MMM d '@' h:mm a");
 
     public final static SimpleDateFormat DAY_MONTH_DATE_FORMATTER = new SimpleDateFormat
             ("EEEE, MMM d");
-    public final static DateFormat MONTH_AND_DAY_FORMATTER = new SimpleDateFormat("MMM d");
+
     public final static SimpleDateFormat LOCAL_TIME_12_HOURS_FORMATTER =
             new SimpleDateFormat("hh:mma", Locale.getDefault());
 
@@ -37,6 +46,8 @@ public class DateTimeUtils
 
     public final static SimpleDateFormat LOCAL_TIME_12_HOURS =
             new SimpleDateFormat("h:mmaaa", Locale.getDefault());
+
+    public final static int HOURS_IN_DAY = 24;
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
@@ -131,5 +142,86 @@ public class DateTimeUtils
     {
         LOCAL_TIME_12_HOURS_FORMATTER.setTimeZone(TimeZone.getDefault());
         return LOCAL_TIME_12_HOURS_FORMATTER;
+    }
+
+    public static Date getBeginningOfDay(Date date)
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
+
+    public static int daysBetween(Date d1, Date d2)
+    {
+        return Math.round((d2.getTime() - d1.getTime()) / (float) (DateUtils.HOUR_IN_MILLIS * HOURS_IN_DAY));
+    }
+
+    public static String formatDateToRelativeAccuracy(final Date date)
+    {
+        final Calendar today = Calendar.getInstance();
+        today.setTime(getBeginningOfDay(new Date()));
+        final Calendar dayToCompare = Calendar.getInstance();
+        dayToCompare.setTime(getBeginningOfDay(date));
+        final int daysBetween = daysBetween(today.getTime(), dayToCompare.getTime());
+        if (daysBetween == 0)
+        {
+            if (minutesBetween(new Date(), date) < 2)
+            {
+                return "Now";
+            }
+            else
+            {
+                return formatDateTo12HourClock(date);
+            }
+        }
+        else if (daysBetween == -1)
+        {
+            return "Yesterday";
+        }
+        else if (daysBetween > -7)
+        {
+            return getDayOfWeek(date);
+        }
+        else
+        {
+            return formatMonthDate(date);
+        }
+    }
+
+
+    @Nullable
+    public static String formatMonthDate(Date date)
+    {
+        if (date == null) { return null; }
+        return getMonthDateFormatter().format(date);
+    }
+
+    private static SimpleDateFormat getMonthDateFormatter()
+    {
+        MONTH_DATE_FORMATTER.setTimeZone(TimeZone.getDefault());
+        return MONTH_DATE_FORMATTER;
+    }
+
+    @Nullable
+    public static String formatDateTo12HourClock(Date date)
+    {
+        if (date == null) { return null; }
+        return getClockFormatter12hr().format(date);
+    }
+
+    public static int minutesBetween(final Date date1, final Date date2)
+    {
+        return Math.round((date1.getTime() - date2.getTime()) / (float) (DateUtils.MINUTE_IN_MILLIS));
+    }
+
+    private static SimpleDateFormat getClockFormatter12hr()
+    {
+        CLOCK_FORMATTER_12HR.setTimeZone(TimeZone.getDefault());
+        return CLOCK_FORMATTER_12HR;
     }
 }

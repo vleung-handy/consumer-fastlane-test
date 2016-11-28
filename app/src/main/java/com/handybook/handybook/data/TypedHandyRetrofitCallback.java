@@ -235,7 +235,6 @@ class HelpCenterResponseHandyRetrofitCallback
     }
 }
 
-
 class ConfigurationHandyRetrofitCallback extends TypedHandyRetrofitCallback<Configuration>
 {
     ConfigurationHandyRetrofitCallback(final DataManager.Callback callback)

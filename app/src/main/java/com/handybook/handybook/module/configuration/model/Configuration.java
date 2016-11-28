@@ -21,14 +21,20 @@ public class Configuration implements Serializable
     private boolean mNativeHelpCenterEnabled;
     @SerializedName("address_auto_complete_enabled")
     private boolean mAddressAutoCompleteEnabled;
+
+    @SerializedName("upcoming_and_past_bookings_enabled")
+    private boolean mUpcomingAndPastBookingsEnabled;
+
     @SerializedName("pro_team_facebook_login_enabled")
     private boolean mProTeamFacebookLoginEnabled;
     @SerializedName("appsee_analytics_enabled")
     private boolean mAppseeAnalyticsEnabled;
     @SerializedName("pro_team_profile_pictures_enabled")
     private boolean isProTeamProfilePicturesEnabled;
+
+    //default this to false
     @SerializedName("pro_team_chat_enabled")
-    private boolean mProTeamChatEnabled;
+    private boolean mProTeamChatEnabled = false;
 
     public boolean isAppseeAnalyticsEnabled()
     {
@@ -85,8 +91,7 @@ public class Configuration implements Serializable
 
     public boolean isProTeamChatEnabled()
     {
+        //FIXME: JIA: remove this hard coding
         return false;
-        // FIXME: Uncomment next line once pro team chat is ready
-        // return mProTeamChatEnabled;
     }
 }

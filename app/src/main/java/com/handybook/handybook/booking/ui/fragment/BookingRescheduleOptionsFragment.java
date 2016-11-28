@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.constant.BundleKeys;
 
 import java.util.Date;
 
@@ -24,23 +25,31 @@ import butterknife.ButterKnife;
 public final class BookingRescheduleOptionsFragment extends BookingFlowFragment {
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_DATE = "com.handy.handy.EXTRA_RESCHEDULE_DATE";
+    static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
     private static final String STATE_OPTION_INDEX = "OPTION_INDEX";
 
     private int optionIndex;
     private Booking booking;
     private Date date;
+    private String mProviderId;
 
     @Bind(R.id.options_layout)
     FrameLayout optionsLayout;
     @Bind(R.id.reschedule_button)
     Button rescheduleButton;
 
-    public static BookingRescheduleOptionsFragment newInstance(final Booking booking, final Date date) {
+    public static BookingRescheduleOptionsFragment newInstance(
+            final Booking booking,
+            final Date date,
+            @Nullable final String providerId
+    )
+    {
         final BookingRescheduleOptionsFragment fragment = new BookingRescheduleOptionsFragment();
         final Bundle args = new Bundle();
 
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, booking);
         args.putLong(EXTRA_RESCHEDULE_DATE, date.getTime());
+        args.putString(EXTRA_PROVIDER_ID, providerId);
         fragment.setArguments(args);
 
         return fragment;
@@ -51,6 +60,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         super.onCreate(savedInstanceState);
         booking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
         date = new Date(getArguments().getLong(EXTRA_RESCHEDULE_DATE, 0));
+        mProviderId = getArguments().getString(EXTRA_PROVIDER_ID);
 
         if (savedInstanceState != null) {
             optionIndex = savedInstanceState.getInt(STATE_OPTION_INDEX, 0);
@@ -79,7 +89,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         rescheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                rescheduleBooking(booking, date, optionIndex == 1);
+                rescheduleBooking(booking, date, optionIndex == 1, mProviderId);
             }
         });
 

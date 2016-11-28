@@ -3,6 +3,7 @@ package com.handybook.handybook.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
+import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -669,11 +670,31 @@ public class DataManager
     }
 
     public void rescheduleBooking(
-            final String bookingId, final String date, final boolean rescheduleAll,
-            final String userId, final Callback<Pair<String, BookingQuote>> cb
+            final String bookingId,
+            final String date,
+            boolean rescheduleAll,
+            final String userId,
+            final String providerId,
+            final Callback<Pair<String, BookingQuote>> cb
     )
     {
-        mService.rescheduleBooking(bookingId, date, rescheduleAll ? 1 : 0, userId,
+
+        //logic dictates, if there is a provider id, that means we're rescheduling from chat, and therefore
+        //rescheduleAll = false, and chatRescheduleAgreement = true;
+        boolean chatRescheduleAgreement = false;
+        if (!TextUtils.isEmpty(providerId))
+        {
+            chatRescheduleAgreement = true;
+            rescheduleAll = false;
+        }
+
+        mService.rescheduleBooking(
+                bookingId,
+                date,
+                rescheduleAll ? 1 : 0,
+                userId,
+                providerId,
+                chatRescheduleAgreement ? 1 : 0,
                                    new HandyRetrofitCallback(cb)
                                    {
                                        @Override

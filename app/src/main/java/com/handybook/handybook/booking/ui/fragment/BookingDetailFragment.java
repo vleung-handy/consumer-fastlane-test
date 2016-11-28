@@ -39,11 +39,11 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -522,6 +522,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     public enum RescheduleType
     {
-        NORMAL, FROM_CANCELATION
+        NORMAL, FROM_CANCELATION, FROM_CHAT
     }
 }

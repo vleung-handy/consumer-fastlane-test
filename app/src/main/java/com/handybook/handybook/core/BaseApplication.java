@@ -35,6 +35,8 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
+import com.handybook.shared.HandyLayer;
+import com.handybook.shared.LayerHelper;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -47,10 +49,13 @@ import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
+import retrofit.RestAdapter;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class BaseApplication extends MultiDexApplication
 {
+    private static final String TAG = BaseApplication.class.getName();
+
     public static final String FLAVOR_PROD = "prod";
     public static final String FLAVOR_STAGE = "stage";
     private static final long GA_SESSION_TIMEOUT_SECONDS = 600L;
@@ -108,6 +113,11 @@ public class BaseApplication extends MultiDexApplication
     ConfigurationManager configurationManager;
     @Inject
     ProTeamManager proTeamManager;
+
+    @Inject
+    RestAdapter mRestAdapter;
+
+    LayerHelper mLayerHelper;
 
     private Date mApplicationStartTime;
     private int started;
@@ -225,6 +235,16 @@ public class BaseApplication extends MultiDexApplication
                 bus.post(new ActivityLifecycleEvent.Destroyed(activity));
             }
         });
+
+        if (configurationManager.getPersistentConfiguration().isProTeamChatEnabled())
+        {
+            mLayerHelper = HandyLayer.init(mRestAdapter, this);
+        }
+    }
+
+    public LayerHelper getLayerHelper()
+    {
+        return mLayerHelper;
     }
 
     private void initFabric()

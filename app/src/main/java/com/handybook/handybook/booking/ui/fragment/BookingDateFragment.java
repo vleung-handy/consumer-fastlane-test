@@ -49,6 +49,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
     static final String EXTRA_RESCHEDULE_TYPE = "com.handy.handy.EXTRA_RESCHEDULE_TYPE";
+    static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
     private final int MINUTE_INTERVAL = 30;
     @Bind(R.id.next_button)
@@ -97,11 +98,12 @@ public final class BookingDateFragment extends BookingFlowFragment
                     );
                     intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
                     intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTimeInMillis());
+                    intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
                     startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
                 }
                 else
                 {
-                    rescheduleBooking(mRescheduleBooking, date.getTime(), false);
+                    rescheduleBooking(mRescheduleBooking, date.getTime(), false, mProviderId);
                 }
             }
             else
@@ -142,6 +144,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     private Date mRescheduleDate;
     private String mNotice;
     private BookingDetailFragment.RescheduleType mRescheduleType;
+    private String mProviderId;
 
     public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions)
     {
@@ -155,7 +158,8 @@ public final class BookingDateFragment extends BookingFlowFragment
     public static BookingDateFragment newInstance(
             final Booking rescheduleBooking,
             final String notice,
-            BookingDetailFragment.RescheduleType type
+            BookingDetailFragment.RescheduleType type,
+            final String providerId
     )
     {
         final BookingDateFragment fragment = new BookingDateFragment();
@@ -163,7 +167,8 @@ public final class BookingDateFragment extends BookingFlowFragment
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
         args.putString(EXTRA_RESCHEDULE_NOTICE, notice);
         args.putSerializable(EXTRA_RESCHEDULE_TYPE, type);
-
+        args.putSerializable(EXTRA_RESCHEDULE_TYPE, type);
+        args.putString(EXTRA_PROVIDER_ID, providerId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -184,6 +189,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                 mRescheduleDate = mRescheduleBooking.getStartDate();
             }
             mNotice = getArguments().getString(EXTRA_RESCHEDULE_NOTICE);
+            mProviderId = getArguments().getString(EXTRA_PROVIDER_ID);
 
             mRescheduleType = (BookingDetailFragment.RescheduleType)
                     getArguments().getSerializable(EXTRA_RESCHEDULE_TYPE);

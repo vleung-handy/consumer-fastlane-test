@@ -769,5 +769,4 @@
         <item name="android:textColor">@color/handy_tertiary_gray</item>
     </style>
 
-    <string name="name">Name</string>
 </resources>

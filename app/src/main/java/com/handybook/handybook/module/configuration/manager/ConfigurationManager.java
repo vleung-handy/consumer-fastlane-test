@@ -27,6 +27,7 @@ public class ConfigurationManager
     private static final String KEY_CONFIGURATION_CACHE = "configuration";
 
     private Cache<String, Configuration> mConfigurationCache;
+    private Configuration mLastKnowConfiguration = null;
 
     @Inject
     public ConfigurationManager(
@@ -100,7 +101,7 @@ public class ConfigurationManager
     private void setCachedConfiguration(final Configuration configuration)
     {
         mConfigurationCache.put(KEY_CONFIGURATION_CACHE, configuration);
-
+        mLastKnowConfiguration = configuration;
         //also put this in the prefs manager, because sometimes we might need access to this before
         //the onResume state.
         mDefaultPreferencesManager.setString(PrefsKey.CONFIGURATION, configuration.toJson());
@@ -110,6 +111,16 @@ public class ConfigurationManager
     public Configuration getCachedConfiguration()
     {
         return mConfigurationCache.getIfPresent(KEY_CONFIGURATION_CACHE);
+    }
+
+    /**
+     * This returns the last known configuration, which could be very stale.
+     *
+     * @return
+     */
+    public Configuration getLastKnowConfiguration()
+    {
+        return mLastKnowConfiguration;
     }
 
     /**

@@ -14,11 +14,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
@@ -41,6 +41,7 @@ import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
+import com.handybook.shared.LayerHelper;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
@@ -49,7 +50,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public abstract class MenuDrawerActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener
+        implements NavigationView.OnNavigationItemSelectedListener,
+        LayerHelper.UnreadConversationsCountChangedListener
 {
     private static final String TAG = MenuDrawerActivity.class.getName();
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
@@ -63,6 +65,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
 
     @Inject
     EnvironmentModifier mEnvironmentModifier;
+
+    LayerHelper mLayerHelper;
 
     protected boolean disableDrawer;
     protected Configuration mConfiguration;
@@ -85,6 +89,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
             finish();
             return;
         }
+        mLayerHelper = ((BaseApplication) getApplication()).getLayerHelper();
+
         setupEnvButton();
         mNavigationView.setNavigationItemSelectedListener(this);
         int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
@@ -111,6 +117,18 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Subscribe
             public void userAuthUpdated(final UserLoggedInEvent event)
             {
+
+                //TODO: JIA: test this for already logged-in users starting the app from scratch.
+                //If this event is not raised, then we have to make sure we init layer somewhere else
+
+                User user = mUserManager.getCurrentUser();
+
+                //if layer helper is null, that means this feature is probably in the dark
+                if (mLayerHelper != null)
+                {
+                    mLayerHelper.initLayer(user.getAuthToken());
+                }
+
                 refreshMenu();
                 if (!event.isLoggedIn())
                 {
@@ -121,7 +139,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Subscribe
             public void envUpdated(final EnvironmentUpdatedEvent event)
             {
-                Log.d(TAG, "received EnvironmentUpdatedEvent");
                 setupEnvButton();
             }
 
@@ -137,6 +154,10 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 }
             }
         };
+
+        if (mLayerHelper != null) {
+            mLayerHelper.registerUnreadConversationsCountChangedListener(this);
+        }
     }
 
     protected boolean requiresUser()
@@ -261,7 +282,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
         super.onResume();
         mBus.register(mBusEventListener);
         mBus.post(new ConfigurationEvent.RequestConfiguration());
-
         refreshMenu();
     }
 
@@ -272,10 +292,46 @@ public abstract class MenuDrawerActivity extends BaseActivity
         mBus.unregister(mBusEventListener);
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if (mLayerHelper != null) {
+            mLayerHelper.unregisterUnreadConversationsCountChangedListener(this);
+        }
+    }
+
+    /**
+     * This is the little text on the drawer next to the pro team menu item, to show how many unread
+     * messages there are
+     */
+    private void updateLayerActionMenu()
+    {
+        TextView textView = (TextView) mNavigationView
+                .getMenu()
+                .findItem(R.id.nav_menu_my_pro_team)
+                .getActionView();
+
+        //TODO: JIA: mLayerHelper is null when this feature is in the dark.
+        if (mLayerHelper != null && mLayerHelper.getUnreadConversationsCount() > 0)
+        {
+            String unreadCount = String.valueOf(mLayerHelper.getUnreadConversationsCount());
+            if (mLayerHelper.getUnreadConversationsCount() > 99)
+            {
+                unreadCount = "99+";
+            }
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(unreadCount);
+        }
+        else
+        {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
     /**
      * Updates the menu item visibilities based on the user's login status
      */
-
     private void refreshMenu()
     {
         final User currentUser = mUserManager.getCurrentUser();
@@ -288,6 +344,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(
                 userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
         mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(userLoggedIn);
+        updateLayerActionMenu();
     }
 
     /**
@@ -369,4 +426,9 @@ public abstract class MenuDrawerActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void onUnreadConversationsCountChanged(final long l)
+    {
+        updateLayerActionMenu();
+    }
 }

@@ -145,7 +145,8 @@ public class ProTeamEditFragment extends InjectedFragment implements
                 && mHandymenToAdd.isEmpty()
                 && mHandymenToRemove.isEmpty())
         {
-            showToast(R.string.pro_team_no_changes);
+            //no changes were made, so we'll just tell them save successful
+            showToast(R.string.pro_team_update_successful);
             return;
         }
         bus.post(

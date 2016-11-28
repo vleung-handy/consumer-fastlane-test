@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="ChatTheme"
+           parent="HandyTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:textViewStyle">@style/ChatTextAppearance</item>
+    </style>
+
+    <style name="ChatTextAppearance"
+           parent="android:Widget.TextView">
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+</resources>

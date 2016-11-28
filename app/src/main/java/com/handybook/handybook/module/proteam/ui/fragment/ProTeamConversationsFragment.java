@@ -2,36 +2,76 @@ package com.handybook.handybook.module.proteam.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.constant.RequestCode;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
+import com.handybook.shared.CreateConversationResponse;
+import com.handybook.shared.HandyLayer;
+import com.handybook.shared.LayerConstants;
+import com.handybook.shared.LayerHelper;
+import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
+
+import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-public class ProTeamConversationsFragment extends InjectedFragment
+public class ProTeamConversationsFragment extends InjectedFragment implements SwipeRefreshLayout.OnRefreshListener
 {
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
 
+    @Bind(R.id.pro_team_swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @Bind(R.id.pro_team_recycler_view)
+    EmptiableRecyclerView mRecyclerView;
+
+    @Bind(R.id.pro_team_empty_view)
+    View mEmptyView;
+
+    @Bind(R.id.pro_team_empty_view_title)
+    TextView mEmptyViewTitle;
+
+    @Bind(R.id.pro_team_empty_view_text)
+    TextView mEmptyViewText;
+
+    ProConversationAdapter mAdapter;
+
     private ProTeam mProTeam;
+    private ProTeamProViewModel mSelectedProTeamMember;
+    private LayerHelper mLayerHelper;
 
     public static ProTeamConversationsFragment newInstance()
     {
@@ -53,12 +93,157 @@ public class ProTeamConversationsFragment extends InjectedFragment
         );
         ButterKnife.bind(this, view);
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.handy_service_handyman,
+                R.color.handy_service_electrician,
+                R.color.handy_service_cleaner,
+                R.color.handy_service_painter,
+                R.color.handy_service_plumber
+        );
+
+        mLayerHelper = ((BaseApplication) getActivity()
+                .getApplication())
+                .getLayerHelper();
+
+        initEmptyView();
+        initRecyclerView();
         return view;
+    }
+
+    private void initRecyclerView()
+    {
+        if (mRecyclerView == null || mProTeam == null)
+        {
+            return;
+        }
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setEmptyView(mEmptyView);
+        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+
+        // Only allow SwipeRefresh when Recycler scrolled all the way up
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
+            {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(-1))
+                {
+                    mSwipeRefreshLayout.setEnabled(true);
+                }
+                else
+                {
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
+            }
+        });
+        ProTeam.ProTeamCategory allCategories = mProTeam.getAllCategories();
+
+        mAdapter = new ProConversationAdapter(
+                allCategories,
+                mLayerHelper,
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final View v)
+                    {
+                        int pos = mRecyclerView.getChildAdapterPosition(v);
+                        mSelectedProTeamMember = mAdapter.getItem(pos);
+                        Conversation conversation = mAdapter.getItem(pos).getConversation();
+
+                        if (conversation != null)
+                        {
+                            startMessagesActivity(
+                                    conversation.getId(),
+                                    mSelectedProTeamMember.getTitle(),
+                                    String.valueOf(mSelectedProTeamMember.getProTeamPro().getId())
+                            );
+                        }
+                        else
+                        {
+                            createNewConversation(String.valueOf(mSelectedProTeamMember.getProTeamPro()
+                                                                                       .getId()));
+                        }
+                    }
+                }
+        );
+
+        mAdapter.refreshConversations();
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void startMessagesActivity(Uri conversationId, String title, String providerId)
+    {
+        Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
+        intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);
+        intent.putExtra(LayerConstants.LAYER_MESSAGE_TITLE, title);
+        intent.putExtra(BundleKeys.PROVIDER_ID, providerId);
+        startActivity(intent);
+    }
+
+    /**
+     * Fires off a request to the server to create a new conversation, then once that's created, and
+     * conversation synced, we will launch the ProMessagesActivity for the actual conversation to
+     * happen
+     */
+    private void createNewConversation(String providerId)
+    {
+        progressDialog.show();
+
+        HandyLayer.getInstance()
+                  .getHandyService()
+                  .createConversation(providerId,
+                                      userManager.getCurrentUser().getAuthToken(),
+                                      "",
+                                      new ConversationCallback(this)
+                  );
+    }
+
+    /**
+     * Response successfully received from server in creating a new layer conversation
+     *
+     * @param conversationId
+     */
+    public void onConversationCreated(String conversationId)
+    {
+        startMessagesActivity(
+                Uri.parse(LayerConstants.LAYER_CONVERSATION_URI_PREFIX + conversationId),
+                mSelectedProTeamMember.getTitle(),
+                String.valueOf(mSelectedProTeamMember.getProTeamPro().getId())
+        );
+
+        progressDialog.dismiss();
+    }
+
+    public void onError()
+    {
+        progressDialog.dismiss();
+        Toast.makeText(getContext(), R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
+    }
+
+    private void initEmptyView()
+    {
+        if (mEmptyViewTitle == null || mEmptyViewText == null)
+        {
+            return;
+        }
+        if (mProTeam == null)
+        {
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
+        }
+        else
+        {
+            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
+            mEmptyViewText.setText(R.string.pro_team_empty_card_text);
+        }
     }
 
     private void requestProTeam()
     {
-        showUiBlockers();
+        mSwipeRefreshLayout.setRefreshing(true);
         bus.post(new ProTeamEvent.RequestProTeam());
     }
 
@@ -78,7 +263,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
         mProTeam = event.getProTeam();
-        removeUiBlockers();
+        mSwipeRefreshLayout.setRefreshing(false);
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
                 mProTeam.getCount(
@@ -88,12 +273,14 @@ public class ProTeamConversationsFragment extends InjectedFragment
                 mProTeam.getCount(ProTeamCategoryType.HANDYMEN, ProviderMatchPreference.PREFERRED),
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT)
         )));
+
+        initRecyclerView();
     }
 
     @Subscribe
     public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
     {
-        removeUiBlockers();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @OnClick(R.id.pro_team_toolbar_edit_list_button)
@@ -118,6 +305,59 @@ public class ProTeamConversationsFragment extends InjectedFragment
             if (updatedProTeam != null)
             {
                 mProTeam = updatedProTeam;
+                initRecyclerView();
+            }
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        requestProTeam();
+    }
+
+    public static class ConversationCallback implements Callback<CreateConversationResponse>
+    {
+
+        private WeakReference<ProTeamConversationsFragment> mFragment;
+
+        public ConversationCallback(ProTeamConversationsFragment fragment)
+        {
+            mFragment = new WeakReference<>(fragment);
+        }
+
+        @Override
+        public void success(
+                final CreateConversationResponse createConversationResponse, final Response response
+        )
+        {
+            if (mFragment.get() != null)
+            {
+                if (createConversationResponse.isSuccess())
+                {
+                    mFragment.get()
+                             .onConversationCreated(createConversationResponse.getConversationId());
+                }
+                else
+                {
+                    mFragment.get().onError();
+                }
+            }
+        }
+
+        @Override
+        public void failure(final RetrofitError error)
+        {
+            if (mFragment.get() != null)
+            {
+                mFragment.get().onError();
             }
         }
     }

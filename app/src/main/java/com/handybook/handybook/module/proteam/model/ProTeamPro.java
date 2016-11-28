@@ -28,6 +28,10 @@ public class ProTeamPro implements Serializable, Comparable
     private Integer mBookingCount;
     @SerializedName("profile_photo_url")
     private String mImageUrl;
+    @SerializedName("chat_enabled")
+    private boolean mChatEnabled;
+    @SerializedName("layer_user_id")
+    private String mLayerUserId;
 
     public int getId()
     {
@@ -72,6 +76,16 @@ public class ProTeamPro implements Serializable, Comparable
     public String getImageUrl()
     {
         return mImageUrl;
+    }
+
+    public boolean isChatEnabled()
+    {
+        return mChatEnabled;
+    }
+
+    public String getLayerUserId()
+    {
+        return mLayerUserId;
     }
 
     @Override

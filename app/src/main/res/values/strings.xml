@@ -19,6 +19,7 @@
     <string name="log_out">Log Out</string>
     <string name="share_using">Share using…</string>
     <string name="my_bookings">My Bookings</string>
+    <string name="new_booking">New Booking</string>
     <string name="my_pro_team">My Pro Team</string>
     <string name="edit_pro_team">Edit Pro Team</string>
     <string name="history">History</string>
@@ -40,6 +41,7 @@
     <string name="upcoming">Upcoming</string>
     <string name="past">Past</string>
     <string name="hours">Hours</string>
+    <string name="name">Name</string>
     <string name="address">Address</string>
     <string name="price">Price</string>
     <string name="professional">Professional</string>
@@ -377,7 +379,6 @@
     <string name="pro_team_see_pro_recommendations">You\'ll see pro recommendations from friends here as we find them.</string>
     <string name="pro_team_ok">OK, Got it</string>
     <string name="pro_team_update_successful">Your Pro Team was updated successfully!</string>
-    <string name="pro_team_no_changes">You did not make any changes to your Pro Team</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
@@ -457,4 +458,15 @@
         <item quantity="one">%d job</item>
         <item quantity="other">%d jobs</item>
     </plurals>
+    <!--Layer Chat-->
+    <string name="login_dialog_message">Logging In&#8230;</string>
+    <string name="logout_dialog_message">Logging out&#8230;</string>
+    <string name="synching">Synching conversation</string>
+    <string name="notifications_num_more">+%1$d more</string>
+    <string name="notifications_new_messages">%1$d new messages</string>
+    <string name="push_notification_no_content_title">New message (tap to sync)</string>
+    <string name="new_conversation_text">Message me...</string>
+    <string name="reschedule_title">Select a booking to reschedule</string>
+    <string name="reschedule_select_booking">Please select a booking to reschedule</string>
+
 </resources>

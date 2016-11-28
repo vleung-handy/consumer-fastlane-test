@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
@@ -23,14 +24,14 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.ui.activity.LoginActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.ui.fragment.LoginFragment;
-import com.handybook.handybook.library.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -151,7 +152,8 @@ public class BookingFlowFragment extends InjectedFragment
     protected void rescheduleBooking(
             final Booking booking,
             final Date date,
-            final boolean rescheduleAll
+            final boolean rescheduleAll,
+            @Nullable final String providerId
     )
     {
         final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");
@@ -172,6 +174,7 @@ public class BookingFlowFragment extends InjectedFragment
                 newDate,
                 rescheduleAll,
                 user.getId(),
+                providerId,
                 new DataManager.Callback<Pair<String, BookingQuote>>()
                 {
                     @Override

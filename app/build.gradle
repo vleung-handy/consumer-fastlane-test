@@ -86,6 +86,12 @@ ext {
     firebaseVersion = '9.6.1'
 }
 
+
+repositories {
+    maven { url "https://raw.githubusercontent.com/layerhq/releases-android/master/releases/" }
+    maven { url "https://raw.githubusercontent.com/layerhq/Atlas-Android/master/releases/" }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/nineoldandroids-2.2.0.jar')
@@ -136,6 +142,7 @@ dependencies {
     compile "com.google.android.gms:play-services-ads:$googlePlayServicesVersion"
     compile "com.google.firebase:firebase-core:$firebaseVersion"
     compile "com.google.firebase:firebase-crash:$firebaseVersion"
+    compile "com.google.firebase:firebase-messaging:$firebaseVersion"
     compile 'com.google.guava:guava:19.0'
 
     // Square
@@ -165,6 +172,14 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+
+    //layer chat
+    compile 'com.layer.atlas:layer-atlas:0.3.2'
+    compile('com.layer.sdk:layer-sdk:0.23.1') {
+        exclude group: 'com.google.firebase', module: 'firebase-messaging'
+        exclude group: 'com.google.firebase', module: 'firebase-core'
+    }
+    compile(name: 'handy-shared', ext: 'aar')
 
     apt 'com.airbnb:deeplinkdispatch-processor:1.5.0'
 
