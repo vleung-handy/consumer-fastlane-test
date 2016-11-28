@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
@@ -48,6 +49,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
     private List<Booking> mBookings;
     private ProgressDialog mProgressDialog;
     private String mProviderId;
+    private Booking mSelectedBooking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -115,21 +117,9 @@ public class RescheduleUpcomingActivity extends BaseActivity
             @Override
             public void onClick(final View v)
             {
-                Intent intent = new Intent(
-                        RescheduleUpcomingActivity.this,
-                        BookingDateActivity.class
-                );
-                intent.putExtra(
-                        BundleKeys.RESCHEDULE_BOOKING,
-                        ((BookingListItem) v).getBooking()
-                );
-                intent.putExtra(
-                        BundleKeys.RESCHEDULE_TYPE,
-                        BookingDetailFragment.RescheduleType.FROM_CHAT
-                );
-                intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
-                startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
-
+                //before we advance to the reschedule flow, we first must grab the pre-reschedule info
+                mSelectedBooking = ((BookingListItem) v).getBooking();
+                getPreRescheduleInfo();
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -138,6 +128,66 @@ public class RescheduleUpcomingActivity extends BaseActivity
     public void onBookingsRequestError()
     {
         mProgressDialog.dismiss();
+        Toast.makeText(this, R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    private void getPreRescheduleInfo()
+    {
+        mProgressDialog.setMessage(getString(R.string.rescheduling));
+        mProgressDialog.show();
+        mDataManager.getPreRescheduleInfo(
+                mSelectedBooking.getId(),
+                new PreRescheduleCallback(this)
+        );
+    }
+
+    public void onReceivePreRescheduleInfoSuccess(String notice)
+    {
+        mProgressDialog.dismiss();
+
+        final Intent intent = new Intent(this, BookingDateActivity.class);
+        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mSelectedBooking);
+        intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
+        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.FROM_CHAT);
+        intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
+        startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+    }
+
+    public void onRescheduleRequestError()
+    {
+        mProgressDialog.dismiss();
+        Toast.makeText(this, R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private static class PreRescheduleCallback implements DataManager.Callback<String>
+    {
+
+        private final WeakReference<RescheduleUpcomingActivity> mActivity;
+
+        public PreRescheduleCallback(RescheduleUpcomingActivity activity)
+        {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void onSuccess(final String response)
+        {
+            if (mActivity.get() != null)
+            {
+                mActivity.get().onReceivePreRescheduleInfoSuccess(response);
+            }
+        }
+
+        @Override
+        public void onError(final DataManager.DataManagerError error)
+        {
+            if (mActivity.get() != null)
+            {
+                mActivity.get().onRescheduleRequestError();
+            }
+        }
     }
 
     private static class BookingsCallback implements DataManager.Callback<UserBookingsWrapper>
