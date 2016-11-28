@@ -2,7 +2,9 @@ package com.handybook.handybook.module.proteam.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -17,6 +19,7 @@ import com.handybook.shared.builtin.MessagesListActivity;
 public class ProMessagesActivity extends MessagesListActivity
 {
     private String mProviderId;
+    private int mAttachmentViewItemHeight;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -24,7 +27,7 @@ public class ProMessagesActivity extends MessagesListActivity
         super.onCreate(savedInstanceState);
 
         mProviderId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
-
+        mAttachmentViewItemHeight = getResources().getDimensionPixelSize(R.dimen.attachment_item_height);
         setupCustomAttachmentMenus();
     }
 
@@ -37,11 +40,15 @@ public class ProMessagesActivity extends MessagesListActivity
 
     private AttachmentItemView getNewBookingView()
     {
-        AttachmentItemView rescheduleView = new AttachmentItemView(this);
-//        TODO: JIA: we need the proper icon from Jaclyn
-        rescheduleView.getAttachmentImage().setImageResource(R.drawable.ic_help_center);
-        rescheduleView.getAttachmentText().setText(getResources().getString(R.string.new_booking));
-        rescheduleView.setOnClickListener(new View.OnClickListener()
+        AttachmentItemView attachmentItemView = new AttachmentItemView(this);
+        attachmentItemView.setLayoutParams(new RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                mAttachmentViewItemHeight
+        ));
+        attachmentItemView.getAttachmentImage().setImageResource(R.drawable.ic_make_booking);
+        attachmentItemView.getAttachmentText()
+                          .setText(getResources().getString(R.string.new_booking));
+        attachmentItemView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
@@ -54,15 +61,20 @@ public class ProMessagesActivity extends MessagesListActivity
             }
         });
 
-        return rescheduleView;
+        return attachmentItemView;
     }
 
     private AttachmentItemView getRescheduleView()
     {
-        AttachmentItemView rescheduleView = new AttachmentItemView(this);
-        rescheduleView.getAttachmentImage().setImageResource(R.drawable.ic_help_past_booking);
-        rescheduleView.getAttachmentText().setText(getResources().getString(R.string.reschedule));
-        rescheduleView.setOnClickListener(new View.OnClickListener()
+        AttachmentItemView attachmentItemView = new AttachmentItemView(this);
+        attachmentItemView.getAttachmentImage().setImageResource(R.drawable.ic_reschedule_booking);
+        attachmentItemView.setLayoutParams(new RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                mAttachmentViewItemHeight
+        ));
+        attachmentItemView.getAttachmentText()
+                          .setText(getResources().getString(R.string.reschedule));
+        attachmentItemView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
@@ -78,7 +90,7 @@ public class ProMessagesActivity extends MessagesListActivity
             }
         });
 
-        return rescheduleView;
+        return attachmentItemView;
     }
 }
 
