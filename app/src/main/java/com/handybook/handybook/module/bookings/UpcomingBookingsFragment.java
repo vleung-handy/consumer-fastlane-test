@@ -96,6 +96,10 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Bind(R.id.upcoming_bookings_padding_view)
     View mPaddingView;
 
+    @Bind(R.id.fetch_error_view)
+    ViewGroup mFetchErrorView;
+
+
     private List<Booking> mBookings;
     private List<RecurringBooking> mRecurringBookings;
     private int mActivePlanCount;
@@ -256,6 +260,13 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         );
         startActivity(intent);
     }
+
+    @OnClick(R.id.try_again_button)
+    public void reFetch()
+    {
+        loadBookings();
+    }
+
 
     protected void loadBookings()
     {
@@ -421,12 +432,12 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         //we don't really care that the services errored out, we just won't display the
         //services icon.
         mServiceRequestCompleted = true;
-        setupBookingsView();
     }
 
     @Subscribe
     public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event)
     {
+        mFetchErrorView.setVisibility(View.GONE);
         mBookingsRequestCompleted = true;
         Log.d(TAG, "onReceiveBookingsSuccess: " + event.getOnlyBookingsValue());
         mBookings = event.getBookingWrapper().getBookings();
@@ -448,10 +459,9 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Subscribe
     public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e)
     {
+        mFetchErrorView.setVisibility(View.VISIBLE);
         mBookingsRequestCompleted = true;
         mSwipeRefreshLayout.setRefreshing(false);
-        toast.setText("Error loading bookings, please try again.");
-        toast.show();
         dataManagerErrorHandler.handleError(getActivity(), e.error);
     }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".booking.ui.fragment.BookingsFragment"
+    tools:context=".booking.ui.activity.BookingsActivity"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -63,17 +63,17 @@
                     android:id="@+id/main_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:animateLayoutChanges="true"
+                    android:orientation="vertical"
                     >
 
                     <com.handybook.handybook.ui.view.ExpandableCleaningPlan
                         android:id="@+id/expanable_cleaning_plan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:orientation="vertical"
                         android:background="@color/handy_white"
+                        android:orientation="vertical"
+                        android:visibility="gone"
                         />
 
                     <!--Using a linear layout because there can be multiple active bookings -->
@@ -98,18 +98,19 @@
 
                         <TextView
                             android:id="@+id/text_upcoming_bookings"
+                            style="@style/TextView.Headline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/TextView.Headline"
-                            android:text="@string/upcoming_bookings"
+                            android:paddingBottom="@dimen/default_padding_half"
                             android:paddingLeft="@dimen/default_padding"
                             android:paddingTop="@dimen/default_padding"
-                            android:paddingBottom="@dimen/default_padding_half"
+                            android:text="@string/upcoming_bookings"
                             android:textColor="@color/handy_tertiary_gray"
+                            android:textSize="@dimen/text_size_xsmall"
                             android:visibility="gone"
                             tools:visibility="visible"
-                            android:textSize="@dimen/text_size_xsmall"
                             />
+
                         <LinearLayout
                             android:id="@+id/bookings_container"
                             android:layout_width="match_parent"
@@ -118,13 +119,18 @@
                             />
                     </LinearLayout>
 
+                    <include
+                        layout="@layout/layout_fetch_error"
+                        android:visibility="gone"
+                        />
+
                     <com.handybook.handybook.ui.view.NoBookingsView
                         android:id="@+id/no_booking_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="gone"
-                        android:gravity="center"
                         android:background="@color/white"
+                        android:gravity="center"
+                        android:visibility="gone"
                         />
 
                     <!--This view is an empty view to make room at the bottom of the layout, only in
