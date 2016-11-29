@@ -3,6 +3,7 @@ package com.handybook.handybook.core;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.crashlytics.android.Crashlytics;
 import com.squareup.otto.Bus;
 
 final class MainBus extends Bus
@@ -11,6 +12,24 @@ final class MainBus extends Bus
 
     public MainBus()
     {
+    }
+
+    @Override
+    public void unregister(final Object object)
+    {
+        /*
+        quick-fix for crash caused by bus unregister:
+        Caused by java.lang.IllegalArgumentException: Missing event handler for an annotated method
+         */
+        try
+        {
+            super.unregister(object);
+        }
+        catch (Exception e)
+        {
+            //want more information until we find the root cause
+            Crashlytics.logException(e);
+        }
     }
 
     @Override
