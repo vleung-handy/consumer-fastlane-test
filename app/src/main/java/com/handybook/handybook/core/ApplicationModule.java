@@ -1,5 +1,6 @@
 package com.handybook.handybook.core;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
@@ -129,6 +130,7 @@ import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.NotificationsModule;
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
+import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamEditFragment;
@@ -159,6 +161,8 @@ import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
+import com.handybook.shared.HandyLayer;
+import com.handybook.shared.LayerHelper;
 import com.squareup.okhttp.CertificatePinner;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -280,6 +284,7 @@ import retrofit.converter.GsonConverter;
         RatingsRadioFragment.class,
         RateImprovementConfirmationDialogFragment.class,
         ProTeamActivity.class,
+        ProMessagesActivity.class,
         ProTeamFragment.class,
         ProTeamConversationsFragment.class,
         ProTeamEditFragment.class,
@@ -633,6 +638,15 @@ public final class ApplicationModule
     )
     {
         return new DeepLinkIntentProvider(userManager);
+    }
+
+    @Provides
+    @Singleton
+    final LayerHelper provideHandyLayer(
+            RestAdapter restAdapter
+    )
+    {
+        return HandyLayer.init(restAdapter, (Application) mContext);
     }
 
     @Provides

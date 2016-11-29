@@ -112,4 +112,6 @@
     <dimen name="nav.free_cleanings_invite_margin">24dp</dimen>
     <dimen name="unread_indicator_size">8dp</dimen>
     <dimen name="unread_indicator_left_margin">-12dp</dimen>
+
+    <dimen name="attachment_item_height">48dp</dimen>
 </resources>

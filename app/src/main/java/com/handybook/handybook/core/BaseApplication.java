@@ -29,14 +29,13 @@ import com.handybook.handybook.manager.SecurePreferencesManager;
 import com.handybook.handybook.manager.ServicesManager;
 import com.handybook.handybook.manager.StripeManager;
 import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.splash.manager.SplashNotificationManager;
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.shared.HandyLayer;
-import com.handybook.shared.LayerHelper;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -116,8 +115,6 @@ public class BaseApplication extends MultiDexApplication
 
     @Inject
     RestAdapter mRestAdapter;
-
-    LayerHelper mLayerHelper;
 
     private Date mApplicationStartTime;
     private int started;
@@ -236,15 +233,9 @@ public class BaseApplication extends MultiDexApplication
             }
         });
 
-        if (configurationManager.getPersistentConfiguration().isProTeamChatEnabled())
-        {
-            mLayerHelper = HandyLayer.init(mRestAdapter, this);
-        }
-    }
+        //warms up the configuration cache
+        bus.post(new ConfigurationEvent.RequestConfiguration());
 
-    public LayerHelper getLayerHelper()
-    {
-        return mLayerHelper;
     }
 
     private void initFabric()

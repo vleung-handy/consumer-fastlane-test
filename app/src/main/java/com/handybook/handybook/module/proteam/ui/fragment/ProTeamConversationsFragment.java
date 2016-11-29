@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.handybook.handybook.R;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.constant.RequestCode;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -39,6 +38,8 @@ import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
 
 import java.lang.ref.WeakReference;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,7 +72,9 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
 
     private ProTeam mProTeam;
     private ProTeamProViewModel mSelectedProTeamMember;
-    private LayerHelper mLayerHelper;
+
+    @Inject
+    LayerHelper mLayerHelper;
 
     public static ProTeamConversationsFragment newInstance()
     {
@@ -103,11 +106,10 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
                 R.color.handy_service_plumber
         );
 
-        mLayerHelper = ((BaseApplication) getActivity()
-                .getApplication())
-                .getLayerHelper();
+//        TODO: JIA: need title/message from Jaclyn, for what to display on an empty view
+        mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
+        mEmptyViewText.setText(R.string.pro_team_empty_card_text);
 
-        initEmptyView();
         initRecyclerView();
         return view;
     }
@@ -221,24 +223,6 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
     {
         progressDialog.dismiss();
         Toast.makeText(getContext(), R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
-    }
-
-    private void initEmptyView()
-    {
-        if (mEmptyViewTitle == null || mEmptyViewText == null)
-        {
-            return;
-        }
-        if (mProTeam == null)
-        {
-            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
-            mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
-        }
-        else
-        {
-            mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
-            mEmptyViewText.setText(R.string.pro_team_empty_card_text);
-        }
     }
 
     private void requestProTeam()
