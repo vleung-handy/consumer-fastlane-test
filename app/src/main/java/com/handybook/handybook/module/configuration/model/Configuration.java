@@ -36,6 +36,14 @@ public class Configuration implements Serializable
     @SerializedName("pro_team_chat_enabled")
     private boolean mProTeamChatEnabled = false;
 
+    @SerializedName("booking_hours_clarification_experiment_enabled")
+    private boolean mBookingHoursClarificationExperimentEnabled;
+
+    public boolean isBookingHoursClarificationExperimentEnabled()
+    {
+        return mBookingHoursClarificationExperimentEnabled;
+    }
+
     public boolean isAppseeAnalyticsEnabled()
     {
         return mAppseeAnalyticsEnabled;

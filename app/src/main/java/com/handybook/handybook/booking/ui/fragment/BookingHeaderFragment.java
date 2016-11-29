@@ -13,10 +13,13 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +42,9 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     TextView priceText;
     @Bind(R.id.discount_text)
     TextView discountText;
+
+    @Inject
+    ConfigurationManager mConfigurationManager;
 
 
     static BookingHeaderFragment newInstance()
@@ -112,11 +118,23 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         //we want to display the time using the booking location's time zone
         dateText.setText(DateTimeUtils.formatDate(startDate, DATE_FORMAT, timeZone));
 
-        timeText.setText(DateTimeUtils.formatDate(startDate, TIME_FORMAT, timeZone)
-                                 + " - "
-                                 + TextUtils.formatDecimal(hours, DECIMAL_FORMAT)
-                                 + " " + getString(R.string.hours)
-        );
+        String startTimeDisplayString = DateTimeUtils.formatDate(startDate, TIME_FORMAT, timeZone);
+        if (mConfigurationManager.getPersistentConfiguration()
+                                 .isBookingHoursClarificationExperimentEnabled())
+        {
+            //don't display the booking hours
+            timeText.setText(startTimeDisplayString);
+        }
+        else
+        {
+            //display the booking hours
+            timeText.setText(startTimeDisplayString
+                                     + " - "
+                                     + TextUtils.formatDecimal(hours, DECIMAL_FORMAT)
+                                     + " " + getString(R.string.hours)
+            );
+        }
+
 
         final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
         final String currChar = quote.getCurrencyChar();
