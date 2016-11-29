@@ -65,6 +65,7 @@ public class ProMessagesActivity extends MessagesListActivity
             //we're in an invalid state, redirect to login.
             Toast.makeText(this, R.string.prompt_login, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, ServiceCategoriesActivity.class));
+            finish();
         }
 
         //default to not show reschedule by default.
@@ -131,7 +132,8 @@ public class ProMessagesActivity extends MessagesListActivity
         if (TextUtils.isEmpty(mProviderId))
         {
             Toast.makeText(this, R.string.conversation_cannot_load, Toast.LENGTH_SHORT);
-            startActivity(new Intent(this, ServiceCategoriesActivity.class));
+            startActivity(new Intent(this, ProTeamActivity.class));
+            finish();
         }
     }
 
