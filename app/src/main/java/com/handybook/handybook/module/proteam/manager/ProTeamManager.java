@@ -52,6 +52,11 @@ public class ProTeamManager
                 mBus.post(new ProTeamEvent.ReceiveProTeamError(error));
             }
         };
+        requestProTeam(cb);
+    }
+
+    public void requestProTeam(final DataManager.Callback<ProTeamWrapper> cb)
+    {
         mService.requestProTeam(
                 getUserIdString(),
                 new HandyRetrofitCallback(cb)

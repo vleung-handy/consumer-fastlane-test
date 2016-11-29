@@ -130,6 +130,7 @@ import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.notifications.NotificationsModule;
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
+import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamEditFragment;
@@ -283,6 +284,7 @@ import retrofit.converter.GsonConverter;
         RatingsRadioFragment.class,
         RateImprovementConfirmationDialogFragment.class,
         ProTeamActivity.class,
+        ProMessagesActivity.class,
         ProTeamFragment.class,
         ProTeamConversationsFragment.class,
         ProTeamEditFragment.class,

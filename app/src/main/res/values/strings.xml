@@ -461,6 +461,7 @@
     </plurals>
     <!--Layer Chat-->
     <string name="login_dialog_message">Logging In&#8230;</string>
+    <string name="prompt_login">Please login to continue.</string>
     <string name="logout_dialog_message">Logging out&#8230;</string>
     <string name="synching">Synching conversation</string>
     <string name="notifications_num_more">+%1$d more</string>
@@ -470,5 +471,6 @@
     <string name="reschedule_title">Select a booking to reschedule</string>
     <string name="reschedule_try_again">There was an issue rescheduling, please try again.</string>
     <string name="reschedule_select_booking">Please select a booking to reschedule</string>
+    <string name="conversation_cannot_load">Cannot load this conversation. Please try again.</string>
 
 </resources>
