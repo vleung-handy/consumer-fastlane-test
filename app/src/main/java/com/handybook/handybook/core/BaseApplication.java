@@ -14,6 +14,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
+import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
@@ -112,6 +113,8 @@ public class BaseApplication extends MultiDexApplication
     ConfigurationManager configurationManager;
     @Inject
     ProTeamManager proTeamManager;
+    @Inject
+    BookingManager mBookingManager;
 
     @Inject
     RestAdapter mRestAdapter;
@@ -119,6 +122,8 @@ public class BaseApplication extends MultiDexApplication
     private Date mApplicationStartTime;
     private int started;
     private boolean savedInstance;
+
+    private static BaseApplication sInstance;
 
     public static GoogleAnalytics googleAnalytics()
     {
@@ -129,6 +134,7 @@ public class BaseApplication extends MultiDexApplication
     public void onCreate()
     {
         super.onCreate();
+        sInstance = this;
         createObjectGraph();
         mApplicationStartTime = new Date();
 
@@ -285,6 +291,11 @@ public class BaseApplication extends MultiDexApplication
     public final void inject(final Object object)
     {
         graph.inject(object);
+    }
+
+    public final static BookingManager getBookingManager()
+    {
+        return sInstance.mBookingManager;
     }
 
     private static void track(final Activity activity, final String action)
