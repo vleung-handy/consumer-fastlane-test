@@ -36,6 +36,19 @@ public class Configuration implements Serializable
     @SerializedName("pro_team_chat_enabled")
     private boolean mProTeamChatEnabled = false;
 
+    /**
+     * used to determine whether we should hide the hours field from the booking flow screens, and
+     * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
+     * in the booking details and upcoming/past booking views
+     */
+    @SerializedName("booking_hours_clarification_experiment_enabled")
+    private boolean mBookingHoursClarificationExperimentEnabled;
+
+    public boolean isBookingHoursClarificationExperimentEnabled()
+    {
+        return mBookingHoursClarificationExperimentEnabled;
+    }
+
     public boolean isAppseeAnalyticsEnabled()
     {
         return mAppseeAnalyticsEnabled;
