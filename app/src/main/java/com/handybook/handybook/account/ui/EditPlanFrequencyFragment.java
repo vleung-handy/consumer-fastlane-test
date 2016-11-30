@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -74,10 +75,10 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
 
         dataManager.getRecurringFrequency(
                 Integer.toString(mPlan.getId()),
-                new DataManager.Callback<BookingEditFrequencyInfoResponse>()
+                new FragmentSafeCallback<BookingEditFrequencyInfoResponse>(this)
                 {
                     @Override
-                    public void onSuccess(final BookingEditFrequencyInfoResponse response)
+                    public void onCallbackSuccess(final BookingEditFrequencyInfoResponse response)
                     {
                         mFrequencyInfo = response;
                         removeUiBlockers();
@@ -85,7 +86,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         removeUiBlockers();
                         dataManagerErrorHandler.handleError(getActivity(), error);
