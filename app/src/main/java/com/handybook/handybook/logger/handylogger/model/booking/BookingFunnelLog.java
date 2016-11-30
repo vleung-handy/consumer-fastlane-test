@@ -44,8 +44,10 @@ public class BookingFunnelLog extends EventLog
         super(eventType, EVENT_CONTEXT);
 
         BookingRequest bookingRequest = BaseApplication.getBookingManager().getCurrentRequest();
-        if(bookingRequest != null)
+        if (bookingRequest != null)
+        {
             mServiceId = String.valueOf(bookingRequest.getServiceId());
+        }
     }
 
     protected BookingFunnelLog(final String eventType, @UserLoginLog.AuthType final String authType )

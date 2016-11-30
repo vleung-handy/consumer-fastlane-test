@@ -22,6 +22,10 @@ public class TestUserManager extends UserManager
         mUser.setEmail("test@test.com");
         mUser.setPhone("123456789");
         mUser.setPhonePrefix("0");
+
+        User.Analytics analytics = new User.Analytics();
+        analytics.setTotalBookings(11);
+        mUser.setAnalytics(analytics);
     }
 
     @Override
