@@ -490,25 +490,17 @@
             </intent-filter>
         </service>
 
-        <!-- Receiver: Our app notification handling -->
+        <!-- Receiver: Our app notification handling for Layer push -->
         <receiver
-            android:name="com.handybook.shared.PushNotificationReceiver"
-            android:permission="${PACKAGE_NAME}.permission.LAYER_PUSH"
+            android:name=".receiver.LayerPushReceiver"
+            android:permission="${applicationId}.permission.LAYER_PUSH"
             >
-
-            <!-- TODO: JIA: figure out how we can "darkify" this -->
-            <!-- Layer SDK broadcasts this, which we use to generate notifications -->
             <intent-filter>
                 <action android:name="com.layer.sdk.PUSH"/>
+                <action android:name="com.handybook.shared.layer.SHOW_NOTIFICATION"/>
+                <action android:name="com.handybook.shared.layer.DISMISS_NOTIFICATION"/>
 
-                <category android:name="${PACKAGE_NAME}"/>
-            </intent-filter>
-
-            <!-- Our app sets this as a PendingIntent to handle user notification swipe-outs -->
-            <intent-filter>
-                <action android:name="${PACKAGE_NAME}.CANCEL_PUSH"/>
-
-                <category android:name="${PACKAGE_NAME}"/>
+                <category android:name="${applicationId}"/>
             </intent-filter>
         </receiver>
 

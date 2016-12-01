@@ -1,7 +1,10 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,6 +39,7 @@ import com.handybook.shared.CreateConversationResponse;
 import com.handybook.shared.HandyLayer;
 import com.handybook.shared.LayerConstants;
 import com.handybook.shared.LayerHelper;
+import com.handybook.shared.PushNotificationReceiver;
 import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
 
@@ -74,6 +78,23 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
 
     private ProTeam mProTeam;
     private ProTeamProViewModel mSelectedProTeamMember;
+
+    private BroadcastReceiver mPushNotificationReceiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(final Context context, final Intent intent)
+        {
+            final Bundle extras = intent.getExtras();
+            if (extras == null) { return; }
+            final Uri conversationId = extras.getParcelable(LayerConstants.LAYER_CONVERSATION_KEY);
+            if (conversationId != null)
+            {
+                // Assuming this receiver has a high system priority, this will prevent push
+                // notifications regarding any conversation from being displayed.
+                abortBroadcast();
+            }
+        }
+    };
 
     @Inject
     LayerHelper mLayerHelper;
@@ -183,6 +204,7 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
 
         mAdapter.refreshConversations();
         mRecyclerView.setAdapter(mAdapter);
+        clearNotifications();
     }
 
     private void startMessagesActivity(Uri conversationId, String title, ProTeamPro mPro)
@@ -252,6 +274,18 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         {
             requestProTeam();
         }
+        if (mAdapter != null)
+        {
+            clearNotifications();
+        }
+        registerPushNotificationReceiver();
+    }
+
+    private void registerPushNotificationReceiver()
+    {
+        final IntentFilter filter = new IntentFilter(LayerConstants.ACTION_SHOW_NOTIFICATION);
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        getActivity().registerReceiver(mPushNotificationReceiver, filter);
     }
 
     @Subscribe
@@ -308,8 +342,9 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
     @Override
     public void onPause()
     {
-        super.onPause();
+        getActivity().unregisterReceiver(mPushNotificationReceiver);
         mSwipeRefreshLayout.setRefreshing(false);
+        super.onPause();
     }
 
     @Override
@@ -354,6 +389,19 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
             {
                 mFragment.get().onError();
             }
+        }
+    }
+
+    private void clearNotifications()
+    {
+        if (mAdapter == null)
+        {
+            return;
+        }
+        for (int i = 0; i < mAdapter.getItemCount(); i++)
+        {
+            PushNotificationReceiver.getNotifications(getActivity())
+                                    .clear(mAdapter.getItem(i).getConversation());
         }
     }
 }

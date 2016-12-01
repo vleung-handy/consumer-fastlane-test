@@ -26,7 +26,7 @@ public class DeepLinkIntentProvider
     //TODO: clean this up
     //TODO: can split this out so that each module has a routes file
     //TODO: put in properties?
-    private static final String DEEP_LINK_BASE_URL = "handybook://deep_link/";
+    public static final String DEEP_LINK_BASE_URL = "handybook://deep_link/";
     //FIXME: If the handy:// is not used anywhere, let's remove it from here
     private static final String DEEP_LINK_NEW_BASE_URL = "handy://";
     private static final String DEEP_LINK_SIDE_MENU_URL = DEEP_LINK_BASE_URL + "side_menu/";
