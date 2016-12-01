@@ -6,8 +6,10 @@ import android.text.TextUtils;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 
@@ -16,7 +18,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 
 public class BookingFunnelLog extends EventLog
 {
@@ -35,15 +36,23 @@ public class BookingFunnelLog extends EventLog
     private static final String EVENT_CONTEXT = "booking_funnel";
     @SerializedName("auth_type")
     private String mAuthType;
+    @SerializedName("service_id")
+    private String mServiceId; //same as job id. if it exists, should be logged for booking_funnel
 
     protected BookingFunnelLog(final String eventType)
     {
         super(eventType, EVENT_CONTEXT);
+
+        BookingRequest bookingRequest = BaseApplication.getBookingManager().getCurrentRequest();
+        if (bookingRequest != null)
+        {
+            mServiceId = String.valueOf(bookingRequest.getServiceId());
+        }
     }
 
     protected BookingFunnelLog(final String eventType, @UserLoginLog.AuthType final String authType )
     {
-        super(eventType, EVENT_CONTEXT);
+        this(eventType);
         mAuthType = authType;
     }
 

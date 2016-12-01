@@ -384,7 +384,6 @@ public class User extends Observable
         }
     }
 
-
     public static final class Address
     {
         @SerializedName("zipcode")
@@ -474,6 +473,10 @@ public class User extends Observable
         public final int getTotalBookings()
         {
             return mTotalBookings;
+        }
+
+        public void setTotalBookings(int totalBookings) {
+            mTotalBookings = totalBookings;
         }
 
         public final int getPastBookings()

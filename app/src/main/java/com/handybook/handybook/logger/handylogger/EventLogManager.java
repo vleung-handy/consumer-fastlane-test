@@ -481,6 +481,12 @@ public class EventLogManager
         }
     }
 
+    /**
+     * Mixpanel may contain extra info we don't log for internal logs
+     * @param eventLogJson
+     * @param event
+     * @throws JSONException
+     */
     private void addMixPanelProperties(JSONObject eventLogJson, Event event) throws JSONException
     {
         addMixPanelUserSuperProperty();
@@ -503,6 +509,11 @@ public class EventLogManager
             eventLogJson.put("name", user.getFirstName() + " " + user.getLastName());
             eventLogJson.put("user_id", user.getId());
             eventLogJson.put("user_logged_in", 1);
+            //This can be new when a new user is first created
+            if (user.getAnalytics() != null)
+            {
+                eventLogJson.put("booking_count", user.getAnalytics().getTotalBookings());
+            }
         }
         else
         {
