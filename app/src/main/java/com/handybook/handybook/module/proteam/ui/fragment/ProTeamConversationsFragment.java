@@ -222,7 +222,7 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         bus.post(new LogEvent.AddLogEvent(new ChatLog.ConversationCreatedLog(String.valueOf(
                 mSelectedProTeamMember.getProTeamPro().getId()), conversationId)));
         startMessagesActivity(
-                Uri.parse(LayerConstants.LAYER_CONVERSATION_URI_PREFIX + conversationId),
+                Uri.parse(conversationId),
                 mSelectedProTeamMember.getTitle(),
                 mSelectedProTeamMember.getProTeamPro()
         );
