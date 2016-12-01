@@ -22,9 +22,11 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
+import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
@@ -106,7 +108,6 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
                 R.color.handy_service_plumber
         );
 
-//        TODO: JIA: need title/message from Jaclyn, for what to display on an empty view
         mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
         mEmptyViewText.setText(R.string.pro_team_empty_card_text);
 
@@ -155,18 +156,26 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
                         mSelectedProTeamMember = mAdapter.getItem(pos);
                         Conversation conversation = mAdapter.getItem(pos).getConversation();
 
+                        String providerId = String.valueOf(mSelectedProTeamMember.getProTeamPro()
+                                                                                 .getId());
+                        String conversationId = conversation == null ? null : conversation.getId()
+                                                                                          .toString();
+                        bus.post(new LogEvent.AddLogEvent(new ChatLog.ConversationSelectedLog(
+                                providerId,
+                                conversationId
+                        )));
+
                         if (conversation != null)
                         {
                             startMessagesActivity(
                                     conversation.getId(),
                                     mSelectedProTeamMember.getTitle(),
-                                    String.valueOf(mSelectedProTeamMember.getProTeamPro().getId())
+                                    mSelectedProTeamMember.getProTeamPro()
                             );
                         }
                         else
                         {
-                            createNewConversation(String.valueOf(mSelectedProTeamMember.getProTeamPro()
-                                                                                       .getId()));
+                            createNewConversation(providerId);
                         }
                     }
                 }
@@ -176,12 +185,12 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void startMessagesActivity(Uri conversationId, String title, String providerId)
+    private void startMessagesActivity(Uri conversationId, String title, ProTeamPro mPro)
     {
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);
         intent.putExtra(LayerConstants.LAYER_MESSAGE_TITLE, title);
-        intent.putExtra(BundleKeys.PROVIDER_ID, providerId);
+        intent.putExtra(BundleKeys.PRO_TEAM_PRO, mPro);
         startActivity(intent);
     }
 
@@ -210,10 +219,12 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
      */
     public void onConversationCreated(String conversationId)
     {
+        bus.post(new LogEvent.AddLogEvent(new ChatLog.ConversationCreatedLog(String.valueOf(
+                mSelectedProTeamMember.getProTeamPro().getId()), conversationId)));
         startMessagesActivity(
                 Uri.parse(LayerConstants.LAYER_CONVERSATION_URI_PREFIX + conversationId),
                 mSelectedProTeamMember.getTitle(),
-                String.valueOf(mSelectedProTeamMember.getProTeamPro().getId())
+                mSelectedProTeamMember.getProTeamPro()
         );
 
         progressDialog.dismiss();

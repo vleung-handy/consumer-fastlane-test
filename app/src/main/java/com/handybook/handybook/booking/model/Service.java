@@ -63,6 +63,21 @@ public class Service implements Parcelable {
         return services;
     }
 
+    public boolean isCleaning()
+    {
+        if (uniq != null)
+        {
+            return uniq.toLowerCase().contains("clean");
+        }
+
+        if (name != null)
+        {
+            return name.toLowerCase().contains("clean");
+        }
+
+        return false;
+    }
+
     public final void setServices(final List<Service> services) {
         this.services = services;
     }

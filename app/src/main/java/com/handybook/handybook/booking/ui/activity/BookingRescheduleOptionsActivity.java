@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -18,7 +19,14 @@ public final class BookingRescheduleOptionsActivity extends MenuDrawerActivity
         final Booking rescheduleBooking = getIntent().getParcelableExtra(BundleKeys.RESCHEDULE_BOOKING);
         final Date date = new Date(getIntent().getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
         final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
-        return BookingRescheduleOptionsFragment.newInstance(rescheduleBooking, date, providerId);
+        final BookingDetailFragment.RescheduleType type = (BookingDetailFragment.RescheduleType)
+                getIntent().getSerializableExtra(BundleKeys.RESCHEDULE_TYPE);
+        return BookingRescheduleOptionsFragment.newInstance(
+                rescheduleBooking,
+                date,
+                providerId,
+                type
+        );
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.fragment.LoginFragment;
@@ -153,7 +154,8 @@ public class BookingFlowFragment extends InjectedFragment
             final Booking booking,
             final Date date,
             final boolean rescheduleAll,
-            @Nullable final String providerId
+            @Nullable final String providerId,
+            final BookingDetailFragment.RescheduleType rescheduleType 
     )
     {
         final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");
@@ -162,12 +164,28 @@ public class BookingFlowFragment extends InjectedFragment
         progressDialog.show();
 
         //log submitted
-        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                BookingDetailsLog.EventType.SUBMITTED,
-                booking.getId(),
-                booking.getStartDate(),
-                date))
-        );
+        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
+        {
+            bus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleSubmittedLog(
+                             providerId,
+                             booking.getId(),
+                             booking.getStartDate(),
+                             date
+                     ))
+            );
+        }
+        else
+        {
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
+                             BookingDetailsLog.EventType.SUBMITTED,
+                             booking.getId(),
+                             booking.getStartDate(),
+                             date
+                     ))
+            );
+        }
+        
+      
 
         dataManager.rescheduleBooking(
                 booking.getId(),
