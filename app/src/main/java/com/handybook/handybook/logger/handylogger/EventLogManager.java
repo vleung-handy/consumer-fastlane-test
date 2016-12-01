@@ -509,7 +509,11 @@ public class EventLogManager
             eventLogJson.put("name", user.getFirstName() + " " + user.getLastName());
             eventLogJson.put("user_id", user.getId());
             eventLogJson.put("user_logged_in", 1);
-            eventLogJson.put("booking_count", user.getAnalytics().getTotalBookings());
+            //This can be new when a new user is first created
+            if (user.getAnalytics() != null)
+            {
+                eventLogJson.put("booking_count", user.getAnalytics().getTotalBookings());
+            }
         }
         else
         {
