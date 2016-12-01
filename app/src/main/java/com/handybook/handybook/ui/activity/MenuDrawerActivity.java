@@ -169,6 +169,11 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 mLayerHelper.initLayer(user.getAuthToken());
                 refreshMenu();
             }
+            else
+            {
+                //the user is in a logged out state
+                mLayerHelper.deauthenticate();
+            }
         }
     }
 
