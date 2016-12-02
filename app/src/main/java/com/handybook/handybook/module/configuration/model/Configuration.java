@@ -69,11 +69,6 @@ public class Configuration implements Serializable
         return mShowRescheduleFlowOnCancel;
     }
 
-    public boolean isMyProTeamEnabled()
-    {
-        return mMyProTeamEnabled;
-    }
-
     public boolean isNativeHelpCenterEnabled()
     {
         return mNativeHelpCenterEnabled;

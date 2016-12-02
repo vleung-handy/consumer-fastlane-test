@@ -178,7 +178,6 @@
     <string name="email_receipt">Email Receipt</string>
     <string name="updated_preferences">Preferences updated</string>
     <string name="updated_entry_information">Entry information updated</string>
-    <string name="pro_assignment_pending">Assignment pending</string>
     <string name="booking_detail_pro_assignment_pending_title">You\'re all set!</string>
     <string name="booking_detail_pro_assignment_pending_text">Prefer working with specific pros?</string>
     <string name="manage_pro_team">Manage Pro Team</string>

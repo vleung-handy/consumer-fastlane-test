@@ -72,6 +72,11 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
                 .inflate(getFragmentResourceId(), container, false);
         ButterKnife.bind(this, view);
         updateDisplay(this.booking, userManager.getCurrentUser());
+        /*
+        TODO can booking or userManager.getCurrentUser() ever be null at this point?
+        make this more obvious/enforce?
+        since we should not be able to create this view when they are null
+         */
         return view;
     }
 
@@ -91,7 +96,7 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
         return R.layout.fragment_booking_detail_section;
     }
 
-    public void updateDisplay(Booking booking, User user)
+    public void updateDisplay(@NonNull Booking booking, @NonNull User user)
     {
         view.getEntryTitle().setText(getEntryTitleTextResourceId(booking));
         updateActionTextView(booking, view.getEntryActionText());

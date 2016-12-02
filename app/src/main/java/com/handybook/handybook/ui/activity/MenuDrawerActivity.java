@@ -357,8 +357,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         mNavigationView.getMenu().findItem(R.id.nav_menu_profile).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_free_cleanings).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_log_in).setVisible(!userLoggedIn);
-        mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(
-                userLoggedIn && mConfiguration != null && mConfiguration.isMyProTeamEnabled());
+        mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(userLoggedIn);
         updateLayerActionMenu();
     }

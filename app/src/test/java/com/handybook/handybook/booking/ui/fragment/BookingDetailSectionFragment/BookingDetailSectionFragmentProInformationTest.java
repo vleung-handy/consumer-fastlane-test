@@ -15,7 +15,6 @@ import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 
@@ -80,12 +79,8 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     {
         when(mBooking.hasAssignedProvider()).thenReturn(false);
         when(mBooking.isPast()).thenReturn(false);
-        when(mConfiguration.isMyProTeamEnabled()).thenReturn(true);
 
         SupportFragmentTestUtil.startVisibleFragment(mFragment);
-
-        mFragment.onReceiveConfigurationSuccess(
-                new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
 
         TextView actionTextView = (TextView) mFragment.getSectionView()
                                                       .findViewById(R.id.entry_action_text);
@@ -104,14 +99,10 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     {
         when(mBooking.hasAssignedProvider()).thenReturn(true);
         when(mBooking.isPast()).thenReturn(false);
-        when(mConfiguration.isMyProTeamEnabled()).thenReturn(true);
         String providerName = "Testy M.";
         when(mProvider.getFirstNameAndLastInitial()).thenReturn(providerName);
 
         SupportFragmentTestUtil.startVisibleFragment(mFragment);
-
-        mFragment.onReceiveConfigurationSuccess(
-                new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
 
         TextView providerNameText = (TextView) mFragment.getSectionView()
                                                         .findViewById(R.id.mini_pro_profile_title);
@@ -130,12 +121,7 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
         tipAmounts.add(mTipAmount);
         when(mUser.getDefaultTipAmounts()).thenReturn(tipAmounts);
 
-        when(mConfiguration.isMyProTeamEnabled()).thenReturn(true);
-
         SupportFragmentTestUtil.startVisibleFragment(mFragment);
-
-        mFragment.onReceiveConfigurationSuccess(
-                new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
 
         TextView actionTextView = (TextView) mFragment.getSectionView()
                                                       .findViewById(R.id.entry_action_text);
@@ -156,12 +142,8 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
         when(providerAssignmentInfo.isProTeamMatch()).thenReturn(true);
 
         when(mBooking.getProviderAssignmentInfo()).thenReturn(providerAssignmentInfo);
-        when(mConfiguration.isMyProTeamEnabled()).thenReturn(true);
 
         SupportFragmentTestUtil.startVisibleFragment(mFragment);
-
-        mFragment.onReceiveConfigurationSuccess(
-                new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
 
         View proTeamMatchIndicator = mFragment.getSectionView()
                                               .findViewById(R.id.mini_pro_profile_title);
@@ -174,12 +156,8 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
         when(mBooking.hasAssignedProvider()).thenReturn(true);
         when(mBooking.isPast()).thenReturn(true);
         when(mBooking.canLeaveTip()).thenReturn(false);
-        when(mConfiguration.isMyProTeamEnabled()).thenReturn(true);
 
         SupportFragmentTestUtil.startVisibleFragment(mFragment);
-
-        mFragment.onReceiveConfigurationSuccess(
-                new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
 
         TextView actionTextView = (TextView) mFragment.getSectionView()
                                                       .findViewById(R.id.entry_action_text);
