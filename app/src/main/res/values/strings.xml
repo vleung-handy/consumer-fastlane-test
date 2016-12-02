@@ -197,10 +197,7 @@
     <string name="image_content_description_icon_recurring">Recurring Icon</string>
     <string name="booking_card_recurring_footer_text">More bookings will be added later</string>
     <string name="booking_card_row_hours_formatted">%1$s – %2$s</string>
-    <string name="booking_card_row_hours_clarification_experiment_hours_formatted">%1$s – Up to %2$s</string>
-    <!--although these strings are currently the same, putting them in separate vars for now
-        because current spec says these strings should be different TODO verify copy-->
-    <string name="booking_details_hours_clarification_experiment_hours_formatted">%1$s - Up to %2$s</string>
+    <string name="booking_details_hours_clarification_experiment_hours_formatted">%1$s (up to %2$s)</string>
     <string name="booking_details_hours_formatted">%1$s - %2$s (%3$s)</string>
     <string name="no_booking_card_upcoming_text">You don\'t have any\nupcoming bookings</string>
     <string name="no_booking_card_past_text">You don\'t have any\npast bookings</string>

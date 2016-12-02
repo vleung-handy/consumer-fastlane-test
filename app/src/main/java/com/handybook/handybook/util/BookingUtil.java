@@ -16,6 +16,7 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -151,10 +152,8 @@ public class BookingUtil
     }
 
     public static final String TITLE_DATE_FORMAT = "EEEE',' MMMM d";
-    public static final String SUBTITLE_DATE_FORMAT = "h:mmaaa";
+    public static final SimpleDateFormat SUBTITLE_DATE_FORMAT = DateTimeUtils.CLOCK_FORMATTER_12HR;
     public static final int MINUTES_PER_HOUR = 60;
-    public static final String DURATION_FORMAT = "#.#";
-
 
     public enum IconType
     {
@@ -172,7 +171,9 @@ public class BookingUtil
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
         final String start = DateTimeUtils.formatDate(booking.getStartDate(),
-                                                      SUBTITLE_DATE_FORMAT, booking.getBookingTimezone()).toLowerCase();
+                                                      SUBTITLE_DATE_FORMAT,
+                                                      booking.getBookingTimezone()
+        ).toLowerCase();
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(booking.getStartDate());
@@ -188,6 +189,16 @@ public class BookingUtil
                 start,
                 end
         );
+    }
+
+    /*
+    formats: "3.5 hours", "1 hour"
+     */
+    public static String getNumHoursDisplayString(float hours, Context context)
+    {
+        return TextUtils.formatDecimal(hours, "#.#") + " "
+                + context.getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
+
     }
 
     /**
@@ -235,10 +246,9 @@ public class BookingUtil
         ).toLowerCase();
 
         float hours = booking.getHours();
-        String hoursDisplayString = TextUtils.formatDecimal(hours, "#.#") + " "
-                + context.getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
+        String hoursDisplayString = getNumHoursDisplayString(hours, context);
         return context.getString(
-                R.string.booking_card_row_hours_clarification_experiment_hours_formatted,
+                R.string.booking_details_hours_clarification_experiment_hours_formatted,
                 start,
                 hoursDisplayString
         );

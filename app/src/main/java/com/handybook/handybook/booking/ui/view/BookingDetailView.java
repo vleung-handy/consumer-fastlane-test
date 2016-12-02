@@ -17,7 +17,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.util.DateTimeUtils;
-import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.util.BookingUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -147,17 +147,16 @@ public final class BookingDetailView extends InjectedRelativeLayout
         //we want to display the time using the booking location's time zone
         String startTimeDisplayString = DateTimeUtils.formatDate(
                 startDate,
-                "h:mm aaa",
+                DateTimeUtils.CLOCK_FORMATTER_12HR,
                 booking.getBookingTimezone()
         );
 
         //in the format "3 hours"
-        String numHoursDisplayString = TextUtils.formatDecimal(hours, "#.#") + " "
-                + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
+        String numHoursDisplayString = BookingUtil.getNumHoursDisplayString(hours, getContext());
 
         if (isBookingHoursClarificationExperimentEnabled)
         {
-            //5:00 PM - Up to 3 hours
+            //5:00 pm (up to 3 hours)
             timeText.setText(getResources().getString(
                     R.string.booking_details_hours_clarification_experiment_hours_formatted,
                     startTimeDisplayString,
@@ -166,11 +165,11 @@ public final class BookingDetailView extends InjectedRelativeLayout
         }
         else
         {
-            //5:00 PM - 8:00 PM (3 hours)
+            //5:00 pm - 8:00 pm (3 hours)
             String endTimeDisplayString =
                     DateTimeUtils.formatDate(
                             endDate.getTime(),
-                            "h:mm aaa ",
+                            DateTimeUtils.CLOCK_FORMATTER_12HR,
                             booking.getBookingTimezone()
                     );
             timeText.setText(getResources().getString(
