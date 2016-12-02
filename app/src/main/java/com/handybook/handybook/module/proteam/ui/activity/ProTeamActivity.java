@@ -48,7 +48,7 @@ public class ProTeamActivity extends MenuDrawerActivity
     @Override
     protected Fragment createFragment()
     {
-        if (mConfigurationManager.getPersistentConfiguration().isProTeamChatEnabled())
+        if (mConfigurationManager.getPersistentConfiguration().isChatEnabled())
         {
             return ProTeamConversationsFragment.newInstance();
         }

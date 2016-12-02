@@ -16,6 +16,8 @@ public class Service implements Parcelable {
     @SerializedName("parent") private int parentId;
     @SerializedName("services") private List<Service> services;
 
+    public static String PREFIX_CLEAN_CONSTANT = "clean";
+
     public Service() {}
 
     public final int getId() {
@@ -61,6 +63,21 @@ public class Service implements Parcelable {
     public List<Service> getServices() {
         if (services == null) services = new ArrayList<>();
         return services;
+    }
+
+    public boolean isCleaning()
+    {
+        if (uniq != null)
+        {
+            return uniq.toLowerCase().contains(PREFIX_CLEAN_CONSTANT);
+        }
+
+        if (name != null)
+        {
+            return name.toLowerCase().contains(PREFIX_CLEAN_CONSTANT);
+        }
+
+        return false;
     }
 
     public final void setServices(final List<Service> services) {

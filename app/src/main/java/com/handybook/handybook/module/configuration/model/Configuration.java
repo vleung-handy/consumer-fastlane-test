@@ -33,8 +33,8 @@ public class Configuration implements Serializable
     private boolean isProTeamProfilePicturesEnabled;
 
     //default this to false
-    @SerializedName("pro_team_chat_enabled")
-    private boolean mProTeamChatEnabled = false;
+    @SerializedName("chat_enabled")
+    private boolean mProTeamChatEnabled;
 
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
@@ -102,7 +102,7 @@ public class Configuration implements Serializable
         return isProTeamProfilePicturesEnabled;
     }
 
-    public boolean isProTeamChatEnabled()
+    public boolean isChatEnabled()
     {
         //FIXME: JIA: remove this hard coding
         return false;

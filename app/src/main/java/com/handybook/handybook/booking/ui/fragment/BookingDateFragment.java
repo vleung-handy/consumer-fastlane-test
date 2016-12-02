@@ -97,13 +97,21 @@ public final class BookingDateFragment extends BookingFlowFragment
                             BookingRescheduleOptionsActivity.class
                     );
                     intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
+                    intent.putExtra(BundleKeys.RESCHEDULE_TYPE, mRescheduleType);
                     intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTimeInMillis());
                     intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
                     startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
                 }
                 else
                 {
-                    rescheduleBooking(mRescheduleBooking, date.getTime(), false, mProviderId);
+                    rescheduleBooking(
+                            mRescheduleBooking,
+                            date.getTime(),
+                            false,
+                            mProviderId,
+                            mRescheduleType,
+                            null
+                    );
                 }
             }
             else
@@ -166,7 +174,6 @@ public final class BookingDateFragment extends BookingFlowFragment
         final Bundle args = new Bundle();
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
         args.putString(EXTRA_RESCHEDULE_NOTICE, notice);
-        args.putSerializable(EXTRA_RESCHEDULE_TYPE, type);
         args.putSerializable(EXTRA_RESCHEDULE_TYPE, type);
         args.putString(EXTRA_PROVIDER_ID, providerId);
         fragment.setArguments(args);

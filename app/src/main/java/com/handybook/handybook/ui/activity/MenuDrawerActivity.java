@@ -153,7 +153,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
      */
     private void checkLayerInitiation()
     {
-        if (mConfiguration == null || !mConfiguration.isProTeamChatEnabled())
+        if (mConfiguration == null || !mConfiguration.isChatEnabled())
         {
             //Layer should be disabled.
             mLayerHelper.deauthenticate();
@@ -168,6 +168,11 @@ public abstract class MenuDrawerActivity extends BaseActivity
             {
                 mLayerHelper.initLayer(user.getAuthToken());
                 refreshMenu();
+            }
+            else
+            {
+                //the user is in a logged out state
+                mLayerHelper.deauthenticate();
             }
         }
     }
@@ -323,7 +328,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 .getActionView();
 
         if (mConfiguration != null
-                && mConfiguration.isProTeamChatEnabled()
+                && mConfiguration.isChatEnabled()
                 && mLayerHelper.getUnreadConversationsCount() > 0)
         {
             String unreadCount = String.valueOf(mLayerHelper.getUnreadConversationsCount());

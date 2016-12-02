@@ -3,6 +3,7 @@ package com.handybook.handybook.constant;
 public class BundleKeys
 {
     public static final String BOOKING = "booking";
+    public static final String BOOKINGS = "bookings";
     public static final String BOOKING_ID = "booking_id";
     public static final String RECURRING_BOOKING = "recurring_booking";
     public static final String RECURRING_PLAN = "recurring_plan";
@@ -28,6 +29,7 @@ public class BundleKeys
     public static final String BOOKING_RATE_PRO_NAME = "prof";
     public static final String PRO_JOB_STATUS = "pro_statuses";
     public static final String PRO_TEAM = "pro_team";
+    public static final String PRO_TEAM_PRO = "pro_team_pro";
 
     public static final String RESCHEDULE_BOOKING = "reschedule_booking";
     public static final String RESCHEDULE_NOTICE = "reschedule_notice";

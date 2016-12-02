@@ -194,7 +194,14 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
                         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackSubmittedLog(
                                 mBookingToReschedule.getStartDate(), date
                         )));
-                        rescheduleBooking(mBookingToReschedule, date, mIsForRescheduleAll, null);
+                        rescheduleBooking(
+                                mBookingToReschedule,
+                                date,
+                                mIsForRescheduleAll,
+                                null,
+                                null,
+                                null
+                        );
                     }
                     else
                     {

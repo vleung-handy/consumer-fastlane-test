@@ -424,7 +424,7 @@ public class TestApplicationModule
 
         //this is so that we don't init the layer client when we run unit tests
         Configuration config = mock(Configuration.class);
-        when(config.isProTeamChatEnabled()).thenReturn(false);
+        when(config.isChatEnabled()).thenReturn(false);
 
         when(configManager.getPersistentConfiguration()).thenReturn(config);
         return configManager;

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
@@ -15,6 +17,7 @@ import com.handybook.shared.LayerHelper;
 import com.handybook.shared.LayerRecyclerAdapter;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
+import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,17 +30,25 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
     private final LayerHelper mLayerHelper;
     private final View.OnClickListener mOnClickListener;
     private List<String> mChatEligibleMemberIds;
+    private Bus mBus;
+
+    /**
+     * We're using this flag to denote the first time conversations became available
+     */
+    private boolean mConversationLoaded = false;
 
     public ProConversationAdapter(
             @Nullable final ProTeam.ProTeamCategory proTeamCategory,
             @NonNull final LayerHelper layerHelper,
-            @NonNull final View.OnClickListener onClickListener
+            @NonNull final View.OnClickListener onClickListener,
+            @NonNull final Bus bus
     )
     {
         super(layerHelper);
         mProTeamCategory = proTeamCategory;
         mLayerHelper = layerHelper;
         mOnClickListener = onClickListener;
+        mBus = bus;
         initProTeamProViewModels();
     }
 
@@ -101,6 +112,18 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
         if (conversations == null)
         {
             return;
+        }
+
+        if (!mConversationLoaded && mProTeamProViewModels != null)
+        {
+            //the first update we get is essentially the "loaded" part. Subsequent updates are for changes.
+            mConversationLoaded = true;
+            mBus.post(new LogEvent.AddLogEvent(
+                    new ChatLog.ConversationsShownLog(
+                            mChatEligibleMemberIds.size(),
+                            conversations.size()
+                    )
+            ));
         }
 
         //update each pro team model with the correct conversation
