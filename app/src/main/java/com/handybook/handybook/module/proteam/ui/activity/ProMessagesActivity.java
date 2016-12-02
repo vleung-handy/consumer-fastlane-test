@@ -28,8 +28,8 @@ import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
-import com.handybook.shared.AttachmentItemView;
-import com.handybook.shared.builtin.MessagesListActivity;
+import com.handybook.shared.layer.ui.AttachmentItemView;
+import com.handybook.shared.layer.ui.MessagesListActivity;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
 import com.squareup.otto.Bus;
@@ -218,7 +218,7 @@ public class ProMessagesActivity extends MessagesListActivity
         ));
         attachmentItemView.getAttachmentImage().setImageResource(R.drawable.ic_make_booking);
         attachmentItemView.getAttachmentText()
-                          .setText(getResources().getString(R.string.new_booking));
+                          .setText(getResources().getString(R.string.make_a_booking));
         attachmentItemView.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -104,7 +104,7 @@ import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.activity.SplashActivityTest;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.HelpCenterTest;
-import com.handybook.shared.LayerHelper;
+import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
@@ -115,6 +115,7 @@ import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -398,7 +399,7 @@ public class TestApplicationModule
     @Singleton
     final LayerHelper provideLayerHelper()
     {
-        return mock(LayerHelper.class);
+        return mock(LayerHelper.class, RETURNS_DEEP_STUBS);
     }
 
     @Provides

@@ -15,6 +15,7 @@ import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.manager.BookingManager;
+import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.constant.PrefsKey;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
@@ -37,6 +38,7 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
+import com.handybook.shared.core.HandyLibrary;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -115,7 +117,6 @@ public class BaseApplication extends MultiDexApplication
     ProTeamManager proTeamManager;
     @Inject
     BookingManager mBookingManager;
-
     @Inject
     RestAdapter mRestAdapter;
 
@@ -136,6 +137,7 @@ public class BaseApplication extends MultiDexApplication
         super.onCreate();
         sInstance = this;
         createObjectGraph();
+        HandyLibrary.init(mRestAdapter, this, BuildConfig.FLAVOR.equals(FLAVOR_PROD));
         mApplicationStartTime = new Date();
 
         FacebookSdk.sdkInitialize(getApplicationContext());

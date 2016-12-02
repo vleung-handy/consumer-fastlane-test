@@ -36,11 +36,11 @@ import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.SimpleDividerItemDecoration;
-import com.handybook.shared.CreateConversationResponse;
-import com.handybook.shared.HandyLayer;
-import com.handybook.shared.LayerConstants;
-import com.handybook.shared.LayerHelper;
-import com.handybook.shared.PushNotificationReceiver;
+import com.handybook.shared.core.HandyLibrary;
+import com.handybook.shared.layer.LayerConstants;
+import com.handybook.shared.layer.LayerHelper;
+import com.handybook.shared.layer.model.CreateConversationResponse;
+import com.handybook.shared.layer.receiver.PushNotificationReceiver;
 import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
 
@@ -232,13 +232,14 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
     {
         progressDialog.show();
 
-        HandyLayer.getInstance()
-                  .getHandyService()
-                  .createConversation(providerId,
-                                      userManager.getCurrentUser().getAuthToken(),
-                                      "",
-                                      new ConversationCallback(this)
-                  );
+        HandyLibrary.getInstance()
+                    .getHandyService()
+                    .createConversation(
+                            providerId,
+                            userManager.getCurrentUser().getAuthToken(),
+                            "",
+                            new ConversationCallback(this)
+                    );
     }
 
     /**

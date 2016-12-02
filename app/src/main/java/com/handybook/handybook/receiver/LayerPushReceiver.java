@@ -6,8 +6,8 @@ import android.content.Intent;
 
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
-import com.handybook.shared.LayerConstants;
-import com.handybook.shared.PushNotificationReceiver;
+import com.handybook.shared.layer.LayerConstants;
+import com.handybook.shared.layer.receiver.PushNotificationReceiver;
 import com.layer.sdk.messaging.Message;
 
 public class LayerPushReceiver extends PushNotificationReceiver
