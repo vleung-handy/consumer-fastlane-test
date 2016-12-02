@@ -89,7 +89,7 @@ public class Configuration implements Serializable
         return isProTeamProfilePicturesEnabled;
     }
 
-    public boolean isProTeamChatEnabled()
+    public boolean isChatEnabled()
     {
         //FIXME: JIA: remove this hard coding
         return false;
