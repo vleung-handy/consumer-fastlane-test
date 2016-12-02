@@ -161,8 +161,8 @@ import com.handybook.handybook.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.ui.fragment.OnboardFragment;
 import com.handybook.handybook.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
-import com.handybook.shared.HandyLayer;
-import com.handybook.shared.LayerHelper;
+import com.handybook.shared.core.HandyLibrary;
+import com.handybook.shared.layer.LayerHelper;
 import com.squareup.okhttp.CertificatePinner;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -646,11 +646,13 @@ public final class ApplicationModule
             RestAdapter restAdapter
     )
     {
-        return HandyLayer.init(
+        HandyLibrary.init(
                 restAdapter,
                 (Application) mContext,
                 BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
         );
+
+        return HandyLibrary.getInstance().getLayerHelper();
     }
 
     @Provides

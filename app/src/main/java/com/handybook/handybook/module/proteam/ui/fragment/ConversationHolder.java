@@ -15,7 +15,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
-import com.handybook.shared.LayerUtil;
+import com.handybook.shared.layer.LayerUtil;
 import com.layer.atlas.util.picasso.transformations.CircleTransform;
 import com.layer.sdk.messaging.Message;
 import com.squareup.picasso.Picasso;

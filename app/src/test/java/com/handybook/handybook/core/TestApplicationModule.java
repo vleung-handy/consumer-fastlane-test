@@ -104,7 +104,7 @@ import com.handybook.handybook.ui.activity.SplashActivity;
 import com.handybook.handybook.ui.activity.SplashActivityTest;
 import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.ui.fragment.HelpCenterTest;
-import com.handybook.shared.LayerHelper;
+import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;

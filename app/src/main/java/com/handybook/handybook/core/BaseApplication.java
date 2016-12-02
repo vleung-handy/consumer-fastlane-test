@@ -37,7 +37,7 @@ import com.handybook.handybook.module.notifications.splash.manager.SplashNotific
 import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.shared.LayerHelper;
+import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
