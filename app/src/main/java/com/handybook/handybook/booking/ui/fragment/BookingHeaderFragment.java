@@ -15,6 +15,7 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
@@ -27,7 +28,7 @@ import butterknife.ButterKnife;
 public final class BookingHeaderFragment extends BookingFlowFragment implements Observer
 {
 
-    private static final String TIME_FORMAT = "h:mm aaa";
+    private static final SimpleDateFormat TIME_FORMAT = DateTimeUtils.CLOCK_FORMATTER_12HR;
     private static final String DATE_FORMAT = "EEEE',' MMMM d";
     private static final String DECIMAL_FORMAT = "#.#";
 
@@ -118,7 +119,8 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         //we want to display the time using the booking location's time zone
         dateText.setText(DateTimeUtils.formatDate(startDate, DATE_FORMAT, timeZone));
 
-        String startTimeDisplayString = DateTimeUtils.formatDate(startDate, TIME_FORMAT, timeZone);
+        String startTimeDisplayString = DateTimeUtils.formatDate(startDate, TIME_FORMAT, timeZone)
+                                                     .toLowerCase();
         if (mConfigurationManager.getPersistentConfiguration()
                                  .isBookingHoursClarificationExperimentEnabled())
         {

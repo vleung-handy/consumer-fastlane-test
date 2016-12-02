@@ -170,9 +170,10 @@ public class BookingUtil
     public static String getSubtitle(Booking booking, Context context)
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String start = DateTimeUtils.formatDate(booking.getStartDate(),
-                                                      SUBTITLE_DATE_FORMAT,
-                                                      booking.getBookingTimezone()
+        final String startDate = DateTimeUtils.formatDate(
+                booking.getStartDate(),
+                SUBTITLE_DATE_FORMAT,
+                booking.getBookingTimezone()
         ).toLowerCase();
 
         Calendar cal = Calendar.getInstance();
@@ -186,7 +187,7 @@ public class BookingUtil
 
         return context.getString(
                 R.string.booking_card_row_hours_formatted,
-                start,
+                startDate,
                 end
         );
     }
@@ -204,7 +205,7 @@ public class BookingUtil
     /**
      * used for the booking list view items
      * <p>
-     * Returns in the form of 3:00 pm - Up to 3 hours if the hours clarification experiment is
+     * Returns in the form of 3:00 pm (up to 3 hours) if the hours clarification experiment is
      * enabled Otherwise returns in the form 3:00pm - 6:00pm
      *
      * @param booking
@@ -240,16 +241,17 @@ public class BookingUtil
     )
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String start = DateTimeUtils.formatDate(booking.getStartDate(),
-                                                      SUBTITLE_DATE_FORMAT,
-                                                      booking.getBookingTimezone()
+        final String startTime = DateTimeUtils.formatDate(
+                booking.getStartDate(),
+                SUBTITLE_DATE_FORMAT,
+                booking.getBookingTimezone()
         ).toLowerCase();
 
         float hours = booking.getHours();
         String hoursDisplayString = getNumHoursDisplayString(hours, context);
         return context.getString(
                 R.string.booking_details_hours_clarification_experiment_hours_formatted,
-                start,
+                startTime,
                 hoursDisplayString
         );
     }

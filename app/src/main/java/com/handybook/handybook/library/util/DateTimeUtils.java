@@ -71,7 +71,7 @@ public class DateTimeUtils
             return null;
         }
 
-        DateFormat customFormatter = new SimpleDateFormat(format);
+        DateFormat customFormatter = new SimpleDateFormat(format, Locale.getDefault());
         if (!android.text.TextUtils.isEmpty(timeZone))
         {
             customFormatter.setTimeZone(TimeZone.getTimeZone(timeZone));

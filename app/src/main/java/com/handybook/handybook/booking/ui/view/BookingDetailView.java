@@ -149,7 +149,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
                 startDate,
                 DateTimeUtils.CLOCK_FORMATTER_12HR,
                 booking.getBookingTimezone()
-        );
+        ).toLowerCase();
 
         //in the format "3 hours"
         String numHoursDisplayString = BookingUtil.getNumHoursDisplayString(hours, getContext());
@@ -171,7 +171,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
                             endDate.getTime(),
                             DateTimeUtils.CLOCK_FORMATTER_12HR,
                             booking.getBookingTimezone()
-                    );
+                    ).toLowerCase();
             timeText.setText(getResources().getString(
                     R.string.booking_details_hours_formatted,
                     startTimeDisplayString,
