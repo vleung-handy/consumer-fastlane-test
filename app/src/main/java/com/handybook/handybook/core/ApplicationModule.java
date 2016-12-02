@@ -646,7 +646,11 @@ public final class ApplicationModule
             RestAdapter restAdapter
     )
     {
-        return HandyLayer.init(restAdapter, (Application) mContext);
+        return HandyLayer.init(
+                restAdapter,
+                (Application) mContext,
+                BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
+        );
     }
 
     @Provides
