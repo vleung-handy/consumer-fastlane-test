@@ -24,14 +24,14 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
+import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
+import com.handybook.handybook.library.ui.view.HandySnackbar;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
-import com.handybook.handybook.library.ui.view.HandySnackbar;
-import com.handybook.handybook.library.util.FragmentUtils;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -386,7 +386,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
             //must make this call to update with new rating, even if the above sets the layout to
             //GONE. This is needed for tracking previous rating.
-            if (mRateProTeamFragment != null)
+            if (mRateProTeamFragment != null && mRateProTeamFragment.isVisible())
             {
                 mRateProTeamFragment.updateWithNewRating(mRating);
             }
