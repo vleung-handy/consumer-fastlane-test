@@ -30,7 +30,7 @@ public class BookingListItem extends FrameLayout
     /**
      * used to determine how to display the subtitle
      */
-    private boolean mIsBookingHoursClarificationExperimentEnabled;
+    private final boolean mIsBookingHoursClarificationExperimentEnabled;
 
     /**
      * @param isBookingHoursClarificationExperimentEnabled this is passed here because don't want to

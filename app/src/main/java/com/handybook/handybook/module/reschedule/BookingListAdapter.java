@@ -17,7 +17,7 @@ public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder>
     /**
      * used by list item views to determine how to display the subtitle
      */
-    private boolean mIsBookingHoursClarificationExperimentEnabled;
+    private final boolean mIsBookingHoursClarificationExperimentEnabled;
 
     public BookingListAdapter(
             final List<Booking> upcomingBookings,

@@ -20,7 +20,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     /**
      * used by list item views to determine how to display the subtitle
      */
-    private boolean mIsBookingHoursClarificationExperimentEnabled;
+    private final boolean mIsBookingHoursClarificationExperimentEnabled;
 
     public HistoryListAdapter(
             final List<Booking> bookings,
