@@ -236,10 +236,10 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
                     .getHandyService()
                     .createConversation(
                             providerId,
-                                      userManager.getCurrentUser().getAuthToken(),
-                                      "",
-                                      new ConversationCallback(this)
-                  );
+                            userManager.getCurrentUser().getAuthToken(),
+                            "",
+                            new ConversationCallback(this)
+                    );
     }
 
     /**

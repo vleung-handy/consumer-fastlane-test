@@ -115,6 +115,7 @@ import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -398,7 +399,7 @@ public class TestApplicationModule
     @Singleton
     final LayerHelper provideLayerHelper()
     {
-        return mock(LayerHelper.class);
+        return mock(LayerHelper.class, RETURNS_DEEP_STUBS);
     }
 
     @Provides

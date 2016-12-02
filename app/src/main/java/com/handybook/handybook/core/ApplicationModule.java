@@ -1,6 +1,5 @@
 package com.handybook.handybook.core;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
@@ -641,17 +640,8 @@ public final class ApplicationModule
     }
 
     @Provides
-    @Singleton
-    final LayerHelper provideHandyLayer(
-            RestAdapter restAdapter
-    )
+    final LayerHelper provideHandyLayer()
     {
-        HandyLibrary.init(
-                restAdapter,
-                (Application) mContext,
-                BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
-        );
-
         return HandyLibrary.getInstance().getLayerHelper();
     }
 
