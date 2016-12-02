@@ -41,6 +41,8 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
+
 /**
  * This is a derivation of the MessagesListActivity that allows for a reschedule flow
  */
@@ -223,21 +225,21 @@ public class ProMessagesActivity extends MessagesListActivity
             public void onClick(final View v)
             {
                 getAttachmentMenu().dismiss();
-                if (mCleaningService != null && mProTeamPro != null && mProTeamPro.getCategoryType()
-                                                                                  .toString()
-                                                                                  .toLowerCase()
-                                                                                  .contains("clean"))
+                if (mCleaningService != null
+                        && mProTeamPro != null
+                        && mProTeamPro.getCategoryType()
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(PREFIX_CLEAN_CONSTANT)
+                        )
                 {
 
                     //for cleaning, we want to start the booking flow right away.
-                    mBus.post(new LogEvent.AddLogEvent(new ChatLog.MakeBookingSelectedLog(String.valueOf(
-                            mProTeamPro.getId()),
-                                                                                          mConversation
-                                                                                                  .getId()
-                                                                                                  .toString(),
-                                                                                          String.valueOf(
-                                                                                                  mCleaningService
-                                                                                                          .getId())
+                    mBus.post(new LogEvent.AddLogEvent(
+                            new ChatLog.MakeBookingSelectedLog(
+                                    String.valueOf(mProTeamPro.getId()),
+                                    mConversation.getId().toString(),
+                                    String.valueOf(mCleaningService.getId())
                     )));
                     startBookingFlow();
                 }
@@ -318,7 +320,7 @@ public class ProMessagesActivity extends MessagesListActivity
         if (bookings == null || bookings.isEmpty())
         {
             mBus.post(new LogEvent.AddLogEvent(new ChatLog.NoUpcomingBookingsLog()));
-            Toast.makeText(this, "You have no bookings to reschedule.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.reschedule_no_bookings, Toast.LENGTH_SHORT).show();
         }
         else
         {

@@ -155,7 +155,8 @@ public class BookingFlowFragment extends InjectedFragment
             final Date date,
             final boolean rescheduleAll,
             @Nullable final String providerId,
-            final BookingDetailFragment.RescheduleType rescheduleType 
+            final BookingDetailFragment.RescheduleType rescheduleType,
+            @Nullable final String recurringId
     )
     {
         final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");
@@ -167,10 +168,11 @@ public class BookingFlowFragment extends InjectedFragment
         if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
         {
             bus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleSubmittedLog(
-                             providerId,
-                             booking.getId(),
-                             booking.getStartDate(),
-                             date
+                    providerId,
+                    booking.getId(),
+                    booking.getStartDate(),
+                    date,
+                    recurringId
                      ))
             );
         }
@@ -199,12 +201,27 @@ public class BookingFlowFragment extends InjectedFragment
                     public void onSuccess(final Pair<String, BookingQuote> response)
                     {
                         //log success
-                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                BookingDetailsLog.EventType.SUCCESS,
-                                booking.getId(),
-                                booking.getStartDate(),
-                                date))
-                        );
+                        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
+                        {
+                            bus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleSuccessLog(
+                                             providerId,
+                                             booking.getId(),
+                                             booking.getStartDate(),
+                                             date,
+                                             recurringId
+                                     ))
+                            );
+                        }
+                        else
+                        {
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
+                                             BookingDetailsLog.EventType.SUCCESS,
+                                             booking.getId(),
+                                             booking.getStartDate(),
+                                             date
+                                     ))
+                            );
+                        }
 
                         if (!allowCallbacks)
                         {
@@ -253,12 +270,27 @@ public class BookingFlowFragment extends InjectedFragment
                     public void onError(final DataManager.DataManagerError error)
                     {
                         //log error
-                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                BookingDetailsLog.EventType.ERROR,
-                                booking.getId(),
-                                booking.getStartDate(),
-                                date))
-                        );
+                        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
+                        {
+                            bus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleErrorLog(
+                                             providerId,
+                                             booking.getId(),
+                                             booking.getStartDate(),
+                                             date,
+                                             recurringId
+                                     ))
+                            );
+                        }
+                        else
+                        {
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
+                                             BookingDetailsLog.EventType.ERROR,
+                                             booking.getId(),
+                                             booking.getStartDate(),
+                                             date
+                                     ))
+                            );
+                        }
 
                         if (!allowCallbacks)
                         {

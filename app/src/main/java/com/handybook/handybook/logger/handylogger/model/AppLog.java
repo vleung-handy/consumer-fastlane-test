@@ -29,4 +29,19 @@ public abstract class AppLog extends EventLog
             mNewOpen = newOpen;
         }
     }
+
+
+    public static class AppProteamConversationLog extends AppLog
+    {
+        private static final String EVENT_TYPE = "navigation";
+
+        @SerializedName("page")
+        private String mPage;
+
+        public AppProteamConversationLog()
+        {
+            super(EVENT_TYPE);
+            mPage = "pro_team_conversations";
+        }
+    }
 }

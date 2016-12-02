@@ -95,7 +95,14 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         rescheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                rescheduleBooking(booking, date, optionIndex == 1, mProviderId, mRescheduleType);
+                rescheduleBooking(
+                        booking,
+                        date,
+                        optionIndex == 1,
+                        mProviderId,
+                        mRescheduleType,
+                        String.valueOf(booking.getRecurringId())
+                );
             }
         });
 

@@ -109,7 +109,8 @@ public final class BookingDateFragment extends BookingFlowFragment
                             date.getTime(),
                             false,
                             mProviderId,
-                            mRescheduleType
+                            mRescheduleType,
+                            null
                     );
                 }
             }

@@ -158,9 +158,10 @@ public class RescheduleUpcomingActivity extends BaseActivity
     {
         mProgressDialog.dismiss();
 
-        mBus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleBookingSelectedLog(mProviderId,
-                                                                                    mSelectedBooking
-                                                                                            .getId()
+        mBus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleBookingSelectedLog(
+                mProviderId,
+                mSelectedBooking.getId(),
+                String.valueOf(mSelectedBooking.getRecurringId())
         )));
 
         final Intent intent = new Intent(this, BookingDateActivity.class);

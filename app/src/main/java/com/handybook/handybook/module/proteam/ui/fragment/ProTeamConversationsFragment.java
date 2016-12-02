@@ -24,6 +24,7 @@ import com.handybook.handybook.constant.RequestCode;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
@@ -133,6 +134,9 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         mEmptyViewText.setText(R.string.pro_team_empty_card_text);
 
         initRecyclerView();
+
+        bus.post(new LogEvent.AddLogEvent(new AppLog.AppProteamConversationLog()));
+
         return view;
     }
 
@@ -199,7 +203,8 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
                             createNewConversation(providerId);
                         }
                     }
-                }
+                },
+                bus
         );
 
         mAdapter.refreshConversations();
