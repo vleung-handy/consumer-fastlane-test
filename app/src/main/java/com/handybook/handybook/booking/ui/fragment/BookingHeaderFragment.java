@@ -15,6 +15,7 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.util.BookingUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +32,6 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
 
     private static final SimpleDateFormat TIME_FORMAT = DateTimeUtils.CLOCK_FORMATTER_12HR;
     private static final String DATE_FORMAT = "EEEE',' MMMM d";
-    private static final String DECIMAL_FORMAT = "#.#";
 
     private BookingTransaction transaction;
     private BookingQuote quote;
@@ -136,8 +136,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
             //display the booking hours
             timeText.setText(startTimeDisplayString
                                      + " - "
-                                     + TextUtils.formatDecimal(hours, DECIMAL_FORMAT)
-                                     + " " + getString(R.string.hours)
+                                     + BookingUtil.getNumHoursDisplayString(hours, getContext())
             );
         }
 

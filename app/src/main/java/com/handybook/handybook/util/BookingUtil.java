@@ -209,7 +209,7 @@ public class BookingUtil
      * used for the booking list view items
      * <p>
      * Returns in the form of 3:00 pm (up to 3 hours) if the hours clarification experiment is
-     * enabled Otherwise returns in the form 3:00pm - 6:00pm
+     * enabled Otherwise returns in the form 3:00 pm - 6:00 pm
      *
      * @param booking
      * @param context
@@ -232,7 +232,7 @@ public class BookingUtil
     }
 
     /**
-     * Returns in the form of 3:00 pm - Up to 3 hours
+     * Returns in the form of 3:00 pm (up to 3 hours)
      *
      * @param booking
      * @param context
