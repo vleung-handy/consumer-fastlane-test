@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.model.BookingService;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 
@@ -170,11 +171,11 @@ public class BookingUtil
     public static String getSubtitle(Booking booking, Context context)
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String startDate = DateTimeUtils.formatDate(
+        final String startDate = StringUtils.toLowerCase(DateTimeUtils.formatDate(
                 booking.getStartDate(),
                 SUBTITLE_DATE_FORMAT,
                 booking.getBookingTimezone()
-        ).toLowerCase();
+        ));
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(booking.getStartDate());
@@ -182,8 +183,10 @@ public class BookingUtil
         final Date endDate = cal.getTime();
 
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String end = DateTimeUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone()).toLowerCase();
+        final String end = StringUtils.toLowerCase(DateTimeUtils.formatDate(endDate,
+                                                                            SUBTITLE_DATE_FORMAT,
+                                                                            booking.getBookingTimezone()
+        ));
 
         return context.getString(
                 R.string.booking_card_row_hours_formatted,
@@ -241,11 +244,11 @@ public class BookingUtil
     )
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String startTime = DateTimeUtils.formatDate(
+        final String startTime = StringUtils.toLowerCase(DateTimeUtils.formatDate(
                 booking.getStartDate(),
                 SUBTITLE_DATE_FORMAT,
                 booking.getBookingTimezone()
-        ).toLowerCase();
+        ));
 
         float hours = booking.getHours();
         String hoursDisplayString = getNumHoursDisplayString(hours, context);

@@ -1,11 +1,22 @@
 package com.handybook.handybook.library.util;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.handybook.handybook.R;
 
 public class StringUtils
 {
+    /**
+     * @param s
+     * @return s with all lowercase chars, or null if s is null
+     */
+    @Nullable
+    public static String toLowerCase(@Nullable String s)
+    {
+        return s == null ? null : s.toLowerCase();
+    }
+
     public static String capitalizeFirstCharacter(String s)
     {
         if (ValidationUtils.isNullOrEmpty(s)) { return s; }

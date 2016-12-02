@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.util.BookingUtil;
 
 import java.util.Calendar;
@@ -145,11 +146,11 @@ public final class BookingDetailView extends InjectedRelativeLayout
         endDate.add(Calendar.MINUTE, minutes);
 
         //we want to display the time using the booking location's time zone
-        String startTimeDisplayString = DateTimeUtils.formatDate(
+        String startTimeDisplayString = StringUtils.toLowerCase(DateTimeUtils.formatDate(
                 startDate,
                 DateTimeUtils.CLOCK_FORMATTER_12HR,
                 booking.getBookingTimezone()
-        ).toLowerCase();
+        ));
 
         //in the format "3 hours"
         String numHoursDisplayString = BookingUtil.getNumHoursDisplayString(hours, getContext());
@@ -167,11 +168,11 @@ public final class BookingDetailView extends InjectedRelativeLayout
         {
             //5:00 pm - 8:00 pm (3 hours)
             String endTimeDisplayString =
-                    DateTimeUtils.formatDate(
+                    StringUtils.toLowerCase(DateTimeUtils.formatDate(
                             endDate.getTime(),
                             DateTimeUtils.CLOCK_FORMATTER_12HR,
                             booking.getBookingTimezone()
-                    ).toLowerCase();
+                    ));
             timeText.setText(getResources().getString(
                     R.string.booking_details_hours_formatted,
                     startTimeDisplayString,
