@@ -55,6 +55,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static com.handybook.handybook.logger.handylogger.model.LogConstants.PRO_TEAM_CONVERSATIONS;
+
 public class ProTeamConversationsFragment extends InjectedFragment implements SwipeRefreshLayout.OnRefreshListener
 {
     @Bind(R.id.pro_team_toolbar)
@@ -135,7 +137,7 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
 
         initRecyclerView();
 
-        bus.post(new LogEvent.AddLogEvent(new AppLog.AppProteamConversationLog()));
+        bus.post(new LogEvent.AddLogEvent(new AppLog.AppNavigationLog(PRO_TEAM_CONVERSATIONS)));
 
         return view;
     }

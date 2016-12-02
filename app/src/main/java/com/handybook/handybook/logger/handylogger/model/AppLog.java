@@ -18,9 +18,9 @@ public abstract class AppLog extends EventLog
         private static final String EVENT_TYPE = "open";
 
         @SerializedName("first_launch")
-        private boolean mFirstLaunch;
+        private final boolean mFirstLaunch;
         @SerializedName("new_open")
-        private boolean mNewOpen;
+        private final boolean mNewOpen;
 
         public AppOpenLog(final boolean firstLaunch, final boolean newOpen)
         {
@@ -31,17 +31,17 @@ public abstract class AppLog extends EventLog
     }
 
 
-    public static class AppProteamConversationLog extends AppLog
+    public static class AppNavigationLog extends AppLog
     {
         private static final String EVENT_TYPE = "navigation";
 
         @SerializedName("page")
-        private String mPage;
+        private final String mPage;
 
-        public AppProteamConversationLog()
+        public AppNavigationLog(final String page)
         {
             super(EVENT_TYPE);
-            mPage = "pro_team_conversations";
+            mPage = page;
         }
     }
 }
