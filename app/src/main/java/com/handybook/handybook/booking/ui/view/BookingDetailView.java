@@ -73,12 +73,20 @@ public final class BookingDetailView extends InjectedRelativeLayout
         init(context);
     }
 
-    public void updateDisplay(final Booking booking, List<Service> serviceList)
+    public void updateDisplay(
+            final Booking booking,
+            List<Service> serviceList,
+            boolean isBookingHoursClarificationExperimentEnabled
+    )
     {
         mBooking = booking;
         navText.setText(booking.getServiceName());
         bookingText.setText(getContext().getString(R.string.booking_number, booking.getId()));
-        updateDateTimeInfoText(booking);
+        updateDateTimeInfoText(
+                booking,
+                booking.getStartDate(),
+                isBookingHoursClarificationExperimentEnabled
+        );
         updateFrequencySectionDisplay(booking);
         updateServiceIcon(booking, serviceList);
     }
@@ -122,12 +130,11 @@ public final class BookingDetailView extends InjectedRelativeLayout
 
     //TODO: don't like having an exception the fragment should talk to the view in as few ways as
     // possible, this view is going to be supplanted by new sub fragments
-    public void updateDateTimeInfoText(final Booking booking)
-    {
-        updateDateTimeInfoText(booking, booking.getStartDate());
-    }
-
-    public void updateDateTimeInfoText(final Booking booking, final Date startDate)
+    public void updateDateTimeInfoText(
+            final Booking booking,
+            final Date startDate,
+            boolean isBookingHoursClarificationExperimentEnabled
+    )
     {
         final float hours = booking.getHours();
         //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
@@ -138,21 +145,42 @@ public final class BookingDetailView extends InjectedRelativeLayout
         endDate.add(Calendar.MINUTE, minutes);
 
         //we want to display the time using the booking location's time zone
-        timeText.setText(DateTimeUtils.formatDate(
+        String startTimeDisplayString = DateTimeUtils.formatDate(
                 startDate,
-                "h:mm aaa – ",
+                "h:mm aaa",
                 booking.getBookingTimezone()
-        )
-                                 + DateTimeUtils.formatDate(
-                endDate.getTime(),
-                "h:mm aaa (",
-                booking.getBookingTimezone()
-        )
-                                 + TextUtils.formatDecimal(hours, "#.#") + " "
-                                 + getResources().getQuantityString(
-                R.plurals.hour,
-                (int) Math.ceil(hours)
-        ) + ")");
+        );
+
+        //in the format "3 hours"
+        String numHoursDisplayString = TextUtils.formatDecimal(hours, "#.#") + " "
+                + getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
+
+        if (isBookingHoursClarificationExperimentEnabled)
+        {
+            //5:00 PM - Up to 3 hours
+            timeText.setText(getResources().getString(
+                    R.string.booking_details_hours_clarification_experiment_hours_text_formatted,
+                    startTimeDisplayString,
+                    numHoursDisplayString
+            ));
+        }
+        else
+        {
+            //5:00 PM - 8:00 PM (3 hours)
+            String endTimeDisplayString =
+                    DateTimeUtils.formatDate(
+                            endDate.getTime(),
+                            "h:mm aaa ",
+                            booking.getBookingTimezone()
+                    );
+            timeText.setText(getResources().getString(
+                    R.string.booking_details_hours_text_formatted,
+                    startTimeDisplayString,
+                    endTimeDisplayString,
+                    numHoursDisplayString
+            ));
+        }
+
 
         dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
                                                   booking.getBookingTimezone()

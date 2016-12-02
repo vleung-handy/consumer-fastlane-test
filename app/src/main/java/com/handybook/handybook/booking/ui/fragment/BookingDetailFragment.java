@@ -186,7 +186,12 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             {
                 Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
                 //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model. API v4 should return the updated booking model
-                mBookingDetailView.updateDateTimeInfoText(mBooking, newDate);
+                mBookingDetailView.updateDateTimeInfoText(
+                        mBooking,
+                        newDate,
+                        configurationManager.getPersistentConfiguration()
+                                            .isBookingHoursClarificationExperimentEnabled()
+                );
                 setUpdatedBookingResult();
             }
         }
@@ -246,7 +251,12 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     private void setupForBooking(Booking booking)
     {
         mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.GONE);
-        mBookingDetailView.updateDisplay(booking, mServices);
+        mBookingDetailView.updateDisplay(
+                booking,
+                mServices,
+                configurationManager.getPersistentConfiguration()
+                                    .isBookingHoursClarificationExperimentEnabled()
+        );
         mBookingDetailView.updateReportIssueButton(mBooking, new View.OnClickListener()
         {
             @Override

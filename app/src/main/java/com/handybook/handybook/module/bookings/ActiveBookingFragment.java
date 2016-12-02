@@ -176,7 +176,15 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
             toggleProviderSection();
 
             mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
-            mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, getActivity()));
+
+            mTextBookingSubtitle.setText(
+                    BookingUtil.getSubtitle(
+                            mBooking,
+                            getActivity(),
+                            configurationManager.getPersistentConfiguration()
+                                                .isBookingHoursClarificationExperimentEnabled()
+                    ));
+
             mMapDivider.setVisibility(View.VISIBLE);
         }
         else

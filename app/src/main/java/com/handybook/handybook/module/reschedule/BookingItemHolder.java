@@ -19,7 +19,6 @@ public class BookingItemHolder extends RecyclerView.ViewHolder
 
     public void bindToBooking(@NonNull final Booking booking)
     {
-        mBookingListItem.setBooking(booking);
-        mBookingListItem.bindToBooking();
+        mBookingListItem.bindToBooking(booking);
     }
 }

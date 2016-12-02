@@ -32,14 +32,28 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
 
     View.OnClickListener mOnClickListener;
 
+    /**
+     * used to determine how to display the subtitle
+     */
+    private boolean mIsBookingHoursClarificationExperimentEnabled;
+
+    /**
+     * @param isBookingHoursClarificationExperimentEnabled this is passed here because don't want to pass
+     *                                                     the entire config object or inject config manager,
+     *                                                     and don't want to pass it to bindBooking()
+     *                                                     since it should be constant
+     *                                                     throughout this holder's lifetime
+     */
     public BookingCardHolder(
             View itemView,
-            View.OnClickListener clickListener
+            View.OnClickListener clickListener,
+            boolean isBookingHoursClarificationExperimentEnabled
     )
     {
         super(itemView);
         ButterKnife.bind(this, itemView);
         mOnClickListener = clickListener;
+        mIsBookingHoursClarificationExperimentEnabled = isBookingHoursClarificationExperimentEnabled;
     }
 
     public void bindToBooking(@NonNull final Booking booking)
@@ -56,7 +70,10 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
 
         mImageIcon.setImageResource(BookingUtil.getIconForService(mBooking, iconType));
         mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
-        mTextBookingSubtitle.setText(BookingUtil.getSubtitle(mBooking, itemView.getContext()));
+        mTextBookingSubtitle.setText(BookingUtil.getSubtitle(
+                mBooking,
+                itemView.getContext(),
+                mIsBookingHoursClarificationExperimentEnabled));
 
         itemView.setTag(mBooking);
         itemView.setOnClickListener(new View.OnClickListener()

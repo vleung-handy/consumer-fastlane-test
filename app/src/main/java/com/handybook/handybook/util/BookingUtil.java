@@ -184,9 +184,63 @@ public class BookingUtil
                 booking.getBookingTimezone()).toLowerCase();
 
         return context.getString(
-                R.string.booking_card_row_time_and_duration,
+                R.string.booking_card_row_start_and_end_time,
                 start,
                 end
+        );
+    }
+
+    /**
+     * used for the booking list view items
+     * <p>
+     * Returns in the form of 3:00 pm - Up to 3 hours if the hours clarification experiment is
+     * enabled Otherwise returns in the form 3:00pm - 6:00pm
+     *
+     * @param booking
+     * @param context
+     * @return
+     */
+    public static String getSubtitle(
+            Booking booking,
+            Context context,
+            boolean bookingHoursClarificationExperimentEnabled
+    )
+    {
+        if (bookingHoursClarificationExperimentEnabled)
+        {
+            return getSubtitleForHoursClarificationExperiment(booking, context);
+        }
+        else
+        {
+            return getSubtitle(booking, context);
+        }
+    }
+
+    /**
+     * Returns in the form of 3:00 pm - Up to 3 hours
+     *
+     * @param booking
+     * @param context
+     * @return
+     */
+    public static String getSubtitleForHoursClarificationExperiment(
+            Booking booking,
+            Context context
+    )
+    {
+        //make sure this date is in the timezone of the booking location. This will be shown to the user
+        final String start = DateTimeUtils.formatDate(booking.getStartDate(),
+                                                      SUBTITLE_DATE_FORMAT,
+                                                      booking.getBookingTimezone()
+        ).toLowerCase();
+
+        float hours = booking.getHours();
+        String hoursDisplayString = TextUtils.formatDecimal(hours, "#.#") + " "
+                + context.getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
+        return context.getString(
+                R.string.booking_card_row_time_duration,
+                start,
+                hoursDisplayString
         );
     }
 
