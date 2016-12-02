@@ -10,6 +10,7 @@
                 android:paddingBottom="@dimen/default_padding_half"
                 android:paddingRight="@dimen/default_padding_half"
                 android:paddingLeft="@dimen/default_padding_quarter"
+                android:background="@color/white"
     >
     <ImageView
         android:id="@+id/conversation_unread_indicator"

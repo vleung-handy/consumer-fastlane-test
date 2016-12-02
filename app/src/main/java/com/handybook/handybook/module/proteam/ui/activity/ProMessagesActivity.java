@@ -218,7 +218,7 @@ public class ProMessagesActivity extends MessagesListActivity
         ));
         attachmentItemView.getAttachmentImage().setImageResource(R.drawable.ic_make_booking);
         attachmentItemView.getAttachmentText()
-                          .setText(getResources().getString(R.string.new_booking));
+                          .setText(getResources().getString(R.string.make_a_booking));
         attachmentItemView.setOnClickListener(new View.OnClickListener()
         {
             @Override
