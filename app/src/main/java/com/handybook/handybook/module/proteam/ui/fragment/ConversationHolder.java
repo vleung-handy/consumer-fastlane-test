@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,8 +30,8 @@ public class ConversationHolder extends RecyclerView.ViewHolder
     @Bind(R.id.conversation_image_profile)
     ImageView mImageProfile;
 
-    @Bind(R.id.conversation_image_heart)
-    ImageView mImageHeart;
+    @Bind(R.id.conversation_heart_container)
+    FrameLayout mHeartContainer;
 
     @Bind(R.id.conversation_unread_indicator)
     ImageView mUnreadIndicator;
@@ -97,11 +98,11 @@ public class ConversationHolder extends RecyclerView.ViewHolder
 
         if (mProTeamProViewModel.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED)
         {
-            mImageHeart.setVisibility(View.VISIBLE);
+            mHeartContainer.setVisibility(View.VISIBLE);
         }
         else
         {
-            mImageHeart.setVisibility(View.GONE);
+            mHeartContainer.setVisibility(View.GONE);
         }
 
         mTextTitle.setText(mProTeamProViewModel.getTitle());
