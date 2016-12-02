@@ -159,7 +159,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
         {
             //5:00 PM - Up to 3 hours
             timeText.setText(getResources().getString(
-                    R.string.booking_details_hours_clarification_experiment_hours_text_formatted,
+                    R.string.booking_details_hours_clarification_experiment_hours_formatted,
                     startTimeDisplayString,
                     numHoursDisplayString
             ));
@@ -174,7 +174,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
                             booking.getBookingTimezone()
                     );
             timeText.setText(getResources().getString(
-                    R.string.booking_details_hours_text_formatted,
+                    R.string.booking_details_hours_formatted,
                     startTimeDisplayString,
                     endTimeDisplayString,
                     numHoursDisplayString

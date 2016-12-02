@@ -184,7 +184,7 @@ public class BookingUtil
                 booking.getBookingTimezone()).toLowerCase();
 
         return context.getString(
-                R.string.booking_card_row_start_and_end_time,
+                R.string.booking_card_row_hours_formatted,
                 start,
                 end
         );
@@ -238,7 +238,7 @@ public class BookingUtil
         String hoursDisplayString = TextUtils.formatDecimal(hours, "#.#") + " "
                 + context.getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
         return context.getString(
-                R.string.booking_card_row_time_duration,
+                R.string.booking_card_row_hours_clarification_experiment_hours_formatted,
                 start,
                 hoursDisplayString
         );
