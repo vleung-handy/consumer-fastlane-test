@@ -125,6 +125,8 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
         {
             mAdapter = new HistoryListAdapter(
                     mBookings,
+                    configurationManager.getPersistentConfiguration()
+                                        .isBookingHoursClarificationExperimentEnabled(),
                     new View.OnClickListener()
                     {
                         @Override

@@ -71,13 +71,31 @@ public class DateTimeUtils
             return null;
         }
 
-        DateFormat customFormatter = new SimpleDateFormat(format);
+        DateFormat customFormatter = new SimpleDateFormat(format, Locale.getDefault());
         if (!android.text.TextUtils.isEmpty(timeZone))
         {
             customFormatter.setTimeZone(TimeZone.getTimeZone(timeZone));
         }
 
         return customFormatter.format(date);
+    }
+
+    /**
+     * see formatDate(Date date, String format, String timeZone)
+     * <p>
+     * convenience method so that we can reuse the patterns of DateTimeUtils' static formatters
+     * without a major refactor
+     *
+     * @param date
+     * @param format   this will not be modified. a new instance of SimpleDateFormat will be created
+     *                 instead of reusing this one because need to make a new instance of it to
+     *                 avoid modifying the original one's timezone
+     * @param timeZone
+     * @return
+     */
+    public static String formatDate(Date date, @NonNull SimpleDateFormat format, String timeZone)
+    {
+        return formatDate(date, format.toPattern(), timeZone);
     }
 
     /**

@@ -17,9 +17,19 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<Booking> mBookings;
     private View.OnClickListener mOnClickListener;
 
-    public HistoryListAdapter(final List<Booking> bookings, final View.OnClickListener onClickListener)
+    /**
+     * used by list item views to determine how to display the subtitle
+     */
+    private final boolean mIsBookingHoursClarificationExperimentEnabled;
+
+    public HistoryListAdapter(
+            final List<Booking> bookings,
+            final boolean isBookingHoursClarificationExperimentEnabled,
+            final View.OnClickListener onClickListener
+    )
     {
         mBookings = bookings;
+        mIsBookingHoursClarificationExperimentEnabled = isBookingHoursClarificationExperimentEnabled;
         mOnClickListener = onClickListener;
     }
 
@@ -29,7 +39,11 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_booking_list_item, parent, false);
 
-        return new BookingCardHolder(itemView, mOnClickListener);
+        return new BookingCardHolder(
+                itemView,
+                mOnClickListener,
+                mIsBookingHoursClarificationExperimentEnabled
+        );
     }
 
     @Override

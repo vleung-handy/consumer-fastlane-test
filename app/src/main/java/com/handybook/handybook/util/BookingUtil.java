@@ -13,9 +13,11 @@ import com.handybook.handybook.booking.model.BookingService;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -151,10 +153,8 @@ public class BookingUtil
     }
 
     public static final String TITLE_DATE_FORMAT = "EEEE',' MMMM d";
-    public static final String SUBTITLE_DATE_FORMAT = "h:mmaaa";
+    public static final SimpleDateFormat SUBTITLE_DATE_FORMAT = DateTimeUtils.CLOCK_FORMATTER_12HR;
     public static final int MINUTES_PER_HOUR = 60;
-    public static final String DURATION_FORMAT = "#.#";
-
 
     public enum IconType
     {
@@ -171,8 +171,11 @@ public class BookingUtil
     public static String getSubtitle(Booking booking, Context context)
     {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String start = DateTimeUtils.formatDate(booking.getStartDate(),
-                                                      SUBTITLE_DATE_FORMAT, booking.getBookingTimezone()).toLowerCase();
+        final String startDate = StringUtils.toLowerCase(DateTimeUtils.formatDate(
+                booking.getStartDate(),
+                SUBTITLE_DATE_FORMAT,
+                booking.getBookingTimezone()
+        ));
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(booking.getStartDate());
@@ -180,13 +183,79 @@ public class BookingUtil
         final Date endDate = cal.getTime();
 
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String end = DateTimeUtils.formatDate(endDate, SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone()).toLowerCase();
+        final String end = StringUtils.toLowerCase(DateTimeUtils.formatDate(endDate,
+                                                                            SUBTITLE_DATE_FORMAT,
+                                                                            booking.getBookingTimezone()
+        ));
 
         return context.getString(
-                R.string.booking_card_row_time_and_duration,
-                start,
+                R.string.booking_card_row_hours_formatted,
+                startDate,
                 end
+        );
+    }
+
+    /*
+    formats: "3.5 hours", "1 hour"
+     */
+    public static String getNumHoursDisplayString(float hours, Context context)
+    {
+        return TextUtils.formatDecimal(hours, "#.#") + " "
+                + context.getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
+
+    }
+
+    /**
+     * used for the booking list view items
+     * <p>
+     * Returns in the form of 3:00 pm (up to 3 hours) if the hours clarification experiment is
+     * enabled Otherwise returns in the form 3:00 pm - 6:00 pm
+     *
+     * @param booking
+     * @param context
+     * @return
+     */
+    public static String getSubtitle(
+            Booking booking,
+            Context context,
+            boolean bookingHoursClarificationExperimentEnabled
+    )
+    {
+        if (bookingHoursClarificationExperimentEnabled)
+        {
+            return getSubtitleForHoursClarificationExperiment(booking, context);
+        }
+        else
+        {
+            return getSubtitle(booking, context);
+        }
+    }
+
+    /**
+     * Returns in the form of 3:00 pm (up to 3 hours)
+     *
+     * @param booking
+     * @param context
+     * @return
+     */
+    public static String getSubtitleForHoursClarificationExperiment(
+            Booking booking,
+            Context context
+    )
+    {
+        //make sure this date is in the timezone of the booking location. This will be shown to the user
+        final String startTime = StringUtils.toLowerCase(DateTimeUtils.formatDate(
+                booking.getStartDate(),
+                SUBTITLE_DATE_FORMAT,
+                booking.getBookingTimezone()
+        ));
+
+        float hours = booking.getHours();
+        String hoursDisplayString = getNumHoursDisplayString(hours, context);
+        return context.getString(
+                R.string.booking_details_hours_clarification_experiment_hours_formatted,
+                startTime,
+                hoursDisplayString
         );
     }
 

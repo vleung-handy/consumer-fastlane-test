@@ -14,20 +14,32 @@ public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder>
     private List<Booking> mUpcomingBookings;
     private View.OnClickListener mClickListener;
 
+    /**
+     * used by list item views to determine how to display the subtitle
+     */
+    private final boolean mIsBookingHoursClarificationExperimentEnabled;
+
     public BookingListAdapter(
             final List<Booking> upcomingBookings,
-            final View.OnClickListener clickListener
+            final View.OnClickListener clickListener,
+            final boolean isBookingHoursClarificationExperimentEnabled
     )
     {
         mUpcomingBookings = upcomingBookings;
         mClickListener = clickListener;
+        mIsBookingHoursClarificationExperimentEnabled = isBookingHoursClarificationExperimentEnabled;
     }
 
     @Override
     public BookingItemHolder onCreateViewHolder(final ViewGroup parent, final int viewType)
     {
 
-        BookingListItem item = new BookingListItem(parent.getContext(), null, null);
+        BookingListItem item = new BookingListItem(
+                parent.getContext(),
+                null,
+                null,
+                mIsBookingHoursClarificationExperimentEnabled
+        );
 
         item.setLayoutParams(new RecyclerView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

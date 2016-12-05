@@ -130,7 +130,10 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
     {
         SupportFragmentTestUtil.startFragment(mActiveFragment);
         assertEquals("Thursday, August 25", mActiveFragment.mTextBookingTitle.getText().toString());
-        assertEquals("9:16am – 11:16am", mActiveFragment.mTextBookingSubtitle.getText().toString());
+        assertEquals(
+                "9:16 am – 11:16 am",
+                mActiveFragment.mTextBookingSubtitle.getText().toString()
+        );
     }
 
     /**

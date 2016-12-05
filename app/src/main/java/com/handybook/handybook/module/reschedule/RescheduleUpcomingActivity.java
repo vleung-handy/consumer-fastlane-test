@@ -133,7 +133,10 @@ public class RescheduleUpcomingActivity extends BaseActivity
                 mSelectedBooking = ((BookingListItem) v).getBooking();
                 getPreRescheduleInfo();
             }
-        });
+        },
+                                          mConfigurationManager.getPersistentConfiguration()
+                                                               .isBookingHoursClarificationExperimentEnabled()
+        );
         mRecyclerView.setAdapter(mAdapter);
     }
 

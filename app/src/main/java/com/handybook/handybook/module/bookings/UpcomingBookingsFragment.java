@@ -358,7 +358,9 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                             );
                         }
                     },
-                    booking
+                    booking,
+                    configurationManager.getPersistentConfiguration()
+                                        .isBookingHoursClarificationExperimentEnabled()
             ));
 
             //add divider
