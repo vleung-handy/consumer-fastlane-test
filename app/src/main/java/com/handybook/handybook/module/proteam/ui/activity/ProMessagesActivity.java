@@ -340,7 +340,12 @@ public class ProMessagesActivity extends MessagesListActivity
         if (bookings == null || bookings.isEmpty())
         {
             mBus.post(new LogEvent.AddLogEvent(new ChatLog.NoUpcomingBookingsLog()));
-            Toast.makeText(this, R.string.reschedule_no_bookings, Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    this,
+                    getString(R.string.reschedule_no_bookings_formatted, mProTeamPro.getName()),
+                    Toast.LENGTH_LONG
+            )
+                 .show();
         }
         else
         {

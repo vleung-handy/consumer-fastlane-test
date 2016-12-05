@@ -470,7 +470,7 @@
     <string name="reschedule_title">Select a booking to reschedule</string>
     <string name="reschedule_try_again">There was an issue rescheduling, please try again.</string>
     <string name="reschedule_select_booking">Please select a booking to reschedule</string>
-    <string name="reschedule_no_bookings">You have no bookings to reschedule.</string>
+    <string name="reschedule_no_bookings_formatted">You don\'t have any upcoming bookings! Make a new booking to work with %1$s again.</string>
     <string name="conversation_cannot_load">Cannot load this conversation. Please try again.</string>
 
 </resources>
