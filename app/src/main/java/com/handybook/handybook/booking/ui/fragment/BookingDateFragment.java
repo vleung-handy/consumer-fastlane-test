@@ -203,13 +203,6 @@ public final class BookingDateFragment extends BookingFlowFragment
 
             mRescheduleType = (BookingDetailFragment.RescheduleType)
                     getArguments().getSerializable(EXTRA_RESCHEDULE_TYPE);
-
-            // flash notice since it may not initially appear in view
-            if (savedInstanceState == null && mNotice != null)
-            {
-                toast.setText(mNotice);
-                toast.show();
-            }
         }
         else
         {
