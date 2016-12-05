@@ -30,6 +30,7 @@ public class BundleKeys
     public static final String PRO_JOB_STATUS = "pro_statuses";
     public static final String PRO_TEAM = "pro_team";
     public static final String PRO_TEAM_PRO = "pro_team_pro";
+    public static final String PRO_TEAM_PRO_PREFERENCE = "pro_team_pro_preference";
 
     public static final String RESCHEDULE_BOOKING = "reschedule_booking";
     public static final String RESCHEDULE_NOTICE = "reschedule_notice";

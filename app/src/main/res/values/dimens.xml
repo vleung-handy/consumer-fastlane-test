@@ -114,4 +114,5 @@
     <dimen name="unread_indicator_left_margin">-12dp</dimen>
 
     <dimen name="attachment_item_height">48dp</dimen>
+    <dimen name="chat_toolbar_icon_size">48dp</dimen>
 </resources>

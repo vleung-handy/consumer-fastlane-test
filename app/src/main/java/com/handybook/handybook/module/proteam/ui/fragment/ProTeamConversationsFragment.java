@@ -197,7 +197,8 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
                             startMessagesActivity(
                                     conversation.getId(),
                                     mSelectedProTeamMember.getTitle(),
-                                    mSelectedProTeamMember.getProTeamPro()
+                                    mSelectedProTeamMember.getProTeamPro(),
+                                    mSelectedProTeamMember.getProviderMatchPreference()
                             );
                         }
                         else
@@ -214,12 +215,18 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         clearNotifications();
     }
 
-    private void startMessagesActivity(Uri conversationId, String title, ProTeamPro mPro)
+    private void startMessagesActivity(
+            final Uri conversationId,
+            final String title,
+            final ProTeamPro mPro,
+            final ProviderMatchPreference preference
+    )
     {
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);
         intent.putExtra(LayerConstants.LAYER_MESSAGE_TITLE, title);
         intent.putExtra(BundleKeys.PRO_TEAM_PRO, mPro);
+        intent.putExtra(BundleKeys.PRO_TEAM_PRO_PREFERENCE, preference);
         startActivity(intent);
     }
 
@@ -254,7 +261,8 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         startMessagesActivity(
                 Uri.parse(conversationId),
                 mSelectedProTeamMember.getTitle(),
-                mSelectedProTeamMember.getProTeamPro()
+                mSelectedProTeamMember.getProTeamPro(),
+                mSelectedProTeamMember.getProviderMatchPreference()
         );
 
         progressDialog.dismiss();

@@ -27,14 +27,15 @@ import com.handybook.handybook.module.proteam.manager.ProTeamManager;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamPro;
 import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
+import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
+import com.handybook.handybook.ui.view.ProAvatarView;
 import com.handybook.shared.layer.ui.AttachmentItemView;
 import com.handybook.shared.layer.ui.MessagesListActivity;
-import com.layer.atlas.util.picasso.transformations.CircleTransform;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
 import com.squareup.otto.Bus;
-import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -44,6 +45,9 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
+import static com.handybook.handybook.constant.BundleKeys.PRO_TEAM_PRO;
+import static com.handybook.handybook.constant.BundleKeys.PRO_TEAM_PRO_PREFERENCE;
+import static com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel.from;
 
 /**
  * This is a derivation of the MessagesListActivity that allows for a reschedule flow
@@ -69,7 +73,7 @@ public class ProMessagesActivity extends MessagesListActivity
     private AttachmentItemView mNewBookingButton;
     private ProgressDialog mProgressDialog;
     private Service mCleaningService;
-    private ProTeamPro mProTeamPro;
+    private ProTeamProViewModel mProTeamProViewModel;
     private int mAttachmentViewItemHeight;
 
     @Override
@@ -79,9 +83,15 @@ public class ProMessagesActivity extends MessagesListActivity
 
         ((BaseApplication) getApplication()).inject(this);
 
-        mAvatar.setImageResource(R.drawable.img_pro_placeholder);
+        ProTeamPro pro = (ProTeamPro) getIntent().getSerializableExtra(PRO_TEAM_PRO);
+        ProviderMatchPreference matchPreference = (ProviderMatchPreference) getIntent().getSerializableExtra(
+                PRO_TEAM_PRO_PREFERENCE);
 
-        mProTeamPro = (ProTeamPro) getIntent().getSerializableExtra(BundleKeys.PRO_TEAM_PRO);
+        if (pro != null && matchPreference != null)
+        {
+            mProTeamProViewModel = from(pro, matchPreference, false);
+        }
+
         updateProAvatar();
         mAttachmentViewItemHeight = getResources().getDimensionPixelSize(R.dimen.attachment_item_height);
 
@@ -110,14 +120,13 @@ public class ProMessagesActivity extends MessagesListActivity
 
     private void updateProAvatar()
     {
-        if (mProTeamPro != null)
+        if (mProTeamProViewModel != null)
         {
-            Picasso.with(mAvatar.getContext())
-                   .load(mProTeamPro.getImageUrl())
-                   .placeholder(R.drawable.img_pro_placeholder)
-                   .noFade()
-                   .transform(new CircleTransform(mProTeamPro.getImageUrl()))
-                   .into(mAvatar);
+            int size = getResources().getDimensionPixelSize(R.dimen.chat_toolbar_icon_size);
+            ProAvatarView avatar = new ProAvatarView(this, size);
+            avatar.bindPro(mProTeamProViewModel);
+            mAvatarContainer.addView(avatar);
+            mAvatarContainer.setVisibility(View.VISIBLE);
         }
     }
 
@@ -158,7 +167,7 @@ public class ProMessagesActivity extends MessagesListActivity
         {
             return;
         }
-        if (mProTeamPro != null)
+        if (mProTeamProViewModel != null)
         {
             mRescheduleButton.setVisibility(View.VISIBLE);
         }
@@ -172,33 +181,57 @@ public class ProMessagesActivity extends MessagesListActivity
 
     public void onProTeamReceived(ProTeam proTeam)
     {
-        for (final ProTeamPro preferred : proTeam.getAllCategories().getPreferred())
+        if (proTeam != null && proTeam.getAllCategories() != null)
         {
-            if (preferred.isChatEnabled()
-                    && containsId(mConversation.getParticipants(), preferred.getLayerUserId()))
+            if (proTeam.getAllCategories().getPreferred() != null)
             {
-                mProTeamPro = preferred;
-                updateProAvatar();
-                refreshAttachmentMenu();
-                return;
-            }
-        }
+                for (final ProTeamPro preferred : proTeam.getAllCategories().getPreferred())
+                {
+                    if (preferred.isChatEnabled()
+                            && containsId(
+                            mConversation.getParticipants(),
+                            preferred.getLayerUserId()
+                    ))
+                    {
 
-        for (final ProTeamPro indifferent : proTeam.getAllCategories().getIndifferent())
-        {
-            if (indifferent.isChatEnabled()
-                    && containsId(mConversation.getParticipants(), indifferent.getLayerUserId()))
+                        mProTeamProViewModel = from(
+                                preferred,
+                                ProviderMatchPreference.PREFERRED,
+                                false
+                        );
+                        updateProAvatar();
+                        refreshAttachmentMenu();
+                        return;
+                    }
+                }
+            }
+
+            if (proTeam.getAllCategories().getIndifferent() != null)
             {
-                mProTeamPro = indifferent;
-                updateProAvatar();
-                refreshAttachmentMenu();
-                return;
+                for (final ProTeamPro indifferent : proTeam.getAllCategories().getIndifferent())
+                {
+                    if (indifferent.isChatEnabled()
+                            && containsId(
+                            mConversation.getParticipants(),
+                            indifferent.getLayerUserId()
+                    ))
+                    {
+                        mProTeamProViewModel = from(
+                                indifferent,
+                                ProviderMatchPreference.INDIFFERENT,
+                                false
+                        );
+                        updateProAvatar();
+                        refreshAttachmentMenu();
+                        return;
+                    }
+                }
             }
         }
 
         //by the time we get here, if we didn't find any matching pro, that means we're not supposed
         //to be in this conversation to begin with. Exit. Most of the time this should not happen.
-        if (mProTeamPro == null)
+        if (mProTeamProViewModel == null)
         {
             Toast.makeText(this, R.string.conversation_cannot_load, Toast.LENGTH_SHORT);
             startActivity(new Intent(this, ProTeamActivity.class));
@@ -246,18 +279,18 @@ public class ProMessagesActivity extends MessagesListActivity
             {
                 getAttachmentMenu().dismiss();
                 if (mCleaningService != null
-                        && mProTeamPro != null
-                        && mProTeamPro.getCategoryType()
-                                      .toString()
-                                      .toLowerCase()
-                                      .contains(PREFIX_CLEAN_CONSTANT)
+                        && mProTeamProViewModel != null
+                        && mProTeamProViewModel.getProTeamPro().getCategoryType()
+                                               .toString()
+                                               .toLowerCase()
+                                               .contains(PREFIX_CLEAN_CONSTANT)
                         )
                 {
 
                     //for cleaning, we want to start the booking flow right away.
                     mBus.post(new LogEvent.AddLogEvent(
                             new ChatLog.MakeBookingSelectedLog(
-                                    String.valueOf(mProTeamPro.getId()),
+                                    String.valueOf(mProTeamProViewModel.getProTeamPro().getId()),
                                     mConversation.getId().toString(),
                                     String.valueOf(mCleaningService.getId())
                     )));
@@ -266,7 +299,12 @@ public class ProMessagesActivity extends MessagesListActivity
                 else
                 {
                     mBus.post(new LogEvent.AddLogEvent(new ChatLog.MakeBookingSelectedLog(String.valueOf(
-                            mProTeamPro.getId()), mConversation.getId().toString(), null)));
+                            mProTeamProViewModel.getProTeamPro().getId()),
+                                                                                          mConversation
+                                                                                                  .getId()
+                                                                                                  .toString(),
+                                                                                          null
+                    )));
                     startActivity(new Intent(
                             ProMessagesActivity.this,
                             ServiceCategoriesActivity.class
@@ -316,7 +354,10 @@ public class ProMessagesActivity extends MessagesListActivity
             {
                 getAttachmentMenu().dismiss();
                 mBus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleSelectedLog(String.valueOf(
-                        mProTeamPro.getId()), mConversation.getId().toString())));
+                        mProTeamProViewModel.getProTeamPro().getId()),
+                                                                                     mConversation.getId()
+                                                                                                  .toString()
+                )));
 
                 //before we send the user to the reschedule bookings page, we check to make sure
                 //there are upcoming bookings to reschedule
@@ -342,10 +383,12 @@ public class ProMessagesActivity extends MessagesListActivity
             mBus.post(new LogEvent.AddLogEvent(new ChatLog.NoUpcomingBookingsLog()));
             Toast.makeText(
                     this,
-                    getString(R.string.reschedule_no_bookings_formatted, mProTeamPro.getName()),
+                    getString(
+                            R.string.reschedule_no_bookings_formatted,
+                            mProTeamProViewModel.getProTeamPro().getName()
+                    ),
                     Toast.LENGTH_LONG
-            )
-                 .show();
+            ).show();
         }
         else
         {
@@ -354,7 +397,10 @@ public class ProMessagesActivity extends MessagesListActivity
                     RescheduleUpcomingActivity.class
             );
 
-            intent.putExtra(BundleKeys.PROVIDER_ID, String.valueOf(mProTeamPro.getId()));
+            intent.putExtra(
+                    BundleKeys.PROVIDER_ID,
+                    String.valueOf(mProTeamProViewModel.getProTeamPro().getId())
+            );
             intent.putExtra(BundleKeys.BOOKINGS, (Serializable) bookings);
             startActivity(intent);
         }
