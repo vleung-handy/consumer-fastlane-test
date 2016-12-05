@@ -5,20 +5,16 @@ import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.DateTimeUtils;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.handybook.ui.view.ProAvatarView;
 import com.handybook.shared.layer.LayerUtil;
-import com.layer.atlas.util.picasso.transformations.CircleTransform;
 import com.layer.sdk.messaging.Message;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -27,11 +23,9 @@ import butterknife.ButterKnife;
 
 public class ConversationHolder extends RecyclerView.ViewHolder
 {
-    @Bind(R.id.conversation_image_profile)
-    ImageView mImageProfile;
 
-    @Bind(R.id.conversation_heart_container)
-    FrameLayout mHeartContainer;
+    @Bind(R.id.conversation_avatar)
+    ProAvatarView mProAvatarView;
 
     @Bind(R.id.conversation_unread_indicator)
     ImageView mUnreadIndicator;
@@ -81,30 +75,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
     public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel)
     {
         mProTeamProViewModel = proTeamProViewModel;
-
-        if (!TextUtils.isEmpty(mProTeamProViewModel.getImageUrl()))
-        {
-            Picasso.with(mImageProfile.getContext())
-                   .load(mProTeamProViewModel.getImageUrl())
-                   .placeholder(R.drawable.img_pro_placeholder)
-                   .noFade()
-                   .transform(new CircleTransform(mProTeamProViewModel.getImageUrl()))
-                   .into(mImageProfile);
-        }
-        else
-        {
-            mImageProfile.setImageResource(R.drawable.img_pro_placeholder);
-        }
-
-        if (mProTeamProViewModel.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED)
-        {
-            mHeartContainer.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            mHeartContainer.setVisibility(View.GONE);
-        }
-
+        mProAvatarView.bindPro(proTeamProViewModel);
         mTextTitle.setText(mProTeamProViewModel.getTitle());
         mTextMessage.setText(mNewConversationMessage);
         mTextMessage.setTextColor(mHandyTertiaryGray);

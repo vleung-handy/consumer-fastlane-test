@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar_image_profile"
+        app:civ_border_color="@color/handy_divider_line"
+        app:civ_border_width="1dp"
+        tools:src="@drawable/img_pro_placeholder"
+        android:layout_width="@dimen/mini_pro_profile_image_size"
+        android:layout_height="@dimen/mini_pro_profile_image_size"
+        android:contentDescription="Pro Team Image"
+        />
+
+    <FrameLayout
+        android:id="@+id/avatar_heart_container"
+        tools:visibility="visible"
+        android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_container_size_small"
+        android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_container_size_small"
+        android:layout_alignEnd="@id/avatar_image_profile"
+        android:layout_alignRight="@id/avatar_image_profile"
+        android:background="@drawable/bg_circle_white"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size_small"
+            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size_small"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_heart_small"
+            />
+
+    </FrameLayout>
+
+</merge>
