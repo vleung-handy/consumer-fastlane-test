@@ -90,7 +90,10 @@ public final class BookingDateFragment extends BookingFlowFragment
                 date.set(Calendar.SECOND, 0);
                 date.set(Calendar.MILLISECOND, 0);
                 date.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
-                if (mRescheduleBooking.isRecurring())
+
+                //we only do recurring reschedules if not coming from chat.
+                if ((mRescheduleBooking.isRecurring()
+                        && (mRescheduleType == null || mRescheduleType != BookingDetailFragment.RescheduleType.FROM_CHAT)))
                 {
                     final Intent intent = new Intent(
                             getActivity(),
@@ -200,13 +203,6 @@ public final class BookingDateFragment extends BookingFlowFragment
 
             mRescheduleType = (BookingDetailFragment.RescheduleType)
                     getArguments().getSerializable(EXTRA_RESCHEDULE_TYPE);
-
-            // flash notice since it may not initially appear in view
-            if (savedInstanceState == null && mNotice != null)
-            {
-                toast.setText(mNotice);
-                toast.show();
-            }
         }
         else
         {
