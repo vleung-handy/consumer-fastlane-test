@@ -20,8 +20,6 @@ import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.util.BookingUtil;
 import com.squareup.otto.Subscribe;
@@ -32,8 +30,6 @@ import java.util.List;
 public class BookingDetailSectionFragmentProInformation extends
         BookingDetailSectionFragment<BookingDetailSectionProInfoView>
 {
-    private Configuration mConfiguration;
-
     public static BookingDetailSectionFragmentProInformation newInstance()
     {
         return new BookingDetailSectionFragmentProInformation();
@@ -50,7 +46,6 @@ public class BookingDetailSectionFragmentProInformation extends
     {
         return R.string.booking_details_pro_info_title;
     }
-
 
     @Override
     protected void updateActionTextView(
@@ -77,9 +72,7 @@ public class BookingDetailSectionFragmentProInformation extends
         }
         else if (!booking.isPast())
         {
-            if (mConfiguration != null
-                    && mConfiguration.isMyProTeamEnabled() //don't want to show pro team button when pro team disabled
-                    && !booking.hasAssignedProvider() //don't want to show team management button when booking already has provider
+            if (!booking.hasAssignedProvider() //don't want to show team management button when booking already has provider
                     && booking.getProviderAssignmentInfo() != null
                     /*
                     when provider assignment info is missing, we fall back to a
@@ -101,34 +94,6 @@ public class BookingDetailSectionFragmentProInformation extends
                 actionTextView.setVisibility(View.VISIBLE);
             }
             //handle more actions
-        }
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if (mConfiguration == null)
-        {
-            bus.post(new ConfigurationEvent.RequestConfiguration());
-        }
-    }
-
-    @Subscribe
-    public void onReceiveConfigurationSuccess(
-            final ConfigurationEvent.ReceiveConfigurationSuccess event
-    )
-    {
-        if (event != null)
-        {
-            mConfiguration = event.getConfiguration();
-            if (event.getConfiguration() != null && event.getConfiguration().isMyProTeamEnabled())
-            {
-                if (booking != null && userManager.getCurrentUser() != null)
-                {
-                    updateDisplay(booking, userManager.getCurrentUser());
-                }
-            }
         }
     }
 
@@ -185,10 +150,7 @@ public class BookingDetailSectionFragmentProInformation extends
 
         if (providerAssignmentInfo != null)
         {
-            if (mConfiguration != null
-                    && mConfiguration.isMyProTeamEnabled()
-                    && providerAssignmentInfo.isProTeamMatch()
-                    )
+            if (providerAssignmentInfo.isProTeamMatch())
             {
                 //indicate that this pro is on the user's pro team
                 getSectionView().setAssignedProTeamMatchIndicatorVisible(true);
@@ -211,22 +173,15 @@ public class BookingDetailSectionFragmentProInformation extends
             getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
             updateAndShowEntryText(providerAssignmentInfo);
         }
-        else if (mConfiguration != null && mConfiguration.isMyProTeamEnabled())
+        else
         {
             //fallback view for when there's no provider assignment info object and pro teams are enabled
             getSectionView().setLegacyNoProViewVisible(true);
         }
-        else
-        {
-            //fallback view for when no provider assignment object and pro teams not enabled
-            getSectionView().getEntryText().setVisibility(View.VISIBLE);
-            getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
-            getSectionView().getEntryText().setText(R.string.pro_assignment_pending);
-        }
     }
 
     @Override
-    public void updateDisplay(Booking booking, User user)
+    public void updateDisplay(@NonNull Booking booking, @NonNull User user)
     {
         super.updateDisplay(booking, user);
 
@@ -253,6 +208,7 @@ public class BookingDetailSectionFragmentProInformation extends
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        updateDisplay(booking, userManager.getCurrentUser());
         getSectionView().setLegacyNoProViewProTeamButtonClickListener(new View.OnClickListener()
         {
             @Override

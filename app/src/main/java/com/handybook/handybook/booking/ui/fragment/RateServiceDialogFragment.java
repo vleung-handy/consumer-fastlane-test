@@ -323,16 +323,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         if (event != null)
         {
             mConfiguration = event.getConfiguration();
-            if (isProTeamEnabled())
-            {
-                initProTeamSection();
-            }
+            initProTeamSection();
         }
-    }
-
-    private boolean isProTeamEnabled()
-    {
-        return mConfiguration != null && mConfiguration.isMyProTeamEnabled();
     }
 
     @Subscribe
@@ -374,8 +366,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             mSubmitButtonLayout.setVisibility(View.VISIBLE);
 
             //this is zero indexed, so this means 4 stars or higher
-            if (!isProTeamEnabled() || (rating >= RAW_RATING_THRESHOLD && mPrerateProInfo != null &&
-                    mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED))
+            if (rating >= RAW_RATING_THRESHOLD && mPrerateProInfo != null &&
+                    mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED)
             {
                 mProTeamSection.setVisibility(View.GONE);
             }
@@ -442,7 +434,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
     private void initProTeamSection()
     {
-        if (isProTeamEnabled() && mPrerateProInfo != null)
+        if (mPrerateProInfo != null)
         {
             mRateProTeamFragment = (RateProTeamFragment) getChildFragmentManager().findFragmentByTag(RateProTeamFragment.class.getSimpleName());
             if (mRateProTeamFragment == null)
