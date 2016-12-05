@@ -30,9 +30,11 @@ import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
 import com.handybook.shared.layer.ui.AttachmentItemView;
 import com.handybook.shared.layer.ui.MessagesListActivity;
+import com.layer.atlas.util.picasso.transformations.CircleTransform;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
 import com.squareup.otto.Bus;
+import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -77,7 +79,10 @@ public class ProMessagesActivity extends MessagesListActivity
 
         ((BaseApplication) getApplication()).inject(this);
 
+        mAvatar.setImageResource(R.drawable.img_pro_placeholder);
+
         mProTeamPro = (ProTeamPro) getIntent().getSerializableExtra(BundleKeys.PRO_TEAM_PRO);
+        updateProAvatar();
         mAttachmentViewItemHeight = getResources().getDimensionPixelSize(R.dimen.attachment_item_height);
 
         setupCustomAttachmentMenus();
@@ -101,6 +106,19 @@ public class ProMessagesActivity extends MessagesListActivity
 
         refreshAttachmentMenu();
         initCleaningService();
+    }
+
+    private void updateProAvatar()
+    {
+        if (mProTeamPro != null)
+        {
+            Picasso.with(mAvatar.getContext())
+                   .load(mProTeamPro.getImageUrl())
+                   .placeholder(R.drawable.img_pro_placeholder)
+                   .noFade()
+                   .transform(new CircleTransform(mProTeamPro.getImageUrl()))
+                   .into(mAvatar);
+        }
     }
 
     /**
@@ -160,6 +178,7 @@ public class ProMessagesActivity extends MessagesListActivity
                     && containsId(mConversation.getParticipants(), preferred.getLayerUserId()))
             {
                 mProTeamPro = preferred;
+                updateProAvatar();
                 refreshAttachmentMenu();
                 return;
             }
@@ -171,6 +190,7 @@ public class ProMessagesActivity extends MessagesListActivity
                     && containsId(mConversation.getParticipants(), indifferent.getLayerUserId()))
             {
                 mProTeamPro = indifferent;
+                updateProAvatar();
                 refreshAttachmentMenu();
                 return;
             }
