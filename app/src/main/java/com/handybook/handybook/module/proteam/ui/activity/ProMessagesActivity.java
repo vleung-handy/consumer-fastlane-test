@@ -255,6 +255,8 @@ public class ProMessagesActivity extends MessagesListActivity
 
     private void setupCustomAttachmentMenus()
     {
+        getAttachmentButton().setImageResource(R.drawable.ic_calendar_plus);
+
         mRescheduleButton = getRescheduleView();
         mNewBookingButton = getNewBookingView();
 
@@ -340,7 +342,7 @@ public class ProMessagesActivity extends MessagesListActivity
     private AttachmentItemView getRescheduleView()
     {
         AttachmentItemView attachmentItemView = new AttachmentItemView(this);
-        attachmentItemView.getAttachmentImage().setImageResource(R.drawable.ic_reschedule_booking);
+        attachmentItemView.getAttachmentImage().setImageResource(R.drawable.ic_reschedule);
         attachmentItemView.setLayoutParams(new RecyclerView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 mAttachmentViewItemHeight
