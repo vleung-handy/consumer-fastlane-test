@@ -75,6 +75,7 @@ public class ProMessagesActivity extends MessagesListActivity
     private Service mCleaningService;
     private ProTeamProViewModel mProTeamProViewModel;
     private int mAttachmentViewItemHeight;
+    private User mUser;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -102,8 +103,8 @@ public class ProMessagesActivity extends MessagesListActivity
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(getString(R.string.rescheduling));
 
-        User user = mUserManager.getCurrentUser();
-        if (user == null)
+        mUser = mUserManager.getCurrentUser();
+        if (mUser == null)
         {
             //we're in an invalid state, redirect to login.
             Toast.makeText(this, R.string.prompt_login, Toast.LENGTH_SHORT).show();
@@ -328,10 +329,9 @@ public class ProMessagesActivity extends MessagesListActivity
         request.setServiceId(mCleaningService.getId());
         request.setUniq(mCleaningService.getUniq());
         request.setCoupon(mBookingManager.getPromoTabCoupon());
-        final User user = mUserManager.getCurrentUser();
-        if (user != null)
+        if (mUser != null)
         {
-            request.setEmail(user.getEmail());
+            request.setEmail(mUser.getEmail());
         }
         mBookingManager.clear();
         mBookingManager.setCurrentRequest(request);
@@ -361,13 +361,12 @@ public class ProMessagesActivity extends MessagesListActivity
                                                                                                   .toString()
                 )));
 
-                //before we send the user to the reschedule bookings page, we check to make sure
+                //before we send the mUser to the reschedule bookings page, we check to make sure
                 //there are upcoming bookings to reschedule
 
                 mProgressDialog.show();
-                mDataManager.getBookings(
-                        mUserManager.getCurrentUser(),
-                        Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING,
+                mDataManager.getBookingsForReschedule(
+                        String.valueOf(mProTeamProViewModel.getProTeamPro().getId()),
                         new BookingsCallback(ProMessagesActivity.this)
                 );
             }

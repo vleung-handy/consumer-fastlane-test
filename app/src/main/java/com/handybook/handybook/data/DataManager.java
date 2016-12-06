@@ -73,6 +73,8 @@ import javax.inject.Inject;
 
 import retrofit.mime.TypedInput;
 
+import static com.handybook.handybook.booking.model.Booking.List.VALUE_ONLY_BOOKINGS_RESCHEDULABLE;
+
 public class DataManager
 {
     private static final String TAG = DataManager.class.getName();
@@ -522,6 +524,7 @@ public class DataManager
     {
         mService.getBookings(
                 null,
+                null,
                 new UserBookingsWrapperHandyRetroFitCallback(cb)
         );
     }
@@ -534,18 +537,18 @@ public class DataManager
     {
         mService.getBookings(
                 onlyBookingValue,
+                null,
                 new UserBookingsWrapperHandyRetroFitCallback(cb)
         );
     }
 
     public final void getBookingsForReschedule(
             final String providerId,
-            @NonNull @Booking.List.OnlyBookingValues final String onlyBookingValue,
             final Callback<UserBookingsWrapper> cb
     )
     {
-        mService.getBookingsForReschedule(
-                onlyBookingValue,
+        mService.getBookings(
+                VALUE_ONLY_BOOKINGS_RESCHEDULABLE,
                 providerId,
                 new UserBookingsWrapperHandyRetroFitCallback(cb)
         );

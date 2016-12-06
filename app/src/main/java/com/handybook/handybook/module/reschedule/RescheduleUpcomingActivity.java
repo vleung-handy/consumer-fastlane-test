@@ -70,9 +70,9 @@ public class RescheduleUpcomingActivity extends BaseActivity
                 onBackPressed();
             }
         });
-
         if (!mUserManager.isUserLoggedIn())
         {
+            //user is not logged in.
             startActivity(new Intent(this, ServiceCategoriesActivity.class));
             finish();
             return;
@@ -101,7 +101,6 @@ public class RescheduleUpcomingActivity extends BaseActivity
         mProgressDialog.show();
         mDataManager.getBookingsForReschedule(
                 mProviderId,
-                Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING,
                 new BookingsCallback(this)
         );
     }
