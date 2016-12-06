@@ -3,6 +3,8 @@ package com.handybook.handybook.receiver;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
@@ -12,7 +14,7 @@ import com.layer.sdk.messaging.Message;
 
 public class LayerPushReceiver extends PushNotificationReceiver
 {
-    private static final String MESSAGES_BACK_NAVIGATION_DEEPLINK =
+    private static final String MESSAGES_DEEPLINK =
             DeepLinkIntentProvider.DEEP_LINK_BASE_URL + "pro_team";
 
     @Override
@@ -30,17 +32,31 @@ public class LayerPushReceiver extends PushNotificationReceiver
         }
     }
 
+    @Nullable
     @Override
-    protected PendingIntent createNotificationClickIntent(final Context context,
-                                                          final Message message)
+    protected PendingIntent createNotificationClickIntent(
+            final Context context,
+            @Nullable final Message message
+    )
     {
-        final Intent intent = new Intent(context, ProMessagesActivity.class)
-                .setPackage(context.getApplicationContext().getPackageName())
-                .putExtra(LayerConstants.LAYER_CONVERSATION_KEY, message.getConversation().getId())
-                .putExtra(LayerConstants.LAYER_MESSAGE_KEY, message.getId())
-                .putExtra(LayerConstants.KEY_BACK_NAVIGATION_DEEPLINK,
-                          MESSAGES_BACK_NAVIGATION_DEEPLINK)
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent;
+        if (message != null)
+        {
+            intent = new Intent(context, ProMessagesActivity.class)
+                    .setPackage(context.getApplicationContext().getPackageName())
+                    .putExtra(
+                            LayerConstants.LAYER_CONVERSATION_KEY,
+                            message.getConversation().getId()
+                    )
+                    .putExtra(LayerConstants.LAYER_MESSAGE_KEY, message.getId())
+                    .putExtra(LayerConstants.KEY_BACK_NAVIGATION_DEEPLINK, MESSAGES_DEEPLINK)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
+        else
+        {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MESSAGES_DEEPLINK))
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
     }
 }
