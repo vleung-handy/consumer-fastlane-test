@@ -37,7 +37,7 @@
         android:layout_toRightOf="@id/space"
         />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -51,10 +51,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
             android:textSize="@dimen/text_size_large"
             tools:text="Jennifer C."
             android:includeFontPadding="false"
+            />
+
+
+        <ImageView
+            android:id="@+id/conversation_type_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/default_margin_half"
+            android:layout_marginStart="@dimen/default_margin_half"
+            android:layout_toRightOf="@id/conversation_title"
+            tools:src="@drawable/ic_handyman_outline_small"
+            android:layout_alignBottom="@id/conversation_title"
             />
 
         <TextView
@@ -72,7 +84,7 @@
             tools:text="Hi, I can't come on friday this week, but I can do it next week"
             android:includeFontPadding="false"
             />
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/conversation_timestamp"

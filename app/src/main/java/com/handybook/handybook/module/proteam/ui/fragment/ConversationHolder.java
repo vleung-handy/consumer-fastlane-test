@@ -21,6 +21,8 @@ import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 
+import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
+
 public class ConversationHolder extends RecyclerView.ViewHolder
 {
 
@@ -38,6 +40,9 @@ public class ConversationHolder extends RecyclerView.ViewHolder
 
     @Bind(R.id.conversation_timestamp)
     TextView mTextTimestamp;
+
+    @Bind(R.id.conversation_type_indicator)
+    ImageView mServiceTypeIndicator;
 
     private ProTeamProViewModel mProTeamProViewModel;
 
@@ -82,6 +87,20 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         mTextMessage.setTypeface(mNormalTypeFace);
         mTextTitle.setTypeface(mNormalTypeFace);
         mUnreadIndicator.setVisibility(View.INVISIBLE);
+
+        if (!mProTeamProViewModel.getProTeamPro().getCategoryType()
+                                 .toString()
+                                 .toLowerCase()
+                                 .contains(PREFIX_CLEAN_CONSTANT))
+        {
+            mServiceTypeIndicator.setImageResource(R.drawable.ic_handyman_outline_small);
+        }
+        else
+        {
+//            TODO: JIA: get the proper indicator photo from Jaclyn
+            mServiceTypeIndicator.setImageResource(R.drawable.ic_service_cleaning_outline_small);
+        }
+
 
         bindWithLayer();
     }

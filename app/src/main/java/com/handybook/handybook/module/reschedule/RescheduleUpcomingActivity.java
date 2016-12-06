@@ -16,7 +16,6 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -49,7 +48,6 @@ public class RescheduleUpcomingActivity extends BaseActivity
     private ProgressDialog mProgressDialog;
     private String mProviderId;
     private Booking mSelectedBooking;
-    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,7 +55,6 @@ public class RescheduleUpcomingActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reschedule_upcoming);
         ButterKnife.bind(this);
-        mUser = mUserManager.getCurrentUser();
 
         mProviderId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
         mBookings = (List<Booking>) getIntent().getSerializableExtra(BundleKeys.BOOKINGS);
@@ -74,7 +71,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
             }
         });
 
-        if (mUser == null)
+        if (!mUserManager.isUserLoggedIn())
         {
             startActivity(new Intent(this, ServiceCategoriesActivity.class));
             finish();
@@ -102,8 +99,8 @@ public class RescheduleUpcomingActivity extends BaseActivity
     private void loadBookings()
     {
         mProgressDialog.show();
-        mDataManager.getBookings(
-                mUser,
+        mDataManager.getBookingsForReschedule(
+                mProviderId,
                 Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING,
                 new BookingsCallback(this)
         );

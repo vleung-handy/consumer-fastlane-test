@@ -45,6 +45,16 @@
         tools:text="As you meet pros, you'll be able to build your Pro Team. We'll always request these pros for future bookings."
         />
 
+    <Button
+        android:id="@+id/pro_team_empty_view_cta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:text="Edit List"
+        style="@style/Button.Green"
+        tools:visibility="visible"
+        android:visibility="gone"
+        />
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +74,9 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
 
     @Bind(R.id.pro_team_empty_view_title)
     TextView mEmptyViewTitle;
+
+    @Bind(R.id.pro_team_empty_view_cta)
+    Button mEmptyViewCta;
 
     @Bind(R.id.pro_team_empty_view_text)
     TextView mEmptyViewText;
@@ -134,7 +138,7 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
 
         mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
         mEmptyViewText.setText(R.string.conversation_no_preferred_pros);
-
+        mEmptyView.setVisibility(View.GONE);
         initRecyclerView();
 
         bus.post(new LogEvent.AddLogEvent(new AppLog.AppNavigationLog(PRO_TEAM_CONVERSATIONS)));
@@ -150,11 +154,24 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
             {
                 //user currently doesn't have any pro, but has option to add pros
                 mEmptyViewText.setText(R.string.conversation_no_preferred_pros);
+
+                //enable the CTA to edit pro team
+                mEmptyViewCta.setVisibility(View.VISIBLE);
+                mEmptyViewCta.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final View v)
+                    {
+                        onEditListClicked();
+                    }
+                });
+
             }
             else if (!hasPreferred() && !hasIndifferent())
             {
                 //user has no pros, and no pros to add.
                 mEmptyViewText.setText(R.string.conversation_no_pros);
+                mEmptyViewCta.setVisibility(View.GONE);
             }
         }
     }
@@ -191,6 +208,8 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         {
             return;
         }
+
+        updateEmptyViews();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setEmptyView(mEmptyView);
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
@@ -351,7 +370,6 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
         mProTeam = event.getProTeam();
-        updateEmptyViews();
         mSwipeRefreshLayout.setRefreshing(false);
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),

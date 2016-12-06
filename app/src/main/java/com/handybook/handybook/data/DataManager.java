@@ -538,6 +538,19 @@ public class DataManager
         );
     }
 
+    public final void getBookingsForReschedule(
+            final String providerId,
+            @NonNull @Booking.List.OnlyBookingValues final String onlyBookingValue,
+            final Callback<UserBookingsWrapper> cb
+    )
+    {
+        mService.getBookingsForReschedule(
+                onlyBookingValue,
+                providerId,
+                new UserBookingsWrapperHandyRetroFitCallback(cb)
+        );
+    }
+
     public final void getEntryMethodsInfo(
             final String bookingId,
             final Callback<EntryMethodsInfo> cb

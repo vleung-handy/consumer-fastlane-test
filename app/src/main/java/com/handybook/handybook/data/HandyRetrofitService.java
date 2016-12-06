@@ -139,6 +139,13 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+    @GET("/bookings")
+    void getBookingsForReschedule(
+            @Nullable @Query("only_bookings") String bookingType,
+            @Nullable @Query("provider_id") String providerId,
+            HandyRetrofitCallback cb
+    );
+
     @GET("/bookings/{bookingId}/edit_hours")
     void getEditHoursInfo(
             @Path("bookingId") int bookingId,
