@@ -65,7 +65,7 @@
             android:layout_marginLeft="@dimen/default_margin_half"
             android:layout_marginStart="@dimen/default_margin_half"
             android:layout_toRightOf="@id/conversation_title"
-            tools:src="@drawable/ic_handyman_outline_small"
+            android:src="@drawable/ic_handyman_outline_small"
             android:layout_alignBottom="@id/conversation_title"
             />
 

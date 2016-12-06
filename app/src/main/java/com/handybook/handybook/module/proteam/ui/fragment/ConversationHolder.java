@@ -93,12 +93,11 @@ public class ConversationHolder extends RecyclerView.ViewHolder
                                  .toLowerCase()
                                  .contains(PREFIX_CLEAN_CONSTANT))
         {
-            mServiceTypeIndicator.setImageResource(R.drawable.ic_handyman_outline_small);
+            mServiceTypeIndicator.setVisibility(View.VISIBLE);
         }
         else
         {
-//            TODO: JIA: get the proper indicator photo from Jaclyn
-            mServiceTypeIndicator.setImageResource(R.drawable.ic_service_cleaning_outline_small);
+            mServiceTypeIndicator.setVisibility(View.GONE);
         }
 
 
