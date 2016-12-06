@@ -133,13 +133,56 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         );
 
         mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
-        mEmptyViewText.setText(R.string.pro_team_empty_card_text);
+        mEmptyViewText.setText(R.string.conversation_no_preferred_pros);
 
         initRecyclerView();
 
         bus.post(new LogEvent.AddLogEvent(new AppLog.AppNavigationLog(PRO_TEAM_CONVERSATIONS)));
 
         return view;
+    }
+
+    private void updateEmptyViews()
+    {
+        if (mProTeam != null && mProTeam.getAllCategories() != null)
+        {
+            if (!hasPreferred() && hasIndifferent())
+            {
+                //user currently doesn't have any pro, but has option to add pros
+                mEmptyViewText.setText(R.string.conversation_no_preferred_pros);
+            }
+            else if (!hasPreferred() && !hasIndifferent())
+            {
+                //user has no pros, and no pros to add.
+                mEmptyViewText.setText(R.string.conversation_no_pros);
+            }
+        }
+    }
+
+    private boolean hasPreferred()
+    {
+        if (mProTeam != null
+                && mProTeam.getAllCategories() != null
+                && mProTeam.getAllCategories().getPreferred() != null
+                && !mProTeam.getAllCategories().getPreferred().isEmpty())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean hasIndifferent()
+    {
+        if (mProTeam != null
+                && mProTeam.getAllCategories() != null
+                && mProTeam.getAllCategories().getIndifferent() != null
+                && !mProTeam.getAllCategories().getIndifferent().isEmpty())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void initRecyclerView()
@@ -308,6 +351,7 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
     {
         mProTeam = event.getProTeam();
+        updateEmptyViews();
         mSwipeRefreshLayout.setRefreshing(false);
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
