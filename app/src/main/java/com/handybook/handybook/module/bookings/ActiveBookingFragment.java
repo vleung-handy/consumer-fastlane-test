@@ -181,8 +181,8 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     BookingUtil.getSubtitle(
                             mBooking,
                             getActivity(),
-                            configurationManager.getPersistentConfiguration()
-                                                .isBookingHoursClarificationExperimentEnabled()
+                            mConfigurationManager.getPersistentConfiguration()
+                                                 .isBookingHoursClarificationExperimentEnabled()
                     ));
 
             mMapDivider.setVisibility(View.VISIBLE);

@@ -45,9 +45,6 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     @Bind(R.id.discount_text)
     TextView discountText;
 
-    @Inject
-    ConfigurationManager mConfigurationManager;
-
 
     static BookingHeaderFragment newInstance()
     {

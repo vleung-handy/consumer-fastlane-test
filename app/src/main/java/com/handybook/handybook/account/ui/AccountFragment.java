@@ -92,7 +92,7 @@ public class AccountFragment extends InjectedFragment
         ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
 
         //if bottom nav is enabled, show
-        if(configurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        if(mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mHistoryHelpLayout.setVisibility(View.VISIBLE);
         }
@@ -243,7 +243,7 @@ public class AccountFragment extends InjectedFragment
 
         InjectedFragment fragment = null;
         Bundle args = null;
-        Configuration config = configurationManager.getPersistentConfiguration();
+        Configuration config = mConfigurationManager.getPersistentConfiguration();
         String helpCenterUrl = config.getHelpCenterUrl();
         if (config.isNativeHelpCenterEnabled())
         {
@@ -283,7 +283,7 @@ public class AccountFragment extends InjectedFragment
                     public void onClick(DialogInterface dialog, int which)
                     {
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
-                        configurationManager.invalidateCache();
+                        mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();

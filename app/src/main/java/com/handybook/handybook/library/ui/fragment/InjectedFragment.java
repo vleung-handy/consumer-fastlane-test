@@ -47,7 +47,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     @Inject
     protected NavigationManager navigationManager;
     @Inject
-    protected ConfigurationManager configurationManager;
+    protected ConfigurationManager mConfigurationManager;
 
     //TODO: acknowledged this is not ideal
     @Inject

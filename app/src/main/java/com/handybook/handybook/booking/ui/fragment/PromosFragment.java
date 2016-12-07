@@ -24,10 +24,7 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,9 +34,6 @@ public final class PromosFragment extends BookingFlowFragment
 {
 
     public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
-
-    @Inject
-    ConfigurationManager mConfigurationManager;
 
     @Bind(R.id.promotions_apply_button)
     Button mApplyButton;
