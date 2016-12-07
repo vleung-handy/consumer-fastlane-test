@@ -14,21 +14,26 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.login.LoginManager;
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
+import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.handybook.handybook.manager.UserDataManager;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.module.bookings.HistoryFragment;
+import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
@@ -42,8 +47,6 @@ import butterknife.OnClick;
 public class AccountFragment extends InjectedFragment
 {
     @Inject
-    ConfigurationManager mConfigurationManager;
-    @Inject
     UserManager mUserManager;
     @Inject
     UserDataManager mUserDataManager;
@@ -56,6 +59,8 @@ public class AccountFragment extends InjectedFragment
     TextView mActivePlansText;
     @Bind(R.id.account_active_plans_layout)
     ViewGroup mActivePlansLayout;
+    @Bind(R.id.account_history_help_layout)
+    ViewGroup mHistoryHelpLayout;
 
     private User mUser;
     private ArrayList<RecurringBooking> mPlans;
@@ -85,6 +90,13 @@ public class AccountFragment extends InjectedFragment
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
         setupToolbar(mToolbar, getString(R.string.account));
         ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+
+        //if bottom nav is enabled, show
+        if(configurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            mHistoryHelpLayout.setVisibility(View.VISIBLE);
+        }
+
         return view;
     }
 
@@ -224,6 +236,42 @@ public class AccountFragment extends InjectedFragment
         FragmentUtils.switchToFragment(this, PromosFragment.newInstance(), true);
     }
 
+    @OnClick(R.id.account_help_layout)
+    public void helpClicked()
+    {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.HelpTapped()));
+
+        InjectedFragment fragment = null;
+        Bundle args = null;
+        Configuration config = configurationManager.getPersistentConfiguration();
+        String helpCenterUrl = config.getHelpCenterUrl();
+        if (config.isNativeHelpCenterEnabled())
+        {
+            fragment = HelpFragment.newInstance(helpCenterUrl);
+        }
+        else if (!Strings.isNullOrEmpty(helpCenterUrl))
+        {
+            args = new Bundle();
+            args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
+        }
+
+        //If fragment is not set, then default to HelpWebViewFragment
+        if(fragment == null)
+        {
+            //args can be set or null
+            fragment = HelpWebViewFragment.newInstance(args);
+        }
+
+        FragmentUtils.switchToFragment(this, fragment, true);
+    }
+
+    @OnClick(R.id.account_booking_history_layout)
+    public void bookingHistoryClicked()
+    {
+        bus.post(new LogEvent.AddLogEvent(new AccountLog.BookingHistoryTapped()));
+        FragmentUtils.switchToFragment(this, new HistoryFragment(), true);
+    }
+
     @OnClick(R.id.account_sign_out_button)
     public void signOutClicked()
     {
@@ -235,7 +283,7 @@ public class AccountFragment extends InjectedFragment
                     public void onClick(DialogInterface dialog, int which)
                     {
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
-                        mConfigurationManager.invalidateCache();
+                        configurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();

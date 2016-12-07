@@ -36,6 +36,10 @@ public class Configuration implements Serializable
     @SerializedName("chat_enabled")
     private boolean mProTeamChatEnabled;
 
+    //default this to false
+    @SerializedName("bottom_nav_enabled")
+    private boolean mBottomNavEnabled;
+
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
      * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
@@ -78,6 +82,8 @@ public class Configuration implements Serializable
     {
         return mAddressAutoCompleteEnabled;
     }
+
+    public boolean isBottomNavEnabled() { return mBottomNavEnabled; };
 
     public String toJson()
     {
