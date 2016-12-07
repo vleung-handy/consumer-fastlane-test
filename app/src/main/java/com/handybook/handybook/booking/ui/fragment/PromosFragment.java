@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -51,7 +52,7 @@ public final class PromosFragment extends BookingFlowFragment
     private String mPromoCoupon;
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
-    public static PromosFragment newInstance(String extraPromoCode)
+    public static PromosFragment newInstance(@Nullable String extraPromoCode)
     {
         PromosFragment fragment = new PromosFragment();
         final Bundle bundle = new Bundle();
@@ -195,8 +196,11 @@ public final class PromosFragment extends BookingFlowFragment
                                 promoCode, null));
 
                         bookingManager.setPromoTabCoupon(code.getCode());
-                        ((MenuDrawerActivity) getActivity()).navigateToActivity(
-                                ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                        if (getActivity() instanceof MenuDrawerActivity)
+                        {
+                            ((MenuDrawerActivity) getActivity()).navigateToActivity(
+                                    ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                        }
                     }
                 }
 

@@ -91,12 +91,18 @@ public class AccountFragment extends InjectedFragment
         setupToolbar(mToolbar, getString(R.string.account));
         ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
 
-        //if bottom nav is enabled, show
-        if(mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        mToolbar.setTitle(R.string.account);
+        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
+        else
+        {
+            mToolbar.setNavigationIcon(null);
+            //if bottom nav is enabled, show
             mHistoryHelpLayout.setVisibility(View.VISIBLE);
         }
-
         return view;
     }
 

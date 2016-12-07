@@ -97,7 +97,10 @@ public class HelpFragment extends InjectedFragment
 
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
         setupToolbar(mToolbar, getString(R.string.help));
-        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
         return view;
     }
 

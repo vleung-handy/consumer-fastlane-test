@@ -98,7 +98,10 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         //we don't allow the user to go back to the previous screen.
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
         setupToolbar(mToolbar, getString(R.string.confirmation));
-        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
 
         EntryMethodsInfo entryMethodsInfo = (EntryMethodsInfo) getArguments()
                 .getSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO);

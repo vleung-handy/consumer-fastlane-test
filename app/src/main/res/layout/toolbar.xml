@@ -10,10 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="@dimen/med_elevation"
+        android:paddingLeft="@dimen/default_padding"
         android:theme="@style/HandyTheme.AppBarOverlay"
-        app:titleTextAppearance="@style/Toolbar.TitleText"
-        app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
         app:contentInsetStart="0dp"
         app:navigationIcon="@drawable/ic_back"
+        app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
         />
 </merge>

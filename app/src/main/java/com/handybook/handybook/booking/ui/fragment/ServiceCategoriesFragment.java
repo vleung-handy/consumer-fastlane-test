@@ -28,6 +28,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
@@ -127,6 +128,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             activity.setSupportActionBar(mToolbar);
             activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
             ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
+        }
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            mToolbar.setNavigationIcon(null);
         }
 
         mPromoImage.setColorFilter(
@@ -303,7 +308,14 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @OnClick(R.id.coupon_layout)
     public void onCouponClick()
     {
-        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
+        }
+        else
+        {
+            FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
+        }
     }
 
     /**

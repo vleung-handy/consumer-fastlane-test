@@ -35,7 +35,8 @@ public final class UiUtils
         View currentFocus = activity.getCurrentFocus();
         if (currentFocus != null)
         {
-            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         }
     }
@@ -91,7 +92,11 @@ public final class UiUtils
 
     }
 
-    public static void extendTouchArea(final View parentContainer, final View viewToExtend, final int padArea)
+    public static void extendTouchArea(
+            final View parentContainer,
+            final View viewToExtend,
+            final int padArea
+    )
     {
         parentContainer.post(new Runnable()
         {
@@ -130,4 +135,34 @@ public final class UiUtils
             }
         });
     }
+// TODO: uncomment when buildToolsVersion is updated to 25
+    // This is a hack to disable shifting for BottomNavigationView
+//    public static void removeShiftMode(BottomNavigationView view)
+//    {
+//        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
+//        try
+//        {
+//            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
+//            shiftingMode.setAccessible(true);
+//            shiftingMode.setBoolean(menuView, false);
+//            shiftingMode.setAccessible(false);
+//            for (int i = 0; i < menuView.getChildCount(); i++)
+//            {
+//                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
+//                item.setShiftingMode(true);
+//                // set once again checked value, so view will be updated
+//                item.setChecked(item.getItemData().isChecked());
+//                // remove text field
+//                item.getChildAt(1).setVisibility(View.GONE);
+//            }
+//        }
+//        catch (NoSuchFieldException e)
+//        {
+//            Crashlytics.log("Unable to get shift mode field");
+//        }
+//        catch (IllegalAccessException e)
+//        {
+//            Crashlytics.log("Unable to change value of shift mode");
+//        }
+//    }
 }

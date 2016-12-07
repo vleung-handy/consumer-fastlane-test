@@ -13,7 +13,6 @@ import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.account.ui.EditPlanFrequencyFragment;
 import com.handybook.handybook.account.ui.PlansFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
-import com.handybook.handybook.account.ui.ProfileFragment;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
 import com.handybook.handybook.account.ui.UpdatePaymentFragment;
 import com.handybook.handybook.account.ui.UpdatePaymentFragmentTest;
@@ -193,7 +192,6 @@ import static org.mockito.Mockito.when;
         AccountFragment.class,
         AccountFragmentTest.class,
         ProfilePasswordFragment.class,
-        ProfileFragment.class,
         PromosFragment.class,
         PlansFragment.class,
         ContactFragmentTest.class,

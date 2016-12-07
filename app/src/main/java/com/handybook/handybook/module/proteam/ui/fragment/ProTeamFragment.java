@@ -1,6 +1,5 @@
 package com.handybook.handybook.module.proteam.ui.fragment;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,7 +38,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 /**
  * A simple {@link Fragment} subclass. Use the {@link ProTeamFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -48,7 +46,6 @@ public class ProTeamFragment extends InjectedFragment implements
         ProTeamProListFragment.OnProInteraction,
         RemoveProDialogFragment.RemoveProListener
 {
-
     @Bind(R.id.pro_team_coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
     @Bind(R.id.pro_team_toolbar)
@@ -85,9 +82,18 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         final View view = inflater.inflate(R.layout.fragment_pro_team, container, false);
         ButterKnife.bind(this, view);
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
-        activity.setupHamburgerMenu(mToolbar);
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+            activity.setSupportActionBar(mToolbar);
+            activity.setupHamburgerMenu(mToolbar);
+        }
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            mToolbar.setNavigationIcon(null);
+        }
+
         initialize();
         return view;
     }
@@ -120,7 +126,7 @@ public class ProTeamFragment extends InjectedFragment implements
         );
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
-        setToolbarTitle(getString(R.string.title_activity_pro_team));
+        mToolbar.setTitle(R.string.title_activity_pro_team);
         initButtons();
     }
 

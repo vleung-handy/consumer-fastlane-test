@@ -96,10 +96,16 @@ public class ReferralFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_referral, container, false);
         ButterKnife.bind(this, view);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_menu);
-        setupToolbar(mToolbar, getString(R.string.free_cleanings));
-        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-
+        mToolbar.setTitle(R.string.free_cleanings);
+        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
+        else
+        {
+            mToolbar.setNavigationIcon(null);
+        }
         return view;
     }
 
@@ -112,6 +118,13 @@ public class ReferralFragment extends InjectedFragment
         {
             requestPrepareReferrals();
         }
+    }
+
+    @Override
+    public void onPause()
+    {
+        removeUiBlockers();
+        super.onPause();
     }
 
     @OnClick(R.id.error_retry_button)

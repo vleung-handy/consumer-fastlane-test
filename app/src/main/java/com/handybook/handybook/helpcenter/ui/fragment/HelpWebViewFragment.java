@@ -15,11 +15,11 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.HandyWebViewClient;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.ui.widget.MenuButton;
 import com.squareup.otto.Subscribe;
 
@@ -146,8 +146,16 @@ public class HelpWebViewFragment extends InjectedFragment
             @Override
             public void onCancel()
             {
-                ((MenuDrawerActivity) getActivity())
-                        .navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                if (getActivity() instanceof MenuDrawerActivity)
+                {
+                    ((MenuDrawerActivity) getActivity())
+                            .navigateToActivity(ServiceCategoriesActivity.class,
+                                                R.id.nav_menu_home);
+                }
+                else
+                {
+                    getActivity().onBackPressed();
+                }
             }
         });
     }

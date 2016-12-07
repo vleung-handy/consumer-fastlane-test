@@ -31,14 +31,12 @@ public class Configuration implements Serializable
     private boolean mAppseeAnalyticsEnabled;
     @SerializedName("pro_team_profile_pictures_enabled")
     private boolean isProTeamProfilePicturesEnabled;
+    @SerializedName("bottom_nav_enabled")
+    private boolean mBottomNavEnabled;
 
     //default this to false
     @SerializedName("chat_enabled")
     private boolean mChatEnabled;
-
-    //default this to false
-    @SerializedName("bottom_nav_enabled")
-    private boolean mBottomNavEnabled;
 
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
@@ -83,7 +81,7 @@ public class Configuration implements Serializable
         return mAddressAutoCompleteEnabled;
     }
 
-    public boolean isBottomNavEnabled() { return mBottomNavEnabled; };
+    public boolean isBottomNavEnabled() { return mBottomNavEnabled; }
 
     public String toJson()
     {
