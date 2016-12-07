@@ -3,7 +3,9 @@ package com.handybook.handybook.module.proteam.ui.activity;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamConversationsFragment;
+import com.handybook.handybook.module.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 
@@ -15,7 +17,14 @@ public class ProTeamActivity extends MenuDrawerActivity
     {
         if (mConfigurationManager.getPersistentConfiguration().isChatEnabled())
         {
-            return ProTeamConversationsFragment.newInstance();
+            if (getIntent().getBooleanExtra(BundleKeys.PRO_TEAM_EDIT, false))
+            {
+                return ProTeamEditFragment.newInstance();
+            }
+            else
+            {
+                return ProTeamConversationsFragment.newInstance();
+            }
         }
         else
         {

@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
+import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
@@ -232,7 +233,8 @@ public class BookingDetailSectionFragmentProInformation extends
     {
         //start pro team activity
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ProTeamOpenTapped()));
-        startActivity(new Intent(getActivity(), ProTeamActivity.class));
+        startActivity(new Intent(getActivity(), ProTeamActivity.class)
+                              .putExtra(BundleKeys.PRO_TEAM_EDIT, true));
     }
 
     /*
