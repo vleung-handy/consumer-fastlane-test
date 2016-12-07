@@ -34,7 +34,7 @@ public class Configuration implements Serializable
 
     //default this to false
     @SerializedName("chat_enabled")
-    private boolean mProTeamChatEnabled;
+    private boolean mChatEnabled;
 
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
@@ -99,7 +99,6 @@ public class Configuration implements Serializable
 
     public boolean isChatEnabled()
     {
-        //FIXME: JIA: remove this hard coding
-        return false;
+        return mChatEnabled;
     }
 }

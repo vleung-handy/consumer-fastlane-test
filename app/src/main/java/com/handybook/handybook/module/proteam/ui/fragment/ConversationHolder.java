@@ -128,7 +128,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
                                     .getConversation()
                                     .getLastMessage()
                                     .getReceivedAt()
-                    ).toLowerCase()
+                    )
             );
 
             mTextTimestamp.setVisibility(View.VISIBLE);

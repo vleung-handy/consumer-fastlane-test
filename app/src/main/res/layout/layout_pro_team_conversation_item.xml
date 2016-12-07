@@ -3,14 +3,15 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:clipChildren="false"
-                android:paddingTop="@dimen/default_padding_half"
-                android:paddingBottom="@dimen/default_padding_half"
-                android:paddingRight="@dimen/default_padding_half"
-                android:paddingLeft="@dimen/default_padding_quarter"
                 android:background="@color/white"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/default_padding_half"
+                android:paddingLeft="@dimen/default_padding_quarter"
+                android:paddingRight="@dimen/default_padding_half"
+                android:paddingTop="@dimen/default_padding_half"
     >
+
     <ImageView
         android:id="@+id/conversation_unread_indicator"
         android:layout_width="wrap_content"
@@ -26,8 +27,8 @@
         android:id="@+id/space"
         android:layout_width="@dimen/default_padding_quarter"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/conversation_unread_indicator"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/conversation_unread_indicator"
         />
 
     <com.handybook.handybook.ui.view.ProAvatarView
@@ -40,10 +41,12 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@id/conversation_avatar"
+        android:layout_toLeftOf="@+id/conversation_timestamp"
         android:layout_toRightOf="@id/conversation_avatar"
+        android:layout_toStartOf="@+id/conversation_timestamp"
+        android:orientation="vertical"
         >
 
         <TextView
@@ -51,9 +54,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
             android:textSize="@dimen/text_size_large"
             tools:text="Jennifer C."
-            android:includeFontPadding="false"
             />
 
 
@@ -61,12 +67,12 @@
             android:id="@+id/conversation_type_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/conversation_title"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/default_margin_half"
             android:layout_marginStart="@dimen/default_margin_half"
             android:layout_toRightOf="@id/conversation_title"
             android:src="@drawable/ic_handyman_outline_small"
-            android:layout_alignBottom="@id/conversation_title"
             />
 
         <TextView
@@ -79,10 +85,10 @@
             android:layout_marginRight="@dimen/default_margin_double"
             android:layout_marginStart="@dimen/default_margin"
             android:ellipsize="end"
+            android:includeFontPadding="false"
             android:maxLines="1"
             android:textColor="@color/handy_text_black"
             tools:text="Hi, I can't come on friday this week, but I can do it next week"
-            android:includeFontPadding="false"
             />
     </RelativeLayout>
 
@@ -93,6 +99,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/default_margin_half"
         android:textColor="@color/handy_tertiary_gray"
         android:textSize="@dimen/text_size_xsmall"
         tools:text="Now"
