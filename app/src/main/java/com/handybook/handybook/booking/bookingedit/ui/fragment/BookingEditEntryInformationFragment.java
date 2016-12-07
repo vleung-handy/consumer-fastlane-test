@@ -23,6 +23,7 @@ import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
@@ -206,10 +207,10 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         mBookingEditManager.updateEntryMethodsInfo(
                 bookingId,
                 editEntryInformationRequest,
-                new DataManager.Callback<Void>()
+                new FragmentSafeCallback<Void>(this)
                 {
                     @Override
-                    public void onSuccess(final Void response)
+                    public void onCallbackSuccess(final Void response)
                     {
                         removeUiBlockers();
                         showToast(R.string.updated_entry_information);
@@ -218,7 +219,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
 
                         removeUiBlockers();
