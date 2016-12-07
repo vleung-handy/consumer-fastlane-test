@@ -126,6 +126,7 @@ public class ProMessagesActivity extends MessagesListActivity
             int size = getResources().getDimensionPixelSize(R.dimen.chat_toolbar_icon_size);
             ProAvatarView avatar = new ProAvatarView(this, size);
             avatar.bindPro(mProTeamProViewModel);
+            avatar.setHeartContainerBackground(R.drawable.bg_circle_blue);
             mAvatarContainer.addView(avatar);
             mAvatarContainer.setVisibility(View.VISIBLE);
         }

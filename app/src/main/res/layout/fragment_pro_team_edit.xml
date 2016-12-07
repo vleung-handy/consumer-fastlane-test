@@ -38,10 +38,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/pro_team_list_holder"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/pro_team_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        >
 
+        <FrameLayout
+            android:id="@+id/pro_team_list_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
