@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -23,6 +24,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -51,7 +53,7 @@ public final class PromosFragment extends BookingFlowFragment
     private String mPromoCoupon;
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
-    public static PromosFragment newInstance(String extraPromoCode)
+    public static PromosFragment newInstance(@Nullable String extraPromoCode)
     {
         PromosFragment fragment = new PromosFragment();
         final Bundle bundle = new Bundle();
@@ -195,8 +197,19 @@ public final class PromosFragment extends BookingFlowFragment
                                 promoCode, null));
 
                         bookingManager.setPromoTabCoupon(code.getCode());
-                        ((MenuDrawerActivity) getActivity()).navigateToActivity(
-                                ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                        if (getActivity() instanceof MenuDrawerActivity)
+                        {
+                            ((MenuDrawerActivity) getActivity()).navigateToActivity(
+                                    ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                        }
+                        else
+                        {
+                            FragmentUtils.switchToFragment(
+                                    PromosFragment.this,
+                                    ServiceCategoriesFragment.newInstance(),
+                                    false
+                            );
+                        }
                     }
                 }
 

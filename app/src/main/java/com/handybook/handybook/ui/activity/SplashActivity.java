@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.facebook.FacebookSdk;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -80,6 +79,13 @@ public class SplashActivity extends BaseActivity
         ) && user == null)
         {
             final Intent intent = new Intent(this, OnboardActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if (user != null
+                && mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            final Intent intent = new Intent(this, BottomNavActivity.class);
             startActivity(intent);
             finish();
         }

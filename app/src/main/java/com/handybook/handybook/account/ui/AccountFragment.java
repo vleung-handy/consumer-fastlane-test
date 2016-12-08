@@ -87,18 +87,22 @@ public class AccountFragment extends InjectedFragment
                                        .inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, view);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_menu);
         setupToolbar(mToolbar, getString(R.string.account));
-        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
 
-        //if bottom nav is enabled, show
-        if(mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
+            mToolbar.setNavigationIcon(null);
+            //if bottom nav is enabled, show
             mHistoryHelpLayout.setVisibility(View.VISIBLE);
         }
-
+        else if (getActivity() instanceof MenuDrawerActivity)
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
         return view;
     }
+
 
     @Override
     public void onViewCreated(
@@ -256,7 +260,7 @@ public class AccountFragment extends InjectedFragment
         }
 
         //If fragment is not set, then default to HelpWebViewFragment
-        if(fragment == null)
+        if (fragment == null)
         {
             //args can be set or null
             fragment = HelpWebViewFragment.newInstance(args);

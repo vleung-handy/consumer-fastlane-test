@@ -75,8 +75,10 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.history));
-        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.handy_service_handyman,

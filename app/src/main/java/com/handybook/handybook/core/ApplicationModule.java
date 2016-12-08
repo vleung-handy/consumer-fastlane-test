@@ -15,7 +15,6 @@ import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.account.ui.EditPlanFrequencyFragment;
 import com.handybook.handybook.account.ui.PlansFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
-import com.handybook.handybook.account.ui.ProfileFragment;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
 import com.handybook.handybook.account.ui.UpdatePaymentFragment;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
@@ -147,6 +146,7 @@ import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
 import com.handybook.handybook.ui.activity.BlockingActivity;
+import com.handybook.handybook.ui.activity.BottomNavActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.activity.OldDeeplinkSplashActivity;
@@ -182,7 +182,6 @@ import retrofit.converter.GsonConverter;
         SplashActivity.class,
         ServiceCategoriesFragment.class,
         LoginFragment.class,
-        ProfileFragment.class,
         UpcomingBookingsFragment.class,
         HistoryFragment.class,
         ActiveBookingFragment.class,
@@ -303,6 +302,7 @@ import retrofit.converter.GsonConverter;
         EditPlanAddressFragment.class,
         EditPlanFrequencyFragment.class,
         RescheduleUpcomingActivity.class,
+        BottomNavActivity.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

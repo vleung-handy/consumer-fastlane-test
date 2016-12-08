@@ -178,28 +178,20 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
 
     private boolean hasPreferred()
     {
-        if (mProTeam != null
+        return mProTeam != null
                 && mProTeam.getAllCategories() != null
                 && mProTeam.getAllCategories().getPreferred() != null
-                && !mProTeam.getAllCategories().getPreferred().isEmpty())
-        {
-            return true;
-        }
+                && !mProTeam.getAllCategories().getPreferred().isEmpty();
 
-        return false;
     }
 
     private boolean hasIndifferent()
     {
-        if (mProTeam != null
+        return mProTeam != null
                 && mProTeam.getAllCategories() != null
                 && mProTeam.getAllCategories().getIndifferent() != null
-                && !mProTeam.getAllCategories().getIndifferent().isEmpty())
-        {
-            return true;
-        }
+                && !mProTeam.getAllCategories().getIndifferent().isEmpty();
 
-        return false;
     }
 
     private void initRecyclerView()
@@ -347,7 +339,10 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
     {
         super.onResume();
         setupToolbar(mToolbar, getString(R.string.my_pro_team));
-        ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
         if (mProTeam == null)
         {
             requestProTeam();

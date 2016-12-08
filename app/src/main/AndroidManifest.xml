@@ -52,7 +52,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/StartupTheme"
             >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -508,8 +507,11 @@
         </activity>
         <activity android:name=".module.proteam.ui.activity.ProMessagesActivity">
         </activity>
-
-
+        <activity
+            android:name=".ui.activity.BottomNavActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
     </application>
 
 </manifest>

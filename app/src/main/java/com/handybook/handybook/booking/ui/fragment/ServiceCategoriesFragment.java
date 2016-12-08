@@ -28,6 +28,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.handybook.handybook.manager.DefaultPreferencesManager;
@@ -122,10 +123,15 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         ButterKnife.bind(this, view);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null && activity instanceof MenuDrawerActivity)
+        activity.setSupportActionBar(mToolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
-            activity.setSupportActionBar(mToolbar);
-            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+            mToolbar.setNavigationIcon(null);
+        }
+        else if (activity instanceof MenuDrawerActivity)
+        {
             ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
         }
 
@@ -303,7 +309,14 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @OnClick(R.id.coupon_layout)
     public void onCouponClick()
     {
-        ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
+        }
+        else
+        {
+            FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
+        }
     }
 
     /**
