@@ -170,14 +170,14 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         final View view = inflater.inflate(R.layout.fragment_upcoming_bookings, container, false);
         ButterKnife.bind(this, view);
 
-        mToolbar.setTitle(R.string.my_bookings);
-        if (getActivity() instanceof MenuDrawerActivity)
-        {
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
+        setupToolbar(mToolbar, getString(R.string.my_bookings));
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
+        }
+        else if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
 
         mSwipeRefreshLayout.setOnRefreshListener(this);

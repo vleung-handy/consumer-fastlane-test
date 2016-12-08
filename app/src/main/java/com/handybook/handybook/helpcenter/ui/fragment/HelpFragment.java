@@ -95,10 +95,10 @@ public class HelpFragment extends InjectedFragment
                                        .inflate(R.layout.fragment_help, container, false);
         ButterKnife.bind(this, view);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_menu);
         setupToolbar(mToolbar, getString(R.string.help));
         if (getActivity() instanceof MenuDrawerActivity)
         {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
         return view;

@@ -82,16 +82,17 @@ public class ProTeamFragment extends InjectedFragment implements
     {
         final View view = inflater.inflate(R.layout.fragment_pro_team, container, false);
         ButterKnife.bind(this, view);
-        if (getActivity() instanceof MenuDrawerActivity)
-        {
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-            activity.setSupportActionBar(mToolbar);
-            activity.setupHamburgerMenu(mToolbar);
-        }
+
+        setupToolbar(mToolbar, getString(R.string.title_activity_pro_team));
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
+        }
+        else if (getActivity() instanceof MenuDrawerActivity)
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+            activity.setupHamburgerMenu(mToolbar);
         }
 
         initialize();
@@ -126,7 +127,6 @@ public class ProTeamFragment extends InjectedFragment implements
         );
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(mTabAdapter);
-        mToolbar.setTitle(R.string.title_activity_pro_team);
         initButtons();
     }
 

@@ -96,10 +96,15 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         ButterKnife.bind(this, view);
 
         //we don't allow the user to go back to the previous screen.
-        mToolbar.setNavigationIcon(R.drawable.ic_menu);
         setupToolbar(mToolbar, getString(R.string.confirmation));
-        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
+            mToolbar.setNavigationIcon(null);
+        }
+        else if (getActivity() instanceof MenuDrawerActivity)
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
 

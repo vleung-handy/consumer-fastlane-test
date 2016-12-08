@@ -123,15 +123,16 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         ButterKnife.bind(this, view);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null && activity instanceof MenuDrawerActivity)
-        {
-            activity.setSupportActionBar(mToolbar);
-            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-            ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
-        }
+        activity.setSupportActionBar(mToolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
+        }
+        else if (activity instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
         }
 
         mPromoImage.setColorFilter(

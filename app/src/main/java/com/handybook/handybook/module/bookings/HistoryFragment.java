@@ -75,7 +75,7 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.history));
-        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        if (getActivity() instanceof MenuDrawerActivity)
         {
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }

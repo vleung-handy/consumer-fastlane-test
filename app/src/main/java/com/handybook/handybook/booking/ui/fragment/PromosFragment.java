@@ -24,6 +24,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
@@ -200,6 +201,14 @@ public final class PromosFragment extends BookingFlowFragment
                         {
                             ((MenuDrawerActivity) getActivity()).navigateToActivity(
                                     ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                        }
+                        else
+                        {
+                            FragmentUtils.switchToFragment(
+                                    PromosFragment.this,
+                                    ServiceCategoriesFragment.newInstance(),
+                                    false
+                            );
                         }
                     }
                 }
