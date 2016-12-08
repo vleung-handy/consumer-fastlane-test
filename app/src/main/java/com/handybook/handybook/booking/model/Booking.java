@@ -942,6 +942,7 @@ public class Booking implements Parcelable
     {
         public static final String VALUE_ONLY_BOOKINGS_PAST = "past";
         public static final String VALUE_ONLY_BOOKINGS_UPCOMING = "upcoming";
+        public static final String VALUE_ONLY_BOOKINGS_RESCHEDULABLE = "reschedulable";
 
 
         @Retention(RetentionPolicy.SOURCE)

@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
@@ -50,8 +49,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public abstract class MenuDrawerActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        LayerHelper.UnreadConversationsCountChangedListener
+        implements NavigationView.OnNavigationItemSelectedListener
 {
     private static final String TAG = MenuDrawerActivity.class.getName();
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
@@ -143,8 +141,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 }
             }
         };
-
-        mLayerHelper.registerUnreadConversationsCountChangedListener(this);
     }
 
     /**
@@ -309,42 +305,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
         mBus.unregister(mBusEventListener);
     }
 
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        mLayerHelper.unregisterUnreadConversationsCountChangedListener(this);
-    }
-
-    /**
-     * This is the little text on the drawer next to the pro team menu item, to show how many unread
-     * messages there are
-     */
-    private void updateLayerActionMenu()
-    {
-        TextView textView = (TextView) mNavigationView
-                .getMenu()
-                .findItem(R.id.nav_menu_my_pro_team)
-                .getActionView();
-
-        if (mConfiguration != null
-                && mConfiguration.isChatEnabled()
-                && mLayerHelper.getUnreadConversationsCount() > 0)
-        {
-            String unreadCount = String.valueOf(mLayerHelper.getUnreadConversationsCount());
-            if (mLayerHelper.getUnreadConversationsCount() > 99)
-            {
-                unreadCount = "99+";
-            }
-            textView.setVisibility(View.VISIBLE);
-            textView.setText(unreadCount);
-        }
-        else
-        {
-            textView.setVisibility(View.GONE);
-        }
-    }
-
     /**
      * Updates the menu item visibilities based on the user's login status
      */
@@ -359,7 +319,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
         mNavigationView.getMenu().findItem(R.id.nav_menu_log_in).setVisible(!userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_my_pro_team).setVisible(userLoggedIn);
         mNavigationView.getMenu().findItem(R.id.nav_menu_history).setVisible(userLoggedIn);
-        updateLayerActionMenu();
     }
 
     /**
@@ -439,11 +398,5 @@ public abstract class MenuDrawerActivity extends BaseActivity
         {
             mDrawerLayout.openDrawer(GravityCompat.START);
         }
-    }
-
-    @Override
-    public void onUnreadConversationsCountChanged(final long l)
-    {
-        updateLayerActionMenu();
     }
 }

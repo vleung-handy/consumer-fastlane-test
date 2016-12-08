@@ -473,5 +473,7 @@
     <string name="reschedule_select_booking">Please select a booking to reschedule</string>
     <string name="reschedule_no_bookings_formatted">You don\'t have any upcoming bookings! Make a new booking to work with %1$s again.</string>
     <string name="conversation_cannot_load">Cannot load this conversation. Please try again.</string>
+    <string name="conversation_no_preferred_pros">Edit your Pro Team to start chatting.</string>
+    <string name="conversation_no_pros">You\'ll be able to chat directly with past pros once you add them to your Pro Team.</string>
 
 </resources>

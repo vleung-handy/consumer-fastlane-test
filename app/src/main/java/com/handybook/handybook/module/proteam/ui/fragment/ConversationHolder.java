@@ -21,6 +21,8 @@ import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 
+import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
+
 public class ConversationHolder extends RecyclerView.ViewHolder
 {
 
@@ -38,6 +40,9 @@ public class ConversationHolder extends RecyclerView.ViewHolder
 
     @Bind(R.id.conversation_timestamp)
     TextView mTextTimestamp;
+
+    @Bind(R.id.conversation_type_indicator)
+    ImageView mServiceTypeIndicator;
 
     private ProTeamProViewModel mProTeamProViewModel;
 
@@ -83,6 +88,19 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         mTextTitle.setTypeface(mNormalTypeFace);
         mUnreadIndicator.setVisibility(View.INVISIBLE);
 
+        if (!mProTeamProViewModel.getProTeamPro().getCategoryType()
+                                 .toString()
+                                 .toLowerCase()
+                                 .contains(PREFIX_CLEAN_CONSTANT))
+        {
+            mServiceTypeIndicator.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mServiceTypeIndicator.setVisibility(View.GONE);
+        }
+
+
         bindWithLayer();
     }
 
@@ -110,7 +128,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
                                     .getConversation()
                                     .getLastMessage()
                                     .getReceivedAt()
-                    ).toLowerCase()
+                    )
             );
 
             mTextTimestamp.setVisibility(View.VISIBLE);

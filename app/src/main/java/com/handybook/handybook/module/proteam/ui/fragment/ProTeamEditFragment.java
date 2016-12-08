@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,8 @@ public class ProTeamEditFragment extends InjectedFragment implements
 {
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.pro_team_swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.pro_team_list_holder)
     ViewGroup mProTeamListHolder;
 
@@ -54,12 +57,20 @@ public class ProTeamEditFragment extends InjectedFragment implements
     private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
     private ProTeamProListFragment mProTeamListFragment;
 
-    public static ProTeamEditFragment newInstance(final ProTeam proTeam)
+    public static ProTeamEditFragment newInstance()
+    {
+        return newInstance(null);
+    }
+
+    public static ProTeamEditFragment newInstance(@Nullable final ProTeam proTeam)
     {
         final ProTeamEditFragment fragment = new ProTeamEditFragment();
-        final Bundle arguments = new Bundle();
-        arguments.putParcelable(BundleKeys.PRO_TEAM, proTeam);
-        fragment.setArguments(arguments);
+        if (proTeam != null)
+        {
+            final Bundle arguments = new Bundle();
+            arguments.putParcelable(BundleKeys.PRO_TEAM, proTeam);
+            fragment.setArguments(arguments);
+        }
         return fragment;
     }
 
@@ -67,7 +78,11 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mProTeam = getArguments().getParcelable(BundleKeys.PRO_TEAM);
+        final Bundle arguments = getArguments();
+        if (arguments != null)
+        {
+            mProTeam = arguments.getParcelable(BundleKeys.PRO_TEAM);
+        }
     }
 
     @Override
@@ -78,7 +93,25 @@ public class ProTeamEditFragment extends InjectedFragment implements
     {
         final View view = inflater.inflate(R.layout.fragment_pro_team_edit, container, false);
         ButterKnife.bind(this, view);
-        initialize();
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.handy_service_handyman,
+                R.color.handy_service_electrician,
+                R.color.handy_service_cleaner,
+                R.color.handy_service_painter,
+                R.color.handy_service_plumber
+        );
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            @Override
+            public void onRefresh()
+            {
+                requestProTeam();
+            }
+        });
+        if (mProTeam != null)
+        {
+            initialize();
+        }
         return view;
     }
 
@@ -87,6 +120,31 @@ public class ProTeamEditFragment extends InjectedFragment implements
     {
         super.onResume();
         setupToolbar(mToolbar, getString(R.string.edit_pro_team));
+        if (mProTeam == null)
+        {
+            mSwipeRefreshLayout.setRefreshing(true);
+            requestProTeam();
+        }
+    }
+
+    private void requestProTeam()
+    {
+        bus.post(new ProTeamEvent.RequestProTeam());
+    }
+
+    @Subscribe
+    public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
+    {
+        mSwipeRefreshLayout.setRefreshing(false);
+        mProTeam = event.getProTeam();
+        initialize();
+    }
+
+    @Subscribe
+    public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
+    {
+        mSwipeRefreshLayout.setRefreshing(false);
+        showToast(R.string.default_error_string);
     }
 
     private void initialize()

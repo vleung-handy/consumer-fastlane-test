@@ -1,6 +1,7 @@
 package com.handybook.handybook.ui.view;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -68,5 +69,10 @@ public class ProAvatarView extends RelativeLayout
                .noFade()
                .transform(new CircleTransform(pro.getImageUrl()))
                .into(mCircleImageView);
+    }
+
+    public void setHeartContainerBackground(@DrawableRes final int drawableResId)
+    {
+        mHeartContainer.setBackgroundResource(drawableResId);
     }
 }

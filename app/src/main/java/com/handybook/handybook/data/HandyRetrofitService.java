@@ -136,6 +136,7 @@ public interface HandyRetrofitService
     @GET("/bookings")
     void getBookings(
             @Nullable @Query("only_bookings") String bookingType,
+            @Nullable @Query("provider_id") String providerId,
             HandyRetrofitCallback cb
     );
 

@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/handy_bg"
+    android:orientation="vertical"
     >
 
 
@@ -45,7 +45,6 @@
         android:layout_height="match_parent"
         >
 
-        <include layout="@layout/layout_pro_team_empty"/>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/pro_team_swipe_refresh"
@@ -61,6 +60,8 @@
                 tools:listitem="@layout/layout_pro_team_pro_card"
                 />
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <include layout="@layout/layout_pro_team_empty"/>
     </FrameLayout>
 
 </LinearLayout>
