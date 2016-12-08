@@ -14,6 +14,7 @@ import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -107,17 +108,17 @@ public final class EditPlanAddressFragment extends InjectedFragment
         dataManager.editBookingPlanAddress(
                 mPlan.getId(),
                 request,
-                new DataManager.Callback<RecurringPlanWrapper>()
+                new FragmentSafeCallback<RecurringPlanWrapper>(this)
                 {
                     @Override
-                    public void onSuccess(final RecurringPlanWrapper response)
+                    public void onCallbackSuccess(final RecurringPlanWrapper response)
                     {
                         bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Success()));
                         onReceiveEditBookingAddressSuccess(response);
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Error()));
                         onReceiveEditBookingAddressError(error);

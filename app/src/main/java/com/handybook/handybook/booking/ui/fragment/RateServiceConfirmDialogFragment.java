@@ -15,11 +15,12 @@ import android.widget.TextView;
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.module.referral.event.ReferralsEvent;
-import com.handybook.handybook.module.referral.manager.ReferralsManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.ui.view.LimitedEditText;
 import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.module.referral.manager.ReferralsManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -202,17 +203,17 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
                 submitButton.setText(null);
 
                 dataManager.submitProRatingDetails(booking, positiveFeedback,
-                                                   new DataManager.Callback<Void>()
+                                                   new FragmentSafeCallback<Void>(RateServiceConfirmDialogFragment.this)
                                                    {
                                                        @Override
-                                                       public void onSuccess(final Void response)
+                                                       public void onCallbackSuccess(final Void response)
                                                        {
                                                            if (!allowCallbacks) { return; }
                                                            dismiss();
                                                        }
 
                                                        @Override
-                                                       public void onError(DataManager.DataManagerError error)
+                                                       public void onCallbackError(DataManager.DataManagerError error)
                                                        {
                                                            if (!allowCallbacks) { return; }
                                                            submitProgress.setVisibility(View.GONE);

@@ -21,10 +21,11 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.library.ui.view.BasicInputTextView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.library.ui.view.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -265,10 +266,10 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     {
         bookingManager.clearAll();
         dataManager.getBooking(bookingId,
-                new DataManager.Callback<Booking>()
+                new FragmentSafeCallback<Booking>(this)
                 {
                     @Override
-                    public void onSuccess(final Booking booking)
+                    public void onCallbackSuccess(final Booking booking)
                     {
                         final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
                         intent.putExtra(BundleKeys.IS_FROM_BOOKING_FLOW, true);
@@ -278,7 +279,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         dataManagerErrorHandler.handleError(getActivity(), error);
                         startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));

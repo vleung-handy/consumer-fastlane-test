@@ -128,10 +128,10 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         dataManager.updateRecurringFrequency(
                 Integer.toString(mPlan.getId()),
                 editFrequencyRequest,
-                new DataManager.Callback<Void>()
+                new FragmentSafeCallback<Void>(this)
                 {
                     @Override
-                    public void onSuccess(final Void response)
+                    public void onCallbackSuccess(final Void response)
                     {
                         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Success(
                                 mPlan.getId(),
@@ -142,7 +142,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Error(
                                 mPlan.getId(),

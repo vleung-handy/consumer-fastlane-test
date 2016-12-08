@@ -22,6 +22,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
@@ -178,10 +179,10 @@ public final class PromosFragment extends BookingFlowFragment
             progressDialog.show();
 
             bus.post(new CodeRedemptionLog.CodeRedemptionPromoSubmittedLog(promoCode));
-            dataManager.getPreBookingPromo(promoCode, new DataManager.Callback<PromoCode>()
+            dataManager.getPreBookingPromo(promoCode, new FragmentSafeCallback<PromoCode>(this)
             {
                 @Override
-                public void onSuccess(final PromoCode code)
+                public void onCallbackSuccess(final PromoCode code)
                 {
                     if (!allowCallbacks) { return; }
 
@@ -206,7 +207,7 @@ public final class PromosFragment extends BookingFlowFragment
                 }
 
                 @Override
-                public void onError(final DataManager.DataManagerError error)
+                public void onCallbackError(final DataManager.DataManagerError error)
                 {
                     if (!allowCallbacks) { return; }
 

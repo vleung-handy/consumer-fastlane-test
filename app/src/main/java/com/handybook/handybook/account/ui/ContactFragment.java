@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
@@ -99,10 +100,10 @@ public class ContactFragment extends InjectedFragment
             dataManager.updateUser(
                     updateUserRequest,
                     mUser.getAuthToken(),
-                    new DataManager.Callback<User>()
+                    new FragmentSafeCallback<User>(this)
                     {
                         @Override
-                        public void onSuccess(final User user)
+                        public void onCallbackSuccess(final User user)
                         {
                             bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateSuccess()));
 
@@ -118,7 +119,7 @@ public class ContactFragment extends InjectedFragment
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error)
+                        public void onCallbackError(final DataManager.DataManagerError error)
                         {
                             bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateError()));
 

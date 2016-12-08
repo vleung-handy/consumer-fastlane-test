@@ -14,6 +14,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.util.TextUtils;
 
@@ -91,9 +92,9 @@ public class AddLaundryDialogFragment extends BaseDialogFragment
                 submitButton.setText(null);
 
                 dataManager.addLaundry(Integer.parseInt(booking.getId()),
-                        new DataManager.Callback<Void>() {
+                        new FragmentSafeCallback<Void>(AddLaundryDialogFragment.this) {
                     @Override
-                    public void onSuccess(final Void response) {
+                    public void onCallbackSuccess(final Void response) {
                         if (!allowCallbacks) return;
                         dismiss();
 
@@ -104,7 +105,7 @@ public class AddLaundryDialogFragment extends BaseDialogFragment
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error) {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         if (!allowCallbacks) return;
                         submitProgress.setVisibility(View.GONE);
                         submitButton.setText(R.string.add_laundry);

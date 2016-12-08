@@ -18,6 +18,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
@@ -166,10 +167,10 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                         booking.getId(),
                         optionIndex,
                         user.getId(),
-                        new DataManager.Callback<String>()
+                        new FragmentSafeCallback<String>(BookingCancelOptionsFragment.this)
                         {
                             @Override
-                            public void onSuccess(final String message)
+                            public void onCallbackSuccess(final String message)
                             {
                                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                                         BookingDetailsLog.EventType.SUCCESS,
@@ -197,7 +198,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                             }
 
                             @Override
-                            public void onError(final DataManager.DataManagerError error)
+                            public void onCallbackError(final DataManager.DataManagerError error)
                             {
                                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                                                  BookingDetailsLog.EventType.ERROR,

@@ -23,6 +23,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextUtils;
@@ -195,10 +196,10 @@ public class BookingFlowFragment extends InjectedFragment
                 rescheduleAll,
                 user.getId(),
                 providerId,
-                new DataManager.Callback<Pair<String, BookingQuote>>()
+                new FragmentSafeCallback<Pair<String, BookingQuote>>(this)
                 {
                     @Override
-                    public void onSuccess(final Pair<String, BookingQuote> response)
+                    public void onCallbackSuccess(final Pair<String, BookingQuote> response)
                     {
                         //log success
                         if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
@@ -267,7 +268,7 @@ public class BookingFlowFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         //log error
                         if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
@@ -397,17 +398,17 @@ public class BookingFlowFragment extends InjectedFragment
     }
 
     private DataManager.Callback<BookingQuote> bookingQuoteCallback
-            = new DataManager.Callback<BookingQuote>()
+            = new FragmentSafeCallback<BookingQuote>(this)
     {
         @Override
-        public void onSuccess(final BookingQuote quote)
+        public void onCallbackSuccess(final BookingQuote quote)
         {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestSuccess()));
             handleBookingQuoteSuccess(quote, false);
         }
 
         @Override
-        public void onError(final DataManager.DataManagerError error)
+        public void onCallbackError(final DataManager.DataManagerError error)
         {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestError(error.getMessage())));
             handleBookingQuoteError(error);
@@ -415,16 +416,16 @@ public class BookingFlowFragment extends InjectedFragment
     };
 
     private DataManager.Callback<BookingQuote> bookingQuoteUpdateCallback
-            = new DataManager.Callback<BookingQuote>()
+            = new FragmentSafeCallback<BookingQuote>(this)
     {
         @Override
-        public void onSuccess(final BookingQuote quote)
+        public void onCallbackSuccess(final BookingQuote quote)
         {
             handleBookingQuoteSuccess(quote, true);
         }
 
         @Override
-        public void onError(final DataManager.DataManagerError error)
+        public void onCallbackError(final DataManager.DataManagerError error)
         {
             handleBookingQuoteError(error);
         }
