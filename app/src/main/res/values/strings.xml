@@ -432,6 +432,11 @@
     <string name="account.payment_method">Payment Method</string>
     <string name="account.payment_method_description">Update your credit card</string>
     <string name="account.plans">Plans</string>
+    <string name="account.support">Support</string>
+    <string name="account.help">Help</string>
+    <string name="account.help_subtext">Contact customer experience</string>
+    <string name="account.booking_history">Booking History</string>
+    <string name="account.booking_history_subtext">View past bookings</string>
     <string name="account.active_plans">Active Plans</string>
     <string name="account.active_plans_formatted">Active Plans: %1$s</string>
     <string name="account.manage_your_plans">Manage your plans</string>

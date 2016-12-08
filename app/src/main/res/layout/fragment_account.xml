@@ -76,15 +76,11 @@
                 style="@style/TextView.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingTop="@dimen/account.personal_info_top_padding"
+                android:padding="@dimen/default_padding"
                 android:text="@string/account.personal_info"
                 android:textColor="@color/handy_tertiary_gray"
                 android:textSize="@dimen/text_size_small"
+                android:textAllCaps="true"
                 />
 
             <LinearLayout
@@ -145,12 +141,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_list_entry"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/account.medium_padding"
-                android:paddingEnd="@dimen/default_padding"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingTop="@dimen/default_padding"
+                android:padding="@dimen/default_padding"
                 >
 
                 <TextView
@@ -170,50 +161,15 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/account_promo_code_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_list_entry"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/account.medium_padding"
-                android:paddingEnd="@dimen/default_padding"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingTop="@dimen/default_padding"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/promo_code"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/account.description_top_padding"
-                    android:text="@string/account.promo_code_description"
-                    android:textColor="@color/handy_tertiary_gray"
-                    android:textSize="@dimen/text_size_small"
-                    />
-
-            </LinearLayout>
-
             <include layout="@layout/element_horizontal_divider"/>
 
             <TextView
                 style="@style/TextView.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingTop="@dimen/account.medium_padding"
+                android:padding="@dimen/default_padding"
                 android:text="@string/account.plans"
+                android:textAllCaps="true"
                 android:textColor="@color/handy_tertiary_gray"
                 android:textSize="@dimen/text_size_small"
                 />
@@ -245,6 +201,106 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/account_promo_code_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_list_entry"
+                android:orientation="vertical"
+                android:padding="@dimen/default_padding"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/promo_code"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/account.description_top_padding"
+                    android:text="@string/account.promo_code_description"
+                    android:textColor="@color/handy_tertiary_gray"
+                    android:textSize="@dimen/text_size_small"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/account_history_help_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include layout="@layout/element_horizontal_divider"/>
+
+                <TextView
+                    style="@style/TextView.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/default_padding"
+                    android:text="@string/account.support"
+                    android:textColor="@color/handy_tertiary_gray"
+                    android:textSize="@dimen/text_size_small"
+                    android:textAllCaps="true"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/account_help_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_list_entry"
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_padding"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account.help"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/account.description_top_padding"
+                        android:text="@string/account.help_subtext"
+                        android:textColor="@color/handy_tertiary_gray"
+                        android:textSize="@dimen/text_size_small"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/account_booking_history_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_list_entry"
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_padding"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account.booking_history"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/account.description_top_padding"
+                        android:text="@string/account.booking_history_subtext"
+                        android:textColor="@color/handy_tertiary_gray"
+                        android:textSize="@dimen/text_size_small"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
             <include layout="@layout/element_gray_horizontal_divider"/>
 
             <TextView
@@ -252,13 +308,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/account.sign_out_height"
                 android:background="@drawable/background_list_entry"
-                android:paddingBottom="@dimen/account.medium_padding"
-                android:paddingEnd="@dimen/default_padding"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingTop="@dimen/account.medium_padding"
+                android:gravity="center_vertical"
                 android:text="@string/account.sign_out"
+                android:paddingLeft="@dimen/default_padding"
                 android:textColor="@color/error_red"
                 />
 

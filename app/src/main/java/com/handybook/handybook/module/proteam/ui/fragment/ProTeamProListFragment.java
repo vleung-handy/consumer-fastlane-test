@@ -171,7 +171,7 @@ public class ProTeamProListFragment extends InjectedFragment
             return;
         }
 
-        final boolean shouldShowProImage = configurationManager
+        final boolean shouldShowProImage = mConfigurationManager
                 .getPersistentConfiguration().isProTeamProfilePicturesEnabled();
         final ProTeam.ProTeamCategory proTeamCategory = mProTeamCategoryType != null ?
                 mProTeam.getCategory(mProTeamCategoryType) : mProTeam.getAllCategories();
@@ -183,7 +183,7 @@ public class ProTeamProListFragment extends InjectedFragment
                 mOnInteractionListener
         );
 
-        if (configurationManager.getPersistentConfiguration().isProTeamFacebookLoginEnabled()
+        if (mConfigurationManager.getPersistentConfiguration().isProTeamFacebookLoginEnabled()
                 && !sXButtonPressed
                 && AccessToken.getCurrentAccessToken() == null)
         {

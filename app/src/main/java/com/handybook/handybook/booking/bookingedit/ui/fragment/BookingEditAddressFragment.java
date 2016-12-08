@@ -73,7 +73,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
                     ),
                     mBooking.getAddress().getAddress1(),
                     mBooking.getAddress().getAddress2(),
-                    configurationManager.getCachedConfiguration()
+                    mConfigurationManager.getCachedConfiguration()
             );
 
             mZipCodeInputTextView.setText(mBooking.getAddress().getZip());
@@ -84,7 +84,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
                     null,
                     null,
                     null,
-                    configurationManager.getCachedConfiguration()
+                    mConfigurationManager.getCachedConfiguration()
             );
         }
 

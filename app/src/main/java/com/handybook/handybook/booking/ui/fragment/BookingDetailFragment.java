@@ -189,8 +189,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                 mBookingDetailView.updateDateTimeInfoText(
                         mBooking,
                         newDate,
-                        configurationManager.getPersistentConfiguration()
-                                            .isBookingHoursClarificationExperimentEnabled()
+                        mConfigurationManager.getPersistentConfiguration()
+                                             .isBookingHoursClarificationExperimentEnabled()
                 );
                 setUpdatedBookingResult();
             }
@@ -254,8 +254,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         mBookingDetailView.updateDisplay(
                 booking,
                 mServices,
-                configurationManager.getPersistentConfiguration()
-                                    .isBookingHoursClarificationExperimentEnabled()
+                mConfigurationManager.getPersistentConfiguration()
+                                     .isBookingHoursClarificationExperimentEnabled()
         );
         mBookingDetailView.updateReportIssueButton(mBooking, new View.OnClickListener()
         {

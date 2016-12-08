@@ -103,7 +103,6 @@
     <!-- New Account Page -->
     <dimen name="account.description_top_padding">2dp</dimen>
     <dimen name="account.personal_info_top_padding">14dp</dimen>
-    <dimen name="account.medium_padding">14dp</dimen>
     <dimen name="account.credits_text_size">30sp</dimen>
     <dimen name="account.sign_out_height">48dp</dimen>
 

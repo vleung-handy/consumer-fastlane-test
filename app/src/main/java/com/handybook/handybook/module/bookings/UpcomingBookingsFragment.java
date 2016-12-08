@@ -359,8 +359,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                         }
                     },
                     booking,
-                    configurationManager.getPersistentConfiguration()
-                                        .isBookingHoursClarificationExperimentEnabled()
+                    mConfigurationManager.getPersistentConfiguration()
+                                         .isBookingHoursClarificationExperimentEnabled()
             ));
 
             //add divider

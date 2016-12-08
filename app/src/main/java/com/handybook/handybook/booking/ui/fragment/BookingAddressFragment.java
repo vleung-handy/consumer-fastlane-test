@@ -95,7 +95,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
                         filter,
                         addr.getAddress1(),
                         addr.getAddress2(),
-                        configurationManager.getCachedConfiguration()
+                        mConfigurationManager.getCachedConfiguration()
                 );
             }
         }
@@ -112,7 +112,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
                     filter,
                     null,
                     null,
-                    configurationManager.getCachedConfiguration()
+                    mConfigurationManager.getCachedConfiguration()
             );
         }
 

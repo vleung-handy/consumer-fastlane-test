@@ -262,4 +262,26 @@ public class AccountLog extends EventLog
             super(EVENT_TYPE);
         }
     }
+
+    //Help section
+    public static class HelpTapped extends AccountLog
+    {
+        private static final String EVENT_TYPE = "help_tapped";
+
+        public HelpTapped()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
+    //Help section
+    public static class BookingHistoryTapped extends AccountLog
+    {
+        private static final String EVENT_TYPE = "booking_history_tapped";
+
+        public BookingHistoryTapped()
+        {
+            super(EVENT_TYPE);
+        }
+    }
 }
