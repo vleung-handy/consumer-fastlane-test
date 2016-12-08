@@ -227,10 +227,10 @@ public final class BookingLocationFragment extends BookingFlowFragment
             userId = user.getId();
         }
         dataManager.getQuoteOptions(request.getServiceId(), userId,
-                new DataManager.Callback<BookingOptionsWrapper>()
+                new FragmentSafeCallback<BookingOptionsWrapper>(this)
                 {
                     @Override
-                    public void onSuccess(final BookingOptionsWrapper options)
+                    public void onCallbackSuccess(final BookingOptionsWrapper options)
                     {
                         if (!allowCallbacks) { return; }
                         List<BookingOption> bookingOptions = options.getBookingOptions();
@@ -251,7 +251,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         if (!allowCallbacks) { return; }
                         enableInputs();

@@ -97,11 +97,11 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         showUiBlockers();
         mBookingEditManager.getEntryMethodsInfo(
                 bookingId,
-                new DataManager.Callback<EntryMethodsInfo>()
+                new FragmentSafeCallback<EntryMethodsInfo>(this)
                 {
 
                     @Override
-                    public void onSuccess(final EntryMethodsInfo response)
+                    public void onCallbackSuccess(final EntryMethodsInfo response)
                     {
                         mEntryMethodsInfoView.updateViewForModel(response, getContext());
                         onEntryMethodsViewUpdated(response);
@@ -109,7 +109,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         removeUiBlockers();
                         showToast(R.string.default_error_string);

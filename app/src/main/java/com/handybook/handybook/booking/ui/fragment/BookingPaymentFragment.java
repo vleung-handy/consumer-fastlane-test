@@ -53,6 +53,7 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.event.StripeEvent;
 import com.handybook.handybook.library.ui.view.FreezableInputTextView;
@@ -817,17 +818,17 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     private void removePromo()
     {
         final int bookingId = mCurrentTransaction.getBookingId();
-        dataManager.removePromo(bookingId, new DataManager.Callback<BookingCoupon>()
+        dataManager.removePromo(bookingId, new FragmentSafeCallback<BookingCoupon>(this)
         {
             @Override
-            public void onSuccess(final BookingCoupon coupon)
+            public void onCallbackSuccess(final BookingCoupon coupon)
             {
                 handlePromoSuccess(coupon, mCurrentQuote, mCurrentTransaction, null);
                 bookingManager.setPromoTabCoupon(null);
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
+            public void onCallbackError(final DataManager.DataManagerError error)
             {
                 handlePromoFailure(error);
             }
@@ -848,10 +849,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         final String email = user != null ? user.getEmail() : null;
 
         dataManager.applyPromo(promoCode, bookingId, userId, email,
-                new DataManager.Callback<BookingQuote>()
+                new FragmentSafeCallback<BookingQuote>(this)
                 {
                     @Override
-                    public void onSuccess(final BookingQuote bookingQuote)
+                    public void onCallbackSuccess(final BookingQuote bookingQuote)
                     {
                         bus.post(new LogEvent.AddLogEvent(
                                 new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(
@@ -861,7 +862,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         handlePromoFailure(error);
                     }
@@ -874,10 +875,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         setReferrerToken();
         dataManager.createBooking(
                 mCurrentTransaction,
-                new DataManager.Callback<BookingCompleteTransaction>()
+                new FragmentSafeCallback<BookingCompleteTransaction>(this)
                 {
                     @Override
-                    public void onSuccess(final BookingCompleteTransaction trans)
+                    public void onCallbackSuccess(final BookingCompleteTransaction trans)
                     {
                         bus.post(new LogEvent.AddLogEvent(
                                 new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())
@@ -942,7 +943,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
+                    public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestErrorLog(error.getMessage())));
 

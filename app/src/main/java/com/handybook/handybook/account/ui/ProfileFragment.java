@@ -20,6 +20,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.ThinIconButton;
 import com.handybook.handybook.library.util.TextUtils;
@@ -304,9 +305,9 @@ public final class ProfileFragment extends InjectedFragment
         }
     };
 
-    private final DataManager.Callback<User> userCallback = new DataManager.Callback<User>() {
+    private final FragmentSafeCallback<User> userCallback = new FragmentSafeCallback<User>(this) {
         @Override
-        public void onSuccess(final User user) {
+        public void onCallbackSuccess(final User user) {
             if (!allowCallbacks) return;
 
             loadedUserInfo = true;
@@ -324,7 +325,7 @@ public final class ProfileFragment extends InjectedFragment
         }
 
         @Override
-        public void onError(final DataManager.DataManagerError error) {
+        public void onCallbackError(final DataManager.DataManagerError error) {
             if (!allowCallbacks) return;
 
             loadedUserInfo = true;

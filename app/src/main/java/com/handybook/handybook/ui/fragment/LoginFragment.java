@@ -32,6 +32,7 @@ import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.event.HandyEvent;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -383,10 +384,10 @@ public final class LoginFragment extends BookingFlowFragment
 
                 if (mFindUser)
                 {
-                    dataManager.getUserExists(email, new DataManager.Callback<UserExistsResponse>()
+                    dataManager.getUserExists(email, new FragmentSafeCallback<UserExistsResponse>(LoginFragment.this)
                     {
                         @Override
-                        public void onSuccess(final UserExistsResponse userExistsResponse)
+                        public void onCallbackSuccess(final UserExistsResponse userExistsResponse)
                         {
                             if (!allowCallbacks)
                             { return; }
@@ -415,7 +416,7 @@ public final class LoginFragment extends BookingFlowFragment
                         }
 
                         @Override
-                        public void onError(DataManager.DataManagerError error)
+                        public void onCallbackError(DataManager.DataManagerError error)
                         {
                             if (!allowCallbacks)
                             {
@@ -450,10 +451,10 @@ public final class LoginFragment extends BookingFlowFragment
 
                 dataManager.requestPasswordReset(
                         mEmailText.getText().toString(),
-                        new DataManager.Callback<String>()
+                        new FragmentSafeCallback<String>(LoginFragment.this)
                         {
                             @Override
-                            public void onSuccess(final String response)
+                            public void onCallbackSuccess(final String response)
                             {
                                 if (!allowCallbacks) { return; }
                                 progressDialog.dismiss();
@@ -464,7 +465,7 @@ public final class LoginFragment extends BookingFlowFragment
                             }
 
                             @Override
-                            public void onError(final DataManager.DataManagerError error)
+                            public void onCallbackError(final DataManager.DataManagerError error)
                             {
                                 if (!allowCallbacks) { return; }
                                 progressDialog.dismiss();
