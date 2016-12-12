@@ -43,4 +43,16 @@
         <attr name="ripple_drawable"
               format="reference"/>
     </declare-styleable>
+
+    <!--bottom nav-->
+    <declare-styleable name="HandyBottomNavigationView">
+        <attr name="itemIconTint"
+              format="color"/>
+        <attr name="itemTextColor"
+              format="color"/>
+        <attr name="itemBackground"
+              format="reference"/>
+        <attr name="menu"
+              format="reference"/>
+    </declare-styleable>
 </resources>

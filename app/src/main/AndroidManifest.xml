@@ -509,8 +509,7 @@
         <activity android:name=".proteam.ui.activity.ProMessagesActivity">
         </activity>
         <activity
-            android:name=".core.ui.activity.BottomNavActivity"
-            android:launchMode="singleTask"
+            android:name=".bottomnav.BottomNavActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             >
