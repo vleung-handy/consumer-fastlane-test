@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import butterknife.ButterKnife;
  */
 public class CancelRecurringBookingFragment extends InjectedFragment
 {
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.web_view)
     HandyWebView mWebView;
 
@@ -45,6 +48,8 @@ public class CancelRecurringBookingFragment extends InjectedFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_cancel_recurring_booking, container, false);
         ButterKnife.bind(this, view);
+
+        setupToolbar(mToolbar, getString(R.string.cancel_recurring_booking_title));
 
         final String cancelUrl = getArguments().getString(BundleKeys.CANCEL_RECURRING_BOOKING_URL);
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity())

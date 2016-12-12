@@ -25,7 +25,7 @@
             android:title="@string/my_bookings"
             app:contentInsetStart="0dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:navigationIcon="@drawable/ic_menu"
+            app:navigationIcon="@drawable/ic_back"
             app:titleTextAppearance="@style/Toolbar.TitleText"
 
             />

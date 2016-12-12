@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +19,11 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.PastBookingsLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
@@ -75,7 +76,8 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.history));
-        if (getActivity() instanceof MenuDrawerActivity)
+        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
+                && getActivity() instanceof MenuDrawerActivity)
         {
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
@@ -134,11 +136,10 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
                         @Override
                         public void onClick(final View v)
                         {
-                            final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
                             Booking booking = (Booking) v.getTag();
                             bus.post(new LogEvent.AddLogEvent(new PastBookingsLog.BookingDetailsTappedLog(booking.getId())));
-                            intent.putExtra(BundleKeys.BOOKING, booking);
-                            getActivity().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
+                            Fragment fragment = BookingDetailFragment.newInstance(booking, false);
+                            FragmentUtils.switchToFragment(HistoryFragment.this, fragment, true);
                         }
                     });
 

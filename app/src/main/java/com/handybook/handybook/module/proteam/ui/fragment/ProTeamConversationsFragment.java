@@ -125,7 +125,6 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
                 false
         );
         ButterKnife.bind(this, view);
-        mToolbar.setNavigationIcon(R.drawable.ic_menu);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -339,7 +338,11 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
     {
         super.onResume();
         setupToolbar(mToolbar, getString(R.string.my_pro_team));
-        if (getActivity() instanceof MenuDrawerActivity)
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            mToolbar.setNavigationIcon(null);
+        }
+        else if (getActivity() instanceof MenuDrawerActivity)
         {
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }

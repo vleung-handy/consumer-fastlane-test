@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
     private RecurringBooking mRecurringBooking;
     private BookingQuote mBookingQuote;
 
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
     @Bind(R.id.next_button)
@@ -110,6 +113,8 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         final View view = inflater
                 .inflate(R.layout.fragment_booking_edit_frequency, container, false);
         ButterKnife.bind(this, view);
+
+        setupToolbar(mToolbar, getString(R.string.edit_frequency));
 
         return view;
     }

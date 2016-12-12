@@ -146,11 +146,11 @@ public class BookingDetailSectionFragmentProInformation extends
     )
     {
         getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
-        getSectionView().setAssignedProInfo(provider, providerAssignmentInfo);
         getSectionView().setProProfileVisible(true);
 
         if (providerAssignmentInfo != null)
         {
+            getSectionView().setAssignedProInfo(provider, providerAssignmentInfo);
             if (providerAssignmentInfo.isProTeamMatch())
             {
                 //indicate that this pro is on the user's pro team
@@ -193,10 +193,7 @@ public class BookingDetailSectionFragmentProInformation extends
         if (booking.hasAssignedProvider())
         {
             //show view for assigned provider
-            showAssignedProviderInfo(
-                    pro,
-                    booking.getProviderAssignmentInfo()
-            );
+            showAssignedProviderInfo(pro, booking.getProviderAssignmentInfo());
         }
         else
         {
@@ -364,7 +361,4 @@ public class BookingDetailSectionFragmentProInformation extends
 
         return validPhoneNumber;
     }
-
-
-
 }

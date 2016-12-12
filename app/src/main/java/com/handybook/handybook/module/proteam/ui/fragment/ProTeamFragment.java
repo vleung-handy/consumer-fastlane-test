@@ -147,6 +147,13 @@ public class ProTeamFragment extends InjectedFragment implements
         requestProTeam();
     }
 
+    @Override
+    public void onPause()
+    {
+        removeUiBlockers();
+        super.onPause();
+    }
+
     private void requestProTeam()
     {
         showUiBlockers();

@@ -9,14 +9,7 @@
               tools:visibility="visible"
     >
 
-    <!--TODO: use a toolbar-->
-    <!--TODO: create templates for this and similar screens-->
-    <com.handybook.handybook.ui.widget.BackButtonNavBar
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel_recurring_booking_title"
-        />
+    <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"

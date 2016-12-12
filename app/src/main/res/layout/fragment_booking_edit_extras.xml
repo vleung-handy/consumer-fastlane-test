@@ -14,19 +14,14 @@
         android:textAllCaps="false"
         />
 
-    <com.handybook.handybook.ui.widget.BackButtonNavBar
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/booking_edit_extras_title"
-        />
+    <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:id="@+id/booking_edit_extras_content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/nav_bar"
+        android:layout_below="@id/toolbar"
         android:visibility="gone"
         tools:visibility="visible"
         >

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="@dimen/med_elevation"
-        android:paddingLeft="@dimen/default_padding"
+        app:titleMargin="@dimen/default_margin"
         android:theme="@style/HandyTheme.AppBarOverlay"
         app:contentInsetStart="0dp"
         app:navigationIcon="@drawable/ic_back"

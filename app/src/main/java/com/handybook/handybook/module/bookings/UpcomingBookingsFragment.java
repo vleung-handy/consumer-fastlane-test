@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,17 +28,16 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
-import com.handybook.handybook.module.referral.ui.ReferralActivity;
+import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.ui.view.BookingListItem;
 import com.handybook.handybook.ui.view.ExpandableCleaningPlan;
@@ -201,12 +201,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             public void onClick(final View v)
             {
                 bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareBannerTappedLog()));
-                Intent intent = new Intent(getActivity(), ReferralActivity.class);
-                intent.putExtra(
-                        BundleKeys.REFERRAL_PAGE_SOURCE,
-                        ShareModalLog.SRC_UPCOMING_BOOKINGS
-                );
-                startActivity(intent);
+                Fragment fragment = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
+                FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
             }
         });
 
@@ -256,12 +252,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     public void onShareButtonClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareMenuPressedLog()));
-        Intent intent = new Intent(getActivity(), ReferralActivity.class);
-        intent.putExtra(
-                BundleKeys.REFERRAL_PAGE_SOURCE,
-                ShareModalLog.NativeShareTappedLog.SRC_UPCOMING_BOOKINGS
-        );
-        startActivity(intent);
+        Fragment fragment = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
+        FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
     }
 
     @OnClick(R.id.try_again_button)
@@ -349,16 +341,12 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                         {
                             bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.BookingDetailsTappedLog(
                                     booking.getId())));
-                            final Intent intent = new Intent(
-                                    getActivity(),
-                                    BookingDetailActivity.class
-                            );
-                            Booking booking = ((BookingListItem) v).getBooking();
-                            intent.putExtra(BundleKeys.BOOKING, booking);
-                            getActivity().startActivityForResult(
-                                    intent,
-                                    ActivityResult.BOOKING_UPDATED
-                            );
+                            Fragment fragment = BookingDetailFragment.newInstance(booking, false);
+                            FragmentUtils.switchToFragment(
+                                    UpcomingBookingsFragment.this, fragment, true);
+                            // we null out the bookings so they'll reload onResume.
+                            mBookings = null;
+                            mRecurringBookings = null;
                         }
                     },
                     booking,

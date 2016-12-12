@@ -6,13 +6,9 @@
               android:orientation="vertical"
     >
 
+    <include layout="@layout/toolbar"/>
+
     <!--TODO: create templates for the booking flow screens-->
-    <com.handybook.handybook.ui.widget.BackButtonNavBar
-        android:id="@+id/nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_frequency"
-        />
 
     <ScrollView
         android:layout_width="match_parent"
