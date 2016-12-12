@@ -71,6 +71,11 @@
                     android:layout_marginTop="@dimen/default_margin"
                     android:src="@drawable/img_referral_couch"
                     />
+                <com.handybook.handybook.library.ui.view.snowflake.SnowView
+                    android:id="@+id/fragment_referral_snowview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"/>
             </FrameLayout>
 
             <LinearLayout

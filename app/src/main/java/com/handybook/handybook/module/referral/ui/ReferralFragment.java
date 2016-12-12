@@ -21,8 +21,10 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.constant.ActivityResult;
 import com.handybook.handybook.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.snowflake.SnowView;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -65,6 +67,8 @@ public class ReferralFragment extends InjectedFragment
     ImageView mImage;
     @Bind(R.id.fragment_referral_toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.fragment_referral_snowview)
+    SnowView mSnowView;
 
     private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
@@ -96,6 +100,7 @@ public class ReferralFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_referral, container, false);
         ButterKnife.bind(this, view);
 
+        UiUtils.showSnowView(mSnowView);
         setupToolbar(mToolbar, getString(R.string.free_cleanings));
         if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
