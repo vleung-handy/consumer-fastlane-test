@@ -85,7 +85,9 @@ public class Configuration implements Serializable
         return mAddressAutoCompleteEnabled;
     }
 
-    public boolean isBottomNavEnabled() { return mBottomNavEnabled; }
+    public boolean isBottomNavEnabled() {
+        return mBottomNavEnabled;
+    }
 
     public String toJson()
     {

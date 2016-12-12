@@ -526,6 +526,8 @@ public final class LoginFragment extends BookingFlowFragment
 
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
+        //TODO destination class is an activity but the bottom nav uses fragment-based nav
+
         if (mDestinationClass != null)
         {
             activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras(),
@@ -534,6 +536,7 @@ public final class LoginFragment extends BookingFlowFragment
         }
         else
         {
+            //TODO this causes the bottom nav to not show because this activity extends menu drawer
             activity.navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
         }
     }

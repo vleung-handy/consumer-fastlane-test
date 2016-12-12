@@ -14,10 +14,10 @@ import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.Tab;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.ui.activity.BottomNavActivity;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 
