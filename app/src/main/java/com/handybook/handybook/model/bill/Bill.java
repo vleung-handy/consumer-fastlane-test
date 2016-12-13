@@ -1,7 +1,6 @@
 package com.handybook.handybook.model.bill;
 
 
-import com.google.android.gms.wallet.LineItem;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class Bill
     @SerializedName("header_text")
     private String mHeaderText;
     @SerializedName("final_line_item")
-    private LineItem mFinalLineItem;
+    private BillLineItem mFinalLineItem;
     @SerializedName("currency_symbol")
     private String mCurrencySymbol;
     @SerializedName("sections")
@@ -71,7 +70,7 @@ public class Bill
         return mHeaderText;
     }
 
-    public LineItem getFinalLineItem()
+    public BillLineItem getFinalLineItem()
     {
         return mFinalLineItem;
     }
