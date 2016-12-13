@@ -140,4 +140,10 @@ public class PriceView extends FrameLayout
         mDecimalText = decimalText;
         updateUi();
     }
+
+    public void setPrice(final float price)
+    {
+        setCardinal((int) price);
+        setDecimal((int) ((price - (int) price) / 100));
+    }
 }
