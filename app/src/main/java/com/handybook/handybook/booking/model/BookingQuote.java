@@ -1,7 +1,8 @@
 package com.handybook.handybook.booking.model;
 
-import com.crashlytics.android.Crashlytics;
 import android.support.annotation.Nullable;
+
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -11,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.model.bill.Bill;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -46,6 +48,7 @@ public class BookingQuote extends Observable
     public static final String KEY_COUPON = "coupon";
     public static final String KEY_RECURRENCE_OPTIONS = "recurrence_options";
     public static final String KEY_QUOTE_CONFIG = "quote_config";
+    public static final String KEY_BILL = "bill";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -87,6 +90,8 @@ public class BookingQuote extends Observable
     private int[] mRecurrenceOptions;
     @SerializedName(KEY_QUOTE_CONFIG)
     private QuoteConfig mQuoteConfig;
+    @SerializedName(KEY_BILL)
+    private Bill mBill;
 
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
@@ -364,6 +369,12 @@ public class BookingQuote extends Observable
         triggerObservers();
     }
 
+
+    public Bill getBill()
+    {
+        return mBill;
+    }
+
     private void triggerObservers()
     {
         setChanged();
@@ -498,10 +509,14 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_SPECIAL_EXTRAS_OPTIONS, context.serialize(value.getBookingOption()));
             jsonObj.add(KEY_IS_ANDROID_PAY_ENABLED, context.serialize(value.isAndroidPayEnabled()));
             jsonObj.add(KEY_ANDROID_PAY_COUPON, context.serialize(value.getAndroidPayCouponCode()));
-            jsonObj.add(KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED, context.serialize(value.getAndroidPayCouponValueFormatted()));
+            jsonObj.add(
+                    KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED,
+                    context.serialize(value.getAndroidPayCouponValueFormatted())
+            );
             jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));
             jsonObj.add(KEY_RECURRENCE_OPTIONS, context.serialize(value.getRecurrenceOptions()));
             jsonObj.add(KEY_QUOTE_CONFIG, context.serialize(value.getQuoteConfig()));
+            jsonObj.add(KEY_BILL, context.serialize(value.getBill()));
             return jsonObj;
         }
     }
