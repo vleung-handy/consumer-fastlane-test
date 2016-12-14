@@ -13,6 +13,29 @@ public final class BookingPriceInfo {
     @SerializedName("weekly_recurring_price") private float weeklyPrice;
     @SerializedName("discount_weekly_recurring_price") private float discountWeeklyPrice;
 
+    public BookingPriceInfo(
+            final float hours,
+            final float price,
+            final float discountPrice,
+            final float biMonthlyprice,
+            final float discountBiMonthlyprice,
+            final float monthlyPrice,
+            final float discountMonthlyPrice,
+            final float weeklyPrice,
+            final float discountWeeklyPrice
+    )
+    {
+        this.hours = hours;
+        this.price = price;
+        this.discountPrice = discountPrice;
+        this.biMonthlyprice = biMonthlyprice;
+        this.discountBiMonthlyprice = discountBiMonthlyprice;
+        this.monthlyPrice = monthlyPrice;
+        this.discountMonthlyPrice = discountMonthlyPrice;
+        this.weeklyPrice = weeklyPrice;
+        this.discountWeeklyPrice = discountWeeklyPrice;
+    }
+
     final float getHours() {
         return hours;
     }

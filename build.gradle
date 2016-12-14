@@ -5,6 +5,7 @@ buildscript {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
         maven { url "http://dl.bintray.com/urbanairship/android" }
+        maven { url 'https://jitpack.io' }
     }
 
     dependencies {

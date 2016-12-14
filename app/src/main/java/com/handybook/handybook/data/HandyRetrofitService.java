@@ -83,35 +83,35 @@ public interface HandyRetrofitService
     @POST("/bookings/{id}/edit_extras")
     void editServiceExtras(
             @Path("id") int bookingId,
-            @Body BookingEditExtrasRequest bookingEditExtrasRequest,
+            @Body BookingEditExtrasRequest BOOKINGEditExtrasRequest,
             HandyRetrofitCallback cb
     );
 
-    @GET("/quotes/new")
+    @GET("/quotes/new?")
     void getQuoteOptions(
             @Query("service_id") int serviceId, @Query("user_id") String userId,
             HandyRetrofitCallback cb
     );
 
-    @POST("/quotes")
+    @POST("/quotes?commitment_prices=1")
     void createQuote(@Body BookingRequest req, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
-    @POST("/quotes/{quote}/select_new_time")
+    @POST("/quotes/{quote}/select_new_time?commitment_prices=1")
     void updateQuoteDate(
             @Path("quote") int quoteId, @Field("date_start") Date date,
             HandyRetrofitCallback cb
     );
 
     @FormUrlEncoded
-    @POST("/quotes/{quote}/set_coupon")
+    @POST("/quotes/{quote}/set_coupon?commitment_prices=1")
     void applyPromo(
             @Field("coupon") String promoCode, @Path("quote") int quoteId,
             @Field("user_id") String userId, @Field("email") String email,
             HandyRetrofitCallback cb
     );
 
-    @POST("/quotes/{quote}/remove_coupon")
+    @POST("/quotes/{quote}/remove_coupon?commitment_prices=1")
     void removePromo(@Path("quote") int quoteId, @Body String empty, HandyRetrofitCallback cb);
 
     @POST("/quotes/{quote}/create_booking")

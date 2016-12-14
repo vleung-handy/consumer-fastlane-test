@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -49,6 +50,7 @@ public class BookingQuote extends Observable
     public static final String KEY_RECURRENCE_OPTIONS = "recurrence_options";
     public static final String KEY_QUOTE_CONFIG = "quote_config";
     public static final String KEY_BILL = "bill";
+    public static final String KEY_COMMITMENT_PRICES = "commitment_prices";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -70,6 +72,8 @@ public class BookingQuote extends Observable
     private float mHourlyAmount;
     @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
+    @SerializedName(KEY_COMMITMENT_PRICES)
+    private CommitmentPricesMap mCommitmentPricesMap;
     @SerializedName(KEY_DYNAMIC_OPTIONS)
     private ArrayList<PeakPriceInfo> mSurgePriceTable;
     @SerializedName(KEY_STRIPE_KEY)
@@ -375,6 +379,12 @@ public class BookingQuote extends Observable
         return mBill;
     }
 
+
+    public Map<String, CommitmentType> getCommitmentPricesMap()
+    {
+        return mCommitmentPricesMap;
+    }
+
     private void triggerObservers()
     {
         setChanged();
@@ -449,16 +459,22 @@ public class BookingQuote extends Observable
     public String toJson()
     {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .setExclusionStrategies(getExclusionStrategy())
-                .registerTypeAdapter(BookingQuote.class, new BookingQuoteSerializer()).create();
+                                           .setExclusionStrategies(getExclusionStrategy())
+                                           .registerTypeAdapter(
+                                                   BookingQuote.class,
+                                                   new BookingQuoteSerializer()
+                                           ).create();
 
         return gson.toJson(this);
     }
 
     public static BookingQuote fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, BookingQuote.class);
+        final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                                                           .create()
+                                                           .fromJson(json, BookingQuote.class);
+        bookingQuote.setPriceTable(bookingQuote.getCommitmentPricesMap().toPriceTable());
+        return bookingQuote;
     }
 
     public static ExclusionStrategy getExclusionStrategy()
@@ -517,6 +533,7 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_RECURRENCE_OPTIONS, context.serialize(value.getRecurrenceOptions()));
             jsonObj.add(KEY_QUOTE_CONFIG, context.serialize(value.getQuoteConfig()));
             jsonObj.add(KEY_BILL, context.serialize(value.getBill()));
+            jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentPricesMap()));
             return jsonObj;
         }
     }
