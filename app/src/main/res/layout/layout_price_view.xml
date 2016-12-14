@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/price_view_cardinal_tv"
-        style="@style/TextView.XLarge.Bold"
+        style="@style/TextView.XXLarge.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
@@ -17,9 +17,10 @@
 
     <TextView
         android:id="@+id/price_view_decimal_tv"
-        style="@style/TextView.Small.Bold"
+        style="@style/TextView.Large.Bold"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginTop="3dp"
         android:maxLines="1"
         tools:text="50"
         />

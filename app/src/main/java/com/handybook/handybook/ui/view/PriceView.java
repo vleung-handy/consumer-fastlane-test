@@ -145,6 +145,6 @@ public class PriceView extends FrameLayout
     public void setPrice(final float price)
     {
         setCardinal((int) price);
-        setDecimal((int) ((price - (int) price) / 100));
+        setDecimal((int) ((price - (int) price) * 100));
     }
 }

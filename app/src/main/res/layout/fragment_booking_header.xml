@@ -69,7 +69,6 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/discount_text"
             android:layout_toRightOf="@id/discount_text"
-            tools:text="$0"
             />
 
     </RelativeLayout>

@@ -22,42 +22,42 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
                     .get("price")
                     .getPriceItemHashMap()
                     .get(hour_key)
-                    .getFullPrice() / 100;
+                    .getFullPrice() / 100.0f;
             final float discountPrice = crf
                     .get("price")
                     .getPriceItemHashMap()
                     .get(hour_key)
-                    .getAmountDue() / 100;
+                    .getAmountDue() / 100.0f;
             final float biMonthlyPrice = crf
                     .get("bimonthly_recurring_price")
                     .getPriceItemHashMap()
                     .get(hour_key)
-                    .getFullPrice() / 100;
+                    .getFullPrice() / 100.0f;
             final float discountBiMonthlyPrice = crf
                     .get("bimonthly_recurring_price")
                     .getPriceItemHashMap()
                     .get(hour_key)
-                    .getAmountDue() / 100;
+                    .getAmountDue() / 100.0f;
             final float monthlyPrice = crf
                     .get("monthly_recurring_price")
                     .getPriceItemHashMap()
                     .get(hour_key)
-                    .getFullPrice() / 100;
+                    .getFullPrice() / 100.0f;
             final float discountMonthlyPrice = crf
                     .get("monthly_recurring_price")
                     .getPriceItemHashMap()
                     .get(hour_key)
-                    .getAmountDue() / 100;
+                    .getAmountDue() / 100.0f;
             final float weeklyPrice = crf
                     .get("weekly_recurring_price")
                     .getPriceItemHashMap()
                     .get(hour_key)
-                    .getFullPrice() / 100;
+                    .getFullPrice() / 100.0f;
             final float discountWeeklyPrice = crf
                     .get("weekly_recurring_price")
                     .getPriceItemHashMap()
                     .get(hour_key)
-                    .getAmountDue() / 100;
+                    .getAmountDue() / 100.0f;
             priceTable.add(new BookingPriceInfo(
                     hours,
                     price,
