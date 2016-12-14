@@ -52,6 +52,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingLocationFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
@@ -204,6 +205,7 @@ import static org.mockito.Mockito.when;
         SplashActivity.class,
         SplashActivityTest.class,
         ProTeamConversationsFragment.class,
+        BookingHeaderFragmentTest.class,
 }, library = true)
 public class TestApplicationModule
 {
