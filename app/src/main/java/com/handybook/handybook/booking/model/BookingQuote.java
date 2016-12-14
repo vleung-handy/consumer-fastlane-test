@@ -23,7 +23,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -380,7 +379,7 @@ public class BookingQuote extends Observable
     }
 
 
-    public Map<String, CommitmentType> getCommitmentPricesMap()
+    public CommitmentPricesMap getCommitmentPricesMap()
     {
         return mCommitmentPricesMap;
     }
@@ -473,7 +472,7 @@ public class BookingQuote extends Observable
         final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                                                            .create()
                                                            .fromJson(json, BookingQuote.class);
-        bookingQuote.setPriceTable(bookingQuote.getCommitmentPricesMap().toPriceTable());
+        bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
         return bookingQuote;
     }
 
