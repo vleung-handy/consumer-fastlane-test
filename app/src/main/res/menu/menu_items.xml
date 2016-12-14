@@ -26,7 +26,6 @@
             android:checked="false"
             android:icon="@drawable/menu_pro_team"
             android:title="@string/my_pro_team"
-            app:actionLayout="@layout/chat_menu_item"
             />
 
         <item

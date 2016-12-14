@@ -153,7 +153,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
         {
             //Layer should be disabled.
             mLayerHelper.deauthenticate();
-            refreshMenu();
         }
         else
         {
@@ -163,7 +162,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
             if (user != null)
             {
                 mLayerHelper.initLayer(user.getAuthToken());
-                refreshMenu();
             }
             else
             {
@@ -171,6 +169,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 mLayerHelper.deauthenticate();
             }
         }
+        //The menu should always be refreshed
+        refreshMenu();
     }
 
     protected boolean requiresUser()
