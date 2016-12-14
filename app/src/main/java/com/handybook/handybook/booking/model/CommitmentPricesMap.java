@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.CommitmentType>
 {
@@ -14,7 +13,7 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         HashMap<String, CommitmentRecurrenceFrequency> crf = get("no_commitment")
                 .get("0")
                 .getFrequencyHashMap();
-        HashSet<String> keys = (HashSet<String>) crf.get("price").getPriceItemHashMap().keySet();
+        ArrayList<String> keys = new ArrayList<>(crf.get("price").getPriceItemHashMap().keySet());
         for (String hour_key : keys)
         {
 
@@ -29,7 +28,7 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
                     .getPriceItemHashMap()
                     .get(hour_key)
                     .getAmountDue() / 100;
-            final float BiMonthlyPrice = crf
+            final float biMonthlyPrice = crf
                     .get("bimonthly_recurring_price")
                     .getPriceItemHashMap()
                     .get(hour_key)
@@ -59,12 +58,11 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
                     .getPriceItemHashMap()
                     .get(hour_key)
                     .getAmountDue() / 100;
-            ;
             priceTable.add(new BookingPriceInfo(
                     hours,
                     price,
                     discountPrice,
-                    BiMonthlyPrice,
+                    biMonthlyPrice,
                     discountBiMonthlyPrice,
                     monthlyPrice,
                     discountMonthlyPrice,

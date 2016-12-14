@@ -472,7 +472,10 @@ public class BookingQuote extends Observable
         final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                                                            .create()
                                                            .fromJson(json, BookingQuote.class);
-        bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
+        if (bookingQuote != null && bookingQuote.getCommitmentPricesMap() != null)
+        {
+            bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
+        }
         return bookingQuote;
     }
 
