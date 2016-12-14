@@ -99,8 +99,8 @@ public class ReferralFragment extends InjectedFragment
     {
         final View view = inflater.inflate(R.layout.fragment_referral, container, false);
         ButterKnife.bind(this, view);
+        mSnowView.setVisibility(mConfigurationManager.getPersistentConfiguration().isSnowEnabled() ? View.VISIBLE : View.GONE);
 
-        UiUtils.showSnowView(mSnowView);
         setupToolbar(mToolbar, getString(R.string.free_cleanings));
         if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {

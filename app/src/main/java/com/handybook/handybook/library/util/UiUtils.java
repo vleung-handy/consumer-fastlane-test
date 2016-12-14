@@ -174,29 +174,4 @@ public final class UiUtils
 //            Crashlytics.log("Unable to change value of shift mode");
 //        }
 //    }
-
-    public static void showSnowView(final SnowView snowView) {
-        int visibility = View.GONE;
-
-        try
-        {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-            Calendar instance = Calendar.getInstance();
-            int year = instance.get(Calendar.YEAR);
-            //Month goes from 0-11
-            int month = instance.get(Calendar.MONTH) + 1;
-            //set up todays date
-            Date today = sdf.parse(month + "-" + instance.get(Calendar.DAY_OF_MONTH) + "-" + year);
-            Date date1 = sdf.parse("12-1-" + (month == 12 ? year : year -1));
-            Date date2 = sdf.parse("1-31-" + (month == 12 ? year + 1 : year));
-
-            visibility = DateTimeUtils.isDateBetween(today, date1, date2) ? View.VISIBLE : View.GONE;
-        } catch (ParseException e)
-        {
-            //do nothing
-            Crashlytics.logException(e);
-        }
-
-        snowView.setVisibility(visibility);
-    }
 }
