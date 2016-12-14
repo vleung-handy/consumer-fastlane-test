@@ -14,15 +14,12 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.util.BookingUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
