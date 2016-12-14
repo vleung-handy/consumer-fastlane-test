@@ -11,6 +11,7 @@
         style="@style/TextView.XLarge.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         tools:text="$100"
         />
 
@@ -19,6 +20,7 @@
         style="@style/TextView.Small.Bold"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:maxLines="1"
         tools:text="50"
         />
 </LinearLayout>

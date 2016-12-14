@@ -2,6 +2,7 @@ package com.handybook.handybook.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -65,7 +66,7 @@ public class PriceView extends FrameLayout
         }
         mCardinal.setText(mCardinalText);
         mDecimal.setText(mDecimalText);
-        if (mDecimalText == null || mDecimalText.isEmpty())
+        if (TextUtils.isEmpty(mDecimalText))
         {
             mDecimal.setVisibility(GONE);
         }
