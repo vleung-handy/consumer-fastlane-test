@@ -28,6 +28,13 @@
             />
     </android.support.v7.widget.Toolbar>
 
+    <com.handybook.handybook.library.ui.view.snowflake.SnowView
+        android:id="@+id/fragment_services_category_snowview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        />
+
     <com.handybook.handybook.library.ui.view.AnimatedRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

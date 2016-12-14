@@ -28,6 +28,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.library.ui.view.snowflake.SnowView;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
@@ -78,6 +79,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     TextView mPromoText;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.fragment_services_category_snowview)
+    SnowView mSnowView;
 
     RecyclerViewAdapter mAdapter;
 
@@ -121,6 +124,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         final View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
+        mSnowView.setVisibility(mConfigurationManager.getPersistentConfiguration()
+                                                     .isSnowEnabled() ? View.VISIBLE : View.GONE);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
