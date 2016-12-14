@@ -12,9 +12,9 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
     private static final String PRICE_WEEKLY_RECURRING_KEY = "weekly_recurring_price";
     private static final String PRICE_MONTHLY_RECURRING_KEY = "monthly_recurring_price";
     private static final String PRICE_BIMONTHLY_RECURRING_KEY = "bimonthly_recurring_price";
-    public static final String NO_COMMITMENT_KEY = "no_commitment";
+    private static final String NO_COMMITMENT_KEY = "no_commitment";
 
-    public ArrayList<BookingPriceInfo> toPriceTable()
+    ArrayList<BookingPriceInfo> toPriceTable()
     {
         final ArrayList<BookingPriceInfo> priceTable = new ArrayList<>();
         HashMap<String, CommitmentRecurrenceFrequency> crf = get(NO_COMMITMENT_KEY)
@@ -104,37 +104,37 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         return fullPriceDollars;
     }
 
-    public static class CommitmentType extends HashMap<String, CommitmentLength>
+    static class CommitmentType extends HashMap<String, CommitmentLength>
     {
     }
 
 
-    public static class CommitmentLength
+    static class CommitmentLength
     {
         @SerializedName("frequency")
         private HashMap<String, CommitmentRecurrenceFrequency> mFrequencyHashMap;
 
-        public HashMap<String, CommitmentRecurrenceFrequency> getFrequencyHashMap()
+        HashMap<String, CommitmentRecurrenceFrequency> getFrequencyHashMap()
         {
             return mFrequencyHashMap;
         }
     }
 
 
-    static class CommitmentRecurrenceFrequency
+    private static class CommitmentRecurrenceFrequency
     {
 
         @SerializedName("hours")
         private HashMap<String, CommitmentPriceItem> mPriceItemHashMap;
 
-        public HashMap<String, CommitmentPriceItem> getPriceItemHashMap()
+        HashMap<String, CommitmentPriceItem> getPriceItemHashMap()
         {
             return mPriceItemHashMap;
         }
     }
 
 
-    public static class CommitmentPriceItem
+    private static class CommitmentPriceItem
     {
 
         @SerializedName("full_price")
@@ -143,12 +143,12 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         int mAmountDue;
 
 
-        public int getFullPrice()
+        int getFullPrice()
         {
             return mFullPrice;
         }
 
-        public int getAmountDue()
+        int getAmountDue()
         {
             return mAmountDue;
         }
