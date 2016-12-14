@@ -7,31 +7,41 @@ import java.util.HashMap;
 
 public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.CommitmentType>
 {
+
+    private static final String PRICE_KEY = "price";
+    private static final String PRICE_WEEKLY_RECURRING_KEY = "weekly_recurring_price";
+    private static final String PRICE_MONTHLY_RECURRING_KEY = "monthly_recurring_price";
+    private static final String PRICE_BIMONTHLY_RECURRING_KEY = "bimonthly_recurring_price";
+    public static final String NO_COMMITMENT_KEY = "no_commitment";
+
     public ArrayList<BookingPriceInfo> toPriceTable()
     {
         final ArrayList<BookingPriceInfo> priceTable = new ArrayList<>();
-        HashMap<String, CommitmentRecurrenceFrequency> crf = get("no_commitment")
+        HashMap<String, CommitmentRecurrenceFrequency> crf = get(NO_COMMITMENT_KEY)
                 .get("0")
                 .getFrequencyHashMap();
-        ArrayList<String> keys = new ArrayList<>(crf.get("price").getPriceItemHashMap().keySet());
+        ArrayList<String> keys = new ArrayList<>(crf.get(PRICE_KEY).getPriceItemHashMap().keySet());
         for (String hoursKey : keys)
         {
 
             final float hours = Float.valueOf(hoursKey);
-            final float price = getPrice("price", hoursKey);
-            final float discountPrice = getDiscountPrice("price", hoursKey);
-            final float biMonthlyPrice = getPrice("bimonthly_recurring_price", hoursKey);
+            final float price = getPrice(PRICE_KEY, hoursKey);
+            final float discountPrice = getDiscountPrice(PRICE_KEY, hoursKey);
+            final float biMonthlyPrice = getPrice(PRICE_BIMONTHLY_RECURRING_KEY, hoursKey);
             final float discountBiMonthlyPrice = getDiscountPrice(
-                    "bimonthly_recurring_price",
+                    PRICE_BIMONTHLY_RECURRING_KEY,
                     hoursKey
             );
-            final float monthlyPrice = getPrice("monthly_recurring_price", hoursKey);
+            final float monthlyPrice = getPrice(PRICE_MONTHLY_RECURRING_KEY, hoursKey);
             final float discountMonthlyPrice = getDiscountPrice(
-                    "monthly_recurring_price",
+                    PRICE_MONTHLY_RECURRING_KEY,
                     hoursKey
             );
-            final float weeklyPrice = getPrice("weekly_recurring_price", hoursKey);
-            final float discountWeeklyPrice = getDiscountPrice("weekly_recurring_price", hoursKey);
+            final float weeklyPrice = getPrice(PRICE_WEEKLY_RECURRING_KEY, hoursKey);
+            final float discountWeeklyPrice = getDiscountPrice(
+                    PRICE_WEEKLY_RECURRING_KEY,
+                    hoursKey
+            );
             priceTable.add(new BookingPriceInfo(
                     hours,
                     price,
@@ -52,7 +62,7 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         float fullPriceDollars;
         try
         {
-            final HashMap<String, CommitmentRecurrenceFrequency> crf = get("no_commitment")
+            final HashMap<String, CommitmentRecurrenceFrequency> crf = get(NO_COMMITMENT_KEY)
                     .get("0")
                     .getFrequencyHashMap();
             final int fullPriceCents = crf
@@ -75,7 +85,7 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         float fullPriceDollars;
         try
         {
-            final HashMap<String, CommitmentRecurrenceFrequency> crf = get("no_commitment")
+            final HashMap<String, CommitmentRecurrenceFrequency> crf = get(NO_COMMITMENT_KEY)
                     .get("0")
                     .getFrequencyHashMap();
             final int fullPriceCents = crf
