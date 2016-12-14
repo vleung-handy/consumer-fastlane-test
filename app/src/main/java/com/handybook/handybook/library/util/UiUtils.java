@@ -12,14 +12,6 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.library.ui.view.snowflake.SnowView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 public final class UiUtils
 {
     /**
@@ -143,7 +135,6 @@ public final class UiUtils
             }
         });
     }
-
 // TODO: uncomment when buildToolsVersion is updated to 25
     // This is a hack to disable shifting for BottomNavigationView
 //    public static void removeShiftMode(BottomNavigationView view)
