@@ -14,6 +14,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * UNFINISHED DO NOT USE
+ * TODO: FINISH THIS
+ */
 public class BillView extends FrameLayout
 {
 
@@ -35,7 +39,7 @@ public class BillView extends FrameLayout
     @Bind(R.id.bill_view_final_line_price)
     PriceView mFinalLinePrice;
     @Bind(R.id.bill_view_expand_target)
-    TextView mExpandTarget;
+    TextView mExpandTargetView;
 
     public BillView(final Context context)
     {
@@ -115,7 +119,7 @@ public class BillView extends FrameLayout
     {
         mSectionContainer.setVisibility(VISIBLE);
         mFinalLineContainer.setVisibility(VISIBLE);
-        mExpandTarget.setVisibility(GONE);
+        mExpandTargetView.setVisibility(GONE);
         mIsExpanded = true;
     }
 
@@ -123,7 +127,7 @@ public class BillView extends FrameLayout
     {
         mSectionContainer.setVisibility(GONE);
         mFinalLineContainer.setVisibility(GONE);
-        mExpandTarget.setVisibility(VISIBLE);
+        mExpandTargetView.setVisibility(VISIBLE);
         mIsExpanded = false;
     }
 }

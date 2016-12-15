@@ -1,6 +1,7 @@
 package com.handybook.handybook.model.bill;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -201,7 +202,7 @@ public class Bill
 
         public boolean hasHelpText()
         {
-            return mHelpText != null && !mHelpText.isEmpty();
+            return TextUtils.isEmpty(mHelpText);
         }
     }
 }

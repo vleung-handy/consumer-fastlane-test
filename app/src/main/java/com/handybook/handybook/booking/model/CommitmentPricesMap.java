@@ -146,9 +146,9 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
     {
 
         @SerializedName("full_price")
-        int mFullPriceCents;
+        private int mFullPriceCents;
         @SerializedName("amount_due")
-        int mAmountDueCents;
+        private int mAmountDueCents;
 
         int getFullPriceCents()
         {
