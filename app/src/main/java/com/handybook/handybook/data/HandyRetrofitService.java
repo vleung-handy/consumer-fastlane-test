@@ -83,7 +83,7 @@ public interface HandyRetrofitService
     @POST("/bookings/{id}/edit_extras")
     void editServiceExtras(
             @Path("id") int bookingId,
-            @Body BookingEditExtrasRequest BOOKINGEditExtrasRequest,
+            @Body BookingEditExtrasRequest bookingEditExtrasRequest,
             HandyRetrofitCallback cb
     );
 

@@ -1,5 +1,6 @@
 package com.handybook.handybook.model.bill;
 
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -111,14 +112,21 @@ public class Bill
      */
     public static class BillSection
     {
+        public enum BillSectionType
+        {
+            @SerializedName("DEFAULT")
+            DEFAULT
+        }
+
+
         @SerializedName("type")
-        private String mType;
+        private BillSectionType mType;
         @SerializedName("line_items")
         private ArrayList<BillLineItem> mLineItems;
 
-        public String getType()
+        public BillSectionType getType()
         {
-            return mType;
+            return mType != null ? mType : BillSectionType.DEFAULT;
         }
 
         public ArrayList<BillLineItem> getLineItems()
@@ -157,7 +165,7 @@ public class Bill
         private String mLabel;
         /** Amount In Cents **/
         @SerializedName("amount")
-        private int mAmount;
+        private int mAmountCents;
         /** Amount as text, if provided supersedes cent amount **/
         @SerializedName("amount_text")
         private String mAmountText;
@@ -165,6 +173,7 @@ public class Bill
         @SerializedName("help_text")
         private String mHelpText;
 
+        @NonNull
         public ItemType getType()
         {
             return mType != null ? mType : ItemType.DEFAULT;
@@ -175,9 +184,9 @@ public class Bill
             return mLabel;
         }
 
-        public int getAmount()
+        public int getAmountCents()
         {
-            return mAmount;
+            return mAmountCents;
         }
 
         public String getAmountText()

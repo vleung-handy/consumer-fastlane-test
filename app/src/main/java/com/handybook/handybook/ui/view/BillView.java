@@ -17,7 +17,7 @@ import butterknife.OnClick;
 public class BillView extends FrameLayout
 {
 
-    private boolean isExpanded;
+    private boolean mIsExpanded;
     private Bill mBill;
 
     @Bind(R.id.bill_view_header_title)
@@ -80,9 +80,9 @@ public class BillView extends FrameLayout
         mHeaderTitle.setText(mBill.getHeaderTitle());
         mHeaderText.setText(mBill.getHeaderText());
         mHeaderPrice.setCurrencySymbol(mBill.getCurrencySymbol());
-        mHeaderPrice.setPrice(mBill.getFinalLineItem().getAmount() / 100);
+        mHeaderPrice.setPrice(mBill.getFinalLineItem().getAmountCents());
         mFinalLineLabel.setText(mBill.getFinalLineItem().getLabel());
-        mFinalLinePrice.setPrice(mBill.getFinalLineItem().getAmount() / 100);
+        mFinalLinePrice.setPrice(mBill.getFinalLineItem().getAmountCents());
         mSectionContainer.removeAllViews();
         for (Bill.BillSection eBillSection : mBill.getSections())
         {
@@ -95,13 +95,13 @@ public class BillView extends FrameLayout
 
     public boolean isExpanded()
     {
-        return isExpanded;
+        return mIsExpanded;
     }
 
     @OnClick(R.id.bill_view_root)
     void toggleExpand()
     {
-        if (isExpanded)
+        if (mIsExpanded)
         {
             collapse();
         }
@@ -116,7 +116,7 @@ public class BillView extends FrameLayout
         mSectionContainer.setVisibility(VISIBLE);
         mFinalLineContainer.setVisibility(VISIBLE);
         mExpandTarget.setVisibility(GONE);
-        isExpanded = true;
+        mIsExpanded = true;
     }
 
     public void collapse()
@@ -124,6 +124,6 @@ public class BillView extends FrameLayout
         mSectionContainer.setVisibility(GONE);
         mFinalLineContainer.setVisibility(GONE);
         mExpandTarget.setVisibility(VISIBLE);
-        isExpanded = false;
+        mIsExpanded = false;
     }
 }

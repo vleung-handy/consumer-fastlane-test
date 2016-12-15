@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
 public class PriceView extends FrameLayout
 {
 
-
     @Bind(R.id.price_view_cardinal_tv)
     TextView mCardinal;
     @Bind(R.id.price_view_decimal_tv)
@@ -26,7 +25,7 @@ public class PriceView extends FrameLayout
     private String mCurrencySymbol;
     private String mCardinalText;
     private String mDecimalText;
-    private boolean shouldDisplayEmptyDecimals; // If false, zero cents will be hidden
+    private boolean mShouldDisplayEmptyDecimals; // If false, zero cents will be hidden
 
     public PriceView(Context context)
     {
@@ -41,7 +40,7 @@ public class PriceView extends FrameLayout
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.PriceView, 0, 0);
         try
         {
-            shouldDisplayEmptyDecimals = ta
+            mShouldDisplayEmptyDecimals = ta
                     .getBoolean(R.styleable.PriceView_priceShowZeroCents, false);
             setCurrencySymbol(ta.getString(R.styleable.PriceView_priceCurrencySymbol));
             setCardinal(ta.getInt(R.styleable.PriceView_priceCardinal, 0));
@@ -76,7 +75,6 @@ public class PriceView extends FrameLayout
         }
     }
 
-
     public PriceView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -88,7 +86,6 @@ public class PriceView extends FrameLayout
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
-
 
     public String getCurrencySymbol()
     {
@@ -109,7 +106,7 @@ public class PriceView extends FrameLayout
 
     public void setDecimal(final int decimalValue)
     {
-        if (decimalValue == 0 && !shouldDisplayEmptyDecimals)
+        if (decimalValue == 0 && !mShouldDisplayEmptyDecimals)
         {
             setDecimal("");
         }
@@ -142,9 +139,26 @@ public class PriceView extends FrameLayout
         updateUi();
     }
 
-    public void setPrice(final float price)
+    public void setPrice(final float dollars)
     {
-        setCardinal((int) price);
-        setDecimal((int) ((price - (int) price) * 100));
+        setCardinal(getCardinalValue((int) (dollars * 100)));
+        setDecimal(getDecimalValue((int) (dollars * 100)));
+    }
+
+    public void setPrice(final int priceCents)
+    {
+        setCardinal(getCardinalValue(priceCents));
+        setDecimal(getDecimalValue(priceCents));
+
+    }
+
+    private static int getCardinalValue(final int cents)
+    {
+        return cents / 100;
+    }
+
+    private static int getDecimalValue(final int cents)
+    {
+        return cents % 100;
     }
 }

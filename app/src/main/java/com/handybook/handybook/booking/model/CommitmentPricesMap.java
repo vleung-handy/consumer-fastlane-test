@@ -69,13 +69,14 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
                     .get(recurrenceKey)
                     .getPriceItemHashMap()
                     .get(hourKey)
-                    .getFullPrice();
-            fullPriceDollars = fullPriceCents / 100f;
+                    .getFullPriceCents();
+            fullPriceDollars = convertCentsToDollars(fullPriceCents);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            fullPriceDollars = 0f;
+            //TODO: Refactor prices in all of the app to be in cents as Long wrapper
+            fullPriceDollars = Float.NaN;
         }
         return fullPriceDollars;
     }
@@ -92,16 +93,22 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
                     .get(recurrenceKey)
                     .getPriceItemHashMap()
                     .get(hourKey)
-                    .getAmountDue();
-            fullPriceDollars = fullPriceCents / 100f;
+                    .getAmountDueCents();
+            fullPriceDollars = convertCentsToDollars(fullPriceCents);
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            fullPriceDollars = 0f;
+            //TODO: Refactor prices in all of the app to be in cents as Long wrapper
+            fullPriceDollars = Float.NaN;
 
         }
         return fullPriceDollars;
+    }
+
+    private static float convertCentsToDollars(final int fullPriceCents)
+    {
+        return fullPriceCents / 100f;
     }
 
     static class CommitmentType extends HashMap<String, CommitmentLength>
@@ -117,7 +124,8 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         HashMap<String, CommitmentRecurrenceFrequency> getFrequencyHashMap()
         {
             return mFrequencyHashMap;
-        }
+        }            //TODO: Refactor prices in all of the app to be in cents as Long wrapper
+
     }
 
 
@@ -138,19 +146,18 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
     {
 
         @SerializedName("full_price")
-        int mFullPrice;
+        int mFullPriceCents;
         @SerializedName("amount_due")
-        int mAmountDue;
+        int mAmountDueCents;
 
-
-        int getFullPrice()
+        int getFullPriceCents()
         {
-            return mFullPrice;
+            return mFullPriceCents;
         }
 
-        int getAmountDue()
+        int getAmountDueCents()
         {
-            return mAmountDue;
+            return mAmountDueCents;
         }
     }
 }

@@ -18,18 +18,21 @@ import com.handybook.handybook.model.bill.Bill;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ *  DO NOT USE IT IS NOT FINSISHED VIEW
+ *  TODO: FINISH IT
+ */
 public class BillLineItemView extends FrameLayout
 {
 
     private Bill.BillLineItem mBillLineItem;
 
     @Bind(R.id.bill_view_line_item_label)
-    TextView mLabel;
+    TextView mLabelText;
     @Bind(R.id.bill_view_line_item_question_mark)
-    ImageView mQuestionMark;
+    ImageView mQuestionMarkImage;
     @Bind(R.id.bill_view_line_item_amount)
-    TextView mAmount;
-
+    TextView mAmountText;
 
     public BillLineItemView(final Context context)
     {
@@ -78,10 +81,10 @@ public class BillLineItemView extends FrameLayout
             return;
         }
         getRootView().setVisibility(VISIBLE);
-        mLabel.setText(mBillLineItem.getLabel());
+        mLabelText.setText(mBillLineItem.getLabel());
         if (mBillLineItem.hasHelpText())
         {
-            mQuestionMark.setVisibility(VISIBLE);
+            mQuestionMarkImage.setVisibility(VISIBLE);
             getRootView().setOnClickListener(new OnClickListener()
             {
                 @Override
@@ -89,7 +92,8 @@ public class BillLineItemView extends FrameLayout
                 {
                     final FragmentManager fm = ((AppCompatActivity) getContext())
                             .getSupportFragmentManager();
-                    if (fm.findFragmentByTag(BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG) == null)
+                    if (fm.findFragmentByTag(
+                            BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG) == null)
                     {
                         BookingDetailSectionPaymentView.PriceLineHelpTextDialog
                                 .newInstance(mBillLineItem.getHelpText())
@@ -104,10 +108,10 @@ public class BillLineItemView extends FrameLayout
         }
         else
         {
-            mQuestionMark.setVisibility(GONE);
+            mQuestionMarkImage.setVisibility(GONE);
             getRootView().setOnClickListener(null);
         }
-        //FIXME: Think about passing currency and rendering prices...
-        mAmount.setText(String.valueOf(mBillLineItem.getAmount()));
+        //TODO: Think about passing currency and rendering prices...
+        mAmountText.setText(String.valueOf(mBillLineItem.getAmountCents()));
     }
 }
