@@ -38,6 +38,10 @@ public class Configuration implements Serializable
     @SerializedName("chat_enabled")
     private boolean mChatEnabled;
 
+    //default this to false
+    @SerializedName("snow_enabled")
+    private boolean mSnowEnabled;
+
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
      * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
@@ -104,5 +108,10 @@ public class Configuration implements Serializable
     public boolean isChatEnabled()
     {
         return mChatEnabled;
+    }
+
+    public boolean isSnowEnabled()
+    {
+        return mSnowEnabled;
     }
 }

@@ -55,6 +55,8 @@ public class DeepLinkTest
         );
         ViewUtil.matchToolbarTitle(R.string.my_pro_team);
 
+        //Note: When snow is activated on this screen, the tests will fail because Espresso's
+        // wait for view requires the app to be idle, while snow is constantly updating
         uri = Uri.parse("handy://share");
         deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
         mActivityRule.getActivity().startActivity(deepLinkIntent);

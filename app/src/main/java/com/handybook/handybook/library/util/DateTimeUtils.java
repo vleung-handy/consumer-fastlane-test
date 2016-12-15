@@ -173,6 +173,9 @@ public class DateTimeUtils
         return c.getTime();
     }
 
+    public static boolean isDateBetween(Date dateToMatch, Date date1, Date date2) {
+        return date1.before(dateToMatch) && date2.after(dateToMatch);
+    }
 
     public static int daysBetween(Date d1, Date d2)
     {
