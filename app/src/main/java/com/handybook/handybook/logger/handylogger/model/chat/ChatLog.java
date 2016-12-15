@@ -9,10 +9,7 @@ import java.util.Date;
 
 public class ChatLog extends EventLog
 {
-
-    //TODO: JIA: figure out where to put the Conversations Loading Error Log:
-    //TODO: JIA: Ask iOS whether they are using Navigation logs in their consumer app. First time in android consumer.
-    private static final String EVENT_CONTEXT = "chat";
+    private static final String EVENT_CONTEXT = "pro_team_conversations";
 
     public ChatLog(final String eventType)
     {
@@ -319,4 +316,14 @@ public class ChatLog extends EventLog
         }
     }
 
+
+    public static class PushNotificationReceived extends ChatLog
+    {
+        private static final String EVENT_TYPE = "push_notification_received";
+
+        public PushNotificationReceived()
+        {
+            super(EVENT_TYPE);
+        }
+    }
 }
