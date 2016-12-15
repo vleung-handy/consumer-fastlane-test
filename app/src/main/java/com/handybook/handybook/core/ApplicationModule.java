@@ -145,6 +145,7 @@ import com.handybook.handybook.module.referral.ui.RedemptionSignUpFragment;
 import com.handybook.handybook.module.referral.ui.ReferralActivity;
 import com.handybook.handybook.module.referral.ui.ReferralFragment;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
+import com.handybook.handybook.receiver.LayerPushReceiver;
 import com.handybook.handybook.ui.activity.BlockingActivity;
 import com.handybook.handybook.ui.activity.BottomNavActivity;
 import com.handybook.handybook.ui.activity.LoginActivity;
@@ -303,6 +304,7 @@ import retrofit.converter.GsonConverter;
         EditPlanFrequencyFragment.class,
         RescheduleUpcomingActivity.class,
         BottomNavActivity.class,
+        LayerPushReceiver.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
