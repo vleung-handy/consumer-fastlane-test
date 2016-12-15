@@ -202,7 +202,7 @@ public class Bill
 
         public boolean hasHelpText()
         {
-            return TextUtils.isEmpty(mHelpText);
+            return !TextUtils.isEmpty(mHelpText);
         }
     }
 }
