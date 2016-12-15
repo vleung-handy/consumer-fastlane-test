@@ -14,6 +14,7 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.ui.view.PriceView;
 import com.handybook.handybook.util.BookingUtil;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +39,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     @Bind(R.id.time_text)
     TextView timeText;
     @Bind(R.id.price_text)
-    TextView priceText;
+    PriceView priceView;
     @Bind(R.id.discount_text)
     TextView discountText;
 
@@ -138,8 +139,18 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
         final String currChar = quote.getCurrencyChar();
 
-        priceText.setText(TextUtils.formatPrice(pricing[1], currChar, null));
-        discountText.setText(TextUtils.formatPrice(pricing[0], currChar, null));
-        discountText.setVisibility(pricing[1] < pricing[0] ? View.VISIBLE : View.GONE);
+        //TODO sammy trust and support update this with new price quote stuff
+        priceView.setCurrencySymbol(currChar);
+        priceView.setPrice(pricing[1]);
+
+        if (pricing[1] < pricing[0])
+        {
+            discountText.setText(TextUtils.formatPrice(pricing[0], currChar, null));
+            discountText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            discountText.setVisibility(View.GONE);
+        }
     }
 }

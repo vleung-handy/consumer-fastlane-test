@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:animateLayoutChanges="true"
+    >
+
+    <TextView
+        android:id="@+id/price_view_cardinal_tv"
+        style="@style/TextView.XXLarge.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        tools:text="$100"
+        />
+
+    <TextView
+        android:id="@+id/price_view_decimal_tv"
+        style="@style/TextView.Large.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="1dp"
+        android:maxLines="1"
+        tools:text="50"
+        />
+</LinearLayout>

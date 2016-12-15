@@ -1,0 +1,13 @@
+<resources>
+    <declare-styleable name="PriceView">
+        <attr name="priceShowZeroCents"
+              format="boolean"
+            />
+        <attr name="priceCardinal"
+              format="integer"/>
+        <attr name="priceDecimal"
+              format="integer"/>
+        <attr name="priceCurrencySymbol"
+              format="reference|string"/>
+    </declare-styleable>
+</resources>

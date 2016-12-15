@@ -63,15 +63,12 @@
             tools:text="$0"
             />
 
-        <TextView
+        <com.handybook.handybook.ui.view.PriceView
             android:id="@+id/price_text"
-            style="@style/TextView.XXLarge.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/discount_text"
             android:layout_toRightOf="@id/discount_text"
-            android:maxLines="1"
-            tools:text="$0"
             />
 
     </RelativeLayout>

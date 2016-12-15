@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/bill_view_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/handy_white"
+    >
+
+    <LinearLayout
+        android:id="@+id/bill_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:padding="@dimen/default_padding_half"
+        >
+
+        <RelativeLayout
+            android:id="@+id/bill_view_header_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin_half"
+            >
+
+            <TextView
+                android:id="@+id/bill_view_header_title"
+                style="@style/TextView.Large.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:maxLines="1"
+                tools:text="Cleaning Plan: Every 2 weeks"
+                />
+
+            <TextView
+                android:id="@+id/bill_view_header_text"
+                style="@style/TextView.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bill_view_header_title"
+                android:lineSpacingMultiplier="1"
+                tools:text="Starting Wed, Jan 10\n8:00 am"
+                />
+
+            <com.handybook.handybook.ui.view.PriceView
+                android:id="@+id/bill_view_header_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/bill_view_header_text"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                app:priceCurrencySymbol="$"
+                app:priceCardinal="51"
+                app:priceDecimal="50"
+                app:priceShowZeroCents="false"
+                />
+        </RelativeLayout>
+
+        <include layout="@layout/layout_bill_view_horizontal_separator"/>
+
+        <LinearLayout
+            android:id="@+id/bill_view_section_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <include layout="@layout/layout_bill_view_section"/>
+
+            <include layout="@layout/layout_bill_view_section"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bill_view_final_line_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin_half"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/bill_view_final_line_label"
+                style="@style/TextView.XLarge.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Today's Total"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+            <com.handybook.handybook.ui.view.PriceView
+                android:id="@+id/bill_view_final_line_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:priceCardinal="51"
+                app:priceCurrencySymbol="$"
+                app:priceDecimal="50"
+                app:priceShowZeroCents="false"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bill_view_expand_target"
+            style="@style/TextView.Headline.Blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/default_margin_half"
+            android:text="@string/bill_view_expand_target_text"
+            />
+
+    </LinearLayout>
+</FrameLayout>

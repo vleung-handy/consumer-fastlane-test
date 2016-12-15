@@ -87,7 +87,7 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
-    @GET("/quotes/new")
+    @GET("/quotes/new?")
     void getQuoteOptions(
             @Query("service_id") int serviceId, @Query("user_id") String userId,
             HandyRetrofitCallback cb
