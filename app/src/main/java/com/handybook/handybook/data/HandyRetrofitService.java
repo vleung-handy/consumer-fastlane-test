@@ -93,25 +93,25 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
-    @POST("/quotes?commitment_prices=1")
+    @POST("/quotes")
     void createQuote(@Body BookingRequest req, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
-    @POST("/quotes/{quote}/select_new_time?commitment_prices=1")
+    @POST("/quotes/{quote}/select_new_time")
     void updateQuoteDate(
             @Path("quote") int quoteId, @Field("date_start") Date date,
             HandyRetrofitCallback cb
     );
 
     @FormUrlEncoded
-    @POST("/quotes/{quote}/set_coupon?commitment_prices=1")
+    @POST("/quotes/{quote}/set_coupon")
     void applyPromo(
             @Field("coupon") String promoCode, @Path("quote") int quoteId,
             @Field("user_id") String userId, @Field("email") String email,
             HandyRetrofitCallback cb
     );
 
-    @POST("/quotes/{quote}/remove_coupon?commitment_prices=1")
+    @POST("/quotes/{quote}/remove_coupon")
     void removePromo(@Path("quote") int quoteId, @Body String empty, HandyRetrofitCallback cb);
 
     @POST("/quotes/{quote}/create_booking")
