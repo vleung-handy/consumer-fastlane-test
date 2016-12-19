@@ -154,8 +154,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 || resultCode == ActivityResult.BOOKING_CANCELED)
         {
             //this happens before onResume, so we just have to null out the bookings and it'll reload onResume.
-            mBookings = null;
-            mRecurringBookings = null;
+            enableRefresh();
         }
     }
 
@@ -344,9 +343,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                             Fragment fragment = BookingDetailFragment.newInstance(booking, false);
                             FragmentUtils.switchToFragment(
                                     UpcomingBookingsFragment.this, fragment, true);
-                            // we null out the bookings so they'll reload onResume.
-                            mBookings = null;
-                            mRecurringBookings = null;
+                            enableRefresh();
                         }
                     },
                     booking,
@@ -362,6 +359,12 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                                                             false
                                                     ));
         }
+    }
+
+    private void enableRefresh()
+    {
+        mBookings = null;
+        mRecurringBookings = null;
     }
 
     /**
