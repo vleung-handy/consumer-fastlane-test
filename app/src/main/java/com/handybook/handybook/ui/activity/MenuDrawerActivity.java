@@ -138,6 +138,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                     mConfiguration = event.getConfiguration();
                     checkLayerInitiation();
                     refreshMenu();
+                    setDrawerDisabled(mConfiguration.isBottomNavEnabled());
                 }
             }
         };
@@ -231,7 +232,14 @@ public abstract class MenuDrawerActivity extends BaseActivity
 
     public final void setDrawerDisabled(final boolean disableDrawer)
     {
-        this.disableDrawer = disableDrawer;
+        if (disableDrawer)
+        {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+        else
+        {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
     }
 
     private void setupEnvButton()

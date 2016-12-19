@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ import butterknife.OnClick;
 public final class BookingEditExtrasFragment extends BookingFlowFragment
 {
     //TODO: use ViewModel
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.booking_edit_extras_content_container)
     ScrollView mContentContainer;
     @Bind(R.id.options_layout)
@@ -99,6 +102,9 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_extras, container, false);
 
         ButterKnife.bind(this, view);
+
+        setupToolbar(mToolbar, getString(R.string.booking_edit_extras_title));
+
         return view;
     }
 

@@ -1,6 +1,5 @@
 package com.handybook.handybook.module.bookings;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
@@ -11,14 +10,12 @@ import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.TestActivity;
 import com.handybook.handybook.library.util.IOUtils;
+import com.handybook.handybook.util.TestUtils;
 
 import org.junit.Ignore;
-import org.robolectric.Shadows;
-import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowIntent;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import java.util.List;
@@ -65,15 +62,8 @@ public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper
         if (fragment.mBookingsContainer.getChildCount() == childCount)
         {
             fragment.mBookingsContainer.getChildAt(0).performClick();
-
-            ShadowActivity shadowActivity = Shadows.shadowOf(fragment.getActivity());
-            Intent startedIntent = shadowActivity.getNextStartedActivity();
-            ShadowIntent shadowIntent = Shadows.shadowOf(startedIntent);
-            assertEquals(
-                    "Should've launched the BookingDetailActivity, but didn't",
-                    BookingDetailActivity.class.getName(),
-                    shadowIntent.getIntentClass().getName()
-            );
+            Fragment current = TestUtils.getScreenFragment(fragment.getFragmentManager());
+            assertTrue(current instanceof BookingDetailFragment);
         }
     }
 

@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,9 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.viewmodel.BookingCancelRecurringViewModel;
 import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.data.DataSynchronizer;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -33,6 +34,9 @@ import butterknife.OnClick;
 public class CancelRecurringBookingSelectionFragment extends InjectedFragment
 {
     public static final int INITIAL_REQUEST_COUNT = 2;
+
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.options_layout)
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
 
@@ -91,6 +95,9 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
                 .inflate(R.layout.fragment_cancel_recurring_booking_selection, container, false);
 
         ButterKnife.bind(this, view);
+
+        setupToolbar(mToolbar, getString(R.string.cancel_recurring_booking_title));
+
         return view;
     }
 
