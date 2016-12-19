@@ -84,14 +84,12 @@ android {
     }
     useLibrary 'org.apache.http.legacy'
 
-    android {
-        sourceSets {
-            main {
-                res.srcDirs = [
-                        'src/main/library-res',
-                        'src/main/res'
-                ]
-            }
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/library-res',
+                    'src/main/res'
+            ]
         }
     }
 }
