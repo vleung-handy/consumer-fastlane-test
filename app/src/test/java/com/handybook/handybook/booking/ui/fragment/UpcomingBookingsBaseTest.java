@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.bookings;
+package com.handybook.handybook.booking.ui.fragment;
 
 import android.support.v4.app.Fragment;
 import android.view.View;

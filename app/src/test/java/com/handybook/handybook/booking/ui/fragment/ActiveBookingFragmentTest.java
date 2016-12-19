@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.bookings;
+package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.view.View;
@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.booking.ui.fragment.ActiveBookingFragment;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.library.util.IOUtils;

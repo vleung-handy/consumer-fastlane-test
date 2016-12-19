@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.bookings;
+package com.handybook.handybook.booking.ui.fragment;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.booking.BookingEvent;

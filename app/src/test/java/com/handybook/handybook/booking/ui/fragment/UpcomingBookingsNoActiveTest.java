@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.bookings;
+package com.handybook.handybook.booking.ui.fragment;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.booking.BookingEvent;
@@ -10,15 +10,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This tests the case where a user has no bookings at all, just an active cleaning plan
+ * This is to test the situation where there is no active booking at all in the upcoming bookings page
  */
-public class UpcomingBookingsOnePlanNoBookingsTest extends UpcomingBookingsBaseTest
+public class UpcomingBookingsNoActiveTest extends UpcomingBookingsBaseTest
 {
     @Before
     public void setUp() throws Exception
     {
         super.setup();
-        String json = IOUtils.getJsonStringForTest("one_plan_no_bookings.json");
+        String json = IOUtils.getJsonStringForTest("upcoming_no_active_bookings.json");
         final UserBookingsWrapper bookings = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
                 .create()
                 .fromJson(json, UserBookingsWrapper.class);
@@ -33,21 +33,29 @@ public class UpcomingBookingsOnePlanNoBookingsTest extends UpcomingBookingsBaseT
         assertNoActiveBooking();
     }
 
+    /**
+     * Verify the correctness of the cleaning plans
+     */
     @Test
     public void testCleaningPlan()
     {
-        testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 1);
+        testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 3);
+    }
+
+    /**
+     * Verify that there are upcoming bookings
+     */
+    @Test
+    public void testUpcomingBookingsSection()
+    {
+        //8 bookings + one share banner
+        testUpcomingBookingsContainingBookings(mUpcomingBookingsFragment, 9);
     }
 
     @Test
-    public void testNoUpcomingBookings()
+    public void testEmptyViewNotShowing()
     {
-        assertNoUpcomingBookings();
-    }
-
-    @Test
-    public void testEmptyViewShowing()
-    {
-        assertEmptyViewShowing();
+        assertEmptyViewNotShowing();
     }
 }
+
