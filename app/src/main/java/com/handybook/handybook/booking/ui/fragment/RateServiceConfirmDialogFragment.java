@@ -19,8 +19,8 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.ui.view.LimitedEditText;
 import com.handybook.handybook.library.util.Utils;
-import com.handybook.handybook.module.referral.event.ReferralsEvent;
-import com.handybook.handybook.module.referral.manager.ReferralsManager;
+import com.handybook.handybook.referral.event.ReferralsEvent;
+import com.handybook.handybook.referral.manager.ReferralsManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

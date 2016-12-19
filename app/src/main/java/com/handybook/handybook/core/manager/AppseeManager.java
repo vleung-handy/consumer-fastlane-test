@@ -5,8 +5,8 @@ import android.view.View;
 
 import com.appsee.Appsee;
 import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.configuration.model.Configuration;
 
 /**
  * wrapping Appsee in a manager in case we want more control over it ex. easily toggle it on for

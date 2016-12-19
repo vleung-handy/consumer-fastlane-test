@@ -18,8 +18,8 @@ import com.handybook.handybook.booking.viewmodel.BookingCancelRecurringViewModel
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataSynchronizer;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;

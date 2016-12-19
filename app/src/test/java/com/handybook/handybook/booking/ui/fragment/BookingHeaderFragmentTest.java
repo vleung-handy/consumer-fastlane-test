@@ -10,8 +10,8 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.booking.util.BookingUtil;
 
 import org.junit.Before;

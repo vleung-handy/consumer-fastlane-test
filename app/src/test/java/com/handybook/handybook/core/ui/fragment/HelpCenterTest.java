@@ -10,8 +10,8 @@ import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.configuration.model.Configuration;
 
 import org.junit.Before;
 import org.junit.Test;

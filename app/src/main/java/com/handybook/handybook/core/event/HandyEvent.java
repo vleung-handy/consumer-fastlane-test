@@ -4,7 +4,7 @@ import com.facebook.AccessToken;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.UserDataManager;
-import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.notifications.feed.model.HandyNotification;
 import com.stripe.android.model.Token;
 
 public abstract class HandyEvent

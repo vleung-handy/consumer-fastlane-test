@@ -32,8 +32,8 @@ import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.handybook.handybook.core.manager.UserDataManager;
-import com.handybook.handybook.module.bookings.HistoryFragment;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.booking.history.HistoryFragment;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;

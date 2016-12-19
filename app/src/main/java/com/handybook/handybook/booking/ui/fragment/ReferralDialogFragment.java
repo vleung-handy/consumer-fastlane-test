@@ -18,12 +18,12 @@ import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
-import com.handybook.handybook.module.referral.event.ReferralsEvent;
-import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.handybook.module.referral.model.ReferralChannels;
-import com.handybook.handybook.module.referral.model.ReferralDescriptor;
-import com.handybook.handybook.module.referral.model.ReferralInfo;
-import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
+import com.handybook.handybook.referral.event.ReferralsEvent;
+import com.handybook.handybook.referral.manager.ReferralsManager;
+import com.handybook.handybook.referral.model.ReferralChannels;
+import com.handybook.handybook.referral.model.ReferralDescriptor;
+import com.handybook.handybook.referral.model.ReferralInfo;
+import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

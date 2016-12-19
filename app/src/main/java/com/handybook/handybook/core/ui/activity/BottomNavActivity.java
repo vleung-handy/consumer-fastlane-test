@@ -9,10 +9,10 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
-import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
+import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
-import com.handybook.handybook.module.referral.ui.ReferralFragment;
+import com.handybook.handybook.referral.ui.ReferralFragment;
 
 import butterknife.ButterKnife;
 

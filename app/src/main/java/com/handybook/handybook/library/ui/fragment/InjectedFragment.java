@@ -20,7 +20,7 @@ import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.library.util.ValidationUtils;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;

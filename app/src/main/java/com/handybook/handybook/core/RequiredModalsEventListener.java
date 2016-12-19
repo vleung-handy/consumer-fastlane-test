@@ -1,8 +1,8 @@
 package com.handybook.handybook.core;
 
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.module.notifications.splash.SplashNotificationEvent;
-import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.notifications.splash.SplashNotificationEvent;
+import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.squareup.otto.Subscribe;
 
 public class RequiredModalsEventListener //TODO: rename + move to better package

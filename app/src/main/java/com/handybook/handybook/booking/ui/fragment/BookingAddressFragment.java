@@ -17,7 +17,7 @@ import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
+import com.handybook.handybook.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.core.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.core.ui.widget.PhoneInputTextView;
 

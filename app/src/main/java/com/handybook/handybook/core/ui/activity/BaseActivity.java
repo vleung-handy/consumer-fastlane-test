@@ -37,11 +37,11 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.core.manager.AppseeManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
-import com.handybook.handybook.module.notifications.splash.view.fragment.SplashPromoDialogFragment;
-import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.handybook.module.referral.model.ReferralResponse;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.notifications.splash.view.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.referral.manager.ReferralsManager;
+import com.handybook.handybook.referral.model.ReferralResponse;
 import com.squareup.otto.Bus;
 import com.yozio.android.Yozio;
 
