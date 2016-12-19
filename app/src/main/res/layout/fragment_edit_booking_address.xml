@@ -31,7 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
-            <com.handybook.handybook.ui.widget.ZipCodeInputTextView
+
+            <com.handybook.handybook.core.ui.widget.ZipCodeInputTextView
                 android:id="@+id/zip_text"
                 android:layout_width="match_parent"
                 style="@style/EditText.Last.ZipCode"

@@ -20,14 +20,14 @@ import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.ui.view.InputTextField;
-import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
+import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

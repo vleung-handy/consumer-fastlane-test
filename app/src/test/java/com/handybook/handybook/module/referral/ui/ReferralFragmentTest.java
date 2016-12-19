@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;

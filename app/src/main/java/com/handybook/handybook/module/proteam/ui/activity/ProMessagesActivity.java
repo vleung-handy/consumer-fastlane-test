@@ -15,11 +15,11 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
@@ -30,7 +30,7 @@ import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.module.reschedule.RescheduleUpcomingActivity;
-import com.handybook.handybook.ui.view.ProAvatarView;
+import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.shared.layer.ui.AttachmentItemView;
 import com.handybook.shared.layer.ui.MessagesListActivity;
 import com.layer.sdk.messaging.Conversation;
@@ -45,8 +45,8 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
-import static com.handybook.handybook.constant.BundleKeys.PRO_TEAM_PRO;
-import static com.handybook.handybook.constant.BundleKeys.PRO_TEAM_PRO_PREFERENCE;
+import static com.handybook.handybook.core.constant.BundleKeys.PRO_TEAM_PRO;
+import static com.handybook.handybook.core.constant.BundleKeys.PRO_TEAM_PRO_PREFERENCE;
 import static com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel.from;
 
 /**

@@ -1,8 +1,8 @@
 package com.handybook.handybook.module.notifications;
 
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.manager.SecurePreferencesManager;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.module.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
 import com.handybook.handybook.module.notifications.feed.ui.fragment.NotificationFeedFragment;

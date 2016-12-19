@@ -45,14 +45,14 @@
         android:padding="@dimen/default_padding"
         >
 
-        <com.handybook.handybook.ui.widget.EmailInputTextView
+        <com.handybook.handybook.core.ui.widget.EmailInputTextView
             android:id="@+id/email"
             style="@style/EditText.Email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
 
-        <com.handybook.handybook.ui.widget.PasswordInputTextView
+        <com.handybook.handybook.core.ui.widget.PasswordInputTextView
             android:id="@+id/password"
             style="@style/EditText.Password"
             android:layout_width="match_parent"

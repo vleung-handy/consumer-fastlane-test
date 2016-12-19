@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Provider;
-import com.handybook.handybook.ui.view.MiniProProfile;
+import com.handybook.handybook.core.ui.view.MiniProProfile;
 
 import butterknife.Bind;
 

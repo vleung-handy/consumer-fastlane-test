@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.model.bill.Bill;
+import com.handybook.handybook.core.model.bill.Bill;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;

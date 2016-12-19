@@ -33,8 +33,8 @@ import com.handybook.handybook.booking.ui.view.ServiceView;
 import com.handybook.handybook.library.util.AnimationUtil;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
-import com.handybook.handybook.ui.descriptor.ServiceCategoryDescriptor;
-import com.handybook.handybook.ui.descriptor.ServiceDescriptor;
+import com.handybook.handybook.core.ui.descriptor.ServiceCategoryDescriptor;
+import com.handybook.handybook.core.ui.descriptor.ServiceDescriptor;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

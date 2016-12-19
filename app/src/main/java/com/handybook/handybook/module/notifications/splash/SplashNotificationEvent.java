@@ -2,8 +2,8 @@ package com.handybook.handybook.module.notifications.splash;
 
 import android.support.annotation.NonNull;
 
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
 
 public abstract class SplashNotificationEvent

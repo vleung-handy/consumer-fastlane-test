@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:theme="@style/HandyTheme"
-    tools:context=".ui.activity.MenuDrawerActivity"
+    tools:context=".core.ui.activity.MenuDrawerActivity"
     >
 
     <FrameLayout

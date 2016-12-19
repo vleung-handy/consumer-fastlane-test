@@ -16,10 +16,10 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.LeftIconButton;
-import com.handybook.handybook.ui.activity.LoginActivity;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

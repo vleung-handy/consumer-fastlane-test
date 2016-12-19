@@ -2,10 +2,13 @@ package com.handybook.handybook.data;
 
 import android.content.Context;
 
+import com.handybook.handybook.core.data.SecurePreferences;
+
 /**
  * Created by jwilliams on 3/4/15.
  */
-public class MockSecurePreferences extends SecurePreferences {
+public class MockSecurePreferences extends SecurePreferences
+{
 
     public MockSecurePreferences(Context context, String preferenceName, String secureKey, boolean encryptKeys) throws SecurePreferencesException {
         super(context, preferenceName, secureKey, encryptKeys);

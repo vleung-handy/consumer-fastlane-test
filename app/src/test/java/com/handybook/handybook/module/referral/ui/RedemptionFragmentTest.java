@@ -9,9 +9,9 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.manager.UserDataManager;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 

@@ -13,14 +13,14 @@ import android.webkit.WebView;
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.HandyWebViewClient;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.widget.MenuButton;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.widget.MenuButton;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

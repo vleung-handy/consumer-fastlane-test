@@ -1,7 +1,7 @@
 package com.handybook.handybook.module.configuration.event;
 
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 
 public class ConfigurationEvent

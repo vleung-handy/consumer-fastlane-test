@@ -15,13 +15,13 @@ import android.widget.Button;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.event.UserEvent;
+import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.event.UserEvent;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
-import com.handybook.handybook.model.request.UpdateUserRequest;
-import com.handybook.handybook.ui.widget.PasswordInputTextView;
+import com.handybook.handybook.core.model.request.UpdateUserRequest;
+import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

@@ -12,7 +12,7 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.booking.util.BookingUtil;
 
 import org.junit.Before;
 import org.junit.Test;

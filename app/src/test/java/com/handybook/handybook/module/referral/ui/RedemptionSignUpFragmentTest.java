@@ -9,7 +9,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
-import com.handybook.handybook.ui.activity.LoginActivity;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
 
 import org.junit.Before;
 import org.junit.Test;

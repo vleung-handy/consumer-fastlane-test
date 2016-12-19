@@ -3,11 +3,11 @@ package com.handybook.handybook.module.proteam.ui.activity;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.module.proteam.ui.fragment.ProTeamFragment;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 
 public class ProTeamActivity extends MenuDrawerActivity

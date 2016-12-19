@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.module.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.fragment.NotificationRecyclerViewAdapter;
+import com.handybook.handybook.core.ui.fragment.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.squareup.otto.Subscribe;
 

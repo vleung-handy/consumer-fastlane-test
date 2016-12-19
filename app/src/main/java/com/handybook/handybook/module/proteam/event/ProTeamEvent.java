@@ -3,8 +3,8 @@ package com.handybook.handybook.module.proteam.event;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.module.proteam.model.ProTeam;
 import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.module.proteam.model.ProTeamEdit;

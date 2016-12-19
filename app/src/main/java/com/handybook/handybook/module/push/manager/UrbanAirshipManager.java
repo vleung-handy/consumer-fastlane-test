@@ -9,7 +9,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.event.UserLoggedInEvent;
+import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.module.push.action.PushActionConstants;
 import com.handybook.handybook.module.push.action.PushActionWidgets;
 import com.squareup.otto.Bus;

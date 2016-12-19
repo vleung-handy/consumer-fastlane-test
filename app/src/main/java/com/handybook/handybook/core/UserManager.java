@@ -4,10 +4,10 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.event.EnvironmentUpdatedEvent;
-import com.handybook.handybook.event.UserLoggedInEvent;
-import com.handybook.handybook.manager.SecurePreferencesManager;
+import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
+import com.handybook.handybook.core.event.UserLoggedInEvent;
+import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.urbanairship.UAirship;

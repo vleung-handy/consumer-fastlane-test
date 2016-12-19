@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.ui.activity.LoginActivity;
+import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.ui.widget.EmailInputTextView;
-import com.handybook.handybook.ui.widget.PasswordInputTextView;
+import com.handybook.handybook.core.ui.widget.EmailInputTextView;
+import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
 

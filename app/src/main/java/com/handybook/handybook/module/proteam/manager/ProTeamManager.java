@@ -2,9 +2,9 @@ package com.handybook.handybook.module.proteam.manager;
 
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.HandyRetrofitCallback;
-import com.handybook.handybook.data.HandyRetrofitService;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.HandyRetrofitCallback;
+import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.module.proteam.event.ProTeamEvent;
 import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
 import com.squareup.otto.Bus;

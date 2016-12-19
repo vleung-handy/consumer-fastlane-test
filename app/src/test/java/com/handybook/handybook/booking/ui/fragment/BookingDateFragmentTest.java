@@ -12,8 +12,8 @@ import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.ui.activity.LoginActivity;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
 
 import org.junit.Before;
 import org.junit.Test;

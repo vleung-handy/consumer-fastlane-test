@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.HandyWebViewClient;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.HandyWebView;

@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.ui.view.LimitedEditText;
 import com.handybook.handybook.library.util.Utils;

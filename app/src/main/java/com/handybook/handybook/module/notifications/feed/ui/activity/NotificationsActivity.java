@@ -3,7 +3,7 @@ package com.handybook.handybook.module.notifications.feed.ui.activity;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.module.notifications.feed.ui.fragment.NotificationFeedFragment;
 
 

@@ -1,9 +1,9 @@
 package com.handybook.handybook.module.referral.manager;
 
-import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.library.util.DateTimeUtils;
-import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.module.referral.model.ReferralResponse;

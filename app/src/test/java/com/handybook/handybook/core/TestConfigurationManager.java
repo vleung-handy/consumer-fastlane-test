@@ -2,8 +2,8 @@ package com.handybook.handybook.core;
 
 import android.support.annotation.Nullable;
 
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.module.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.squareup.otto.Bus;

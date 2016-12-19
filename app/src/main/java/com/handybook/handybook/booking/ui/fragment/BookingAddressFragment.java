@@ -18,8 +18,8 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
-import com.handybook.handybook.ui.widget.FullNameInputTextView;
-import com.handybook.handybook.ui.widget.PhoneInputTextView;
+import com.handybook.handybook.core.ui.widget.FullNameInputTextView;
+import com.handybook.handybook.core.ui.widget.PhoneInputTextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

@@ -7,7 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 
 import org.junit.Before;
 import org.junit.Test;

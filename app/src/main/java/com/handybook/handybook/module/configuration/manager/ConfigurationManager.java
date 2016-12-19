@@ -6,9 +6,9 @@ import android.text.TextUtils;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.module.configuration.model.Configuration;
 import com.squareup.otto.Bus;

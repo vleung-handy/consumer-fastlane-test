@@ -1,6 +1,6 @@
 package com.handybook.handybook.helpcenter.helpcontact.manager;
 
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;

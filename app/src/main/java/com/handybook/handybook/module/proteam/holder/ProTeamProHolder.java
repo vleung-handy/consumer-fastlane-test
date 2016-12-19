@@ -8,7 +8,7 @@ import android.widget.CompoundButton;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
-import com.handybook.handybook.ui.view.MiniProProfile;
+import com.handybook.handybook.core.ui.view.MiniProProfile;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

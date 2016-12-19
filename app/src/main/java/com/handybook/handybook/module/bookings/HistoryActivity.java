@@ -3,7 +3,7 @@ package com.handybook.handybook.module.bookings;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public class HistoryActivity extends MenuDrawerActivity
 {

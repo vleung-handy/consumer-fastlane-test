@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
-import com.handybook.handybook.ui.view.ProAvatarView;
+import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.shared.layer.LayerUtil;
 import com.layer.sdk.messaging.Message;
 

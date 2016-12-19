@@ -17,21 +17,21 @@
         android:orientation="vertical"
         >
 
-        <com.handybook.handybook.ui.widget.FullNameInputTextView
+        <com.handybook.handybook.core.ui.widget.FullNameInputTextView
             android:id="@+id/contact_name_text"
             style="@style/EditText.FullName"
             android:drawableLeft="@drawable/ic_head_gray"
             android:drawablePadding="@dimen/default_padding"
             />
 
-        <com.handybook.handybook.ui.widget.EmailInputTextView
+        <com.handybook.handybook.core.ui.widget.EmailInputTextView
             android:id="@+id/contact_email_text"
             style="@style/EditText.Email"
             android:drawableLeft="@drawable/ic_mail_gray"
             android:drawablePadding="@dimen/default_padding"
             />
 
-        <com.handybook.handybook.ui.widget.PhoneInputTextView
+        <com.handybook.handybook.core.ui.widget.PhoneInputTextView
             android:id="@+id/contact_phone_text"
             style="@style/EditText.Last.Phone"
             android:drawableLeft="@drawable/ic_phone_gray"

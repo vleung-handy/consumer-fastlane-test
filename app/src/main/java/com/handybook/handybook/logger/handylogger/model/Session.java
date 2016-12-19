@@ -3,8 +3,8 @@ package com.handybook.handybook.logger.handylogger.model;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.handybook.handybook.constant.PrefsKey;
-import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 
 import java.io.Serializable;
 

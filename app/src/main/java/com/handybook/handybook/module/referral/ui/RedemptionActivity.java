@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.module.referral.util.ReferralIntentUtil;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public class RedemptionActivity extends MenuDrawerActivity
 {

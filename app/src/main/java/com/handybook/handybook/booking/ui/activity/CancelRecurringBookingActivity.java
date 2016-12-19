@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public final class CancelRecurringBookingActivity extends MenuDrawerActivity
 {

@@ -1,7 +1,7 @@
 package com.handybook.handybook.helpcenter;
 
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
 import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
 import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;

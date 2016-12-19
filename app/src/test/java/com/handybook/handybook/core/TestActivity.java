@@ -2,7 +2,7 @@ package com.handybook.handybook.core;
 
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public class TestActivity extends MenuDrawerActivity
 {

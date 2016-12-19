@@ -11,7 +11,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.module.referral.event.ReferralsEvent;
 import com.handybook.handybook.module.referral.model.RedemptionDetails;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;

@@ -24,7 +24,7 @@
         android:orientation="horizontal"
         >
 
-        <com.handybook.handybook.ui.view.MiniProProfile
+        <com.handybook.handybook.core.ui.view.MiniProProfile
             android:id="@+id/pro_team_pro_card_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

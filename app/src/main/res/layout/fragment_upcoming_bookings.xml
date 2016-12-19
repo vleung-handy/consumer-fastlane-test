@@ -68,7 +68,7 @@
                     android:orientation="vertical"
                     >
 
-                    <com.handybook.handybook.ui.view.ExpandableCleaningPlan
+                    <com.handybook.handybook.core.ui.view.ExpandableCleaningPlan
                         android:id="@+id/expanable_cleaning_plan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                         android:visibility="gone"
                         />
 
-                    <com.handybook.handybook.ui.view.NoBookingsView
+                    <com.handybook.handybook.core.ui.view.NoBookingsView
                         android:id="@+id/no_booking_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

@@ -9,12 +9,12 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
-import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 
 import org.junit.Before;
 import org.junit.Ignore;

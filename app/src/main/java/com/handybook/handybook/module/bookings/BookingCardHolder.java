@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.util.Date;
 

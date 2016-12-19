@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.ui.view.BookingListItem;
+import com.handybook.handybook.core.ui.view.BookingListItem;
 
 import java.util.List;
 

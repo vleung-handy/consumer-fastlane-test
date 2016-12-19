@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.ui.view.BookingListItem;
+import com.handybook.handybook.core.ui.view.BookingListItem;
 
 public class BookingItemHolder extends RecyclerView.ViewHolder
 {

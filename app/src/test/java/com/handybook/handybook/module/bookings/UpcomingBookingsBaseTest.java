@@ -13,7 +13,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.TestActivity;
 import com.handybook.handybook.library.util.IOUtils;
-import com.handybook.handybook.util.TestUtils;
+import com.handybook.handybook.core.util.TestUtils;
 
 import org.junit.Ignore;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;

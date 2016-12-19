@@ -16,8 +16,8 @@ import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.StripeEvent;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.event.StripeEvent;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;

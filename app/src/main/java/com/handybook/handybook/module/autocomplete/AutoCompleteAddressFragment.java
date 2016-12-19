@@ -19,7 +19,7 @@ import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.AddressAutocompleteLog;
 import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.ui.widget.StreetAddressInputTextView;
+import com.handybook.handybook.core.ui.widget.StreetAddressInputTextView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.ArrayList;
