@@ -527,6 +527,19 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     }
 
     /**
+     * updates the booking location marker with the given icon if it is not null
+     *
+     * need the null check as a quick-fix for issue in which the marker is null
+     * because it was not initialized due to bad booking location
+     * @param bookingLocationMarkerIcon
+     */
+    private void setBookingLocationMarkerIfApplicable(@Nullable BitmapDescriptor bookingLocationMarkerIcon)
+    {
+        if (mBookingLocationMarker == null) { return; }
+        mBookingLocationMarker.setIcon(bookingLocationMarkerIcon);
+    }
+
+    /**
      * This will update the booking and/or provider location icons based on the milestone states {on
      * my way, arrived, completed, etc.}
      */
@@ -543,7 +556,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                 case JobStatus.Milestone.PRO_LATE:
                 case JobStatus.Milestone.PRO_NO_SHOW:
                 case JobStatus.Milestone.PRO_ARRIVED_LATE:
-                    mBookingLocationMarker.setIcon(mHouseIcon);
+                    setBookingLocationMarkerIfApplicable(mHouseIcon);
                     showAppropriateProviderMarker();
                     break;
                 case JobStatus.Milestone.STARTS_SOON:
@@ -551,7 +564,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     {
                         mProviderLocationMarker.setVisible(false);
                     }
-                    mBookingLocationMarker.setIcon(mHouseIcon);
+                    setBookingLocationMarkerIfApplicable(mHouseIcon);
                     break;
                 case JobStatus.Milestone.ARRIVED:
                     if (mProviderLocationMarker != null)
@@ -561,11 +574,11 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     if (mBooking.getServiceMachineName().contains(Booking.SERVICE_CLEANING))
                     {
                         // this is a cleaning
-                        mBookingLocationMarker.setIcon(mCleanerArrivedIcon);
+                        setBookingLocationMarkerIfApplicable(mCleanerArrivedIcon);
                     }
                     else
                     {
-                        mBookingLocationMarker.setIcon(mOtherServiceArrivedIcon);
+                        setBookingLocationMarkerIfApplicable(mOtherServiceArrivedIcon);
                     }
                     break;
                 case JobStatus.Milestone.COMPLETED:
@@ -573,10 +586,10 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                     {
                         mProviderLocationMarker.setVisible(false);
                     }
-                    mBookingLocationMarker.setIcon(mCompletedIcon);
+                    setBookingLocationMarkerIfApplicable(mCompletedIcon);
                     break;
                 case JobStatus.Milestone.ON_MY_WAY:
-                    mBookingLocationMarker.setIcon(mHouseIcon);
+                    setBookingLocationMarkerIfApplicable(mHouseIcon);
                     showAppropriateProviderMarker();
                     break;
             }
