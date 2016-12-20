@@ -6,8 +6,8 @@ import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.activity.BaseActivity;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

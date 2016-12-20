@@ -6,9 +6,9 @@ import android.support.v4.app.Fragment;
 
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public final class BookingPaymentActivity extends MenuDrawerActivity
 {

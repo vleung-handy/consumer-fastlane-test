@@ -12,8 +12,8 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.ui.view.BasicInputTextView;
-import com.handybook.handybook.ui.widget.EmailInputTextView;
-import com.handybook.handybook.ui.widget.FirstNameInputTextView;
+import com.handybook.handybook.core.ui.widget.EmailInputTextView;
+import com.handybook.handybook.core.ui.widget.FirstNameInputTextView;
 
 import butterknife.Bind;
 

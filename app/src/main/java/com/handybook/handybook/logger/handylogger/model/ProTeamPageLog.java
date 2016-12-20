@@ -4,8 +4,8 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage.HandyLoggerSourcePage;
-import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

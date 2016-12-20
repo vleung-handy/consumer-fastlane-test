@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.google.common.base.Strings;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.activity.WebViewActivity;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.WebViewActivity;
 
 public class DeepLinkFallbackReceiver extends BroadcastReceiver
 {

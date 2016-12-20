@@ -23,13 +23,13 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.ui.view.GroovedTimePicker;
+import com.handybook.handybook.core.ui.view.GroovedTimePicker;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

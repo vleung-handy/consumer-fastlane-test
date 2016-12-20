@@ -5,7 +5,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.module.referral.event.ReferralsEvent;
+import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;

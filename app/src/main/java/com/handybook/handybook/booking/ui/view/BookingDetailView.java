@@ -18,7 +18,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.util.Calendar;
 import java.util.Date;

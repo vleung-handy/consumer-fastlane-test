@@ -14,8 +14,8 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
-import com.handybook.handybook.ui.view.PriceView;
-import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.core.ui.view.PriceView;
+import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

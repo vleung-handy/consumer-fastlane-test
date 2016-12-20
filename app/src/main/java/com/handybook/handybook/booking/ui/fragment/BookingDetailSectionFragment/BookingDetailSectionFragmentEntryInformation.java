@@ -12,8 +12,8 @@ import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryI
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.EntryMethodOption;
 import com.handybook.handybook.booking.model.InputFormDefinition;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 
 public class BookingDetailSectionFragmentEntryInformation extends BookingDetailSectionFragment

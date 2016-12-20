@@ -13,10 +13,10 @@ import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.module.autocomplete.AutoCompleteAddressFragment;
-import com.handybook.handybook.ui.widget.ZipCodeInputTextView;
+import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.autocomplete.AutoCompleteAddressFragment;
+import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

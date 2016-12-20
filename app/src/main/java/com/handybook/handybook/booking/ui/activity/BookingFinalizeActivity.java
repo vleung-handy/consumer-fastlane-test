@@ -8,7 +8,7 @@ import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.fragment.BookingEntryInfoFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPasswordPromptFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public final class BookingFinalizeActivity extends MenuDrawerActivity
 {

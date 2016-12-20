@@ -6,9 +6,9 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;

@@ -3,10 +3,10 @@ package com.handybook.handybook.core;
 import android.content.Context;
 
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.library.util.PropertiesReader;
-import com.handybook.handybook.event.EnvironmentUpdatedEvent;
-import com.handybook.handybook.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;

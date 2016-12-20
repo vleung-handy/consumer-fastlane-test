@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.Date;
 

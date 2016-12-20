@@ -11,12 +11,12 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 
 import org.junit.Assert;
 import org.junit.Before;

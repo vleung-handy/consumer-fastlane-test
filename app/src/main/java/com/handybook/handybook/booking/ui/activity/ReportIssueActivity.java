@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public class ReportIssueActivity extends MenuDrawerActivity
 {

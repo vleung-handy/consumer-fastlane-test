@@ -14,12 +14,12 @@ import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.DataManagerErrorHandler;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.library.util.PropertiesReader;
-import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.ui.widget.CTANavigationData;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.core.ui.widget.CTANavigationData;
 
 import java.util.ArrayList;
 import java.util.Collections;

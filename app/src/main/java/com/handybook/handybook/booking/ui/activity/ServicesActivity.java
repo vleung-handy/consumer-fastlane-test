@@ -10,7 +10,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.library.util.TransitionListenerAdapter;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public final class ServicesActivity extends MenuDrawerActivity
 {

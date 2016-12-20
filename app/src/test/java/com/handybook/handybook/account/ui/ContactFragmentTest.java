@@ -5,8 +5,8 @@ import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.model.request.UpdateUserRequest;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.model.request.UpdateUserRequest;
 
 import org.junit.Before;
 import org.junit.Test;

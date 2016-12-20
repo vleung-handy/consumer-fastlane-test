@@ -3,7 +3,7 @@ package com.handybook.handybook.logger.handylogger.model;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 public abstract class RatingDialogLog extends EventLog
 {

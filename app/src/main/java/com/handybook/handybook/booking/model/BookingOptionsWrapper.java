@@ -3,8 +3,8 @@ package com.handybook.handybook.booking.model;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
+import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeamWrapper;
 
 import java.util.List;
 

@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_padding" />
 
-            <com.handybook.handybook.ui.widget.FullNameInputTextView
+            <com.handybook.handybook.core.ui.widget.FullNameInputTextView
                 android:id="@+id/text_fullname"
                 android:layout_below="@id/info_header_layout"
                 style="@style/EditText.FullName"
@@ -54,7 +54,7 @@
                     android:background="@color/cell_sep"
                     />
 
-                <com.handybook.handybook.ui.widget.PhoneInputTextView
+                <com.handybook.handybook.core.ui.widget.PhoneInputTextView
                     android:id="@+id/text_phone"
                     style="@style/EditText.Phone"
                     />

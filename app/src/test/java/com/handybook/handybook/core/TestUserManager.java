@@ -2,7 +2,7 @@ package com.handybook.handybook.core;
 
 import android.content.Context;
 
-import com.handybook.handybook.manager.SecurePreferencesManager;
+import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.squareup.otto.Bus;
 
 public class TestUserManager extends UserManager

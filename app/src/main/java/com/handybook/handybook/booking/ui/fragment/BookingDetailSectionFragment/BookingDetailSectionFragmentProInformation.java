@@ -17,12 +17,12 @@ import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
-import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.booking.util.BookingUtil;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.ui.descriptor.ServiceCategoryListDescriptor;
+import com.handybook.handybook.core.ui.descriptor.ServiceCategoryListDescriptor;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;

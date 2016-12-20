@@ -45,7 +45,7 @@
                 tools:text="Starting Wed, Jan 10\n8:00 am"
                 />
 
-            <com.handybook.handybook.ui.view.PriceView
+            <com.handybook.handybook.core.ui.view.PriceView
                 android:id="@+id/bill_view_header_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                 android:layout_weight="1"
                 />
 
-            <com.handybook.handybook.ui.view.PriceView
+            <com.handybook.handybook.core.ui.view.PriceView
                 android:id="@+id/bill_view_final_line_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

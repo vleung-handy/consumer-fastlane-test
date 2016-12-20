@@ -18,7 +18,7 @@ import com.handybook.handybook.library.ui.view.ImageToggleButton;
 import com.handybook.handybook.library.ui.view.SwipeableViewPager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;

@@ -10,12 +10,12 @@ import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.configuration.model.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;

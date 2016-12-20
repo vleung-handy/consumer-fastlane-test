@@ -53,14 +53,14 @@
                 android:src="@color/transparent"
                 />
 
-            <com.handybook.handybook.ui.view.MapPlaceholderView
+            <com.handybook.handybook.core.ui.view.MapPlaceholderView
                 android:id="@+id/active_booking_map_place_holder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 />
 
-            <com.handybook.handybook.ui.view.MissingLocationView
+            <com.handybook.handybook.core.ui.view.MissingLocationView
                 android:id="@+id/active_booking_missing_location_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -115,7 +115,7 @@
                     android:textSize="@dimen/text_size_xsmall"
                     />
 
-                <com.handybook.handybook.ui.view.MiniProProfile
+                <com.handybook.handybook.core.ui.view.MiniProProfile
                     android:id="@+id/active_booking_provider_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

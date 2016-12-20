@@ -15,10 +15,10 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.constant.ActivityResult;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 

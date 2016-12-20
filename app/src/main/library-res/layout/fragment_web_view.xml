@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/handy_bg"
     android:orientation="vertical"
-    tools:context=".ui.activity.WebViewActivity"
+    tools:context=".core.ui.activity.WebViewActivity"
     >
 
     <include layout="@layout/toolbar"/>

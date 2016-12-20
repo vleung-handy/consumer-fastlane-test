@@ -25,8 +25,8 @@ import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingConfirmationLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.Map;
 

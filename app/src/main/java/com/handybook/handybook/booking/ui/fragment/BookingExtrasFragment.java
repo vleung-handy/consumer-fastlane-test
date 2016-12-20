@@ -16,10 +16,10 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.manager.SecurePreferencesManager;
+import com.handybook.handybook.core.manager.SecurePreferencesManager;
 
 import java.util.ArrayList;
 

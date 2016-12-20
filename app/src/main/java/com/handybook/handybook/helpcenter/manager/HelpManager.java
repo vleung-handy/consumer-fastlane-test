@@ -3,11 +3,11 @@ package com.handybook.handybook.helpcenter.manager;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
-import com.handybook.handybook.model.response.HelpCenterResponse;
+import com.handybook.handybook.core.model.response.HelpCenterResponse;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
