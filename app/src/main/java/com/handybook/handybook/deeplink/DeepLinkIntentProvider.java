@@ -13,7 +13,7 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.booking.history.HistoryActivity;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;

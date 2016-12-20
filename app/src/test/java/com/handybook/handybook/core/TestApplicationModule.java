@@ -91,7 +91,7 @@ import com.handybook.handybook.booking.ui.fragment.ActiveBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.ui.fragment.ProTeamConversationsFragment;
+import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.referral.ui.RedemptionActivity;
 import com.handybook.handybook.referral.ui.RedemptionEmailSignUpFragment;

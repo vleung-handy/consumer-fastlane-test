@@ -38,7 +38,7 @@ import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
 import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Subscribe;

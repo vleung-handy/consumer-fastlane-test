@@ -25,7 +25,7 @@ import com.handybook.handybook.core.event.BookingFlowClearedEvent;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
-import com.handybook.handybook.module.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeam;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

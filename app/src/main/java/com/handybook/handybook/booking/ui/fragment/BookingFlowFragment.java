@@ -31,7 +31,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
-import com.handybook.handybook.module.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.fragment.LoginFragment;
 

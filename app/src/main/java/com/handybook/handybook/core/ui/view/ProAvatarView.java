@@ -7,8 +7,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.layer.atlas.util.picasso.transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
 

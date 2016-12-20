@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.holder;
+package com.handybook.handybook.proteam.holder;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;

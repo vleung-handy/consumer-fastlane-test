@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.model;
+package com.handybook.handybook.proteam.model;
 
 
 import android.support.annotation.Nullable;

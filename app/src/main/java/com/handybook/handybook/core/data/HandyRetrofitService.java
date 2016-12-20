@@ -18,7 +18,7 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.model.request.CreateUserRequest;
 import com.handybook.handybook.core.model.request.UpdateUserRequest;
-import com.handybook.handybook.module.proteam.model.ProTeamEditWrapper;
+import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.ui.activity;
+package com.handybook.handybook.proteam.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,12 +23,12 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
-import com.handybook.handybook.module.proteam.manager.ProTeamManager;
-import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
-import com.handybook.handybook.module.proteam.model.ProTeamWrapper;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.handybook.proteam.manager.ProTeamManager;
+import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeamPro;
+import com.handybook.handybook.proteam.model.ProTeamWrapper;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.booking.reschedule.RescheduleUpcomingActivity;
 import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.shared.layer.ui.AttachmentItemView;
@@ -47,7 +47,7 @@ import javax.inject.Inject;
 import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
 import static com.handybook.handybook.core.constant.BundleKeys.PRO_TEAM_PRO;
 import static com.handybook.handybook.core.constant.BundleKeys.PRO_TEAM_PRO_PREFERENCE;
-import static com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel.from;
+import static com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel.from;
 
 /**
  * This is a derivation of the MessagesListActivity that allows for a reschedule flow

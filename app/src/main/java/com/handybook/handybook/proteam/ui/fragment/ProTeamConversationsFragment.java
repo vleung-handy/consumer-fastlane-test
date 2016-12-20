@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.ui.fragment;
+package com.handybook.handybook.proteam.ui.fragment;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -28,13 +28,13 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
-import com.handybook.handybook.module.proteam.event.ProTeamEvent;
-import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
-import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProTeamPro;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.shared.core.HandyLibrary;

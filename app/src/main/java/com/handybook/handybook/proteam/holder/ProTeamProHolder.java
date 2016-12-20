@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.holder;
+package com.handybook.handybook.proteam.holder;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.core.ui.view.MiniProProfile;
 
 import butterknife.Bind;

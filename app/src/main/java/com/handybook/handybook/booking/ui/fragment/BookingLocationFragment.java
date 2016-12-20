@@ -24,7 +24,7 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.module.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.ui.view.InputTextField;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;

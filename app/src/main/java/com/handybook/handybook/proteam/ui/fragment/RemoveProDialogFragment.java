@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.ui.fragment;
+package com.handybook.handybook.proteam.ui.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -22,9 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProTeamPro;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

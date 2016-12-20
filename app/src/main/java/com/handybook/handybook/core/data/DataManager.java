@@ -55,7 +55,7 @@ import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
 

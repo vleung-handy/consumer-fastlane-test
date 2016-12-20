@@ -31,7 +31,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

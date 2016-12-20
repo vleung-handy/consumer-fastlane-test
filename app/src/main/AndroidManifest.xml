@@ -235,7 +235,7 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".module.proteam.ui.activity.ProTeamActivity"
+            android:name=".proteam.ui.activity.ProTeamActivity"
             android:label="@string/title_activity_pro_team"
             android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
             android:screenOrientation="portrait"
@@ -505,7 +505,7 @@
 
         <activity android:name=".booking.reschedule.RescheduleUpcomingActivity">
         </activity>
-        <activity android:name=".module.proteam.ui.activity.ProMessagesActivity">
+        <activity android:name=".proteam.ui.activity.ProMessagesActivity">
         </activity>
         <activity
             android:name=".core.ui.activity.BottomNavActivity"

@@ -1,8 +1,8 @@
-package com.handybook.handybook.module.proteam.ui.fragment;
+package com.handybook.handybook.proteam.ui.fragment;
 
 import android.support.annotation.NonNull;
 
-import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.layer.sdk.messaging.Message;
 
 import java.util.Comparator;

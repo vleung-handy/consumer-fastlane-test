@@ -34,7 +34,7 @@ import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.notifications.feed.manager.NotificationManager;
 import com.handybook.handybook.notifications.splash.manager.SplashNotificationManager;
-import com.handybook.handybook.module.proteam.manager.ProTeamManager;
+import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.shared.core.HandyLibrary;

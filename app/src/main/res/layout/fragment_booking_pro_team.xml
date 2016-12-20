@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context=".module.proteam.ui.activity.ProTeamActivity"
+    tools:context=".proteam.ui.activity.ProTeamActivity"
     >
 
     <LinearLayout

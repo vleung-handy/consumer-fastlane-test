@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.model;
+package com.handybook.handybook.proteam.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.handybook.handybook.module.proteam.model.ProviderMatchPreference.INDIFFERENT;
-import static com.handybook.handybook.module.proteam.model.ProviderMatchPreference.PREFERRED;
+import static com.handybook.handybook.proteam.model.ProviderMatchPreference.INDIFFERENT;
+import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
 
 public class ProTeam implements Parcelable
 {

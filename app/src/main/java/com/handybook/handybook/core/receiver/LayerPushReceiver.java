@@ -10,7 +10,7 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
-import com.handybook.handybook.module.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.shared.layer.LayerConstants;
 import com.handybook.shared.layer.receiver.PushNotificationReceiver;
 import com.layer.sdk.messaging.Message;

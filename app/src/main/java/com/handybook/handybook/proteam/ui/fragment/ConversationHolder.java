@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.ui.fragment;
+package com.handybook.handybook.proteam.ui.fragment;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.DateTimeUtils;
-import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.shared.layer.LayerUtil;
 import com.layer.sdk.messaging.Message;

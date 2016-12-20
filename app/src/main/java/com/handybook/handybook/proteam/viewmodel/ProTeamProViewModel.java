@@ -1,11 +1,11 @@
-package com.handybook.handybook.module.proteam.viewmodel;
+package com.handybook.handybook.proteam.viewmodel;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProTeamPro;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.layer.sdk.messaging.Conversation;
 
 public class ProTeamProViewModel

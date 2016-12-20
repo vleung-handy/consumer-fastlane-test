@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.ui.fragment;
+package com.handybook.handybook.proteam.ui.fragment;
 
 
 import android.app.Activity;
@@ -20,11 +20,11 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
-import com.handybook.handybook.module.proteam.event.ProTeamEvent;
-import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProTeamPro;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.squareup.otto.Subscribe;
 
 import java.security.InvalidParameterException;

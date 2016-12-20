@@ -1,4 +1,4 @@
-package com.handybook.handybook.module.proteam.ui.fragment;
+package com.handybook.handybook.proteam.ui.fragment;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import com.handybook.handybook.R;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
-import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.module.proteam.viewmodel.ProTeamProViewModel;
+import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeamPro;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.layer.LayerHelper;
 import com.handybook.shared.layer.ui.LayerRecyclerAdapter;
 import com.layer.sdk.messaging.Conversation;

@@ -1,16 +1,16 @@
-package com.handybook.handybook.module.proteam.event;
+package com.handybook.handybook.proteam.event;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.module.proteam.model.ProTeam;
-import com.handybook.handybook.module.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.module.proteam.model.ProTeamEdit;
-import com.handybook.handybook.module.proteam.model.ProTeamEditWrapper;
-import com.handybook.handybook.module.proteam.model.ProTeamPro;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProTeamEdit;
+import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
+import com.handybook.handybook.proteam.model.ProTeamPro;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.util.ArrayList;
 import java.util.Set;
