@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +14,18 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.handybook.handybook.library.util.UiUtils;
-import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -33,6 +34,8 @@ import butterknife.OnClick;
 
 public final class BookingEditHoursFragment extends BookingFlowFragment
 {
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.booking_edit_hours_base_time_row)
     LabelValueView mBaseTimeDetailsView;
     @Bind(R.id.booking_edit_hours_added_time_row)
@@ -92,6 +95,9 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
                 .inflate(R.layout.fragment_booking_edit_hours, container, false);
 
         ButterKnife.bind(this, view);
+
+        setupToolbar(mToolbar, getString(R.string.booking_edit_hours_title));
+
         return view;
     }
 

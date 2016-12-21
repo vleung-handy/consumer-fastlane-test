@@ -34,16 +34,16 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.module.configuration.model.Configuration;
-import com.handybook.handybook.module.referral.event.ReferralsEvent;
-import com.handybook.handybook.module.referral.manager.ReferralsManager;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.referral.event.ReferralsEvent;
+import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

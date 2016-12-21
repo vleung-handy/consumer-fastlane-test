@@ -12,7 +12,7 @@ import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequenc
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.core.SuccessWrapper;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.data.DataManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

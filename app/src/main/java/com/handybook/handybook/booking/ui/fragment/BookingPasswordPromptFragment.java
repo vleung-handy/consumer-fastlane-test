@@ -14,13 +14,13 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.ui.widget.PasswordInputTextView;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;

@@ -18,7 +18,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.library.ui.view.SwipeableViewPager;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.squareup.otto.Subscribe;

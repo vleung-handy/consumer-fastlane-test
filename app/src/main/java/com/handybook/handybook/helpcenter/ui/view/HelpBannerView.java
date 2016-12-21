@@ -10,9 +10,9 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.model.HelpNode;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
-import com.handybook.handybook.ui.widget.MenuButton;
+import com.handybook.handybook.core.ui.widget.MenuButton;
 
 import butterknife.Bind;
 

@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.event.HandyEvent;
 
 import javax.inject.Inject;
 

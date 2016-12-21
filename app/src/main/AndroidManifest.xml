@@ -47,7 +47,7 @@
 
         <!-- This StartupTheme is to have the handy logo on startup. Note: The theme can be used for all fragments -->
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".core.ui.activity.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/StartupTheme"
@@ -71,7 +71,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.OldDeeplinkSplashActivity"
+            android:name=".core.ui.activity.OldDeeplinkSplashActivity"
             android:screenOrientation="portrait"
             >
             <intent-filter>
@@ -98,7 +98,7 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".core.ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             />
         <activity
@@ -120,15 +120,15 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.activity.UpdatePaymentActivity"
+            android:name=".core.ui.activity.UpdatePaymentActivity"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".module.referral.ui.ReferralActivity"
+            android:name=".referral.ui.ReferralActivity"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".module.referral.ui.RedemptionActivity"
+            android:name=".referral.ui.RedemptionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             />
@@ -163,7 +163,7 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.activity.WebViewActivity"
+            android:name=".core.ui.activity.WebViewActivity"
             android:screenOrientation="portrait"
             />
         <activity
@@ -195,7 +195,7 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.activity.OnboardActivity"
+            android:name=".core.ui.activity.OnboardActivity"
             android:screenOrientation="portrait"
             />
         <activity
@@ -235,7 +235,7 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".module.proteam.ui.activity.ProTeamActivity"
+            android:name=".proteam.ui.activity.ProTeamActivity"
             android:label="@string/title_activity_pro_team"
             android:parentActivityName=".booking.ui.activity.ServiceCategoriesActivity"
             android:screenOrientation="portrait"
@@ -247,7 +247,7 @@
                 />
         </activity>
         <activity
-            android:name=".ui.activity.BlockingActivity"
+            android:name=".core.ui.activity.BlockingActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
             />
@@ -292,7 +292,7 @@
 
         <!-- Used for install referrer tracking by Yozio -->
         <receiver
-            android:name=".receiver.InstallReferrerReceiver"
+            android:name=".core.receiver.InstallReferrerReceiver"
             android:exported="true"
             >
             <intent-filter>
@@ -370,7 +370,7 @@
         </receiver>
 
         <activity
-            android:name=".module.notifications.feed.ui.activity.NotificationsActivity"
+            android:name=".notifications.feed.ui.activity.NotificationsActivity"
             android:label="@string/title_activity_notification_feed"
             android:parentActivityName=".booking.ui.activity.ServicesActivity"
             android:theme="@style/BaseTheme"
@@ -440,7 +440,7 @@
             />
 
         <receiver
-            android:name=".module.push.receiver.PushReceiver"
+            android:name=".push.receiver.PushReceiver"
             android:exported="false"
             >
             <intent-filter>
@@ -467,7 +467,7 @@
         </receiver>
 
         <activity
-            android:name=".module.bookings.HistoryActivity"
+            android:name=".booking.history.HistoryActivity"
             android:screenOrientation="portrait"
             />
 
@@ -491,7 +491,7 @@
 
         <!-- Receiver: Our app notification handling for Layer push -->
         <receiver
-            android:name=".receiver.LayerPushReceiver"
+            android:name=".core.receiver.LayerPushReceiver"
             android:permission="${applicationId}.permission.LAYER_PUSH"
             >
             <intent-filter>
@@ -503,13 +503,14 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".module.reschedule.RescheduleUpcomingActivity">
+        <activity android:name=".booking.reschedule.RescheduleUpcomingActivity">
         </activity>
-        <activity android:name=".module.proteam.ui.activity.ProMessagesActivity">
+        <activity android:name=".proteam.ui.activity.ProMessagesActivity">
         </activity>
         <activity
-            android:name=".ui.activity.BottomNavActivity"
+            android:name=".core.ui.activity.BottomNavActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             >
         </activity>
     </application>

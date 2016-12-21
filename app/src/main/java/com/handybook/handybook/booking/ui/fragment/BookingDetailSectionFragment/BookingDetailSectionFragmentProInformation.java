@@ -17,12 +17,12 @@ import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.module.proteam.ui.activity.ProTeamActivity;
-import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.booking.util.BookingUtil;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -146,11 +146,11 @@ public class BookingDetailSectionFragmentProInformation extends
     )
     {
         getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
-        getSectionView().setAssignedProInfo(provider, providerAssignmentInfo);
         getSectionView().setProProfileVisible(true);
 
         if (providerAssignmentInfo != null)
         {
+            getSectionView().setAssignedProInfo(provider, providerAssignmentInfo);
             if (providerAssignmentInfo.isProTeamMatch())
             {
                 //indicate that this pro is on the user's pro team
@@ -193,10 +193,7 @@ public class BookingDetailSectionFragmentProInformation extends
         if (booking.hasAssignedProvider())
         {
             //show view for assigned provider
-            showAssignedProviderInfo(
-                    pro,
-                    booking.getProviderAssignmentInfo()
-            );
+            showAssignedProviderInfo(pro, booking.getProviderAssignmentInfo());
         }
         else
         {
@@ -364,7 +361,4 @@ public class BookingDetailSectionFragmentProInformation extends
 
         return validPhoneNumber;
     }
-
-
-
 }

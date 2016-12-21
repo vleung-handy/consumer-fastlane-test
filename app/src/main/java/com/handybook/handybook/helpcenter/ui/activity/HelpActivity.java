@@ -7,10 +7,10 @@ import android.support.v4.app.Fragment;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public class HelpActivity extends MenuDrawerActivity
 {

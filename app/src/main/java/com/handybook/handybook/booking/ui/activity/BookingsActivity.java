@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
-import com.handybook.handybook.module.bookings.UpcomingBookingsFragment;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public final class BookingsActivity extends MenuDrawerActivity
 {

@@ -3,13 +3,14 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="#0099cc"
-             tools:context="com.handybook.handybook.ui.activity.BlockingActivity">
+             tools:context=".core.ui.activity.BlockingActivity"
+    >
 
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.handybook.handybook.ui.fragment.BlockingUpdateFragment"
+        android:name="com.handybook.handybook.core.ui.fragment.BlockingUpdateFragment"
         android:id="@+id/f_blocking"
         android:layout_gravity="center"
         tools:layout="@layout/fragment_blocking_update"

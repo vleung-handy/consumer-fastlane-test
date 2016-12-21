@@ -1,8 +1,8 @@
 package com.handybook.handybook.core;
 
-import com.handybook.handybook.module.notifications.splash.model.SplashPromo;
-import com.handybook.handybook.module.referral.manager.ReferralsManager;
-import com.handybook.handybook.module.referral.model.ReferralResponse;
+import com.handybook.handybook.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.referral.manager.ReferralsManager;
+import com.handybook.handybook.referral.model.ReferralResponse;
 
 public interface RequiredModalsLauncher //TODO: rename + move to better package
 {

@@ -1,12 +1,14 @@
 package com.handybook.handybook.booking.ui.fragment;
 
+import android.support.v7.app.AppCompatActivity;
+
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.data.DataManager;
 import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.module.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.module.configuration.model.Configuration;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;
@@ -53,7 +55,7 @@ public class CancelRecurringBookingSelectionFragmentTest extends RobolectricGrad
         when(mRecurringBooking2.getId()).thenReturn(2);
         when(mRecurringBooking2.getNextBookingDate()).thenReturn(mockDate);
         when(mConfiguration.shouldUseCancelRecurringWebview()).thenReturn(false);
-        SupportFragmentTestUtil.startFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test

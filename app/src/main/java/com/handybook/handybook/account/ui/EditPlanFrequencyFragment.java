@@ -11,9 +11,9 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInf
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.constant.BundleKeys;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;

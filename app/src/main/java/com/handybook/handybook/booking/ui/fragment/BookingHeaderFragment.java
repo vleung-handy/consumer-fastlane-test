@@ -13,8 +13,8 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.ui.view.PriceView;
-import com.handybook.handybook.util.BookingUtil;
+import com.handybook.handybook.core.ui.view.PriceView;
+import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

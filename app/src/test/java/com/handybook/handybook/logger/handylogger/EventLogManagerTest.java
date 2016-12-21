@@ -1,11 +1,11 @@
 package com.handybook.handybook.logger.handylogger;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.constant.PrefsKey;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
-import com.handybook.handybook.manager.DefaultPreferencesManager;
-import com.handybook.handybook.manager.FileManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.manager.FileManager;
 
 import org.junit.Before;
 import org.junit.Test;

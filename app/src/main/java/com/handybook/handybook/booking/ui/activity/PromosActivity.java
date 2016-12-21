@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.deeplink.DeepLinkParams;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public final class PromosActivity extends MenuDrawerActivity
 {

@@ -11,9 +11,9 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.module.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.util.List;
 

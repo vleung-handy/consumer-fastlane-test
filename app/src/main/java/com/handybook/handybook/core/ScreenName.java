@@ -29,16 +29,16 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.module.notifications.feed.ui.activity.NotificationsActivity;
-import com.handybook.handybook.module.referral.ui.RedemptionActivity;
-import com.handybook.handybook.module.referral.ui.ReferralActivity;
-import com.handybook.handybook.ui.activity.BaseActivity;
-import com.handybook.handybook.ui.activity.BlockingActivity;
-import com.handybook.handybook.ui.activity.LoginActivity;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.ui.activity.OnboardActivity;
-import com.handybook.handybook.ui.activity.OldDeeplinkSplashActivity;
-import com.handybook.handybook.ui.activity.UpdatePaymentActivity;
+import com.handybook.handybook.notifications.feed.ui.activity.NotificationsActivity;
+import com.handybook.handybook.referral.ui.RedemptionActivity;
+import com.handybook.handybook.referral.ui.ReferralActivity;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.core.ui.activity.BlockingActivity;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.OnboardActivity;
+import com.handybook.handybook.core.ui.activity.OldDeeplinkSplashActivity;
+import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
 
 import java.util.HashMap;
 

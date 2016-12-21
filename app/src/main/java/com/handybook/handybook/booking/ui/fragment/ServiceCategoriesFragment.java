@@ -32,8 +32,8 @@ import com.handybook.handybook.library.ui.view.snowflake.SnowView;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
-import com.handybook.handybook.manager.DefaultPreferencesManager;
-import com.handybook.handybook.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

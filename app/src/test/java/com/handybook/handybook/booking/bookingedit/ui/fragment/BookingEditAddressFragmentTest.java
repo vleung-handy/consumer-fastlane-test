@@ -6,7 +6,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;

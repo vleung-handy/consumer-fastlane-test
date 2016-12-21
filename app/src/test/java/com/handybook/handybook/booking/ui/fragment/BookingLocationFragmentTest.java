@@ -11,7 +11,7 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.core.TestBaseApplication;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.data.DataManager;
 
 import org.junit.Before;
 import org.junit.Test;

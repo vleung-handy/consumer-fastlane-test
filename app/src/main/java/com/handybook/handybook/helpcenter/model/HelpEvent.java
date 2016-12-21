@@ -1,8 +1,8 @@
 package com.handybook.handybook.helpcenter.model;
 
-import com.handybook.handybook.data.DataManager;
-import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.model.response.HelpCenterResponse;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.model.response.HelpCenterResponse;
 
 import retrofit.mime.TypedInput;
 

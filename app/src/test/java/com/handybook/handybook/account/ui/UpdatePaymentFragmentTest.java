@@ -8,8 +8,8 @@ import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.event.HandyEvent;
-import com.handybook.handybook.event.StripeEvent;
+import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.event.StripeEvent;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 import com.stripe.android.model.Token;
 

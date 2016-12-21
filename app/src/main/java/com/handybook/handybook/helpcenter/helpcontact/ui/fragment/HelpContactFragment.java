@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.helpcenter.helpcontact.ui.view.HelpContactView;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.helpcenter.ui.view.HelpBannerView;

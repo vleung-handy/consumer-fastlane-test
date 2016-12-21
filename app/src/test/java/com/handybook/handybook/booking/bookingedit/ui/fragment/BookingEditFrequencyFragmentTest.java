@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
+import android.support.v7.app.AppCompatActivity;
+
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
@@ -7,7 +9,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInf
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditFrequencyViewModel;
 import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.data.DataManager;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;
@@ -47,7 +49,7 @@ public class BookingEditFrequencyFragmentTest extends RobolectricGradleTestWrapp
         when(mBooking.getId()).thenReturn("12345");
         mFragment = BookingEditFrequencyFragment.newInstance(mBooking, null);
 
-        SupportFragmentTestUtil.startFragment(mFragment);
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test

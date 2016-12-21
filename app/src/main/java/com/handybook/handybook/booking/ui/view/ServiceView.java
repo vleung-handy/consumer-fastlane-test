@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.ui.descriptor.ServiceDescriptor;
+import com.handybook.handybook.core.ui.descriptor.ServiceDescriptor;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

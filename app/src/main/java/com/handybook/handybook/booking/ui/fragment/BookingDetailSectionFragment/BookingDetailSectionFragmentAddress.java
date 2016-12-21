@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.constant.ActivityResult;
-import com.handybook.handybook.constant.BundleKeys;
+import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
