@@ -13,10 +13,10 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.ui.view.PriceView;
 import com.handybook.handybook.util.BookingUtil;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
@@ -145,7 +145,9 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
 
         if (pricing[1] < pricing[0])
         {
-            discountText.setText(TextUtils.formatPrice(pricing[0], currChar, null));
+            final String priceText = (currChar != null ? currChar : "$")
+                    + new DecimalFormat("0.00").format(pricing[0]);
+            discountText.setText(priceText);
             discountText.setVisibility(View.VISIBLE);
         }
         else
