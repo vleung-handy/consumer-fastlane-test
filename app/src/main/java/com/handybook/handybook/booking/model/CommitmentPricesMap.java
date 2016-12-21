@@ -76,7 +76,7 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         {
             e.printStackTrace();
             //TODO: Refactor prices in all of the app to be in cents as Long wrapper
-            fullPriceDollars = Float.NaN;
+            fullPriceDollars = 0f;
         }
         return fullPriceDollars;
     }
@@ -100,7 +100,7 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         {
             e.printStackTrace();
             //TODO: Refactor prices in all of the app to be in cents as Long wrapper
-            fullPriceDollars = Float.NaN;
+            fullPriceDollars = 0f;
 
         }
         return fullPriceDollars;

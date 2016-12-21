@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 
 import java.util.ArrayList;
@@ -58,10 +57,7 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
     //TODO: Clean this up
     public void updatePaymentDisplay(final Booking booking, final User user)
     {
-        final String price = TextUtils.formatPrice(booking.getPrice(),
-                                                   user.getCurrencyChar(), null
-        );
-        totalText.setText(price);
+        totalText.setText(booking.formatPrice(user.getCurrencyChar()));
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
 

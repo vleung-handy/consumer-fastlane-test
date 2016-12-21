@@ -15,6 +15,7 @@ import com.handybook.handybook.R;
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -223,6 +224,12 @@ public class Booking implements Parcelable
         return mInstructions;
     }
 
+    public String formatPrice(final String currencyChar)
+    {
+        final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        return (currencyChar != null ? currencyChar : "$")
+                + decimalFormat.format(getPrice());
+    }
 
     /*
     Service list from api/v3/services:
