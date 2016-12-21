@@ -393,9 +393,10 @@ public class BookingOptionsFragment extends BookingFlowFragment
 
         if (view instanceof BookingOptionsIndexView)
         {
-            BookingOptionsIndexView indexView = (BookingOptionsIndexView) view;
-            requestOptions.put(option.getUniq(), indexView.getCurrentValue());
-            optionIndexMap.put(option.getUniq(), indexView.getCurrentIndex());
+            int currentIndex = ((BookingOptionsIndexView) view).getCurrentIndex();
+            //Both the requestion options and option index map uses the current Index
+            requestOptions.put(option.getUniq(), Integer.toString(currentIndex));
+            optionIndexMap.put(option.getUniq(), currentIndex);
         }
         else
         {
