@@ -141,8 +141,13 @@ public class PriceView extends FrameLayout
 
     public void setPrice(final float dollars)
     {
-        setCardinal(getCardinalValue((int) (dollars * 100)));
-        setDecimal(getDecimalValue((int) (dollars * 100)));
+        final int cents = Math.round(dollars * 100);
+        /*
+        using Math.round() to handle floating point precision issues
+        ex. 156.4f * 100 = 15639.9999
+         */
+        setCardinal(getCardinalValue(cents));
+        setDecimal(getDecimalValue(cents));
     }
 
     public void setPrice(final int priceCents)
