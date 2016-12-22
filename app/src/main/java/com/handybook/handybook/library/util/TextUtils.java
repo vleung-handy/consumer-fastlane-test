@@ -77,6 +77,8 @@ public final class TextUtils
             final String currencySuffix
     )
     {
+        //TODO fix - the following incorrectly formats the cents component if it is a non-zero multiple of 10
+        //so a price of 123.40 gets formatted as 123.4
         final DecimalFormat decimalFormat = new DecimalFormat("#.##");
         return (currencyChar != null ? currencyChar : "$")
                 + decimalFormat.format(price)
