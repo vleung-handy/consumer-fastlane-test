@@ -1,6 +1,5 @@
 package com.handybook.handybook.account.ui;
 
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,25 +15,25 @@ import com.crashlytics.android.Crashlytics;
 import com.facebook.login.LoginManager;
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.history.HistoryFragment;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
-import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.manager.UserDataManager;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.view.PriceView;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
-import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
-import com.handybook.handybook.core.manager.UserDataManager;
-import com.handybook.handybook.booking.history.HistoryFragment;
-import com.handybook.handybook.configuration.model.Configuration;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
 
@@ -53,8 +52,8 @@ public class AccountFragment extends InjectedFragment
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.account_credits_text)
-    TextView mCreditsText;
+    @Bind(R.id.fragment_account_credits_view)
+    PriceView mCreditsView;
     @Bind(R.id.account_active_plans_text)
     TextView mActivePlansText;
     @Bind(R.id.account_active_plans_layout)
@@ -115,7 +114,7 @@ public class AccountFragment extends InjectedFragment
         this can be old, but we will request the most recent user data onResume
         and show an error if we are unable to get it
          */
-        setCreditsText(mUser);
+        updateCreditsView(mUser);
     }
 
     @Override
@@ -146,20 +145,17 @@ public class AccountFragment extends InjectedFragment
         });
     }
 
+    private void updateCreditsView(@NonNull User user)
+    {
+        mCreditsView.setCurrencySymbol(user.getCurrencyChar());
+        mCreditsView.setPrice(user.getCredits());
+    }
+
     @Override
     public void onStop()
     {
         removeUiBlockers();
         super.onStop();
-    }
-
-    private void setCreditsText(@NonNull User user)
-    {
-        mCreditsText.setText(TextUtils.formatPrice(
-                user.getCredits(),
-                user.getCurrencyChar(),
-                null
-        ));
     }
 
     @Override
@@ -187,7 +183,7 @@ public class AccountFragment extends InjectedFragment
                     public void onCallbackSuccess(final User response)
                     {
                         mUser = response;
-                        setCreditsText(mUser);
+                        updateCreditsView(mUser);
                     }
 
                     @Override
