@@ -255,6 +255,7 @@
         <activity
             android:name=".deeplink.DeepLinkActivity"
             android:theme="@android:style/Theme.NoDisplay"
+            android:launchMode="singleTask"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -511,6 +512,7 @@
             android:name=".core.ui.activity.BottomNavActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTask"
             >
         </activity>
     </application>

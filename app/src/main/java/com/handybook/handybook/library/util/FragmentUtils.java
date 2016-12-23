@@ -71,6 +71,9 @@ public class FragmentUtils
         }
         else
         {
+            //clears out the whole stack
+            activity.getSupportFragmentManager().popBackStackImmediate(null, 0);
+
             transaction.replace(R.id.fragment_container, newFragment).commit();
         }
     }

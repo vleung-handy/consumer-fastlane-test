@@ -566,7 +566,6 @@ public final class ApplicationModule
         return new BookingManager(bus, securePreferencesManager, dataManager);
     }
 
-
     @Provides
     @Singleton
     final FileManager provideFileManager()
@@ -635,10 +634,10 @@ public final class ApplicationModule
     @Provides
     @Singleton
     final DeepLinkIntentProvider provideDeepLinkNavigationManager(
-            final UserManager userManager
+            final UserManager userManager, final ConfigurationManager configurationManager
     )
     {
-        return new DeepLinkIntentProvider(userManager);
+        return new DeepLinkIntentProvider(userManager, configurationManager);
     }
 
     @Provides

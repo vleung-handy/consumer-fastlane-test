@@ -146,6 +146,13 @@ public class AccountFragment extends InjectedFragment
         });
     }
 
+    @Override
+    public void onStop()
+    {
+        removeUiBlockers();
+        super.onStop();
+    }
+
     private void setCreditsText(@NonNull User user)
     {
         mCreditsText.setText(TextUtils.formatPrice(

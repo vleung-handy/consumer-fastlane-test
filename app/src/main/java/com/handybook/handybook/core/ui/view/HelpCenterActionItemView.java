@@ -108,8 +108,6 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
             }
             final Intent intent = new Intent(getContext(), DeepLinkActivity.class);
             intent.setData(Uri.parse(mDeepLink));
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
-                                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
             getContext().startActivity(intent);
         }
     }
