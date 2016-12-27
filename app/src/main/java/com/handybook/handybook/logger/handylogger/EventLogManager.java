@@ -41,6 +41,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -144,13 +145,22 @@ public class EventLogManager
             }
         }
 
-        //Prefix event_type with app_lib_
-        eventLog.setEventType("app_lib_" + eventLog.getEventType());
-        sCurrentEventLogBundle.addEvent(eventLog);
-
         //Save the EventLogBundle to preferences always
+        //Must wrap the sCurrentEventLogBundle in this also, because the bundleWrapper might be in the process of
+        //  converting the hash to JSON which also includes the sCurrentEventLogBundle
         synchronized (BundlesWrapper.class)
         {
+            //If it's null here, it means that the current bundle was just sent. Reattempt to add log
+            if(sCurrentEventLogBundle == null)
+            {
+                addLog(event);
+                return;
+            }
+
+            //Prefix event_type with app_lib_
+            eventLog.setEventType("app_lib_" + eventLog.getEventType());
+            sCurrentEventLogBundle.addEvent(eventLog);
+
             saveToPreference(PrefsKey.EVENT_LOG_BUNDLES, BundlesWrapper.BUNDLES);
         }
     }
@@ -179,7 +189,9 @@ public class EventLogManager
                 mPrefsManager.setString(prefsKey, GSON.toJson(eventLogBundles));
             }
         }
-        catch (JsonParseException e)
+        //Concurrent modification could happen if the sCurrentEventLogBundle is modified while
+        // GSON is turing the eventLogBundles into json. Hoping line 154 fix stops this from happening
+        catch (JsonParseException | ConcurrentModificationException e)
         {
             //If there's an JsonParseException then clear the eventLogBundles because invalid json
             synchronized (BundlesWrapper.class)
