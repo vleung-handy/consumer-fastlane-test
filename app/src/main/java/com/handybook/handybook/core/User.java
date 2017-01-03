@@ -26,8 +26,8 @@ public class User extends Observable
     private String mAuthToken;
     @SerializedName("id")
     private String mId;
-    @SerializedName("credits")
-    private float mCredits;
+    @SerializedName("credits_cents")
+    private int mCreditsCents;
     @SerializedName("first_name")
     private String mFirstName;
     @SerializedName("last_name")
@@ -107,15 +107,8 @@ public class User extends Observable
         triggerObservers();
     }
 
-    public final float getCredits()
-    {
-        return mCredits;
-    }
-
-    final void setCredits(final float credits)
-    {
-        mCredits = credits;
-        triggerObservers();
+    public int getCreditsCents() {
+        return mCreditsCents;
     }
 
     public final String getFirstName()
@@ -360,7 +353,7 @@ public class User extends Observable
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("id", context.serialize(value.getId()));
-            jsonObj.add("credits", context.serialize(value.getCredits()));
+            jsonObj.add("credits_cents", context.serialize(value.getCreditsCents()));
             jsonObj.add("first_name", context.serialize(value.getFirstName()));
             jsonObj.add("last_name", context.serialize(value.getLastName()));
             jsonObj.add("email", context.serialize(value.getEmail()));
