@@ -65,7 +65,8 @@ public class AccountFragment extends InjectedFragment
     ProgressBar mHorizontalProgressBar;
 
     //This counter is used to remove the horizontal progress bar when counter is 0
-    private int mProgressCounter;
+    //Whenever show horizontal progress bar is called, this counter is incremented
+    private int mHorizontalProgressRequestCounter;
 
     private User mUser;
     private ArrayList<RecurringBooking> mPlans;
@@ -161,7 +162,7 @@ public class AccountFragment extends InjectedFragment
     @Override
     public void onStop()
     {
-        mProgressCounter = 0;
+        mHorizontalProgressRequestCounter = 0;
         hideHorizontalProgressBar();
         super.onStop();
     }
@@ -319,16 +320,20 @@ public class AccountFragment extends InjectedFragment
     }
 
     private void showHorizontalProgressBar() {
-        mProgressCounter++;
+        mHorizontalProgressRequestCounter++;
         mHorizontalProgressBar.setVisibility(View.VISIBLE);
     }
 
-    private void hideHorizontalProgressBar() {
+    /**
+     * This method will hide the horizontal progress bar if api call backs are completed.
+     * If not, it will decrement the counter
+     */
+    private void hideHorizontalProgressBarIfReady() {
         //only decrement if greater then 0
-        if(mProgressCounter > 0)
-            --mProgressCounter;
+        if(mHorizontalProgressRequestCounter > 0)
+            --mHorizontalProgressRequestCounter;
 
-        if(mProgressCounter == 0) {
+        if(mHorizontalProgressRequestCounter == 0) {
            mHorizontalProgressBar.setVisibility(View.GONE);
         }
     }
