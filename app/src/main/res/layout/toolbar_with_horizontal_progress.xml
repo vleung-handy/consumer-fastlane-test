@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/toolbarLayout"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        app:contentInsetStart="0dp"
+        app:navigationIcon="@drawable/ic_back"
+        app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
+        app:titleMargin="@dimen/default_margin"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        />
+
+    <ProgressBar
+        android:id="@+id/horizontalProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="-2dp"
+        android:layout_marginTop="-3dp"
+        android:indeterminate="true"
+        android:max="100"
+        android:maxHeight="6dp"
+        android:minHeight="6dp"
+        android:theme="@style/LinearProgress"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/titleBarErrorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding"
+        android:gravity="center"
+        android:textAppearance="@style/TextView.Medium"
+        android:textColor="@color/error_red"
+        android:visibility="gone"
+        tools:text="Sorry something went wrong"
+        tools:visibility="visible"
+        />
+</LinearLayout>

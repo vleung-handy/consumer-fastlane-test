@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -60,6 +61,11 @@ public class AccountFragment extends InjectedFragment
     ViewGroup mActivePlansLayout;
     @Bind(R.id.account_history_help_layout)
     ViewGroup mHistoryHelpLayout;
+    @Bind(R.id.horizontalProgressBar)
+    ProgressBar mHorizontalProgressBar;
+
+    //This counter is used to remove the horizontal progress bar when counter is 0
+    private int mProgressCounter;
 
     private User mUser;
     private ArrayList<RecurringBooking> mPlans;
@@ -121,14 +127,15 @@ public class AccountFragment extends InjectedFragment
     public void onStart()
     {
         super.onStart();
-        showUiBlockers();
+        showHorizontalProgressBar();
+
         dataManager.getRecurringBookings(new FragmentSafeCallback<RecurringBookingsResponse>(
                 this)
         {
             @Override
             public void onCallbackSuccess(final RecurringBookingsResponse response)
             {
-                removeUiBlockers();
+                hideHorizontalProgressBar();
                 mPlans = new ArrayList<>(response.getRecurringBookings());
                 mActivePlansText.setText(getString(
                         R.string.account_active_plans_formatted, mPlans.size()));
@@ -138,8 +145,8 @@ public class AccountFragment extends InjectedFragment
             @Override
             public void onCallbackError(final DataManager.DataManagerError error)
             {
+                hideHorizontalProgressBar();
                 mActivePlansLayout.setEnabled(false);
-                removeUiBlockers();
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
         });
@@ -154,7 +161,8 @@ public class AccountFragment extends InjectedFragment
     @Override
     public void onStop()
     {
-        removeUiBlockers();
+        mProgressCounter = 0;
+        hideHorizontalProgressBar();
         super.onStop();
     }
 
@@ -171,9 +179,9 @@ public class AccountFragment extends InjectedFragment
         /*
         hotfix to get updated user data
         looks like previous logic assumed mUser to be non-null here
-        TODO non-blocking loading indicator
         TODO investigate when UserManager's current user is set and retrieved
          */
+        showHorizontalProgressBar();
         mUserDataManager.requestAndSetCurrentUser(
                 mUser.getId(),
                 mUser.getAuthToken(),
@@ -184,6 +192,7 @@ public class AccountFragment extends InjectedFragment
                     {
                         mUser = response;
                         updateCreditsView(mUser);
+                        hideHorizontalProgressBar();
                     }
 
                     @Override
@@ -195,6 +204,7 @@ public class AccountFragment extends InjectedFragment
                                 error
                         );
                         Crashlytics.logException(new Exception(error.getMessage()));
+                        hideHorizontalProgressBar();
                     }
                 }
         );
@@ -306,5 +316,20 @@ public class AccountFragment extends InjectedFragment
                 });
 
         alertDialog.show();
+    }
+
+    private void showHorizontalProgressBar() {
+        mProgressCounter++;
+        mHorizontalProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideHorizontalProgressBar() {
+        //only decrement if greater then 0
+        if(mProgressCounter > 0)
+            --mProgressCounter;
+
+        if(mProgressCounter == 0) {
+           mHorizontalProgressBar.setVisibility(View.GONE);
+        }
     }
 }

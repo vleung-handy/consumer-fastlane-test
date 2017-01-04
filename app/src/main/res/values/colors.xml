@@ -7,6 +7,7 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="handy_blue_pressed">#00abc6</color>
+    <color name="handy_blue_indeterminate_progress_bar">#0076B7</color>
     <color name="handy_green">#8cc63f</color>
     <color name="handy_green_pressed">#71a230</color>
     <color name="handy_green_dark_pressed">#508013</color>
