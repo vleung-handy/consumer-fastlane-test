@@ -28,9 +28,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
-import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
 import com.handybook.handybook.library.util.FragmentUtils;
@@ -81,8 +79,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     TextView mPromoText;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.fragment_service_categories_sign_in_text)
-    TextView mSignInText;
     @Bind(R.id.fragment_services_category_snowview)
     SnowView mSnowView;
 
@@ -93,9 +89,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     @Inject
     DefaultPreferencesManager mDefaultPreferencesManager;
-
-    @Inject
-    UserManager mUserManager;
 
     public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
     {
@@ -141,13 +134,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
-            mSignInText.setVisibility(mUserManager.isUserLoggedIn() ? View.GONE : View.VISIBLE);
-            //TODO does new sign-in button use same config param?
         }
         else if (activity instanceof MenuDrawerActivity)
         {
             ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
-            mSignInText.setVisibility(View.GONE);
         }
 
         mPromoImage.setColorFilter(
@@ -175,14 +165,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         mRecyclerView.setAdapter(mAdapter);
         return view;
-    }
-
-    @OnClick(R.id.fragment_service_categories_sign_in_text)
-    public void onSignInTextClicked()
-    {
-        //TODO do we want to launch the login activity or just switch to login fragment?
-        final Intent intent = new Intent(getActivity(), LoginActivity.class);
-        getActivity().startActivity(intent);
     }
 
     @Override

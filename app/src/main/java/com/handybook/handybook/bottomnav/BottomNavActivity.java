@@ -31,6 +31,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * TODO this is a work in progress and the relevant config should not be turned on in prod yet
  * this should eventually replace the menu drawer activity
  * not bothering to spend time consolidating duplicate code for this reason
  */
