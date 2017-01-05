@@ -372,7 +372,7 @@ public class BookingQuote extends Observable
         triggerObservers();
     }
 
-
+    @Nullable
     public Bill getBill()
     {
         return mBill;
