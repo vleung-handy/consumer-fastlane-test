@@ -11,48 +11,48 @@ import java.util.ArrayList;
 /**
  * Example Bill Payload:
  * {
- * "bill":{
- * "header_title":"Cleaning Plan: Every 2 weeks",
- * "header_text":"Starting Wed, Jan 10/n8:00 am",
- * "final_price_value":5100,
- * "currency_symbol":"$",
- * "sections":[
- * {
- * "line_items":[
- * {
- * "label":"Cleaning + 1 extra",
- * "amount":7500
- * },
- * {
- * "label":"Coupon",
- * "amount":-1750
- * },
- * {
- * "label":"Trust & Support Fee",
- * "amount":3,
- * "help_text":"It has to be done..."
- * },
- * {
- * "label":"Credits",
- * "amount":-1000
- * }
- * ]
- * },
- * {
- * "line_items":[
- * {
- * "type":"TOTAL_PRICE",
- * "label":"Today's Total",
- * "amount":5100
- * },
- * {
- * "label":"Credits",
- * "amount":-5100
- * }
- * ]
- * }
- * ]
- * }
+ *   "bill":{
+ *     "header_title":"Cleaning Plan: Every 2 weeks",
+ *     "header_text":"Starting Wed, Jan 10/n8:00 am",
+ *     "final_price_value":5100,
+ *     "currency_symbol":"$",
+ *     "sections":[
+ *       {
+ *         "line_items":[
+ *           {
+ *             "label":"Cleaning + 1 extra",
+ *             "amount":7500
+ *           },
+ *           {
+ *           "label":"Coupon",
+ *           "amount":-1750
+ *           },
+ *           {
+ *             "label":"Trust & Support Fee",
+ *             "amount":3,
+ *             "help_text":"It has to be done..."
+ *           },
+ *           {
+ *             "label":"Credits",
+ *             "amount":-1000
+ *           }
+ *         ]
+ *       },
+ *       {
+ *         "line_items":[
+ *           {
+ *             "type":"TOTAL_PRICE",
+ *             "label":"Today's Total",
+ *             "amount":5100
+ *           },
+ *           {
+ *             "label":"Credits",
+ *             "amount":-5100
+ *           }
+ *         ]
+ *       }
+ *     ]
+ *   }
  * }
  */
 public class Bill
@@ -107,30 +107,31 @@ public class Bill
     /**
      * Example BillSection payload:
      * {
-     * "type":"ITEMIZED_BILL",
-     * "line_items":[
-     * {
-     * "label":"Cleaning + 1 extra",
-     * "amount":7500
-     * },
-     * {
-     * "label":"Coupon",
-     * "amount":-1750
-     * },
-     * {
-     * "label":"Trust & Support Fee",
-     * "amount": 3,
-     * "help_text": "It has to be done..."
-     * },
-     * {
-     * "label":"Credits",
-     * "amount":-1000
-     * },
-     * {
-     * "type":"LARGE_PRICE",
-     * "label":"Today's Total",
-     * "amount":5600
-     * }
+     *   {
+     *     "type":"ITEMIZED_BILL",
+     *     "line_items":[
+     *   {
+     *     "label":"Cleaning + 1 extra",
+     *     "amount":7500
+     *   },
+     *   {
+     *     "label":"Coupon",
+     *     "amount":-1750
+     *   },
+     *   {
+     *     "label":"Trust & Support Fee",
+     *     "amount": 3,
+     *     "help_text": "It has to be done..."
+     *   },
+     *   {
+     *     "label":"Credits",
+     *     "amount":-1000
+     *   },
+     *   {
+     *     "type":"LARGE_PRICE",
+     *     "label":"Today's Total",
+     *     "amount":5600
+     *   }
      * }
      */
     public static class BillSection
@@ -171,11 +172,11 @@ public class Bill
     /**
      * Example BillLineItem payload:
      * {
-     * "type":"DEFAULT",
-     * "label":"Trust & Support Fee",
-     * "amount":0,
-     * "amount_text":"free",
-     * "help_text":"It has to be done..."
+     *   "type":"DEFAULT",
+     *   "label":"Trust & Support Fee",
+     *   "amount":0,
+     *   "amount_text":"free",
+     *   "help_text":"It has to be done..."
      * }
      */
     public static class BillLineItem

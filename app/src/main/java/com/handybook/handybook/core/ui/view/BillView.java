@@ -84,9 +84,9 @@ public class BillView extends FrameLayout
         mHeaderTitle.setText(mBill.getHeaderTitle());
         mHeaderText.setText(mBill.getHeaderText());
         mHeaderPrice.setCurrencySymbol(mBill.getCurrencySymbol());
-        mHeaderPrice.setPrice(mBill.getFinalLineItem().getAmountCents());
-        mFinalLineLabel.setText(mBill.getFinalLineItem().getLabel());
-        mFinalLinePrice.setPrice(mBill.getFinalLineItem().getAmountCents());
+        mHeaderPrice.setPrice(mBill.getFinalPriceValueCents().getAmountCents());
+        mFinalLineLabel.setText(mBill.getFinalPriceValueCents().getLabel());
+        mFinalLinePrice.setPrice(mBill.getFinalPriceValueCents().getAmountCents());
         mSectionContainer.removeAllViews();
         for (Bill.BillSection eBillSection : mBill.getSections())
         {
