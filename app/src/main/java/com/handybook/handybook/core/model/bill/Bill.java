@@ -1,8 +1,9 @@
 package com.handybook.handybook.core.model.bill;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
+import android.support.annotation.Nullable;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -10,44 +11,50 @@ import java.util.ArrayList;
 /**
  * Example Bill Payload:
  * {
- *   "bill":{
- *     "header_title":"Cleaning Plan: Every 2 weeks",
- *     "header_text":"Starting Wed, Jan 10/n8:00 am",
- *     "final_line_item":{
- *       "type":"FINAL_PRICE",
- *       "label":"Today's Total",
- *       "amount":5100
- *     },
- *     "currency_symbol":"$",
- *     "sections":[
- *       {
- *         "type":"ITEMIZED_BILL",
- *         "line_items":[
- *           {
- *             "label":"Cleaning + 1 extra",
- *             "amount":7500
- *
- *           },
- *           {
- *             "label":"Coupon",
- *             "amount":-1750
- *
- *           },
- *           {
- *             "label":"Trust & Support Fee",
- *           "amount": 3,
- *           "help_text": "It has to be done..."
- *           },
- *           {
- *             "label":"Credits",
- *             "amount":-1000
- *           }
- *          ]
- *        }
- *     ]
- *   }
+ * "bill":{
+ * "header_title":"Cleaning Plan: Every 2 weeks",
+ * "header_text":"Starting Wed, Jan 10/n8:00 am",
+ * "final_price_value":5100,
+ * "currency_symbol":"$",
+ * "sections":[
+ * {
+ * "line_items":[
+ * {
+ * "label":"Cleaning + 1 extra",
+ * "amount":7500
+ * },
+ * {
+ * "label":"Coupon",
+ * "amount":-1750
+ * },
+ * {
+ * "label":"Trust & Support Fee",
+ * "amount":3,
+ * "help_text":"It has to be done..."
+ * },
+ * {
+ * "label":"Credits",
+ * "amount":-1000
  * }
- * */
+ * ]
+ * },
+ * {
+ * "line_items":[
+ * {
+ * "type":"TOTAL_PRICE",
+ * "label":"Today's Total",
+ * "amount":5100
+ * },
+ * {
+ * "label":"Credits",
+ * "amount":-5100
+ * }
+ * ]
+ * }
+ * ]
+ * }
+ * }
+ */
 public class Bill
 {
 
@@ -55,33 +62,43 @@ public class Bill
     private String mHeaderTitle;
     @SerializedName("header_text")
     private String mHeaderText;
-    @SerializedName("final_line_item")
-    private BillLineItem mFinalLineItem;
+    @SerializedName("final_amount")
+    private Long mFinalPriceValueCents;
     @SerializedName("currency_symbol")
     private String mCurrencySymbol;
     @SerializedName("sections")
     private ArrayList<BillSection> mSections;
 
+    static Bill fromJson(@NonNull CharSequence input)
+    {
+        return new Gson().fromJson(input.toString(), Bill.class);
+    }
+
+    @NonNull
     public String getHeaderTitle()
     {
         return mHeaderTitle;
     }
 
+    @NonNull
     public String getHeaderText()
     {
         return mHeaderText;
     }
 
-    public BillLineItem getFinalLineItem()
+    @NonNull
+    public Long getFinalPriceValueCents()
     {
-        return mFinalLineItem;
+        return mFinalPriceValueCents;
     }
 
-    public String getCurrencySymbol()
+    @NonNull
+    String getCurrencySymbol()
     {
         return mCurrencySymbol;
     }
 
+    @Nullable
     public ArrayList<BillSection> getSections()
     {
         return mSections;
@@ -90,25 +107,30 @@ public class Bill
     /**
      * Example BillSection payload:
      * {
-     *   "type":"ITEMIZED_BILL",
-     *   "line_items":[
-     *     {
-     *       "label":"Cleaning + 1 extra",
-     *       "amount":7500
-     *     },
-     *     {
-     *       "label":"Coupon",
-     *       "amount":-1750
-     *     },
-     *     {
-     *       "label":"Trust & Support Fee",
-     *     "amount": 3,
-     *     "help_text": "It has to be done..."
-     *     },
-     *     {
-     *       "label":"Credits",
-     *       "amount":-1000
-     *     }
+     * "type":"ITEMIZED_BILL",
+     * "line_items":[
+     * {
+     * "label":"Cleaning + 1 extra",
+     * "amount":7500
+     * },
+     * {
+     * "label":"Coupon",
+     * "amount":-1750
+     * },
+     * {
+     * "label":"Trust & Support Fee",
+     * "amount": 3,
+     * "help_text": "It has to be done..."
+     * },
+     * {
+     * "label":"Credits",
+     * "amount":-1000
+     * },
+     * {
+     * "type":"LARGE_PRICE",
+     * "label":"Today's Total",
+     * "amount":5600
+     * }
      * }
      */
     public static class BillSection
@@ -116,7 +138,9 @@ public class Bill
         public enum BillSectionType
         {
             @SerializedName("DEFAULT")
-            DEFAULT
+            DEFAULT,
+            @SerializedName("DEFAULT")
+            ITEMIZED_BILL
         }
 
 
@@ -125,14 +149,21 @@ public class Bill
         @SerializedName("line_items")
         private ArrayList<BillLineItem> mLineItems;
 
+        @Nullable
         public BillSectionType getType()
         {
             return mType != null ? mType : BillSectionType.DEFAULT;
         }
 
+        @Nullable
         public ArrayList<BillLineItem> getLineItems()
         {
             return mLineItems;
+        }
+
+        public boolean isEmpty()
+        {
+            return mLineItems == null || mLineItems.isEmpty();
         }
     }
 
@@ -140,11 +171,11 @@ public class Bill
     /**
      * Example BillLineItem payload:
      * {
-     *   "type":"DEFAULT",
-     *   "label":"Trust & Support Fee",
-     *   "amount":0,
-     *   "amount_text":""free,
-     *   "help_text":"It has to be done..."
+     * "type":"DEFAULT",
+     * "label":"Trust & Support Fee",
+     * "amount":0,
+     * "amount_text":"free",
+     * "help_text":"It has to be done..."
      * }
      */
     public static class BillLineItem
@@ -153,8 +184,8 @@ public class Bill
         {
             @SerializedName("DEFAULT")
             DEFAULT,
-            @SerializedName("FINAL_PRICE")
-            FINAL_PRICE
+            @SerializedName("LARGE_PRICE")
+            LARGE_PRICE
         }
 
 
@@ -166,7 +197,7 @@ public class Bill
         private String mLabel;
         /** Amount In Cents **/
         @SerializedName("amount")
-        private int mAmountCents;
+        private Long mAmountCents;
         /** Amount as text, if provided supersedes cent amount **/
         @SerializedName("amount_text")
         private String mAmountText;
@@ -180,21 +211,25 @@ public class Bill
             return mType != null ? mType : ItemType.DEFAULT;
         }
 
+        @Nullable
         public String getLabel()
         {
             return mLabel;
         }
 
-        public int getAmountCents()
+        @Nullable
+        public Long getAmountCents()
         {
             return mAmountCents;
         }
 
+        @Nullable
         public String getAmountText()
         {
             return mAmountText;
         }
 
+        @Nullable
         public String getHelpText()
         {
             return mHelpText;
@@ -202,7 +237,8 @@ public class Bill
 
         public boolean hasHelpText()
         {
-            return !TextUtils.isEmpty(mHelpText);
+            return mHelpText == null || mHelpText.isEmpty();
         }
+
     }
 }
