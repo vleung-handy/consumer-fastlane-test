@@ -61,7 +61,7 @@ public class AccountFragment extends InjectedFragment
     ViewGroup mActivePlansLayout;
     @Bind(R.id.account_history_help_layout)
     ViewGroup mHistoryHelpLayout;
-    @Bind(R.id.horizontalProgressBar)
+    @Bind(R.id.horizontal_progress_bar)
     ProgressBar mHorizontalProgressBar;
 
     //This counter is used to remove the horizontal progress bar when counter is 0
@@ -136,7 +136,7 @@ public class AccountFragment extends InjectedFragment
             @Override
             public void onCallbackSuccess(final RecurringBookingsResponse response)
             {
-                hideHorizontalProgressBar();
+                hideHorizontalProgressBarIfReady();
                 mPlans = new ArrayList<>(response.getRecurringBookings());
                 mActivePlansText.setText(getString(
                         R.string.account_active_plans_formatted, mPlans.size()));
@@ -146,7 +146,7 @@ public class AccountFragment extends InjectedFragment
             @Override
             public void onCallbackError(final DataManager.DataManagerError error)
             {
-                hideHorizontalProgressBar();
+                hideHorizontalProgressBarIfReady();
                 mActivePlansLayout.setEnabled(false);
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
@@ -163,7 +163,7 @@ public class AccountFragment extends InjectedFragment
     public void onStop()
     {
         mHorizontalProgressRequestCounter = 0;
-        hideHorizontalProgressBar();
+        hideHorizontalProgressBarIfReady();
         super.onStop();
     }
 
@@ -193,7 +193,7 @@ public class AccountFragment extends InjectedFragment
                     {
                         mUser = response;
                         updateCreditsView(mUser);
-                        hideHorizontalProgressBar();
+                        hideHorizontalProgressBarIfReady();
                     }
 
                     @Override
@@ -205,7 +205,7 @@ public class AccountFragment extends InjectedFragment
                                 error
                         );
                         Crashlytics.logException(new Exception(error.getMessage()));
-                        hideHorizontalProgressBar();
+                        hideHorizontalProgressBarIfReady();
                     }
                 }
         );
