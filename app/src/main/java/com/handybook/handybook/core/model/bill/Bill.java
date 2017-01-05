@@ -69,7 +69,7 @@ public class Bill
     @SerializedName("sections")
     private ArrayList<BillSection> mSections;
 
-    static Bill fromJson(@NonNull CharSequence input)
+    public static Bill fromJson(@NonNull CharSequence input)
     {
         return new Gson().fromJson(input.toString(), Bill.class);
     }
@@ -93,15 +93,15 @@ public class Bill
     }
 
     @NonNull
-    String getCurrencySymbol()
+    public String getCurrencySymbol()
     {
         return mCurrencySymbol;
     }
 
-    @Nullable
+    @NonNull
     public ArrayList<BillSection> getSections()
     {
-        return mSections;
+        return mSections == null ? new ArrayList<BillSection>() : mSections;
     }
 
     /**
@@ -140,7 +140,7 @@ public class Bill
         {
             @SerializedName("DEFAULT")
             DEFAULT,
-            @SerializedName("DEFAULT")
+            @SerializedName("ITEMIZED_BILL")
             ITEMIZED_BILL
         }
 
@@ -242,4 +242,52 @@ public class Bill
         }
 
     }
+
+
+    public static String EXAMPLE_JSON = ""
+            + "{"
+            + "  \"bill\":{"
+            + "    \"header_title\":\"Cleaning Plan: Every 2 weeks\","
+            + "    \"header_text\":\"Starting Wed, Jan 10/n8:00 am\","
+            + "    \"final_price_value\":5100,"
+            + "    \"currency_symbol\":\"$\","
+            + "    \"sections\":["
+            + "      {"
+            + "        \"line_items\":["
+            + "          {"
+            + "            \"label\":\"Cleaning + 1 extra\","
+            + "            \"amount\":7500"
+            + "          },"
+            + "          {"
+            + "          \"label\":\"Coupon\","
+            + "          \"amount\":-1750"
+            + "          },"
+            + "          {"
+            + "            \"label\":\"Trust & Support Fee\","
+            + "            \"amount\":3,"
+            + "            \"help_text\":\"It has to be done...\""
+            + "          },"
+            + "          {"
+            + "            \"label\":\"Credits\","
+            + "            \"amount\":-1000"
+            + "          }"
+            + "        ]"
+            + "      },"
+            + "      {"
+            + "        \"line_items\":["
+            + "          {"
+            + "            \"type\":\"TOTAL_PRICE\","
+            + "            \"label\":\"Today's Total\","
+            + "            \"amount\":5100"
+            + "          },"
+            + "          {"
+            + "            \"label\":\"Credits\","
+            + "            \"amount\":-5100"
+            + "          }"
+            + "        ]"
+            + "      }"
+            + "    ]"
+            + "  }"
+            + "}";
+
 }
