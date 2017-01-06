@@ -11,7 +11,7 @@ import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.core.Tab;
+import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
@@ -93,7 +93,7 @@ public class DeepLinkIntentProvider
         {
             if (sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
             {
-                return createBottomNavActivityIntent(context, Tab.BOOKINGS);
+                return createBottomNavActivityIntent(context, MainNavTab.BOOKINGS);
             }
             else
             {
@@ -134,7 +134,7 @@ public class DeepLinkIntentProvider
         {
             if (sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
             {
-                return createBottomNavActivityIntent(context, Tab.ACCOUNT);
+                return createBottomNavActivityIntent(context, MainNavTab.ACCOUNT);
             }
             else
             {
@@ -157,7 +157,7 @@ public class DeepLinkIntentProvider
     {
         if (sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
-            return createBottomNavActivityIntent(context, Tab.PRO_TEAM);
+            return createBottomNavActivityIntent(context, MainNavTab.PRO_TEAM);
         }
         else
         {
@@ -171,7 +171,7 @@ public class DeepLinkIntentProvider
     {
         if (sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
-            return createBottomNavActivityIntent(context, Tab.SHARE);
+            return createBottomNavActivityIntent(context, MainNavTab.SHARE);
         }
         else
         {
@@ -179,10 +179,10 @@ public class DeepLinkIntentProvider
         }
     }
 
-    private static Intent createBottomNavActivityIntent(@NonNull Context context, @NonNull Tab tab)
+    private static Intent createBottomNavActivityIntent(@NonNull Context context, @NonNull MainNavTab mainNavTab)
     {
         Intent intent = new Intent(context, BottomNavActivity.class);
-        intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, tab);
+        intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, mainNavTab);
         return intent;
     }
 }

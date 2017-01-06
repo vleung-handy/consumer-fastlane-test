@@ -1,11 +1,13 @@
 package com.handybook.handybook.bottomnav;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
@@ -14,6 +16,7 @@ import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
+import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
@@ -35,7 +38,7 @@ import butterknife.ButterKnife;
  * this should eventually replace the menu drawer activity
  * not bothering to spend time consolidating duplicate code for this reason
  */
-public class BottomNavActivity extends BaseActivity
+public class BottomNavActivity extends BaseActivity implements MainNavTab.Navigator
 {
     public static final String BUNDLE_KEY_TAB = "key_tab";
 
@@ -48,9 +51,7 @@ public class BottomNavActivity extends BaseActivity
     @Inject
     LayerHelper mLayerHelper;
 
-    protected boolean disableDrawer;
     protected Configuration mConfiguration;
-    private Object mBusEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -68,6 +69,11 @@ public class BottomNavActivity extends BaseActivity
                         return onNavItemSelected(item);
                     }
                 });
+        selectDefaultTab();
+    }
+
+    private void selectDefaultTab()
+    {
         User user = mUserManager.getCurrentUser();
         if (user != null
                 && user.getAnalytics() != null
@@ -81,68 +87,89 @@ public class BottomNavActivity extends BaseActivity
         {
             mBottomNavigationView.findViewById(R.id.add_booking).performClick();
         }
+    }
 
-        //TODO copied from MenuDrawerActivity - this should be refactored
-        //this is to work around the subscriber inheritance issue that Otto has.
-        //https://github.com/square/otto/issues/26
-        mBusEventListener = new Object()
+    @Override
+    protected void onNewIntent(final Intent intent)
+    {
+        super.onNewIntent(intent);
+        navigateToMainNavTab(intent);
+
+    }
+
+    @Subscribe
+    public void userAuthUpdated(final UserLoggedInEvent event)
+    {
+        checkLayerInitiation();
+        if (!event.isLoggedIn())
         {
-            @Subscribe
-            public void userAuthUpdated(final UserLoggedInEvent event)
-            {
-                checkLayerInitiation();
-                if (!event.isLoggedIn())
-                {
-                    navigateToMenuItem(R.id.add_booking);
-                }
-            }
+            navigateToMainNavTab(MainNavTab.SERVICES);
+        }
+    }
 
-            @Subscribe
-            public void envUpdated(final EnvironmentUpdatedEvent event)
-            {
-                setupEnvButton();
-            }
+    @Subscribe
+    public void envUpdated(final EnvironmentUpdatedEvent event)
+    {
+        setupEnvButton();
+    }
 
-            @Subscribe
-            public void onReceiveConfigurationSuccess(
-                    final ConfigurationEvent.ReceiveConfigurationSuccess event
-            )
-            {
-                if (event != null)
-                {
-                    mConfiguration = event.getConfiguration();
-                    checkLayerInitiation();
-                    refreshMenu();
-                }
-            }
-        };
-        //TODO refactor
+    @Subscribe
+    public void onReceiveConfigurationSuccess(
+            final ConfigurationEvent.ReceiveConfigurationSuccess event
+    )
+    {
+        if (event != null)
+        {
+            mConfiguration = event.getConfiguration();
+            checkLayerInitiation();
+            refreshMenu();
+        }
     }
 
     @Override
     protected void onResumeFragments()
     {
         super.onResumeFragments();
-        mBus.register(mBusEventListener);
+        mBus.register(this);
         refreshMenu();
     }
 
     @Override
     protected void onPause()
     {
-        mBus.unregister(mBusEventListener);
+        mBus.unregister(this);
         super.onPause();
     }
 
-    private boolean navigateToMenuItem(int menuItemId)
+    /**
+     * navigate to the bottom nav tab associated with the Tab in the given intent's bundle
+     * @param intent
+     */
+    private void navigateToMainNavTab(Intent intent)
+    {
+        MainNavTab mainNavTab = (intent == null || intent.getSerializableExtra(BUNDLE_KEY_TAB) == null) ?
+                MainNavTab.UNKNOWN : (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
+        navigateToMainNavTab(mainNavTab);
+    }
+
+    /**
+     * navigate to the fragment associated with the given tab
+     * mapping menu item -> tab instead of tab -> menu item in case we want to launch a tab whose
+     * menu item isn't present
+     *
+     * @param mainNavTab
+     * @return true if navigation was resolved
+     */
+    @Override
+    public boolean navigateToMainNavTab(@NonNull MainNavTab mainNavTab)
     {
         Fragment fragment = null;
-        switch (menuItemId)
+        switch (mainNavTab)
         {
-            case R.id.bookings:
+            case BOOKINGS:
                 fragment = UpcomingBookingsFragment.newInstance();
                 break;
-            case R.id.pro_team:
+            case PRO_TEAM:
                 if (mConfigurationManager.getPersistentConfiguration().isChatEnabled())
                 {
                     fragment = ProTeamConversationsFragment.newInstance();
@@ -152,14 +179,18 @@ public class BottomNavActivity extends BaseActivity
                     fragment = ProTeamFragment.newInstance();
                 }
                 break;
-            case R.id.add_booking:
+            case SERVICES:
                 fragment = ServiceCategoriesFragment.newInstance(null, null);
                 break;
-            case R.id.gift:
+            case SHARE:
                 fragment = ReferralFragment.newInstance(null);
                 break;
-            case R.id.account:
+            case ACCOUNT:
                 fragment = AccountFragment.newInstance();
+                break;
+            default:
+                Crashlytics.logException(new Exception("Don't know how to handle navigation for the given tab: " + mainNavTab
+                        .toString()));
                 break;
         }
         if (fragment != null)
@@ -173,10 +204,39 @@ public class BottomNavActivity extends BaseActivity
         }
     }
 
+    private boolean navigateToMainNavTab(@NonNull MenuItem menuItem)
+    {
+        MainNavTab mainNavTab = null;
+        switch (menuItem.getItemId())
+        {
+            case R.id.bookings:
+                mainNavTab = MainNavTab.BOOKINGS;
+                break;
+            case R.id.pro_team:
+                mainNavTab = MainNavTab.PRO_TEAM;
+                break;
+            case R.id.add_booking:
+                mainNavTab = MainNavTab.SERVICES;
+                break;
+            case R.id.gift:
+                mainNavTab = MainNavTab.SHARE;
+                break;
+            case R.id.account:
+                mainNavTab = MainNavTab.ACCOUNT;
+                break;
+        }
+        if(mainNavTab == null)
+        {
+            Crashlytics.logException(new Exception("Unable to navigate to tab for menu item " + menuItem.getItemId()));
+            return false;
+        }
+        return navigateToMainNavTab(mainNavTab);
+    }
+
     //TODO probably consolidate this
     private boolean onNavItemSelected(@NonNull final MenuItem item)
     {
-        return navigateToMenuItem(item.getItemId());
+        return navigateToMainNavTab(item);
     }
 
     /**
@@ -218,12 +278,6 @@ public class BottomNavActivity extends BaseActivity
         final boolean userLoggedIn = currentUser != null;
 
         mBottomNavigationView.setVisibility(userLoggedIn ? View.VISIBLE : View.GONE);
-//        Menu menu = mBottomNavigationView.getMenu();
-//        menu.getItem(R.id.bookings).setVisible(userLoggedIn);
-//        menu.getItem(R.id.pro_team).setVisible(userLoggedIn);
-//        menu.getItem(R.id.add_booking).setVisible(true);
-//        menu.getItem(R.id.gift).setVisible(userLoggedIn);
-//        menu.getItem(R.id.account).setVisible(userLoggedIn);
     }
 
     protected boolean requiresUser()
