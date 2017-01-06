@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -55,7 +56,7 @@ import java.util.ArrayList;
  *   }
  * }
  */
-public class Bill
+public class Bill implements Serializable
 {
 
     @SerializedName("header_title")
