@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -60,6 +61,12 @@ public class AccountFragment extends InjectedFragment
     ViewGroup mActivePlansLayout;
     @Bind(R.id.account_history_help_layout)
     ViewGroup mHistoryHelpLayout;
+    @Bind(R.id.horizontal_progress_bar)
+    ProgressBar mHorizontalProgressBar;
+
+    //This counter is used to remove the horizontal progress bar when counter is 0
+    //Whenever show horizontal progress bar is called, this counter is incremented
+    private int mHorizontalProgressRequestCounter;
 
     private User mUser;
     private ArrayList<RecurringBooking> mPlans;
@@ -121,14 +128,15 @@ public class AccountFragment extends InjectedFragment
     public void onStart()
     {
         super.onStart();
-        showUiBlockers();
+        showHorizontalProgressBar();
+
         dataManager.getRecurringBookings(new FragmentSafeCallback<RecurringBookingsResponse>(
                 this)
         {
             @Override
             public void onCallbackSuccess(final RecurringBookingsResponse response)
             {
-                removeUiBlockers();
+                hideHorizontalProgressBarIfReady();
                 mPlans = new ArrayList<>(response.getRecurringBookings());
                 mActivePlansText.setText(getString(
                         R.string.account_active_plans_formatted, mPlans.size()));
@@ -138,8 +146,8 @@ public class AccountFragment extends InjectedFragment
             @Override
             public void onCallbackError(final DataManager.DataManagerError error)
             {
+                hideHorizontalProgressBarIfReady();
                 mActivePlansLayout.setEnabled(false);
-                removeUiBlockers();
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
         });
@@ -154,7 +162,8 @@ public class AccountFragment extends InjectedFragment
     @Override
     public void onStop()
     {
-        removeUiBlockers();
+        mHorizontalProgressRequestCounter = 0;
+        hideHorizontalProgressBarIfReady();
         super.onStop();
     }
 
@@ -171,9 +180,9 @@ public class AccountFragment extends InjectedFragment
         /*
         hotfix to get updated user data
         looks like previous logic assumed mUser to be non-null here
-        TODO non-blocking loading indicator
         TODO investigate when UserManager's current user is set and retrieved
          */
+        showHorizontalProgressBar();
         mUserDataManager.requestAndSetCurrentUser(
                 mUser.getId(),
                 mUser.getAuthToken(),
@@ -184,6 +193,7 @@ public class AccountFragment extends InjectedFragment
                     {
                         mUser = response;
                         updateCreditsView(mUser);
+                        hideHorizontalProgressBarIfReady();
                     }
 
                     @Override
@@ -195,6 +205,7 @@ public class AccountFragment extends InjectedFragment
                                 error
                         );
                         Crashlytics.logException(new Exception(error.getMessage()));
+                        hideHorizontalProgressBarIfReady();
                     }
                 }
         );
@@ -306,5 +317,24 @@ public class AccountFragment extends InjectedFragment
                 });
 
         alertDialog.show();
+    }
+
+    private void showHorizontalProgressBar() {
+        mHorizontalProgressRequestCounter++;
+        mHorizontalProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * This method will hide the horizontal progress bar if api call backs are completed.
+     * If not, it will decrement the counter
+     */
+    private void hideHorizontalProgressBarIfReady() {
+        //only decrement if greater then 0
+        if(mHorizontalProgressRequestCounter > 0)
+            --mHorizontalProgressRequestCounter;
+
+        if(mHorizontalProgressRequestCounter == 0) {
+           mHorizontalProgressBar.setVisibility(View.GONE);
+        }
     }
 }
