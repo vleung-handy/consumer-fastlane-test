@@ -1,8 +1,10 @@
 package com.handybook.handybook.core.ui.view;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,12 +34,6 @@ public class BillView extends FrameLayout
     PriceView mHeaderPrice;
     @Bind(R.id.bill_view_section_container)
     LinearLayout mSectionContainer;
-    @Bind(R.id.bill_view_final_line_container)
-    ViewGroup mFinalLineContainer;
-    @Bind(R.id.bill_view_final_line_label)
-    TextView mFinalLineLabel;
-    @Bind(R.id.bill_view_final_line_price)
-    PriceView mFinalLinePrice;
     @Bind(R.id.bill_view_expand_target)
     TextView mExpandTargetView;
 
@@ -59,15 +55,19 @@ public class BillView extends FrameLayout
         init(attrs, defStyleAttr);
     }
 
-
     private void init(AttributeSet attrs, int defStyle)
     {
+        setSaveEnabled(true);
         inflate(getContext(), R.layout.layout_bill_view, this);
         ButterKnife.bind(this);
         collapse();
+        if (isInEditMode())
+        {
+            setBill(Bill.fromJson(Bill.EXAMPLE_JSON));
+        }
     }
 
-    public void setBill(final Bill bill)
+    public void setBill(@NonNull final Bill bill)
     {
         mBill = bill;
         update();
@@ -75,18 +75,11 @@ public class BillView extends FrameLayout
 
     private void update()
     {
-        if (mBill == null)
-        {
-            getRootView().setVisibility(GONE);
-            return;
-        }
         getRootView().setVisibility(VISIBLE);
         mHeaderTitle.setText(mBill.getHeaderTitle());
         mHeaderText.setText(mBill.getHeaderText());
         mHeaderPrice.setCurrencySymbol(mBill.getCurrencySymbol());
-        mHeaderPrice.setPrice(mBill.getFinalPriceValueCents().getAmountCents());
-        mFinalLineLabel.setText(mBill.getFinalPriceValueCents().getLabel());
-        mFinalLinePrice.setPrice(mBill.getFinalPriceValueCents().getAmountCents());
+        mHeaderPrice.setPrice(mBill.getFinalPriceValueCents());
         mSectionContainer.removeAllViews();
         for (Bill.BillSection eBillSection : mBill.getSections())
         {
@@ -118,7 +111,6 @@ public class BillView extends FrameLayout
     public void expand()
     {
         mSectionContainer.setVisibility(VISIBLE);
-        mFinalLineContainer.setVisibility(VISIBLE);
         mExpandTargetView.setVisibility(GONE);
         mIsExpanded = true;
     }
@@ -126,8 +118,77 @@ public class BillView extends FrameLayout
     public void collapse()
     {
         mSectionContainer.setVisibility(GONE);
-        mFinalLineContainer.setVisibility(GONE);
         mExpandTargetView.setVisibility(VISIBLE);
         mIsExpanded = false;
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState()
+    {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.setBill(mBill);
+        return savedState;
+
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Parcelable state)
+    {
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        mBill = savedState.getBill();
+
+    }
+
+    private static class SavedState extends BaseSavedState
+    {
+
+        private Bill mBill;
+
+        SavedState(final Parcelable superState)
+        {
+            super(superState);
+        }
+
+        SavedState(final Parcel source)
+        {
+            super(source);
+            mBill = (Bill) source.readSerializable();
+        }
+
+        @Override
+        public void writeToParcel(final Parcel out, final int flags)
+        {
+            super.writeToParcel(out, flags);
+            out.writeSerializable(mBill);
+        }
+
+        void setBill(@NonNull final Bill bill)
+        {
+            mBill = bill;
+        }
+
+        @NonNull
+        Bill getBill()
+        {
+            return mBill;
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>()
+        {
+            @Override
+            public SavedState createFromParcel(final Parcel source)
+            {
+                return new SavedState(source);
+            }
+
+            @Override
+            public SavedState[] newArray(final int size)
+            {
+                return new SavedState[size];
+            }
+        };
     }
 }
