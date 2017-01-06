@@ -1,13 +1,9 @@
 package com.handybook.handybook.core.ui.view;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,13 +12,11 @@ import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
 import com.handybook.handybook.core.model.bill.Bill;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
-/**
- *  DO NOT USE IT IS NOT FINSISHED VIEW
- *  TODO: FINISH IT
+/***
+ * Standard issue line item in BillSectionView, small title small value
  */
-public class BillLineItemView extends FrameLayout
+public class DefaultBillLineItemView extends AbstractBillLineItem
 {
 
     private Bill.BillLineItem mBillLineItem;
@@ -34,46 +28,14 @@ public class BillLineItemView extends FrameLayout
     @Bind(R.id.bill_view_line_item_amount)
     TextView mAmountText;
 
-    public BillLineItemView(final Context context)
+    public DefaultBillLineItemView(final Context context)
     {
         super(context);
     }
 
-    public BillLineItemView(final Context context, final AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
+    protected int getLayout() {return R.layout.layout_bill_view_line_item_default;}
 
-    public BillLineItemView(final Context context, final AttributeSet attrs, final int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public BillLineItemView(
-            final Context context,
-            final AttributeSet attrs,
-            final int defStyleAttr,
-            final int defStyleRes
-    )
-    {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    private void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes)
-    {
-        inflate(getContext(), R.layout.layout_bill_view_section, this);
-        ButterKnife.bind(this);
-        update();
-    }
-
-    public void setBillLineItem(final Bill.BillLineItem billLineItem)
-    {
-        mBillLineItem = billLineItem;
-        update();
-    }
-
-    private void update()
+    protected void update()
     {
         if (mBillLineItem == null)
         {
