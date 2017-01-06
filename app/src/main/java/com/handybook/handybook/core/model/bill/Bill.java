@@ -135,7 +135,7 @@ public class Bill implements Serializable
      *   }
      * }
      */
-    public static class BillSection
+    public static class BillSection implements Serializable
     {
         public enum BillSectionType
         {
@@ -157,10 +157,10 @@ public class Bill implements Serializable
             return mType != null ? mType : BillSectionType.DEFAULT;
         }
 
-        @Nullable
+        @NonNull
         public ArrayList<BillLineItem> getLineItems()
         {
-            return mLineItems;
+            return mLineItems == null ? new ArrayList<BillLineItem>() : mLineItems;
         }
 
         public boolean isEmpty()
@@ -180,7 +180,7 @@ public class Bill implements Serializable
      *   "help_text":"It has to be done..."
      * }
      */
-    public static class BillLineItem
+    public static class BillLineItem implements Serializable
     {
         public enum ItemType
         {
@@ -250,7 +250,7 @@ public class Bill implements Serializable
             + "  \"bill\":{"
             + "    \"header_title\":\"Cleaning Plan: Every 2 weeks\","
             + "    \"header_text\":\"Starting Wed, Jan 10/n8:00 am\","
-            + "    \"final_price_value\":5100,"
+            + "    \"final_amount\":5100,"
             + "    \"currency_symbol\":\"$\","
             + "    \"sections\":["
             + "      {"
