@@ -16,11 +16,13 @@
         android:orientation="vertical"
         >
 
-        <include layout="@layout/layout_bill_view_line_item"/>
+        <include layout="@layout/layout_bill_view_line_item_default"/>
 
-        <include layout="@layout/layout_bill_view_line_item"/>
+        <include layout="@layout/layout_bill_view_line_item_default"/>
 
-        <include layout="@layout/layout_bill_view_line_item"/>
+        <include layout="@layout/layout_bill_view_line_item_large"/>
+
+        <include layout="@layout/layout_bill_view_line_item_default"/>
     </LinearLayout>
 
     <include
