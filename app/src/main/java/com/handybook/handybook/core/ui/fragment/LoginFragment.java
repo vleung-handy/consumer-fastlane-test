@@ -28,6 +28,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
+import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.User;
@@ -97,6 +99,8 @@ public final class LoginFragment extends BookingFlowFragment
     ScrollView mLoginScrollView;
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
+    private Bundle mDestinationExtras;
+
     public static LoginFragment newInstance(
             final boolean findUser,
             final String bookingUserName,
@@ -132,6 +136,7 @@ public final class LoginFragment extends BookingFlowFragment
         mIsFromBookingFunnel = getArguments().getBoolean(EXTRA_FROM_BOOKING_FUNNEL);
 
         String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
+        mDestinationExtras = getActivity().getIntent().getExtras();
         if (!TextUtils.isEmpty(mDestinationActivity))
         {
             try
@@ -524,21 +529,47 @@ public final class LoginFragment extends BookingFlowFragment
         progressDialog.dismiss();
         enableInputs();
 
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-
-        //TODO destination class is an activity but the bottom nav uses fragment-based nav
-
-        if (mDestinationClass != null)
+        //TODO refactor
+        if(mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
+                || !(getActivity() instanceof MenuDrawerActivity)
+            //in case bottom nav config flag gets set to true after LoginFragment
+            // already instantiated by LoginActivity
+            // (which is currently a MenuDrawerActivity)
+                )
         {
-            activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras(),
-                                        null
-            );
+            //TODO consolidate this logic
+            Intent intent;
+            if(mDestinationClass != null)
+            {
+                //destination class could be BookingDetailActivity
+                intent = new Intent(getActivity(), mDestinationClass);
+                intent.putExtras(mDestinationExtras);
+            }
+            else
+            {
+                intent = new Intent(getActivity(), BottomNavActivity.class);
+                intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(intent);
         }
         else
         {
-            //TODO this causes the bottom nav to not show because this activity extends menu drawer
-            activity.navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+            final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
+
+            //TODO want to consolidate with above, but keeping this here for now until we dig into what MenuDrawerActivity.navigateToActivity does
+            if (mDestinationClass != null)
+            {
+                activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras(),
+                                            null
+                );
+            }
+            else
+            {
+                activity.navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+            }
         }
+
     }
 
     @Subscribe

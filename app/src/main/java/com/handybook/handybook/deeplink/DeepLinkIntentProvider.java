@@ -2,7 +2,9 @@ package com.handybook.handybook.deeplink;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.airbnb.deeplinkdispatch.DeepLink;
 import com.handybook.handybook.account.ui.ProfileActivity;
@@ -10,6 +12,7 @@ import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.UserManager;
@@ -17,13 +20,12 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 
 import javax.inject.Inject;
 
-//TODO: package this better
+//TODO: this needs to be fixed to completely work with new bottom nav
 public class DeepLinkIntentProvider
 {
     //TODO: clean this up
@@ -69,9 +71,16 @@ public class DeepLinkIntentProvider
         return intent;
     }
 
+    //TODO update this to handle bottom nav arch
     public static Intent getLoginIntent(Context context, Class<?> destinationClass)
     {
+        return getLoginIntent(context, destinationClass, null);
+    }
+
+    private static Intent getLoginIntent(Context context, Class<?> destinationClass, Bundle extras)
+    {
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtras(extras); //TODO test if this can be null
         intent.putExtra(BundleKeys.ACTIVITY, destinationClass.getName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -89,24 +98,35 @@ public class DeepLinkIntentProvider
             DEEP_LINK_NEW_BASE_URL + "bookings"})
     public static Intent getMyBookingsIntent(Context context)
     {
-        if (isUserLoggedIn())
+        if(sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
-            if (sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+            if(isUserLoggedIn())
             {
                 return createBottomNavActivityIntent(context, MainNavTab.BOOKINGS);
             }
             else
             {
-                return new Intent(context, BookingsActivity.class);
+                return createBottomNavLoginActivityIntent(context, MainNavTab.BOOKINGS);
             }
         }
-        return getLoginIntent(context, BookingsActivity.class);
+        else
+        {
+            if(isUserLoggedIn())
+            {
+                return new Intent(context, BookingsActivity.class);
+            }
+            else
+            {
+                return getLoginIntent(context, BookingsActivity.class);
+            }
+        }
     }
 
     @DeepLink({DEEP_LINK_SIDE_MENU_URL + "past_bookings",
             DEEP_LINK_NEW_BASE_URL + "past_bookings"})
     public static Intent getPastBookingsIntent(Context context)
     {
+        //TODO account for bottom nav?
         if (isUserLoggedIn())
         {
             return new Intent(context, HistoryActivity.class);
@@ -130,18 +150,28 @@ public class DeepLinkIntentProvider
             DEEP_LINK_BASE_URL + "account"})
     public static Intent getAccountIntent(Context context)
     {
-        if (isUserLoggedIn())
+        if(sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
-            if (sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+            if(isUserLoggedIn())
             {
                 return createBottomNavActivityIntent(context, MainNavTab.ACCOUNT);
             }
             else
             {
-                return new Intent(context, ProfileActivity.class);
+                return createBottomNavLoginActivityIntent(context, MainNavTab.ACCOUNT);
             }
         }
-        return getHomeIntent(context);
+        else
+        {
+            if(isUserLoggedIn())
+            {
+                return new Intent(context, ProfileActivity.class);
+            }
+            else
+            {
+                return getLoginIntent(context, ProfileActivity.class);
+            }
+        }
     }
 
     @DeepLink({DEEP_LINK_SIDE_MENU_URL + "help",
@@ -155,6 +185,7 @@ public class DeepLinkIntentProvider
             DEEP_LINK_NEW_BASE_URL + "pro_team"})
     public static Intent getProTeamIntent(Context context)
     {
+        //TODO need to handle case in which user not logged in
         if (sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             return createBottomNavActivityIntent(context, MainNavTab.PRO_TEAM);
@@ -169,6 +200,7 @@ public class DeepLinkIntentProvider
             DEEP_LINK_NEW_BASE_URL + "share"})
     public static Intent getReferralIntent(Context context)
     {
+        //TODO need to handle case in which user not logged in
         if (sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             return createBottomNavActivityIntent(context, MainNavTab.SHARE);
@@ -179,10 +211,25 @@ public class DeepLinkIntentProvider
         }
     }
 
-    private static Intent createBottomNavActivityIntent(@NonNull Context context, @NonNull MainNavTab mainNavTab)
+    private static Intent createBottomNavActivityIntent(@NonNull Context context, @Nullable MainNavTab mainNavTab)
     {
         Intent intent = new Intent(context, BottomNavActivity.class);
         intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, mainNavTab);
         return intent;
+    }
+
+    /**
+     * TODO give better name
+     * creates a login activity intent that launches the bottom nav activity after login,
+     * with the given tab as the selected tab
+     * @param context
+     * @param mainNavTab
+     * @return
+     */
+    private static Intent createBottomNavLoginActivityIntent(@NonNull Context context, @Nullable MainNavTab mainNavTab)
+    {
+        Bundle extras = new Bundle();
+        extras.putSerializable(BottomNavActivity.BUNDLE_KEY_TAB, mainNavTab);
+        return getLoginIntent(context, BottomNavActivity.class, extras);
     }
 }
