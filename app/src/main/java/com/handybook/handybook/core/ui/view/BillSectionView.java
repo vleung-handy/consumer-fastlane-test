@@ -22,7 +22,7 @@ public class BillSectionView extends FrameLayout
 
     private Bill.BillSection mBillSection;
 
-    @Bind(R.id.bill_view_section_line_item_container)
+    @Bind(R.id.bill_view_section_line_item_root)
     LinearLayout mLineItemContainer;
     @Bind(R.id.bill_view_section_horizontal_separator)
     View mSeparator;
@@ -80,9 +80,26 @@ public class BillSectionView extends FrameLayout
         }
         getRootView().setVisibility(VISIBLE);
         mLineItemContainer.removeAllViews();
+        View horizontalSeparator = inflate(
+                getContext(),
+                R.layout.layout_bill_view_horizontal_separator,
+                mLineItemContainer
+        );
+        mLineItemContainer.addView(horizontalSeparator);
         for (Bill.BillLineItem eBillLineItem : mBillSection.getLineItems())
         {
-            DefaultBillLineItemView billLineItemView = new DefaultBillLineItemView(getContext());
+            AbstractBillLineItem billLineItemView;
+            // TODO: I'd like to move the bit tha decides which LineItem to inflate somewhere..
+            // Suggestions?
+            switch (eBillLineItem.getType())
+            {
+                case LARGE_PRICE:
+                    billLineItemView = new LargeBillLineItem(getContext());
+                    break;
+                default:
+                    billLineItemView = new DefaultBillLineItemView(getContext());
+
+            }
             billLineItemView.setBillLineItem(eBillLineItem);
             mLineItemContainer.addView(billLineItemView);
         }
@@ -104,7 +121,7 @@ public class BillSectionView extends FrameLayout
     {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
-        mBillSection = savedState.getBillSection();
+        setBillSection(savedState.getBillSection());
 
     }
 
