@@ -16,7 +16,7 @@ import butterknife.Bind;
 /***
  * Standard issue line item in BillSectionView, small title small value
  */
-public class DefaultBillLineItemView extends AbstractBillLineItem
+public class DefaultBillLineItemView extends AbstractBillLineItemView
 {
 
     private Bill.BillLineItem mBillLineItem;
@@ -40,10 +40,28 @@ public class DefaultBillLineItemView extends AbstractBillLineItem
         if (mBillLineItem == null)
         {
             getRootView().setVisibility(GONE);
-            return;
         }
-        getRootView().setVisibility(VISIBLE);
+        else
+        {
+            getRootView().setVisibility(VISIBLE);
+            updateLabel();
+            updatePrice();
+            updateHelpText();
+        }
+    }
+
+    private void updateLabel()
+    {
         mLabelText.setText(mBillLineItem.getLabel());
+    }
+
+    private void updatePrice()
+    {
+        mAmountText.setText(String.valueOf(mBillLineItem.getAmountCents()));
+    }
+
+    private void updateHelpText()
+    {
         if (mBillLineItem.hasHelpText())
         {
             mQuestionMarkImage.setVisibility(VISIBLE);
@@ -55,7 +73,8 @@ public class DefaultBillLineItemView extends AbstractBillLineItem
                     final FragmentManager fm = ((AppCompatActivity) getContext())
                             .getSupportFragmentManager();
                     if (fm.findFragmentByTag(
-                            BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG) == null)
+                            BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
+                    ) == null)
                     {
                         BookingDetailSectionPaymentView.PriceLineHelpTextDialog
                                 .newInstance(mBillLineItem.getHelpText())
@@ -73,7 +92,6 @@ public class DefaultBillLineItemView extends AbstractBillLineItem
             mQuestionMarkImage.setVisibility(GONE);
             getRootView().setOnClickListener(null);
         }
-        //TODO: Think about passing currency and rendering prices...
-        mAmountText.setText(String.valueOf(mBillLineItem.getAmountCents()));
+
     }
 }

@@ -13,24 +13,24 @@ import com.handybook.handybook.core.model.bill.Bill;
 
 import butterknife.ButterKnife;
 
-public abstract class AbstractBillLineItem extends LinearLayout
+public abstract class AbstractBillLineItemView extends LinearLayout
 {
 
     private Bill.BillLineItem mBillLineItem;
 
-    public AbstractBillLineItem(final Context context)
+    public AbstractBillLineItemView(final Context context)
     {
         super(context);
         init(null, 0, 0);
     }
 
-    public AbstractBillLineItem(final Context context, final AttributeSet attrs)
+    public AbstractBillLineItemView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
         init(attrs, 0, 0);
     }
 
-    public AbstractBillLineItem(
+    public AbstractBillLineItemView(
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr
@@ -41,7 +41,7 @@ public abstract class AbstractBillLineItem extends LinearLayout
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public AbstractBillLineItem(
+    public AbstractBillLineItemView(
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr,
@@ -87,7 +87,7 @@ public abstract class AbstractBillLineItem extends LinearLayout
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         mBillLineItem = savedState.getBillLineItem();
-
+        update();
     }
 
     private static class SavedState extends BaseSavedState

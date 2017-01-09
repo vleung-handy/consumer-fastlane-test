@@ -13,7 +13,7 @@ import com.handybook.handybook.core.model.bill.Bill;
 
 import butterknife.Bind;
 
-public class LargeBillLineItem extends DefaultBillLineItemView
+public class LargeBillLineItemView extends AbstractBillLineItemView
 {
 
     private Bill.BillLineItem mBillLineItem;
@@ -25,7 +25,7 @@ public class LargeBillLineItem extends DefaultBillLineItemView
     @Bind(R.id.bill_view_line_item_amount)
     TextView mAmountText;
 
-    public LargeBillLineItem(final Context context)
+    public LargeBillLineItemView(final Context context)
     {
         super(context);
     }
@@ -40,10 +40,28 @@ public class LargeBillLineItem extends DefaultBillLineItemView
         if (mBillLineItem == null)
         {
             getRootView().setVisibility(GONE);
-            return;
         }
-        getRootView().setVisibility(VISIBLE);
+        else
+        {
+            getRootView().setVisibility(VISIBLE);
+            updateLabel();
+            updatePrice();
+            updateHelpText();
+        }
+    }
+
+    private void updateLabel()
+    {
         mLabelText.setText(mBillLineItem.getLabel());
+    }
+
+    private void updatePrice()
+    {
+        mAmountText.setText(String.valueOf(mBillLineItem.getAmountCents()));
+    }
+
+    private void updateHelpText()
+    {
         if (mBillLineItem.hasHelpText())
         {
             mQuestionMarkImage.setVisibility(VISIBLE);
@@ -55,7 +73,8 @@ public class LargeBillLineItem extends DefaultBillLineItemView
                     final FragmentManager fm = ((AppCompatActivity) getContext())
                             .getSupportFragmentManager();
                     if (fm.findFragmentByTag(
-                            BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG) == null)
+                            BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
+                    ) == null)
                     {
                         BookingDetailSectionPaymentView.PriceLineHelpTextDialog
                                 .newInstance(mBillLineItem.getHelpText())
@@ -73,8 +92,7 @@ public class LargeBillLineItem extends DefaultBillLineItemView
             mQuestionMarkImage.setVisibility(GONE);
             getRootView().setOnClickListener(null);
         }
-        //TODO: Think about passing currency and rendering prices...
-        mAmountText.setText(String.valueOf(mBillLineItem.getAmountCents()));
+
     }
 
 }

@@ -88,13 +88,13 @@ public class BillSectionView extends FrameLayout
         mLineItemContainer.addView(horizontalSeparator);
         for (Bill.BillLineItem eBillLineItem : mBillSection.getLineItems())
         {
-            AbstractBillLineItem billLineItemView;
+            AbstractBillLineItemView billLineItemView;
             // TODO: I'd like to move the bit tha decides which LineItem to inflate somewhere..
             // Suggestions?
             switch (eBillLineItem.getType())
             {
                 case LARGE_PRICE:
-                    billLineItemView = new LargeBillLineItem(getContext());
+                    billLineItemView = new LargeBillLineItemView(getContext());
                     break;
                 default:
                     billLineItemView = new DefaultBillLineItemView(getContext());
