@@ -187,7 +187,7 @@ public class Bill implements Serializable
             @SerializedName("DEFAULT")
             DEFAULT,
             @SerializedName("LARGE_PRICE")
-            LARGE_PRICE
+            LARGE_PRICE;
         }
 
 

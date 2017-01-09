@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,8 +35,10 @@ public class BillView extends FrameLayout
     PriceView mHeaderPrice;
     @Bind(R.id.bill_view_section_container)
     LinearLayout mSectionContainer;
-    @Bind(R.id.bill_view_expand_target)
-    TextView mExpandTargetView;
+    @Bind(R.id.bill_view_expand_target_container)
+    ViewGroup mExpandTargetContainer;
+    @Bind(R.id.bill_view_expand_target_label)
+    TextView mExpandTargetViewLabel;
 
     public BillView(final Context context)
     {
@@ -76,10 +79,9 @@ public class BillView extends FrameLayout
     private void update()
     {
         getRootView().setVisibility(VISIBLE);
-        mHeaderTitle.setText(mBill.getHeaderTitle());
-        mHeaderText.setText(mBill.getHeaderText());
-        mHeaderPrice.setCurrencySymbol(mBill.getCurrencySymbol());
-        mHeaderPrice.setPrice(mBill.getFinalPriceValueCents());
+        updateHeaderTitle();
+        updateHeaderText();
+        updateHeaderPrice();
         mSectionContainer.removeAllViews();
         for (Bill.BillSection eBillSection : mBill.getSections())
         {
@@ -90,6 +92,18 @@ public class BillView extends FrameLayout
 
     }
 
+    private void updateHeaderTitle() {mHeaderTitle.setText(mBill.getHeaderTitle());}
+
+    private void updateHeaderText() {mHeaderText.setText(mBill.getHeaderText());}
+
+    private void updateHeaderPrice()
+    {
+        final String currencySymbol = mBill.getCurrencySymbol();
+        mHeaderPrice.setCurrencySymbol(currencySymbol);
+        final Long finalPriceValueCents = mBill.getFinalPriceValueCents();
+        mHeaderPrice.setPrice(finalPriceValueCents);
+    }
+
     public boolean isExpanded()
     {
         return mIsExpanded;
@@ -98,7 +112,7 @@ public class BillView extends FrameLayout
     @OnClick(R.id.bill_view_root)
     void toggleExpand()
     {
-        if (mIsExpanded)
+        if (isExpanded())
         {
             collapse();
         }
@@ -111,14 +125,14 @@ public class BillView extends FrameLayout
     public void expand()
     {
         mSectionContainer.setVisibility(VISIBLE);
-        mExpandTargetView.setVisibility(GONE);
+        mExpandTargetContainer.setVisibility(GONE);
         mIsExpanded = true;
     }
 
     public void collapse()
     {
         mSectionContainer.setVisibility(GONE);
-        mExpandTargetView.setVisibility(VISIBLE);
+        mExpandTargetContainer.setVisibility(VISIBLE);
         mIsExpanded = false;
     }
 
@@ -138,8 +152,7 @@ public class BillView extends FrameLayout
     {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
-        mBill = savedState.getBill();
-
+        setBill(savedState.getBill());
     }
 
     private static class SavedState extends BaseSavedState
