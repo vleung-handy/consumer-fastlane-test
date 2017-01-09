@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.subscription.CommitmentType;
 import com.handybook.handybook.core.model.bill.Bill;
 
 import java.io.Serializable;
@@ -25,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
+import static com.handybook.handybook.booking.model.BookingQuote.KEY_COMMITMENT_PRICES;
 
 public class BookingQuote extends Observable
 {
@@ -69,10 +72,12 @@ public class BookingQuote extends Observable
     private String mCurrencySuffix;
     @SerializedName(KEY_HOURLY_AMOUNT)
     private float mHourlyAmount;
+
+//    TODO: JIA: this is the legacy price table conver this to a "no_commitment", and use that instead.
     @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
     @SerializedName(KEY_COMMITMENT_PRICES)
-    private CommitmentPricesMap mCommitmentPricesMap;
+    CommitmentType mCommitmentType;
     @SerializedName(KEY_DYNAMIC_OPTIONS)
     private ArrayList<PeakPriceInfo> mSurgePriceTable;
     @SerializedName(KEY_STRIPE_KEY)
@@ -118,6 +123,10 @@ public class BookingQuote extends Observable
         }
     }
 
+    /**
+     * Now replaced by using the price in {@link CommitmentType}
+     */
+    @Deprecated()
     public QuoteConfig getQuoteConfig()
     {
         return mQuoteConfig;
@@ -256,6 +265,10 @@ public class BookingQuote extends Observable
         mHourlyAmount = hourlyAmount;
     }
 
+    /**
+     * Now replaced by the prices in {@link CommitmentType}
+     */
+    @Deprecated
     public ArrayList<BookingPriceInfo> getPriceTable()
     {
         return mPriceTable;
@@ -378,10 +391,9 @@ public class BookingQuote extends Observable
         return mBill;
     }
 
-
-    public CommitmentPricesMap getCommitmentPricesMap()
+    public CommitmentType getCommitmentType()
     {
-        return mCommitmentPricesMap;
+        return mCommitmentType;
     }
 
     private void triggerObservers()
@@ -472,10 +484,14 @@ public class BookingQuote extends Observable
         final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                                                            .create()
                                                            .fromJson(json, BookingQuote.class);
-        if (bookingQuote != null && bookingQuote.getCommitmentPricesMap() != null)
+
+
+//        TODO : JIA: remove this
+        if (bookingQuote != null && bookingQuote.getCommitmentType() != null)
         {
-            bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
+            bookingQuote.mPriceTable = bookingQuote.getCommitmentType().transform();
         }
+
         return bookingQuote;
     }
 
