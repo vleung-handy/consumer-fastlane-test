@@ -28,6 +28,8 @@ import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Subscribe;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -69,9 +71,32 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                         return onNavItemSelected(item);
                     }
                 });
-        selectDefaultTab();
+        boolean navigatedToTab = navigateToTabFromBundleExtras();
+        if(!navigatedToTab)
+        {
+            selectDefaultTab();
+        }
     }
 
+    /**
+     * navigates to the tab given by the bundle extras
+     * @return true if navigated to tab from bundle extras
+     */
+    private boolean navigateToTabFromBundleExtras()
+    {
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) return false;
+        Serializable tabToSelect = extras.getSerializable(BUNDLE_KEY_TAB);
+        if(tabToSelect != null && tabToSelect instanceof MainNavTab)
+        {
+            return navigateToMainNavTab((MainNavTab) tabToSelect);
+        }
+        return false;
+    }
+
+    /**
+     * TODO refactor to use the navigation methods for consistency?
+     */
     private void selectDefaultTab()
     {
         User user = mUserManager.getCurrentUser();
@@ -94,7 +119,6 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     {
         super.onNewIntent(intent);
         navigateToMainNavTab(intent);
-
     }
 
     @Subscribe
