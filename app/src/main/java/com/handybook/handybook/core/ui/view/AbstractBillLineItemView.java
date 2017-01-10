@@ -17,6 +17,8 @@ public abstract class AbstractBillLineItemView extends LinearLayout
 {
 
     private Bill.BillLineItem mBillLineItem;
+    private String mCurrencySymbol = "";
+
 
     public AbstractBillLineItemView(final Context context)
     {
@@ -56,14 +58,42 @@ public abstract class AbstractBillLineItemView extends LinearLayout
     {
         setSaveEnabled(true);
         inflate(getContext(), getLayout(), this);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this, getRootView());
         update();
     }
 
-    public void setBillLineItem(final Bill.BillLineItem billLineItem)
+    public void setData(
+            @NonNull final Bill.BillLineItem billLineItem,
+            @NonNull final String currencySymbol)
     {
+
+        if (billLineItem.equals(mBillLineItem))
+        {
+            return;
+        }
         mBillLineItem = billLineItem;
         update();
+    }
+
+    public Bill.BillLineItem getBillLineItem()
+    {
+        return mBillLineItem;
+    }
+
+    public void setCurrencySymbol(@NonNull final String currencySymbol)
+    {
+        if (currencySymbol.equals(mCurrencySymbol))
+        {
+            return;
+        }
+        mCurrencySymbol = currencySymbol;
+        update();
+    }
+
+    @NonNull
+    public String getCurrencySymbol()
+    {
+        return mCurrencySymbol;
     }
 
     protected abstract int getLayout();
@@ -76,6 +106,7 @@ public abstract class AbstractBillLineItemView extends LinearLayout
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
         savedState.setBillLineItem(mBillLineItem);
+        savedState.setCurrencySymbol(mCurrencySymbol);
         return savedState;
 
 
@@ -86,14 +117,14 @@ public abstract class AbstractBillLineItemView extends LinearLayout
     {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
-        mBillLineItem = savedState.getBillLineItem();
-        update();
+        setData(savedState.getBillLineItem(), savedState.getCurrencySymbol());
     }
 
     private static class SavedState extends BaseSavedState
     {
 
         private Bill.BillLineItem mBillLineItem;
+        private String mCurrencySymbol;
 
         SavedState(final Parcelable superState)
         {
@@ -104,6 +135,7 @@ public abstract class AbstractBillLineItemView extends LinearLayout
         {
             super(source);
             mBillLineItem = (Bill.BillLineItem) source.readSerializable();
+            mCurrencySymbol = source.readString();
         }
 
         @Override
@@ -111,6 +143,7 @@ public abstract class AbstractBillLineItemView extends LinearLayout
         {
             super.writeToParcel(out, flags);
             out.writeSerializable(mBillLineItem);
+            out.writeString(mCurrencySymbol);
         }
 
         void setBillLineItem(@NonNull final Bill.BillLineItem billLineItem)
@@ -138,7 +171,39 @@ public abstract class AbstractBillLineItemView extends LinearLayout
                 return new SavedState[size];
             }
         };
+
+        public void setCurrencySymbol(@NonNull final String currencySymbol)
+        {
+            mCurrencySymbol = currencySymbol;
+        }
+
+        @NonNull
+        public String getCurrencySymbol()
+        {
+            return mCurrencySymbol;
+        }
     }
 
 
+    public static class Factory
+    {
+        public static AbstractBillLineItemView from(
+                @NonNull final Context ctx,
+                @NonNull final Bill.BillLineItem billLineItem,
+                @NonNull String currencySymbol)
+        {
+
+            AbstractBillLineItemView lineItemView;
+            switch (billLineItem.getType())
+            {
+                case LARGE_PRICE:
+                    lineItemView = new LargeBillLineItemView(ctx);
+                    break;
+                default:
+                    lineItemView = new DefaultBillLineItemView(ctx);
+            }
+            lineItemView.setData(billLineItem, currencySymbol);
+            return lineItemView;
+        }
+    }
 }

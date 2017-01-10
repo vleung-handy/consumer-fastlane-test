@@ -7,6 +7,7 @@ import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.DevMainActivity;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.account.ui.ContactFragment;
@@ -305,6 +306,7 @@ import retrofit.converter.GsonConverter;
         RescheduleUpcomingActivity.class,
         BottomNavActivity.class,
         LayerPushReceiver.class,
+        DevMainActivity.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

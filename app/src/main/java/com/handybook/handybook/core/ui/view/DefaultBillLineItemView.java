@@ -2,14 +2,14 @@ package com.handybook.handybook.core.ui.view;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
-import com.handybook.handybook.core.model.bill.Bill;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.library.util.TextUtils;
 
 import butterknife.Bind;
 
@@ -18,8 +18,8 @@ import butterknife.Bind;
  */
 public class DefaultBillLineItemView extends AbstractBillLineItemView
 {
+    private static final String TAG = "DefaultBillLineItemView";
 
-    private Bill.BillLineItem mBillLineItem;
 
     @Bind(R.id.bill_view_line_item_label)
     TextView mLabelText;
@@ -33,61 +33,79 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
         super(context);
     }
 
-    protected int getLayout() {return R.layout.layout_bill_view_line_item_default;}
+    protected int getLayout()
+    {
+        return R.layout.layout_bill_view_line_item_default;
+    }
 
     protected void update()
     {
-        if (mBillLineItem == null)
+        if (getBillLineItem() == null)
         {
             getRootView().setVisibility(GONE);
+            return;
         }
-        else
-        {
-            getRootView().setVisibility(VISIBLE);
-            updateLabel();
-            updatePrice();
-            updateHelpText();
-        }
+        getRootView().setVisibility(VISIBLE);
+        updateLabel();
+        updatePrice();
+        updateHelpText();
     }
 
     private void updateLabel()
     {
-        mLabelText.setText(mBillLineItem.getLabel());
+        mLabelText.setText(getBillLineItem().getLabel());
     }
 
     private void updatePrice()
     {
-        mAmountText.setText(String.valueOf(mBillLineItem.getAmountCents()));
+        assert getBillLineItem() != null;
+        final Integer amountCents = getBillLineItem().getAmountCents();
+        final String amountText;
+        if (getBillLineItem().hasHelpText() || amountCents == null)
+        {
+            amountText = getBillLineItem().getAmountText();
+        } else
+        {
+            amountText = TextUtils.formatPriceCents(amountCents, getCurrencySymbol());
+        }
+
+        mAmountText.setText(amountText);
     }
 
     private void updateHelpText()
     {
-        if (mBillLineItem.hasHelpText())
+        if (getBillLineItem().hasHelpText())
         {
             mQuestionMarkImage.setVisibility(VISIBLE);
-            getRootView().setOnClickListener(new OnClickListener()
-            {
-                @Override
-                public void onClick(final View v)
-                {
-                    final FragmentManager fm = ((AppCompatActivity) getContext())
-                            .getSupportFragmentManager();
-                    if (fm.findFragmentByTag(
-                            BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
-                    ) == null)
+            getRootView().setOnClickListener(
+                    new OnClickListener()
                     {
-                        BookingDetailSectionPaymentView.PriceLineHelpTextDialog
-                                .newInstance(mBillLineItem.getHelpText())
-                                .show(
-                                        fm,
-                                        BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
-                                );
+                        @Override
+                        public void onClick(final View v)
+                        {
+                            final BaseActivity baseActivity = BaseActivity.getInstance(getContext());
+                            if (baseActivity == null)
+                            {
+                                return;
+                            }
+                            final FragmentManager fm = baseActivity.getSupportFragmentManager();
+                            if (fm.findFragmentByTag(
+                                    BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
+                            ) == null)
+                            {
+                                BookingDetailSectionPaymentView.PriceLineHelpTextDialog
+                                        .newInstance(getBillLineItem().getHelpText())
+                                        .show(
+                                                fm,
+                                                BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
+                                        );
+                            }
+                        }
                     }
-                }
-            });
 
-        }
-        else
+            );
+
+        } else
         {
             mQuestionMarkImage.setVisibility(GONE);
             getRootView().setOnClickListener(null);

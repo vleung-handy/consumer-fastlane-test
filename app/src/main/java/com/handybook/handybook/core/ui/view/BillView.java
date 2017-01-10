@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ import butterknife.OnClick;
 public class BillView extends FrameLayout
 {
 
+    private static final String TAG = "BillView";
     private boolean mIsExpanded;
     private Bill mBill;
 
@@ -67,11 +69,13 @@ public class BillView extends FrameLayout
         if (isInEditMode())
         {
             setBill(Bill.fromJson(Bill.EXAMPLE_JSON));
+            expand();
         }
     }
 
     public void setBill(@NonNull final Bill bill)
     {
+        Log.d(TAG, bill.toString());
         mBill = bill;
         update();
     }
@@ -86,7 +90,7 @@ public class BillView extends FrameLayout
         for (Bill.BillSection eBillSection : mBill.getSections())
         {
             BillSectionView billSectionView = new BillSectionView(getContext());
-            billSectionView.setBillSection(eBillSection);
+            billSectionView.setData(eBillSection, mBill.getCurrencySymbol());
             mSectionContainer.addView(billSectionView);
         }
 
@@ -100,7 +104,7 @@ public class BillView extends FrameLayout
     {
         final String currencySymbol = mBill.getCurrencySymbol();
         mHeaderPrice.setCurrencySymbol(currencySymbol);
-        final Long finalPriceValueCents = mBill.getFinalPriceValueCents();
+        final Integer finalPriceValueCents = mBill.getFinalPriceValueCents();
         mHeaderPrice.setPrice(finalPriceValueCents);
     }
 

@@ -9,21 +9,22 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
-import com.handybook.handybook.core.model.bill.Bill;
 
 import butterknife.Bind;
 
 public class LargeBillLineItemView extends AbstractBillLineItemView
 {
+    private static final String TAG = "LargeBillLineItemView";
 
-    private Bill.BillLineItem mBillLineItem;
 
     @Bind(R.id.bill_view_line_item_label)
-    TextView mLabelText;
+    TextView mLabel;
     @Bind(R.id.bill_view_line_item_question_mark)
-    ImageView mQuestionMarkImage;
+    ImageView mQuestionMark;
     @Bind(R.id.bill_view_line_item_amount)
-    TextView mAmountText;
+    PriceView mPrice;
+    @Bind(R.id.bill_view_line_item_amount_override)
+    TextView mPriceOverride;
 
     public LargeBillLineItemView(final Context context)
     {
@@ -37,34 +38,43 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
 
     protected void update()
     {
-        if (mBillLineItem == null)
+        if (getBillLineItem() == null)
         {
             getRootView().setVisibility(GONE);
+            return;
         }
-        else
-        {
-            getRootView().setVisibility(VISIBLE);
-            updateLabel();
-            updatePrice();
-            updateHelpText();
-        }
+        getRootView().setVisibility(VISIBLE);
+        updateLabel();
+        updatePrice();
+        updateHelpText();
     }
 
     private void updateLabel()
     {
-        mLabelText.setText(mBillLineItem.getLabel());
+        mLabel.setText(getBillLineItem().getLabel());
     }
 
     private void updatePrice()
     {
-        mAmountText.setText(String.valueOf(mBillLineItem.getAmountCents()));
+        if (getBillLineItem().hasAmountText() || getBillLineItem().getAmountCents() == null)
+        {
+            mPrice.setVisibility(GONE);
+            mPriceOverride.setVisibility(VISIBLE);
+            mPriceOverride.setText(getBillLineItem().getAmountText());
+        } else
+        {
+            mPrice.setVisibility(VISIBLE);
+            mPriceOverride.setVisibility(GONE);
+            mPrice.setPrice(getBillLineItem().getAmountCents());
+
+        }
     }
 
     private void updateHelpText()
     {
-        if (mBillLineItem.hasHelpText())
+        if (getBillLineItem().hasHelpText())
         {
-            mQuestionMarkImage.setVisibility(VISIBLE);
+            mQuestionMark.setVisibility(VISIBLE);
             getRootView().setOnClickListener(new OnClickListener()
             {
                 @Override
@@ -77,7 +87,7 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
                     ) == null)
                     {
                         BookingDetailSectionPaymentView.PriceLineHelpTextDialog
-                                .newInstance(mBillLineItem.getHelpText())
+                                .newInstance(getBillLineItem().getHelpText())
                                 .show(
                                         fm,
                                         BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
@@ -86,10 +96,9 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
                 }
             });
 
-        }
-        else
+        } else
         {
-            mQuestionMarkImage.setVisibility(GONE);
+            mQuestionMark.setVisibility(GONE);
             getRootView().setOnClickListener(null);
         }
 

@@ -27,6 +27,8 @@ public class BillSectionView extends FrameLayout
     @Bind(R.id.bill_view_section_horizontal_separator)
     View mSeparator;
 
+    private String mCurrencySymbol = "";
+
     public BillSectionView(final Context context)
     {
         super(context);
@@ -65,9 +67,10 @@ public class BillSectionView extends FrameLayout
         update();
     }
 
-    public void setBillSection(final Bill.BillSection billSection)
+    public void setData(final Bill.BillSection billSection, @NonNull final String currencySymbol)
     {
         mBillSection = billSection;
+        mCurrencySymbol = currencySymbol;
         update();
     }
 
@@ -75,32 +78,24 @@ public class BillSectionView extends FrameLayout
     {
         if (mBillSection == null)
         {
-            getRootView().setVisibility(GONE);
             return;
         }
-        getRootView().setVisibility(VISIBLE);
         mLineItemContainer.removeAllViews();
-        View horizontalSeparator = inflate(
+        inflate(
                 getContext(),
                 R.layout.layout_bill_view_horizontal_separator,
                 mLineItemContainer
         );
-        mLineItemContainer.addView(horizontalSeparator);
         for (Bill.BillLineItem eBillLineItem : mBillSection.getLineItems())
         {
-            AbstractBillLineItemView billLineItemView;
-            // TODO: I'd like to move the bit tha decides which LineItem to inflate somewhere..
-            // Suggestions?
-            switch (eBillLineItem.getType())
-            {
-                case LARGE_PRICE:
-                    billLineItemView = new LargeBillLineItemView(getContext());
-                    break;
-                default:
-                    billLineItemView = new DefaultBillLineItemView(getContext());
-
-            }
-            billLineItemView.setBillLineItem(eBillLineItem);
+            AbstractBillLineItemView billLineItemView = AbstractBillLineItemView.Factory
+                    .from(getContext(), eBillLineItem, mCurrencySymbol);
+            billLineItemView.setLayoutParams(
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+            );
             mLineItemContainer.addView(billLineItemView);
         }
     }
@@ -121,7 +116,7 @@ public class BillSectionView extends FrameLayout
     {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
-        setBillSection(savedState.getBillSection());
+        setData(savedState.getBillSection(), mCurrencySymbol);
 
     }
 
