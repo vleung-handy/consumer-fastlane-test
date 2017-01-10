@@ -64,7 +64,7 @@ public class Bill implements Serializable
     @SerializedName("header_text")
     private String mHeaderText;
     @SerializedName("final_amount_cents")
-    private Long mFinalPriceValueCents;
+    private Integer mFinalPriceValueCents;
     @SerializedName("currency_symbol")
     private String mCurrencySymbol;
     @SerializedName("sections")
@@ -89,7 +89,7 @@ public class Bill implements Serializable
     }
 
     @NonNull
-    public Long getFinalPriceValueCents()
+    public Integer getFinalPriceValueCents()
     {
         return mFinalPriceValueCents;
     }
@@ -213,7 +213,6 @@ public class Bill implements Serializable
         @SerializedName("type")
         private ItemType mType;
 
-
         /**
          * Line item label
          **/
@@ -223,7 +222,7 @@ public class Bill implements Serializable
          * Amount In Cents
          **/
         @SerializedName("amount_cents")
-        private Long mAmountCents;
+        private Integer mAmountCents;
         /**
          * Amount as text, if provided supersedes cent amount
          **/
@@ -249,7 +248,7 @@ public class Bill implements Serializable
         }
 
         @Nullable
-        public Long getAmountCents()
+        public Integer getAmountCents()
         {
             return mAmountCents;
         }
@@ -287,8 +286,8 @@ public class Bill implements Serializable
     public static String EXAMPLE_JSON = ""
             + "{\n"
             + "  \"header_title\":\"Cleaning Plan: Every 2 weeks\",\n"
-            + "  \"header_text\":\"Starting Wed, Jan 10/n8:00 am\",\n"
-            + "  \"final_amount_cents\":5100,\n"
+            + "  \"header_text\":\"Starting Wed, Jan 10\\n8:00 am\",\n"
+            + "  \"final_amount_cents\":12345,\n"
             + "  \"currency_symbol\":\"$\",\n"
             + "  \"sections\":[\n"
             + "    {\n"
@@ -303,12 +302,16 @@ public class Bill implements Serializable
             + "        },\n"
             + "        {\n"
             + "          \"label\":\"Trust & Support Fee\",\n"
-            + "          \"amount_cents\":300,\n"
+            + "          \"amount_cents\":300\n"
+            + "        },\n"
+            + "        {\n"
+            + "          \"label\":\"Overriden default\",\n"
+            + "          \"amount_text\":\"OvErRiDe\",\n"
             + "          \"help_text\":\"It has to be done...\"\n"
             + "        },\n"
             + "        {\n"
             + "          \"label\":\"Credits\",\n"
-            + "          \"amount_cents\":-1000\n"
+            + "          \"amount_cents\":-1020\n"
             + "        }\n"
             + "      ]\n"
             + "    },\n"
@@ -317,11 +320,16 @@ public class Bill implements Serializable
             + "        {\n"
             + "          \"type\":\"LARGE_PRICE\",\n"
             + "          \"label\":\"Today's Total\",\n"
-            + "          \"amount_cents\":5100\n"
+            + "          \"amount_cents\":2030\n"
             + "        },\n"
             + "        {\n"
             + "          \"label\":\"Credits\",\n"
-            + "          \"amount_cents\":-5100\n"
+            + "          \"amount_cents\":-3050\n"
+            + "        },\n"
+            + "        {\n"
+            + "          \"type\":\"LARGE_PRICE\",\n"
+            + "          \"label\":\"Overridden Total\",\n"
+            + "          \"amount_text\":\"OvErRiDe\"\n"
             + "        }\n"
             + "      ]\n"
             + "    }\n"
