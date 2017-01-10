@@ -5,4 +5,9 @@ package com.handybook.handybook.booking.model.subscription;
  */
 public class SubscriptionLength extends SubscriptionType
 {
+    public SubscriptionLength(String key, String title)
+    {
+        mKey = key;
+        mTitle = title;
+    }
 }

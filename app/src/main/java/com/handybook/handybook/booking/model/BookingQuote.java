@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.handybook.handybook.booking.model.BookingQuote.KEY_COMMITMENT_PRICES;
-
 public class BookingQuote extends Observable
 {
     public static final String KEY_ID = "id";
@@ -77,7 +75,7 @@ public class BookingQuote extends Observable
     @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
     @SerializedName(KEY_COMMITMENT_PRICES)
-    CommitmentType mCommitmentType;
+    private CommitmentType mCommitmentType;
     @SerializedName(KEY_DYNAMIC_OPTIONS)
     private ArrayList<PeakPriceInfo> mSurgePriceTable;
     @SerializedName(KEY_STRIPE_KEY)
@@ -279,6 +277,11 @@ public class BookingQuote extends Observable
         mPriceTable = priceTable;
         buildPriceMap();
         triggerObservers();
+    }
+
+    public void setCommitmentType(final CommitmentType commitmentType)
+    {
+        mCommitmentType = commitmentType;
     }
 
     HashMap<Float, BookingPriceInfo> getPriceTableMap()
@@ -485,11 +488,11 @@ public class BookingQuote extends Observable
                                                            .create()
                                                            .fromJson(json, BookingQuote.class);
 
-
-//        TODO : JIA: remove this
         if (bookingQuote != null && bookingQuote.getCommitmentType() != null)
         {
-            bookingQuote.mPriceTable = bookingQuote.getCommitmentType().transform();
+            bookingQuote.getCommitmentType().transform();
+        } else {
+            //TODO: JIA: we need to convert the old school mPriceTable to be a CommitmentType of "no_commitment"
         }
 
         return bookingQuote;
@@ -551,7 +554,7 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_RECURRENCE_OPTIONS, context.serialize(value.getRecurrenceOptions()));
             jsonObj.add(KEY_QUOTE_CONFIG, context.serialize(value.getQuoteConfig()));
             jsonObj.add(KEY_BILL, context.serialize(value.getBill()));
-            jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentPricesMap()));
+            jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentType()));
             return jsonObj;
         }
     }

@@ -6,4 +6,9 @@ package com.handybook.handybook.booking.model.subscription;
  */
 public class SubscriptionFrequency extends SubscriptionType
 {
+    public SubscriptionFrequency(String key, String title)
+    {
+        mKey = key;
+        mTitle = title;
+    }
 }

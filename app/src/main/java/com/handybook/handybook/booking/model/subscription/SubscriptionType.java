@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 public abstract class SubscriptionType implements Serializable
 {
-    private String mKey;
-    private String mTitle;
+    protected String mKey;
+    protected String mTitle;
 
     public String getKey()
     {

@@ -22,4 +22,18 @@ public class SubscriptionPrices implements Serializable
      */
     private Map<String, Price> mPrices;
 
+    public SubscriptionPrices(
+            final String subscriptionLengthKey,
+            final String subscriptionFrequencyKey,
+            final boolean aDefault,
+            final boolean enabled,
+            final Map<String, Price> prices
+    )
+    {
+        mSubscriptionLengthKey = subscriptionLengthKey;
+        mSubscriptionFrequencyKey = subscriptionFrequencyKey;
+        mDefault = aDefault;
+        mEnabled = enabled;
+        mPrices = prices;
+    }
 }
