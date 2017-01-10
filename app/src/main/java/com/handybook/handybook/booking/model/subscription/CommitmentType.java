@@ -25,16 +25,21 @@ public class CommitmentType implements Serializable
     private JsonObject mMonths;
 
     /**
-     * In the form of <LengthKey, <FrequencyKey, SubscriptionPrice>>
+     * In the form of <LengthKey, <FrequencyKey, SubscriptionPrice>>. This is so that you can
+     * figure out the price table to use given a "length", and a "frequency"
      */
     private Map<String, Map<String, SubscriptionPrices>> mSubscriptionPrices;
 
     /**
+     * A frequency are values that are similar to weekly, biweekly, monthly, etc. to indicate
+     * how often to repeat a booking. 
      * For now, we don't have a way to enforce a certain type of ordering
      */
     private List<SubscriptionFrequency> mUniqueFrequencies;
 
     /**
+     * A length are values that are similar to 3 month, 6 month, 9 month -- to indicate the length
+     * of the subscription (or term).
      * For now, we don't have a way to enforce a certain type of ordering
      */
     private List<SubscriptionLength> mUniqueLengths;
