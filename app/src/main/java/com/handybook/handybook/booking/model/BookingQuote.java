@@ -71,7 +71,7 @@ public class BookingQuote extends Observable
     @SerializedName(KEY_HOURLY_AMOUNT)
     private float mHourlyAmount;
 
-//    TODO: JIA: this is the legacy price table conver this to a "no_commitment", and use that instead.
+    //    TODO: JIA: this is the legacy price table conver this to a "no_commitment", and use that instead.
     @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
     @SerializedName(KEY_COMMITMENT_PRICES)
@@ -491,7 +491,9 @@ public class BookingQuote extends Observable
         if (bookingQuote != null && bookingQuote.getCommitmentType() != null)
         {
             bookingQuote.getCommitmentType().transform();
-        } else {
+        }
+        else
+        {
             //TODO: JIA: we need to convert the old school mPriceTable to be a CommitmentType of "no_commitment"
         }
 
