@@ -68,11 +68,11 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                     @Override
                     public boolean onNavigationItemSelected(@NonNull final MenuItem item)
                     {
-                        return onNavItemSelected(item);
+                        return onMenuItemSelected(item);
                     }
                 });
         boolean navigatedToTab = navigateToTabFromBundleExtras();
-        if(!navigatedToTab)
+        if (!navigatedToTab)
         {
             selectDefaultTab();
         }
@@ -85,9 +85,9 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     private boolean navigateToTabFromBundleExtras()
     {
         Bundle extras = getIntent().getExtras();
-        if(extras == null) return false;
+        if (extras == null) { return false; }
         Serializable tabToSelect = extras.getSerializable(BUNDLE_KEY_TAB);
-        if(tabToSelect != null && tabToSelect instanceof MainNavTab)
+        if (tabToSelect != null && tabToSelect instanceof MainNavTab)
         {
             return navigateToMainNavTab((MainNavTab) tabToSelect);
         }
@@ -213,8 +213,9 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                 fragment = AccountFragment.newInstance();
                 break;
             default:
-                Crashlytics.logException(new Exception("Don't know how to handle navigation for the given tab: " + mainNavTab
-                        .toString()));
+                Crashlytics.logException(new Exception(
+                        "Don't know how to handle navigation for the given tab: " + mainNavTab
+                                .toString()));
                 break;
         }
         if (fragment != null)
@@ -228,7 +229,7 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
         }
     }
 
-    private boolean navigateToMainNavTab(@NonNull MenuItem menuItem)
+    private boolean onMenuItemSelected(@NonNull MenuItem menuItem)
     {
         MainNavTab mainNavTab = null;
         switch (menuItem.getItemId())
@@ -249,18 +250,13 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                 mainNavTab = MainNavTab.ACCOUNT;
                 break;
         }
-        if(mainNavTab == null)
+        if (mainNavTab == null)
         {
-            Crashlytics.logException(new Exception("Unable to navigate to tab for menu item " + menuItem.getItemId()));
+            Crashlytics.logException(new Exception("Unable to navigate to tab for menu item " + menuItem
+                    .getItemId()));
             return false;
         }
         return navigateToMainNavTab(mainNavTab);
-    }
-
-    //TODO probably consolidate this
-    private boolean onNavItemSelected(@NonNull final MenuItem item)
-    {
-        return navigateToMainNavTab(item);
     }
 
     /**
