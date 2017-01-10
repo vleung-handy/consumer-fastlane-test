@@ -17,12 +17,12 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.library.ui.view.ProgressDialog;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.core.ui.view.BookingListItem;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
+import com.handybook.handybook.library.ui.view.ProgressDialog;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -99,10 +99,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
     private void loadBookings()
     {
         mProgressDialog.show();
-        mDataManager.getBookingsForReschedule(
-                mProviderId,
-                new BookingsCallback(this)
-        );
+        mDataManager.getBookingsForReschedule(mProviderId, new BookingsCallback(this));
     }
 
     @Override
@@ -110,7 +107,10 @@ public class RescheduleUpcomingActivity extends BaseActivity
     {
         if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
         {
-            //reschedule date has been successful, just finish
+            final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
+            final Intent intent = new Intent();
+            intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
+            setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
             finish();
         }
     }
@@ -177,7 +177,6 @@ public class RescheduleUpcomingActivity extends BaseActivity
         Toast.makeText(this, R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
     }
 
-
     private static class PreRescheduleCallback implements DataManager.Callback<String>
     {
 
@@ -206,6 +205,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
             }
         }
     }
+
 
     private static class BookingsCallback implements DataManager.Callback<UserBookingsWrapper>
     {

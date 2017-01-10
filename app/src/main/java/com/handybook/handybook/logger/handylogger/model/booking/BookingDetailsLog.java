@@ -5,7 +5,6 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import java.util.Date;
 
-
 public abstract class BookingDetailsLog extends EventLog
 {
     private static final String EVENT_CONTEXT = "booking_details";
@@ -24,6 +23,7 @@ public abstract class BookingDetailsLog extends EventLog
             super(EVENT_TYPE);
         }
     }
+
 
     /*
     don't like that this log nearly duped in the BookingFunnelLog class file
@@ -97,6 +97,7 @@ public abstract class BookingDetailsLog extends EventLog
             }
         }
     }
+
 
     public static class RescheduleBooking extends BookingDetailsLog
     {
@@ -185,6 +186,51 @@ public abstract class BookingDetailsLog extends EventLog
             super(EVENT_TYPE);
         }
     }
+
+
+    public static class RescheduleSelectedProShown extends BookingDetailsLog
+    {
+        private static final String EVENT_TYPE = "reschedule_select_pro_shown";
+
+        @SerializedName("num_providers")
+        private final int mNumProviders;
+
+        public RescheduleSelectedProShown(final int numProviders)
+        {
+            super(EVENT_TYPE);
+            mNumProviders = numProviders;
+        }
+    }
+
+
+    public static class RescheduleProviderSelected extends BookingDetailsLog
+    {
+        public static final String EVENT_TYPE = "reschedule_provider_selected";
+
+        @SerializedName("provider_id")
+        private final String mProviderId;
+        @SerializedName("layer_conversation_id")
+        private final String mConversationId;
+
+        public RescheduleProviderSelected(final String providerId, final String conversationId)
+        {
+            super(EVENT_TYPE);
+            mProviderId = providerId;
+            mConversationId = conversationId;
+        }
+    }
+
+
+    public static class RescheduleIndifferenceSelected extends BookingDetailsLog
+    {
+        private static final String EVENT_TYPE = "reschedule_indifferent_selected";
+
+        public RescheduleIndifferenceSelected()
+        {
+            super(EVENT_TYPE);
+        }
+    }
+
 
     public enum EventType
     {

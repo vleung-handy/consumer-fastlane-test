@@ -34,14 +34,17 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.squareup.otto.Subscribe;
@@ -179,7 +182,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         super.onActivityResult(requestCode, resultCode, data);
 
         //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
-
         if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
         {
             if (data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
@@ -232,6 +234,19 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         setSectionFragmentInputsEnabled(true);
     }
 
+    // expose to child fragment
+    @Override
+    public void showUiBlockers()
+    {
+        super.showUiBlockers();
+    }
+
+    // expose to child fragment
+    @Override
+    public void removeUiBlockers()
+    {
+        super.removeUiBlockers();
+    }
 
     @OnClick(R.id.nav_help)
     void onHelpClicked(final View view)
@@ -241,7 +256,6 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         popup.setOnMenuItemClickListener(this);
         popup.show();
     }
-
 
     private void setSectionFragmentInputsEnabled(boolean enabled)
     {
@@ -414,6 +428,30 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             removeUiBlockers();
             dataManagerErrorHandler.handleError(getActivity(), event.error);
         }
+    }
+
+    @Subscribe
+    public void onReceiveBookingProTeamSuccess(final ProTeamEvent.ReceiveBookingProTeamSuccess event)
+    {
+        ProTeam.ProTeamCategory category = event.getProTeamCategory();
+        if (category == null || category.getPreferred() == null || category.getPreferred()
+                                                                           .isEmpty())
+        {
+            bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
+        }
+        else
+        {
+            Intent intent = new Intent(getContext(), ProTeamPerBookingActivity.class);
+            intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, category);
+            intent.putExtra(BundleKeys.BOOKING, mBooking);
+            startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+        }
+    }
+
+    @Subscribe
+    public void onReceiveBookingProTeamError(final ProTeamEvent.ReceiveBookingProTeamError event)
+    {
+        bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
     }
 
     @Subscribe

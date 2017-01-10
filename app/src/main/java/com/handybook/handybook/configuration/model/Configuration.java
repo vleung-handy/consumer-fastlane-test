@@ -42,6 +42,8 @@ public class Configuration implements Serializable
     @SerializedName("snow_enabled")
     private boolean mSnowEnabled;
 
+    @SerializedName("pro_team_reschedule_enabled")
+    private boolean mEnableProTeamReschedule;
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
      * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
@@ -114,4 +116,6 @@ public class Configuration implements Serializable
     {
         return mSnowEnabled;
     }
+
+    public boolean isProTeamRescheduleEnabled() { return mEnableProTeamReschedule; }
 }
