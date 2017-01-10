@@ -27,7 +27,13 @@ public class BookingTransaction extends Observable {
     @SerializedName("zipcode") private String mZipCode;
     @SerializedName("email") private String mEmail;
     @SerializedName("hrs") private float mHours;
+
+    /**
+     * This frequency field is used both in the legacy pricing tables, and the new
+     * {@link com.handybook.handybook.booking.model.subscription.CommitmentType} pricing
+     */
     @SerializedName("updated_recurring_freq") private int mRecurringFrequency;
+
     @SerializedName("extra_cleaning_text") private String mExtraCleaningText;
     @SerializedName("extra_hours") private float mExtraHours;
     @SerializedName("date_start") private Date mStartDate;
@@ -36,6 +42,18 @@ public class BookingTransaction extends Observable {
     @SerializedName("payment_method") private String mPaymentMethod;
     @SerializedName("button_referrer_token") private String mReferrerToken;
     @SerializedName("_android_promo_applied") private String mPromoApplied;
+
+    /**
+     * holds values like : {"no_commitment", "months"}
+     */
+    @SerializedName("commitment_type")
+    private String mCommitmentType;
+
+    /**
+     * Holds values like : {3, 6, 9}
+     */
+    @SerializedName("commitment_length")
+    private int mCommitmentLength;
 
     public int getBookingId() {
         return mBookingId;
@@ -97,6 +115,28 @@ public class BookingTransaction extends Observable {
 
     public void setAddress2(final String address2) {
         this.mAddress2 = address2;
+        triggerObservers();
+    }
+
+    public String getCommitmentType()
+    {
+        return mCommitmentType;
+    }
+
+    public void setCommitmentType(final String commitmentType)
+    {
+        mCommitmentType = commitmentType;
+        triggerObservers();
+    }
+
+    public int getCommitmentLength()
+    {
+        return mCommitmentLength;
+    }
+
+    public void setCommitmentLength(final int commitmentLength)
+    {
+        mCommitmentLength = commitmentLength;
         triggerObservers();
     }
 
@@ -280,6 +320,11 @@ public class BookingTransaction extends Observable {
             jsonObj.add("button_referrer_token", context.serialize(value.getReferrerToken()));
             jsonObj.add("_android_promo_applied", context.serialize(value.promoApplied()));
 
+            if (value.getCommitmentType() != null)
+            {
+                jsonObj.add("commitment_type", context.serialize(value.getCommitmentType()));
+            }
+
             final int recur = value.getRecurringFrequency();
 
             if (recur > 0) jsonObj.add("updated_recurring_freq",
@@ -287,6 +332,12 @@ public class BookingTransaction extends Observable {
 
             final float extraHours = value.getExtraHours();
             if (extraHours > 0) jsonObj.add("extra_hours", context.serialize(extraHours));
+
+            final int comLength = value.getCommitmentLength();
+            if (comLength > 0)
+            {
+                jsonObj.add("commitment_length", context.serialize(comLength));
+            }
 
             return jsonObj;
         }

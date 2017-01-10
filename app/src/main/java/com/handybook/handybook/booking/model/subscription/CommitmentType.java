@@ -1,5 +1,8 @@
 package com.handybook.handybook.booking.model.subscription;
 
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -148,6 +151,36 @@ public class CommitmentType implements Serializable
 
             processHours(lengthKey, freqKey, hours, isDefault, isEnabled);
         }
+    }
+
+    /**
+     * Given a lengthKey and a frequencyKey, return the price that is associated with it. Null if not
+     * found
+     *
+     * @param lengthKey
+     * @param frequencyKey
+     * @return
+     */
+    @Nullable
+    public Price getPrice(String lengthKey, String frequencyKey, String hour)
+    {
+        if (!TextUtils.isEmpty(lengthKey) && !TextUtils.isEmpty(frequencyKey) && mSubscriptionPrices != null)
+        {
+
+            Map<String, SubscriptionPrices> pricesMap = mSubscriptionPrices.get(lengthKey);
+
+            if (pricesMap != null)
+            {
+                SubscriptionPrices subscriptionPrices = pricesMap.get(frequencyKey);
+
+                if (subscriptionPrices != null && subscriptionPrices.getPrices() != null)
+                {
+                    return subscriptionPrices.getPrices().get(hour);
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

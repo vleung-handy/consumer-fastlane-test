@@ -36,4 +36,9 @@ public class SubscriptionPrices implements Serializable
         mEnabled = enabled;
         mPrices = prices;
     }
+
+    public Map<String, Price> getPrices()
+    {
+        return mPrices;
+    }
 }
