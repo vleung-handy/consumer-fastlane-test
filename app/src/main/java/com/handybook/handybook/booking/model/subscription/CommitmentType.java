@@ -61,14 +61,9 @@ public class CommitmentType implements Serializable
         mUniqueFrequencies = new ArrayList<>();
         mUniqueLengths = new ArrayList<>();
 
-        //TODO: JIA: For now, only use mMonths if mNoCommitment is null;
         try
         {
-            if (mNoCommitment != null)
-            {
-                processLengths(mNoCommitment);
-            }
-            else if (mMonths != null)
+            if (mMonths != null)
             {
                 processLengths(mMonths);
             }

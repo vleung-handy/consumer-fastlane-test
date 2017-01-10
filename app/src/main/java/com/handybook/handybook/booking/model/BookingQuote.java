@@ -71,11 +71,20 @@ public class BookingQuote extends Observable
     @SerializedName(KEY_HOURLY_AMOUNT)
     private float mHourlyAmount;
 
-    //    TODO: JIA: this is the legacy price table conver this to a "no_commitment", and use that instead.
     @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
+
+    /**
+     * This is just a generic json holder at the moment. If there are months returned from the
+     * commitment prices, then we'll use {@link CommitmentType}, else we'll use the {@link CommitmentPricesMap}
+     * fallback. If mCommitmentPrices is null, we'll fallback to the old prices table.
+     *
+     */
     @SerializedName(KEY_COMMITMENT_PRICES)
+    private JsonObject mCommitmentPrices;
     private CommitmentType mCommitmentType;
+    private CommitmentPricesMap mCommitmentPricesMap;
+
     @SerializedName(KEY_DYNAMIC_OPTIONS)
     private ArrayList<PeakPriceInfo> mSurgePriceTable;
     @SerializedName(KEY_STRIPE_KEY)
@@ -279,11 +288,6 @@ public class BookingQuote extends Observable
         triggerObservers();
     }
 
-    public void setCommitmentType(final CommitmentType commitmentType)
-    {
-        mCommitmentType = commitmentType;
-    }
-
     HashMap<Float, BookingPriceInfo> getPriceTableMap()
     {
         if (mPriceTableMap == null || mPriceTable.isEmpty()) { buildPriceMap(); }
@@ -399,6 +403,11 @@ public class BookingQuote extends Observable
         return mCommitmentType;
     }
 
+    public CommitmentPricesMap getCommitmentPricesMap()
+    {
+        return mCommitmentPricesMap;
+    }
+
     private void triggerObservers()
     {
         setChanged();
@@ -482,19 +491,39 @@ public class BookingQuote extends Observable
         return gson.toJson(this);
     }
 
+    public JsonObject getCommitmentPrices()
+    {
+        return mCommitmentPrices;
+    }
+
     public static BookingQuote fromJson(final String json)
     {
         final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                                                            .create()
                                                            .fromJson(json, BookingQuote.class);
 
-        if (bookingQuote != null && bookingQuote.getCommitmentType() != null)
+        if (bookingQuote != null && bookingQuote.getCommitmentPrices() != null)
         {
-            bookingQuote.getCommitmentType().transform();
-        }
-        else
-        {
-            //TODO: JIA: we need to convert the old school mPriceTable to be a CommitmentType of "no_commitment"
+
+            //TODO: JIA: check for the flag that tells you what commitment to use.
+            // If none, fall back is to use no_commitment
+
+            if (bookingQuote.getCommitmentPrices().has("months"))
+            {
+                bookingQuote.setCommitmentType(new Gson().fromJson(
+                        bookingQuote.getCommitmentPrices(),
+                        CommitmentType.class
+                ));
+                bookingQuote.getCommitmentType().transform();
+            }
+            else
+            {
+                bookingQuote.setCommitmentPricesMap(new Gson().fromJson(
+                        bookingQuote.getCommitmentPrices(),
+                        CommitmentPricesMap.class
+                ));
+                bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
+            }
         }
 
         return bookingQuote;
@@ -516,6 +545,16 @@ public class BookingQuote extends Observable
                 return clazz.equals(Observer.class);
             }
         };
+    }
+
+    public void setCommitmentPricesMap(final CommitmentPricesMap commitmentPricesMap)
+    {
+        mCommitmentPricesMap = commitmentPricesMap;
+    }
+
+    public void setCommitmentType(final CommitmentType commitmentType)
+    {
+        mCommitmentType = commitmentType;
     }
 
     public boolean hasCouponWarning()
