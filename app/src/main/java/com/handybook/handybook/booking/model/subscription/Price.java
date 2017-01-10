@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 public class Price implements Serializable
 {
-    private int mFullPrice;
-    private int mAmountDue;
+    private int mFullPrice;     //also known as the regular price
+    private int mAmountDue;     //also known as the "discounted price"
 
     public Price(final int fullPrice, final int amountDue)
     {

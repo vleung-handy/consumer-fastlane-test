@@ -11,10 +11,10 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.util.BookingUtil;
+import com.handybook.handybook.core.ui.view.PriceView;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.core.ui.view.PriceView;
-import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -135,8 +135,11 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
             );
         }
 
-
-        final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
+        final float[] pricing = quote.getPricing(
+                hours,
+                transaction.getRecurringFrequency(),
+                transaction.getCommitmentLength()
+        );
         final String currChar = quote.getCurrencyChar();
 
         //TODO sammy trust and support update this with new price quote stuff

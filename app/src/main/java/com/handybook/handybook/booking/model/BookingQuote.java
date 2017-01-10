@@ -13,6 +13,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.subscription.CommitmentType;
+import com.handybook.handybook.booking.model.subscription.Price;
 import com.handybook.handybook.core.model.bill.Bill;
 
 import java.io.Serializable;
@@ -51,6 +52,10 @@ public class BookingQuote extends Observable
     public static final String KEY_QUOTE_CONFIG = "quote_config";
     public static final String KEY_BILL = "bill";
     public static final String KEY_COMMITMENT_PRICES = "commitment_prices";
+    public static final int ONCE = 0;
+    public static final int WEEKLY_PRICE = 1;
+    public static final int BI_WEEKLY_PRICE = 2;
+    public static final int MONTHLY_PRICE = 4;
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -322,6 +327,35 @@ public class BookingQuote extends Observable
                 && info.getWeeklyPrice() <= 0);
     }
 
+    /**
+     * Returns the price for the selected length & frequency option.
+     * Full price at index 0, and discounted/amount due at index 1;
+     *
+     * This is for use in the new commitment model. Will default back to the old pricing model if
+     * there is no {@link CommitmentType} present.
+     * @return
+     */
+    @Nullable
+    public float[] getPricing(final float hours, final int freq, final int lengths)
+    {
+        if (getCommitmentType() != null)
+        {
+            //this means to use the new commitment model
+            Price price = getCommitmentType()
+                    .getPrice(
+                            String.valueOf(lengths),
+                            String.valueOf(freq),
+                            String.valueOf(hours)
+                    );
+
+            return new float[]{price.getFullPrice(), price.getAmountDue()};
+        }
+        else
+        {
+            return getPricing(hours, freq);
+        }
+    }
+
     @Nullable
     public float[] getPricing(final float hours, final int freq)
     {
@@ -346,15 +380,12 @@ public class BookingQuote extends Observable
         }
         switch (freq)
         {
-            case 1:
+            case WEEKLY_PRICE:
                 return new float[]{info.getWeeklyPrice(), info.getDiscountWeeklyPrice()};
-
-            case 2:
+            case BI_WEEKLY_PRICE:
                 return new float[]{info.getBiMonthlyprice(), info.getDiscountBiMonthlyprice()};
-
-            case 4:
+            case MONTHLY_PRICE:
                 return new float[]{info.getMonthlyPrice(), info.getDiscountMonthlyPrice()};
-
             default:
                 return new float[]{info.getPrice(), info.getDiscountPrice()};
         }
