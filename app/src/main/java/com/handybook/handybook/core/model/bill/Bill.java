@@ -12,48 +12,48 @@ import java.util.ArrayList;
 /**
  * Example Bill Payload:
  * {
- *   "bill":{
- *     "header_title":"Cleaning Plan: Every 2 weeks",
- *     "header_text":"Starting Wed, Jan 10/n8:00 am",
- *     "final_price_value":5100,
- *     "currency_symbol":"$",
- *     "sections":[
- *       {
- *         "line_items":[
- *           {
- *             "label":"Cleaning + 1 extra",
- *             "amount":7500
- *           },
- *           {
- *           "label":"Coupon",
- *           "amount":-1750
- *           },
- *           {
- *             "label":"Trust & Support Fee",
- *             "amount":3,
- *             "help_text":"It has to be done..."
- *           },
- *           {
- *             "label":"Credits",
- *             "amount":-1000
- *           }
- *         ]
- *       },
- *       {
- *         "line_items":[
- *           {
- *             "type":"TOTAL_PRICE",
- *             "label":"Today's Total",
- *             "amount":5100
- *           },
- *           {
- *             "label":"Credits",
- *             "amount":-5100
- *           }
- *         ]
- *       }
- *     ]
- *   }
+ * "bill":{
+ * "header_title":"Cleaning Plan: Every 2 weeks",
+ * "header_text":"Starting Wed, Jan 10/n8:00 am",
+ * "final_amount_cents":5100,
+ * "currency_symbol":"$",
+ * "sections":[
+ * {
+ * "line_items":[
+ * {
+ * "label":"Cleaning + 1 extra",
+ * "amount_cents":7500
+ * },
+ * {
+ * "label":"Coupon",
+ * "amount_cents":-1750
+ * },
+ * {
+ * "label":"Trust & Support Fee",
+ * "amount_cents":3,
+ * "help_text":"It has to be done..."
+ * },
+ * {
+ * "label":"Credits",
+ * "amount_cents":-1000
+ * }
+ * ]
+ * },
+ * {
+ * "line_items":[
+ * {
+ * "type":"TOTAL_PRICE",
+ * "label":"Today's Total",
+ * "amount_cents":5100
+ * },
+ * {
+ * "label":"Credits",
+ * "amount_cents":-5100
+ * }
+ * ]
+ * }
+ * ]
+ * }
  * }
  */
 public class Bill implements Serializable
@@ -63,7 +63,7 @@ public class Bill implements Serializable
     private String mHeaderTitle;
     @SerializedName("header_text")
     private String mHeaderText;
-    @SerializedName("final_amount")
+    @SerializedName("final_amount_cents")
     private Long mFinalPriceValueCents;
     @SerializedName("currency_symbol")
     private String mCurrencySymbol;
@@ -72,7 +72,8 @@ public class Bill implements Serializable
 
     public static Bill fromJson(@NonNull CharSequence input)
     {
-        return new Gson().fromJson(input.toString(), Bill.class);
+        final Bill bill = new Gson().fromJson(input.toString(), Bill.class);
+        return bill;
     }
 
     @NonNull
@@ -105,34 +106,41 @@ public class Bill implements Serializable
         return mSections == null ? new ArrayList<BillSection>() : mSections;
     }
 
+    @Override
+    public String toString()
+    {
+        return new Gson().toJson(this);
+    }
+
+
     /**
      * Example BillSection payload:
      * {
-     *   {
-     *     "type":"ITEMIZED_BILL",
-     *     "line_items":[
-     *   {
-     *     "label":"Cleaning + 1 extra",
-     *     "amount":7500
-     *   },
-     *   {
-     *     "label":"Coupon",
-     *     "amount":-1750
-     *   },
-     *   {
-     *     "label":"Trust & Support Fee",
-     *     "amount": 3,
-     *     "help_text": "It has to be done..."
-     *   },
-     *   {
-     *     "label":"Credits",
-     *     "amount":-1000
-     *   },
-     *   {
-     *     "type":"LARGE_PRICE",
-     *     "label":"Today's Total",
-     *     "amount":5600
-     *   }
+     * "type":"ITEMIZED_BILL",
+     * "line_items":[
+     * {
+     * "label":"Cleaning + 1 extra",
+     * "amount_cents":7500
+     * },
+     * {
+     * "label":"Coupon",
+     * "amount_cents":-1750
+     * },
+     * {
+     * "label":"Trust & Support Fee",
+     * "amount_cents": 3,
+     * "help_text": "It has to be done..."
+     * },
+     * {
+     * "label":"Credits",
+     * "amount_cents":-1000
+     * },
+     * {
+     * "type":"LARGE_PRICE",
+     * "label":"Today's Total",
+     * "amount_cents":5600
+     * }
+     * ]
      * }
      */
     public static class BillSection implements Serializable
@@ -167,17 +175,24 @@ public class Bill implements Serializable
         {
             return mLineItems == null || mLineItems.isEmpty();
         }
+
+        @Override
+        public String toString()
+        {
+            return new Gson().toJson(this);
+        }
+
     }
 
 
     /**
      * Example BillLineItem payload:
      * {
-     *   "type":"DEFAULT",
-     *   "label":"Trust & Support Fee",
-     *   "amount":0,
-     *   "amount_text":"free",
-     *   "help_text":"It has to be done..."
+     * "type":"DEFAULT",
+     * "label":"Trust & Support Fee",
+     * "amount":0,
+     * "amount_text":"free",
+     * "help_text":"It has to be done..."
      * }
      */
     public static class BillLineItem implements Serializable
@@ -188,24 +203,38 @@ public class Bill implements Serializable
             DEFAULT,
             @SerializedName("LARGE_PRICE")
             LARGE_PRICE;
+
         }
 
 
-        /** One of valid types, otherwise defaults to DEFAULT **/
+        /**
+         * One of valid types, otherwise defaults to DEFAULT
+         **/
         @SerializedName("type")
         private ItemType mType;
-        /** Amount In Cents **/
+
+
+        /**
+         * Line item label
+         **/
         @SerializedName("label")
         private String mLabel;
-        /** Amount In Cents **/
-        @SerializedName("amount")
+        /**
+         * Amount In Cents
+         **/
+        @SerializedName("amount_cents")
         private Long mAmountCents;
-        /** Amount as text, if provided supersedes cent amount **/
+        /**
+         * Amount as text, if provided supersedes cent amount
+         **/
         @SerializedName("amount_text")
         private String mAmountText;
-        /** Help text, if provided we display clickable question mark next to the label **/
+        /**
+         * Help text, if provided we display clickable question mark next to the label
+         **/
         @SerializedName("help_text")
         private String mHelpText;
+
 
         @NonNull
         public ItemType getType()
@@ -239,56 +268,64 @@ public class Bill implements Serializable
 
         public boolean hasHelpText()
         {
-            return mHelpText == null || mHelpText.isEmpty();
+            return mHelpText != null;
         }
 
+        public boolean hasAmountText()
+        {
+            return mAmountText != null;
+        }
+
+        @Override
+        public String toString()
+        {
+            return new Gson().toJson(this);
+        }
     }
 
 
     public static String EXAMPLE_JSON = ""
-            + "{"
-            + "  \"bill\":{"
-            + "    \"header_title\":\"Cleaning Plan: Every 2 weeks\","
-            + "    \"header_text\":\"Starting Wed, Jan 10/n8:00 am\","
-            + "    \"final_amount\":5100,"
-            + "    \"currency_symbol\":\"$\","
-            + "    \"sections\":["
-            + "      {"
-            + "        \"line_items\":["
-            + "          {"
-            + "            \"label\":\"Cleaning + 1 extra\","
-            + "            \"amount\":7500"
-            + "          },"
-            + "          {"
-            + "          \"label\":\"Coupon\","
-            + "          \"amount\":-1750"
-            + "          },"
-            + "          {"
-            + "            \"label\":\"Trust & Support Fee\","
-            + "            \"amount\":3,"
-            + "            \"help_text\":\"It has to be done...\""
-            + "          },"
-            + "          {"
-            + "            \"label\":\"Credits\","
-            + "            \"amount\":-1000"
-            + "          }"
-            + "        ]"
-            + "      },"
-            + "      {"
-            + "        \"line_items\":["
-            + "          {"
-            + "            \"type\":\"TOTAL_PRICE\","
-            + "            \"label\":\"Today's Total\","
-            + "            \"amount\":5100"
-            + "          },"
-            + "          {"
-            + "            \"label\":\"Credits\","
-            + "            \"amount\":-5100"
-            + "          }"
-            + "        ]"
-            + "      }"
-            + "    ]"
-            + "  }"
+            + "{\n"
+            + "  \"header_title\":\"Cleaning Plan: Every 2 weeks\",\n"
+            + "  \"header_text\":\"Starting Wed, Jan 10/n8:00 am\",\n"
+            + "  \"final_amount_cents\":5100,\n"
+            + "  \"currency_symbol\":\"$\",\n"
+            + "  \"sections\":[\n"
+            + "    {\n"
+            + "      \"line_items\":[\n"
+            + "        {\n"
+            + "          \"label\":\"Cleaning + 1 extra\",\n"
+            + "          \"amount_cents\":7500\n"
+            + "        },\n"
+            + "        {\n"
+            + "        \"label\":\"Coupon\",\n"
+            + "        \"amount_cents\":-1750\n"
+            + "        },\n"
+            + "        {\n"
+            + "          \"label\":\"Trust & Support Fee\",\n"
+            + "          \"amount_cents\":300,\n"
+            + "          \"help_text\":\"It has to be done...\"\n"
+            + "        },\n"
+            + "        {\n"
+            + "          \"label\":\"Credits\",\n"
+            + "          \"amount_cents\":-1000\n"
+            + "        }\n"
+            + "      ]\n"
+            + "    },\n"
+            + "    {\n"
+            + "      \"line_items\":[\n"
+            + "        {\n"
+            + "          \"type\":\"LARGE_PRICE\",\n"
+            + "          \"label\":\"Today's Total\",\n"
+            + "          \"amount_cents\":5100\n"
+            + "        },\n"
+            + "        {\n"
+            + "          \"label\":\"Credits\",\n"
+            + "          \"amount_cents\":-5100\n"
+            + "        }\n"
+            + "      ]\n"
+            + "    }\n"
+            + "  ]\n"
             + "}";
 
 }
