@@ -28,6 +28,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.BI_MONTHLY_PRICE;
+import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.MONTHLY_PRICE;
+import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.WEEKLY_PRICE;
+
 public class BookingQuote extends Observable
 {
     public static final String KEY_ID = "id";
@@ -52,10 +56,7 @@ public class BookingQuote extends Observable
     public static final String KEY_QUOTE_CONFIG = "quote_config";
     public static final String KEY_BILL = "bill";
     public static final String KEY_COMMITMENT_PRICES = "commitment_prices";
-    public static final int ONCE = 0;
-    public static final int WEEKLY_PRICE = 1;
-    public static final int BI_WEEKLY_PRICE = 2;
-    public static final int MONTHLY_PRICE = 4;
+    public static final String KEY_ACTIVE_COMMITMENT_TYPES = "active_commitment_types";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -89,6 +90,12 @@ public class BookingQuote extends Observable
     private JsonObject mCommitmentPrices;
     private CommitmentType mCommitmentType;
     private CommitmentPricesMap mCommitmentPricesMap;
+
+    /**
+     * This is the key to the commitment prices
+     */
+    @SerializedName(KEY_ACTIVE_COMMITMENT_TYPES)
+    private List<CommitmentType.CommitmentTypeName> mActiveCommitmentTypes;
 
     @SerializedName(KEY_DYNAMIC_OPTIONS)
     private ArrayList<PeakPriceInfo> mSurgePriceTable;
@@ -382,7 +389,7 @@ public class BookingQuote extends Observable
         {
             case WEEKLY_PRICE:
                 return new float[]{info.getWeeklyPrice(), info.getDiscountWeeklyPrice()};
-            case BI_WEEKLY_PRICE:
+            case BI_MONTHLY_PRICE:
                 return new float[]{info.getBiMonthlyprice(), info.getDiscountBiMonthlyprice()};
             case MONTHLY_PRICE:
                 return new float[]{info.getMonthlyPrice(), info.getDiscountMonthlyPrice()};
@@ -432,6 +439,11 @@ public class BookingQuote extends Observable
     public CommitmentType getCommitmentType()
     {
         return mCommitmentType;
+    }
+
+    public List<CommitmentType.CommitmentTypeName> getActiveCommitmentTypes()
+    {
+        return mActiveCommitmentTypes;
     }
 
     public CommitmentPricesMap getCommitmentPricesMap()
@@ -535,20 +547,20 @@ public class BookingQuote extends Observable
 
         if (bookingQuote != null && bookingQuote.getCommitmentPrices() != null)
         {
-
-            //TODO: JIA: check for the flag that tells you what commitment to use.
-            // If none, fall back is to use no_commitment
-
-            if (bookingQuote.getCommitmentPrices().has("months"))
+            //if there is a specified active commitment to use
+            if (bookingQuote.isCommitmentMonthsActive())
             {
                 bookingQuote.setCommitmentType(new Gson().fromJson(
                         bookingQuote.getCommitmentPrices(),
                         CommitmentType.class
                 ));
-                bookingQuote.getCommitmentType().transform();
+
+                bookingQuote.getCommitmentType()
+                            .transform(CommitmentType.CommitmentTypeName.MONTHS);
             }
             else
             {
+                //this uses no commitments by default
                 bookingQuote.setCommitmentPricesMap(new Gson().fromJson(
                         bookingQuote.getCommitmentPrices(),
                         CommitmentPricesMap.class
@@ -558,6 +570,25 @@ public class BookingQuote extends Observable
         }
 
         return bookingQuote;
+    }
+
+    /**
+     * Returns true if the active commitments are "months"
+     * @return
+     */
+    public boolean isCommitmentMonthsActive()
+    {
+        if (getActiveCommitmentTypes() != null && !getActiveCommitmentTypes().isEmpty())
+        {
+            CommitmentType.CommitmentTypeName type = getActiveCommitmentTypes().get(0);
+
+            if (type != null && type == CommitmentType.CommitmentTypeName.MONTHS)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static ExclusionStrategy getExclusionStrategy()
@@ -626,7 +657,7 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_RECURRENCE_OPTIONS, context.serialize(value.getRecurrenceOptions()));
             jsonObj.add(KEY_QUOTE_CONFIG, context.serialize(value.getQuoteConfig()));
             jsonObj.add(KEY_BILL, context.serialize(value.getBill()));
-            jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentType()));
+            jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentPrices()));
             return jsonObj;
         }
     }

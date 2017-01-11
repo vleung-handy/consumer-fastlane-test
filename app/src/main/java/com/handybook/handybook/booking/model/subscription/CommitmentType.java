@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.model.subscription;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -21,10 +22,14 @@ import java.util.Map;
  */
 public class CommitmentType implements Serializable
 {
-    @SerializedName("no_commitment")
+
+    public static final String STRING_NO_COMMITMENT = "no_commitment";
+    public static final String STRING_MONTHS = "months";
+
+    @SerializedName(STRING_NO_COMMITMENT)
     private JsonObject mNoCommitment;
 
-    @SerializedName("months")
+    @SerializedName(STRING_MONTHS)
     private JsonObject mMonths;
 
     /**
@@ -58,7 +63,7 @@ public class CommitmentType implements Serializable
      * the user selects.
      *
      */
-    public void transform()
+    public void transform(CommitmentTypeName commitmentToUse)
     {
         mSubscriptionPrices = new HashMap<>();
         mUniqueFrequencies = new ArrayList<>();
@@ -66,9 +71,21 @@ public class CommitmentType implements Serializable
 
         try
         {
-            if (mMonths != null)
+            if (commitmentToUse == CommitmentTypeName.MONTHS && mMonths != null)
             {
                 processLengths(mMonths);
+            }
+            else if (mNoCommitment != null)
+            {
+                //fall back to use
+                processLengths(mNoCommitment);
+                Crashlytics.logException(new RuntimeException(
+                        "We should not be handling no_commitment inside the new CommitmentType model"));
+            }
+            else
+            {
+                Crashlytics.logException(new RuntimeException(
+                        "We should not be in the new CommitmentType model with nothing to process"));
             }
         }
         catch (Exception e)
@@ -127,8 +144,9 @@ public class CommitmentType implements Serializable
 
         for (final Map.Entry<String, JsonElement> entrySet : data.entrySet())
         {
-            //in the form of {"price", "weekly_recurring_price", "monthly_recurring_price", etc.}
-            String freqKey = entrySet.getKey();
+            //The key is in the form of {"price", "weekly_recurring_price", "monthly_recurring_price", etc.},
+            //but it needs to be converted to {0, 2, 4, etc. }
+            String freqKey = SubscriptionFrequency.convertFrequencyKey(entrySet.getKey());
             JsonObject freqInformation = (JsonObject) entrySet.getValue();
 
             //if we don't already have this frequency, then add it;
@@ -177,6 +195,12 @@ public class CommitmentType implements Serializable
                 {
                     return subscriptionPrices.getPrices().get(hour);
                 }
+            }
+            else
+            {
+                //there is something wrong here, prices not found. Invalid length / frequency combination
+                Crashlytics.logException(new RuntimeException(
+                        "there is something wrong here, prices not found. Invalid length / frequency combination"));
             }
         }
 
@@ -285,5 +309,27 @@ public class CommitmentType implements Serializable
     public Map<String, Map<String, SubscriptionPrices>> getSubscriptionPrices()
     {
         return mSubscriptionPrices;
+    }
+
+    public enum CommitmentTypeName
+    {
+        @SerializedName(STRING_NO_COMMITMENT)
+        NO_COMMITMENT(STRING_NO_COMMITMENT),
+        @SerializedName(STRING_MONTHS)
+        MONTHS(STRING_MONTHS);
+
+        private final String mValue;
+
+        CommitmentTypeName(String value)
+        {
+            mValue = value;
+        }
+
+        @NonNull
+        @Override
+        public String toString()
+        {
+            return mValue;
+        }
     }
 }
