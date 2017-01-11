@@ -439,6 +439,7 @@ public class BookingFlowFragment extends InjectedFragment
     {
         return !(
                 (BookingFlowFragment.this instanceof BookingRecurrenceFragment)
+                        || (BookingFlowFragment.this instanceof BookingSubscriptionFragment)
                         || (BookingFlowFragment.this instanceof BookingExtrasFragment)
                         || !request.getUniq().equals("home_cleaning")
         ) && (

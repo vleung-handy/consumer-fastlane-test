@@ -18,7 +18,9 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,8 +28,6 @@ import butterknife.OnClick;
 
 public final class BookingSubscriptionFragment extends BookingFlowFragment
 {
-    private BookingTransaction bookingTransaction;
-
     @Bind(R.id.booking_frequency_options_spinner_view)
     FrameLayout mFrequencyLayout;
     @Bind(R.id.next_button)
@@ -35,7 +35,10 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    BookingOptionsSpinnerView mFrequencyOptionsSpinnerView;
+    private BookingTransaction bookingTransaction;
+    private BookingOptionsSpinnerView mFrequencyOptionsSpinnerView;
+    //This used to do a looking up from the selected frequency value to the frequency key
+    private Map<String, String> mFrequencyValueToKey;
 
     public static BookingSubscriptionFragment newInstance()
     {
@@ -84,46 +87,30 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     @OnClick(R.id.next_button)
     public void onNextButtonClick()
     {
+        String freqKey = mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
+        bookingTransaction.setRecurringFrequency(Integer.parseInt(freqKey));
         continueBookingFlow();
     }
 
     private void createFrequencyView()
     {
+        List<SubscriptionFrequency> frequencies = bookingManager.getCurrentQuote().getCommitmentType().getUniqueFrequencies();
+        List<String> frequencyTitles =new ArrayList<>();
+        mFrequencyValueToKey = new HashMap<>();
 
-        //Get the list of frequencies and put it into the recycler view
-        //todo sammy
-        List<SubscriptionFrequency> frequencies =new ArrayList<SubscriptionFrequency>();
-        frequencies.add(new SubscriptionFrequency("key1", "title1"));
-        frequencies.add(new SubscriptionFrequency("key1a", "title1a"));
-        frequencies.add(new SubscriptionFrequency("key1b", "title1b"));
-        frequencies.add(new SubscriptionFrequency("key1c", "title1c"));
-        frequencies.add(new SubscriptionFrequency("key1d", "title1d"));
-        frequencies.add(new SubscriptionFrequency("key1e", "title1e"));
-        frequencies.add(new SubscriptionFrequency("key1f", "title1f"));
-        frequencies.add(new SubscriptionFrequency("key1g", "title1g"));
-        frequencies.add(new SubscriptionFrequency("key1d", "title1d"));
-        frequencies.add(new SubscriptionFrequency("key1e", "title1e"));
-        frequencies.add(new SubscriptionFrequency("key1f", "title1f"));
-        frequencies.add(new SubscriptionFrequency("key1g", "title1g"));
-        //List<SubscriptionFrequency> frequencies = mBookingQuote.getCommitmentType().getUniqueFrequencies();
-        List<String> strings =new ArrayList<String>();
+        for(SubscriptionFrequency frequency : frequencies)
+        {
+            mFrequencyValueToKey.put(frequency.getTitle(), frequency.getKey());
+            frequencyTitles.add(frequency.getTitle());
+        }
 
-        strings.add("title1 asf");
-        strings.add("title1a asfa");
-        strings.add("title1 asf");
-        strings.add("title1a asfa");
-        strings.add("title1 asf");
-        strings.add("title1a asfa");
-        strings.add("title1 asf");
-        strings.add("title1a asfa");
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION_PICKER);
-        bookingOption.setOptions(strings.toArray(new String[0]));
+        bookingOption.setOptions(frequencyTitles.toArray(new String[0]));
         bookingOption.setDefaultValue(Integer.toString(0));
         bookingOption.setTitle(getString(R.string.booking_subscription_frequency_title));
 
-
-
+        //Create the frequency spinner
         mFrequencyOptionsSpinnerView = new BookingOptionsSpinnerView(
                 getContext(),
                 bookingOption,
@@ -131,7 +118,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                     @Override
                     public void onUpdate(final BookingOptionsView view)
                     {
-                        //view.getCurrentValue()
+                        //TODO this will update the Subscription time
                     }
 
                     @Override
