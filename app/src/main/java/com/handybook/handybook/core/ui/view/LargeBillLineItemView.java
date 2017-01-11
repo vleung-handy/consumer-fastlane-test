@@ -16,7 +16,6 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
 {
     private static final String TAG = "LargeBillLineItemView";
 
-
     @Bind(R.id.bill_view_line_item_label)
     TextView mLabel;
     @Bind(R.id.bill_view_line_item_question_mark)
@@ -61,10 +60,12 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
             mPrice.setVisibility(GONE);
             mPriceOverride.setVisibility(VISIBLE);
             mPriceOverride.setText(getBillLineItem().getAmountText());
-        } else
+        }
+        else
         {
             mPrice.setVisibility(VISIBLE);
             mPriceOverride.setVisibility(GONE);
+            mPrice.setCurrencySymbol(getCurrencySymbol());
             mPrice.setPrice(getBillLineItem().getAmountCents());
 
         }
@@ -96,7 +97,8 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
                 }
             });
 
-        } else
+        }
+        else
         {
             mQuestionMark.setVisibility(GONE);
             getRootView().setOnClickListener(null);
