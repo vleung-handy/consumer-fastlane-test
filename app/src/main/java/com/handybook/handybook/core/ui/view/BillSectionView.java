@@ -106,6 +106,7 @@ public class BillSectionView extends FrameLayout
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
         savedState.setBillSection(mBillSection);
+        savedState.setCurrencySymbol(mCurrencySymbol);
         return savedState;
 
 
@@ -124,6 +125,7 @@ public class BillSectionView extends FrameLayout
     {
 
         private Bill.BillSection mBillSection;
+        private String mCurrencySymbol;
 
         SavedState(final Parcelable superState)
         {
@@ -133,14 +135,16 @@ public class BillSectionView extends FrameLayout
         SavedState(final Parcel source)
         {
             super(source);
-            mBillSection = (Bill.BillSection) source.readSerializable();
+            setBillSection((Bill.BillSection) source.readSerializable());
+            setCurrencySymbol(source.readString());
         }
 
         @Override
         public void writeToParcel(final Parcel out, final int flags)
         {
             super.writeToParcel(out, flags);
-            out.writeSerializable(mBillSection);
+            out.writeSerializable(getBillSection());
+            out.writeString(getCurrencySymbol());
         }
 
         void setBillSection(@NonNull final Bill.BillSection billSection)
@@ -152,6 +156,17 @@ public class BillSectionView extends FrameLayout
         Bill.BillSection getBillSection()
         {
             return mBillSection;
+        }
+
+        void setCurrencySymbol(@NonNull String currencySymbol)
+        {
+            mCurrencySymbol = currencySymbol;
+        }
+
+        @NonNull
+        String getCurrencySymbol()
+        {
+            return mCurrencySymbol;
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>()
