@@ -107,6 +107,7 @@ public class BookingFlowFragment extends InjectedFragment
           or if user skipped peak pricing
         */
         if (this instanceof BookingRecurrenceFragment
+                || this instanceof BookingSubscriptionFragment
                 || this instanceof PeakPricingFragment
                 || this instanceof BookingExtrasFragment
                 || this instanceof PeakPricingFragment

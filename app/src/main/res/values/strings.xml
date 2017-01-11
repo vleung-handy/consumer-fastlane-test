@@ -202,6 +202,10 @@
     <string name="snackbar_recurring_will_be_generated">Bookings are generated 28 days in advance.</string>
     <string name="updated_booking_frequency">Updated booking frequency</string>
     <string name="edit_frequency">Edit Frequency</string>
+    <string name="booking_subscription_titlebar">Your Plan</string>
+    <string name="booking_subscription_title">Choose a plan that\'s right for you.</string>
+    <string name="booking_subscription_frequency_title">Select a Frequency</string>
+    <string name="booking_subscription_term_title">Select a Plan Term</string>
     <string name="how_often_should_come">How often would you like us to come?</string>
     <string name="booking_options_right_sub_text">\u2215%1$s</string>
     <string name="current">current</string>
