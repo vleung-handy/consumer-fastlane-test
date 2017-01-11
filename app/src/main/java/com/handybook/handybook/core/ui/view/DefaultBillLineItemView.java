@@ -21,11 +21,11 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
     private static final String TAG = "DefaultBillLineItemView";
 
     @Bind(R.id.bill_view_line_item_label)
-    TextView mLabelText;
+    TextView mLabel;
     @Bind(R.id.bill_view_line_item_question_mark)
     ImageView mQuestionMarkImage;
     @Bind(R.id.bill_view_line_item_amount)
-    TextView mAmountText;
+    TextView mAmount;
 
     public DefaultBillLineItemView(final Context context)
     {
@@ -48,11 +48,13 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
         updateLabel();
         updatePrice();
         updateHelpText();
+        mLabel.setId(hashCode());
+        mAmount.setId(hashCode());
     }
 
     private void updateLabel()
     {
-        mLabelText.setText(getBillLineItem().getLabel());
+        mLabel.setText(getBillLineItem().getLabel());
     }
 
     private void updatePrice()
@@ -60,7 +62,7 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
         assert getBillLineItem() != null;
         final Integer amountCents = getBillLineItem().getAmountCents();
         final String amountText;
-        if (getBillLineItem().hasHelpText() || amountCents == null)
+        if (getBillLineItem().hasAmountText() || amountCents == null)
         {
             amountText = getBillLineItem().getAmountText();
         }
@@ -69,7 +71,7 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
             amountText = TextUtils.formatPriceCents(amountCents, getCurrencySymbol());
         }
 
-        mAmountText.setText(amountText);
+        mAmount.setText(amountText);
     }
 
     private void updateHelpText()

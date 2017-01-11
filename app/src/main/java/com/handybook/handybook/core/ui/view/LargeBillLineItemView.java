@@ -16,13 +16,13 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
 {
     private static final String TAG = "LargeBillLineItemView";
 
-    @Bind(R.id.bill_view_line_item_label)
+    @Bind(R.id.bill_view_large_line_item_label)
     TextView mLabel;
-    @Bind(R.id.bill_view_line_item_question_mark)
+    @Bind(R.id.bill_view_large_line_item_question_mark)
     ImageView mQuestionMark;
-    @Bind(R.id.bill_view_line_item_amount)
+    @Bind(R.id.bill_view_large_line_item_amount)
     PriceView mPrice;
-    @Bind(R.id.bill_view_line_item_amount_override)
+    @Bind(R.id.bill_view_large_line_item_amount_override)
     TextView mPriceOverride;
 
     public LargeBillLineItemView(final Context context)
@@ -46,6 +46,9 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
         updateLabel();
         updatePrice();
         updateHelpText();
+        mLabel.setId(hashCode());
+        mPrice.setId(hashCode());
+        mPriceOverride.setId(hashCode());
     }
 
     private void updateLabel()
