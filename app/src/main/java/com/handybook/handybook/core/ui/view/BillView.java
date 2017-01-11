@@ -96,9 +96,15 @@ public class BillView extends FrameLayout
 
     }
 
-    private void updateHeaderTitle() {mHeaderTitle.setText(mBill.getHeaderTitle());}
+    private void updateHeaderTitle()
+    {
+        mHeaderTitle.setText(mBill.getHeaderTitle());
+    }
 
-    private void updateHeaderText() {mHeaderText.setText(mBill.getHeaderText());}
+    private void updateHeaderText()
+    {
+        mHeaderText.setText(mBill.getHeaderText());
+    }
 
     private void updateHeaderPrice()
     {

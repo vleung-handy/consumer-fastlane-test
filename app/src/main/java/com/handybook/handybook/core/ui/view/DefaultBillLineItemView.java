@@ -20,7 +20,6 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
 {
     private static final String TAG = "DefaultBillLineItemView";
 
-
     @Bind(R.id.bill_view_line_item_label)
     TextView mLabelText;
     @Bind(R.id.bill_view_line_item_question_mark)
@@ -64,7 +63,8 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
         if (getBillLineItem().hasHelpText() || amountCents == null)
         {
             amountText = getBillLineItem().getAmountText();
-        } else
+        }
+        else
         {
             amountText = TextUtils.formatPriceCents(amountCents, getCurrencySymbol());
         }
@@ -105,7 +105,8 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
 
             );
 
-        } else
+        }
+        else
         {
             mQuestionMarkImage.setVisibility(GONE);
             getRootView().setOnClickListener(null);
