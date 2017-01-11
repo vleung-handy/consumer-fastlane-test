@@ -383,13 +383,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     @Nullable
-    public static BaseActivity getInstance(Context context) {
-    if (context == null)
+    public static BaseActivity getInstance(Context context)
+    {
+        if (context == null)
+        { return null; }
+        else if (context instanceof BaseActivity)
+        { return (BaseActivity) context; }
+        else if (context instanceof ContextWrapper)
+        { return getInstance(((ContextWrapper) context).getBaseContext()); }
         return null;
-    else if (context instanceof BaseActivity)
-        return (BaseActivity)context;
-    else if (context instanceof ContextWrapper)
-        return getInstance(((ContextWrapper)context).getBaseContext());
-    return null;
-}
+    }
 }
