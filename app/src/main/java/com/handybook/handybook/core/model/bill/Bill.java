@@ -12,48 +12,46 @@ import java.util.ArrayList;
 /**
  * Example Bill Payload:
  * {
- * "bill":{
- * "header_title":"Cleaning Plan: Every 2 weeks",
- * "header_text":"Starting Wed, Jan 10/n8:00 am",
- * "final_amount_cents":5100,
- * "currency_symbol":"$",
- * "sections":[
- * {
- * "line_items":[
- * {
- * "label":"Cleaning + 1 extra",
- * "amount_cents":7500
- * },
- * {
- * "label":"Coupon",
- * "amount_cents":-1750
- * },
- * {
- * "label":"Trust & Support Fee",
- * "amount_cents":3,
- * "help_text":"It has to be done..."
- * },
- * {
- * "label":"Credits",
- * "amount_cents":-1000
- * }
- * ]
- * },
- * {
- * "line_items":[
- * {
- * "type":"TOTAL_PRICE",
- * "label":"Today's Total",
- * "amount_cents":5100
- * },
- * {
- * "label":"Credits",
- * "amount_cents":-5100
- * }
- * ]
- * }
- * ]
- * }
+ *   "header_title":"Cleaning Plan: Every 2 weeks",
+ *   "header_text":"Starting Wed, Jan 10/n8:00 am",
+ *   "final_amount_cents":5100,
+ *   "currency_symbol":"$",
+ *   "sections":[
+ *     {
+ *     "line_items":[
+ *       {
+ *         "label":"Cleaning + 1 extra",
+ *         "amount_cents":7500
+ *       },
+ *       {
+ *         "label":"Coupon",
+ *         "amount_cents":-1750
+ *       },
+ *       {
+ *         "label":"Trust & Support Fee",
+ *         "amount_cents":3,
+ *         "help_text":"It has to be done..."
+ *       },
+ *       {
+ *         "label":"Credits",
+ *         "amount_cents":-1000
+ *       }
+ *     ]
+ *     },
+ *     {
+ *       "line_items":[
+ *         {
+ *           "type":"TOTAL_PRICE",
+ *           "label":"Today's Total",
+ *           "amount_cents":5100
+ *         },
+ *         {
+ *           "label":"Credits",
+ *           "amount_cents":-5100
+ *         }
+ *       ]
+ *     }
+ *   ]
  * }
  */
 public class Bill implements Serializable
@@ -72,8 +70,7 @@ public class Bill implements Serializable
 
     public static Bill fromJson(@NonNull CharSequence input)
     {
-        final Bill bill = new Gson().fromJson(input.toString(), Bill.class);
-        return bill;
+        return new Gson().fromJson(input.toString(), Bill.class);
     }
 
     @NonNull
@@ -112,35 +109,34 @@ public class Bill implements Serializable
         return new Gson().toJson(this);
     }
 
-
     /**
      * Example BillSection payload:
      * {
-     * "type":"ITEMIZED_BILL",
-     * "line_items":[
-     * {
-     * "label":"Cleaning + 1 extra",
-     * "amount_cents":7500
-     * },
-     * {
-     * "label":"Coupon",
-     * "amount_cents":-1750
-     * },
-     * {
-     * "label":"Trust & Support Fee",
-     * "amount_cents": 3,
-     * "help_text": "It has to be done..."
-     * },
-     * {
-     * "label":"Credits",
-     * "amount_cents":-1000
-     * },
-     * {
-     * "type":"LARGE_PRICE",
-     * "label":"Today's Total",
-     * "amount_cents":5600
-     * }
-     * ]
+     *   "type":"ITEMIZED_BILL",
+     *   "line_items":[
+     *     {
+     *       "label":"Cleaning + 1 extra",
+     *       "amount_cents":7500
+     *     },
+     *     {
+     *       "label":"Coupon",
+     *        "amount_cents":-1750
+     *     },
+     *     {
+     *       "label":"Trust & Support Fee",
+     *       "amount_cents": 3,
+     *       "help_text": "It has to be done..."
+     *     },
+     *     {
+     *       "label":"Credits",
+     *       "amount_cents":-1000
+     *     },
+     *     {
+     *       "type":"LARGE_PRICE",
+     *       "label":"Today's Total",
+     *       "amount_cents":5600
+     *     }
+     *   ]
      * }
      */
     public static class BillSection implements Serializable
@@ -188,11 +184,11 @@ public class Bill implements Serializable
     /**
      * Example BillLineItem payload:
      * {
-     * "type":"DEFAULT",
-     * "label":"Trust & Support Fee",
-     * "amount":0,
-     * "amount_text":"free",
-     * "help_text":"It has to be done..."
+     *   "type":"DEFAULT",
+     *   "label":"Trust & Support Fee",
+     *   "amount":0,
+     *   "amount_text":"free",
+     *   "help_text":"It has to be done..."
      * }
      */
     public static class BillLineItem implements Serializable
@@ -233,7 +229,6 @@ public class Bill implements Serializable
          **/
         @SerializedName("help_text")
         private String mHelpText;
-
 
         @NonNull
         public ItemType getType()
@@ -298,7 +293,8 @@ public class Bill implements Serializable
             + "        },\n"
             + "        {\n"
             + "        \"label\":\"Coupon\",\n"
-            + "        \"amount_cents\":-1750\n"
+            + "        \"amount_cents\":-1750,\n"
+            + "        \"help_text\":\"Coupons are good,\\nMkay?!...\"\n"
             + "        },\n"
             + "        {\n"
             + "          \"label\":\"Trust & Support Fee\",\n"
@@ -318,6 +314,17 @@ public class Bill implements Serializable
             + "    {\n"
             + "      \"line_items\":[\n"
             + "        {\n"
+            + "          \"label\":\"Empty section below, beware!\",\n"
+            + "          \"amount_text\":\"\"\n"
+            + "        }\n"
+            + "      ]\n"
+            + "    },\n"
+            + "    {\n"
+            + "      \"line_items\":[]\n"
+            + "    },\n"
+            + "    {\n"
+            + "      \"line_items\":[\n"
+            + "        {\n"
             + "          \"type\":\"LARGE_PRICE\",\n"
             + "          \"label\":\"Today's Total\",\n"
             + "          \"amount_cents\":2030\n"
@@ -330,6 +337,18 @@ public class Bill implements Serializable
             + "          \"type\":\"LARGE_PRICE\",\n"
             + "          \"label\":\"Overridden Total\",\n"
             + "          \"amount_text\":\"OvErRiDe\"\n"
+            + "        }\n"
+            + "      ]\n"
+            + "    },\n"
+            + "    {},\n"
+            + "    {},\n"
+            + "    {},\n"
+            + "    {},\n"
+            + "    {\n"
+            + "      \"line_items\":[\n"
+            + "        {\n"
+            + "          \"label\":\"Number of empty sections above:\",\n"
+            + "          \"amount_text\":\"4\"\n"
             + "        }\n"
             + "      ]\n"
             + "    }\n"
