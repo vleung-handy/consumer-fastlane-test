@@ -19,7 +19,6 @@ public abstract class AbstractBillLineItemView extends LinearLayout
     private Bill.BillLineItem mBillLineItem;
     private String mCurrencySymbol = "";
 
-
     public AbstractBillLineItemView(final Context context)
     {
         super(context);
@@ -64,7 +63,8 @@ public abstract class AbstractBillLineItemView extends LinearLayout
 
     public void setData(
             @NonNull final Bill.BillLineItem billLineItem,
-            @NonNull final String currencySymbol)
+            @NonNull final String currencySymbol
+    )
     {
 
         if (billLineItem.equals(mBillLineItem))
@@ -72,6 +72,7 @@ public abstract class AbstractBillLineItemView extends LinearLayout
             return;
         }
         mBillLineItem = billLineItem;
+        mCurrencySymbol = currencySymbol;
         update();
     }
 
@@ -105,11 +106,9 @@ public abstract class AbstractBillLineItemView extends LinearLayout
     {
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
-        savedState.setBillLineItem(mBillLineItem);
-        savedState.setCurrencySymbol(mCurrencySymbol);
+        savedState.setBillLineItem(getBillLineItem());
+        savedState.setCurrencySymbol(getCurrencySymbol());
         return savedState;
-
-
     }
 
     @Override
@@ -157,6 +156,17 @@ public abstract class AbstractBillLineItemView extends LinearLayout
             return mBillLineItem;
         }
 
+        void setCurrencySymbol(@NonNull final String currencySymbol)
+        {
+            mCurrencySymbol = currencySymbol;
+        }
+
+        @NonNull
+        String getCurrencySymbol()
+        {
+            return mCurrencySymbol;
+        }
+
         public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>()
         {
             @Override
@@ -171,17 +181,6 @@ public abstract class AbstractBillLineItemView extends LinearLayout
                 return new SavedState[size];
             }
         };
-
-        public void setCurrencySymbol(@NonNull final String currencySymbol)
-        {
-            mCurrencySymbol = currencySymbol;
-        }
-
-        @NonNull
-        public String getCurrencySymbol()
-        {
-            return mCurrencySymbol;
-        }
     }
 
 
@@ -190,7 +189,8 @@ public abstract class AbstractBillLineItemView extends LinearLayout
         public static AbstractBillLineItemView from(
                 @NonNull final Context ctx,
                 @NonNull final Bill.BillLineItem billLineItem,
-                @NonNull String currencySymbol)
+                @NonNull String currencySymbol
+        )
         {
 
             AbstractBillLineItemView lineItemView;
