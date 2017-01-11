@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -18,10 +17,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * UNFINISHED DO NOT USE
- * TODO: FINISH THIS
- */
 public class BillView extends FrameLayout
 {
 
@@ -75,7 +70,6 @@ public class BillView extends FrameLayout
 
     public void setBill(@NonNull final Bill bill)
     {
-        Log.d(TAG, bill.toString());
         mBill = bill;
         update();
     }
@@ -132,17 +126,31 @@ public class BillView extends FrameLayout
         }
     }
 
+    public void setExpanded(final boolean shouldExpand)
+    {
+        if (shouldExpand)
+        {
+            expand();
+        }
+        else
+        {
+            collapse();
+        }
+    }
+
     public void expand()
     {
-        mSectionContainer.setVisibility(VISIBLE);
         mExpandTargetContainer.setVisibility(GONE);
+        mHeaderPrice.setVisibility(GONE);
+        mSectionContainer.setVisibility(VISIBLE);
         mIsExpanded = true;
     }
 
     public void collapse()
     {
-        mSectionContainer.setVisibility(GONE);
         mExpandTargetContainer.setVisibility(VISIBLE);
+        mHeaderPrice.setVisibility(VISIBLE);
+        mSectionContainer.setVisibility(GONE);
         mIsExpanded = false;
     }
 
@@ -152,6 +160,7 @@ public class BillView extends FrameLayout
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
         savedState.setBill(mBill);
+        savedState.setExpanded(mIsExpanded);
         return savedState;
 
 
@@ -163,12 +172,14 @@ public class BillView extends FrameLayout
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         setBill(savedState.getBill());
+        setExpanded(savedState.isExpanded());
     }
 
     private static class SavedState extends BaseSavedState
     {
 
         private Bill mBill;
+        private boolean mIsExpanded;
 
         SavedState(final Parcelable superState)
         {
@@ -179,6 +190,7 @@ public class BillView extends FrameLayout
         {
             super(source);
             mBill = (Bill) source.readSerializable();
+            mIsExpanded = source.readByte() != 0;
         }
 
         @Override
@@ -186,6 +198,7 @@ public class BillView extends FrameLayout
         {
             super.writeToParcel(out, flags);
             out.writeSerializable(mBill);
+            out.writeByte((byte) (mIsExpanded ? 1 : 0));
         }
 
         void setBill(@NonNull final Bill bill)
@@ -213,5 +226,15 @@ public class BillView extends FrameLayout
                 return new SavedState[size];
             }
         };
+
+        public void setExpanded(final boolean expanded)
+        {
+            mIsExpanded = expanded;
+        }
+
+        public boolean isExpanded()
+        {
+            return mIsExpanded;
+        }
     }
 }
