@@ -56,8 +56,6 @@
         android:layout_weight="1"
         android:clipToPadding="true"
         android:fillViewport="true"
-        android:paddingBottom="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding"
         >
 
         <LinearLayout
