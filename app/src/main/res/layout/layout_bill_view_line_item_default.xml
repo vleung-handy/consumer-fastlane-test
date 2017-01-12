@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/bill_view_default_line_item_label"
-        style="@style/TextView"
+        style="@style/TextView.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label"
@@ -37,7 +37,7 @@
 
     <TextView
         android:id="@+id/bill_view_default_line_item_amount"
-        style="@style/TextView"
+        style="@style/TextView.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/amount"

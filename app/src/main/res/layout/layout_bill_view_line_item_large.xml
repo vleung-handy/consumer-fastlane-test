@@ -14,7 +14,7 @@
 
     <TextView
         android:id="@+id/bill_view_large_line_item_label"
-        style="@style/TextView.XLarge.Bold"
+        style="@style/TextView.Medium.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label"

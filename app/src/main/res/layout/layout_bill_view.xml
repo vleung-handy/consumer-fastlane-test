@@ -25,11 +25,14 @@
             android:padding="@dimen/default_margin_half"
             >
 
+
             <TextView
                 android:id="@+id/bill_view_header_title"
-                style="@style/TextView.Large.Bold"
+                style="@style/TextView.Medium.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:maxLines="1"
                 tools:text="Cleaning Plan: Every 2 weeks"
@@ -37,11 +40,12 @@
 
             <TextView
                 android:id="@+id/bill_view_header_text"
-                style="@style/TextView.Large"
+                style="@style/TextView.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/bill_view_header_title"
-                android:lineSpacingMultiplier="1"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:lineSpacingMultiplier="1.3"
                 tools:text="Starting Wed, Jan 10\n8:00 am"
                 />
 
@@ -83,12 +87,13 @@
 
             <TextView
                 android:id="@+id/bill_view_expand_target_label"
-                style="@style/TextView.Headline.Blue"
+                style="@style/TextView.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/default_margin_half"
                 android:text="@string/bill_view_expand_target_text"
+                android:textColor="@color/handy_darkened_blue"
                 />
 
         </LinearLayout>
