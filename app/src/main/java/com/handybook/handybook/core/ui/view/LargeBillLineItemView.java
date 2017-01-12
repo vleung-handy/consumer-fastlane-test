@@ -12,6 +12,9 @@ import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
 
 import butterknife.Bind;
 
+/**
+ * Large line item usees bigger fonts and PriceView widget to show price
+ */
 public class LargeBillLineItemView extends AbstractBillLineItemView
 {
     private static final String TAG = "LargeBillLineItemView";

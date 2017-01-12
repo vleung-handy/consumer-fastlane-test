@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bill_view_line_item_root"
+    android:id="@+id/bill_view_default_line_item_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -11,7 +11,7 @@
     >
 
     <TextView
-        android:id="@+id/bill_view_line_item_label"
+        android:id="@+id/bill_view_default_line_item_label"
         style="@style/TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         />
 
     <ImageView
-        android:id="@+id/bill_view_line_item_question_mark"
+        android:id="@+id/bill_view_default_line_item_question_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -36,7 +36,7 @@
         />
 
     <TextView
-        android:id="@+id/bill_view_line_item_amount"
+        android:id="@+id/bill_view_default_line_item_amount"
         style="@style/TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

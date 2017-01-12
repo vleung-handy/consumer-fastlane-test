@@ -20,7 +20,8 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
 
-public final class TextUtils {
+public final class TextUtils
+{
     //TODO: split this class out into more specific ones
     /**
      * making a formatter specifically with US locale because server price table values seem to
@@ -33,7 +34,8 @@ public final class TextUtils {
             new DecimalFormat("0.#", DecimalFormatSymbols.getInstance(Locale.US));
 
 
-    public static final class Fonts {
+    public static final class Fonts
+    {
         public static final String CIRCULAR_BOLD = "CircularStd-Bold.otf";
         public static final String CIRCULAR_BOOK = "CircularStd-Book.otf";
         public static final String CIRCULAR_MEDIUM = "CircularStd-Medium.otf";
@@ -42,19 +44,20 @@ public final class TextUtils {
     /**
      * Return true if there is nothing meaningful in the string (null, empty string, string with
      * white spaces)
-     *
-     * @param text
-     * @return
      */
-    public static boolean isBlank(final String text) {
+    public static boolean isBlank(final String text)
+    {
         return android.text.TextUtils.isEmpty(text) || text.trim().length() == 0;
     }
 
     private static final Hashtable<String, Typeface> cache = new Hashtable<>();
 
-    public static Typeface get(final Context c, final String name) {
-        synchronized (cache) {
-            if (!cache.containsKey(name)) {
+    public static Typeface get(final Context c, final String name)
+    {
+        synchronized (cache)
+        {
+            if (!cache.containsKey(name))
+            {
                 final Typeface t = Typeface.createFromAsset(
                         c.getAssets(),
                         String.format("fonts/%s", name)
@@ -65,14 +68,16 @@ public final class TextUtils {
         }
     }
 
-    public static String formatToAtMostOneDecimalPlaceUSLocale(final float num) {
+    public static String formatToAtMostOneDecimalPlaceUSLocale(final float num)
+    {
         return AT_MOST_ONE_DECIMAL_PLACE_US_LOCALE_FORMAT.format(num);
     }
 
     public static String formatPrice(
             final float price, final String currencyChar,
             final String currencySuffix
-    ) {
+    )
+    {
         //TODO fix - the following incorrectly formats the cents component if it is a non-zero multiple of 10
         //so a price of 123.40 gets formatted as 123.4
         final DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -81,31 +86,44 @@ public final class TextUtils {
                 + (currencySuffix != null ? currencySuffix : "");
     }
 
-    public static String formatPriceCents(final int priceCents, @NonNull final String currencySymbol) {
+    public static String formatPriceCents(
+            final int priceCents,
+            @NonNull final String currencySymbol
+    )
+    {
         final DecimalFormat decimalFormat = new DecimalFormat("0.00");
         decimalFormat.setPositivePrefix(currencySymbol);
         decimalFormat.setNegativePrefix("-" + currencySymbol);
         return decimalFormat.format(priceCents / 100.0);
     }
 
-    public static String formatPhone(String phone, final String prefix) {
+    public static String formatPhone(String phone, final String prefix)
+    {
         String shortFormat = "(%s) %s", longFormat = "(%s) %s-%s";
-        if (prefix != null && prefix.equals("+44")) {
+        if (prefix != null && prefix.equals("+44"))
+        {
             shortFormat = "%s %s";
             longFormat = "%s %s %s";
         }
 
         phone = phone.replaceAll("\\D+", "");
 
-        if (phone.length() < 4) {
+        if (phone.length() < 4)
+        {
             return phone;
-        } else if (phone.length() >= 4 && phone.length() <= 6) {
+        }
+        else if (phone.length() >= 4 && phone.length() <= 6)
+        {
             return String.format(shortFormat, phone.substring(0, 3), phone.substring(3));
-        } else if (phone.length() >= 7 && phone.length() <= 10) {
+        }
+        else if (phone.length() >= 7 && phone.length() <= 10)
+        {
             return String.format(longFormat, phone.substring(0, 3), phone.substring(3, 6),
-                    phone.substring(6)
+                                 phone.substring(6)
             );
-        } else {
+        }
+        else
+        {
             return phone;
         }
     }
@@ -113,14 +131,17 @@ public final class TextUtils {
     public static String formatAddress(
             final String address1, final String address2, final String city,
             final String state, final String zip
-    ) {
+    )
+    {
         return address1 + (address2 != null && address2.length() > 0 ? ", "
                 + address2 + "\n" : "\n") + city + ", "
                 + state + " " + (zip != null ? zip.replace(" ", "\u00A0") : null);
     }
 
-    public static String formatDate(final Date date, final String format) {
-        if (date == null) {
+    public static String formatDate(final Date date, final String format)
+    {
+        if (date == null)
+        {
             return null;
         }
 
@@ -131,20 +152,25 @@ public final class TextUtils {
         return dateFormat.format(date);
     }
 
-    public static String formatDecimal(final float value, final String format) {
+    public static String formatDecimal(final float value, final String format)
+    {
         final DecimalFormat decimalFormat = new DecimalFormat(format);
         return decimalFormat.format(value);
     }
 
-    public static String formatCreditCardNumber(final CreditCard.Type cardType, final String number) {
-        if (number == null || number.length() < 1) {
+    public static String formatCreditCardNumber(final CreditCard.Type cardType, final String number)
+    {
+        if (number == null || number.length() < 1)
+        {
             return number;
         }
 
         final String raw = number.replaceAll("\\D+", "");
 
-        if (cardType == CreditCard.Type.AMEX) {
-            if (raw.length() >= 5 && raw.length() <= 10) {
+        if (cardType == CreditCard.Type.AMEX)
+        {
+            if (raw.length() >= 5 && raw.length() <= 10)
+            {
                 return String.format(
                         "%s %s",
                         raw.substring(0, 4),
@@ -152,7 +178,8 @@ public final class TextUtils {
                 );
             }
 
-            if (raw.length() >= 11) {
+            if (raw.length() >= 11)
+            {
                 return String.format(
                         "%s %s %s",
                         raw.substring(0, 4),
@@ -164,7 +191,8 @@ public final class TextUtils {
             return raw;
         }
 
-        if (raw.length() >= 5 && raw.length() <= 8) {
+        if (raw.length() >= 5 && raw.length() <= 8)
+        {
             return String.format(
                     "%s %s",
                     raw.substring(0, 4),
@@ -172,7 +200,8 @@ public final class TextUtils {
             );
         }
 
-        if (raw.length() >= 9 && raw.length() <= 12) {
+        if (raw.length() >= 9 && raw.length() <= 12)
+        {
             return String.format(
                     "%s %s %s",
                     raw.substring(0, 4),
@@ -181,7 +210,8 @@ public final class TextUtils {
             );
         }
 
-        if (raw.length() >= 13) {
+        if (raw.length() >= 13)
+        {
             return String.format(
                     "%s %s %s %s",
                     raw.substring(0, 4),
@@ -194,24 +224,29 @@ public final class TextUtils {
         return raw;
     }
 
-    public static String formatCreditCardExpDate(final String number) {
-        if (number == null || number.length() < 1) {
+    public static String formatCreditCardExpDate(final String number)
+    {
+        if (number == null || number.length() < 1)
+        {
             return number;
         }
 
         final String raw = number.replaceAll("\\D+", "");
 
-        if (raw.length() >= 3) {
+        if (raw.length() >= 3)
+        {
             return String.format("%s/%s",
-                    raw.substring(0, 2), raw.substring(2)
+                                 raw.substring(0, 2), raw.substring(2)
             );
         }
 
         return raw;
     }
 
-    public static String toTitleCase(final String str) {
-        if (str == null) {
+    public static String toTitleCase(final String str)
+    {
+        if (str == null)
+        {
             return null;
         }
 
@@ -220,17 +255,24 @@ public final class TextUtils {
         StringBuilder builder = new StringBuilder(str);
         final int len = builder.length();
 
-        for (int i = 0; i < len; ++i) {
+        for (int i = 0; i < len; ++i)
+        {
             char c = builder.charAt(i);
-            if (space) {
-                if (!Character.isWhitespace(c)) {
+            if (space)
+            {
+                if (!Character.isWhitespace(c))
+                {
                     // Convert to title case and switch out of whitespace mode.
                     builder.setCharAt(i, Character.toTitleCase(c));
                     space = false;
                 }
-            } else if (Character.isWhitespace(c)) {
+            }
+            else if (Character.isWhitespace(c))
+            {
                 space = true;
-            } else {
+            }
+            else
+            {
                 builder.setCharAt(i, Character.toLowerCase(c));
             }
         }
@@ -238,25 +280,30 @@ public final class TextUtils {
         return builder.toString();
     }
 
-    public static CharSequence trim(final CharSequence s) {
+    public static CharSequence trim(final CharSequence s)
+    {
         int start = 0;
         int end = s.length();
 
-        while (start < end && Character.isWhitespace(s.charAt(start))) {
+        while (start < end && Character.isWhitespace(s.charAt(start)))
+        {
             start++;
         }
-        while (end > start && Character.isWhitespace(s.charAt(end - 1))) {
+        while (end > start && Character.isWhitespace(s.charAt(end - 1)))
+        {
             end--;
         }
 
         return s.subSequence(start, end);
     }
 
-    public static void stripUnderlines(final TextView textView) {
+    public static void stripUnderlines(final TextView textView)
+    {
         final Spannable s = new SpannableString(textView.getText());
         final URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
 
-        for (URLSpan span : spans) {
+        for (URLSpan span : spans)
+        {
             final int start = s.getSpanStart(span);
             final int end = s.getSpanEnd(span);
             s.removeSpan(span);
@@ -266,13 +313,16 @@ public final class TextUtils {
         textView.setText(s);
     }
 
-    private static final class URLSpanNoUnderline extends URLSpan {
-        URLSpanNoUnderline(String url) {
+    private static final class URLSpanNoUnderline extends URLSpan
+    {
+        URLSpanNoUnderline(String url)
+        {
             super(url);
         }
 
         @Override
-        public final void updateDrawState(final TextPaint ds) {
+        public final void updateDrawState(final TextPaint ds)
+        {
             super.updateDrawState(ds);
             ds.setUnderlineText(false);
         }

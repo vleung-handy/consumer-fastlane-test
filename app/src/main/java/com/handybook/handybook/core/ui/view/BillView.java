@@ -162,8 +162,6 @@ public class BillView extends FrameLayout
         savedState.setBill(mBill);
         savedState.setExpanded(mIsExpanded);
         return savedState;
-
-
     }
 
     @Override
@@ -177,7 +175,6 @@ public class BillView extends FrameLayout
 
     private static class SavedState extends BaseSavedState
     {
-
         private Bill mBill;
         private boolean mIsExpanded;
 

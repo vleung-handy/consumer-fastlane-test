@@ -108,8 +108,6 @@ public class BillSectionView extends FrameLayout
         savedState.setBillSection(mBillSection);
         savedState.setCurrencySymbol(mCurrencySymbol);
         return savedState;
-
-
     }
 
     @Override

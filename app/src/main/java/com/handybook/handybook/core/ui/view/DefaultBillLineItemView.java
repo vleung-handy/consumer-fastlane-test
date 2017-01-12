@@ -20,11 +20,11 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
 {
     private static final String TAG = "DefaultBillLineItemView";
 
-    @Bind(R.id.bill_view_line_item_label)
+    @Bind(R.id.bill_view_default_line_item_label)
     TextView mLabel;
-    @Bind(R.id.bill_view_line_item_question_mark)
+    @Bind(R.id.bill_view_default_line_item_question_mark)
     ImageView mQuestionMarkImage;
-    @Bind(R.id.bill_view_line_item_amount)
+    @Bind(R.id.bill_view_default_line_item_amount)
     TextView mAmount;
 
     public DefaultBillLineItemView(final Context context)
