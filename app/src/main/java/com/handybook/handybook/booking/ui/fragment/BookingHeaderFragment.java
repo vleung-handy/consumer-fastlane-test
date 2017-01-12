@@ -15,6 +15,7 @@ import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.ui.view.PriceView;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.library.util.TextUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -144,12 +145,31 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
 
         //TODO sammy trust and support update this with new price quote stuff
         priceView.setCurrencySymbol(currChar);
-        priceView.setPrice(pricing[1]);
+
+        //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
+        if (transaction.getCommitmentLength() > 0)
+        {
+            priceView.setPrice(Math.round(pricing[1]));
+        }
+        else
+        {
+            priceView.setPrice(pricing[1]);
+        }
 
         if (pricing[1] < pricing[0])
         {
-            final String priceText = (currChar != null ? currChar : "$")
-                    + new DecimalFormat("0.00").format(pricing[0]);
+            String priceText = "";
+            //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
+            if (transaction.getCommitmentLength() > 0)
+            {
+                priceText = TextUtils.formatPriceCents(Math.round(pricing[0]), currChar);
+            }
+            else
+            {
+                priceText = (currChar != null ? currChar : "$")
+                        + new DecimalFormat("0.00").format(pricing[0]);
+            }
+
             discountText.setText(priceText);
             discountText.setVisibility(View.VISIBLE);
         }
