@@ -109,17 +109,13 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     @OnClick(R.id.next_button)
     public void onNextButtonClick()
     {
-        Toast.makeText(
-                getContext(),
-                mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue()),
-                Toast.LENGTH_SHORT
-        ).show();
-        String freqKey = mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
-        mBookingTransaction.setRecurringFrequency(Integer.parseInt(freqKey));
+        //Get the frequency selected
+        mBookingTransaction.setRecurringFrequency(Integer.parseInt(getCurrentFrequencyKey()));
 
         //Get the subscription selected
         String subKey = mSubscriptionLengthToKey.get(mSubscriptionOptionsView.getCurrentValue());
-        mBookingTransaction.setCommitmentLength(Integer.parseInt(subKey));
+        int commitmentLength = TextUtils.isBlank(subKey) ? 0 : Integer.parseInt(subKey);
+        mBookingTransaction.setCommitmentLength(commitmentLength);
 
         continueBookingFlow();
     }
@@ -279,7 +275,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                 }
 
                 //todo sammy udpate to have default only update if previous one doesn't exist
-                if (subscriptionLength.isDefault())
+                if (isEnabled && subscriptionLength.isDefault())
                 {
                     mSubscriptionOptionsView.setCurrentIndex(i);
                 }

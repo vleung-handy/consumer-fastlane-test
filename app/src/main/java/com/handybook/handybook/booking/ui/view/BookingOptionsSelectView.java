@@ -282,6 +282,9 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     public final String getCurrentValue()
     {
         final CheckBox box = checkMap.get(checkedIndex);
+        if(box == null)
+            return null;
+
         final ViewGroup layout = (ViewGroup) box.getParent();
         final TextView title = (TextView) layout.findViewById(R.id.title_text);
         return title.getText().toString();
@@ -290,7 +293,19 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     public final void setIsOptionEnabled(boolean isEnabled, int position)
     {
         //todo jia update this with tint color or something? row
-        checkMap.get(position).setEnabled(isEnabled);
+        CheckBox checkBox = checkMap.get(position);
+        checkBox.setEnabled(isEnabled);
+        //Mark as unchecked if disabled
+        if(!isEnabled)
+        {
+            if(checkBox.isChecked())
+            {
+                checkedIndex = -1;
+                checkBox.setOnCheckedChangeListener(null);
+            }
+
+            selectOption(checkBox, false);
+        }
     }
 
     public final void updateRightOptionsTitleText(String text, int position)
