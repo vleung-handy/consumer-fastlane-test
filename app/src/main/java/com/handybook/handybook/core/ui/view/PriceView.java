@@ -37,6 +37,8 @@ public class PriceView extends FrameLayout
     {
         inflate(getContext(), R.layout.layout_price_view, this);
         ButterKnife.bind(this);
+        mCardinal.setId(hashCode());
+        mDecimal.setId(hashCode());
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.PriceView, 0, 0);
         try
         {
@@ -166,4 +168,6 @@ public class PriceView extends FrameLayout
     {
         return cents % 100;
     }
+
+
 }

@@ -63,7 +63,7 @@ public class BillView extends FrameLayout
         collapse();
         if (isInEditMode())
         {
-            setBill(Bill.fromJson(Bill.EXAMPLE_JSON));
+            setBill(Bill.fromJson(Bill.MOCK_PAYLOAD_JSON));
             expand();
         }
     }
