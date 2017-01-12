@@ -558,13 +558,7 @@ public class BookingQuote extends Observable
             //if there is a specified active commitment to use
             if (bookingQuote.isCommitmentMonthsActive())
             {
-                bookingQuote.setCommitmentType(new Gson().fromJson(
-                        bookingQuote.getCommitmentPrices(),
-                        CommitmentType.class
-                ));
-
-                bookingQuote.getCommitmentType()
-                            .transform(CommitmentType.CommitmentTypeName.MONTHS);
+                bookingQuote.setupCommitmentPricingStructure();
             }
             else
             {
@@ -578,6 +572,12 @@ public class BookingQuote extends Observable
         }
 
         return bookingQuote;
+    }
+
+    public void setupCommitmentPricingStructure()
+    {
+        setCommitmentType(new Gson().fromJson(getCommitmentPrices(), CommitmentType.class));
+        getCommitmentType().transform(CommitmentType.CommitmentTypeName.MONTHS);
     }
 
     /**
@@ -625,6 +625,16 @@ public class BookingQuote extends Observable
     public void setCommitmentType(final CommitmentType commitmentType)
     {
         mCommitmentType = commitmentType;
+    }
+
+    public void setCommitmentPrices(final JsonObject commitmentPrices)
+    {
+        mCommitmentPrices = commitmentPrices;
+    }
+
+    public void setActiveCommitmentTypes(final List<CommitmentType.CommitmentTypeName> activeCommitmentTypes)
+    {
+        mActiveCommitmentTypes = activeCommitmentTypes;
     }
 
     public boolean hasCouponWarning()
