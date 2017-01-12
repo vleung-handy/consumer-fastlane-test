@@ -104,6 +104,12 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 && optionsHidden[optionIndex];
     }
 
+    private boolean shouldDisableOption(boolean[] optionsDisabled, int optionIndex)
+    {
+        return isBooleanOptionValid(optionsDisabled, optionIndex)
+                && optionsDisabled[optionIndex];
+    }
+
     private void showTextView(TextView textView, String textString)
     {
         textView.setText(textString);
@@ -223,6 +229,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 public void onClick(final View v)
                 {
                     final CheckBox box = ((CheckBox) optionView.findViewById(R.id.check_box));
+                    //If the box is disabled, then do nothing
+                    if(!box.isEnabled())
+                        return;
+
                     if (isMulti)
                     {
                         box.setChecked(!box.isChecked());
@@ -269,12 +279,34 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         }
     }
 
+    public final void disableAllOptions()
+    {
+        for (int i = 0; i < optionViews.length; i++)
+        {
+            if (optionViews[i] == null)
+            {
+                //this shouldn't happen
+                Crashlytics.logException(new Exception("Option view is null at index " + i));
+            }
+            else
+            {
+                optionViews[i].setEnabled(i%2 == 0);
+            }
+        }
+    }
+
     public final String getCurrentValue()
     {
         final CheckBox box = checkMap.get(checkedIndex);
         final ViewGroup layout = (ViewGroup) box.getParent();
         final TextView title = (TextView) layout.findViewById(R.id.title_text);
         return title.getText().toString();
+    }
+
+    public final void setIsOptionEnabled(boolean isEnabled, int position)
+    {
+        //todo jia update this with tint color or something? row
+        checkMap.get(position).setEnabled(isEnabled);
     }
 
     public final void setCurrentIndex(final int index)

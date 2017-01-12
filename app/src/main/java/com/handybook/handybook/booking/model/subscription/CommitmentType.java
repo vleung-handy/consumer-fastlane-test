@@ -118,7 +118,8 @@ public class CommitmentType implements Serializable
             {
                 SubscriptionLength length = new SubscriptionLength(
                         lengthKey,
-                        GsonUtil.safeGetAsString(lengthInformation.get("title"))
+                        GsonUtil.safeGetAsString(lengthInformation.get("title")),
+                        GsonUtil.safeGetAsBoolean(lengthInformation.get("default"))
                 );
                 mUniqueLengths.add(length);
             }
@@ -182,6 +183,18 @@ public class CommitmentType implements Serializable
     @Nullable
     public Price getPrice(String lengthKey, String frequencyKey, String hour)
     {
+        SubscriptionPrices subscriptionPrices = getSubscriptionPrice(lengthKey, frequencyKey);
+
+        if (subscriptionPrices != null && subscriptionPrices.getPrices() != null)
+        {
+            return subscriptionPrices.getPrices().get(hour);
+        }
+
+        return null;
+    }
+
+    public SubscriptionPrices getSubscriptionPrice(String lengthKey, String frequencyKey)
+    {
         if (!TextUtils.isEmpty(lengthKey) && !TextUtils.isEmpty(frequencyKey) && mSubscriptionPrices != null)
         {
 
@@ -189,12 +202,7 @@ public class CommitmentType implements Serializable
 
             if (pricesMap != null)
             {
-                SubscriptionPrices subscriptionPrices = pricesMap.get(frequencyKey);
-
-                if (subscriptionPrices != null && subscriptionPrices.getPrices() != null)
-                {
-                    return subscriptionPrices.getPrices().get(hour);
-                }
+                return pricesMap.get(frequencyKey);
             }
             else
             {

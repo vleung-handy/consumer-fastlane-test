@@ -41,4 +41,14 @@ public class SubscriptionPrices implements Serializable
     {
         return mPrices;
     }
+
+    public boolean isDefault()
+    {
+        return mDefault;
+    }
+
+    public boolean isEnabled()
+    {
+        return mEnabled;
+    }
 }
