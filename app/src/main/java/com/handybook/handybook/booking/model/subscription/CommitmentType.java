@@ -155,9 +155,8 @@ public class CommitmentType implements Serializable
             {
                 SubscriptionFrequency frequency = new SubscriptionFrequency(
                         freqKey,
-                        GsonUtil.safeGetAsString(
-                                freqInformation.get(
-                                        "title"))
+                        GsonUtil.safeGetAsString(freqInformation.get("title")),
+                        GsonUtil.safeGetAsBoolean(freqInformation.get("default"))
                 );
                 mUniqueFrequencies.add(frequency);
             }

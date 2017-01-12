@@ -123,18 +123,23 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         String[] frequencyTitles = new String[frequencies.size()];
         mFrequencyLengthToKey = new HashMap<>();
 
-        for (int i = 0; i < frequencies.size(); i++)
-        {
-            SubscriptionFrequency frequency = frequencies.get(i);
-            mFrequencyLengthToKey.put(frequency.getTitle(), frequency.getKey());
-            frequencyTitles[i] = frequency.getTitle();
-        }
-
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION_PICKER);
         bookingOption.setOptions(frequencyTitles);
         bookingOption.setDefaultValue(Integer.toString(0));
         bookingOption.setTitle(getString(R.string.booking_subscription_frequency_title));
+
+        for (int i = 0; i < frequencies.size(); i++)
+        {
+            SubscriptionFrequency frequency = frequencies.get(i);
+            mFrequencyLengthToKey.put(frequency.getTitle(), frequency.getKey());
+            frequencyTitles[i] = frequency.getTitle();
+
+            if (frequency.isDefault())
+            {
+                bookingOption.setDefaultValue(Integer.toString(i));
+            }
+        }
 
         //Create the frequency spinner
         mFrequencyOptionsSpinnerView = new BookingOptionsSpinnerView(
@@ -171,7 +176,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         //Booking option used for the BookingOptionsSelectView
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION);
-        bookingOption.setDefaultValue(Integer.toString(0));
 
         CommitmentType commitmentType = bookingManager.getCurrentQuote().getCommitmentType();
         List<SubscriptionLength> subscriptionLengths = commitmentType.getUniqueLengths();
@@ -186,6 +190,10 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         {
             SubscriptionLength subscriptionLength = subscriptionLengths.get(i);
             String key = subscriptionLength.getKey();
+            if (subscriptionLength.isDefault())
+            {
+                bookingOption.setDefaultValue(Integer.toString(i));
+            }
             mSubscriptionLengthToKey.put(subscriptionLength.getTitle(), key);
             subscriptionTitles[i] = subscriptionLength.getTitle();
             Price price = commitmentType.getPrice(

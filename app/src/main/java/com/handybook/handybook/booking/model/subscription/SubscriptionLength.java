@@ -5,17 +5,10 @@ package com.handybook.handybook.booking.model.subscription;
  */
 public class SubscriptionLength extends SubscriptionType
 {
-    private boolean mIsDefault;
-
     public SubscriptionLength(String key, String title, boolean isDefault)
     {
         mKey = key;
         mTitle = title;
         mIsDefault = isDefault;
-    }
-
-    public boolean isDefault()
-    {
-        return mIsDefault;
     }
 }

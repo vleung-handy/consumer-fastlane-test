@@ -9,6 +9,7 @@ public abstract class SubscriptionType implements Serializable
 {
     protected String mKey;
     protected String mTitle;
+    protected boolean mIsDefault;
 
     public String getKey()
     {
@@ -18,5 +19,10 @@ public abstract class SubscriptionType implements Serializable
     public String getTitle()
     {
         return mTitle;
+    }
+
+    public boolean isDefault()
+    {
+        return mIsDefault;
     }
 }
