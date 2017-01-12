@@ -111,6 +111,13 @@ public class CommitmentType implements Serializable
         for (final Map.Entry<String, JsonElement> entrySet : data.entrySet())
         {
             String lengthKey = entrySet.getKey();       //in the form of {"0", "3", "6", "9"}
+
+            //According to Sammy & Mark, we're just going to ignore the "zero" month option
+            if (lengthKey.equals("0"))
+            {
+                continue;
+            }
+
             JsonObject lengthInformation = (JsonObject) entrySet.getValue();
 
             //if we don't already have this length stored, then store it.

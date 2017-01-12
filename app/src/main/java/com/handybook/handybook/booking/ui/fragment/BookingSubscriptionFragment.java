@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +55,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     //This used to do a looking up from the selected subscription value to the subscription key
     private Map<String, String> mSubscriptionLengthToKey;
     //This used to do a looking up from the selected frequency value to the frequency key
-    private Map<String, String> mFrequencyLengthToKey;
+    private Map<String, String> mFrequencyValueToKey;
 
     public static BookingSubscriptionFragment newInstance()
     {
@@ -110,8 +109,12 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     @OnClick(R.id.next_button)
     public void onNextButtonClick()
     {
-        //Get the frequency selected
-        String freqKey = mFrequencyLengthToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
+        Toast.makeText(
+                getContext(),
+                mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue()),
+                Toast.LENGTH_SHORT
+        ).show();
+        String freqKey = mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
         mBookingTransaction.setRecurringFrequency(Integer.parseInt(freqKey));
 
         //Get the subscription selected
@@ -138,7 +141,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                                                                 .getCommitmentType()
                                                                 .getUniqueFrequencies();
         String[] frequencyTitles = new String[frequencies.size()];
-        mFrequencyLengthToKey = new HashMap<>();
+        mFrequencyValueToKey = new HashMap<>();
 
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION_PICKER);
@@ -149,7 +152,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         for (int i = 0; i < frequencies.size(); i++)
         {
             SubscriptionFrequency frequency = frequencies.get(i);
-            mFrequencyLengthToKey.put(frequency.getTitle(), frequency.getKey());
+            mFrequencyValueToKey.put(frequency.getTitle(), frequency.getKey());
             frequencyTitles[i] = frequency.getTitle();
 
             if (frequency.isDefault())
@@ -167,7 +170,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                     @Override
                     public void onUpdate(final BookingOptionsView view)
                     {
-                        Log.e(TAG, view.getCurrentValue());
                         updateSubscriptionOptions();
                     }
 
@@ -262,6 +264,20 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                 boolean isEnabled = subscriptionPrice.isEnabled();
                 mSubscriptionOptionsView.setIsOptionEnabled(isEnabled, i);
 
+                Price price = subscriptionPrice.getPrices()
+                                               .get(Float.toString(mBookingTransaction.getHours()));
+
+                if (price != null)
+                {
+                    mSubscriptionOptionsView.updateRightOptionsTitleText(
+                            TextUtils.formatPriceCents(
+                                    price.getFullPrice(),
+                                    bookingManager.getCurrentQuote().getCurrencyChar()
+                            ),
+                            i
+                    );
+                }
+
                 //todo sammy udpate to have default only update if previous one doesn't exist
                 if (subscriptionLength.isDefault())
                 {
@@ -273,6 +289,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
 
     private String getCurrentFrequencyKey()
     {
-        return mFrequencyLengthToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
+        return mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
     }
 }

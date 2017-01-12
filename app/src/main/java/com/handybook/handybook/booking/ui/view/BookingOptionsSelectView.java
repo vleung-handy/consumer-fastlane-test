@@ -293,6 +293,11 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         checkMap.get(position).setEnabled(isEnabled);
     }
 
+    public final void updateRightOptionsTitleText(String text, int position)
+    {
+        showTextView((TextView) optionViews[position].findViewById(R.id.right_title_text), text);
+    }
+
     public final void setCurrentIndex(final int index)
     {
         if (index < 0 || !checkMap.containsKey(index))
