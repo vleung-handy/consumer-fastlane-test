@@ -279,22 +279,6 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         }
     }
 
-    public final void disableAllOptions()
-    {
-        for (int i = 0; i < optionViews.length; i++)
-        {
-            if (optionViews[i] == null)
-            {
-                //this shouldn't happen
-                Crashlytics.logException(new Exception("Option view is null at index " + i));
-            }
-            else
-            {
-                optionViews[i].setEnabled(i%2 == 0);
-            }
-        }
-    }
-
     public final String getCurrentValue()
     {
         final CheckBox box = checkMap.get(checkedIndex);

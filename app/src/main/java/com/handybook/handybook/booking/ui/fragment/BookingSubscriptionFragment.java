@@ -230,7 +230,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
             if (subscriptionPrice != null)
             {
                 boolean isEnabled = subscriptionPrice.isEnabled();
-                Log.e("BLAH", isEnabled +"");
                 mSubscriptionOptionsView.setIsOptionEnabled(isEnabled, i);
 
                 //todo sammy udpate to have default only update if previous one doesn't exist
@@ -238,8 +237,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                 {
                     mSubscriptionOptionsView.setCurrentIndex(i);
                 }
-
-                mSubscriptionOptionsView.disableAllOptions();
             }
         }
     }
