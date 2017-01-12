@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
@@ -23,8 +22,11 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.ui.fragment.WebViewFragment;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -108,14 +110,25 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     @OnClick(R.id.next_button)
     public void onNextButtonClick()
     {
-        Toast.makeText(
-                getContext(),
-                mFrequencyLengthToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue()),
-                Toast.LENGTH_SHORT
-        ).show();
+        //Get the frequency selected
         String freqKey = mFrequencyLengthToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
         mBookingTransaction.setRecurringFrequency(Integer.parseInt(freqKey));
+
+        //Get the subscription selected
+        String subKey = mSubscriptionLengthToKey.get(mSubscriptionOptionsView.getCurrentValue());
+        mBookingTransaction.setCommitmentLength(Integer.parseInt(subKey));
+
         continueBookingFlow();
+    }
+
+    @OnClick(R.id.booking_subscription_toolbar_faq)
+    public void onFAQClicked()
+    {
+        String faqURL = bookingManager.getCurrentQuote().getCommitmentFAQURL();
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFAQPressedLog(faqURL)));
+        WebViewFragment fragment = WebViewFragment
+                .newInstance(faqURL, getString(R.string.booking_subscription_titlebar_faq));
+        FragmentUtils.switchToFragment(this, fragment, true);
     }
 
     //TODO sammy do we have to handle onactivity result when users put in a promo code/remove it on final flow page

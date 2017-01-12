@@ -207,6 +207,7 @@
     <string name="booking_subscription_frequency_title">Select a Frequency</string>
     <string name="booking_subscription_term_title">Select a Plan Term</string>
     <string name="booking_subscription_term_cleaning">/cleaning</string>
+    <string name="booking_subscription_titlebar_faq">FAQs</string>
     <string name="how_often_should_come">How often would you like us to come?</string>
     <string name="booking_options_right_sub_text">\u2215%1$s</string>
     <string name="current">current</string>

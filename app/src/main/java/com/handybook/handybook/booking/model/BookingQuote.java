@@ -57,6 +57,7 @@ public class BookingQuote extends Observable
     public static final String KEY_BILL = "bill";
     public static final String KEY_COMMITMENT_PRICES = "commitment_prices";
     public static final String KEY_ACTIVE_COMMITMENT_TYPES = "active_commitment_types";
+    public static final String KEY_COMMITMENT_FAQ_URL = "commitment_faq_url";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -76,6 +77,8 @@ public class BookingQuote extends Observable
     private String mCurrencySuffix;
     @SerializedName(KEY_HOURLY_AMOUNT)
     private float mHourlyAmount;
+    @SerializedName(KEY_COMMITMENT_FAQ_URL)
+    private String mCommitmentFAQURL;
 
     @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
@@ -206,6 +209,11 @@ public class BookingQuote extends Observable
     {
         mServiceId = serviceId;
         triggerObservers();
+    }
+
+    public String getCommitmentFAQURL()
+    {
+        return mCommitmentFAQURL;
     }
 
     public String getUserId()

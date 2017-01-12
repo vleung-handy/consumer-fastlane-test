@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/handy_bg"
               android:orientation="vertical"
     >
 
-    <include layout="@layout/toolbar"
-        />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="@dimen/med_elevation"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        app:contentInsetStart="0dp"
+        app:navigationIcon="@drawable/ic_back"
+        app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
+        app:titleMargin="@dimen/default_margin"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        >
+
+        <TextView
+            android:id="@+id/booking_subscription_toolbar_faq"
+            style="@style/TextView.NavbarAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:text="@string/booking_subscription_titlebar_faq"
+            />
+    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:layout_width="match_parent"
@@ -30,19 +54,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:fillViewport="true"
         android:clipToPadding="true"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding"
         >
 
         <LinearLayout
             android:id="@+id/booking_subscription_option_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@color/white"
-            android:paddingTop="@dimen/default_padding"
-            android:paddingBottom="@dimen/default_padding"
-            android:gravity="center_horizontal"
+            android:orientation="vertical"
             >
 
             <TextView
