@@ -112,12 +112,6 @@ public class CommitmentType implements Serializable
         {
             String lengthKey = entrySet.getKey();       //in the form of {"0", "3", "6", "9"}
 
-            //According to Sammy & Mark, we're just going to ignore the "zero" month option
-            if (lengthKey.equals("0"))
-            {
-                continue;
-            }
-
             JsonObject lengthInformation = (JsonObject) entrySet.getValue();
 
             //if we don't already have this length stored, then store it.
@@ -128,13 +122,18 @@ public class CommitmentType implements Serializable
                         GsonUtil.safeGetAsString(lengthInformation.get("title")),
                         GsonUtil.safeGetAsBoolean(lengthInformation.get("default"))
                 );
-                mUniqueLengths.add(length);
+
+                //This is not added to the unique lengths because 0 is not to be displayed
+                // for the Plan terms
+                if (!lengthKey.equals("0"))
+                {
+                    mUniqueLengths.add(length);
+                }
             }
 
             //digging deeper in the length information, we'll find frequency
             JsonObject frequencyData = (JsonObject) lengthInformation.get("frequency");
             processFrequencies(frequencyData, lengthKey);
-
         }
     }
 
