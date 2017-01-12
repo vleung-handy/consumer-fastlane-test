@@ -1,6 +1,9 @@
 package com.handybook.handybook.core.ui.view;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,13 +17,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * UNFINISHED DO NOT USE
- * TODO: FINISH THIS
- */
 public class BillView extends FrameLayout
 {
 
+    private static final String TAG = "BillView";
     private boolean mIsExpanded;
     private Bill mBill;
 
@@ -32,14 +32,10 @@ public class BillView extends FrameLayout
     PriceView mHeaderPrice;
     @Bind(R.id.bill_view_section_container)
     LinearLayout mSectionContainer;
-    @Bind(R.id.bill_view_final_line_container)
-    ViewGroup mFinalLineContainer;
-    @Bind(R.id.bill_view_final_line_label)
-    TextView mFinalLineLabel;
-    @Bind(R.id.bill_view_final_line_price)
-    PriceView mFinalLinePrice;
-    @Bind(R.id.bill_view_expand_target)
-    TextView mExpandTargetView;
+    @Bind(R.id.bill_view_expand_target_container)
+    ViewGroup mExpandTargetContainer;
+    @Bind(R.id.bill_view_expand_target_label)
+    TextView mExpandTargetViewLabel;
 
     public BillView(final Context context)
     {
@@ -59,15 +55,20 @@ public class BillView extends FrameLayout
         init(attrs, defStyleAttr);
     }
 
-
     private void init(AttributeSet attrs, int defStyle)
     {
+        setSaveEnabled(true);
         inflate(getContext(), R.layout.layout_bill_view, this);
         ButterKnife.bind(this);
         collapse();
+        if (isInEditMode())
+        {
+            setBill(Bill.fromJson(Bill.MOCK_PAYLOAD_JSON));
+            expand();
+        }
     }
 
-    public void setBill(final Bill bill)
+    public void setBill(@NonNull final Bill bill)
     {
         mBill = bill;
         update();
@@ -75,26 +76,36 @@ public class BillView extends FrameLayout
 
     private void update()
     {
-        if (mBill == null)
-        {
-            getRootView().setVisibility(GONE);
-            return;
-        }
         getRootView().setVisibility(VISIBLE);
-        mHeaderTitle.setText(mBill.getHeaderTitle());
-        mHeaderText.setText(mBill.getHeaderText());
-        mHeaderPrice.setCurrencySymbol(mBill.getCurrencySymbol());
-        mHeaderPrice.setPrice(mBill.getFinalLineItem().getAmountCents());
-        mFinalLineLabel.setText(mBill.getFinalLineItem().getLabel());
-        mFinalLinePrice.setPrice(mBill.getFinalLineItem().getAmountCents());
+        updateHeaderTitle();
+        updateHeaderText();
+        updateHeaderPrice();
         mSectionContainer.removeAllViews();
         for (Bill.BillSection eBillSection : mBill.getSections())
         {
             BillSectionView billSectionView = new BillSectionView(getContext());
-            billSectionView.setBillSection(eBillSection);
+            billSectionView.setData(eBillSection, mBill.getCurrencySymbol());
             mSectionContainer.addView(billSectionView);
         }
 
+    }
+
+    private void updateHeaderTitle()
+    {
+        mHeaderTitle.setText(mBill.getHeaderTitle());
+    }
+
+    private void updateHeaderText()
+    {
+        mHeaderText.setText(mBill.getHeaderText());
+    }
+
+    private void updateHeaderPrice()
+    {
+        final String currencySymbol = mBill.getCurrencySymbol();
+        mHeaderPrice.setCurrencySymbol(currencySymbol);
+        final Integer finalPriceValueCents = mBill.getFinalPriceValueCents();
+        mHeaderPrice.setPrice(finalPriceValueCents);
     }
 
     public boolean isExpanded()
@@ -105,7 +116,7 @@ public class BillView extends FrameLayout
     @OnClick(R.id.bill_view_root)
     void toggleExpand()
     {
-        if (mIsExpanded)
+        if (isExpanded())
         {
             collapse();
         }
@@ -115,19 +126,112 @@ public class BillView extends FrameLayout
         }
     }
 
+    public void setExpanded(final boolean shouldExpand)
+    {
+        if (shouldExpand)
+        {
+            expand();
+        }
+        else
+        {
+            collapse();
+        }
+    }
+
     public void expand()
     {
+        mExpandTargetContainer.setVisibility(GONE);
+        mHeaderPrice.setVisibility(GONE);
         mSectionContainer.setVisibility(VISIBLE);
-        mFinalLineContainer.setVisibility(VISIBLE);
-        mExpandTargetView.setVisibility(GONE);
         mIsExpanded = true;
     }
 
     public void collapse()
     {
+        mExpandTargetContainer.setVisibility(VISIBLE);
+        mHeaderPrice.setVisibility(VISIBLE);
         mSectionContainer.setVisibility(GONE);
-        mFinalLineContainer.setVisibility(GONE);
-        mExpandTargetView.setVisibility(VISIBLE);
         mIsExpanded = false;
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState()
+    {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.setBill(mBill);
+        savedState.setExpanded(mIsExpanded);
+        return savedState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Parcelable state)
+    {
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        setBill(savedState.getBill());
+        setExpanded(savedState.isExpanded());
+    }
+
+    private static class SavedState extends BaseSavedState
+    {
+        private Bill mBill;
+        private boolean mIsExpanded;
+
+        SavedState(final Parcelable superState)
+        {
+            super(superState);
+        }
+
+        SavedState(final Parcel source)
+        {
+            super(source);
+            mBill = (Bill) source.readSerializable();
+            mIsExpanded = source.readByte() != 0;
+        }
+
+        @Override
+        public void writeToParcel(final Parcel out, final int flags)
+        {
+            super.writeToParcel(out, flags);
+            out.writeSerializable(mBill);
+            out.writeByte((byte) (mIsExpanded ? 1 : 0));
+        }
+
+        void setBill(@NonNull final Bill bill)
+        {
+            mBill = bill;
+        }
+
+        @NonNull
+        Bill getBill()
+        {
+            return mBill;
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>()
+        {
+            @Override
+            public SavedState createFromParcel(final Parcel source)
+            {
+                return new SavedState(source);
+            }
+
+            @Override
+            public SavedState[] newArray(final int size)
+            {
+                return new SavedState[size];
+            }
+        };
+
+        public void setExpanded(final boolean expanded)
+        {
+            mIsExpanded = expanded;
+        }
+
+        public boolean isExpanded()
+        {
+            return mIsExpanded;
+        }
     }
 }

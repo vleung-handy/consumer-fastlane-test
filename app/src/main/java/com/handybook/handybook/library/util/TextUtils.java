@@ -2,6 +2,7 @@ package com.handybook.handybook.library.util;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
@@ -14,6 +15,7 @@ import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -42,10 +44,9 @@ public final class TextUtils
     /**
      * Return true if there is nothing meaningful in the string (null, empty string, string with
      * white spaces)
-     * @param text
-     * @return
      */
-    public static boolean isBlank(final String text) {
+    public static boolean isBlank(final String text)
+    {
         return android.text.TextUtils.isEmpty(text) || text.trim().length() == 0;
     }
 
@@ -85,6 +86,17 @@ public final class TextUtils
                 + (currencySuffix != null ? currencySuffix : "");
     }
 
+    public static String formatPriceCents(
+            final int priceCents,
+            @NonNull final String currencySymbol
+    )
+    {
+        final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        decimalFormat.setPositivePrefix(currencySymbol);
+        decimalFormat.setNegativePrefix("-" + currencySymbol);
+        return decimalFormat.format(priceCents / 100.0);
+    }
+
     public static String formatPhone(String phone, final String prefix)
     {
         String shortFormat = "(%s) %s", longFormat = "(%s) %s-%s";
@@ -96,19 +108,24 @@ public final class TextUtils
 
         phone = phone.replaceAll("\\D+", "");
 
-        if (phone.length() < 4) { return phone; }
-
+        if (phone.length() < 4)
+        {
+            return phone;
+        }
         else if (phone.length() >= 4 && phone.length() <= 6)
-        { return String.format(shortFormat, phone.substring(0, 3), phone.substring(3)); }
-
+        {
+            return String.format(shortFormat, phone.substring(0, 3), phone.substring(3));
+        }
         else if (phone.length() >= 7 && phone.length() <= 10)
         {
             return String.format(longFormat, phone.substring(0, 3), phone.substring(3, 6),
                                  phone.substring(6)
             );
         }
-
-        else { return phone; }
+        else
+        {
+            return phone;
+        }
     }
 
     public static String formatAddress(
@@ -123,7 +140,10 @@ public final class TextUtils
 
     public static String formatDate(final Date date, final String format)
     {
-        if (date == null) { return null; }
+        if (date == null)
+        {
+            return null;
+        }
 
         final SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         final DateFormatSymbols symbols = new DateFormatSymbols();
@@ -140,7 +160,10 @@ public final class TextUtils
 
     public static String formatCreditCardNumber(final CreditCard.Type cardType, final String number)
     {
-        if (number == null || number.length() < 1) { return number; }
+        if (number == null || number.length() < 1)
+        {
+            return number;
+        }
 
         final String raw = number.replaceAll("\\D+", "");
 
@@ -203,7 +226,10 @@ public final class TextUtils
 
     public static String formatCreditCardExpDate(final String number)
     {
-        if (number == null || number.length() < 1) { return number; }
+        if (number == null || number.length() < 1)
+        {
+            return number;
+        }
 
         final String raw = number.replaceAll("\\D+", "");
 
@@ -219,7 +245,10 @@ public final class TextUtils
 
     public static String toTitleCase(final String str)
     {
-        if (str == null) { return null; }
+        if (str == null)
+        {
+            return null;
+        }
 
         boolean space = true;
 
@@ -256,8 +285,14 @@ public final class TextUtils
         int start = 0;
         int end = s.length();
 
-        while (start < end && Character.isWhitespace(s.charAt(start))) { start++; }
-        while (end > start && Character.isWhitespace(s.charAt(end - 1))) { end--; }
+        while (start < end && Character.isWhitespace(s.charAt(start)))
+        {
+            start++;
+        }
+        while (end > start && Character.isWhitespace(s.charAt(end - 1)))
+        {
+            end--;
+        }
 
         return s.subSequence(start, end);
     }

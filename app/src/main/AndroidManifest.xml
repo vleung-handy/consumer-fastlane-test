@@ -254,8 +254,8 @@
         <!-- Required by the DeepLinkDispatch library -->
         <activity
             android:name=".deeplink.DeepLinkActivity"
-            android:theme="@android:style/Theme.NoDisplay"
             android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoDisplay"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -510,9 +510,9 @@
         </activity>
         <activity
             android:name=".core.ui.activity.BottomNavActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTask"
             >
         </activity>
     </application>

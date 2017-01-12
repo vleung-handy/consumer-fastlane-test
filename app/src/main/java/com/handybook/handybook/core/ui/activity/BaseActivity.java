@@ -1,10 +1,12 @@
 package com.handybook.handybook.core.ui.activity;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -378,5 +380,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     public interface OnBackPressedListener
     {
         void onBack();
+    }
+
+    @Nullable
+    public static BaseActivity getInstance(Context context)
+    {
+        if (context == null)
+        { return null; }
+        else if (context instanceof BaseActivity)
+        { return (BaseActivity) context; }
+        else if (context instanceof ContextWrapper)
+        { return getInstance(((ContextWrapper) context).getBaseContext()); }
+        return null;
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/bill_view_section_root"
+    android:id="@+id/bill_view_section_line_item_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,23 +9,19 @@
     tools:showIn="@layout/layout_bill_view"
     >
 
-    <LinearLayout
-        android:id="@+id/bill_view_section_line_item_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-        <include layout="@layout/layout_bill_view_line_item"/>
-
-        <include layout="@layout/layout_bill_view_line_item"/>
-
-        <include layout="@layout/layout_bill_view_line_item"/>
-    </LinearLayout>
 
     <include
         android:id="@+id/bill_view_section_horizontal_separator"
         layout="@layout/layout_bill_view_horizontal_separator"
         />
+
+    <include layout="@layout/layout_bill_view_line_item_default"/>
+
+    <include layout="@layout/layout_bill_view_line_item_default"/>
+
+    <include layout="@layout/layout_bill_view_line_item_large"/>
+
+    <include layout="@layout/layout_bill_view_line_item_default"/>
 </LinearLayout>
+
 

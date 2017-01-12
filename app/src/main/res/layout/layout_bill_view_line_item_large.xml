@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bill_view_large_line_item_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/default_padding_half"
+    tools:showIn="@layout/layout_bill_view_section"
+    android:gravity="center_vertical"
+    >
+
+    <TextView
+        android:id="@+id/bill_view_large_line_item_label"
+        style="@style/TextView.Medium.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label"
+        />
+
+    <ImageView
+        android:id="@+id/bill_view_large_line_item_question_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/default_margin_half"
+        android:layout_marginStart="@dimen/default_margin_half"
+        android:contentDescription="@string/cd_view_payment_questionmark_icon"
+        android:src="@drawable/ic_question_mark_grey_outline"
+        />
+
+    <android.support.v4.widget.Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
+
+    <com.handybook.handybook.core.ui.view.PriceView
+        android:id="@+id/bill_view_large_line_item_amount"
+        style="@style/TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:priceCurrencySymbol="$"
+        app:priceCardinal="50"
+        app:priceDecimal="50"
+        />
+
+    <TextView
+        android:id="@+id/bill_view_large_line_item_amount_override"
+        style="@style/TextView.XXLarge.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label"
+        />
+
+</LinearLayout>

@@ -25,11 +25,14 @@
             android:padding="@dimen/default_margin_half"
             >
 
+
             <TextView
                 android:id="@+id/bill_view_header_title"
-                style="@style/TextView.Large.Bold"
+                style="@style/TextView.Medium.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:maxLines="1"
                 tools:text="Cleaning Plan: Every 2 weeks"
@@ -37,11 +40,12 @@
 
             <TextView
                 android:id="@+id/bill_view_header_text"
-                style="@style/TextView.Large"
+                style="@style/TextView.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/bill_view_header_title"
-                android:lineSpacingMultiplier="1"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:lineSpacingMultiplier="1.3"
                 tools:text="Starting Wed, Jan 10\n8:00 am"
                 />
 
@@ -52,14 +56,13 @@
                 android:layout_alignBaseline="@id/bill_view_header_text"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                app:priceCurrencySymbol="$"
                 app:priceCardinal="51"
+                app:priceCurrencySymbol="$"
                 app:priceDecimal="50"
                 app:priceShowZeroCents="false"
                 />
         </RelativeLayout>
 
-        <include layout="@layout/layout_bill_view_horizontal_separator"/>
 
         <LinearLayout
             android:id="@+id/bill_view_section_container"
@@ -74,47 +77,26 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/bill_view_final_line_container"
+            android:id="@+id/bill_view_expand_target_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin_half"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             >
 
+            <include layout="@layout/layout_bill_view_horizontal_separator"/>
+
             <TextView
-                android:id="@+id/bill_view_final_line_label"
-                style="@style/TextView.XLarge.Bold"
-                android:layout_width="wrap_content"
+                android:id="@+id/bill_view_expand_target_label"
+                style="@style/TextView.Medium"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Today's Total"
+                android:gravity="center"
+                android:padding="@dimen/default_margin_half"
+                android:text="@string/bill_view_expand_target_text"
+                android:textColor="@color/handy_darkened_blue"
                 />
 
-            <android.support.v4.widget.Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
-
-            <com.handybook.handybook.core.ui.view.PriceView
-                android:id="@+id/bill_view_final_line_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:priceCardinal="51"
-                app:priceCurrencySymbol="$"
-                app:priceDecimal="50"
-                app:priceShowZeroCents="false"
-                />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/bill_view_expand_target"
-            style="@style/TextView.Headline.Blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/default_margin_half"
-            android:text="@string/bill_view_expand_target_text"
-            />
 
     </LinearLayout>
 </FrameLayout>
