@@ -22,6 +22,7 @@ import com.handybook.handybook.booking.model.subscription.SubscriptionPrices;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
@@ -35,6 +36,9 @@ import butterknife.OnClick;
 
 public final class BookingSubscriptionFragment extends BookingFlowFragment
 {
+
+    private static final String TAG = BookingSubscriptionFragment.class.getName();
+
     @Bind(R.id.booking_frequency_options_spinner_view)
     FrameLayout mFrequencyLayout;
     @Bind(R.id.booking_subscription_option_layout)
@@ -150,7 +154,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                     @Override
                     public void onUpdate(final BookingOptionsView view)
                     {
-                        Log.e("BLAH", view.getCurrentValue());
+                        Log.e(TAG, view.getCurrentValue());
                         updateSubscriptionOptions();
                     }
 
@@ -201,16 +205,21 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                     getCurrentFrequencyKey(),
                     Float.toString(mBookingTransaction.getHours())
             );
-            //TODO sammy use the util class to get the price from cents
-            pricesText[i] = Integer.toString(price.getFullPrice());
+
+            if (price != null)
+            {
+                pricesText[i] = TextUtils.formatPriceCents(price.getFullPrice(),
+                                                           bookingManager.getCurrentQuote()
+                                                                         .getCurrencyChar()
+                );
+            }
+
             cleaningTexts[i] = cleaningText;
         }
 
-        bookingOption.setTitle(getString(R.string.booking_subscription_term_title));
         bookingOption.setOptionsRightTitleText(pricesText);
         bookingOption.setOptionsRightSubText(cleaningTexts);
         bookingOption.setOptions(subscriptionTitles);
-        bookingOption.setTitle(getString(R.string.booking_subscription_term_title));
 
         /*
         build a BookingOption model from the monthly subscription options so we can use it
@@ -218,7 +227,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
          */
         mSubscriptionOptionsView = new BookingOptionsSelectView(getActivity(), bookingOption, null);
         updateSubscriptionOptions();
-        mSubscriptionOptionsLayout.addView(mSubscriptionOptionsView, 0);
+        mSubscriptionOptionsLayout.addView(mSubscriptionOptionsView, 1);
     }
 
     private void updateSubscriptionOptions()
