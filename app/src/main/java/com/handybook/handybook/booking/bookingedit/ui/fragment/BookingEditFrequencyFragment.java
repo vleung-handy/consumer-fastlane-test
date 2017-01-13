@@ -143,7 +143,6 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
         if (mBookingQuote != null)
         {
 
-//            TODO: JIA: make sure to incorporate the new commitment pricing model here.
             float[] prices = mBookingQuote.getPricing(hours, frequency);
             if (prices != null && prices.length >= 2)
             {

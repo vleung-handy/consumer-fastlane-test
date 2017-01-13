@@ -9,6 +9,10 @@ import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
+/**
+ * NOTE: doens't look like this is being used anymore
+ */
+@Deprecated
 public final class BookingEditFrequencyActivity extends MenuDrawerActivity
 {
 
