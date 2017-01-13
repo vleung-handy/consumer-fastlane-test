@@ -156,6 +156,12 @@ public class CommitmentType implements Serializable
             String freqKey = SubscriptionFrequency.convertFrequencyKey(entrySet.getKey());
             JsonObject freqInformation = (JsonObject) entrySet.getValue();
 
+            //if this is disabled, then we don't care about the prices here.
+            if (GsonUtil.safeGetAsBoolean(freqInformation.get("disabled")))
+            {
+                continue;
+            }
+
             //if we don't already have this frequency, then add it;
             if (!contains(mUniqueFrequencies, freqKey))
             {

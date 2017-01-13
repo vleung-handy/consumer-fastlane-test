@@ -334,7 +334,7 @@ public class BookingTransaction extends Observable {
             if (extraHours > 0) jsonObj.add("extra_hours", context.serialize(extraHours));
 
             final int comLength = value.getCommitmentLength();
-            if (comLength > 0)
+            if (comLength > 0)     //if the server didn't receive this value, it'll assume 0
             {
                 jsonObj.add("commitment_length", context.serialize(comLength));
             }
