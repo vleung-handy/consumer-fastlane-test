@@ -802,6 +802,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         {
             mPromoProgress.setVisibility(View.VISIBLE);
             mPromoButton.setText(null);
+            mPromoButton.setVisibility(View.GONE);
 
             if (hasPromo)
             {
@@ -1005,7 +1006,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCurrentQuote.setPriceTable(newQuote.getPriceTable());
         mCurrentQuote.setSurgePriceTable(newQuote.getSurgePriceTable());
         mCurrentQuote.setCoupon(newQuote.getCoupon());
-        mCurrentQuote.setCommitmentType(newQuote.getCommitmentType());
+        mCurrentQuote.setCommitmentPrices(newQuote.getCommitmentPrices());
+        mCurrentQuote.setupCommitmentPricingStructure();
         mCurrentQuote.setActiveCommitmentTypes(newQuote.getActiveCommitmentTypes());
         showBookingWarningIfApplicable(mCurrentQuote);
         transaction.setPromoApplied(promo);
@@ -1056,6 +1058,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
         mPromoProgress.setVisibility(View.INVISIBLE);
         mPromoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
+        mPromoButton.setVisibility(View.VISIBLE);
 
         String promoCodeDisplayString;
         if (applied)

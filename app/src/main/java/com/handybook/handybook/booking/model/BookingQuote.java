@@ -290,6 +290,7 @@ public class BookingQuote extends Observable
     void setHourlyAmount(final float hourlyAmount)
     {
         mHourlyAmount = hourlyAmount;
+        triggerObservers();
     }
 
     /**
@@ -414,6 +415,7 @@ public class BookingQuote extends Observable
     void setPhonePrefix(final String phonePrefix)
     {
         mPhonePrefix = phonePrefix;
+        triggerObservers();
     }
 
     public String getStripeKey()
@@ -576,8 +578,12 @@ public class BookingQuote extends Observable
 
     public void setupCommitmentPricingStructure()
     {
-        setCommitmentType(new Gson().fromJson(getCommitmentPrices(), CommitmentType.class));
-        getCommitmentType().transform(CommitmentType.CommitmentTypeName.MONTHS);
+        if (getCommitmentPrices() != null)
+        {
+            setCommitmentType(new Gson().fromJson(getCommitmentPrices(), CommitmentType.class));
+            getCommitmentType().transform(CommitmentType.CommitmentTypeName.MONTHS);
+            triggerObservers();
+        }
     }
 
     /**
@@ -620,9 +626,15 @@ public class BookingQuote extends Observable
     public void setCommitmentPricesMap(final CommitmentPricesMap commitmentPricesMap)
     {
         mCommitmentPricesMap = commitmentPricesMap;
+        triggerObservers();
     }
 
-    public void setCommitmentType(final CommitmentType commitmentType)
+    /**
+     * Do not make this public, since setting the commitment type requires another "setup" step
+     * before it can be used. If you must set this, use setupCommitmentPricingStructure() instead.
+     * @param commitmentType
+     */
+    private void setCommitmentType(final CommitmentType commitmentType)
     {
         mCommitmentType = commitmentType;
     }
@@ -630,11 +642,13 @@ public class BookingQuote extends Observable
     public void setCommitmentPrices(final JsonObject commitmentPrices)
     {
         mCommitmentPrices = commitmentPrices;
+        triggerObservers();
     }
 
     public void setActiveCommitmentTypes(final List<CommitmentType.CommitmentTypeName> activeCommitmentTypes)
     {
         mActiveCommitmentTypes = activeCommitmentTypes;
+        triggerObservers();
     }
 
     public boolean hasCouponWarning()
