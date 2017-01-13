@@ -10,6 +10,8 @@
         style="@style/TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
         android:freezesText="false"
         android:gravity="center"
         android:lines="1"
