@@ -147,7 +147,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         priceView.setCurrencySymbol(currChar);
 
         //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-        if (!android.text.TextUtils.isEmpty(transaction.getCommitmentType()))
+        if (quote.getCommitmentType() != null)
         {
             priceView.setPrice(Math.round(pricing[1]));
         }
@@ -160,7 +160,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         {
             String priceText = "";
             //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-            if (!android.text.TextUtils.isEmpty(transaction.getCommitmentType()))
+            if (quote.getCommitmentType() != null)
             {
                 priceText = TextUtils.formatPriceCents(Math.round(pricing[0]), currChar);
             }
