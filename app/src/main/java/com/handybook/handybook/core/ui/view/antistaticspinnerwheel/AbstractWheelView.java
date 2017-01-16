@@ -94,7 +94,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
     protected Drawable mSelectionDivider;
 
     // Set to true to disable to fade in/fade out animations
-    protected boolean mDisableDimAnimation;
+    protected boolean mIsDisableDimAnimation;
 
     // the rest
 
@@ -160,7 +160,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
         mItemOffsetPercent = a.getInt(R.styleable.AbstractWheelView_itemOffsetPercent, DEF_ITEM_OFFSET_PERCENT);
         mItemsPadding = a.getDimensionPixelSize(R.styleable.AbstractWheelView_itemsPadding, DEF_ITEM_PADDING);
         mSelectionDivider = a.getDrawable(R.styleable.AbstractWheelView_selectionDivider);
-        mDisableDimAnimation = a.getBoolean(R.styleable.AbstractWheelView_disableDimAnimation, false);
+        mIsDisableDimAnimation = a.getBoolean(R.styleable.AbstractWheelView_disableDimAnimation, false);
         a.recycle();
     }
 
@@ -231,7 +231,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
     protected void onScrollTouched() {
         mDimSelectorWheelAnimator.cancel();
         mDimSeparatorsAnimator.cancel();
-        if(!mDisableDimAnimation)
+        if(!mIsDisableDimAnimation)
         {
             setSelectorPaintCoeff(1);
         }
@@ -241,7 +241,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
     @Override
     protected void onScrollTouchedUp() {
         super.onScrollTouchedUp();
-        if(!mDisableDimAnimation)
+        if(!mIsDisableDimAnimation)
         {
             fadeSelectorWheel(750);
             lightSeparators(750);
@@ -250,7 +250,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
 
     @Override
     protected void onScrollFinished() {
-        if(!mDisableDimAnimation)
+        if(!mIsDisableDimAnimation)
         {
             fadeSelectorWheel(500);
             lightSeparators(500);

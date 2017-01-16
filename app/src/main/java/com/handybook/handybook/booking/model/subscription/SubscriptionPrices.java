@@ -14,7 +14,7 @@ public class SubscriptionPrices implements Serializable
 {
     private String mSubscriptionLengthKey;
     private String mSubscriptionFrequencyKey;
-    private boolean mDefault;
+    private boolean mIsDefault;
     private boolean mEnabled;
 
     /**
@@ -25,15 +25,15 @@ public class SubscriptionPrices implements Serializable
     public SubscriptionPrices(
             final String subscriptionLengthKey,
             final String subscriptionFrequencyKey,
-            final boolean aDefault,
-            final boolean enabled,
+            final boolean isDefault,
+            final boolean isEnabled,
             final Map<String, Price> prices
     )
     {
         mSubscriptionLengthKey = subscriptionLengthKey;
         mSubscriptionFrequencyKey = subscriptionFrequencyKey;
-        mDefault = aDefault;
-        mEnabled = enabled;
+        mIsDefault = isDefault;
+        mEnabled = isEnabled;
         mPrices = prices;
     }
 
@@ -44,7 +44,7 @@ public class SubscriptionPrices implements Serializable
 
     public boolean isDefault()
     {
-        return mDefault;
+        return mIsDefault;
     }
 
     public boolean isEnabled()

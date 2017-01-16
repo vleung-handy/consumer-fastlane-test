@@ -156,7 +156,7 @@ public class AccountFragment extends InjectedFragment
     private void updateCreditsView(@NonNull User user)
     {
         mCreditsView.setCurrencySymbol(user.getCurrencyChar());
-        mCreditsView.setPrice(user.getCreditsCents());
+        mCreditsView.setPriceCents(user.getCreditsCents());
     }
 
     @Override

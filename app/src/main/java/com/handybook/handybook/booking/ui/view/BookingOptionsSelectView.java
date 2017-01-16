@@ -292,7 +292,6 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
     public final void setIsOptionEnabled(boolean isEnabled, int position)
     {
-        //todo jia update this with tint color or something? row
         CheckBox checkBox = checkMap.get(position);
         checkBox.setEnabled(isEnabled);
 

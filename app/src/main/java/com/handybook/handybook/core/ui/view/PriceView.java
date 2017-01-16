@@ -141,7 +141,7 @@ public class PriceView extends FrameLayout
         updateUi();
     }
 
-    public void setPrice(final float dollars)
+    public void setPriceDollars(final float dollars)
     {
         final int cents = Math.round(dollars * 100);
         /*
@@ -152,7 +152,7 @@ public class PriceView extends FrameLayout
         setDecimal(getDecimalValue(cents));
     }
 
-    public void setPrice(final int priceCents)
+    public void setPriceCents(final int priceCents)
     {
         setCardinal(getCardinalValue(priceCents));
         setDecimal(getDecimalValue(priceCents));
