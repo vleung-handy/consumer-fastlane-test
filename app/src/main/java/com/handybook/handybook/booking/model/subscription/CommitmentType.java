@@ -156,14 +156,8 @@ public class CommitmentType implements Serializable
             String freqKey = SubscriptionFrequency.convertFrequencyKey(entrySet.getKey());
             JsonObject freqInformation = (JsonObject) entrySet.getValue();
 
-            //within freqInformation, there is the prices ("hours") table, in the form of
-            //{"3", "3.5", "4.0"}
-            JsonObject hours = (JsonObject) freqInformation.get("hours");
-            boolean isEnabled = !GsonUtil.safeGetAsBoolean(freqInformation.get("disabled"));
-            boolean isDefault = GsonUtil.safeGetAsBoolean(freqInformation.get("default"));
-
             //if it's enabled and we don't already have this frequency, then add it to frequency list
-            if (isEnabled && !contains(mUniqueFrequencies, freqKey))
+            if (!contains(mUniqueFrequencies, freqKey))
             {
                 SubscriptionFrequency frequency = new SubscriptionFrequency(
                         freqKey,
@@ -172,6 +166,12 @@ public class CommitmentType implements Serializable
                 );
                 mUniqueFrequencies.add(frequency);
             }
+
+            //within freqInformation, there is the prices ("hours") table, in the form of
+            //{"3", "3.5", "4.0"}
+            JsonObject hours = (JsonObject) freqInformation.get("hours");
+            boolean isEnabled = !GsonUtil.safeGetAsBoolean(freqInformation.get("disabled"));
+            boolean isDefault = GsonUtil.safeGetAsBoolean(freqInformation.get("default"));
 
             processHours(lengthKey, freqKey, hours, isDefault, isEnabled);
         }
