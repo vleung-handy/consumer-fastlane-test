@@ -39,6 +39,7 @@
                 app:itemsDimmedAlpha="90"
                 app:isAllVisible="true"
                 app:itemsPadding="@dimen/options_wheel_padding"
+                app:disableDimAnimation="true"
                 android:layout_gravity="center" />
 
             <View

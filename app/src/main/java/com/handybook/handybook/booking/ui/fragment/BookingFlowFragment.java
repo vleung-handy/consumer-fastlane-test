@@ -107,6 +107,7 @@ public class BookingFlowFragment extends InjectedFragment
           or if user skipped peak pricing
         */
         if (this instanceof BookingRecurrenceFragment
+                || this instanceof BookingSubscriptionFragment
                 || this instanceof PeakPricingFragment
                 || this instanceof BookingExtrasFragment
                 || this instanceof PeakPricingFragment
@@ -438,6 +439,7 @@ public class BookingFlowFragment extends InjectedFragment
     {
         return !(
                 (BookingFlowFragment.this instanceof BookingRecurrenceFragment)
+                        || (BookingFlowFragment.this instanceof BookingSubscriptionFragment)
                         || (BookingFlowFragment.this instanceof BookingExtrasFragment)
                         || !request.getUniq().equals("home_cleaning")
         ) && (

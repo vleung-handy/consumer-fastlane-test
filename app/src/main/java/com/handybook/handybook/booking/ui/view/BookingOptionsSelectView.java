@@ -104,6 +104,12 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 && optionsHidden[optionIndex];
     }
 
+    private boolean shouldDisableOption(boolean[] optionsDisabled, int optionIndex)
+    {
+        return isBooleanOptionValid(optionsDisabled, optionIndex)
+                && optionsDisabled[optionIndex];
+    }
+
     private void showTextView(TextView textView, String textString)
     {
         textView.setText(textString);
@@ -223,6 +229,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                 public void onClick(final View v)
                 {
                     final CheckBox box = ((CheckBox) optionView.findViewById(R.id.check_box));
+                    //If the box is disabled, then do nothing
+                    if(!box.isEnabled())
+                        return;
+
                     if (isMulti)
                     {
                         box.setChecked(!box.isChecked());
@@ -272,9 +282,36 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     public final String getCurrentValue()
     {
         final CheckBox box = checkMap.get(checkedIndex);
+        if(box == null)
+            return null;
+
         final ViewGroup layout = (ViewGroup) box.getParent();
         final TextView title = (TextView) layout.findViewById(R.id.title_text);
         return title.getText().toString();
+    }
+
+    public final void setIsOptionEnabled(boolean isEnabled, int position)
+    {
+        //todo jia update this with tint color or something? row
+        CheckBox checkBox = checkMap.get(position);
+        checkBox.setEnabled(isEnabled);
+
+        //Mark as unchecked if disabled
+        if(!isEnabled)
+        {
+            if(checkBox.isChecked())
+            {
+                checkedIndex = -1;
+                checkBox.setOnCheckedChangeListener(null);
+            }
+
+            selectOption(checkBox, false);
+        }
+    }
+
+    public final void updateRightOptionsTitleText(String text, int position)
+    {
+        showTextView((TextView) optionViews[position].findViewById(R.id.right_title_text), text);
     }
 
     public final void setCurrentIndex(final int index)

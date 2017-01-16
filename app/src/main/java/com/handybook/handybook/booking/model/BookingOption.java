@@ -126,7 +126,7 @@ public class BookingOption implements Parcelable
         return title;
     }
 
-    void setTitle(final String title)
+    public void setTitle(final String title)
     {
         this.title = title;
     }

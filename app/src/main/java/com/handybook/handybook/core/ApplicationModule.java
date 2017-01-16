@@ -90,6 +90,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
 import com.handybook.handybook.booking.ui.fragment.EmailCancellationDialogFragment;
@@ -305,6 +306,7 @@ import retrofit.converter.GsonConverter;
         RescheduleUpcomingActivity.class,
         BottomNavActivity.class,
         LayerPushReceiver.class,
+        BookingSubscriptionFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

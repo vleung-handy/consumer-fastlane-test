@@ -48,19 +48,14 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
-import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.event.StripeEvent;
-import com.handybook.handybook.library.ui.view.FreezableInputTextView;
-import com.handybook.handybook.library.util.TextUtils;
-import com.handybook.handybook.library.util.ValidationUtils;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.core.ui.widget.CreditCardCVCInputTextView;
@@ -68,6 +63,11 @@ import com.handybook.handybook.core.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.core.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.core.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.core.util.WalletUtils;
+import com.handybook.handybook.library.ui.view.FreezableInputTextView;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.ValidationUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
@@ -802,6 +802,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         {
             mPromoProgress.setVisibility(View.VISIBLE);
             mPromoButton.setText(null);
+            mPromoButton.setVisibility(View.GONE);
 
             if (hasPromo)
             {
@@ -823,7 +824,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             @Override
             public void onCallbackSuccess(final BookingCoupon coupon)
             {
-                handlePromoSuccess(coupon, mCurrentQuote, mCurrentTransaction, null);
+                removePromoSuccess(coupon, mCurrentQuote, mCurrentTransaction, null);
                 bookingManager.setPromoTabCoupon(null);
             }
 
@@ -858,7 +859,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                                 new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(
                                         promoCode
                                 )));
-                        handlePromoSuccess(bookingQuote, mCurrentTransaction, promoCode);
+                        applyPromoSuccess(bookingQuote, mCurrentTransaction, promoCode);
                     }
 
                     @Override
@@ -995,7 +996,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
      * This is a new method that handles the updated API that returns the whole quote not a subset
      * Api Endpooint: /v3/quotes/{1245}/set_coupon
      */
-    private void handlePromoSuccess(
+    private void applyPromoSuccess(
             final BookingQuote newQuote,
             final BookingTransaction transaction,
             final String promo
@@ -1005,6 +1006,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCurrentQuote.setPriceTable(newQuote.getPriceTable());
         mCurrentQuote.setSurgePriceTable(newQuote.getSurgePriceTable());
         mCurrentQuote.setCoupon(newQuote.getCoupon());
+        mCurrentQuote.setCommitmentPrices(newQuote.getCommitmentPrices());
+        mCurrentQuote.setupCommitmentPricingStructure();
+        mCurrentQuote.setActiveCommitmentTypes(newQuote.getActiveCommitmentTypes());
         showBookingWarningIfApplicable(mCurrentQuote);
         transaction.setPromoApplied(promo);
         updatePromoUI();
@@ -1020,13 +1024,20 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     }
 
-    private void handlePromoSuccess(
+    private void removePromoSuccess(
             final BookingCoupon coupon, final BookingQuote quote,
             final BookingTransaction transaction, final String promo
     )
     {
         if (!allowCallbacks) { return; }
         quote.setPriceTable(coupon.getPriceTable());
+
+        if (coupon.getCommitmentPrices() != null)
+        {
+            quote.setCommitmentPrices(coupon.getCommitmentPrices());
+            quote.setupCommitmentPricingStructure();
+        }
+
         transaction.setPromoApplied(promo);
         updatePromoUI();
         mPromoText.setText(null);
@@ -1047,6 +1058,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
         mPromoProgress.setVisibility(View.INVISIBLE);
         mPromoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
+        mPromoButton.setVisibility(View.VISIBLE);
 
         String promoCodeDisplayString;
         if (applied)
