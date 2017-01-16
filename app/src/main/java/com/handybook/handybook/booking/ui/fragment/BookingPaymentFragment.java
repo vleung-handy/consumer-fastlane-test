@@ -48,19 +48,14 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
-import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.CreditCard;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.event.StripeEvent;
-import com.handybook.handybook.library.ui.view.FreezableInputTextView;
-import com.handybook.handybook.library.util.TextUtils;
-import com.handybook.handybook.library.util.ValidationUtils;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.core.ui.widget.CreditCardCVCInputTextView;
@@ -68,6 +63,11 @@ import com.handybook.handybook.core.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.core.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.core.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.core.util.WalletUtils;
+import com.handybook.handybook.library.ui.view.FreezableInputTextView;
+import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.ValidationUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
@@ -79,7 +79,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.card.payment.CardIOActivity;
 
-public class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+public class BookingPaymentFragment extends BookingFlowFragment implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener
 {
     //TODO: would be nice to have a ViewModel
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
@@ -136,93 +138,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     private BookingQuote mCurrentQuote;
     private BookingTransaction mCurrentTransaction;
 
-    @OnClick(R.id.scan_card_button)
-    public void onScanCardButtonPressed()
-    {
-        startCardScanActivity();
-    }
-
-    private void startCardScanActivity()
-    {
-        Intent scanIntent = new Intent(getContext(), CardIOActivity.class);
-
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
-
-        startActivityForResult(scanIntent, ActivityResult.SCAN_CREDIT_CARD);
-    }
-
-    @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ActivityResult.SCAN_CREDIT_CARD)
-        {
-            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT))
-            {
-                io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
-                onScannedCardResult(scannedCardResult);
-            }
-        }
-    }
-
-    public void onScannedCardResult(@NonNull final io.card.payment.CreditCard scannedCardResult)
-    {
-        mCreditCardText.setText(scannedCardResult.cardNumber);
-        if (scannedCardResult.isExpiryValid())
-        {
-            mExpText.setTextFromMonthYear(scannedCardResult.expiryMonth, scannedCardResult.expiryYear);
-        }
-        mCvcText.setText(scannedCardResult.cvv);
-    }
-
-    @OnClick(R.id.enter_credit_card_button)
-    public void onEnterCreditCardButtonClicked()
-    {
-        allowCardInput();
-    }
-
-    @OnClick(R.id.android_pay_button)
-    public void onBookWithAndroidPayClicked()
-    {
-        if (mMaskedWallet != null)
-        {
-            Wallet.Payments.changeMaskedWallet(mGoogleApiClient,
-                    mMaskedWallet.getGoogleTransactionId(),
-                    null,
-                    ActivityResult.LOAD_MASKED_WALLET);
-        }
-        else
-        {
-            final MaskedWalletRequest maskedWalletRequest = WalletUtils.createMaskedWalletRequest(
-                    mCurrentQuote,
-                    mCurrentTransaction
-            );
-            Wallet.Payments.loadMaskedWallet(mGoogleApiClient,
-                    maskedWalletRequest,
-                    ActivityResult.LOAD_MASKED_WALLET);
-        }
-    }
-
-    @OnClick(R.id.change_button)
-    public void onChangeButtonClicked()
-    {
-        mUseExistingCard = false;
-        checkAndShowPaymentMethodSelection();
-    }
-
-    @OnClick(R.id.apply_promo_button)
-    public void onApplyPromoButtonClicked()
-    {
-        showAndUpdatePromoCodeInput();
-    }
-
-    public static BookingPaymentFragment newInstance()
-    {
-        return new BookingPaymentFragment();
-    }
-
     @Override
     public void onCreate(final Bundle savedInstanceState)
     {
@@ -247,32 +162,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     }
 
     @Override
-    public void onConnected(Bundle bundle)
-    {
-        checkAndShowPaymentMethodSelection();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i)
-    {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-    {
-        checkAndShowPaymentMethodSelection();
-    }
-
-    @Override
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_payment, container, false);
-
+        final View view = inflater.inflate(R.layout.fragment_booking_payment, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.payment));
         showBookingWarningIfApplicable(mCurrentQuote);
@@ -298,10 +193,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         }
 
         mCreditCardText.addTextChangedListener(cardTextWatcher);
-        mNextButton.setOnClickListener(nextClicked);
 
-        mLockIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.black_pressed),
-                PorterDuff.Mode.SRC_ATOP);
+        mLockIcon.setColorFilter(
+                ContextCompat.getColor(getContext(), R.color.black_pressed),
+                PorterDuff.Mode.SRC_ATOP
+        );
 
         showViewForPromoCodeApplied();
 
@@ -310,6 +206,119 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         initializeTermsOfUseText();
 
         return view;
+    }
+
+    @OnClick(R.id.scan_card_button)
+    public void onScanCardButtonPressed()
+    {
+        startCardScanActivity();
+    }
+
+    private void startCardScanActivity()
+    {
+        Intent scanIntent = new Intent(getContext(), CardIOActivity.class);
+
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
+
+        startActivityForResult(scanIntent, ActivityResult.SCAN_CREDIT_CARD);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ActivityResult.SCAN_CREDIT_CARD)
+        {
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT))
+            {
+                io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(
+                        CardIOActivity.EXTRA_SCAN_RESULT);
+                onScannedCardResult(scannedCardResult);
+            }
+        }
+    }
+
+    public void onScannedCardResult(@NonNull final io.card.payment.CreditCard scannedCardResult)
+    {
+        mCreditCardText.setText(scannedCardResult.cardNumber);
+        if (scannedCardResult.isExpiryValid())
+        {
+            mExpText.setTextFromMonthYear(
+                    scannedCardResult.expiryMonth,
+                    scannedCardResult.expiryYear
+            );
+        }
+        mCvcText.setText(scannedCardResult.cvv);
+    }
+
+    @OnClick(R.id.enter_credit_card_button)
+    public void onEnterCreditCardButtonClicked()
+    {
+        allowCardInput();
+    }
+
+    @OnClick(R.id.android_pay_button)
+    public void onBookWithAndroidPayClicked()
+    {
+        if (mMaskedWallet != null)
+        {
+            Wallet.Payments.changeMaskedWallet(
+                    mGoogleApiClient,
+                    mMaskedWallet.getGoogleTransactionId(),
+                    null,
+                    ActivityResult.LOAD_MASKED_WALLET
+            );
+        }
+        else
+        {
+            final MaskedWalletRequest maskedWalletRequest = WalletUtils.createMaskedWalletRequest(
+                    mCurrentQuote,
+                    mCurrentTransaction
+            );
+            Wallet.Payments.loadMaskedWallet(
+                    mGoogleApiClient,
+                    maskedWalletRequest,
+                    ActivityResult.LOAD_MASKED_WALLET
+            );
+        }
+    }
+
+    @OnClick(R.id.change_button)
+    public void onChangeButtonClicked()
+    {
+        mUseExistingCard = false;
+        checkAndShowPaymentMethodSelection();
+    }
+
+    @OnClick(R.id.apply_promo_button)
+    public void onApplyPromoButtonClicked()
+    {
+        showAndUpdatePromoCodeInput();
+    }
+
+    public static BookingPaymentFragment newInstance()
+    {
+        return new BookingPaymentFragment();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle)
+    {
+        checkAndShowPaymentMethodSelection();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
+        checkAndShowPaymentMethodSelection();
     }
 
     /**
@@ -366,8 +375,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         {
             NavbarWebViewDialogFragment navbarWebViewDialogFragment = NavbarWebViewDialogFragment
                     .newInstance(getString(R.string.handy_terms_of_use_title), getString(R.string
-                            .handy_terms_of_use_url));
-            navbarWebViewDialogFragment.show(fragmentManager, NavbarWebViewDialogFragment.FRAGMENT_TAG);
+                                                                                                 .handy_terms_of_use_url));
+            navbarWebViewDialogFragment.show(
+                    fragmentManager,
+                    NavbarWebViewDialogFragment.FRAGMENT_TAG
+            );
         }
     }
 
@@ -449,7 +461,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         outState.putBoolean(STATE_USE_EXISTING_CARD, mUseExistingCard);
     }
 
-    public void handleLoadFullWalletResult(final int resultCode, final Intent data, final int errorCode)
+    public void handleLoadFullWalletResult(
+            final int resultCode,
+            final Intent data,
+            final int errorCode
+    )
     {
         switch (resultCode)
         {
@@ -472,7 +488,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         }
     }
 
-    public void handleLoadMaskedWalletResult(final int resultCode, final Intent data, final int errorCode)
+    public void handleLoadMaskedWalletResult(
+            final int resultCode,
+            final Intent data,
+            final int errorCode
+    )
     {
         switch (resultCode)
         {
@@ -630,7 +650,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
             mSelectPaymentPromoText.setText(getString(
                     R.string.booking_payment_android_pay_promo_savings_formatted,
-                    androidPayCouponValueFormatted));
+                    androidPayCouponValueFormatted
+            ));
             mSelectPaymentPromoText.setVisibility(View.VISIBLE);
         }
         else
@@ -733,43 +754,45 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     {
         if (!allowCallbacks) { return; }
         String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
-        com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(tokenJSON, com.stripe.model.Token.class);
+        com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(
+                tokenJSON,
+                com.stripe.model.Token.class
+        );
         mCurrentTransaction.setStripeToken(token.getId());
         mCurrentTransaction.setPaymentMethod(User.PAYMENT_METHOD_ANDROID_PAY);
         completeBooking();
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
+    @OnClick(R.id.next_button)
+    void onNextClicked(final View view)
     {
-        @Override
-        public void onClick(final View view)
+        if (validateFields())
         {
-            if (validateFields())
-            {
-                disableInputs();
-                progressDialog.show();
+            disableInputs();
+            progressDialog.show();
 
-                if (mUseAndroidPay)
-                {
-                    final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
-                            mCurrentQuote,
-                            mCurrentTransaction,
-                            mMaskedWallet
-                    );
-                    Wallet.Payments.loadFullWallet(mGoogleApiClient, fullWalletRequest,
-                            ActivityResult.LOAD_FULL_WALLET);
-                }
-                else if (!mUseExistingCard)
-                {
-                    final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
-                            mExpText.getExpYear(), mCvcText.getCVC());
-                    final String stripeKey = mCurrentQuote.getStripeKey();
-                    bus.post(new StripeEvent.RequestCreateToken(card, stripeKey));
-                }
-                else { completeBooking(); }
+            if (mUseAndroidPay)
+            {
+                final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
+                        mCurrentQuote,
+                        mCurrentTransaction,
+                        mMaskedWallet
+                );
+                Wallet.Payments.loadFullWallet(mGoogleApiClient, fullWalletRequest,
+                                               ActivityResult.LOAD_FULL_WALLET
+                );
             }
+            else if (!mUseExistingCard)
+            {
+                final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
+                                           mExpText.getExpYear(), mCvcText.getCVC()
+                );
+                final String stripeKey = mCurrentQuote.getStripeKey();
+                bus.post(new StripeEvent.RequestCreateToken(card, stripeKey));
+            }
+            else { completeBooking(); }
         }
-    };
+    }
 
     @Subscribe
     public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
@@ -849,24 +872,29 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         final String email = user != null ? user.getEmail() : null;
 
         dataManager.applyPromo(promoCode, bookingId, userId, email,
-                new FragmentSafeCallback<BookingQuote>(this)
-                {
-                    @Override
-                    public void onCallbackSuccess(final BookingQuote bookingQuote)
-                    {
-                        bus.post(new LogEvent.AddLogEvent(
-                                new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(
-                                        promoCode
-                                )));
-                        handlePromoSuccess(bookingQuote, mCurrentTransaction, promoCode);
-                    }
+                               new FragmentSafeCallback<BookingQuote>(this)
+                               {
+                                   @Override
+                                   public void onCallbackSuccess(final BookingQuote bookingQuote)
+                                   {
+                                       bus.post(new LogEvent.AddLogEvent(
+                                               new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(
+                                                       promoCode
+                                               )));
+                                       handlePromoSuccess(
+                                               bookingQuote,
+                                               mCurrentTransaction,
+                                               promoCode
+                                       );
+                                   }
 
-                    @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
-                        handlePromoFailure(error);
-                    }
-                });
+                                   @Override
+                                   public void onCallbackError(final DataManager.DataManagerError error)
+                                   {
+                                       handlePromoFailure(error);
+                                   }
+                               }
+        );
     }
 
     private void completeBooking()
@@ -918,7 +946,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         if (user != null)
                         {
                             bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(),
-                                    null));
+                                                                null
+                            ));
                         }
 
                         bookingManager.setCurrentPostInfo(
@@ -928,14 +957,20 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                                 new FinalizeBookingRequestPayload()
                         );
 
-                        final Intent intent = new Intent(getActivity(),
-                                BookingFinalizeActivity.class);
+                        final Intent intent = new Intent(
+                                getActivity(),
+                                BookingFinalizeActivity.class
+                        );
 
                         intent.putExtra(BookingFinalizeActivity.EXTRA_NEW_USER, isNewUser);
-                        intent.putExtra(BookingFinalizeActivity.EXTRA_INSTRUCTIONS,
-                                trans.getInstructions());
-                        intent.putExtra(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO,
-                                trans.getEntryMethodsInfo());
+                        intent.putExtra(
+                                BookingFinalizeActivity.EXTRA_INSTRUCTIONS,
+                                trans.getInstructions()
+                        );
+                        intent.putExtra(
+                                BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO,
+                                trans.getEntryMethodsInfo()
+                        );
                         startActivity(intent);
 
                         enableInputs();
@@ -945,7 +980,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error)
                     {
-                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestErrorLog(error.getMessage())));
+                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestErrorLog(
+                                error.getMessage())));
 
                         if (!allowCallbacks) { return; }
                         enableInputs();
@@ -953,7 +989,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         progressDialog.dismiss();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
-                });
+                }
+        );
     }
 
     private void setReferrerToken()
@@ -962,7 +999,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         // The variable referrerToken may be null but that's ok! It just means that the booking
         // flow was not initiated through Button.
         final String referrerToken = com.usebutton.sdk.Button.getButton(applicationContext)
-                .getReferrerToken();
+                                                             .getReferrerToken();
         mCurrentTransaction.setReferrerToken(referrerToken);
     }
 
