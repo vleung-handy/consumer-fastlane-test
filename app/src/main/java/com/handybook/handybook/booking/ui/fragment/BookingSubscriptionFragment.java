@@ -77,8 +77,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
+        final View view = inflater.inflate(
                                                R.layout.fragment_booking_subscription,
                                                container,
                                                false
@@ -89,21 +88,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         createFrequencyView();
         createSubscriptionOptions();
         return view;
-    }
-
-    @Override
-    protected final void disableInputs()
-    {
-        //TODO sammy disable when defaults not selected
-        super.disableInputs();
-        nextButton.setClickable(false);
-    }
-
-    @Override
-    protected final void enableInputs()
-    {
-        super.enableInputs();
-        nextButton.setClickable(true);
     }
 
     @OnClick(R.id.next_button)
@@ -123,14 +107,13 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     @OnClick(R.id.booking_subscription_toolbar_faq)
     public void onFAQClicked()
     {
-        String faqURL = bookingManager.getCurrentQuote().getCommitmentFAQURL();
+        String faqURL = bookingManager.getCurrentQuote().getCommitmentFaqUrl();
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFAQPressedLog(faqURL)));
         WebViewFragment fragment = WebViewFragment
                 .newInstance(faqURL, getString(R.string.booking_subscription_titlebar_faq));
         FragmentUtils.switchToFragment(this, fragment, true);
     }
 
-    //TODO sammy do we have to handle onactivity result when users put in a promo code/remove it on final flow page
     private void createFrequencyView()
     {
         List<SubscriptionFrequency> frequencies = bookingManager.getCurrentQuote()
@@ -274,7 +257,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                     );
                 }
 
-                //todo sammy udpate to have default only update if previous one doesn't exist
                 if (isEnabled && subscriptionLength.isDefault())
                 {
                     mSubscriptionOptionsView.setCurrentIndex(i);

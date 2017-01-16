@@ -17,7 +17,6 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
@@ -143,31 +142,29 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         );
         final String currChar = quote.getCurrencyChar();
 
-        //TODO sammy trust and support update this with new price quote stuff
         priceView.setCurrencySymbol(currChar);
 
         //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-        if (!android.text.TextUtils.isEmpty(transaction.getCommitmentType()))
+        if (quote.getCommitmentType() != null)
         {
-            priceView.setPrice(Math.round(pricing[1]));
+            priceView.setPriceCents(Math.round(pricing[1]));
         }
         else
         {
-            priceView.setPrice(pricing[1]);
+            priceView.setPriceDollars(pricing[1]);
         }
 
         if (pricing[1] < pricing[0])
         {
             String priceText = "";
             //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-            if (!android.text.TextUtils.isEmpty(transaction.getCommitmentType()))
+            if (quote.getCommitmentType() != null)
             {
                 priceText = TextUtils.formatPriceCents(Math.round(pricing[0]), currChar);
             }
             else
             {
-                priceText = (currChar != null ? currChar : "$")
-                        + new DecimalFormat("0.00").format(pricing[0]);
+                priceText = TextUtils.formatPrice(pricing[0], currChar, quote.getCurrencySuffix());
             }
 
             discountText.setText(priceText);

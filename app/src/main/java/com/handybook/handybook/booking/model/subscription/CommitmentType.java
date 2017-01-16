@@ -26,6 +26,14 @@ public class CommitmentType implements Serializable
     public static final String STRING_NO_COMMITMENT = "no_commitment";
     public static final String STRING_MONTHS = "months";
 
+    private static final String JSON_KEY_DEFAULT = "default";
+    private static final String JSON_KEY_TITLE = "title";
+    private static final String JSON_KEY_DISABLED = "disabled";
+    private static final String JSON_KEY_HOURS = "hours";
+    private static final String JSON_KEY_FREQUENCY = "frequency";
+    private static final String JSON_KEY_FULL_PRICE = "full_price";
+    private static final String JSON_KEY_AMOUNT_DUE = "amount_due";
+
     @SerializedName(STRING_NO_COMMITMENT)
     private JsonObject mNoCommitment;
 
@@ -119,8 +127,8 @@ public class CommitmentType implements Serializable
             {
                 SubscriptionLength length = new SubscriptionLength(
                         lengthKey,
-                        GsonUtil.safeGetAsString(lengthInformation.get("title")),
-                        GsonUtil.safeGetAsBoolean(lengthInformation.get("default"))
+                        GsonUtil.safeGetAsString(lengthInformation.get(JSON_KEY_TITLE)),
+                        GsonUtil.safeGetAsBoolean(lengthInformation.get(JSON_KEY_DEFAULT))
                 );
 
                 //This is not added to the unique lengths because 0 is not to be displayed
@@ -132,7 +140,7 @@ public class CommitmentType implements Serializable
             }
 
             //digging deeper in the length information, we'll find frequency
-            JsonObject frequencyData = (JsonObject) lengthInformation.get("frequency");
+            JsonObject frequencyData = (JsonObject) lengthInformation.get(JSON_KEY_FREQUENCY);
             processFrequencies(frequencyData, lengthKey);
         }
     }
@@ -156,22 +164,22 @@ public class CommitmentType implements Serializable
             String freqKey = SubscriptionFrequency.convertFrequencyKey(entrySet.getKey());
             JsonObject freqInformation = (JsonObject) entrySet.getValue();
 
-            //within freqInformation, there is the prices ("hours") table, in the form of
-            //{"3", "3.5", "4.0"}
-            JsonObject hours = (JsonObject) freqInformation.get("hours");
-            boolean isEnabled = !GsonUtil.safeGetAsBoolean(freqInformation.get("disabled"));
-            boolean isDefault = GsonUtil.safeGetAsBoolean(freqInformation.get("default"));
-
             //if it's enabled and we don't already have this frequency, then add it to frequency list
-            if (isEnabled && !contains(mUniqueFrequencies, freqKey))
+            if (!contains(mUniqueFrequencies, freqKey))
             {
                 SubscriptionFrequency frequency = new SubscriptionFrequency(
                         freqKey,
-                        GsonUtil.safeGetAsString(freqInformation.get("title")),
-                        GsonUtil.safeGetAsBoolean(freqInformation.get("default"))
+                        GsonUtil.safeGetAsString(freqInformation.get(JSON_KEY_TITLE)),
+                        GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DEFAULT))
                 );
                 mUniqueFrequencies.add(frequency);
             }
+
+            //within freqInformation, there is the prices ("hours") table, in the form of
+            //{"3", "3.5", "4.0"}
+            JsonObject hours = (JsonObject) freqInformation.get(JSON_KEY_HOURS);
+            boolean isEnabled = !GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DISABLED));
+            boolean isDefault = GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DEFAULT));
 
             processHours(lengthKey, freqKey, hours, isDefault, isEnabled);
         }
@@ -213,7 +221,12 @@ public class CommitmentType implements Serializable
             {
                 //there is something wrong here, prices not found. Invalid length / frequency combination
                 Crashlytics.logException(new RuntimeException(
-                        "there is something wrong here, prices not found. Invalid length / frequency combination"));
+                        String.format(
+                                "Subscription price for length: [%s] and frequency: [%s} not found in subscription list: [%s]",
+                                lengthKey,
+                                frequencyKey,
+                                mSubscriptionPrices.toString()
+                        )));
             }
         }
 
@@ -260,8 +273,8 @@ public class CommitmentType implements Serializable
                     prices.put(
                             hourKey,
                             new Price(
-                                    priceData.get("full_price").getAsInt(),
-                                    priceData.get("amount_due").getAsInt()
+                                    priceData.get(JSON_KEY_FULL_PRICE).getAsInt(),
+                                    priceData.get(JSON_KEY_AMOUNT_DUE).getAsInt()
                             )
                     );
                 }

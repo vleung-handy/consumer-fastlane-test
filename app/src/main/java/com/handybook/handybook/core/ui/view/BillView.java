@@ -105,7 +105,7 @@ public class BillView extends FrameLayout
         final String currencySymbol = mBill.getCurrencySymbol();
         mHeaderPrice.setCurrencySymbol(currencySymbol);
         final Integer finalPriceValueCents = mBill.getFinalPriceValueCents();
-        mHeaderPrice.setPrice(finalPriceValueCents);
+        mHeaderPrice.setPriceCents(finalPriceValueCents);
     }
 
     public boolean isExpanded()

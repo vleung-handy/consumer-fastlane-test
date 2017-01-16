@@ -78,7 +78,7 @@ public class BookingQuote extends Observable
     @SerializedName(KEY_HOURLY_AMOUNT)
     private float mHourlyAmount;
     @SerializedName(KEY_COMMITMENT_FAQ_URL)
-    private String mCommitmentFAQURL;
+    private String mCommitmentFaqUrl;
 
     @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
@@ -211,9 +211,9 @@ public class BookingQuote extends Observable
         triggerObservers();
     }
 
-    public String getCommitmentFAQURL()
+    public String getCommitmentFaqUrl()
     {
-        return mCommitmentFAQURL;
+        return mCommitmentFaqUrl;
     }
 
     public String getUserId()

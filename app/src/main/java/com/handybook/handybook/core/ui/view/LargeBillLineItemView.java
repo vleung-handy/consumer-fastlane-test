@@ -72,7 +72,7 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
             mPrice.setVisibility(VISIBLE);
             mPriceOverride.setVisibility(GONE);
             mPrice.setCurrencySymbol(getCurrencySymbol());
-            mPrice.setPrice(getBillLineItem().getAmountCents());
+            mPrice.setPriceCents(getBillLineItem().getAmountCents());
 
         }
     }
