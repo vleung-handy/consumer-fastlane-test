@@ -41,18 +41,18 @@ import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
-import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
-import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.model.request.CreateUserRequest;
 import com.handybook.handybook.core.model.request.UpdateUserRequest;
 import com.handybook.handybook.core.model.response.HelpCenterResponse;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
-import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
 import com.handybook.handybook.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
@@ -452,6 +452,26 @@ public class DataManager
                 cb.onSuccess(BookingQuote.fromJson(response.toString()));
             }
         });
+    }
+
+    public void updateQuote(
+            final int quoteId,
+            final BookingTransaction bookingTransaction,
+            final Callback<BookingQuote> cb
+    )
+    {
+        mService.updateQuote(
+                quoteId,
+                bookingTransaction,
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        cb.onSuccess(BookingQuote.fromJson(response.toString()));
+                    }
+                }
+        );
     }
 
     public void applyPromo(

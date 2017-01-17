@@ -105,6 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                tools:visibility="visible"
                 />
 
             <TextView
@@ -117,6 +118,7 @@
                 android:textColor="@color/handy_blue"
                 android:textSize="@dimen/text_size_large"
                 android:visibility="gone"
+                tools:visibility="visible"
                 />
 
             <LinearLayout
@@ -127,6 +129,7 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:visibility="gone"
+                tools:visibility="visible"
                 >
 
                 <com.handybook.handybook.library.ui.view.FreezableInputTextView
@@ -164,6 +167,16 @@
                 </FrameLayout>
 
             </LinearLayout>
+
+            <com.handybook.handybook.core.ui.view.BillView
+                android:id="@+id/payment_screen_bill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                tools:visibility="visible"
+                />
 
             <TextView
                 android:id="@+id/booking_payment_terms_of_use_text"

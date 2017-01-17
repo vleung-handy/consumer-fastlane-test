@@ -58,6 +58,7 @@ import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.event.StripeEvent;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
+import com.handybook.handybook.core.ui.view.BillView;
 import com.handybook.handybook.core.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.core.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.core.ui.widget.CreditCardIconImageView;
@@ -79,18 +80,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.card.payment.CardIOActivity;
 
-public class BookingPaymentFragment extends BookingFlowFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+public class BookingPaymentFragment extends BookingFlowFragment implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener
 {
-    //TODO: would be nice to have a ViewModel
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
     private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
     private static final String STATE_USE_EXISTING_CARD = "USE_EXISTING_CARD";
 
-    private boolean mUseExistingCard;
-    private boolean mUseAndroidPay;
-    private GoogleApiClient mGoogleApiClient;
-    private MaskedWallet mMaskedWallet;
     @Inject
     ServicesManager mServicesManager;
 
@@ -130,9 +128,15 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     TextView mTermsOfUseText;
     @Bind(R.id.scan_card_button)
     TextView mScanCardButton;
-
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.payment_screen_bill)
+    BillView mBillView;
+
+    private boolean mUseExistingCard;
+    private boolean mUseAndroidPay;
+    private GoogleApiClient mGoogleApiClient;
+    private MaskedWallet mMaskedWallet;
     private BookingQuote mCurrentQuote;
     private BookingTransaction mCurrentTransaction;
 
@@ -161,7 +165,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         {
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT))
             {
-                io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(
+                        CardIOActivity.EXTRA_SCAN_RESULT);
                 onScannedCardResult(scannedCardResult);
             }
         }
@@ -172,7 +177,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCreditCardText.setText(scannedCardResult.cardNumber);
         if (scannedCardResult.isExpiryValid())
         {
-            mExpText.setTextFromMonthYear(scannedCardResult.expiryMonth, scannedCardResult.expiryYear);
+            mExpText.setTextFromMonthYear(
+                    scannedCardResult.expiryMonth,
+                    scannedCardResult.expiryYear
+            );
         }
         mCvcText.setText(scannedCardResult.cvv);
     }
@@ -188,10 +196,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     {
         if (mMaskedWallet != null)
         {
-            Wallet.Payments.changeMaskedWallet(mGoogleApiClient,
+            Wallet.Payments.changeMaskedWallet(
+                    mGoogleApiClient,
                     mMaskedWallet.getGoogleTransactionId(),
                     null,
-                    ActivityResult.LOAD_MASKED_WALLET);
+                    ActivityResult.LOAD_MASKED_WALLET
+            );
         }
         else
         {
@@ -199,9 +209,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     mCurrentQuote,
                     mCurrentTransaction
             );
-            Wallet.Payments.loadMaskedWallet(mGoogleApiClient,
+            Wallet.Payments.loadMaskedWallet(
+                    mGoogleApiClient,
                     maskedWalletRequest,
-                    ActivityResult.LOAD_MASKED_WALLET);
+                    ActivityResult.LOAD_MASKED_WALLET
+            );
         }
     }
 
@@ -240,6 +252,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         .setTheme(WalletConstants.THEME_LIGHT)
                         .build())
                 .build();
+        mGoogleApiClient.connect();
         mCurrentQuote = bookingManager.getCurrentQuote();
         mCurrentTransaction = bookingManager.getCurrentTransaction();
 
@@ -266,13 +279,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
     @Override
     public final View onCreateView(
-            final LayoutInflater inflater, final ViewGroup container,
+            final LayoutInflater inflater,
+            final ViewGroup container,
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_payment, container, false);
-
+        final View view = inflater.inflate(R.layout.fragment_booking_payment, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.payment));
         showBookingWarningIfApplicable(mCurrentQuote);
@@ -280,13 +292,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         {
             showToast(mCurrentQuote.getCoupon().getWarning());
         }
-        final BookingHeaderFragment header = new BookingHeaderFragment();
-        final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.info_header_layout, header).commit();
-
         final User user = userManager.getCurrentUser();
         final User.CreditCard card = user != null ? user.getCreditCard() : null;
-
         if ((card != null && card.getLast4() != null)
                 && (savedInstanceState == null || mUseExistingCard)
                 && !user.isUsingAndroidPay())
@@ -297,19 +304,81 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             mCreditCardIcon.setCardIcon(card.getBrand());
         }
 
-        mCreditCardText.addTextChangedListener(cardTextWatcher);
-        mNextButton.setOnClickListener(nextClicked);
+        mCreditCardText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(
+                    final CharSequence charSequence, final int start,
+                    final int count, final int after
+            )
+            { }
 
-        mLockIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.black_pressed),
-                PorterDuff.Mode.SRC_ATOP);
+            @Override
+            public void onTextChanged(
+                    final CharSequence charSequence, final int start,
+                    final int before, final int count
+            )
+            { }
 
-        showViewForPromoCodeApplied();
+            @Override
+            public void afterTextChanged(final Editable editable)
+            {
+                if (!mUseExistingCard)
+                {
+                    mCreditCardIcon.setCardIcon(mCreditCardText.getCardType());
+                }
+            }
+        });
+        mLockIcon.setColorFilter(
+                ContextCompat.getColor(getContext(), R.color.black_pressed),
+                PorterDuff.Mode.SRC_ATOP
+        );
 
-        mGoogleApiClient.connect();
-
+        initializePromoCodeView();
+        initializeBill();
         initializeTermsOfUseText();
 
         return view;
+    }
+
+    /**
+     * Show either "apply promo code" button or the promo code input field
+     * based on the applied promo code
+     */
+    private void initializePromoCodeView()
+    {
+        String appliedPromoCode = mCurrentTransaction.promoApplied();
+
+        if (ValidationUtils.isNullOrEmpty(appliedPromoCode))
+        {
+            //no promo code. show the "Apply Promo Code" button
+            showApplyPromoCodeButton();
+        }
+        else //has a promo code. display it
+        {
+            showAndUpdatePromoCodeInput();
+        }
+    }
+
+    private void initializeBill()
+    {
+        if (mCurrentQuote.getBill() == null)
+        {
+            mBillView.setVisibility(View.GONE);
+            initializeBookingHeader();
+        }
+        else
+        {
+            mBillView.setVisibility(View.VISIBLE);
+            mBillView.setBill(mCurrentQuote.getBill());
+        }
+    }
+
+    private void initializeBookingHeader()
+    {
+        final BookingHeaderFragment headerFragment = new BookingHeaderFragment();
+        final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.info_header_layout, headerFragment).commit();
     }
 
     /**
@@ -364,29 +433,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         if (fragmentManager.findFragmentByTag(NavbarWebViewDialogFragment.FRAGMENT_TAG) == null)
         //only show if there isn't an instance of the fragment showing already
         {
-            NavbarWebViewDialogFragment navbarWebViewDialogFragment = NavbarWebViewDialogFragment
-                    .newInstance(getString(R.string.handy_terms_of_use_title), getString(R.string
-                            .handy_terms_of_use_url));
-            navbarWebViewDialogFragment.show(fragmentManager, NavbarWebViewDialogFragment.FRAGMENT_TAG);
-        }
-    }
-
-    /**
-     * Show either "apply promo code" button or the promo code input field
-     * based on the applied promo code
-     */
-    private void showViewForPromoCodeApplied()
-    {
-        String appliedPromoCode = mCurrentTransaction.promoApplied();
-
-        if (ValidationUtils.isNullOrEmpty(appliedPromoCode))
-        {
-            //no promo code. show the "Apply Promo Code" button
-            showApplyPromoCodeButton();
-        }
-        else //has a promo code. display it
-        {
-            showAndUpdatePromoCodeInput();
+            NavbarWebViewDialogFragment df = NavbarWebViewDialogFragment
+                    .newInstance(
+                            getString(R.string.handy_terms_of_use_title),
+                            getString(R.string.handy_terms_of_use_url)
+                    );
+            df.show(fragmentManager, NavbarWebViewDialogFragment.FRAGMENT_TAG);
         }
     }
 
@@ -449,7 +501,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         outState.putBoolean(STATE_USE_EXISTING_CARD, mUseExistingCard);
     }
 
-    public void handleLoadFullWalletResult(final int resultCode, final Intent data, final int errorCode)
+    public void handleLoadFullWalletResult(
+            final int resultCode,
+            final Intent data,
+            final int errorCode
+    )
     {
         switch (resultCode)
         {
@@ -472,7 +528,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         }
     }
 
-    public void handleLoadMaskedWalletResult(final int resultCode, final Intent data, final int errorCode)
+    public void handleLoadMaskedWalletResult(
+            final int resultCode,
+            final Intent data,
+            final int errorCode
+    )
     {
         switch (resultCode)
         {
@@ -513,7 +573,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                 showToast(R.string.android_pay_unavailable);
                 break;
         }
-        handleError();
+        enableInputs();
+        mNextButton.setClickable(true);
+        progressDialog.dismiss();
     }
 
     @Override
@@ -521,7 +583,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     {
         super.disableInputs();
         mNextButton.setClickable(false);
-
         final InputMethodManager imm = (InputMethodManager) getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mCreditCardText.getWindowToken(), 0);
@@ -596,7 +657,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             removePromo();
         }
 
-        showViewForPromoCodeApplied();
+        initializePromoCodeView();
     }
 
     private boolean hasAndroidPayPromoSavings()
@@ -630,7 +691,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
 
             mSelectPaymentPromoText.setText(getString(
                     R.string.booking_payment_android_pay_promo_savings_formatted,
-                    androidPayCouponValueFormatted));
+                    androidPayCouponValueFormatted
+            ));
             mSelectPaymentPromoText.setVisibility(View.VISIBLE);
         }
         else
@@ -718,58 +780,55 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mUseAndroidPay = true;
         mMaskedWallet = maskedWallet;
         mCreditCardIcon.setCardIcon(CreditCard.Type.ANDROID_PAY);
-
-        applyAndroidPayCoupon();
-    }
-
-    private void applyAndroidPayCoupon()
-    {
-        //apply android pay coupon
-        String promoCode = mCurrentQuote.getAndroidPayCouponCode();
-        applyPromo(promoCode);
+        applyPromo(mCurrentQuote.getAndroidPayCouponCode());
     }
 
     private void finishAndroidPayTransaction(FullWallet fullWallet)
     {
         if (!allowCallbacks) { return; }
         String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
-        com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(tokenJSON, com.stripe.model.Token.class);
+        com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(
+                tokenJSON,
+                com.stripe.model.Token.class
+        );
         mCurrentTransaction.setStripeToken(token.getId());
         mCurrentTransaction.setPaymentMethod(User.PAYMENT_METHOD_ANDROID_PAY);
         completeBooking();
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
+    @OnClick(R.id.next_button)
+    public void onNextClicked(final View view)
     {
-        @Override
-        public void onClick(final View view)
+        if (validateFields())
         {
-            if (validateFields())
-            {
-                disableInputs();
-                progressDialog.show();
+            disableInputs();
+            progressDialog.show();
 
-                if (mUseAndroidPay)
-                {
-                    final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
-                            mCurrentQuote,
-                            mCurrentTransaction,
-                            mMaskedWallet
-                    );
-                    Wallet.Payments.loadFullWallet(mGoogleApiClient, fullWalletRequest,
-                            ActivityResult.LOAD_FULL_WALLET);
-                }
-                else if (!mUseExistingCard)
-                {
-                    final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
-                            mExpText.getExpYear(), mCvcText.getCVC());
-                    final String stripeKey = mCurrentQuote.getStripeKey();
-                    bus.post(new StripeEvent.RequestCreateToken(card, stripeKey));
-                }
-                else { completeBooking(); }
+            if (mUseAndroidPay)
+            {
+                final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
+                        mCurrentQuote,
+                        mCurrentTransaction,
+                        mMaskedWallet
+                );
+                Wallet.Payments.loadFullWallet(mGoogleApiClient, fullWalletRequest,
+                                               ActivityResult.LOAD_FULL_WALLET
+                );
             }
+            else if (!mUseExistingCard)
+            {
+                final Card card = new Card(
+                        mCreditCardText.getCardNumber(),
+                        mExpText.getExpMonth(),
+                        mExpText.getExpYear(),
+                        mCvcText.getCVC()
+                );
+                final String stripeKey = mCurrentQuote.getStripeKey();
+                bus.post(new StripeEvent.RequestCreateToken(card, stripeKey));
+            }
+            else { completeBooking(); }
         }
-    };
+    }
 
     @Subscribe
     public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
@@ -824,6 +883,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
             @Override
             public void onCallbackSuccess(final BookingCoupon coupon)
             {
+                // FIXME: This should give us back the updated quote, not coupon!
                 removePromoSuccess(coupon, mCurrentQuote, mCurrentTransaction, null);
                 bookingManager.setPromoTabCoupon(null);
             }
@@ -849,16 +909,21 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         final String userId = user != null ? user.getId() : null;
         final String email = user != null ? user.getEmail() : null;
 
-        dataManager.applyPromo(promoCode, bookingId, userId, email,
+        dataManager.applyPromo(
+                promoCode,
+                bookingId,
+                userId,
+                email,
                 new FragmentSafeCallback<BookingQuote>(this)
                 {
                     @Override
                     public void onCallbackSuccess(final BookingQuote bookingQuote)
                     {
-                        bus.post(new LogEvent.AddLogEvent(
-                                new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(
-                                        promoCode
-                                )));
+                        bus.post(
+                                new LogEvent.AddLogEvent(
+                                        new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(
+                                                promoCode
+                                        )));
                         applyPromoSuccess(bookingQuote, mCurrentTransaction, promoCode);
                     }
 
@@ -867,13 +932,20 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     {
                         handlePromoFailure(error);
                     }
-                });
+                }
+        );
     }
 
     private void completeBooking()
     {
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSubmittedLog()));
-        setReferrerToken();
+        final Context applicationContext = getActivity().getApplicationContext();
+        // The variable referrerToken may be null but that's ok! It just means that the booking
+        // flow was not initiated through Button.
+        final String referrerToken = com.usebutton.sdk.Button
+                .getButton(applicationContext)
+                .getReferrerToken();
+        mCurrentTransaction.setReferrerToken(referrerToken);
         dataManager.createBooking(
                 mCurrentTransaction,
                 new FragmentSafeCallback<BookingCompleteTransaction>(this)
@@ -884,7 +956,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                         bus.post(new LogEvent.AddLogEvent(
                                 new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())
                         ));
-
                         bus.post(new LogEvent.AddLogEvent(
                                 new BookingFunnelLog.BookingRequestMadeLog(
                                         bookingManager.getCurrentQuote(),
@@ -894,51 +965,46 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                                         mServicesManager.getServiceNameByServiceId(
                                                 mCurrentTransaction.getServiceId())
                                 )));
-
-                        //UPGRADE: Should we use this trans or ask the manager for current trans?
-                        // So much inconsistency....
                         if (!allowCallbacks) { return; }
-
                         mCurrentTransaction.setBookingId(trans.getId());
-
                         boolean isNewUser = false;
-
                         if (userManager.getCurrentUser() == null)
                         {
                             isNewUser = true;
-
                             final BookingCompleteTransaction.User transUser = trans.getUser();
                             final User user = new User();
-
                             user.setAuthToken(transUser.getAuthToken());
                             user.setId(transUser.getId());
                             userManager.setCurrentUser(user);
                         }
-
                         final User user = userManager.getCurrentUser();
                         if (user != null)
                         {
-                            bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(),
-                                    null));
+                            bus.post(new HandyEvent.RequestUser(
+                                             user.getId(),
+                                             user.getAuthToken(),
+                                             null
+                                     )
+                            );
                         }
-
-                        bookingManager.setCurrentPostInfo(
-                                new BookingPostInfo()
-                        );
+                        bookingManager.setCurrentPostInfo(new BookingPostInfo());
                         bookingManager.setCurrentFinalizeBookingRequestPayload(
                                 new FinalizeBookingRequestPayload()
                         );
-
-                        final Intent intent = new Intent(getActivity(),
-                                BookingFinalizeActivity.class);
-
+                        final Intent intent = new Intent(
+                                getActivity(),
+                                BookingFinalizeActivity.class
+                        );
                         intent.putExtra(BookingFinalizeActivity.EXTRA_NEW_USER, isNewUser);
-                        intent.putExtra(BookingFinalizeActivity.EXTRA_INSTRUCTIONS,
-                                trans.getInstructions());
-                        intent.putExtra(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO,
-                                trans.getEntryMethodsInfo());
+                        intent.putExtra(
+                                BookingFinalizeActivity.EXTRA_INSTRUCTIONS,
+                                trans.getInstructions()
+                        );
+                        intent.putExtra(
+                                BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO,
+                                trans.getEntryMethodsInfo()
+                        );
                         startActivity(intent);
-
                         enableInputs();
                         progressDialog.dismiss();
                     }
@@ -946,51 +1012,18 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error)
                     {
-                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestErrorLog(error.getMessage())));
-
+                        bus.post(new LogEvent.AddLogEvent(
+                                new BookingFunnelLog.BookingRequestErrorLog(error.getMessage())
+                        ));
                         if (!allowCallbacks) { return; }
                         enableInputs();
                         checkAndShowPaymentMethodSelection();
                         progressDialog.dismiss();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
-                });
+                }
+        );
     }
-
-    private void setReferrerToken()
-    {
-        final Context applicationContext = getActivity().getApplicationContext();
-        // The variable referrerToken may be null but that's ok! It just means that the booking
-        // flow was not initiated through Button.
-        final String referrerToken = com.usebutton.sdk.Button.getButton(applicationContext)
-                .getReferrerToken();
-        mCurrentTransaction.setReferrerToken(referrerToken);
-    }
-
-    private final TextWatcher cardTextWatcher = new TextWatcher()
-    {
-        @Override
-        public void beforeTextChanged(
-                final CharSequence charSequence, final int start,
-                final int count, final int after
-        )
-        {
-        }
-
-        @Override
-        public void onTextChanged(
-                final CharSequence charSequence, final int start,
-                final int before, final int count
-        )
-        {
-        }
-
-        @Override
-        public void afterTextChanged(final Editable editable)
-        {
-            if (!mUseExistingCard) { mCreditCardIcon.setCardIcon(mCreditCardText.getCardType()); }
-        }
-    };
 
     /**
      * This is a new method that handles the updated API that returns the whole quote not a subset
@@ -1003,6 +1036,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     )
     {
         if (!allowCallbacks) { return; }
+        // FIXME: Here we should eb storing this instead of replacing it's insides....ffs
+        mCurrentQuote.setBill(newQuote.getBill());
+        initializeBill();
         mCurrentQuote.setPriceTable(newQuote.getPriceTable());
         mCurrentQuote.setSurgePriceTable(newQuote.getSurgePriceTable());
         mCurrentQuote.setCoupon(newQuote.getCoupon());
@@ -1015,32 +1051,32 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mPromoText.setText(null);
     }
 
+    private void removePromoSuccess(
+            final BookingCoupon coupon,
+            final BookingQuote quote,
+            final BookingTransaction transaction,
+            final String promo
+    )
+    {
+        if (!allowCallbacks) { return; }
+        // FIXME: Here we should be toring the new quote in bookingManager
+        quote.setPriceTable(coupon.getPriceTable());
+        if (coupon.getCommitmentPrices() != null)
+        {
+            quote.setCommitmentPrices(coupon.getCommitmentPrices());
+            quote.setupCommitmentPricingStructure();
+        }
+        transaction.setPromoApplied(promo);
+        updatePromoUI();
+        mPromoText.setText(null);
+    }
+
     private void showBookingWarningIfApplicable(BookingQuote quote)
     {
         if (quote.hasCouponWarning())
         {
             showToast(quote.getCoupon().getWarning());
         }
-
-    }
-
-    private void removePromoSuccess(
-            final BookingCoupon coupon, final BookingQuote quote,
-            final BookingTransaction transaction, final String promo
-    )
-    {
-        if (!allowCallbacks) { return; }
-        quote.setPriceTable(coupon.getPriceTable());
-
-        if (coupon.getCommitmentPrices() != null)
-        {
-            quote.setCommitmentPrices(coupon.getCommitmentPrices());
-            quote.setupCommitmentPricingStructure();
-        }
-
-        transaction.setPromoApplied(promo);
-        updatePromoUI();
-        mPromoText.setText(null);
     }
 
     private void handlePromoFailure(final DataManager.DataManagerError error)
@@ -1055,11 +1091,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
     {
         final String promo = mCurrentTransaction.promoApplied();
         final boolean applied = (promo != null);
-
         mPromoProgress.setVisibility(View.INVISIBLE);
         mPromoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
         mPromoButton.setVisibility(View.VISIBLE);
-
         String promoCodeDisplayString;
         if (applied)
         {
@@ -1079,10 +1113,4 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mPromoText.setDisabled(applied, promoCodeDisplayString);
     }
 
-    public void handleError()
-    {
-        enableInputs();
-        mNextButton.setClickable(true);
-        progressDialog.dismiss();
-    }
 }

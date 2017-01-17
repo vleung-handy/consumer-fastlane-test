@@ -126,14 +126,13 @@ public class BookingQuote extends Observable
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
 
-
     public static class QuoteConfig implements Serializable
     {
+
         @SerializedName("disclaimer_text")
         private String mDisclaimerText;
         @SerializedName("recurrence_options")
         private List<RecurrenceOption> mRecurrenceOptions;
-
         public String getDisclaimerText()
         {
             return mDisclaimerText;
@@ -143,8 +142,8 @@ public class BookingQuote extends Observable
         {
             return mRecurrenceOptions;
         }
-    }
 
+    }
     /**
      * Now replaced by using the price in {@link CommitmentType}
      */
@@ -444,6 +443,11 @@ public class BookingQuote extends Observable
     public Bill getBill()
     {
         return mBill;
+    }
+
+    public void setBill(@Nullable final Bill bill)
+    {
+        mBill = bill;
     }
 
     public CommitmentType getCommitmentType()
