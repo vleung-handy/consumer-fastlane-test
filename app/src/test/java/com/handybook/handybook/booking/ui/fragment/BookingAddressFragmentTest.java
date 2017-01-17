@@ -49,7 +49,11 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
         when(mMockBookingRequest.getTimeZone()).thenReturn("America/Los_Angeles");
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockBookingRequest);
-        when(mMockQuote.getPricing(anyFloat(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(
+                anyFloat(),
+                anyInt(),
+                anyInt()
+        )).thenReturn(new float[]{0.0f, 0.0f});
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         mFragment = BookingAddressFragment.newInstance();
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
