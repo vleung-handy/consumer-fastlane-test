@@ -352,14 +352,14 @@ public class BookingQuote extends Observable
      * @return
      */
     @Nullable
-    public float[] getPricing(final float hours, final int freq, final int lengths)
+    public float[] getPricing(final float hours, final int freq, final int length)
     {
         if (getCommitmentType() != null)
         {
             //this means to use the new commitment model
             Price price = getCommitmentType()
                     .getPrice(
-                            String.valueOf(lengths),
+                            String.valueOf(length),
                             String.valueOf(freq),
                             String.valueOf(hours)
                     );
