@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/default_padding_double"
+        android:paddingBottom="@dimen/default_padding_double"
+        android:paddingLeft="@dimen/default_margin_4x"
+        android:paddingRight="@dimen/default_margin_4x"
+        android:background="@color/handy_blue"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:id="@+id/image_logo"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_home_logo"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:layout_centerHorizontal="true"
+                />
+
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book trusted cleaners &amp; handymen instantly"
+                android:textColor="@color/handy_white"
+                style="@style/TextView.XLarge"
+                android:textAllCaps="false"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_below="@id/image_logo"
+                />
+
+            <TextView
+                android:id="@+id/text_already_have_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_title"
+                android:layout_marginTop="@dimen/default_margin_double"
+                android:text="Already have an account?"
+                android:textColor="@color/handy_blue_indeterminate_progress_bar"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/text_already_have_account"
+                android:layout_below="@id/text_title"
+                android:layout_alignBaseline="@id/text_already_have_account"
+                android:text="Sign In"
+                style="@style/Button.Link.Bold.White"
+                android:textColor="@color/handy_white"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
+
+    </android.support.design.widget.CollapsingToolbarLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/onboarding_map"
+            android:scaleType="centerCrop"
+            />
+
+        <com.handybook.handybook.library.ui.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_gravity="center"
+            >
+
+        </com.handybook.handybook.library.ui.view.ViewPager>
+    </FrameLayout>
+</LinearLayout>

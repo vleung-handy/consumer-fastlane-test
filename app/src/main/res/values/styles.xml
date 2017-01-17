@@ -201,6 +201,11 @@
         <item name="fontPath">fonts/CircularStd-Bold.otf</item>
     </style>
 
+    <style name="Button.Link.Bold.White"
+           parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/handy_white</item>
+    </style>
+
     <style name="RoundedButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
