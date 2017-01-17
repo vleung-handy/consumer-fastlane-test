@@ -66,6 +66,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
@@ -157,6 +158,7 @@ import static org.mockito.Mockito.when;
         BookingPaymentActivity.class,
         BookingPaymentFragment.class,
         BookingPaymentFragmentTest.class,
+        BookingSubscriptionFragment.class,
         BookingSubscriptionFragmentTest.class,
         BookingsActivity.class,
         CancelRecurringBookingSelectionFragment.class,
