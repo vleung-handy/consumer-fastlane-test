@@ -1009,6 +1009,16 @@ public class BookingPaymentFragment extends BookingFlowFragment implements Googl
         mCurrentQuote.setCommitmentPrices(newQuote.getCommitmentPrices());
         mCurrentQuote.setupCommitmentPricingStructure();
         mCurrentQuote.setActiveCommitmentTypes(newQuote.getActiveCommitmentTypes());
+
+        //stores this promo on disk (similar to how a user applies a coupon through the promo screen)
+        bookingManager.setPromoTabCoupon(promo);
+        if (bookingManager.getCurrentRequest() != null)
+        {
+            //this is so that in the case we make a request to create a new quote,
+            //we'll be making the request with this coupon applied. Also saving i
+            bookingManager.getCurrentRequest().setCoupon(promo);
+        }
+
         showBookingWarningIfApplicable(mCurrentQuote);
         transaction.setPromoApplied(promo);
         updatePromoUI();
