@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-//TODO this class and associates need major refactoring
+//TODO this class and associates need major refactoring. and change field names
 public class BookingOption implements Parcelable
 {
 
@@ -126,7 +126,7 @@ public class BookingOption implements Parcelable
         return title;
     }
 
-    void setTitle(final String title)
+    public void setTitle(final String title)
     {
         this.title = title;
     }

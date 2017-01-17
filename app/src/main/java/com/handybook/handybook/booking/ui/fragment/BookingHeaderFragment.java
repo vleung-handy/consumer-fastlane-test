@@ -11,12 +11,12 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.util.BookingUtil;
+import com.handybook.handybook.core.ui.view.PriceView;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.core.ui.view.PriceView;
-import com.handybook.handybook.booking.util.BookingUtil;
+import com.handybook.handybook.library.util.TextUtils;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Observable;
@@ -135,18 +135,38 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
             );
         }
 
-
-        final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
+        final float[] pricing = quote.getPricing(
+                hours,
+                transaction.getRecurringFrequency(),
+                transaction.getCommitmentLength()
+        );
         final String currChar = quote.getCurrencyChar();
 
-        //TODO sammy trust and support update this with new price quote stuff
         priceView.setCurrencySymbol(currChar);
-        priceView.setPrice(pricing[1]);
+
+        //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
+        if (quote.getCommitmentType() != null)
+        {
+            priceView.setPriceCents(Math.round(pricing[1]));
+        }
+        else
+        {
+            priceView.setPriceDollars(pricing[1]);
+        }
 
         if (pricing[1] < pricing[0])
         {
-            final String priceText = (currChar != null ? currChar : "$")
-                    + new DecimalFormat("0.00").format(pricing[0]);
+            String priceText = "";
+            //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
+            if (quote.getCommitmentType() != null)
+            {
+                priceText = TextUtils.formatPriceCents(Math.round(pricing[0]), currChar);
+            }
+            else
+            {
+                priceText = TextUtils.formatPrice(pricing[0], currChar, quote.getCurrencySuffix());
+            }
+
             discountText.setText(priceText);
             discountText.setVisibility(View.VISIBLE);
         }

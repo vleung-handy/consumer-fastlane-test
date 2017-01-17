@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Deprecated
 public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.CommitmentType>
 {
 

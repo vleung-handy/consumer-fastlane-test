@@ -22,7 +22,7 @@ public class PriceViewTest extends RobolectricGradleTestWrapper
     @Test
     public void testSetPriceFromFloat()
     {
-        mPriceView.setPrice(156.4f);//using this specific float because this used to cause the decimal component to be 39 instead of 40
+        mPriceView.setPriceDollars(156.4f);//using this specific float because this used to cause the decimal component to be 39 instead of 40
         assertEquals(mPriceView.mCardinal.getText(), "$156");
         assertEquals(mPriceView.mDecimal.getText(), "40");
     }
@@ -30,7 +30,7 @@ public class PriceViewTest extends RobolectricGradleTestWrapper
     @Test
     public void testSetPriceFromInteger()
     {
-        mPriceView.setPrice(15640);
+        mPriceView.setPriceCents(15640);
         assertEquals(mPriceView.mCardinal.getText(), "$156");
         assertEquals(mPriceView.mDecimal.getText(), "40");
     }

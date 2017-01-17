@@ -66,6 +66,19 @@ public class BookingFunnelLog extends EventLog
         }
     }
 
+    public static class BookingFAQPressedLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "commitment_faq_pressed";
+
+        @SerializedName("url")
+        private final String mFAQURL;
+
+        public BookingFAQPressedLog(String url)
+        {
+            super(EVENT_TYPE);
+            mFAQURL = url;
+        }
+    }
 
     /*
     don't like that this log nearly duped in the BookingDetailsLog class file

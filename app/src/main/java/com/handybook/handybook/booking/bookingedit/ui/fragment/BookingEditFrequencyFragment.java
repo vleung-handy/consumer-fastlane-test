@@ -142,6 +142,7 @@ public final class BookingEditFrequencyFragment extends BookingFlowFragment
 
         if (mBookingQuote != null)
         {
+
             float[] prices = mBookingQuote.getPricing(hours, frequency);
             if (prices != null && prices.length >= 2)
             {

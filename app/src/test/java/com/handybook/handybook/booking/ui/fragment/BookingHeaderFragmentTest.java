@@ -7,12 +7,12 @@ import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.util.BookingUtil;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.configuration.model.Configuration;
-import com.handybook.handybook.booking.util.BookingUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +60,11 @@ public class BookingHeaderFragmentTest extends RobolectricGradleTestWrapper
         when(mMockBookingRequest.getTimeZone()).thenReturn("America/Los_Angeles");
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockBookingRequest);
-        when(mMockQuote.getPricing(anyFloat(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(
+                anyFloat(),
+                anyInt(),
+                anyInt()
+        )).thenReturn(new float[]{0.0f, 0.0f});
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
 
         mFragment = BookingHeaderFragment.newInstance();

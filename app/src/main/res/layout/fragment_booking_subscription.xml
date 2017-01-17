@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/handy_bg"
+              android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="@dimen/med_elevation"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        app:contentInsetStart="0dp"
+        app:navigationIcon="@drawable/ic_back"
+        app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
+        app:titleMargin="@dimen/default_margin"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        >
+
+        <TextView
+            android:id="@+id/booking_subscription_toolbar_faq"
+            style="@style/TextView.NavbarAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:text="@string/booking_subscription_titlebar_faq"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="@string/booking_subscription_title"
+        android:textColor="@color/handy_text_black"
+        android:textSize="@dimen/text_size_large"
+        />
+
+    <FrameLayout
+        android:id="@+id/booking_frequency_options_spinner_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        />
+
+    <ScrollView
+        android:id="@+id/booking_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clipToPadding="true"
+        android:fillViewport="true"
+        >
+
+        <LinearLayout
+            android:id="@+id/booking_subscription_option_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/booking_subscription_term_title"
+                android:textColor="@color/handy_text_black"
+                android:gravity="center"
+                android:paddingTop="18dp"
+                android:textSize="@dimen/text_size_large"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/next_button"
+        style="@style/Button.Green"
+        android:text="@string/next"
+        />
+</LinearLayout>

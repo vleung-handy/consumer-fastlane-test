@@ -10,9 +10,9 @@ import com.google.android.gms.wallet.PaymentMethodTokenizationType;
 import com.google.android.gms.wallet.WalletConstants;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.core.BaseApplication;
 import com.stripe.Stripe;
 
 import java.util.List;
@@ -92,7 +92,11 @@ public class WalletUtils
                                        final BookingTransaction transaction)
     {
         final float hours = transaction.getHours() + transaction.getExtraHours();
-        final float[] pricing = quote.getPricing(hours, transaction.getRecurringFrequency());
+        final float[] pricing = quote.getPricing(
+                hours,
+                transaction.getRecurringFrequency(),
+                transaction.getCommitmentLength()
+        );
         return Float.toString(pricing[0] == pricing[1] ? pricing[0] : pricing[1]);
     }
 }

@@ -8,11 +8,12 @@ import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
+import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
@@ -27,16 +28,16 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
+public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrapper
 {
-    private BookingAddressFragment mFragment;
+    private BookingSubscriptionFragment mFragment;
 
     @Mock
     private BookingTransaction mMockTransaction;
-    @Mock
-    private BookingRequest mMockBookingRequest;
-    @Mock
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private BookingQuote mMockQuote;
+    @Mock
+    private BookingRequest mMockRequest;
     @Inject
     BookingManager mBookingManager;
 
@@ -46,30 +47,23 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
-        when(mMockBookingRequest.getTimeZone()).thenReturn("America/Los_Angeles");
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mBookingManager.getCurrentRequest()).thenReturn(mMockBookingRequest);
-        when(mMockQuote.getPricing(
-                anyFloat(),
-                anyInt(),
-                anyInt()
-        )).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPeakPriceTable()).thenReturn(null);
+        when(mMockRequest.getUniq()).thenReturn("home_cleaning");
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
-        mFragment = BookingAddressFragment.newInstance();
+        when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
+        mFragment = BookingSubscriptionFragment.newInstance();
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 
     @Test
-    public void shouldLaunchBookingPaymentActivity() throws Exception
+    public void shouldLaunchBookingExtrasActivity() throws Exception
     {
-        mFragment.mTextFullName.setText("John Doe");
-        mFragment.mAutoCompleteFragment.mStreet.setText("123 Handy St");
-        mFragment.mTextPhone.setText("1111111111");
-
-        mFragment.mButtonNext.performClick();
+        mFragment.nextButton.performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingPaymentActivity.class.getName()));
+                equalTo(BookingExtrasActivity.class.getName()));
     }
 }

@@ -12,6 +12,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.subscription.CommitmentType;
+import com.handybook.handybook.booking.model.subscription.Price;
 import com.handybook.handybook.core.model.bill.Bill;
 
 import java.io.Serializable;
@@ -25,6 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
+import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.BI_MONTHLY_PRICE;
+import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.MONTHLY_PRICE;
+import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.WEEKLY_PRICE;
 
 public class BookingQuote extends Observable
 {
@@ -50,6 +56,8 @@ public class BookingQuote extends Observable
     public static final String KEY_QUOTE_CONFIG = "quote_config";
     public static final String KEY_BILL = "bill";
     public static final String KEY_COMMITMENT_PRICES = "commitment_prices";
+    public static final String KEY_ACTIVE_COMMITMENT_TYPES = "active_commitment_types";
+    public static final String KEY_COMMITMENT_FAQ_URL = "commitment_faq_url";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -69,10 +77,29 @@ public class BookingQuote extends Observable
     private String mCurrencySuffix;
     @SerializedName(KEY_HOURLY_AMOUNT)
     private float mHourlyAmount;
+    @SerializedName(KEY_COMMITMENT_FAQ_URL)
+    private String mCommitmentFaqUrl;
+
     @SerializedName(KEY_PRICE_TABLE)
     private ArrayList<BookingPriceInfo> mPriceTable;
+
+    /**
+     * This is just a generic json holder at the moment. If there are months returned from the
+     * commitment prices, then we'll use {@link CommitmentType}, else we'll use the {@link CommitmentPricesMap}
+     * fallback. If mCommitmentPrices is null, we'll fallback to the old prices table.
+     *
+     */
     @SerializedName(KEY_COMMITMENT_PRICES)
+    private JsonObject mCommitmentPrices;
+    private CommitmentType mCommitmentType;
     private CommitmentPricesMap mCommitmentPricesMap;
+
+    /**
+     * This is the key to the commitment prices
+     */
+    @SerializedName(KEY_ACTIVE_COMMITMENT_TYPES)
+    private List<CommitmentType.CommitmentTypeName> mActiveCommitmentTypes;
+
     @SerializedName(KEY_DYNAMIC_OPTIONS)
     private ArrayList<PeakPriceInfo> mSurgePriceTable;
     @SerializedName(KEY_STRIPE_KEY)
@@ -118,6 +145,10 @@ public class BookingQuote extends Observable
         }
     }
 
+    /**
+     * Now replaced by using the price in {@link CommitmentType}
+     */
+    @Deprecated()
     public QuoteConfig getQuoteConfig()
     {
         return mQuoteConfig;
@@ -178,6 +209,11 @@ public class BookingQuote extends Observable
     {
         mServiceId = serviceId;
         triggerObservers();
+    }
+
+    public String getCommitmentFaqUrl()
+    {
+        return mCommitmentFaqUrl;
     }
 
     public String getUserId()
@@ -254,8 +290,13 @@ public class BookingQuote extends Observable
     void setHourlyAmount(final float hourlyAmount)
     {
         mHourlyAmount = hourlyAmount;
+        triggerObservers();
     }
 
+    /**
+     * Now replaced by the prices in {@link CommitmentType}
+     */
+    @Deprecated
     public ArrayList<BookingPriceInfo> getPriceTable()
     {
         return mPriceTable;
@@ -302,6 +343,35 @@ public class BookingQuote extends Observable
                 && info.getWeeklyPrice() <= 0);
     }
 
+    /**
+     * Returns the price for the selected length & frequency option.
+     * Full price at index 0, and discounted/amount due at index 1;
+     *
+     * This is for use in the new commitment model. Will default back to the old pricing model if
+     * there is no {@link CommitmentType} present.
+     * @return
+     */
+    @Nullable
+    public float[] getPricing(final float hours, final int freq, final int length)
+    {
+        if (getCommitmentType() != null)
+        {
+            //this means to use the new commitment model
+            Price price = getCommitmentType()
+                    .getPrice(
+                            String.valueOf(length),
+                            String.valueOf(freq),
+                            String.valueOf(hours)
+                    );
+
+            return new float[]{price.getFullPrice(), price.getAmountDue()};
+        }
+        else
+        {
+            return getPricing(hours, freq);
+        }
+    }
+
     @Nullable
     public float[] getPricing(final float hours, final int freq)
     {
@@ -326,15 +396,12 @@ public class BookingQuote extends Observable
         }
         switch (freq)
         {
-            case 1:
+            case WEEKLY_PRICE:
                 return new float[]{info.getWeeklyPrice(), info.getDiscountWeeklyPrice()};
-
-            case 2:
+            case BI_MONTHLY_PRICE:
                 return new float[]{info.getBiMonthlyprice(), info.getDiscountBiMonthlyprice()};
-
-            case 4:
+            case MONTHLY_PRICE:
                 return new float[]{info.getMonthlyPrice(), info.getDiscountMonthlyPrice()};
-
             default:
                 return new float[]{info.getPrice(), info.getDiscountPrice()};
         }
@@ -348,6 +415,7 @@ public class BookingQuote extends Observable
     void setPhonePrefix(final String phonePrefix)
     {
         mPhonePrefix = phonePrefix;
+        triggerObservers();
     }
 
     public String getStripeKey()
@@ -378,6 +446,15 @@ public class BookingQuote extends Observable
         return mBill;
     }
 
+    public CommitmentType getCommitmentType()
+    {
+        return mCommitmentType;
+    }
+
+    public List<CommitmentType.CommitmentTypeName> getActiveCommitmentTypes()
+    {
+        return mActiveCommitmentTypes;
+    }
 
     public CommitmentPricesMap getCommitmentPricesMap()
     {
@@ -467,16 +544,65 @@ public class BookingQuote extends Observable
         return gson.toJson(this);
     }
 
+    public JsonObject getCommitmentPrices()
+    {
+        return mCommitmentPrices;
+    }
+
     public static BookingQuote fromJson(final String json)
     {
         final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                                                            .create()
                                                            .fromJson(json, BookingQuote.class);
-        if (bookingQuote != null && bookingQuote.getCommitmentPricesMap() != null)
+
+        if (bookingQuote != null && bookingQuote.getCommitmentPrices() != null)
         {
-            bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
+            //if there is a specified active commitment to use
+            if (bookingQuote.isCommitmentMonthsActive())
+            {
+                bookingQuote.setupCommitmentPricingStructure();
+            }
+            else
+            {
+                //this uses no commitments by default
+                bookingQuote.setCommitmentPricesMap(new Gson().fromJson(
+                        bookingQuote.getCommitmentPrices(),
+                        CommitmentPricesMap.class
+                ));
+                bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
+            }
         }
+
         return bookingQuote;
+    }
+
+    public void setupCommitmentPricingStructure()
+    {
+        if (getCommitmentPrices() != null)
+        {
+            setCommitmentType(new Gson().fromJson(getCommitmentPrices(), CommitmentType.class));
+            getCommitmentType().transform(CommitmentType.CommitmentTypeName.MONTHS);
+            triggerObservers();
+        }
+    }
+
+    /**
+     * Returns true if the active commitments are "months"
+     * @return
+     */
+    public boolean isCommitmentMonthsActive()
+    {
+        if (getActiveCommitmentTypes() != null && !getActiveCommitmentTypes().isEmpty())
+        {
+            CommitmentType.CommitmentTypeName type = getActiveCommitmentTypes().get(0);
+
+            if (type != null && type == CommitmentType.CommitmentTypeName.MONTHS)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static ExclusionStrategy getExclusionStrategy()
@@ -495,6 +621,34 @@ public class BookingQuote extends Observable
                 return clazz.equals(Observer.class);
             }
         };
+    }
+
+    public void setCommitmentPricesMap(final CommitmentPricesMap commitmentPricesMap)
+    {
+        mCommitmentPricesMap = commitmentPricesMap;
+        triggerObservers();
+    }
+
+    /**
+     * Do not make this public, since setting the commitment type requires another "setup" step
+     * before it can be used. If you must set this, use setupCommitmentPricingStructure() instead.
+     * @param commitmentType
+     */
+    private void setCommitmentType(final CommitmentType commitmentType)
+    {
+        mCommitmentType = commitmentType;
+    }
+
+    public void setCommitmentPrices(final JsonObject commitmentPrices)
+    {
+        mCommitmentPrices = commitmentPrices;
+        triggerObservers();
+    }
+
+    public void setActiveCommitmentTypes(final List<CommitmentType.CommitmentTypeName> activeCommitmentTypes)
+    {
+        mActiveCommitmentTypes = activeCommitmentTypes;
+        triggerObservers();
     }
 
     public boolean hasCouponWarning()
@@ -535,7 +689,7 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_RECURRENCE_OPTIONS, context.serialize(value.getRecurrenceOptions()));
             jsonObj.add(KEY_QUOTE_CONFIG, context.serialize(value.getQuoteConfig()));
             jsonObj.add(KEY_BILL, context.serialize(value.getBill()));
-            jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentPricesMap()));
+            jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentPrices()));
             return jsonObj;
         }
     }

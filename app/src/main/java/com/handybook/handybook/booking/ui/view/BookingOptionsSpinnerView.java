@@ -60,6 +60,7 @@ public final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
                     @Override
                     public void onGlobalLayout() {
                         resizeIndicators();
+                        optionsSpinner.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 });
 
@@ -72,6 +73,11 @@ public final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
 
     public final String getCurrentValue() {
         return optionsList[optionsSpinner.getCurrentItem()];
+    }
+
+    public int getListSize()
+    {
+        return optionsList.length;
     }
 
     public final void setCurrentIndex(final int index) {

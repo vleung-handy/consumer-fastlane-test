@@ -93,6 +93,9 @@ public abstract class AbstractWheelView extends AbstractWheel {
     /** Divider for showing item to be selected while scrolling */
     protected Drawable mSelectionDivider;
 
+    // Set to true to disable to fade in/fade out animations
+    protected boolean mIsDisableDimAnimation;
+
     // the rest
 
     /**
@@ -157,6 +160,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
         mItemOffsetPercent = a.getInt(R.styleable.AbstractWheelView_itemOffsetPercent, DEF_ITEM_OFFSET_PERCENT);
         mItemsPadding = a.getDimensionPixelSize(R.styleable.AbstractWheelView_itemsPadding, DEF_ITEM_PADDING);
         mSelectionDivider = a.getDrawable(R.styleable.AbstractWheelView_selectionDivider);
+        mIsDisableDimAnimation = a.getBoolean(R.styleable.AbstractWheelView_disableDimAnimation, false);
         a.recycle();
     }
 
@@ -227,21 +231,30 @@ public abstract class AbstractWheelView extends AbstractWheel {
     protected void onScrollTouched() {
         mDimSelectorWheelAnimator.cancel();
         mDimSeparatorsAnimator.cancel();
-        setSelectorPaintCoeff(1);
+        if(!mIsDisableDimAnimation)
+        {
+            setSelectorPaintCoeff(1);
+        }
         setSeparatorsPaintAlpha(mSelectionDividerActiveAlpha);
     }
 
     @Override
     protected void onScrollTouchedUp() {
         super.onScrollTouchedUp();
-        fadeSelectorWheel(750);
-        lightSeparators(750);
+        if(!mIsDisableDimAnimation)
+        {
+            fadeSelectorWheel(750);
+            lightSeparators(750);
+        }
     }
 
     @Override
     protected void onScrollFinished() {
-        fadeSelectorWheel(500);
-        lightSeparators(500);
+        if(!mIsDisableDimAnimation)
+        {
+            fadeSelectorWheel(500);
+            lightSeparators(500);
+        }
     }
 
     //----------------------------------
