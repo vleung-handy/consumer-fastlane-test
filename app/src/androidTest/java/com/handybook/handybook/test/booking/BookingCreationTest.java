@@ -187,7 +187,10 @@ public class BookingCreationTest
         clickNextButton();
 
         //use previous credit card
-        ViewUtil.waitForViewVisible(R.id.info_payment_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(
+                R.id.payment_fragment_credit_card_info_container,
+                ViewUtil.SHORT_MAX_WAIT_TIME_MS
+        );
         clickNextButton();
 
         /*post-confirmation pages*/
@@ -263,7 +266,10 @@ public class BookingCreationTest
         clickNextButton();
 
         //use previous credit card
-        ViewUtil.waitForViewVisible(R.id.info_payment_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(
+                R.id.payment_fragment_credit_card_info_container,
+                ViewUtil.SHORT_MAX_WAIT_TIME_MS
+        );
         clickNextButton();
 
         /*post-confirmation pages*/

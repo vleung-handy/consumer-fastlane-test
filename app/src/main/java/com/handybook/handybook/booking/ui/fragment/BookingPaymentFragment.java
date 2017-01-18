@@ -94,7 +94,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
 
     @Bind(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.promo_button)
+    @Bind(R.id.payment_fragment_promo_button)
     Button mPromoButton;
     @Bind(R.id.credit_card_text)
     CreditCardNumberInputTextView mCreditCardText;
@@ -102,7 +102,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     CreditCardExpDateInputTextView mExpText;
     @Bind(R.id.cvc_text)
     CreditCardCVCInputTextView mCvcText;
-    @Bind(R.id.promo_text)
+    @Bind(R.id.payment_fragment_promo_text)
     FreezableInputTextView mPromoText;
     @Bind(R.id.lock_icon)
     ImageView mLockIcon;
@@ -110,27 +110,27 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     CreditCardIconImageView mCreditCardIcon;
     @Bind(R.id.card_extras_layout)
     LinearLayout mCardExtrasLayout;
-    @Bind(R.id.promo_progress)
+    @Bind(R.id.payment_fragment_promo_progress)
     ProgressBar mPromoProgress;
-    @Bind(R.id.promo_layout)
+    @Bind(R.id.payment_fragment_promo_container)
     LinearLayout mPromoLayout;
-    @Bind(R.id.select_payment_layout)
+    @Bind(R.id.payment_fragment_select_payment_method_container)
     View mSelectPaymentLayout;
-    @Bind(R.id.info_payment_layout)
+    @Bind(R.id.payment_fragment_credit_card_info_container)
     View mInfoPaymentLayout;
-    @Bind(R.id.apply_promo_button)
+    @Bind(R.id.payment_fragment_apply_promo_cta)
     View mApplyPromoButton;
     @Bind(R.id.change_button)
     View mChangeButton;
     @Bind(R.id.booking_select_payment_promo_text)
     TextView mSelectPaymentPromoText;
-    @Bind(R.id.booking_payment_terms_of_use_text)
+    @Bind(R.id.payment_fragment_terms_of_use_text)
     TextView mTermsOfUseText;
     @Bind(R.id.scan_card_button)
     TextView mScanCardButton;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.payment_screen_bill)
+    @Bind(R.id.payment_fragment_bill)
     BillView mBillView;
 
     private boolean mUseExistingCard;
@@ -224,7 +224,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         checkAndShowPaymentMethodSelection();
     }
 
-    @OnClick(R.id.apply_promo_button)
+    @OnClick(R.id.payment_fragment_apply_promo_cta)
     public void onApplyPromoButtonClicked()
     {
         showAndUpdatePromoCodeInput();
@@ -378,7 +378,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     {
         final BookingHeaderFragment headerFragment = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.info_header_layout, headerFragment).commit();
+        transaction.replace(R.id.payment_fragment_price_header_container, headerFragment).commit();
     }
 
     /**
@@ -851,7 +851,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         toast.show();
     }
 
-    @OnClick(R.id.promo_button)
+    @OnClick(R.id.payment_fragment_promo_button)
     public void onPromobButtonClicked()
     {
         final String promoCode = mPromoText.getText().toString();
