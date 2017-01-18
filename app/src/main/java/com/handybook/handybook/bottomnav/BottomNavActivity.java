@@ -13,7 +13,6 @@ import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.MainNavTab;
@@ -23,12 +22,9 @@ import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
-import com.handybook.handybook.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Subscribe;
-
-import java.io.Serializable;
 
 import javax.inject.Inject;
 
@@ -53,8 +49,6 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     @Inject
     LayerHelper mLayerHelper;
 
-    protected Configuration mConfiguration;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -71,47 +65,8 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                         return onMenuItemSelected(item);
                     }
                 });
-        boolean navigatedToTab = navigateToTabFromBundleExtras();
-        if (!navigatedToTab)
-        {
-            selectDefaultTab();
-        }
-    }
 
-    /**
-     * navigates to the tab given by the bundle extras
-     * @return true if navigated to tab from bundle extras
-     */
-    private boolean navigateToTabFromBundleExtras()
-    {
-        Bundle extras = getIntent().getExtras();
-        if (extras == null) { return false; }
-        Serializable tabToSelect = extras.getSerializable(BUNDLE_KEY_TAB);
-        if (tabToSelect != null && tabToSelect instanceof MainNavTab)
-        {
-            return navigateToMainNavTab((MainNavTab) tabToSelect);
-        }
-        return false;
-    }
-
-    /**
-     * TODO refactor to use the navigation methods for consistency?
-     */
-    private void selectDefaultTab()
-    {
-        User user = mUserManager.getCurrentUser();
-        if (user != null
-                && user.getAnalytics() != null
-                && user.getAnalytics().getUpcomingBookings() > 0
-                && ((BaseApplication) getApplication()).isNewlyLaunched())
-
-        {
-            mBottomNavigationView.findViewById(R.id.bookings).performClick();
-        }
-        else
-        {
-            mBottomNavigationView.findViewById(R.id.add_booking).performClick();
-        }
+        navigateToMainNavTab(getIntent());
     }
 
     @Override
@@ -144,7 +99,6 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     {
         if (event != null)
         {
-            mConfiguration = event.getConfiguration();
             checkLayerInitiation();
             refreshMenu();
         }
@@ -171,9 +125,27 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
      */
     private void navigateToMainNavTab(Intent intent)
     {
-        MainNavTab mainNavTab = (intent == null || intent.getSerializableExtra(BUNDLE_KEY_TAB) == null) ?
-                MainNavTab.UNKNOWN : (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
-        navigateToMainNavTab(mainNavTab);
+        MainNavTab tab;
+        if (intent != null && intent.getSerializableExtra(BUNDLE_KEY_TAB) != null)
+        {
+            tab = (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
+        }
+        else
+        {
+            User user = mUserManager.getCurrentUser();
+            if (user != null
+                    && user.getAnalytics() != null
+                    && user.getAnalytics().getUpcomingBookings() > 0
+                    && ((BaseApplication) getApplication()).isNewlyLaunched())
+            {
+                tab = MainNavTab.BOOKINGS;
+            }
+            else
+            {
+                tab = MainNavTab.SERVICES;
+            }
+        }
+        navigateToMainNavTab(tab);
     }
 
     /**
@@ -194,14 +166,7 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                 fragment = UpcomingBookingsFragment.newInstance();
                 break;
             case PRO_TEAM:
-                if (mConfigurationManager.getPersistentConfiguration().isChatEnabled())
-                {
-                    fragment = ProTeamConversationsFragment.newInstance();
-                }
-                else
-                {
-                    fragment = ProTeamFragment.newInstance();
-                }
+                fragment = ProTeamConversationsFragment.newInstance();
                 break;
             case SERVICES:
                 fragment = ServiceCategoriesFragment.newInstance(null, null);
@@ -265,25 +230,17 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
      */
     private void checkLayerInitiation()
     {
-        if (mConfiguration == null || !mConfiguration.isChatEnabled())
+        //chat is enabled, so we'll login if the user is available
+        User user = mUserManager.getCurrentUser();
+
+        if (user != null)
         {
-            //Layer should be disabled.
-            mLayerHelper.deauthenticate();
+            mLayerHelper.initLayer(user.getAuthToken());
         }
         else
         {
-            //chat is enabled, so we'll login if the user is available
-            User user = mUserManager.getCurrentUser();
-
-            if (user != null)
-            {
-                mLayerHelper.initLayer(user.getAuthToken());
-            }
-            else
-            {
-                //the user is in a logged out state
-                mLayerHelper.deauthenticate();
-            }
+            //the user is in a logged out state
+            mLayerHelper.deauthenticate();
         }
         //The menu should always be refreshed
         refreshMenu();
