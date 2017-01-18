@@ -12,6 +12,8 @@ import com.handybook.handybook.library.util.GsonUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,8 +166,14 @@ public class CommitmentType implements Serializable
             String freqKey = SubscriptionFrequency.convertFrequencyKey(entrySet.getKey());
             JsonObject freqInformation = (JsonObject) entrySet.getValue();
 
+            //within freqInformation, there is the prices ("hours") table, in the form of
+            //{"3", "3.5", "4.0"}
+            JsonObject hours = (JsonObject) freqInformation.get(JSON_KEY_HOURS);
+            boolean isEnabled = !GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DISABLED));
+            boolean isDefault = GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DEFAULT));
+
             //if it's enabled and we don't already have this frequency, then add it to frequency list
-            if (!contains(mUniqueFrequencies, freqKey))
+            if (isEnabled && !contains(mUniqueFrequencies, freqKey))
             {
                 SubscriptionFrequency frequency = new SubscriptionFrequency(
                         freqKey,
@@ -175,14 +183,19 @@ public class CommitmentType implements Serializable
                 mUniqueFrequencies.add(frequency);
             }
 
-            //within freqInformation, there is the prices ("hours") table, in the form of
-            //{"3", "3.5", "4.0"}
-            JsonObject hours = (JsonObject) freqInformation.get(JSON_KEY_HOURS);
-            boolean isEnabled = !GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DISABLED));
-            boolean isDefault = GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DEFAULT));
-
             processHours(lengthKey, freqKey, hours, isDefault, isEnabled);
         }
+
+        //Sort the unique Frequencies by the subscriptionFrequency key
+        Collections.sort(mUniqueFrequencies, new Comparator<SubscriptionFrequency>() {
+            @Override
+            public int compare(
+                    final SubscriptionFrequency o1, final SubscriptionFrequency o2
+            )
+            {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
     }
 
     /**

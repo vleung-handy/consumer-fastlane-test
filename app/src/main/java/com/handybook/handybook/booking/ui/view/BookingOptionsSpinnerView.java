@@ -75,6 +75,11 @@ public final class BookingOptionsSpinnerView extends BookingOptionsIndexView {
         return optionsList[optionsSpinner.getCurrentItem()];
     }
 
+    public int getListSize()
+    {
+        return optionsList.length;
+    }
+
     public final void setCurrentIndex(final int index) {
         if (index < 0) return;
 

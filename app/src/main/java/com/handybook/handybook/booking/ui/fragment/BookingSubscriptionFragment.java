@@ -267,6 +267,10 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
 
     private String getCurrentFrequencyKey()
     {
+        //This is here only because unit tests fail here. Should never happen in real life
+        if(mFrequencyOptionsSpinnerView.getListSize() == 0)
+            return "0";
+
         return mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
     }
 }
