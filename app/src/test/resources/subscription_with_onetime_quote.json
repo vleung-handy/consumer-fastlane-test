@@ -1,0 +1,882 @@
+{
+  "id": 78975,
+  "hourly_amount": 27,
+  "hours": 3,
+  "hrs": 3,
+  "date_start": "2017-01-24T11:00:00-08:00",
+  "recurring_booking": {
+    "freq": 0
+  },
+  "service_id": 3,
+  "phone_country_prefix": "+1",
+  "currency_char": "$",
+  "currency_suffix": "",
+  "currency_code": "USD",
+  "address": {
+    "zipcode": "90210"
+  },
+  "commitment_prices": {
+    "months": {
+      "3": {
+        "frequency": {
+          "price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8100,
+                "amount_due": 8100
+              },
+              "3.5": {
+                "full_price": 9450,
+                "amount_due": 9400
+              },
+              "4.0": {
+                "full_price": 10800,
+                "amount_due": 10800
+              },
+              "4.5": {
+                "full_price": 12150,
+                "amount_due": 12100
+              },
+              "5.0": {
+                "full_price": 13500,
+                "amount_due": 13500
+              },
+              "5.5": {
+                "full_price": 14850,
+                "amount_due": 14800
+              },
+              "6.0": {
+                "full_price": 16200,
+                "amount_due": 16200
+              }
+            },
+            "default": false,
+            "disabled": true,
+            "title": "One-time $81.00"
+          },
+          "weekly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8700,
+                "amount_due": 8700
+              },
+              "3.5": {
+                "full_price": 10150,
+                "amount_due": 10100
+              },
+              "4.0": {
+                "full_price": 11600,
+                "amount_due": 11600
+              },
+              "4.5": {
+                "full_price": 13050,
+                "amount_due": 13000
+              },
+              "5.0": {
+                "full_price": 14500,
+                "amount_due": 14500
+              },
+              "5.5": {
+                "full_price": 15950,
+                "amount_due": 15900
+              },
+              "6.0": {
+                "full_price": 17400,
+                "amount_due": 17400
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "Weekly"
+          },
+          "bimonthly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8700,
+                "amount_due": 8700
+              },
+              "3.5": {
+                "full_price": 10150,
+                "amount_due": 10100
+              },
+              "4.0": {
+                "full_price": 11600,
+                "amount_due": 11600
+              },
+              "4.5": {
+                "full_price": 13050,
+                "amount_due": 13000
+              },
+              "5.0": {
+                "full_price": 14500,
+                "amount_due": 14500
+              },
+              "5.5": {
+                "full_price": 15950,
+                "amount_due": 15900
+              },
+              "6.0": {
+                "full_price": 17400,
+                "amount_due": 17400
+              }
+            },
+            "default": true,
+            "disabled": false,
+            "title": "Bi-weekly"
+          },
+          "monthly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8700,
+                "amount_due": 8700
+              },
+              "3.5": {
+                "full_price": 10150,
+                "amount_due": 10100
+              },
+              "4.0": {
+                "full_price": 11600,
+                "amount_due": 11600
+              },
+              "4.5": {
+                "full_price": 13050,
+                "amount_due": 13000
+              },
+              "5.0": {
+                "full_price": 14500,
+                "amount_due": 14500
+              },
+              "5.5": {
+                "full_price": 15950,
+                "amount_due": 15900
+              },
+              "6.0": {
+                "full_price": 17400,
+                "amount_due": 17400
+              }
+            },
+            "default": false,
+            "disabled": true,
+            "title": "Monthly"
+          }
+        },
+        "default": false,
+        "title": "3 Months"
+      },
+      "6": {
+        "frequency": {
+          "price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8100,
+                "amount_due": 8100
+              },
+              "3.5": {
+                "full_price": 9450,
+                "amount_due": 9400
+              },
+              "4.0": {
+                "full_price": 10800,
+                "amount_due": 10800
+              },
+              "4.5": {
+                "full_price": 12150,
+                "amount_due": 12100
+              },
+              "5.0": {
+                "full_price": 13500,
+                "amount_due": 13500
+              },
+              "5.5": {
+                "full_price": 14850,
+                "amount_due": 14800
+              },
+              "6.0": {
+                "full_price": 16200,
+                "amount_due": 16200
+              }
+            },
+            "default": false,
+            "disabled": true,
+            "title": "One-time $81.00"
+          },
+          "weekly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8100,
+                "amount_due": 8100
+              },
+              "3.5": {
+                "full_price": 9450,
+                "amount_due": 9400
+              },
+              "4.0": {
+                "full_price": 10800,
+                "amount_due": 10800
+              },
+              "4.5": {
+                "full_price": 12150,
+                "amount_due": 12100
+              },
+              "5.0": {
+                "full_price": 13500,
+                "amount_due": 13500
+              },
+              "5.5": {
+                "full_price": 14850,
+                "amount_due": 14800
+              },
+              "6.0": {
+                "full_price": 16200,
+                "amount_due": 16200
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "Weekly"
+          },
+          "bimonthly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8100,
+                "amount_due": 8100
+              },
+              "3.5": {
+                "full_price": 9450,
+                "amount_due": 9400
+              },
+              "4.0": {
+                "full_price": 10800,
+                "amount_due": 10800
+              },
+              "4.5": {
+                "full_price": 12150,
+                "amount_due": 12100
+              },
+              "5.0": {
+                "full_price": 13500,
+                "amount_due": 13500
+              },
+              "5.5": {
+                "full_price": 14850,
+                "amount_due": 14800
+              },
+              "6.0": {
+                "full_price": 16200,
+                "amount_due": 16200
+              }
+            },
+            "default": true,
+            "disabled": false,
+            "title": "Bi-weekly"
+          },
+          "monthly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8100,
+                "amount_due": 8100
+              },
+              "3.5": {
+                "full_price": 9450,
+                "amount_due": 9400
+              },
+              "4.0": {
+                "full_price": 10800,
+                "amount_due": 10800
+              },
+              "4.5": {
+                "full_price": 12150,
+                "amount_due": 12100
+              },
+              "5.0": {
+                "full_price": 13500,
+                "amount_due": 13500
+              },
+              "5.5": {
+                "full_price": 14850,
+                "amount_due": 14800
+              },
+              "6.0": {
+                "full_price": 16200,
+                "amount_due": 16200
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "Monthly"
+          }
+        },
+        "default": true,
+        "title": "6 Months"
+      },
+      "12": {
+        "frequency": {
+          "price": {
+            "hours": {
+              "3.0": {
+                "full_price": 7500,
+                "amount_due": 7500
+              },
+              "3.5": {
+                "full_price": 8750,
+                "amount_due": 8700
+              },
+              "4.0": {
+                "full_price": 10000,
+                "amount_due": 10000
+              },
+              "4.5": {
+                "full_price": 11250,
+                "amount_due": 11200
+              },
+              "5.0": {
+                "full_price": 12500,
+                "amount_due": 12500
+              },
+              "5.5": {
+                "full_price": 13750,
+                "amount_due": 13700
+              },
+              "6.0": {
+                "full_price": 15000,
+                "amount_due": 15000
+              }
+            },
+            "default": false,
+            "disabled": true,
+            "title": "One-time $75.00"
+          },
+          "weekly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 7500,
+                "amount_due": 7500
+              },
+              "3.5": {
+                "full_price": 8750,
+                "amount_due": 8700
+              },
+              "4.0": {
+                "full_price": 10000,
+                "amount_due": 10000
+              },
+              "4.5": {
+                "full_price": 11250,
+                "amount_due": 11200
+              },
+              "5.0": {
+                "full_price": 12500,
+                "amount_due": 12500
+              },
+              "5.5": {
+                "full_price": 13750,
+                "amount_due": 13700
+              },
+              "6.0": {
+                "full_price": 15000,
+                "amount_due": 15000
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "Weekly"
+          },
+          "bimonthly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 7500,
+                "amount_due": 7500
+              },
+              "3.5": {
+                "full_price": 8750,
+                "amount_due": 8700
+              },
+              "4.0": {
+                "full_price": 10000,
+                "amount_due": 10000
+              },
+              "4.5": {
+                "full_price": 11250,
+                "amount_due": 11200
+              },
+              "5.0": {
+                "full_price": 12500,
+                "amount_due": 12500
+              },
+              "5.5": {
+                "full_price": 13750,
+                "amount_due": 13700
+              },
+              "6.0": {
+                "full_price": 15000,
+                "amount_due": 15000
+              }
+            },
+            "default": true,
+            "disabled": false,
+            "title": "Bi-weekly"
+          },
+          "monthly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 7500,
+                "amount_due": 7500
+              },
+              "3.5": {
+                "full_price": 8750,
+                "amount_due": 8700
+              },
+              "4.0": {
+                "full_price": 10000,
+                "amount_due": 10000
+              },
+              "4.5": {
+                "full_price": 11250,
+                "amount_due": 11200
+              },
+              "5.0": {
+                "full_price": 12500,
+                "amount_due": 12500
+              },
+              "5.5": {
+                "full_price": 13750,
+                "amount_due": 13700
+              },
+              "6.0": {
+                "full_price": 15000,
+                "amount_due": 15000
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "Monthly"
+          }
+        },
+        "default": false,
+        "title": "12 Months"
+      },
+      "0": {
+        "frequency": {
+          "price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8100,
+                "amount_due": 8100
+              },
+              "3.5": {
+                "full_price": 9450,
+                "amount_due": 9400
+              },
+              "4.0": {
+                "full_price": 10800,
+                "amount_due": 10800
+              },
+              "4.5": {
+                "full_price": 12150,
+                "amount_due": 12100
+              },
+              "5.0": {
+                "full_price": 13500,
+                "amount_due": 13500
+              },
+              "5.5": {
+                "full_price": 14850,
+                "amount_due": 14800
+              },
+              "6.0": {
+                "full_price": 16200,
+                "amount_due": 16200
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "One-time $81.00"
+          }
+        },
+        "default": false,
+        "title": "0 Months"
+      }
+    },
+    "no_commitment": {
+      "0": {
+        "frequency": {
+          "price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8100,
+                "amount_due": 8100
+              },
+              "3.5": {
+                "full_price": 9450,
+                "amount_due": 9400
+              },
+              "4.0": {
+                "full_price": 10800,
+                "amount_due": 10800
+              },
+              "4.5": {
+                "full_price": 12150,
+                "amount_due": 12100
+              },
+              "5.0": {
+                "full_price": 13500,
+                "amount_due": 13500
+              },
+              "5.5": {
+                "full_price": 14850,
+                "amount_due": 14800
+              },
+              "6.0": {
+                "full_price": 16200,
+                "amount_due": 16200
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "One-time $81.00"
+          },
+          "weekly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 7500,
+                "amount_due": 7500
+              },
+              "3.5": {
+                "full_price": 8750,
+                "amount_due": 8700
+              },
+              "4.0": {
+                "full_price": 10000,
+                "amount_due": 10000
+              },
+              "4.5": {
+                "full_price": 11250,
+                "amount_due": 11200
+              },
+              "5.0": {
+                "full_price": 12500,
+                "amount_due": 12500
+              },
+              "5.5": {
+                "full_price": 13750,
+                "amount_due": 13700
+              },
+              "6.0": {
+                "full_price": 15000,
+                "amount_due": 15000
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "Weekly"
+          },
+          "bimonthly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8100,
+                "amount_due": 8100
+              },
+              "3.5": {
+                "full_price": 9450,
+                "amount_due": 9400
+              },
+              "4.0": {
+                "full_price": 10800,
+                "amount_due": 10800
+              },
+              "4.5": {
+                "full_price": 12150,
+                "amount_due": 12100
+              },
+              "5.0": {
+                "full_price": 13500,
+                "amount_due": 13500
+              },
+              "5.5": {
+                "full_price": 14850,
+                "amount_due": 14800
+              },
+              "6.0": {
+                "full_price": 16200,
+                "amount_due": 16200
+              }
+            },
+            "default": true,
+            "disabled": false,
+            "title": "Bi-weekly"
+          },
+          "monthly_recurring_price": {
+            "hours": {
+              "3.0": {
+                "full_price": 8700,
+                "amount_due": 8700
+              },
+              "3.5": {
+                "full_price": 10150,
+                "amount_due": 10100
+              },
+              "4.0": {
+                "full_price": 11600,
+                "amount_due": 11600
+              },
+              "4.5": {
+                "full_price": 13050,
+                "amount_due": 13000
+              },
+              "5.0": {
+                "full_price": 14500,
+                "amount_due": 14500
+              },
+              "5.5": {
+                "full_price": 15950,
+                "amount_due": 15900
+              },
+              "6.0": {
+                "full_price": 17400,
+                "amount_due": 17400
+              }
+            },
+            "default": false,
+            "disabled": false,
+            "title": "Monthly"
+          }
+        },
+        "default": true,
+        "title": "0 No commitment"
+      }
+    }
+  },
+  "active_commitment_types": [
+    "months"
+  ],
+  "commitment_faq_url": "http:\/\/q494-handybook.hbinternal.com\/term_faqs?hide_header=0",
+  "price_table": [
+    {
+      "hours": "3.0",
+      "price": 57,
+      "discount_price": 57,
+      "weekly_recurring_price": 57,
+      "discount_weekly_recurring_price": 57,
+      "bimonthly_recurring_price": 57,
+      "discount_bimonthly_recurring_price": 57,
+      "monthly_recurring_price": 57,
+      "discount_monthly_recurring_price": 57
+    },
+    {
+      "hours": "3.5",
+      "price": 66,
+      "discount_price": 66,
+      "weekly_recurring_price": 66,
+      "discount_weekly_recurring_price": 66,
+      "bimonthly_recurring_price": 66,
+      "discount_bimonthly_recurring_price": 66,
+      "monthly_recurring_price": 66,
+      "discount_monthly_recurring_price": 66
+    },
+    {
+      "hours": "4.0",
+      "price": 76,
+      "discount_price": 76,
+      "weekly_recurring_price": 76,
+      "discount_weekly_recurring_price": 76,
+      "bimonthly_recurring_price": 76,
+      "discount_bimonthly_recurring_price": 76,
+      "monthly_recurring_price": 76,
+      "discount_monthly_recurring_price": 76
+    },
+    {
+      "hours": "4.5",
+      "price": 85,
+      "discount_price": 85,
+      "weekly_recurring_price": 85,
+      "discount_weekly_recurring_price": 85,
+      "bimonthly_recurring_price": 85,
+      "discount_bimonthly_recurring_price": 85,
+      "monthly_recurring_price": 85,
+      "discount_monthly_recurring_price": 85
+    },
+    {
+      "hours": "5.0",
+      "price": 95,
+      "discount_price": 95,
+      "weekly_recurring_price": 95,
+      "discount_weekly_recurring_price": 95,
+      "bimonthly_recurring_price": 95,
+      "discount_bimonthly_recurring_price": 95,
+      "monthly_recurring_price": 95,
+      "discount_monthly_recurring_price": 95
+    },
+    {
+      "hours": "5.5",
+      "price": 104,
+      "discount_price": 104,
+      "weekly_recurring_price": 104,
+      "discount_weekly_recurring_price": 104,
+      "bimonthly_recurring_price": 104,
+      "discount_bimonthly_recurring_price": 104,
+      "monthly_recurring_price": 104,
+      "discount_monthly_recurring_price": 104
+    },
+    {
+      "hours": "6.0",
+      "price": 114,
+      "discount_price": 114,
+      "weekly_recurring_price": 114,
+      "discount_weekly_recurring_price": 114,
+      "bimonthly_recurring_price": 114,
+      "discount_bimonthly_recurring_price": 114,
+      "monthly_recurring_price": 114,
+      "discount_monthly_recurring_price": 114
+    },
+    {
+      "hours": "6.5",
+      "price": 123,
+      "discount_price": 123,
+      "weekly_recurring_price": 123,
+      "discount_weekly_recurring_price": 123,
+      "bimonthly_recurring_price": 123,
+      "discount_bimonthly_recurring_price": 123,
+      "monthly_recurring_price": 123,
+      "discount_monthly_recurring_price": 123
+    }
+  ],
+  "stripe_key": "pk_AdAZ6Xac3qjOGZPIPBxAiVFxoocj4",
+  "coupon": null,
+  "quote_config": {
+    "disclaimer_text": "Plans are flexible. Skip, cancel, or reschedule anytime.",
+    "recurrence_options": [
+      {
+        "frequency": 1,
+        "default": false,
+        "hidden": false,
+        "text": "Weekly",
+        "subtext": "",
+        "price_info_text": ""
+      },
+      {
+        "frequency": 2,
+        "default": true,
+        "hidden": false,
+        "text": "Biweekly",
+        "subtext": "Most popular",
+        "price_info_text": ""
+      },
+      {
+        "frequency": 4,
+        "default": false,
+        "hidden": false,
+        "text": "Monthly",
+        "subtext": "",
+        "price_info_text": ""
+      },
+      {
+        "frequency": 0,
+        "default": false,
+        "hidden": false,
+        "text": "Once",
+        "subtext": "",
+        "price_info_text": ""
+      }
+    ],
+    "monthly_commitment_options": [
+      {
+        "commitment_unit": "months",
+        "commitment_length": 3,
+        "is_default_length": false,
+        "label": "3 Months",
+        "discount_text": "",
+        "subtext": ""
+      },
+      {
+        "commitment_unit": "months",
+        "commitment_length": 6,
+        "is_default_length": true,
+        "label": "6 Months",
+        "discount_text": "",
+        "subtext": "Most popular"
+      },
+      {
+        "commitment_unit": "months",
+        "commitment_length": 12,
+        "is_default_length": false,
+        "label": "12 Months",
+        "discount_text": "",
+        "subtext": ""
+      }
+    ]
+  },
+  "special_extras_options": {
+    "uniq": "extras",
+    "type": "checklist",
+    "title": "",
+    "default_value": null,
+    "options": [
+      "Inside cabinets",
+      "Inside fridge",
+      "Inside oven",
+      "Laundry wash & dry",
+      "Interior windows"
+    ],
+    "options_machine_names": [
+      "inside_cabinets",
+      "inside_fridge",
+      "inside_oven",
+      "laundry",
+      "interior_windows"
+    ],
+    "options_images": [
+      [
+        "appsrc:inside_cabinets_extras",
+        "appsrc:inside_cabinets_extras"
+      ],
+      [
+        "appsrc:inside_fridge_extras",
+        "appsrc:inside_fridge_extras"
+      ],
+      [
+        "appsrc:inside_oven_extras",
+        "appsrc:inside_oven_extras"
+      ],
+      [
+        "appsrc:laundry_extras",
+        "appsrc:laundry_extras"
+      ],
+      [
+        "appsrc:interior_windows_extras",
+        "appsrc:interior_windows_extras"
+      ]
+    ],
+    "options_sub_text": [
+      "+0.5 HOURS",
+      "+0.5 HOURS",
+      "+0.5 HOURS",
+      "+1 HOUR",
+      "+0.5 HOURS"
+    ],
+    "hour_info": [
+      0.5,
+      0.5,
+      0.5,
+      1,
+      0.5
+    ]
+  },
+  "mobile_tag": {
+    "add": [
+      "Drop_Off_On_Cleaning_Payment"
+    ],
+    "remove": [
+    ]
+  },
+  "is_new_user": false,
+  "is_apple_pay_enabled": false,
+  "is_android_pay_enabled": true,
+  "android_pay_coupon": null,
+  "android_pay_coupon_value_formatted": null,
+  "recurrence_options": [
+    1,
+    2,
+    4,
+    0
+  ]
+}
