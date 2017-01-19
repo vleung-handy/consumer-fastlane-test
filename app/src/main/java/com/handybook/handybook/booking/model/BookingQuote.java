@@ -551,7 +551,7 @@ public class BookingQuote extends Observable
 
     public static BookingQuote fromJson(final String json)
     {
-        final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
                                                            .create()
                                                            .fromJson(json, BookingQuote.class);
 
