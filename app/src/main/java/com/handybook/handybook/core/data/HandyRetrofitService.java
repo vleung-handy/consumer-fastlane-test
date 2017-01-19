@@ -463,6 +463,12 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+    @GET("/bookings/{booking_id}/pro_team")
+    void requestProTeamViaBooking(
+            @Path("booking_id") String userId,
+            HandyRetrofitCallback cb
+    );
+
     @POST("/users/{user}/provider_preferences")
     void editProTeam(
             @Path("user") String userId,

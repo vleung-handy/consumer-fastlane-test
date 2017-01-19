@@ -386,6 +386,13 @@
     <string name="pro_team_see_pro_recommendations">You\'ll see pro recommendations from friends here as we find them.</string>
     <string name="pro_team_ok">OK, Got it</string>
     <string name="pro_team_update_successful">Your Pro Team was updated successfully!</string>
+    <string name="select_pro">Select your preference</string>
+    <string name="find_any_pro">Find any pro to work with my booking</string>
+    <string name="select_any_time">Select any date and time</string>
+    <string name="specific_pro">I prefer a specific pro and I\'ll work around their schedule</string>
+    <string name="currently_assigned">Currently assigned</string>
+    <string name="conversation_tip_title">Ask for a time that works for you both.</string>
+    <string name="conversation_tip_body">Tap the calendar to set your new date and time.</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 

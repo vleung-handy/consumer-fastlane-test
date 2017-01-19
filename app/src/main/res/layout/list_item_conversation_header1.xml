@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/default_padding"
+    >
+
+    <TextView
+        android:id="@+id/conversation_header_title_text"
+        style="@style/TextView.Large.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/select_pro"
+        />
+
+    <TextView
+        android:id="@+id/conversation_header_title_body"
+        style="@style/TextView.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/default_margin"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/find_any_pro"
+        />
+</LinearLayout>

@@ -1,11 +1,15 @@
 package com.handybook.handybook.proteam.manager;
 
+import android.support.annotation.NonNull;
+
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitCallback;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.model.BookingProTeam;
+import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -42,8 +46,10 @@ public class ProTeamManager
             @Override
             public void onSuccess(final ProTeamWrapper proTeamWrapper)
             {
-                mBus.post(new ProTeamEvent.ReceiveProTeamSuccess(proTeamWrapper.getProTeam(),
-                        proTeamWrapper.getProTeamHelpCenterUrl()));
+                mBus.post(new ProTeamEvent.ReceiveProTeamSuccess(
+                        proTeamWrapper.getProTeam(),
+                        proTeamWrapper.getProTeamHelpCenterUrl()
+                ));
             }
 
             @Override
@@ -66,7 +72,8 @@ public class ProTeamManager
                     {
                         cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
                     }
-                });
+                }
+        );
     }
 
     private String getUserIdString()
@@ -108,8 +115,64 @@ public class ProTeamManager
                     {
                         cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
                     }
-                });
-
+                }
+        );
     }
 
+    public void requestBookingProTeam(@NonNull final String bookingId)
+    {
+
+        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>()
+        {
+            @Override
+            public void onSuccess(final ProTeamWrapper proTeamWrapper)
+            {
+                requestBookingProTeam(proTeamWrapper.getProTeam(), bookingId);
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
+                mBus.post(new ProTeamEvent.ReceiveBookingProTeamError(error));
+            }
+        };
+
+        mService.requestProTeam(getUserIdString(), new HandyRetrofitCallback(cb)
+        {
+            @Override
+            protected void success(final JSONObject response)
+            {
+                cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
+            }
+        });
+    }
+
+    private void requestBookingProTeam(@NonNull final ProTeam proTeam, @NonNull String bookingId)
+    {
+        final DataManager.Callback<BookingProTeam> cb = new DataManager.Callback<BookingProTeam>()
+        {
+            @Override
+            public void onSuccess(final BookingProTeam response)
+            {
+                // We filter the existing pro team based on the returning result
+                ProTeam.ProTeamCategory proTeamCategory = proTeam.getAllCategories();
+                proTeamCategory.filterFavorPros(response.getProTeamPros());
+                mBus.post(new ProTeamEvent.ReceiveBookingProTeamSuccess(proTeamCategory));
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error)
+            {
+                mBus.post(new ProTeamEvent.ReceiveBookingProTeamError(error));
+            }
+        };
+        mService.requestProTeamViaBooking(bookingId, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            protected void success(final JSONObject response)
+            {
+                cb.onSuccess(BookingProTeam.fromJson(response.toString()));
+            }
+        });
+    }
 }

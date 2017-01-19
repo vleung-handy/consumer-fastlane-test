@@ -32,6 +32,8 @@ public class BundleKeys
     public static final String PRO_TEAM_PRO = "pro_team_pro";
     public static final String PRO_TEAM_PRO_PREFERENCE = "pro_team_pro_preference";
     public static final String PRO_TEAM_EDIT = "pro_team_edit";
+    public static final String PRO_TEAM_CATEGORY = "pro_team_category";
+    public static final String SHOW_TIPS = "show_tips";
 
     public static final String RESCHEDULE_BOOKING = "reschedule_booking";
     public static final String RESCHEDULE_NOTICE = "reschedule_notice";
@@ -60,4 +62,6 @@ public class BundleKeys
 
     public static final String IS_FROM_BOOKING_FLOW = "is_from_booking_flow";
     public static final String REFERRAL_PAGE_SOURCE = "referral_page_source";
+
+    public static final String IS_FROM_BOOKING_DETAIL = "is_from_booking_detail";
 }

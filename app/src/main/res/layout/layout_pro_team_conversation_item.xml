@@ -51,6 +51,7 @@
 
         <TextView
             android:id="@+id/conversation_title"
+            style="@style/CircularBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin"
@@ -76,14 +77,15 @@
 
         <TextView
             android:id="@+id/conversation_message"
+            style="@style/CircularBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/conversation_title"
-            android:layout_marginTop="3dp"
             android:layout_marginEnd="@dimen/default_margin_double"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin_double"
             android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/handy_text_black"
@@ -102,5 +104,20 @@
         android:textColor="@color/handy_tertiary_gray"
         android:textSize="@dimen/text_size_xsmall"
         tools:text="Now"
+        />
+
+    <TextView
+        android:id="@+id/conversation_currently_assigned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/default_margin_half"
+        android:text="@string/currently_assigned"
+        android:textColor="@color/handy_tertiary_gray"
+        android:textSize="@dimen/text_size_xsmall"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 </RelativeLayout>
