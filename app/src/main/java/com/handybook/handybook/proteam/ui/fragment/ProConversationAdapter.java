@@ -29,7 +29,6 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
 {
     private static final int NORMAL = Integer.MIN_VALUE;
 
-    private SingleViewHolder mFooter;
     private List<SingleViewHolder> mHeaders = new ArrayList<>();
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeam.ProTeamCategory mProTeamCategory;
@@ -220,6 +219,11 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
     public int getItemCount()
     {
         return mProTeamProViewModels.size() + mHeaders.size();
+    }
+
+    public int getHeaderCount()
+    {
+        return mHeaders.size();
     }
 
     public ProTeamProViewModel getItem(final int index)

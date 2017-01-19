@@ -23,7 +23,6 @@ import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamPro;
@@ -47,6 +46,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+// TODO: a lot of these code are duplicated from ProTeamConversationsFragment. Consider a refactor.
 public class BookingProTeamConversationsFragment extends InjectedFragment
 {
     @Inject
@@ -155,10 +155,10 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
                     {
                         int pos = mRecyclerView.getChildAdapterPosition(v);
 
-                        // ignore header and footer
-                        if (pos == 0 || pos >= mAdapter.getItemCount() - 1) { return; }
+                        // ignore header
+                        if (pos < mAdapter.getHeaderCount()) { return; }
 
-                        mSelectedProTeamMember = mAdapter.getItem(pos - 1);
+                        mSelectedProTeamMember = mAdapter.getItem(pos - mAdapter.getHeaderCount());
                         Conversation conversation = mSelectedProTeamMember.getConversation();
 
                         String providerId =
@@ -258,7 +258,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
      */
     public void onConversationCreated(String conversationId)
     {
-        bus.post(new LogEvent.AddLogEvent(new ChatLog.ConversationCreatedLog(String.valueOf(
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ConversationCreatedLog(String.valueOf(
                 mSelectedProTeamMember.getProTeamPro().getId()), conversationId)));
         startMessagesActivity(
                 Uri.parse(conversationId),

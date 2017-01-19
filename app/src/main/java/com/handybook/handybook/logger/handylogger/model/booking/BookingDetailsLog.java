@@ -232,6 +232,26 @@ public abstract class BookingDetailsLog extends EventLog
     }
 
 
+    public static class ConversationCreatedLog extends BookingDetailsLog
+    {
+        private static final String EVENT_TYPE = "conversation_created";
+
+        @SerializedName("provider_id")
+        private final String mProviderId;
+        @SerializedName("layer_conversation_id")
+        private final String mConversationId;
+
+        public ConversationCreatedLog(
+                final String providerId,
+                final String conversationId
+        )
+        {
+            super(EVENT_TYPE);
+            mProviderId = providerId;
+            mConversationId = conversationId;
+        }
+    }
+
     public enum EventType
     {
         SELECTED("selected"),
