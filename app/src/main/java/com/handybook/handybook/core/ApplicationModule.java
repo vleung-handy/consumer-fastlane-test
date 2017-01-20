@@ -146,6 +146,7 @@ import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
+import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
@@ -236,6 +237,7 @@ import retrofit.converter.GsonConverter;
         YozioMetaDataCallback.class,
         OnboardActivity.class,
         OnboardFragment.class,
+        OnboardV2Fragment.class,
         OnboardPageFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,

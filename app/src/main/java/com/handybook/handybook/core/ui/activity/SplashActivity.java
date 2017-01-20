@@ -74,7 +74,13 @@ public class SplashActivity extends BaseActivity
         });
 
         final User user = userManager.getCurrentUser();
-        if (!mDefaultPreferencesManager.getBoolean(
+
+        if (1 == 1)
+        {
+            //TODO: JIA: remove this hard coding
+            startActivity(new Intent(this, OnboardActivity.class));
+        }
+        else if (!mDefaultPreferencesManager.getBoolean(
                 PrefsKey.APP_ONBOARD_SHOWN,
                 false
         ) && user == null)
