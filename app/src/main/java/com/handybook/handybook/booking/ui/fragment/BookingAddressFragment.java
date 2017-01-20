@@ -164,6 +164,10 @@ public final class BookingAddressFragment extends BookingFlowFragment
                     {
                         removeUiBlockers();
                         transaction.setBookingId(newQuote.getBookingId());
+                        if (newQuote.getCoupon() != null)
+                        {
+                            transaction.setPromoCode(newQuote.getCoupon().getCode());
+                        }
                         BookingQuote.updateQuote(
                                 bookingManager.getCurrentQuote(),
                                 newQuote

@@ -346,7 +346,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      */
     private void initializePromoCodeView()
     {
-        String appliedPromoCode = mCurrentTransaction.promoApplied();
+        String appliedPromoCode = mCurrentTransaction.getPromoCode();
 
         if (ValidationUtils.isNullOrEmpty(appliedPromoCode))
         {
@@ -654,7 +654,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     private boolean isAndroidPayPromoApplied()
     {
         String androidPayPromoCode = mCurrentQuote.getAndroidPayCouponCode();
-        String promoApplied = mCurrentTransaction.promoApplied();
+        String promoApplied = mCurrentTransaction.getPromoCode();
         return (!ValidationUtils.isNullOrEmpty(androidPayPromoCode)
                 && androidPayPromoCode.equalsIgnoreCase(promoApplied));
     }
@@ -853,7 +853,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     public void onPromobButtonClicked()
     {
         final String promoCode = mPromoText.getText().toString();
-        final boolean hasPromo = (mCurrentTransaction.promoApplied() != null);
+        final boolean hasPromo = (mCurrentTransaction.getPromoCode() != null);
 
         if (hasPromo || promoCode.length() > 0)
         {
@@ -1058,7 +1058,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final String promo
     )
     {
-        transaction.setPromoApplied(promo);
+        transaction.setPromoCode(promo);
         transaction.setBookingId(newQuote.getBookingId());
         BookingQuote.updateQuote(mCurrentQuote, newQuote);
         initializeBill();
@@ -1085,7 +1085,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
 
     private void updatePromoUI()
     {
-        final String promo = mCurrentTransaction.promoApplied();
+        final String promo = mCurrentTransaction.getPromoCode();
         final boolean applied = (promo != null);
         mPromoProgress.setVisibility(View.INVISIBLE);
         mPromoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
