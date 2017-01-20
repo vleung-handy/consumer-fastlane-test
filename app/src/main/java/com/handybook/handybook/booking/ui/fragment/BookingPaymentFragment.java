@@ -42,7 +42,6 @@ import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
-import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
@@ -92,7 +91,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     @Inject
     ServicesManager mServicesManager;
 
-    @Bind(R.id.next_button)
+    @Bind(R.id.payment_fragment_next_button)
     Button mNextButton;
     @Bind(R.id.payment_fragment_promo_button)
     Button mPromoButton;
@@ -625,14 +624,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         mUseExistingCard = false;
     }
 
-    private boolean isAndroidPayPromoApplied()
-    {
-        String androidPayPromoCode = mCurrentQuote.getAndroidPayCouponCode();
-        String promoApplied = mCurrentTransaction.promoApplied();
-        return (!ValidationUtils.isNullOrEmpty(androidPayPromoCode)
-                && androidPayPromoCode.equalsIgnoreCase(promoApplied));
-    }
-
     private void showInfoPaymentLayout()
     {
         mSelectPaymentLayout.setVisibility(View.GONE);
@@ -658,6 +649,14 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         }
 
         initializePromoCodeView();
+    }
+
+    private boolean isAndroidPayPromoApplied()
+    {
+        String androidPayPromoCode = mCurrentQuote.getAndroidPayCouponCode();
+        String promoApplied = mCurrentTransaction.promoApplied();
+        return (!ValidationUtils.isNullOrEmpty(androidPayPromoCode)
+                && androidPayPromoCode.equalsIgnoreCase(promoApplied));
     }
 
     private boolean hasAndroidPayPromoSavings()
@@ -796,14 +795,13 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         completeBooking();
     }
 
-    @OnClick(R.id.next_button)
-    public void onNextClicked(final View view)
+    @OnClick(R.id.payment_fragment_next_button)
+    public void onCompleteBookingClicked()
     {
         if (validateFields())
         {
             disableInputs();
             progressDialog.show();
-
             if (mUseAndroidPay)
             {
                 final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
@@ -878,13 +876,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     private void removePromo()
     {
         final int bookingId = mCurrentTransaction.getBookingId();
-        dataManager.removePromo(bookingId, new FragmentSafeCallback<BookingCoupon>(this)
+        dataManager.removePromo(bookingId, new FragmentSafeCallback<BookingQuote>(this)
         {
             @Override
-            public void onCallbackSuccess(final BookingCoupon coupon)
+            public void onCallbackSuccess(final BookingQuote newQuote)
             {
-                // FIXME: This should give us back the updated quote, not coupon!
-                removePromoSuccess(coupon, mCurrentQuote, mCurrentTransaction, null);
+                removePromoSuccess(newQuote, mCurrentTransaction, null);
                 bookingManager.setPromoTabCoupon(null);
             }
 
@@ -919,11 +916,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                     @Override
                     public void onCallbackSuccess(final BookingQuote bookingQuote)
                     {
-                        bus.post(
-                                new LogEvent.AddLogEvent(
-                                        new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(
-                                                promoCode
-                                        )));
+                        bus.post(new LogEvent.AddLogEvent(
+                                new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(promoCode)
+                        ));
                         applyPromoSuccess(bookingQuote, mCurrentTransaction, promoCode);
                     }
 
@@ -1036,16 +1031,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     )
     {
         if (!allowCallbacks) { return; }
-        // FIXME: Here we should eb storing this instead of replacing it's insides....ffs
-        mCurrentQuote.setBill(newQuote.getBill());
-        initializeBill();
-        mCurrentQuote.setPriceTable(newQuote.getPriceTable());
-        mCurrentQuote.setSurgePriceTable(newQuote.getSurgePriceTable());
-        mCurrentQuote.setCoupon(newQuote.getCoupon());
-        mCurrentQuote.setCommitmentPrices(newQuote.getCommitmentPrices());
-        mCurrentQuote.setupCommitmentPricingStructure();
-        mCurrentQuote.setActiveCommitmentTypes(newQuote.getActiveCommitmentTypes());
-
         //stores this promo on disk (similar to how a user applies a coupon through the promo screen)
         bookingManager.setPromoTabCoupon(promo);
         if (bookingManager.getCurrentRequest() != null)
@@ -1054,29 +1039,30 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             //we'll be making the request with this coupon applied. Also saving i
             bookingManager.getCurrentRequest().setCoupon(promo);
         }
-
-        showBookingWarningIfApplicable(mCurrentQuote);
-        transaction.setPromoApplied(promo);
-        updatePromoUI();
-        mPromoText.setText(null);
+        updateQuote(newQuote, transaction, promo);
     }
 
     private void removePromoSuccess(
-            final BookingCoupon coupon,
-            final BookingQuote quote,
+            final BookingQuote newQuote,
             final BookingTransaction transaction,
             final String promo
     )
     {
         if (!allowCallbacks) { return; }
-        // FIXME: Here we should be toring the new quote in bookingManager
-        quote.setPriceTable(coupon.getPriceTable());
-        if (coupon.getCommitmentPrices() != null)
-        {
-            quote.setCommitmentPrices(coupon.getCommitmentPrices());
-            quote.setupCommitmentPricingStructure();
-        }
+        updateQuote(newQuote, transaction, null);
+    }
+
+    private void updateQuote(
+            final BookingQuote newQuote,
+            final BookingTransaction transaction,
+            final String promo
+    )
+    {
         transaction.setPromoApplied(promo);
+        transaction.setBookingId(newQuote.getBookingId());
+        BookingQuote.updateQuote(mCurrentQuote, newQuote);
+        initializeBill();
+        showBookingWarningIfApplicable(mCurrentQuote);
         updatePromoUI();
         mPromoText.setText(null);
     }

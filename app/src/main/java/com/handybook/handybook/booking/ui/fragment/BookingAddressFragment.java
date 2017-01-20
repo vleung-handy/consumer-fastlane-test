@@ -160,18 +160,23 @@ public final class BookingAddressFragment extends BookingFlowFragment
                 new FragmentSafeCallback<BookingQuote>(this)
                 {
                     @Override
-                    public void onCallbackSuccess(final BookingQuote bookingQuote)
+                    public void onCallbackSuccess(final BookingQuote newQuote)
                     {
                         removeUiBlockers();
-                        bookingManager.setCurrentQuote(bookingQuote);
+                        transaction.setBookingId(newQuote.getBookingId());
+                        BookingQuote.updateQuote(
+                                bookingManager.getCurrentQuote(),
+                                newQuote
+                        );
                         startPaymentActivity();
                     }
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error)
                     {
-                        dataManagerErrorHandler.handleError(getContext(), error);
+                        // Fail silently and proceed to payment screen without bill - Mngmnt.
                         removeUiBlockers();
+                        startPaymentActivity();
                     }
                 }
         );
