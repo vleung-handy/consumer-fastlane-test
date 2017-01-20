@@ -136,37 +136,81 @@
             android:adjustViewBounds="true"
             />
 
-
-        <LinearLayout
+        <ViewSwitcher
+            android:id="@+id/view_switcher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin_double"
             android:layout_marginRight="@dimen/default_margin_double"
             android:layout_marginTop="@dimen/default_margin_double"
             android:background="@color/handy_white"
-            android:elevation="@dimen/med_elevation"
-            android:gravity="center"
-            android:orientation="vertical"
             android:padding="@dimen/default_margin_double"
+            android:elevation="@dimen/med_elevation"
+            android:clipToPadding="false"
             >
 
-            <TextView
-                android:textSize="25sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Where are you located?"
-                />
-
-            <EditText
-                android:id="@+id/edit_zip"
+            <LinearLayout
+                android:id="@+id/view_zip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin"
-                android:hint="Zip code"
-                />
-        </LinearLayout>
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:textSize="25sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Where are you located?"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_zip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:hint="Zip code"
+                    />
+
+                <Button
+                    android:id="@+id/button_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:textSize="25sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="What's your email address?"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:hint="Email"
+                    />
+
+                <Button
+                    android:id="@+id/button_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit"
+                    />
+            </LinearLayout>
+        </ViewSwitcher>
+
+
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

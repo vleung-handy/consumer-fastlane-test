@@ -11,14 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * This is the new onboarding fragment that is supposed to
@@ -45,12 +50,28 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @Bind(R.id.edit_zip)
     EditText mEditZip;
 
+    @Bind(R.id.edit_email)
+    EditText mEditEmail;
+
     @Bind(R.id.button_signin_1)
     Button mSign1;
 
     @Bind(R.id.button_signin_2)
     Button mSign2;
 
+    @Bind(R.id.view_switcher)
+    ViewSwitcher mViewSwitcher;
+
+    @Bind(R.id.view_email)
+    View mEmailView;
+
+    @Bind(R.id.view_zip)
+    View mZipView;
+
+    private Animation mSlideInFromRight;
+    private Animation mSlideOutToLeft;
+    private Animation mSlideOutToRight;
+    private Animation mSlideInFromLeft;
     private boolean mExpanded = true;
 
     public static OnboardV2Fragment newInstance()
@@ -72,8 +93,57 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         mEditZip.clearFocus();
         mAppBar.addOnOffsetChangedListener(this);
         registerKeyboardListener();
+
+        mSlideInFromRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
+        mSlideOutToLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_left);
+        mSlideInFromLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_left);
+        mSlideOutToRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
         return view;
 
+    }
+
+    @OnClick(R.id.button_next)
+    public void showNext()
+    {
+        mViewSwitcher.setInAnimation(mSlideInFromRight);
+        mViewSwitcher.setOutAnimation(mSlideOutToLeft);
+        mViewSwitcher.showNext();
+    }
+
+    private void showPrevious()
+    {
+        mViewSwitcher.setInAnimation(mSlideInFromLeft);
+        mViewSwitcher.setOutAnimation(mSlideOutToRight);
+        mViewSwitcher.showPrevious();
+    }
+
+    /**
+     * Returns true if it's been handled.
+     * @return
+     */
+    public boolean onBackPressed()
+    {
+        if (mViewSwitcher.getCurrentView() == mEmailView)
+        {
+            //we just want to go back to zip
+            showPrevious();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    @OnClick(R.id.button_submit)
+    public void onSubmitClicked()
+    {
+        Toast.makeText(getContext(),
+                       "SUBMIT zip: " + mEditZip.getText()
+                                                .toString() + "  and email:" + mEditEmail.getText()
+                                                                                         .toString() + " to server.",
+                       Toast.LENGTH_SHORT
+        ).show();
     }
 
     /**
@@ -138,19 +208,11 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
     }
 
-    public void clicked()
-    {
-        if (!mExpanded)
-        {
-            expand();
-        }
-        else
-        {
-            collapse();
-        }
-        mExpanded = !mExpanded;
-    }
-
+    /**
+     * Determines when the toolbar is fully expanded and fully collapsed.
+     * @param appBarLayout
+     * @param verticalOffset
+     */
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset)
     {
