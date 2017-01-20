@@ -202,10 +202,10 @@
                     />
 
                 <Button
-                    android:id="@+id/button_submit"
+                    android:id="@+id/button_dont_support"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Submit"
+                    android:text="Launch Don't Support Screen"
                     />
             </LinearLayout>
         </ViewSwitcher>

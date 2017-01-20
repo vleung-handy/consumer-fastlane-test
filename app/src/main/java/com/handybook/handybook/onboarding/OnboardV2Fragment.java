@@ -1,5 +1,6 @@
 package com.handybook.handybook.onboarding;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +16,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.handybook.handybook.R;
@@ -135,15 +135,10 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
     }
 
-    @OnClick(R.id.button_submit)
-    public void onSubmitClicked()
+    @OnClick(R.id.button_dont_support)
+    public void launchNoSupport()
     {
-        Toast.makeText(getContext(),
-                       "SUBMIT zip: " + mEditZip.getText()
-                                                .toString() + "  and email:" + mEditEmail.getText()
-                                                                                         .toString() + " to server.",
-                       Toast.LENGTH_SHORT
-        ).show();
+        startActivity(new Intent(getContext(), NotSupportedActivity.class));
     }
 
     /**

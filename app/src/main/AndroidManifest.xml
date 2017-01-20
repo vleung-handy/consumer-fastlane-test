@@ -521,6 +521,11 @@
             android:windowSoftInputMode="adjustPan"
             >
         </activity>
+        <activity
+            android:name=".onboarding.NotSupportedActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
     </application>
 
 </manifest>

@@ -507,4 +507,7 @@
     <string name="bill_view_expand_target_text">Payment Details</string>
     <string name="sign_in">Sign In</string>
     <string name="label_continue">Continue</string>
+
+    <string name="dont_support_title">We\'re not in your \n area yet :(</string>
+    <string name="dont_support_sub_title">We\'ll let you know when we\'re \n in your city</string>
 </resources>

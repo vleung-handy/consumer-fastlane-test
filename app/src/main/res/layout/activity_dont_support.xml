@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_dont_support"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_white"
+    android:orientation="vertical"
+    tools:context="com.handybook.handybook.onboarding.NotSupportedActivity"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/handy_white"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/image_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_cleaner"
+            />
+
+        <TextView
+            android:id="@+id/text_title"
+            style="@style/TextView.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_double"
+            android:gravity="center"
+            android:text="@string/dont_support_title"
+            />
+
+        <TextView
+            android:id="@+id/text_sub_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:gravity="center"
+            android:text="@string/dont_support_sub_title"
+            />
+
+        <EditText
+            android:id="@+id/edit_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin_4x"
+            android:layout_marginRight="@dimen/default_margin_4x"
+            android:layout_marginTop="@dimen/default_margin"
+            android:hint="Email"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_submit"
+        android:layout_alignParentBottom="true"
+        style="@style/Button.Green"
+        android:text="Keep Me Updated"
+        />
+</RelativeLayout>
