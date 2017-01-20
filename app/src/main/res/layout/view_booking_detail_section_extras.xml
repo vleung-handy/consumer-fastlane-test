@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView
-    style="@style/BookingDetailSectionView.Transparent"
+<RelativeLayout
+    style="@style/BookingDetailSectionView"
     >
 
-    <!--<include layout="@layout/element_section_separator"/>-->
+    <include layout="@layout/layout_section_separator_view"/>
 
     <include layout="@layout/layout_section_entry_title"/>
 
     <include layout="@layout/layout_section_action_text"/>
 
+    <include layout="@layout/layout_section_extras"/>
+
     <include layout="@layout/layout_section_entry_text"/>
 
     <include layout="@layout/layout_section_action_buttons"/>
 
-</com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView>
+</RelativeLayout>

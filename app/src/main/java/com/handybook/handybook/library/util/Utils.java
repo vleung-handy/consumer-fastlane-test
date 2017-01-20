@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.Time;
 import android.util.TypedValue;
@@ -16,9 +17,11 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.constant.BookingActionButtonType;
+import com.handybook.handybook.proteam.model.ProTeamPro;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public final class Utils
 {
@@ -146,5 +149,17 @@ public final class Utils
     public static Integer convertToCents(Float dollarAmount)
     {
         return Math.round(dollarAmount * CENTS_TO_DOLLAR_CONVERSION_VALUE);
+    }
+
+    public static boolean containsProvider(@NonNull List<ProTeamPro> providers, @NonNull String id)
+    {
+        for (ProTeamPro p : providers)
+        {
+            if (id.equals(Integer.toString(p.getId())))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

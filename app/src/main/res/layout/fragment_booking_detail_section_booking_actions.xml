@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/handy_bg">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    >
 
-    <include
+    <com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView
         android:id="@+id/booking_detail_section_view"
-        layout="@layout/element_booking_detail_section_actions"/>
-
+        style="@style/BookingDetailSectionView.Transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 </RelativeLayout>

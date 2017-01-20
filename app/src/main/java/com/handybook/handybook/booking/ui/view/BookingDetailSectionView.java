@@ -1,18 +1,23 @@
 package com.handybook.handybook.booking.ui.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-
-public class BookingDetailSectionView extends InjectedRelativeLayout
+public class BookingDetailSectionView extends FrameLayout
 {
+    @Bind(R.id.entry_sep)
+    View mSeparator;
     @Bind(R.id.entry_title)
     TextView mEntryTitle;
     @Bind(R.id.entry_text)
@@ -25,16 +30,44 @@ public class BookingDetailSectionView extends InjectedRelativeLayout
     public BookingDetailSectionView(final Context context)
     {
         super(context);
+        init();
     }
 
     public BookingDetailSectionView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
+        init();
     }
 
-    public BookingDetailSectionView(final Context context, final AttributeSet attrs, final int defStyle)
+    public BookingDetailSectionView(
+            final Context context, final AttributeSet attrs, final int defStyleAttr
+    )
     {
-        super(context, attrs, defStyle);
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public BookingDetailSectionView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr,
+            final int defStyleRes
+    )
+    {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    protected void init()
+    {
+        inflate(getContext(), R.layout.element_booking_detail_section, this);
+        ButterKnife.bind(this);
+    }
+
+    public void showSeparator(boolean show)
+    {
+        mSeparator.setVisibility(show ? VISIBLE : GONE);
     }
 
     public TextView getEntryTitle()

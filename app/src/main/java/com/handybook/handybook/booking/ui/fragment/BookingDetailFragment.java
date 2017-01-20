@@ -72,6 +72,8 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     private RescheduleType mRescheduleType;
 
+    private ProTeam.ProTeamCategory mCategory;
+
     @Bind(R.id.booking_detail_view)
     BookingDetailView mBookingDetailView;
     @Bind(R.id.nav_help)
@@ -186,15 +188,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         {
             if (data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
             {
-                Date newDate = new Date(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
-                //TODO: We are manually updating the booking, which is something we should strive to avoid as the client is directly changing the model. API v4 should return the updated booking model
-                mBookingDetailView.updateDateTimeInfoText(
-                        mBooking,
-                        newDate,
-                        mConfigurationManager.getPersistentConfiguration()
-                                             .isBookingHoursClarificationExperimentEnabled()
-                );
-                setUpdatedBookingResult();
+                postBlockingEvent(new BookingEvent.RequestBookingDetails(mBooking.getId()));
             }
         }
         else if (resultCode == ActivityResult.BOOKING_CANCELED)
@@ -346,6 +340,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
         List<BookingDetailSectionFragment> sectionFragments = constructSectionFragments();
 
+        // TODO: using fragment here is a over kill. We should be using views
         //These are fragments nested inside this fragment, must use getChildFragmentManager instead of getFragmentManager
         for (BookingDetailSectionFragment sectionFragment : sectionFragments)
         {
@@ -430,28 +425,28 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         }
     }
 
-    @Subscribe
-    public void onReceiveBookingProTeamSuccess(final ProTeamEvent.ReceiveBookingProTeamSuccess event)
+    public void onRescheduleClicked()
     {
-        ProTeam.ProTeamCategory category = event.getProTeamCategory();
-        if (category == null || category.getPreferred() == null || category.getPreferred()
-                                                                           .isEmpty())
+        if (!mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled()
+                || mCategory == null
+                || mCategory.getPreferred() == null
+                || mCategory.getPreferred().isEmpty())
         {
             bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         }
         else
         {
             Intent intent = new Intent(getContext(), ProTeamPerBookingActivity.class);
-            intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, category);
+            intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mCategory);
             intent.putExtra(BundleKeys.BOOKING, mBooking);
             startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
         }
     }
 
     @Subscribe
-    public void onReceiveBookingProTeamError(final ProTeamEvent.ReceiveBookingProTeamError event)
+    public void onReceiveBookingProTeamSuccess(final ProTeamEvent.ReceiveBookingProTeamSuccess event)
     {
-        bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
+        mCategory = event.getProTeamCategory();
     }
 
     @Subscribe
