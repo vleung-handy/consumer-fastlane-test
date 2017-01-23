@@ -55,6 +55,7 @@ public class ProTeamProViewModel
         return mProviderMatchPreference;
     }
 
+    @NonNull
     public ProTeamPro getProTeamPro()
     {
         return mProTeamPro;

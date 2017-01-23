@@ -35,19 +35,19 @@ import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
+import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.ui.view.MapPlaceholderView;
+import com.handybook.handybook.core.ui.view.MiniProProfile;
+import com.handybook.handybook.core.ui.view.MissingLocationView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.PlayServicesUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
-import com.handybook.handybook.core.ui.view.MapPlaceholderView;
-import com.handybook.handybook.core.ui.view.MiniProProfile;
-import com.handybook.handybook.core.ui.view.MissingLocationView;
-import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.util.Date;
 
@@ -442,7 +442,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
      */
     protected void updateLocationStatus(Booking.LocationStatus locationStatus)
     {
-        if (!isAttached())
+        if (!isAttached() || mTextLocationTime == null)
         {
             return;
         }

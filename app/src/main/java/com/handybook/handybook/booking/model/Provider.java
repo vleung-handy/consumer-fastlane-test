@@ -13,6 +13,8 @@ public class Provider implements Serializable
 {
     @SerializedName("status")
     private int mStatus;
+    @SerializedName("id")
+    private String mId;
     @SerializedName("first_name")
     private String mFirstName;
     @SerializedName("last_name")
@@ -37,6 +39,11 @@ public class Provider implements Serializable
     public final int getStatus()
     {
         return mStatus;
+    }
+
+    public String getId()
+    {
+        return mId;
     }
 
     final void setStatus(final int status)

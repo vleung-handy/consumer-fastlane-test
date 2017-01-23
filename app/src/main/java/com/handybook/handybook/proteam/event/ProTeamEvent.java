@@ -161,6 +161,33 @@ public abstract class ProTeamEvent
     }
 
 
+    public static class ReceiveBookingProTeamSuccess extends HandyEvent.ReceiveSuccessEvent
+    {
+        private final ProTeam.ProTeamCategory mProTeamCategory;
+
+        public ReceiveBookingProTeamSuccess(final ProTeam.ProTeamCategory proTeamCategory)
+        {
+            mProTeamCategory = proTeamCategory;
+        }
+
+        @Nullable
+        public ProTeam.ProTeamCategory getProTeamCategory()
+        {
+            return mProTeamCategory;
+        }
+
+    }
+
+
+    public static class ReceiveBookingProTeamError extends HandyEvent.ReceiveErrorEvent
+    {
+        public ReceiveBookingProTeamError(final DataManager.DataManagerError error)
+        {
+            this.error = error;
+        }
+    }
+
+
     public enum Source
     {
         PRO_MANAGEMENT("pro_management"),

@@ -147,6 +147,8 @@ import com.handybook.handybook.notifications.NotificationsModule;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
+import com.handybook.handybook.proteam.ui.fragment.BookingProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamFragment;
@@ -307,6 +309,8 @@ import retrofit.converter.GsonConverter;
         BottomNavActivity.class,
         LayerPushReceiver.class,
         BookingSubscriptionFragment.class,
+        ProTeamPerBookingActivity.class,
+        BookingProTeamConversationsFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

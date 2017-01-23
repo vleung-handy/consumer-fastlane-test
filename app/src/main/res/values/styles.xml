@@ -28,6 +28,10 @@
         <item name="android:textColorPrimary">@color/handy_white</item>
     </style>
 
+    <style name="CircularBold">
+        <item name="fontPath">fonts/CircularStd-Bold.otf</item>
+    </style>
+
     <style name="Toolbar.TitleText"
            parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/text_size_large</item>
