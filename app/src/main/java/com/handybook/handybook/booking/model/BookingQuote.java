@@ -126,6 +126,20 @@ public class BookingQuote extends Observable
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
 
+    public static void updateQuote(final BookingQuote currentQuote, final BookingQuote newQuote)
+    {
+        currentQuote.setBookingId(newQuote.getBookingId());
+        currentQuote.setBill(newQuote.getBill());
+        currentQuote.setPriceTable(newQuote.getPriceTable());
+        currentQuote.setSurgePriceTable(newQuote.getSurgePriceTable());
+        currentQuote.setCoupon(newQuote.getCoupon());
+        currentQuote.setCommitmentPrices(newQuote.getCommitmentPrices());
+        currentQuote.setupCommitmentPricingStructure();
+        currentQuote.setActiveCommitmentTypes(newQuote.getActiveCommitmentTypes());
+        currentQuote.setBill(newQuote.getBill());
+
+    }
+
     public static class QuoteConfig implements Serializable
     {
 
@@ -133,6 +147,7 @@ public class BookingQuote extends Observable
         private String mDisclaimerText;
         @SerializedName("recurrence_options")
         private List<RecurrenceOption> mRecurrenceOptions;
+
         public String getDisclaimerText()
         {
             return mDisclaimerText;
@@ -144,6 +159,7 @@ public class BookingQuote extends Observable
         }
 
     }
+
     /**
      * Now replaced by using the price in {@link CommitmentType}
      */
@@ -694,6 +710,11 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_QUOTE_CONFIG, context.serialize(value.getQuoteConfig()));
             jsonObj.add(KEY_BILL, context.serialize(value.getBill()));
             jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentPrices()));
+            jsonObj.add(KEY_COMMITMENT_FAQ_URL, context.serialize(value.getCommitmentFaqUrl()));
+            jsonObj.add(
+                    KEY_ACTIVE_COMMITMENT_TYPES,
+                    context.serialize(value.getActiveCommitmentTypes())
+            );
             return jsonObj;
         }
     }

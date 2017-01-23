@@ -17,6 +17,8 @@ import java.util.Observer;
 
 public class BookingTransaction extends Observable
 {
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+
     @SerializedName("booking_id")
     private int mBookingId;
     @SerializedName("user_id")
@@ -62,7 +64,7 @@ public class BookingTransaction extends Observable
     @SerializedName("button_referrer_token")
     private String mReferrerToken;
     @SerializedName("_android_promo_applied")
-    private String mPromoApplied;
+    private String mPromoCode;
 
     /**
      * holds values like : {"no_commitment", "months"}
@@ -285,14 +287,14 @@ public class BookingTransaction extends Observable
         triggerObservers();
     }
 
-    public String promoApplied()
+    public String getPromoCode()
     {
-        return mPromoApplied;
+        return mPromoCode;
     }
 
-    public void setPromoApplied(final String promoApplied)
+    public void setPromoCode(final String promoCode)
     {
-        mPromoApplied = promoApplied;
+        mPromoCode = promoCode;
         triggerObservers();
     }
 
@@ -304,7 +306,7 @@ public class BookingTransaction extends Observable
 
     public final String toJson()
     {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        final Gson gson = new GsonBuilder().setDateFormat(DATE_FORMAT)
                                            .setExclusionStrategies(getExclusionStrategy())
                                            .registerTypeAdapter(
                                                    BookingTransaction.class,
@@ -316,7 +318,7 @@ public class BookingTransaction extends Observable
 
     public static BookingTransaction fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+        return new GsonBuilder().setDateFormat(DATE_FORMAT).create()
                                 .fromJson(json, BookingTransaction.class);
     }
 
@@ -387,7 +389,7 @@ public class BookingTransaction extends Observable
             jsonObj.add("extra_cleaning_text", context.serialize(value.getExtraCleaningText()));
             jsonObj.add("mobile", context.serialize(1));
             jsonObj.add("button_referrer_token", context.serialize(value.getReferrerToken()));
-            jsonObj.add("_android_promo_applied", context.serialize(value.promoApplied()));
+            jsonObj.add("_android_promo_applied", context.serialize(value.getPromoCode()));
 
             if (value.getCommitmentType() != null)
             {

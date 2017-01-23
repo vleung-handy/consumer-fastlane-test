@@ -19,12 +19,14 @@ import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingProTeamActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
+import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -32,8 +34,6 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLo
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.core.ui.fragment.LoginFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -188,8 +188,6 @@ public class BookingFlowFragment extends InjectedFragment
                      ))
             );
         }
-        
-      
 
         dataManager.rescheduleBooking(
                 booking.getId(),
@@ -326,7 +324,7 @@ public class BookingFlowFragment extends InjectedFragment
         transaction.setZipCode(quote.getAddress().getZip());
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
-        transaction.setPromoApplied(bookingManager.getPromoTabCoupon());
+        transaction.setPromoCode(bookingManager.getPromoTabCoupon());
         if (user != null)
         {
             transaction.setEmail(user.getEmail());
@@ -518,7 +516,7 @@ public class BookingFlowFragment extends InjectedFragment
         if (transaction != null && oldQuote != null && oldQuote.getBookingId()
                 != quote.getBookingId())
         {
-            transaction.setPromoApplied(null);
+            transaction.setPromoCode(null);
         }
         bookingManager.setCurrentQuote(quote);
         continueFlow();

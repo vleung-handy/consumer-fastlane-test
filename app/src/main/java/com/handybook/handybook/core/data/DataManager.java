@@ -21,7 +21,6 @@ import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProT
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
-import com.handybook.handybook.booking.model.BookingCoupon;
 import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingPostInfo;
@@ -491,14 +490,14 @@ public class DataManager
         );
     }
 
-    public void removePromo(final int quoteId, final Callback<BookingCoupon> cb)
+    public void removePromo(final int quoteId, final Callback<BookingQuote> cb)
     {
         mService.removePromo(quoteId, "", new HandyRetrofitCallback(cb)
         {
             @Override
             protected void success(final JSONObject response)
             {
-                cb.onSuccess(BookingCoupon.fromJson(response.toString()));
+                cb.onSuccess(BookingQuote.fromJson(response.toString()));
             }
         });
     }
