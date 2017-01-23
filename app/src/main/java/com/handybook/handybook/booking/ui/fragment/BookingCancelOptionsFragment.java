@@ -55,7 +55,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
     )
     {
         final BookingCancelOptionsFragment fragment = new BookingCancelOptionsFragment();
-        final Bundle args = new Bundle(); 
+        final Bundle args = new Bundle();
 
         args.putString(EXTRA_NOTICE, notice);
         args.putStringArrayList(EXTRA_OPTIONS, options);
