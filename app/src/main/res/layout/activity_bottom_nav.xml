@@ -20,5 +20,7 @@
         android:layout_height="wrap_content"
         app:itemBackground="@color/white"
         app:itemTextColor="@color/black"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu"
+        app:chatIndicatorIndex="1"
+        />
 </LinearLayout>
