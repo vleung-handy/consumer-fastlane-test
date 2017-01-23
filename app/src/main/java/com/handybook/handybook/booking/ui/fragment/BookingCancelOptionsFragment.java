@@ -15,8 +15,8 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -34,17 +34,19 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
     public static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     private static final String STATE_OPTION_INDEX = "OPTION_INDEX";
 
-    private int optionIndex = -1;
-    private String notice;
-    private ArrayList<String> optionsList;
-    private Booking booking;
+    private int mOptionIndex = -1;
+    private String mNotice;
+    private ArrayList<String> mOptions;
+    private Booking mBooking;
 
+    @Bind(R.id.booking_cancel_options_title)
+    TextView mTitle;
     @Bind(R.id.options_layout)
-    FrameLayout optionsLayout;
-    @Bind(R.id.cancel_button)
-    Button cancelButton;
+    FrameLayout mOptionsLayout;
     @Bind(R.id.notice_text)
-    TextView noticeText;
+    TextView mNoticeText;
+    @Bind(R.id.booking_cancel_options_button)
+    Button mButton;
 
     public static BookingCancelOptionsFragment newInstance(
             final String notice,
@@ -67,9 +69,9 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        notice = getArguments().getString(EXTRA_NOTICE);
-        optionsList = getArguments().getStringArrayList(EXTRA_OPTIONS);
-        booking = getArguments().getParcelable(EXTRA_BOOKING);
+        mNotice = getArguments().getString(EXTRA_NOTICE);
+        mOptions = getArguments().getStringArrayList(EXTRA_OPTIONS);
+        mBooking = getArguments().getParcelable(EXTRA_BOOKING);
     }
 
     @Override
@@ -89,8 +91,8 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
 
         final BookingOption options = new BookingOption();
         options.setType(BookingOption.TYPE_OPTION);
-        options.setOptions(optionsList.toArray(new String[optionsList.size()]));
-        options.setDefaultValue(Integer.toString(optionIndex));
+        options.setOptions(mOptions.toArray(new String[mOptions.size()]));
+        options.setDefaultValue(Integer.toString(mOptionIndex));
 
         final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
                 getActivity(),
@@ -99,24 +101,52 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
         );
 
         optionsView.hideTitle();
-        optionsLayout.addView(optionsView, 0);
+        mOptionsLayout.addView(optionsView, 0);
 
-        if (notice != null && notice.length() > 0)
+        if (mNotice != null && mNotice.length() > 0)
         {
-            noticeText.setText(notice);
-            noticeText.setVisibility(View.VISIBLE);
+            mNoticeText.setText(mNotice);
+            mNoticeText.setVisibility(View.VISIBLE);
         }
 
-        cancelButton.setOnClickListener(cancelClicked);
+        mButton.setOnClickListener(cancelClicked);
 
+        initToolbarTitle();
+        initButtonTitle();
         return view;
+    }
+
+    private void initToolbarTitle()
+    {
+        final boolean isRecurring = mBooking != null && mBooking.isRecurring();
+        if (isRecurring)
+        {
+            mTitle.setText(R.string.skip_booking);
+        }
+        else
+        {
+            mTitle.setText(R.string.cancel_booking);
+        }
+    }
+
+    private void initButtonTitle()
+    {
+        final boolean isRecurring = mBooking != null && mBooking.isRecurring();
+        if (isRecurring)
+        {
+            mButton.setText(R.string.skip_booking);
+        }
+        else
+        {
+            mButton.setText(R.string.cancel_booking);
+        }
     }
 
     @Override
     public final void onSaveInstanceState(final Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_OPTION_INDEX, optionIndex);
+        outState.putInt(STATE_OPTION_INDEX, mOptionIndex);
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated
@@ -125,7 +155,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
         @Override
         public void onUpdate(final BookingOptionsView view)
         {
-            optionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
+            mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
         }
 
         @Override
@@ -156,16 +186,16 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
             final User user = userManager.getCurrentUser();
 
             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                             BookingDetailsLog.EventType.SUBMITTED,
-                             booking.getId()
+                    BookingDetailsLog.EventType.SUBMITTED,
+                    mBooking.getId()
                      ))
             );
 
             if (user != null)
             {
                 dataManager.cancelBooking(
-                        booking.getId(),
-                        optionIndex,
+                        mBooking.getId(),
+                        mOptionIndex,
                         user.getId(),
                         new FragmentSafeCallback<String>(BookingCancelOptionsFragment.this)
                         {
@@ -174,7 +204,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                             {
                                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                                         BookingDetailsLog.EventType.SUCCESS,
-                                        booking.getId()
+                                        mBooking.getId()
                                 )));
 
                                 if (!allowCallbacks)
@@ -201,8 +231,8 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                             public void onCallbackError(final DataManager.DataManagerError error)
                             {
                                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                                                 BookingDetailsLog.EventType.ERROR,
-                                                 booking.getId()
+                                        BookingDetailsLog.EventType.ERROR,
+                                        mBooking.getId()
                                          ))
                                 );
 
