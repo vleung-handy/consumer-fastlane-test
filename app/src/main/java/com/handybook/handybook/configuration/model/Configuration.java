@@ -35,10 +35,6 @@ public class Configuration implements Serializable
     private boolean mBottomNavEnabled;
 
     //default this to false
-    @SerializedName("chat_enabled")
-    private boolean mChatEnabled;
-
-    //default this to false
     @SerializedName("snow_enabled")
     private boolean mSnowEnabled;
 
@@ -107,11 +103,6 @@ public class Configuration implements Serializable
     public boolean isProTeamProfilePicturesEnabled()
     {
         return isProTeamProfilePicturesEnabled;
-    }
-
-    public boolean isChatEnabled()
-    {
-        return mChatEnabled;
     }
 
     public boolean isSnowEnabled()

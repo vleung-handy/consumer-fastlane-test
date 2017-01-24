@@ -49,10 +49,6 @@ public class DeepLinkTest
         uri = Uri.parse("handy://pro_team");
         deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
         mActivityRule.getActivity().startActivity(deepLinkIntent);
-        ViewUtil.waitForViewVisible(
-                R.id.pro_team_tab_layout,
-                ViewUtil.LONG_MAX_WAIT_TIME_MS
-        );
         ViewUtil.matchToolbarTitle(R.string.my_pro_team);
 
         //Note: When snow is activated on this screen, the tests will fail because Espresso's

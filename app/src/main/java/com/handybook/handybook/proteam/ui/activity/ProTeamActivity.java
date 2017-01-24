@@ -4,31 +4,22 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
-import com.handybook.handybook.proteam.ui.fragment.ProTeamFragment;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-
 
 public class ProTeamActivity extends MenuDrawerActivity
 {
     @Override
     protected Fragment createFragment()
     {
-        if (mConfigurationManager.getPersistentConfiguration().isChatEnabled())
+        if (getIntent().getBooleanExtra(BundleKeys.PRO_TEAM_EDIT, false))
         {
-            if (getIntent().getBooleanExtra(BundleKeys.PRO_TEAM_EDIT, false))
-            {
-                return ProTeamEditFragment.newInstance();
-            }
-            else
-            {
-                return ProTeamConversationsFragment.newInstance();
-            }
+            return ProTeamEditFragment.newInstance();
         }
         else
         {
-            return ProTeamFragment.newInstance();
+            return ProTeamConversationsFragment.newInstance();
         }
     }
 
