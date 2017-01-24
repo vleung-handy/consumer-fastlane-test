@@ -260,7 +260,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
      */
     public void showIndicator(boolean showIndicator, int position)
     {
-        if(position < mButtons.length)
+        if(mButtons != null && position < mButtons.length)
         {
             mButtons[position].showIndicator(showIndicator);
         }

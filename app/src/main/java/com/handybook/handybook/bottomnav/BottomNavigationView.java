@@ -219,7 +219,7 @@ public class BottomNavigationView extends FrameLayout {
      */
     public void showChatIndicator(boolean showIndicator)
     {
-        if(mChatIndicatorIndex > -1)
+        if(mChatIndicatorIndex > -1 && mMenuView != null)
         {
             mMenuView.showIndicator(showIndicator, mChatIndicatorIndex);
         }
