@@ -24,14 +24,12 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import butterknife.Bind;
-
+import butterknife.ButterKnife;
 
 public class BookingDetailSectionPaymentView extends BookingDetailSectionView
 {
-
     @Bind(R.id.pay_lines_section)
     public LinearLayout paymentLinesSection;
-
     @Bind(R.id.total_text)
     public TextView totalText;
 
@@ -52,6 +50,13 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
     )
     {
         super(context, attrs, defStyle);
+    }
+
+    @Override
+    protected void init()
+    {
+        inflate(getContext(), R.layout.view_booking_detail_section_payment, this);
+        ButterKnife.bind(this);
     }
 
     //TODO: Clean this up
@@ -83,7 +88,8 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
 
             for (int i = 0; i < paymentInfo.size(); i++)
             {
-                paymentLineView = inflate(R.layout.view_payment_line, paymentLinesSection);
+                paymentLineView = inflate(getContext(), R.layout.view_payment_line, null);
+                paymentLinesSection.addView(paymentLineView);
 
                 final TextView labelText = (TextView) paymentLineView.findViewById(
                         R.id.view_payment_line_label_text

@@ -393,6 +393,9 @@
     <string name="currently_assigned">Currently assigned</string>
     <string name="conversation_tip_title">Ask for a time that works for you both.</string>
     <string name="conversation_tip_body">Tap the calendar to set your new date and time.</string>
+    <string name="prefer_different_pro">Prefer a different pro?</string>
+    <string name="not_seeing_pro">Not seeing the pro you want?</string>
+    <string name="reschedule_with_pro">Your Pro Team members were not available to work at this time. You can reschedule directly with your favorite pro.</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 

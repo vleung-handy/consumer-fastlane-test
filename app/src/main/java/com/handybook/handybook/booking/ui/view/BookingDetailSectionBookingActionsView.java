@@ -3,10 +3,6 @@ package com.handybook.handybook.booking.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 
-
-/**
- * Created by cdavis on 9/1/15.
- */
 public class BookingDetailSectionBookingActionsView extends BookingDetailSectionView
 {
     public BookingDetailSectionBookingActionsView(final Context context)
@@ -22,5 +18,12 @@ public class BookingDetailSectionBookingActionsView extends BookingDetailSection
     public BookingDetailSectionBookingActionsView(final Context context, final AttributeSet attrs, final int defStyle)
     {
         super(context, attrs, defStyle);
+    }
+
+    @Override
+    protected void init()
+    {
+        super.init();
+        showSeparator(false);
     }
 }

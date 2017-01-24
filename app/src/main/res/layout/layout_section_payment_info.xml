@@ -3,7 +3,7 @@
        xmlns:tools="http://schemas.android.com/tools"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       tools:showIn="@layout/element_booking_detail_section_payment"
+       tools:showIn="@layout/view_booking_detail_section_payment"
     >
 
     <RelativeLayout
@@ -13,7 +13,7 @@
         android:layout_below="@id/entry_title"
         android:layout_marginBottom="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
-        tools:showIn="@layout/element_booking_detail_section_payment"
+        tools:showIn="@layout/view_booking_detail_section_payment"
         >
 
         <LinearLayout
