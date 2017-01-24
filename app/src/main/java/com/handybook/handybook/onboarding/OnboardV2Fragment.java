@@ -3,12 +3,14 @@ package com.handybook.handybook.onboarding;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +22,16 @@ import android.widget.Button;
 import android.widget.ViewSwitcher;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.model.response.UserExistsResponse;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,6 +89,9 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     private Animation mSlideOutToRight;
     private Animation mSlideInFromLeft;
     private boolean mExpanded = true;
+    private List<Service> mServices;
+    private String mZip;
+    private String mEmail;
 
     public static OnboardV2Fragment newInstance()
     {
@@ -126,13 +139,32 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @OnClick(R.id.button_next)
     public void nextClicked()
     {
-        requestForServices(mEditZip.getText().toString());
+        mZip = mEditZip.getText().toString();
+        requestForServices(mZip);
         showNext();
     }
 
     private void requestForServices(String zip)
     {
+        mServices = null;
+        dataManager.getServices(zip, new FragmentSafeCallback<List<Service>>(this)
+        {
+            @Override
+            public void onCallbackSuccess(@NonNull final List<Service> services)
+            {
+                mServices = services;
 
+                //it could be possible that this zip response comes after the user enters email.
+                //if that is the case, we need to call userCreateLead();
+                userCreateLead();
+            }
+
+            @Override
+            public void onCallbackError(final DataManager.DataManagerError error)
+            {
+                //TODO: JIA: figure out what to do here on zip error
+            }
+        });
     }
 
     private void showNext()
@@ -167,10 +199,75 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
     }
 
-    @OnClick(R.id.button_dont_support)
-    public void launchNoSupport()
+    /**
+     * TODO: JIA: make this button enabled/disabled based on the text that is entered.
+     */
+    @OnClick(R.id.button_submit)
+    public void submitClicked()
     {
-        startActivity(new Intent(getContext(), NotSupportedActivity.class));
+        mEmail = mEditEmail.getText().toString();
+        userCreateLead();
+    }
+
+    private void userCreateLead()
+    {
+        //we only do this step if we have both the email and the zip response. If the zip
+        //response is received, mServices will not equal to null
+        if (mServices != null && !TextUtils.isEmpty(mEmail))
+        {
+            dataManager.userCreateLead(
+                    mEmail,
+                    mZip,
+                    new DataManager.Callback<UserExistsResponse>()
+                    {
+                        @Override
+                        public void onSuccess(final UserExistsResponse response)
+                        {
+                            handleEmailResponse(response);
+                        }
+
+                        @Override
+                        public void onError(final DataManager.DataManagerError error)
+                        {
+                            //TODO: JIA: handle this error
+                        }
+                    }
+            );
+        }
+    }
+
+    /**
+     * IF the email already exists, redirect to login page
+     * ELSE IF we don't support this zip, redirect to {@link NotSupportedActivity}
+     * ELSE IF we support this zip, redirect to new home page
+     *
+     * @param emailResponse
+     */
+    private void handleEmailResponse(UserExistsResponse emailResponse)
+    {
+        if (emailResponse.exists())
+        {
+            //user exists, go to login
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, mEmail);
+            intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, emailResponse.getFirstName());
+            startActivity(intent);
+        }
+        else
+        {
+            if (mServices.isEmpty())
+            {
+                //we don't support this zip
+                startActivity(new Intent(getActivity(), NotSupportedActivity.class));
+            }
+            else
+            {
+                //we do support this zip, just go to home page without prompting to login
+
+                //TODO: JIA: this might be a redirection to the home page.
+                startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
+            }
+        }
     }
 
     /**

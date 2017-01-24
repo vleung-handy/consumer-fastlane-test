@@ -216,10 +216,10 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
-                    android:id="@+id/button_dont_support"
+                    android:id="@+id/button_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Launch Don't Support Screen"
+                    android:text="Next"
                     />
             </LinearLayout>
         </ViewSwitcher>

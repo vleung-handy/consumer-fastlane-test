@@ -30,17 +30,12 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.MainNavTab;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.library.util.ValidationUtils;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
-import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
@@ -48,6 +43,11 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.widget.EmailInputTextView;
 import com.handybook.handybook.core.ui.widget.MenuButton;
 import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
+import com.handybook.handybook.library.util.ValidationUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
+import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -200,7 +200,11 @@ public final class LoginFragment extends BookingFlowFragment
                 mWelcomeText.setText(getString(R.string.welcome_back, mBookingUserName));
                 mWelcomeText.setVisibility(View.VISIBLE);
             }
-            mBookingRequest.setEmail(mBookingUserEmail);
+            //NOTE: mBookingRequest could be null if this is a login coming from the onboarding process
+            if (mBookingRequest != null)
+            {
+                mBookingRequest.setEmail(mBookingUserEmail);
+            }
         }
         else
         {

@@ -101,6 +101,58 @@ public class DataManager
     }
 
     /**
+     * TODO: JIA: maybe cache these services based on the zip.
+     * @param zip
+     * @param cb
+     */
+    public final void getServices(@NonNull final String zip, final Callback<List<Service>> cb)
+    {
+        mService.getServices(zip, new HandyRetrofitCallback(cb)
+        {
+            @Override
+            protected void success(final JSONObject response)
+            {
+                cb.onSuccess(getServicesFromJson(response));
+            }
+        });
+    }
+
+    /**
+     * Takes in a JSONObject that is returned from /services call and converts them into a list of Service
+     * @return
+     */
+    private
+    @NonNull
+    List<Service> getServicesFromJson(JSONObject response)
+    {
+        final JSONArray array = response.optJSONArray("services_list");
+
+        List<Service> services = new ArrayList<>();
+
+        for (int i = 0; i <= array.length(); i++)
+        {
+            final JSONObject obj = array.optJSONObject(i);
+
+            if (obj != null && obj.optBoolean("no_show", true))
+            {
+                final Service service = new Service();
+                service.setId(obj.optInt("id"));
+
+                service.setUniq(obj.isNull("machine_name") ? null
+                                        : obj.optString("machine_name"));
+
+                service.setName(obj.isNull("name") ? null : obj.optString("name"));
+                service.setOrder(obj.optInt("order", 0));
+                service.setParentId(obj.optInt("parent", 0));
+
+                services.add(service);
+            }
+        }
+
+        return services;
+    }
+
+    /**
      * If there is a cached version, return the cache, and updates the cache in the background. If
      * there was a cached version, then cache update success will not be broadcasted. This is to
      * prevent a client from having to deal with multiple broadcasts (cache, updates, etc).
@@ -929,6 +981,15 @@ public class DataManager
                 handleCreateSessionResponse(response, cb);
             }
         });
+    }
+
+    public void userCreateLead(
+            @NonNull String email,
+            @NonNull String zipcode,
+            Callback<UserExistsResponse> cb
+    )
+    {
+        mService.createLead(email, zipcode, new UserExistsHandyRetrofitCallback(cb));
     }
 
     public final void authFBUser(final CreateUserRequest createUserRequest, final Callback<User> cb)
