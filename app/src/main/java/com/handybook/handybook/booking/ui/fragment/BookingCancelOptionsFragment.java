@@ -2,6 +2,8 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,12 +58,10 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
     {
         final BookingCancelOptionsFragment fragment = new BookingCancelOptionsFragment();
         final Bundle args = new Bundle();
-
         args.putString(EXTRA_NOTICE, notice);
         args.putStringArrayList(EXTRA_OPTIONS, options);
         args.putParcelable(EXTRA_BOOKING, booking);
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -80,65 +80,115 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_cancel_options,
-                                               container,
-                                               false
-                                       );
-
+        final View view = getActivity()
+                .getLayoutInflater()
+                .inflate(R.layout.fragment_booking_cancel_options, container, false);
         ButterKnife.bind(this, view);
+        initUI();
+        return view;
+    }
+
+    private void initUI()
+    {
+        final boolean isRecurring = mBooking != null && mBooking.isRecurring();
+        @StringRes final int strRes = isRecurring ? R.string.skip_booking : R.string.cancel_booking;
+        mTitle.setText(strRes);
+        mButton.setText(strRes);
+        mButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                disableInputs();
+                progressDialog.show();
+                final User user = userManager.getCurrentUser();
+                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                                 BookingDetailsLog.EventType.SUBMITTED,
+                                 mBooking.getId()
+                         ))
+                );
+                if (user == null)
+                {
+                    Crashlytics.logException(new NullPointerException("User is null"));
+                    showToast(R.string.default_error_string);
+                    return;
+                }
+                final FragmentSafeCallback<String> cb = new FragmentSafeCallback<String>(
+                        BookingCancelOptionsFragment.this
+                )
+                {
+                    @Override
+                    public void onCallbackSuccess(final String message)
+                    {
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                                BookingDetailsLog.EventType.SUCCESS,
+                                mBooking.getId()
+                        )));
+                        if (!allowCallbacks) { return; }
+                        progressDialog.dismiss();
+                        enableInputs();
+                        if (TextUtils.isEmpty(message)) { showToast(message); }
+                        getActivity().setResult(ActivityResult.BOOKING_CANCELED, new Intent());
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error)
+                    {
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
+                                         BookingDetailsLog.EventType.ERROR,
+                                         mBooking.getId()
+                                 ))
+                        );
+
+                        if (!allowCallbacks) { return; }
+                        progressDialog.dismiss();
+                        enableInputs();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                };
+                dataManager.cancelBooking(mBooking.getId(), mOptionIndex, user.getId(), cb);
+            }
+        });
 
         final BookingOption options = new BookingOption();
         options.setType(BookingOption.TYPE_OPTION);
         options.setOptions(mOptions.toArray(new String[mOptions.size()]));
         options.setDefaultValue(Integer.toString(mOptionIndex));
-
         final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
                 getActivity(),
                 options,
-                optionUpdated
-        );
+                new BookingOptionsView.OnUpdatedListener()
+                {
+                    @Override
+                    public void onUpdate(final BookingOptionsView view)
+                    {
+                        mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
+                    }
 
+                    @Override
+                    public void onShowChildren(
+                            final BookingOptionsView view,
+                            final String[] items
+                    )
+                    {
+                    }
+
+                    @Override
+                    public void onHideChildren(
+                            final BookingOptionsView view,
+                            final String[] items
+                    )
+                    {
+                    }
+                }
+        );
         optionsView.hideTitle();
         mOptionsLayout.addView(optionsView, 0);
-
         if (mNotice != null && mNotice.length() > 0)
         {
             mNoticeText.setText(mNotice);
             mNoticeText.setVisibility(View.VISIBLE);
-        }
-
-        mButton.setOnClickListener(cancelClicked);
-
-        initToolbarTitle();
-        initButtonTitle();
-        return view;
-    }
-
-    private void initToolbarTitle()
-    {
-        final boolean isRecurring = mBooking != null && mBooking.isRecurring();
-        if (isRecurring)
-        {
-            mTitle.setText(R.string.skip_booking);
-        }
-        else
-        {
-            mTitle.setText(R.string.cancel_booking);
-        }
-    }
-
-    private void initButtonTitle()
-    {
-        final boolean isRecurring = mBooking != null && mBooking.isRecurring();
-        if (isRecurring)
-        {
-            mButton.setText(R.string.skip_booking);
-        }
-        else
-        {
-            mButton.setText(R.string.cancel_booking);
         }
     }
 
@@ -149,110 +199,4 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
         outState.putInt(STATE_OPTION_INDEX, mOptionIndex);
     }
 
-    private final BookingOptionsView.OnUpdatedListener optionUpdated
-            = new BookingOptionsView.OnUpdatedListener()
-    {
-        @Override
-        public void onUpdate(final BookingOptionsView view)
-        {
-            mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
-        }
-
-        @Override
-        public void onShowChildren(
-                final BookingOptionsView view,
-                final String[] items
-        )
-        {
-        }
-
-        @Override
-        public void onHideChildren(
-                final BookingOptionsView view,
-                final String[] items
-        )
-        {
-        }
-    };
-
-    private View.OnClickListener cancelClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View v)
-        {
-            disableInputs();
-            progressDialog.show();
-
-            final User user = userManager.getCurrentUser();
-
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                    BookingDetailsLog.EventType.SUBMITTED,
-                    mBooking.getId()
-                     ))
-            );
-
-            if (user != null)
-            {
-                dataManager.cancelBooking(
-                        mBooking.getId(),
-                        mOptionIndex,
-                        user.getId(),
-                        new FragmentSafeCallback<String>(BookingCancelOptionsFragment.this)
-                        {
-                            @Override
-                            public void onCallbackSuccess(final String message)
-                            {
-                                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                                        BookingDetailsLog.EventType.SUCCESS,
-                                        mBooking.getId()
-                                )));
-
-                                if (!allowCallbacks)
-                                {
-                                    return;
-                                }
-                                enableInputs();
-                                progressDialog.dismiss();
-
-                                if (message != null && !message.isEmpty())
-                                {
-                                    toast.setText(message);
-                                    toast.show();
-                                }
-
-                                getActivity().setResult(
-                                        ActivityResult.BOOKING_CANCELED,
-                                        new Intent()
-                                );
-                                getActivity().finish();
-                            }
-
-                            @Override
-                            public void onCallbackError(final DataManager.DataManagerError error)
-                            {
-                                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                                        BookingDetailsLog.EventType.ERROR,
-                                        mBooking.getId()
-                                         ))
-                                );
-
-                                if (!allowCallbacks)
-                                {
-                                    return;
-                                }
-
-                                enableInputs();
-                                progressDialog.dismiss();
-                                dataManagerErrorHandler.handleError(getActivity(), error);
-                            }
-                        }
-                );
-            }
-            else
-            {
-                Crashlytics.logException(new NullPointerException("User is null"));
-                showToast(R.string.default_error_string);
-            }
-        }
-    };
 }
