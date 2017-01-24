@@ -163,19 +163,27 @@
                     android:text="Where are you located?"
                     />
 
-                <EditText
-                    android:id="@+id/edit_zip"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/zip_code"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:hint="Zip code"
-                    />
+                    >
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_zip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
 
                 <Button
                     android:id="@+id/button_next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Next"
+                    android:enabled="false"
                     />
             </LinearLayout>
 
@@ -193,13 +201,19 @@
                     android:text="What's your email address?"
                     />
 
-                <EditText
-                    android:id="@+id/edit_email"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin"
                     android:hint="Email"
-                    />
+                    android:layout_marginTop="@dimen/default_margin"
+                    >
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </android.support.design.widget.TextInputLayout>
 
                 <Button
                     android:id="@+id/button_dont_support"

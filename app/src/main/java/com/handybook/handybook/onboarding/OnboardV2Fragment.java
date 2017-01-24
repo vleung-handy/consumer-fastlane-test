@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +17,11 @@ import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ViewSwitcher;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.TextWatcherAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,6 +33,7 @@ import butterknife.OnClick;
 public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.OnOffsetChangedListener
 {
     private static final String TAG = "OnboardV2Fragment";
+    private static final int ZIP_MIN_LENGTH = 5;
 
     // Threshold for minimal keyboard height.
     final int MIN_KEYBOARD_HEIGHT_PX = 150;
@@ -48,10 +51,10 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     View mCollapsedView;
 
     @Bind(R.id.edit_zip)
-    EditText mEditZip;
+    TextInputEditText mEditZip;
 
     @Bind(R.id.edit_email)
-    EditText mEditEmail;
+    TextInputEditText mEditEmail;
 
     @Bind(R.id.button_signin_1)
     Button mSign1;
@@ -61,6 +64,9 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
 
     @Bind(R.id.view_switcher)
     ViewSwitcher mViewSwitcher;
+
+    @Bind(R.id.button_next)
+    Button mNextButton;
 
     @Bind(R.id.view_email)
     View mEmailView;
@@ -98,12 +104,38 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         mSlideOutToLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_left);
         mSlideInFromLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_left);
         mSlideOutToRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
-        return view;
 
+        mEditZip.addTextChangedListener(new TextWatcherAdapter()
+        {
+            @Override
+            public void afterTextChanged(final Editable s)
+            {
+                if (s.toString().trim().length() >= ZIP_MIN_LENGTH)
+                {
+                    mNextButton.setEnabled(true);
+                }
+                else
+                {
+                    mNextButton.setEnabled(false);
+                }
+            }
+        });
+        return view;
     }
 
     @OnClick(R.id.button_next)
-    public void showNext()
+    public void nextClicked()
+    {
+        requestForServices(mEditZip.getText().toString());
+        showNext();
+    }
+
+    private void requestForServices(String zip)
+    {
+
+    }
+
+    private void showNext()
     {
         mViewSwitcher.setInAnimation(mSlideInFromRight);
         mViewSwitcher.setOutAnimation(mSlideOutToLeft);
