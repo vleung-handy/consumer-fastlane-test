@@ -120,29 +120,20 @@ public class BookingDetailSectionFragmentBookingActions
         @Override
         public void onClick(final View v)
         {
+            //log that this was clicked.
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
+                    BookingDetailsLog.EventType.SELECTED,
+                    booking.getId(),
+                    booking.getStartDate(),
+                    null
+            )));
+
             if (getParentFragment() != null)
             {
                 ((BookingDetailFragment) getParentFragment()).showUiBlockers();
                 ((BookingDetailFragment) getParentFragment()).setRescheduleType(
                         BookingDetailFragment.RescheduleType.NORMAL);
-            }
-
-            //log that this was clicked.
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                             BookingDetailsLog.EventType.SELECTED,
-                             booking.getId(),
-                             booking.getStartDate(),
-                             null
-                     ))
-            );
-
-            if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled())
-            {
-                mProTeamManager.requestBookingProTeam(booking.getId());
-            }
-            else
-            {
-                bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
+                ((BookingDetailFragment) getParentFragment()).onRescheduleClicked();
             }
         }
     };

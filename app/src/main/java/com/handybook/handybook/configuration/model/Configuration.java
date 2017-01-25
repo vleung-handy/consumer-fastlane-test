@@ -35,15 +35,13 @@ public class Configuration implements Serializable
     private boolean mBottomNavEnabled;
 
     //default this to false
-    @SerializedName("chat_enabled")
-    private boolean mChatEnabled;
-
-    //default this to false
     @SerializedName("snow_enabled")
     private boolean mSnowEnabled;
 
     @SerializedName("pro_team_reschedule_enabled")
     private boolean mEnableProTeamReschedule;
+    @SerializedName("pro_team_reschedule_cta_enabled")
+    private boolean mEnableProTeamRescheduleCTA;
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
      * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
@@ -107,15 +105,12 @@ public class Configuration implements Serializable
         return isProTeamProfilePicturesEnabled;
     }
 
-    public boolean isChatEnabled()
-    {
-        return mChatEnabled;
-    }
-
     public boolean isSnowEnabled()
     {
         return mSnowEnabled;
     }
 
     public boolean isProTeamRescheduleEnabled() { return mEnableProTeamReschedule; }
+
+    public boolean isProTeamRescheduleCTAEnabled() { return mEnableProTeamRescheduleCTA; }
 }

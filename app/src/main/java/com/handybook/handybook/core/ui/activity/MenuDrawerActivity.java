@@ -22,8 +22,11 @@ import android.widget.EditText;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.ProfileActivity;
+import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.User;
@@ -35,9 +38,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
-import com.handybook.handybook.booking.history.HistoryActivity;
-import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.shared.layer.LayerHelper;
@@ -150,25 +150,17 @@ public abstract class MenuDrawerActivity extends BaseActivity
      */
     private void checkLayerInitiation()
     {
-        if (mConfiguration == null || !mConfiguration.isChatEnabled())
+        //chat is enabled, so we'll login if the user is available
+        User user = mUserManager.getCurrentUser();
+
+        if (user != null)
         {
-            //Layer should be disabled.
-            mLayerHelper.deauthenticate();
+            mLayerHelper.initLayer(user.getAuthToken());
         }
         else
         {
-            //chat is enabled, so we'll login if the user is available
-            User user = mUserManager.getCurrentUser();
-
-            if (user != null)
-            {
-                mLayerHelper.initLayer(user.getAuthToken());
-            }
-            else
-            {
-                //the user is in a logged out state
-                mLayerHelper.deauthenticate();
-            }
+            //the user is in a logged out state
+            mLayerHelper.deauthenticate();
         }
         //The menu should always be refreshed
         refreshMenu();
