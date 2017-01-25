@@ -81,10 +81,14 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
             @Override
             public void onReceive(final Context context, final Intent intent)
             {
-                if(!isProChatCurrentlySelected && mBottomNavigationView != null)
+                if (!isProChatCurrentlySelected && mBottomNavigationView != null)
+                {
                     mBottomNavigationView.showChatIndicator(true);
+                }
             }
         };
+
+        navigateToMainNavTab(new Intent());
     }
 
     @Override
@@ -147,31 +151,37 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
 
     /**
      * navigate to the bottom nav tab associated with the Tab in the given intent's bundle
+     * If there is no intent data, then will go to default tabs
      * @param intent
      */
     private void navigateToMainNavTab(Intent intent)
     {
-        MainNavTab tab;
+        //If the intent is has a tab, then navigate the fragment to it
         if (intent != null && intent.getSerializableExtra(BUNDLE_KEY_TAB) != null)
         {
-            tab = (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
+            MainNavTab tab = (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
+            navigateToMainNavTab(tab);
         }
+        //Else default to either the bookings page if a user has bookings or to the make a booking page
         else
         {
+            //If this is not a tab on the intent, then just default to the correct tab
             User user = mUserManager.getCurrentUser();
+            View view;
             if (user != null
                     && user.getAnalytics() != null
                     && user.getAnalytics().getUpcomingBookings() > 0
                     && ((BaseApplication) getApplication()).isNewlyLaunched())
             {
-                tab = MainNavTab.BOOKINGS;
+                view = mBottomNavigationView.findViewById(R.id.bookings);
             }
             else
             {
-                tab = MainNavTab.SERVICES;
+                view = mBottomNavigationView.findViewById(R.id.add_booking);
             }
+            //go to the correct tab
+            view.performClick();
         }
-        navigateToMainNavTab(tab);
     }
 
     /**
@@ -317,40 +327,40 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     //TODO need to ask where env button should be placed
     private void setupEnvButton()
     {
-//        Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
-//        envButton.setText(String.format(
-//                getString(R.string.env_format),
-//                mEnvironmentModifier.getEnvironment(),
-//                BuildConfig.VERSION_NAME,
-//                Integer.valueOf(BuildConfig.VERSION_CODE).toString()
-//                          )
-//        );
-//        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-//        {
-//            envButton.setVisibility(View.GONE);
-//        }
-//        envButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                final EditText input = new EditText(BottomNavActivity.this);
-//                input.setText(mEnvironmentModifier.getEnvironment());
-//                new AlertDialog.Builder(BottomNavActivity.this)
-//                        .setTitle(R.string.set_environment)
-//                        .setView(input)
-//                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
-//                        {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i)
-//                            {
-//                                mEnvironmentModifier.setEnvironment(input.getText().toString());
-//                            }
-//                        })
-//                        .setNegativeButton(R.string.cancel, null)
-//                        .create()
-//                        .show();
-//            }
-//        });
+        //        Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
+        //        envButton.setText(String.format(
+        //                getString(R.string.env_format),
+        //                mEnvironmentModifier.getEnvironment(),
+        //                BuildConfig.VERSION_NAME,
+        //                Integer.valueOf(BuildConfig.VERSION_CODE).toString()
+        //                          )
+        //        );
+        //        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+        //        {
+        //            envButton.setVisibility(View.GONE);
+        //        }
+        //        envButton.setOnClickListener(new View.OnClickListener()
+        //        {
+        //            @Override
+        //            public void onClick(View view)
+        //            {
+        //                final EditText input = new EditText(BottomNavActivity.this);
+        //                input.setText(mEnvironmentModifier.getEnvironment());
+        //                new AlertDialog.Builder(BottomNavActivity.this)
+        //                        .setTitle(R.string.set_environment)
+        //                        .setView(input)
+        //                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
+        //                        {
+        //                            @Override
+        //                            public void onClick(DialogInterface dialogInterface, int i)
+        //                            {
+        //                                mEnvironmentModifier.setEnvironment(input.getText().toString());
+        //                            }
+        //                        })
+        //                        .setNegativeButton(R.string.cancel, null)
+        //                        .create()
+        //                        .show();
+        //            }
+        //        });
     }
 }
