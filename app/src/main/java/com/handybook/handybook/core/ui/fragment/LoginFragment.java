@@ -33,9 +33,11 @@ import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
@@ -49,6 +51,8 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog
 import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.squareup.otto.Subscribe;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -97,6 +101,10 @@ public final class LoginFragment extends BookingFlowFragment
     ViewGroup mMenuButtonLayout;
     @Bind(R.id.login_scroll_view)
     ScrollView mLoginScrollView;
+
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
+
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
     private Bundle mDestinationExtras;
@@ -520,6 +528,10 @@ public final class LoginFragment extends BookingFlowFragment
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSuccessLog(authTypeForLogger)));
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(authTypeForLogger)));
         }
+
+        //the fact that the user is logged in guarantees at least email and zip information
+        mDefaultPreferencesManager.setString(PrefsKey.ZIP, event.getUser().getAddress().getZip());
+        mDefaultPreferencesManager.setString(PrefsKey.EMAIL, event.getUser().getEmail());
 
         mConfigurationManager.invalidateCache();
 

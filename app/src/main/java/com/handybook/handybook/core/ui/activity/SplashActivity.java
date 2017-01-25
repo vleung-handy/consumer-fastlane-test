@@ -3,6 +3,7 @@ package com.handybook.handybook.core.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
@@ -75,10 +76,11 @@ public class SplashActivity extends BaseActivity
 
         final User user = userManager.getCurrentUser();
 
-        if (1 == 1)
+        //if onboarding is enabled, and we haven't collected email and zip yet, then show the onboarding page
+        if (requiresOnboardingV2())
         {
-            //TODO: JIA: remove this hard coding
             startActivity(new Intent(this, OnboardActivity.class));
+            finish();
         }
         else if (!mDefaultPreferencesManager.getBoolean(
                 PrefsKey.APP_ONBOARD_SHOWN,
@@ -155,6 +157,25 @@ public class SplashActivity extends BaseActivity
         if (mBusEventListener != null) { mBus.register(mBusEventListener); }
         if (mBusErrorEventListener != null) { mBus.register(mBusErrorEventListener); }
         mBus.post(new ConfigurationEvent.RequestConfiguration());
+    }
+
+    /**
+     * If the new onboarding flag is enabled, and we don't have zip or email, then
+     * user is required to go to onboarding screen.
+     *
+     * Do this only if the user is not currently logged in
+     * @return
+     */
+    private boolean requiresOnboardingV2()
+    {
+        return mConfigurationManager.getPersistentConfiguration().isOnboardingEnabled()
+                && !mUserManager.isUserLoggedIn() &&
+                (TextUtils.isEmpty(mSecurePreferencesManager.getString(PrefsKey.ZIP, null))
+                        || TextUtils.isEmpty(mSecurePreferencesManager.getString(
+                        PrefsKey.EMAIL,
+                        null
+                ))
+                );
     }
 
     @Override

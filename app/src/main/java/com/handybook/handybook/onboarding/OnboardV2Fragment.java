@@ -24,14 +24,18 @@ import android.widget.ViewSwitcher;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -66,12 +70,6 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @Bind(R.id.edit_email)
     TextInputEditText mEditEmail;
 
-    @Bind(R.id.button_signin_1)
-    Button mSign1;
-
-    @Bind(R.id.button_signin_2)
-    Button mSign2;
-
     @Bind(R.id.view_switcher)
     ViewSwitcher mViewSwitcher;
 
@@ -87,6 +85,9 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @Bind(R.id.view_zip)
     View mZipView;
 
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
+
     private Animation mSlideInFromRight;
     private Animation mSlideOutToLeft;
     private Animation mSlideOutToRight;
@@ -101,7 +102,6 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         return new OnboardV2Fragment();
     }
 
-    @Nullable
     @Override
     public View onCreateView(
             final LayoutInflater inflater,
@@ -160,6 +160,8 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     public void nextClicked()
     {
         mZip = mEditZip.getText().toString();
+        mDefaultPreferencesManager.setString(PrefsKey.ZIP, mZip);
+        mEmail = null;
         requestForServices(mZip);
         showNext();
     }
@@ -219,13 +221,34 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
     }
 
+    @OnClick(R.id.button_signin_1)
+    public void signinClicked()
+    {
+        redirectToLogin();
+    }
+
+    @OnClick(R.id.button_signin_2)
+    public void signin2Clicked()
+    {
+        redirectToLogin();
+    }
+
+    private void redirectToLogin()
+    {
+        final Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
     /**
      * TODO: JIA: make this button enabled/disabled based on the text that is entered.
      */
     @OnClick(R.id.button_submit)
     public void submitClicked()
     {
+        //mark onboarding shown, so we don't show the old one, even if the config eventually gets turned off.
+        mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
         mEmail = mEditEmail.getText().toString();
+        mDefaultPreferencesManager.setString(PrefsKey.EMAIL, mEmail);
         userCreateLead();
     }
 

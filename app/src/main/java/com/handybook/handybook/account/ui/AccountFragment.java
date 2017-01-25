@@ -24,8 +24,10 @@ import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.view.PriceView;
@@ -50,6 +52,9 @@ public class AccountFragment extends InjectedFragment
     UserManager mUserManager;
     @Inject
     UserDataManager mUserDataManager;
+
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -303,6 +308,11 @@ public class AccountFragment extends InjectedFragment
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
+
+                        //remove user email and zip when they logout
+                        mDefaultPreferencesManager.removeValue(PrefsKey.ZIP);
+                        mDefaultPreferencesManager.removeValue(PrefsKey.EMAIL);
+
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();
                     }
