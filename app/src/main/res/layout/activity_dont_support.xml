@@ -54,7 +54,7 @@
             android:layout_marginLeft="@dimen/default_margin_4x"
             android:layout_marginRight="@dimen/default_margin_4x"
             android:layout_marginTop="@dimen/default_margin"
-            android:hint="Email"
+            android:hint="@string/email"
             />
 
     </LinearLayout>
@@ -63,6 +63,6 @@
         android:id="@+id/button_submit"
         android:layout_alignParentBottom="true"
         style="@style/Button.Green"
-        android:text="Keep Me Updated"
+        android:text="@string/onboard_keep_me_updated"
         />
 </RelativeLayout>
