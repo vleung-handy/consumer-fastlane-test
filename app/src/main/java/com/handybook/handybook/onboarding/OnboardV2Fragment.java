@@ -78,6 +78,9 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @Bind(R.id.button_next)
     Button mNextButton;
 
+    @Bind(R.id.button_submit)
+    Button mSubmitButton;
+
     @Bind(R.id.view_email)
     View mEmailView;
 
@@ -130,6 +133,23 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
                 else
                 {
                     mNextButton.setEnabled(false);
+                }
+            }
+        });
+
+        mEditEmail.addTextChangedListener(new TextWatcherAdapter()
+        {
+            @Override
+            public void afterTextChanged(final Editable s)
+            {
+                final String email = s.toString().trim();
+                if (email.matches("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"))
+                {
+                    mSubmitButton.setEnabled(true);
+                }
+                else
+                {
+                    mSubmitButton.setEnabled(false);
                 }
             }
         });
