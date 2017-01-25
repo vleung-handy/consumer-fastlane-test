@@ -48,6 +48,8 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -119,14 +121,6 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     public static OnboardV2Fragment newInstance()
     {
         return new OnboardV2Fragment();
-    }
-
-    @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -342,7 +336,10 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @OnClick(R.id.onboard_button_submit)
     public void emailSubmitClicked()
     {
+        //mark onboarding shown, so we don't show the old one, even if the config eventually gets turned off.
+        mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
         mEmail = mEditEmail.getText().toString();
+        mDefaultPreferencesManager.setString(PrefsKey.EMAIL, mEmail);
         userCreateLead();
     }
 

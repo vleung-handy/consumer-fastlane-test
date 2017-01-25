@@ -309,8 +309,6 @@ public class AccountFragment extends InjectedFragment
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
-
-
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();
                         Intent intent = new Intent(getContext(), SplashActivity.class);
