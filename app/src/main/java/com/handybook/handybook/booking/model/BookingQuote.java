@@ -94,9 +94,7 @@ public class BookingQuote extends Observable
     private CommitmentType mCommitmentType;
     private CommitmentPricesMap mCommitmentPricesMap;
 
-    /**
-     * This is the key to the commitment prices
-     */
+    //This is the key to the commitment prices
     @SerializedName(KEY_ACTIVE_COMMITMENT_TYPES)
     private List<CommitmentType.CommitmentTypeName> mActiveCommitmentTypes;
 
