@@ -184,12 +184,9 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         super.onActivityResult(requestCode, resultCode, data);
 
         //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
-        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
+        if (requestCode == ActivityResult.RESCHEDULE_NEW_DATE && resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
         {
-            if (data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
-            {
-                postBlockingEvent(new BookingEvent.RequestBookingDetails(mBooking.getId()));
-            }
+            postBlockingEvent(new BookingEvent.RequestBookingDetails(mBooking.getId()));
         }
         else if (resultCode == ActivityResult.BOOKING_CANCELED)
         {

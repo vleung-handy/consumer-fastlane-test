@@ -229,6 +229,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
         intent.putExtra(BundleKeys.PRO_TEAM_PRO, mPro);
         intent.putExtra(BundleKeys.PRO_TEAM_PRO_PREFERENCE, preference);
         intent.putExtra(BundleKeys.SHOW_TIPS, true);
+        intent.putExtra(BundleKeys.BOOKING, mBooking);
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }
 

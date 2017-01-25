@@ -14,14 +14,17 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.reschedule.RescheduleUpcomingActivity;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
 import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -58,16 +61,12 @@ public class ProMessagesActivity extends MessagesListActivity
 {
     @Inject
     UserManager mUserManager;
-
     @Inject
     ProTeamManager mProTeamManager;
-
     @Inject
     DataManager mDataManager;
-
     @Inject
     BookingManager mBookingManager;
-
     @Inject
     Bus mBus;
 
@@ -78,7 +77,8 @@ public class ProMessagesActivity extends MessagesListActivity
     private ProTeamProViewModel mProTeamProViewModel;
     private int mAttachmentViewItemHeight;
     private User mUser;
-    private boolean mShowTips;
+    private ProTeamPro mPro;
+    private Booking mBooking;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -87,13 +87,15 @@ public class ProMessagesActivity extends MessagesListActivity
 
         ((BaseApplication) getApplication()).inject(this);
 
-        ProTeamPro pro = (ProTeamPro) getIntent().getSerializableExtra(PRO_TEAM_PRO);
+        mPro = (ProTeamPro) getIntent().getSerializableExtra(PRO_TEAM_PRO);
+        mBooking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
+
         ProviderMatchPreference matchPreference =
                 (ProviderMatchPreference) getIntent().getSerializableExtra(PRO_TEAM_PRO_PREFERENCE);
 
-        if (pro != null && matchPreference != null)
+        if (mPro != null && matchPreference != null)
         {
-            mProTeamProViewModel = from(pro, matchPreference, false);
+            mProTeamProViewModel = from(mPro, matchPreference, false);
         }
 
         if (getIntent().getBooleanExtra(BundleKeys.SHOW_TIPS, false))
@@ -323,11 +325,8 @@ public class ProMessagesActivity extends MessagesListActivity
                 else
                 {
                     mBus.post(new LogEvent.AddLogEvent(new ChatLog.MakeBookingSelectedLog(
-                            String.valueOf(
-                                    mProTeamProViewModel.getProTeamPro().getId()),
-                            mConversation
-                                    .getId()
-                                    .toString(),
+                            String.valueOf(mProTeamProViewModel.getProTeamPro().getId()),
+                            mConversation.getId().toString(),
                             null
                     )));
                     startActivity(new Intent(
@@ -388,10 +387,18 @@ public class ProMessagesActivity extends MessagesListActivity
                 //there are upcoming bookings to reschedule
 
                 mProgressDialog.show();
-                mDataManager.getBookingsForReschedule(
-                        String.valueOf(mProTeamProViewModel.getProTeamPro().getId()),
-                        new BookingsCallback(ProMessagesActivity.this)
-                );
+                if (mBooking == null)
+                {
+                    mDataManager.getBookingsForReschedule(
+                            String.valueOf(mProTeamProViewModel.getProTeamPro().getId()),
+                            new BookingsCallback(ProMessagesActivity.this)
+                    );
+                }
+                else
+                {
+                    mDataManager.getPreRescheduleInfo(
+                            mBooking.getId(), new PreRescheduleCallback(ProMessagesActivity.this));
+                }
             }
         });
 
@@ -433,6 +440,30 @@ public class ProMessagesActivity extends MessagesListActivity
         Toast.makeText(this, R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
     }
 
+    public void onReceivePreRescheduleInfoSuccess(String notice)
+    {
+        mProgressDialog.dismiss();
+
+        mBus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleBookingSelectedLog(
+                String.valueOf(mPro.getId()),
+                mBooking.getId(),
+                String.valueOf(mBooking.getRecurringId())
+        )));
+
+        final Intent intent = new Intent(this, BookingDateActivity.class);
+        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
+        intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
+        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.FROM_CHAT);
+        intent.putExtra(BundleKeys.PROVIDER_ID, String.valueOf(mPro.getId()));
+        startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+    }
+
+    public void onRescheduleRequestError()
+    {
+        mProgressDialog.dismiss();
+        Toast.makeText(this, R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
+    }
+
     public static class ProTeamCallback implements DataManager.Callback<ProTeamWrapper>
     {
         private WeakReference<ProMessagesActivity> mActivityRef;
@@ -459,32 +490,44 @@ public class ProMessagesActivity extends MessagesListActivity
     }
 
 
-    private static class BookingsCallback implements DataManager.Callback<UserBookingsWrapper>
+    private static class BookingsCallback extends ActivitySafeCallback<UserBookingsWrapper, ProMessagesActivity>
     {
-
-        private final WeakReference<ProMessagesActivity> mActivity;
-
         public BookingsCallback(ProMessagesActivity activity)
         {
-            mActivity = new WeakReference<>(activity);
+            super(activity);
         }
 
         @Override
-        public void onSuccess(final UserBookingsWrapper response)
+        public void onCallbackSuccess(final UserBookingsWrapper response)
         {
-            if (mActivity.get() != null)
-            {
-                mActivity.get().onBookingReceived(response.getBookings());
-            }
+            mActivityWeakReference.get().onBookingReceived(response.getBookings());
         }
 
         @Override
-        public void onError(final DataManager.DataManagerError error)
+        public void onCallbackError(final DataManager.DataManagerError error)
         {
-            if (mActivity.get() != null)
-            {
-                mActivity.get().onBookingsRequestError();
-            }
+            mActivityWeakReference.get().onBookingsRequestError();
+        }
+    }
+
+
+    private static class PreRescheduleCallback extends ActivitySafeCallback<String, ProMessagesActivity>
+    {
+        public PreRescheduleCallback(ProMessagesActivity activity)
+        {
+            super(activity);
+        }
+
+        @Override
+        public void onCallbackSuccess(final String response)
+        {
+            mActivityWeakReference.get().onReceivePreRescheduleInfoSuccess(response);
+        }
+
+        @Override
+        public void onCallbackError(final DataManager.DataManagerError error)
+        {
+            mActivityWeakReference.get().onRescheduleRequestError();
         }
     }
 }
