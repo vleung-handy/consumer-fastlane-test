@@ -152,7 +152,6 @@ import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
-import com.handybook.handybook.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.RemoveProDialogFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
@@ -288,7 +287,6 @@ import retrofit.converter.GsonConverter;
         RateImprovementConfirmationDialogFragment.class,
         ProTeamActivity.class,
         ProMessagesActivity.class,
-        ProTeamFragment.class,
         ProTeamConversationsFragment.class,
         ProTeamEditFragment.class,
         ProTeamProListFragment.class,

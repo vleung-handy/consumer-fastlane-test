@@ -14,7 +14,6 @@ import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.core.Tab;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
-import com.handybook.handybook.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.referral.ui.ReferralFragment;
 
 import butterknife.ButterKnife;
@@ -22,7 +21,6 @@ import butterknife.ButterKnife;
 public class BottomNavActivity extends BaseActivity
 {
     public static final String BUNDLE_KEY_TAB = "key_tab";
-
 
     // TODO: uncomment when buildToolsVersion is updated to 25
 //    @Bind(R.id.bottom_navigation)
@@ -104,14 +102,7 @@ public class BottomNavActivity extends BaseActivity
                 fragment = UpcomingBookingsFragment.newInstance();
                 break;
             case R.id.pro_team:
-                if (mConfigurationManager.getPersistentConfiguration().isChatEnabled())
-                {
-                    fragment = ProTeamConversationsFragment.newInstance();
-                }
-                else
-                {
-                    fragment = ProTeamFragment.newInstance();
-                }
+                fragment = ProTeamConversationsFragment.newInstance();
                 break;
             case R.id.add_booking:
                 fragment = ServiceCategoriesFragment.newInstance(null, null);
