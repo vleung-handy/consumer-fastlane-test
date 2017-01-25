@@ -185,7 +185,6 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
         );
         optionsView.hideTitle();
         mOptionsLayout.addView(optionsView, 0);
-        
         if (mNotice != null && mNotice.length() > 0)
         {
             mNoticeText.setText(mNotice);
