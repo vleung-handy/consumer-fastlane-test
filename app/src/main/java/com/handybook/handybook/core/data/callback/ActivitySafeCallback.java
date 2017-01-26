@@ -1,5 +1,6 @@
 package com.handybook.handybook.core.data.callback;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -13,20 +14,21 @@ import java.lang.ref.WeakReference;
  *
  * @param <T>
  */
-public abstract class ActivitySafeCallback<T> extends CancellableCallback<T>
+public abstract class ActivitySafeCallback<T, A extends Activity> extends CancellableCallback<T>
 {
     /**
      * NOTE: for the WeakReference to effectively avoid memory leaks,
      * this callback should be used as a static class;
      * otherwise this will still have a strong reference
      */
-    private WeakReference<Activity> mActivityWeakReference;
+    protected WeakReference<A> mActivityWeakReference;
 
-    public ActivitySafeCallback(@NonNull Activity activity)
+    public ActivitySafeCallback(@NonNull A activity)
     {
         mActivityWeakReference = new WeakReference<>(activity);
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected boolean areCallbacksEnabled()
     {
