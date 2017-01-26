@@ -795,7 +795,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         completeBooking();
     }
 
-    @OnClick(R.id.payment_fragment_next_button)
+    @OnClick(R.id.next_button)
     public void onCompleteBookingClicked()
     {
         if (validateFields())
