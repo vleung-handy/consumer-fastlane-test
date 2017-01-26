@@ -268,7 +268,7 @@ public class BookingCreationTest
 
         //use previous credit card
         ViewUtil.waitForViewVisible(
-                R.id.payment_fragment_next_button,
+                R.id.next_button,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
         clickNextButton();
