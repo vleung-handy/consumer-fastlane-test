@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout style="@style/BookingDetailSectionView.Transparent">
+
+    <include layout="@layout/layout_section_separator_view"/>
+
+    <include layout="@layout/layout_section_entry_title"/>
+
+    <include layout="@layout/layout_section_action_text"/>
+
+    <include layout="@layout/layout_section_entry_text"/>
+
+    <include layout="@layout/layout_section_action_buttons"/>
+
+</RelativeLayout>

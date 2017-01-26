@@ -3,6 +3,10 @@ package com.handybook.handybook.booking.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.handybook.handybook.R;
+
+import butterknife.ButterKnife;
+
 public class BookingDetailSectionBookingActionsView extends BookingDetailSectionView
 {
     public BookingDetailSectionBookingActionsView(final Context context)
@@ -23,7 +27,8 @@ public class BookingDetailSectionBookingActionsView extends BookingDetailSection
     @Override
     protected void init()
     {
-        super.init();
+        inflate(getContext(), R.layout.view_booking_detail_section_actions, this);
+        ButterKnife.bind(this);
         showSeparator(false);
     }
 }
