@@ -28,12 +28,14 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
-import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -79,6 +81,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     TextView mPromoText;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.fragment_service_categories_sign_in_text)
+    TextView mSignInText;
     @Bind(R.id.fragment_services_category_snowview)
     SnowView mSnowView;
 
@@ -89,6 +93,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     @Inject
     DefaultPreferencesManager mDefaultPreferencesManager;
+
+    @Inject
+    UserManager mUserManager;
 
     public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
     {
@@ -134,10 +141,16 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
+            mSignInText.setVisibility(mUserManager.isUserLoggedIn() ? View.GONE : View.VISIBLE);
+            //the sign-in button is exclusive to the bottom nav feature and driven by same config
         }
-        else if (activity instanceof MenuDrawerActivity)
+        else
         {
-            ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
+            if(activity instanceof MenuDrawerActivity)
+            {
+                ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
+            }
+            mSignInText.setVisibility(View.GONE); //should never show when bottom nav disabled
         }
 
         mPromoImage.setColorFilter(
@@ -165,6 +178,14 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         mRecyclerView.setAdapter(mAdapter);
         return view;
+    }
+
+    //only enabled when bottom nav enabled
+    @OnClick(R.id.fragment_service_categories_sign_in_text)
+    public void onSignInTextClicked()
+    {
+        final Intent intent = new Intent(getActivity(), LoginActivity.class);
+        getActivity().startActivity(intent);
     }
 
     @Override

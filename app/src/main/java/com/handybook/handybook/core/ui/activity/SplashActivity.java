@@ -7,14 +7,15 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.handybook.handybook.core.manager.SecurePreferencesManager;
-import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralResponse;
@@ -85,6 +86,7 @@ public class SplashActivity extends BaseActivity
         else if (user != null
                 && mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
+            //TODO investigate
             final Intent intent = new Intent(this, BottomNavActivity.class);
             startActivity(intent);
             finish();
