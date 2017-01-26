@@ -146,6 +146,7 @@ import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
+import com.handybook.handybook.onboarding.NotSupportedActivity;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
@@ -305,6 +306,7 @@ import retrofit.converter.GsonConverter;
         WebViewFragment.class,
         AccountFragment.class,
         ContactFragment.class,
+        NotSupportedActivity.class,
         ProfilePasswordFragment.class,
         PlansFragment.class,
         EditPlanFragment.class,

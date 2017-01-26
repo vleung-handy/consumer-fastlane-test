@@ -2,11 +2,13 @@ package com.handybook.handybook.core.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.handybook.handybook.core.ui.fragment.OnboardFragment;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
 
 public final class OnboardActivity extends MenuDrawerActivity {
+    private static final String TAG = "OnboardActivity";
 
     Fragment mFragment;
 
@@ -15,6 +17,11 @@ public final class OnboardActivity extends MenuDrawerActivity {
         if (mConfiguration == null)
         {
             mConfiguration = mConfigurationManager.getCachedConfiguration();
+
+            if (mConfiguration == null)
+            {
+                Log.d(TAG, "createFragment: mConfiguration is null");
+            }
         }
 
         if (mConfiguration != null && mConfiguration.isOnboardingEnabled())
@@ -22,6 +29,8 @@ public final class OnboardActivity extends MenuDrawerActivity {
             mFragment = OnboardV2Fragment.newInstance();
             return mFragment;
         }
+
+        Log.d(TAG, "createFragment: returning legacy onboarding fragment");
         return OnboardFragment.newInstance();
     }
 

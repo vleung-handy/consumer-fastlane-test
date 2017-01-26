@@ -41,6 +41,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.handybook.handybook.core.constant.BundleKeys.ZIP;
+
 /**
  * This is the new onboarding fragment that is supposed to
  */
@@ -121,6 +123,8 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         mSlideInFromLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_left);
         mSlideOutToRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
 
+        //        TODO: JIA: add key press listener, to treat "enter" keys as next clicks
+
         mEditZip.addTextChangedListener(new TextWatcherAdapter()
         {
             @Override
@@ -153,6 +157,11 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
                 }
             }
         });
+
+        //try to prepopulate the zip fields with any data we already have.
+        mEditZip.setText(mDefaultPreferencesManager.getString(PrefsKey.ZIP));
+        mEditEmail.setText(mDefaultPreferencesManager.getString(PrefsKey.EMAIL));
+
         return view;
     }
 
@@ -239,11 +248,8 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         startActivity(intent);
     }
 
-    /**
-     * TODO: JIA: make this button enabled/disabled based on the text that is entered.
-     */
     @OnClick(R.id.button_submit)
-    public void submitClicked()
+    public void emailSubmitClicked()
     {
         //mark onboarding shown, so we don't show the old one, even if the config eventually gets turned off.
         mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
@@ -301,7 +307,10 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             if (mServices.isEmpty())
             {
                 //we don't support this zip
-                startActivity(new Intent(getActivity(), NotSupportedActivity.class));
+                Intent intent = new Intent(getActivity(), NotSupportedActivity.class);
+                intent.putExtra(ZIP, mZip);
+                startActivity(intent);
+                getActivity().finish();
             }
             else
             {

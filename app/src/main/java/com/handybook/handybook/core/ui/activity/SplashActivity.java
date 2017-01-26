@@ -170,8 +170,8 @@ public class SplashActivity extends BaseActivity
     {
         return mConfigurationManager.getPersistentConfiguration().isOnboardingEnabled()
                 && !mUserManager.isUserLoggedIn() &&
-                (TextUtils.isEmpty(mSecurePreferencesManager.getString(PrefsKey.ZIP, null))
-                        || TextUtils.isEmpty(mSecurePreferencesManager.getString(
+                (TextUtils.isEmpty(mDefaultPreferencesManager.getString(PrefsKey.ZIP, null))
+                        || TextUtils.isEmpty(mDefaultPreferencesManager.getString(
                         PrefsKey.EMAIL,
                         null
                 ))

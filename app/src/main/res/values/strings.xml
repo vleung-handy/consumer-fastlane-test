@@ -509,9 +509,9 @@
     <string name="sign_in">Sign In</string>
     <string name="label_continue">Continue</string>
 
-    <string name="dont_support_title">We\'re not in your \n area yet :(</string>
+    <string name="dont_support_title">Handy is not in \n your area yet!</string>
     <string name="dont_support_sub_title">We\'ll let you know when we\'re \n in your city</string>
-    <string name="onboard_keep_me_updated">Keep Me Updated</string>
+    <string name="onboard_try_another_zip">Try Another ZIP Code</string>
     <string name="onboard_title"><![CDATA[Book trusted cleaners & handymen instantly]]></string>
     <string name="onboard_already_account">Already have an account?</string>
     <string name="onboard_your_area">Your Area</string>

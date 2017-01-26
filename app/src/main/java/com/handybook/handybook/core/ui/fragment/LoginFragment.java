@@ -141,6 +141,13 @@ public final class LoginFragment extends BookingFlowFragment
         mFindUser = getArguments().getBoolean(EXTRA_FIND_USER);
         mBookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
         mBookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
+
+        if (TextUtils.isEmpty(mBookingUserEmail))
+        {
+            //if there is no email passed in, look in shared prefs
+            mBookingUserEmail = mDefaultPreferencesManager.getString(PrefsKey.EMAIL);
+        }
+
         mIsFromBookingFunnel = getArguments().getBoolean(EXTRA_FROM_BOOKING_FUNNEL);
 
         String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
