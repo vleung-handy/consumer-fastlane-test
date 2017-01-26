@@ -1,71 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+    android:background="@color/handy_bg"
+    android:orientation="vertical"
+    >
 
-    <Button
-        android:id="@+id/booking_cancel_options_button"
+    <TextView
+        android:id="@+id/booking_cancel_options_title"
+        style="@style/TextView.Navbar"
         android:text="@string/cancel_booking"
-        style="@style/Button.Green" />
+        />
+
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/nav_text"
-        android:layout_above="@id/cancel_button">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/default_padding">
+            android:paddingTop="@dimen/default_padding"
+            >
 
             <TextView
                 android:id="@+id/header_text"
+                style="@style/TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:paddingLeft="@dimen/default_margin"
                 android:paddingRight="@dimen/default_margin"
                 android:text="@string/why_cancel"
-                android:gravity="center"
-                style="@style/TextView" />
+                />
 
             <FrameLayout
                 android:id="@+id/options_layout"
-                android:layout_below="@id/header_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/header_text"
+                />
 
             <TextView
                 android:id="@+id/notice_text"
+                style="@style/TextView.XSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/options_layout"
-                android:gravity="center"
+                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:text="notice"
                 android:visibility="gone"
-                style="@style/TextView.XSmall" />
+                />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="16dp" />
+                android:layout_height="16dp"
+                />
 
         </RelativeLayout>
 
     </ScrollView>
 
-    <TextView
-        android:id="@+id/booking_cancel_options_title"
+    <Button
+        android:id="@+id/booking_cancel_options_button"
+        style="@style/Button.Green"
         android:text="@string/cancel_booking"
-        style="@style/TextView.Navbar"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         />
 
-</RelativeLayout>
+
+</LinearLayout>

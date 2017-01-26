@@ -38,6 +38,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.shared.layer.LayerHelper;
@@ -48,6 +49,9 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * eventually switch to BottomNavActivity
+ */
 public abstract class MenuDrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {

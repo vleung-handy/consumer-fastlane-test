@@ -38,6 +38,12 @@ public class UserManager implements Observer
         mBus.register(this);
     }
 
+    /**
+     * TODO this seems like a dangerous way of checking if the user is logged in but this logic is
+     * currently used everywhere throughout the app
+     *
+     * @return
+     */
     public boolean isUserLoggedIn()
     {
         return getCurrentUser() != null;
