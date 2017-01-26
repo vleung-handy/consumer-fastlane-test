@@ -28,7 +28,7 @@
             app:titleMargin="@dimen/default_margin"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             >
-
+            <!--TODO: this should be a menu item instead of a textview. It breaks the core test-->
             <TextView
                 android:id="@+id/pro_team_toolbar_edit_list_button"
                 style="@style/TextView.NavbarAction"
