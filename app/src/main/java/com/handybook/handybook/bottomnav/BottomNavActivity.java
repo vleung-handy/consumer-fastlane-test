@@ -16,7 +16,6 @@ import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
@@ -167,8 +166,7 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
             View view;
             if (user != null
                     && user.getAnalytics() != null
-                    && user.getAnalytics().getUpcomingBookings() > 0
-                    && ((BaseApplication) getApplication()).isNewlyLaunched())
+                    && user.getAnalytics().getUpcomingBookings() > 0)
             {
                 view = mBottomNavigationView.findViewById(R.id.bookings);
             }
