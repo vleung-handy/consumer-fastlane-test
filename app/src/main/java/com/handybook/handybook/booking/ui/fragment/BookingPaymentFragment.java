@@ -91,7 +91,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     @Inject
     ServicesManager mServicesManager;
 
-    @Bind(R.id.payment_fragment_next_button)
+    @Bind(R.id.next_button)
     Button mNextButton;
     @Bind(R.id.payment_fragment_promo_button)
     Button mPromoButton;

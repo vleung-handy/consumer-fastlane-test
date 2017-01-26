@@ -271,7 +271,7 @@ public class BookingCreationTest
                 R.id.payment_fragment_next_button,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
-        onView(withId(R.id.payment_fragment_next_button)).perform(click());
+        clickNextButton();
 
         /*post-confirmation pages*/
 
