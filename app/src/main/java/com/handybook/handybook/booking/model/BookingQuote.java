@@ -94,9 +94,7 @@ public class BookingQuote extends Observable
     private CommitmentType mCommitmentType;
     private CommitmentPricesMap mCommitmentPricesMap;
 
-    /**
-     * This is the key to the commitment prices
-     */
+    //This is the key to the commitment prices
     @SerializedName(KEY_ACTIVE_COMMITMENT_TYPES)
     private List<CommitmentType.CommitmentTypeName> mActiveCommitmentTypes;
 
@@ -126,9 +124,23 @@ public class BookingQuote extends Observable
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
 
+    public static void updateQuote(final BookingQuote currentQuote, final BookingQuote newQuote)
+    {
+        currentQuote.setBookingId(newQuote.getBookingId());
+        currentQuote.setBill(newQuote.getBill());
+        currentQuote.setPriceTable(newQuote.getPriceTable());
+        currentQuote.setSurgePriceTable(newQuote.getSurgePriceTable());
+        currentQuote.setCoupon(newQuote.getCoupon());
+        currentQuote.setCommitmentPrices(newQuote.getCommitmentPrices());
+        currentQuote.setupCommitmentPricingStructure();
+        currentQuote.setActiveCommitmentTypes(newQuote.getActiveCommitmentTypes());
+        currentQuote.setBill(newQuote.getBill());
+
+    }
 
     public static class QuoteConfig implements Serializable
     {
+
         @SerializedName("disclaimer_text")
         private String mDisclaimerText;
         @SerializedName("recurrence_options")
@@ -143,6 +155,7 @@ public class BookingQuote extends Observable
         {
             return mRecurrenceOptions;
         }
+
     }
 
     /**
@@ -446,6 +459,11 @@ public class BookingQuote extends Observable
         return mBill;
     }
 
+    public void setBill(@Nullable final Bill bill)
+    {
+        mBill = bill;
+    }
+
     public CommitmentType getCommitmentType()
     {
         return mCommitmentType;
@@ -690,6 +708,11 @@ public class BookingQuote extends Observable
             jsonObj.add(KEY_QUOTE_CONFIG, context.serialize(value.getQuoteConfig()));
             jsonObj.add(KEY_BILL, context.serialize(value.getBill()));
             jsonObj.add(KEY_COMMITMENT_PRICES, context.serialize(value.getCommitmentPrices()));
+            jsonObj.add(KEY_COMMITMENT_FAQ_URL, context.serialize(value.getCommitmentFaqUrl()));
+            jsonObj.add(
+                    KEY_ACTIVE_COMMITMENT_TYPES,
+                    context.serialize(value.getActiveCommitmentTypes())
+            );
             return jsonObj;
         }
     }

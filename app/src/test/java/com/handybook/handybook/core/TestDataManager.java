@@ -5,6 +5,8 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyInf
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingQuote;
+import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.data.DataManager;
@@ -69,5 +71,15 @@ public class TestDataManager extends DataManager
         RecurringPlanWrapper wrapper =
                 new RecurringPlanWrapper(ModelFactory.createRecurringPlan(address));
         cb.onSuccess(wrapper);
+    }
+
+    @Override
+    public void updateQuote(
+            final int quoteId,
+            final BookingTransaction bookingTransaction,
+            final Callback<BookingQuote> cb
+    )
+    {
+        cb.onError(new DataManagerError(Type.NETWORK, "Got 500"));
     }
 }
