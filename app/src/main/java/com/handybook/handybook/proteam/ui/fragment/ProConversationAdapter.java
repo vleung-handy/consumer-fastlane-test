@@ -2,11 +2,13 @@ package com.handybook.handybook.proteam.ui.fragment;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.library.ui.viewholder.SingleViewHolder;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.model.ProTeam;
@@ -23,14 +25,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHolder>
+public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.ViewHolder>
 {
+    private static final int NORMAL = Integer.MIN_VALUE;
+
+    private List<SingleViewHolder> mHeaders = new ArrayList<>();
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeam.ProTeamCategory mProTeamCategory;
     private final LayerHelper mLayerHelper;
     private final View.OnClickListener mOnClickListener;
     private List<String> mChatEligibleMemberIds;
     private Bus mBus;
+    private boolean mHideConversation;
+    private String mProviderId;
 
     /**
      * We're using this flag to denote the first time conversations became available
@@ -50,6 +57,21 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
         mOnClickListener = onClickListener;
         mBus = bus;
         initProTeamProViewModels();
+    }
+
+    public void addHeader(@NonNull View header)
+    {
+        mHeaders.add(new SingleViewHolder(header));
+    }
+
+    public void setHideConversation(boolean hideConversation)
+    {
+        mHideConversation = hideConversation;
+    }
+
+    public void setProviderId(@NonNull String providerId)
+    {
+        mProviderId = providerId;
     }
 
     private void initProTeamProViewModels()
@@ -97,7 +119,6 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
         onConversationUpdated();
         setHasStableIds(true);
     }
-
 
     /**
      * conversations could've changed. See if we need to update the screen.
@@ -166,37 +187,60 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<ConversationHol
     }
 
     @Override
-    public ConversationHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        final View itemView = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.layout_pro_team_conversation_item, parent, false);
-        itemView.setOnClickListener(mOnClickListener);
+        if (viewType == NORMAL)
+        {
+            final View itemView = LayoutInflater
+                    .from(parent.getContext())
+                    .inflate(R.layout.layout_pro_team_conversation_item, parent, false);
+            itemView.setOnClickListener(mOnClickListener);
 
-        return new ConversationHolder(itemView);
+            return new ConversationHolder(itemView, mHideConversation, mProviderId);
+        }
+        else // Header
+        {
+            return mHeaders.get(viewType);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(final ConversationHolder holder, int position)
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position)
     {
-        super.onBindViewHolder(holder, position);
-        holder.bind(getItem(position));
+        if (position >= mHeaders.size() && position < mProTeamProViewModels.size() + mHeaders.size())
+        {
+            super.onBindViewHolder(holder, position - mHeaders.size());
+            ((ConversationHolder) holder).bind(getItem(position - mHeaders.size()));
+        }
     }
 
     @Override
     public int getItemCount()
     {
-        return mProTeamProViewModels.size();
+        return mProTeamProViewModels.size() + mHeaders.size();
     }
 
-    public ProTeamProViewModel getItem(final int position)
+    public int getHeaderCount()
     {
-        return mProTeamProViewModels.get(position);
+        return mHeaders.size();
+    }
+
+    public ProTeamProViewModel getItem(final int index)
+    {
+        return mProTeamProViewModels.get(index);
     }
 
     @Override
     public long getItemId(final int position)
     {
-        return getItem(position).hashCode();
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(final int position)
+    {
+        // We return the position as type if it's header.
+        return position >= mHeaders.size() ? NORMAL : position;
     }
 }

@@ -10,24 +10,39 @@ import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView;
+import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.proteam.manager.ProTeamManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 
 public class BookingDetailSectionFragmentBookingActions
         extends BookingDetailSectionFragment<BookingDetailSectionBookingActionsView>
 {
+    @Inject
+    ProTeamManager mProTeamManager;
+
     @Override
     protected int getFragmentResourceId()
     {
         return R.layout.fragment_booking_detail_section_booking_actions;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if (getParentFragment() != null)
+        {
+            ((BookingDetailFragment) getParentFragment()).removeUiBlockers();
+        }
     }
 
     @Override
@@ -79,8 +94,8 @@ public class BookingDetailSectionFragmentBookingActions
             //log that this was clicked.
             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                     BookingDetailsLog.EventType.SELECTED,
-                    booking.getId())
-            ));
+                    booking.getId()
+            )));
 
             BookingDetailFragment parentFragment = (BookingDetailFragment) getParentFragment();
             if (parentFragment != null)
@@ -105,20 +120,21 @@ public class BookingDetailSectionFragmentBookingActions
         @Override
         public void onClick(final View v)
         {
-            if (getParentFragment() != null)
-            {
-                ((BookingDetailFragment) getParentFragment()).setRescheduleType(BookingDetailFragment.RescheduleType.NORMAL);
-            }
-
             //log that this was clicked.
             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                     BookingDetailsLog.EventType.SELECTED,
                     booking.getId(),
                     booking.getStartDate(),
-                    null))
-            );
+                    null
+            )));
 
-            bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
+            if (getParentFragment() != null)
+            {
+                ((BookingDetailFragment) getParentFragment()).showUiBlockers();
+                ((BookingDetailFragment) getParentFragment()).setRescheduleType(
+                        BookingDetailFragment.RescheduleType.NORMAL);
+                ((BookingDetailFragment) getParentFragment()).onRescheduleClicked();
+            }
         }
     };
 
@@ -130,9 +146,6 @@ public class BookingDetailSectionFragmentBookingActions
             final Intent intent = new Intent(getActivity(), BookingEditHoursActivity.class);
             intent.putExtra(BundleKeys.BOOKING, booking);
             getParentFragment().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);
-
         }
     };
-
-
 }

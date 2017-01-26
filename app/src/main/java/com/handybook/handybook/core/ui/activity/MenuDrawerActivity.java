@@ -154,25 +154,17 @@ public abstract class MenuDrawerActivity extends BaseActivity
      */
     private void checkLayerInitiation()
     {
-        if (mConfiguration == null || !mConfiguration.isChatEnabled())
+        //chat is enabled, so we'll login if the user is available
+        User user = mUserManager.getCurrentUser();
+
+        if (user != null)
         {
-            //Layer should be disabled.
-            mLayerHelper.deauthenticate();
+            mLayerHelper.initLayer(user.getAuthToken());
         }
         else
         {
-            //chat is enabled, so we'll login if the user is available
-            User user = mUserManager.getCurrentUser();
-
-            if (user != null)
-            {
-                mLayerHelper.initLayer(user.getAuthToken());
-            }
-            else
-            {
-                //the user is in a logged out state
-                mLayerHelper.deauthenticate();
-            }
+            //the user is in a logged out state
+            mLayerHelper.deauthenticate();
         }
         //The menu should always be refreshed
         refreshMenu();

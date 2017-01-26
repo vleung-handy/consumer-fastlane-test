@@ -62,6 +62,9 @@
     <dimen name="med_elevation">4dp</dimen>
     <dimen name="checkbox_round_square">32dp</dimen>
 
+
+    <dimen name="dialog_width">300dp</dimen>
+
     <!-- Pro Team -->
     <dimen name="pro_team_margin">12dp</dimen>
     <dimen name="pro_team_button_height">32dp</dimen>

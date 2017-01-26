@@ -25,7 +25,6 @@ import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
-import com.handybook.handybook.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.shared.layer.LayerConstants;
 import com.handybook.shared.layer.LayerHelper;
@@ -88,7 +87,7 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
             }
         };
 
-        navigateToMainNavTab(new Intent());
+        navigateToMainNavTab(getIntent());
     }
 
     @Override
@@ -156,16 +155,14 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
      */
     private void navigateToMainNavTab(Intent intent)
     {
-        //If the intent is has a tab, then navigate the fragment to it
+        MainNavTab tab;
         if (intent != null && intent.getSerializableExtra(BUNDLE_KEY_TAB) != null)
         {
-            MainNavTab tab = (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
+            tab = (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
             navigateToMainNavTab(tab);
         }
-        //Else default to either the bookings page if a user has bookings or to the make a booking page
         else
         {
-            //If this is not a tab on the intent, then just default to the correct tab
             User user = mUserManager.getCurrentUser();
             View view;
             if (user != null
@@ -202,14 +199,7 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                 fragment = UpcomingBookingsFragment.newInstance();
                 break;
             case PRO_TEAM:
-                if (mConfigurationManager.getPersistentConfiguration().isChatEnabled())
-                {
-                    fragment = ProTeamConversationsFragment.newInstance();
-                }
-                else
-                {
-                    fragment = ProTeamFragment.newInstance();
-                }
+                fragment = ProTeamConversationsFragment.newInstance();
                 break;
             case SERVICES:
                 fragment = ServiceCategoriesFragment.newInstance(null, null);
@@ -284,25 +274,17 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
      */
     private void checkLayerInitiation()
     {
-        if (!mConfigurationManager.getPersistentConfiguration().isChatEnabled())
+        //chat is enabled, so we'll login if the user is available
+        User user = mUserManager.getCurrentUser();
+
+        if (user != null)
         {
-            //Layer should be disabled.
-            mLayerHelper.deauthenticate();
+            mLayerHelper.initLayer(user.getAuthToken());
         }
         else
         {
-            //chat is enabled, so we'll login if the user is available
-            User user = mUserManager.getCurrentUser();
-
-            if (user != null)
-            {
-                mLayerHelper.initLayer(user.getAuthToken());
-            }
-            else
-            {
-                //the user is in a logged out state
-                mLayerHelper.deauthenticate();
-            }
+            //the user is in a logged out state
+            mLayerHelper.deauthenticate();
         }
         //The menu should always be refreshed
         refreshMenu();
@@ -327,40 +309,40 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     //TODO need to ask where env button should be placed
     private void setupEnvButton()
     {
-        //        Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
-        //        envButton.setText(String.format(
-        //                getString(R.string.env_format),
-        //                mEnvironmentModifier.getEnvironment(),
-        //                BuildConfig.VERSION_NAME,
-        //                Integer.valueOf(BuildConfig.VERSION_CODE).toString()
-        //                          )
-        //        );
-        //        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-        //        {
-        //            envButton.setVisibility(View.GONE);
-        //        }
-        //        envButton.setOnClickListener(new View.OnClickListener()
-        //        {
-        //            @Override
-        //            public void onClick(View view)
-        //            {
-        //                final EditText input = new EditText(BottomNavActivity.this);
-        //                input.setText(mEnvironmentModifier.getEnvironment());
-        //                new AlertDialog.Builder(BottomNavActivity.this)
-        //                        .setTitle(R.string.set_environment)
-        //                        .setView(input)
-        //                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
-        //                        {
-        //                            @Override
-        //                            public void onClick(DialogInterface dialogInterface, int i)
-        //                            {
-        //                                mEnvironmentModifier.setEnvironment(input.getText().toString());
-        //                            }
-        //                        })
-        //                        .setNegativeButton(R.string.cancel, null)
-        //                        .create()
-        //                        .show();
-        //            }
-        //        });
+//        Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
+//        envButton.setText(String.format(
+//                getString(R.string.env_format),
+//                mEnvironmentModifier.getEnvironment(),
+//                BuildConfig.VERSION_NAME,
+//                Integer.valueOf(BuildConfig.VERSION_CODE).toString()
+//                          )
+//        );
+//        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+//        {
+//            envButton.setVisibility(View.GONE);
+//        }
+//        envButton.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                final EditText input = new EditText(BottomNavActivity.this);
+//                input.setText(mEnvironmentModifier.getEnvironment());
+//                new AlertDialog.Builder(BottomNavActivity.this)
+//                        .setTitle(R.string.set_environment)
+//                        .setView(input)
+//                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
+//                        {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i)
+//                            {
+//                                mEnvironmentModifier.setEnvironment(input.getText().toString());
+//                            }
+//                        })
+//                        .setNegativeButton(R.string.cancel, null)
+//                        .create()
+//                        .show();
+//            }
+//        });
     }
 }

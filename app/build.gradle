@@ -29,12 +29,12 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion '24.0.2'
+    buildToolsVersion '24.0.3'
     defaultConfig {
         applicationId 'com.handy.handy'
         minSdkVersion 16
-        targetSdkVersion 24
-        versionName '1.36.0'
+        targetSdkVersion 25
+        versionName '1.38.0'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -95,7 +95,7 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '25.0.1'
+    supportLibraryVersion = '25.1.0'
     googlePlayServicesVersion = '9.6.1'
     firebaseVersion = '9.6.1'
 }

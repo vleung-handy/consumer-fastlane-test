@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    style="@style/BookingDetailSectionView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <include layout="@layout/layout_section_separator_view"/>
+
+    <include
+        android:id="@+id/entry_title"
+        layout="@layout/layout_section_entry_title"
+        />
+
+    <include layout="@layout/layout_section_action_text"/>
+
+    <LinearLayout
+        android:id="@+id/preferences_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/entry_title"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        >
+
+    </LinearLayout>
+
+    <include layout="@layout/layout_section_entry_text"/>
+
+    <include layout="@layout/layout_section_action_buttons"/>
+
+</RelativeLayout>

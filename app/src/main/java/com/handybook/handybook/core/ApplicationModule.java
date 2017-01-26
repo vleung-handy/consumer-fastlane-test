@@ -104,6 +104,7 @@ import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragm
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
+import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
@@ -147,9 +148,10 @@ import com.handybook.handybook.notifications.NotificationsModule;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
+import com.handybook.handybook.proteam.ui.fragment.BookingProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
-import com.handybook.handybook.proteam.ui.fragment.ProTeamFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.RemoveProDialogFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
@@ -285,7 +287,6 @@ import retrofit.converter.GsonConverter;
         RateImprovementConfirmationDialogFragment.class,
         ProTeamActivity.class,
         ProMessagesActivity.class,
-        ProTeamFragment.class,
         ProTeamConversationsFragment.class,
         ProTeamEditFragment.class,
         ProTeamProListFragment.class,
@@ -307,6 +308,9 @@ import retrofit.converter.GsonConverter;
         BottomNavActivity.class,
         LayerPushReceiver.class,
         BookingSubscriptionFragment.class,
+        ProTeamPerBookingActivity.class,
+        BookingProTeamConversationsFragment.class,
+        RescheduleDialogFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

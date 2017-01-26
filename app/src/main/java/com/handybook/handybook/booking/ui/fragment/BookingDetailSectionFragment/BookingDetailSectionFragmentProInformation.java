@@ -15,22 +15,32 @@ import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.model.Provider;
+import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
-import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.manager.ProTeamManager;
+import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
-import com.handybook.handybook.booking.util.BookingUtil;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class BookingDetailSectionFragmentProInformation extends
         BookingDetailSectionFragment<BookingDetailSectionProInfoView>
 {
+    @Inject
+    ProTeamManager mProTeamManager;
+
     public static BookingDetailSectionFragmentProInformation newInstance()
     {
         return new BookingDetailSectionFragmentProInformation();
@@ -98,6 +108,46 @@ public class BookingDetailSectionFragmentProInformation extends
         }
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleCTAEnabled())
+        {
+            mProTeamManager.requestBookingProTeam(booking.getId());
+        }
+    }
+
+    @Subscribe
+    public void onReceiveBookingProTeamSuccess(final ProTeamEvent.ReceiveBookingProTeamSuccess event)
+    {
+        final ProTeam.ProTeamCategory category = event.getProTeamCategory();
+        if (!mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleCTAEnabled()
+                || category == null
+                || category.getPreferred() == null
+                || category.getPreferred().isEmpty()
+                || booking.getProvider() == null
+                || booking.getProvider().getId() == null
+                || Utils.containsProvider(category.getPreferred(), booking.getProvider().getId()))
+        {
+            getSectionView().showPreferDifferentProLayout(false);
+        }
+        else
+        {
+            getSectionView().showPreferDifferentProLayout(true);
+            getSectionView().setPreferDifferentProOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(final View v)
+                {
+                    RescheduleDialogFragment fragment =
+                            RescheduleDialogFragment.newInstance(category, booking);
+                    fragment.show(getFragmentManager(), null);
+                }
+            });
+        }
+    }
+
     /**
      * hides all the views managed by this class
      *
@@ -112,6 +162,7 @@ public class BookingDetailSectionFragmentProInformation extends
         getSectionView().setAssignedProTeamMatchIndicatorVisible(false);
         getSectionView().getEntryText().setVisibility(View.GONE);
         getSectionView().getEntryTitle().setVisibility(View.GONE);
+        getSectionView().showPreferDifferentProLayout(false);
     }
 
     /**

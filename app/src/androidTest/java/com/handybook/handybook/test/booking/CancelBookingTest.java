@@ -61,9 +61,12 @@ public class CancelBookingTest
         onView(withId(R.id.action_button_cancel_booking)).perform(scrollTo()).perform(click());
 
         // Select the first reason and click cancel booking
-        ViewUtil.waitForViewVisible(R.id.cancel_button, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(
+                R.id.booking_cancel_options_button,
+                ViewUtil.LONG_MAX_WAIT_TIME_MS
+        );
         onView(ViewUtil.first(withId(R.id.check_box))).perform(click());
-        onView(withId(R.id.cancel_button)).perform(click());
+        onView(withId(R.id.booking_cancel_options_button)).perform(click());
 
         // If upcoming bookings page is visible and no upcoming bookings displayed, then cancel booking worked
         onView(withId(R.id.booking_item_container)).check(doesNotExist()); // Check if booking row is there

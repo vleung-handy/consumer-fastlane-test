@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/handy_tertiary_gray"
+    android:padding="@dimen/default_padding_half"
+    >
+
+    <TextView
+        android:id="@+id/conversation_tips_title_text"
+        style="@style/CircularBold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/conversation_tip_title"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_medium"
+        />
+
+    <TextView
+        android:id="@+id/conversation_tips_body_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/conversation_tips_title_text"
+        android:text="@string/conversation_tip_body"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_medium"
+        />
+
+    <ImageView
+        android:id="@+id/conversation_tips_dismiss_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_x_white"
+        />
+
+</RelativeLayout>

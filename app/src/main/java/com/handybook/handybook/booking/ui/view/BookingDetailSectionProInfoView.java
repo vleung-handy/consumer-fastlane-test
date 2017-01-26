@@ -4,8 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
@@ -13,11 +15,8 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.ui.view.MiniProProfile;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-
-/**
- * Created by cdavis on 9/1/15.
- */
 public class BookingDetailSectionProInfoView extends BookingDetailSectionView
 {
     /**
@@ -38,6 +37,11 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView
 
     @Bind(R.id.action_buttons_layout_slot_2)
     public LinearLayout actionButtonsLayoutSlot2;
+
+    @Bind(R.id.element_booking_detail_section_pro_info_prefer_diff_pro_layout)
+    ViewGroup mPreferDifferentProLayout;
+    @Bind(R.id.element_booking_detail_section_pro_info_prefer_diff_pro_text)
+    TextView mPreferDifferentProText;
 
     /**
      * mini pro profile
@@ -62,6 +66,13 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView
     )
     {
         super(context, attrs, defStyle);
+    }
+
+    @Override
+    protected void init()
+    {
+        inflate(getContext(), R.layout.view_booking_detail_section_pro_info, this);
+        ButterKnife.bind(this);
     }
 
     public void setAssignedProTeamMatchIndicatorVisible(boolean visible)
@@ -96,5 +107,15 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView
     public void setLegacyNoProViewVisible(boolean visible)
     {
         mLegacyNoProView.setVisibility(visible ? VISIBLE : GONE);
+    }
+
+    public void showPreferDifferentProLayout(boolean show)
+    {
+        mPreferDifferentProLayout.setVisibility(show ? VISIBLE : GONE);
+    }
+
+    public void setPreferDifferentProOnClickListener(OnClickListener onClickListener)
+    {
+        mPreferDifferentProText.setOnClickListener(onClickListener);
     }
 }

@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-
 public class DeepLinkTest
 {
     @Rule
@@ -49,11 +48,8 @@ public class DeepLinkTest
         uri = Uri.parse("handy://pro_team");
         deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
         mActivityRule.getActivity().startActivity(deepLinkIntent);
-        ViewUtil.waitForViewVisible(
-                R.id.pro_team_tab_layout,
-                ViewUtil.LONG_MAX_WAIT_TIME_MS
-        );
-        ViewUtil.matchToolbarTitle(R.string.my_pro_team);
+        // We cannot use ViewUtil.matchToolbarTitle() here because this toolbar contains additional text view
+        ViewUtil.waitForViewVisible(R.id.pro_team_toolbar, ViewUtil.LONG_MAX_WAIT_TIME_MS);
 
         //Note: When snow is activated on this screen, the tests will fail because Espresso's
         // wait for view requires the app to be idle, while snow is constantly updating

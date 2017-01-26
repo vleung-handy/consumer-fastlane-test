@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/text"
+    style="@style/TextView.Large"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:gravity="center"
+    android:maxLines="1"
+    android:padding="@dimen/default_padding"
+    android:text="@string/select_any_time"
+    android:textColor="@color/atlas_text_blue"
+    />
+

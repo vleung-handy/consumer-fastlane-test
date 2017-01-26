@@ -10,10 +10,8 @@ import com.handybook.handybook.booking.model.Booking;
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-/**
- * Created by cdavis on 9/1/15.
- */
 public class BookingDetailSectionExtrasView extends BookingDetailSectionView
 {
     @Bind(R.id.extras_section)
@@ -35,6 +33,13 @@ public class BookingDetailSectionExtrasView extends BookingDetailSectionView
     }
 
     @Override
+    protected void init()
+    {
+        inflate(getContext(), R.layout.view_booking_detail_section_extras, this);
+        ButterKnife.bind(this);
+    }
+
+    @Override
     protected void onFinishInflate()
     {
         super.onFinishInflate();
@@ -51,7 +56,9 @@ public class BookingDetailSectionExtrasView extends BookingDetailSectionView
             for (int i = 0; i < extras.size(); i++)
             {
                 final Booking.ExtraInfo info = extras.get(i);
-                BookingDetailSectionImageItemView itemView = (BookingDetailSectionImageItemView) inflate(R.layout.layout_section_image_item, extrasSection);
+                BookingDetailSectionImageItemView itemView = (BookingDetailSectionImageItemView)
+                        inflate(getContext(), R.layout.layout_section_image_item, null);
+                extrasSection.addView(itemView);
                 itemView.updateDisplay(info.getImageResource(), VISIBLE, null, null, info.getLabel());
             }
         }

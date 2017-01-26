@@ -11,7 +11,9 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.INDIFFERENT;
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
@@ -97,7 +99,6 @@ public class ProTeam implements Parcelable
         return 0;
     }
 
-
     @Nullable
     public ProTeamCategory getCategory(@NonNull final ProTeamCategoryType proTeamCategoryType)
     {
@@ -154,7 +155,6 @@ public class ProTeam implements Parcelable
         return mCleaning.isEmpty() && mHandymen.isEmpty();
     }
 
-
     public static class ProTeamCategory implements Parcelable
     {
 
@@ -165,10 +165,7 @@ public class ProTeam implements Parcelable
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_NEVER)
         private List<ProTeamPro> mNever;
 
-        ProTeamCategory()
-        {
-
-        }
+        ProTeamCategory() { }
 
         ProTeamCategory(Parcel in)
         {
@@ -178,6 +175,61 @@ public class ProTeam implements Parcelable
             in.readList(mIndifferent, ProTeamPro.class.getClassLoader());
             mNever = new ArrayList<>();
             in.readList(mNever, ProTeamPro.class.getClassLoader());
+        }
+
+        public void filterFavorPros(@NonNull final List<ProTeamPro> pros)
+        {
+            Set<Integer> ids = new HashSet<>();
+            for (ProTeamPro pro : pros)
+            {
+                ids.add(pro.getId());
+            }
+            filterFavorPros(ids);
+        }
+
+        public void filterFavorPros(@NonNull final Set<Integer> ids)
+        {
+            // Filtering mPreferred
+            if (mPreferred != null)
+            {
+                List<ProTeamPro> preferred = new ArrayList<>();
+                for (ProTeamPro pro : mPreferred)
+                {
+                    if (ids.contains(pro.getId()))
+                    {
+                        preferred.add(pro);
+                    }
+                }
+                mPreferred = preferred;
+            }
+
+            // Filtering mIndifferent
+            if (mIndifferent != null)
+            {
+                List<ProTeamPro> indifferent = new ArrayList<>();
+                for (ProTeamPro pro : mIndifferent)
+                {
+                    if (ids.contains(pro.getId()))
+                    {
+                        indifferent.add(pro);
+                    }
+                }
+                mIndifferent = indifferent;
+            }
+
+            // Filtering mNever
+            if (mNever != null)
+            {
+                List<ProTeamPro> never = new ArrayList<>();
+                for (ProTeamPro pro : mNever)
+                {
+                    if (ids.contains(pro.getId()))
+                    {
+                        never.add(pro);
+                    }
+                }
+                mNever = never;
+            }
         }
 
         public static final Creator<ProTeamCategory> CREATOR = new Creator<ProTeamCategory>()
@@ -248,11 +300,7 @@ public class ProTeam implements Parcelable
             {
                 return false;
             }
-            if (mPreferred != null && !mPreferred.isEmpty())
-            {
-                return false;
-            }
-            return true;
+            return !(mPreferred != null && !mPreferred.isEmpty());
         }
 
         public static class Builder
