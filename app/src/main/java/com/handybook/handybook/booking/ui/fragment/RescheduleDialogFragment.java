@@ -57,6 +57,7 @@ public class RescheduleDialogFragment extends BaseDialogFragment
 
         final View view = inflater.inflate(R.layout.dialog_reschedule, container, true);
         ButterKnife.bind(this, view);
+        getDialog().setCanceledOnTouchOutside(true);
 
         return view;
     }

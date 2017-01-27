@@ -99,6 +99,7 @@ public class BookingCreationTest
         clickNextButton();
 
         //fill out credit card fields
+        ViewUtil.waitForViewVisible(R.id.credit_card_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         Card card = testUser.getCard();
         TextViewUtil.updateEditTextView(R.id.credit_card_text, card.getNumber());
         TextViewUtil.updateEditTextView(R.id.exp_text, card.getExpMonth() + "" + card.getExpYear());
@@ -187,7 +188,10 @@ public class BookingCreationTest
         clickNextButton();
 
         //use previous credit card
-        ViewUtil.waitForViewVisible(R.id.info_payment_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(
+                R.id.payment_fragment_credit_card_info_container,
+                ViewUtil.SHORT_MAX_WAIT_TIME_MS
+        );
         clickNextButton();
 
         /*post-confirmation pages*/
@@ -263,7 +267,10 @@ public class BookingCreationTest
         clickNextButton();
 
         //use previous credit card
-        ViewUtil.waitForViewVisible(R.id.info_payment_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(
+                R.id.next_button,
+                ViewUtil.SHORT_MAX_WAIT_TIME_MS
+        );
         clickNextButton();
 
         /*post-confirmation pages*/

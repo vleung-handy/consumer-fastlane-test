@@ -603,7 +603,7 @@ public class BookingFunnelLog extends EventLog
             mRepeatFreq = transaction.getRecurringFrequency();
             mServiceType = service == null ? null : service.getName();
             mZip = transaction.getZipCode();
-            mCouponCode = transaction.promoApplied();
+            mCouponCode = transaction.getPromoCode();
         }
 
         private String getFrequencyName(BookingTransaction transaction)

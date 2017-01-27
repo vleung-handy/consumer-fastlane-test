@@ -91,12 +91,14 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     @Test
     public void shouldGetStripeToken() throws Exception
     {
+        // We click here first so that GoogleApiClient has time to fail to connect :-O
+        // Then we fill in the credit card details and actually check if we et back Strip token
+        mFragment.mNextButton.performClick();
+
         mFragment.mCreditCardText.setText("4242424242424242");
         mFragment.mExpText.setText("01/30");
         mFragment.mCvcText.setText("123");
-
         mFragment.mNextButton.performClick();
-
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
                 instanceOf(StripeEvent.RequestCreateToken.class));
     }
@@ -138,7 +140,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     {
         when(mMockReceiveCreateTokenSuccessEvent.getToken().getId()).thenReturn("some_id");
         when(mMockTransaction.getZipCode()).thenReturn("10003");
-        
+
         mFragment.onReceiveCreateTokenSuccess(mMockReceiveCreateTokenSuccessEvent);
 
         verify(mMockTransaction).setStripeToken(eq("some_id"));
