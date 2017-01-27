@@ -30,6 +30,11 @@ import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.view.BookingListItem;
+import com.handybook.handybook.core.ui.view.ExpandableCleaningPlan;
+import com.handybook.handybook.core.ui.view.NoBookingsView;
+import com.handybook.handybook.core.ui.view.ShareBannerView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.UiUtils;
@@ -37,11 +42,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.referral.ui.ReferralFragment;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.core.ui.view.BookingListItem;
-import com.handybook.handybook.core.ui.view.ExpandableCleaningPlan;
-import com.handybook.handybook.core.ui.view.NoBookingsView;
-import com.handybook.handybook.core.ui.view.ShareBannerView;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -210,6 +210,10 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Subscribe
     public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
     {
+        if (isBeingRemoved())
+        {
+            return;
+        }
         mServiceRequestCompleted = true;
         mServices = event.getServices();
         if (mServices != null)
@@ -225,6 +229,17 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         }
 
         setupBookingsView();
+    }
+
+    /**
+     * When using {@link FragmentUtils.switchToFragment()}, onPause may not be called before the
+     * incoming fragment's onResume. Hence this fragment may not get a chance to unregister the bus
+     * and receive the incoming events it is not supposed to listen for. This method tells us whether
+     * or not this fragment is being removed, so we can ignore event posts.
+     */
+    private boolean isBeingRemoved()
+    {
+        return isRemoving();
     }
 
     @OnClick(R.id.add_booking_button)
@@ -424,6 +439,10 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Subscribe
     public void onReceiveServicesError(final BookingEvent.ReceiveServicesError error)
     {
+        if (isBeingRemoved())
+        {
+            return;
+        }
         //we don't really care that the services errored out, we just won't display the
         //services icon.
         mServiceRequestCompleted = true;
@@ -432,6 +451,10 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Subscribe
     public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event)
     {
+        if (isBeingRemoved())
+        {
+            return;
+        }
         mFetchErrorView.setVisibility(View.GONE);
         mBookingsRequestCompleted = true;
         Log.d(TAG, "onReceiveBookingsSuccess: " + event.getOnlyBookingsValue());
@@ -454,6 +477,10 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Subscribe
     public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e)
     {
+        if (isBeingRemoved())
+        {
+            return;
+        }
         mFetchErrorView.setVisibility(View.VISIBLE);
         mBookingsRequestCompleted = true;
         mSwipeRefreshLayout.setRefreshing(false);
