@@ -23,7 +23,7 @@ public class NotSupportedActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dont_support);
+        setContentView(R.layout.activity_not_supported);
         ButterKnife.bind(this);
         String zipPrefix = getString(R.string.zip_code);
         mTextZip.setText(zipPrefix + ": " + getIntent().getStringExtra(BundleKeys.ZIP));

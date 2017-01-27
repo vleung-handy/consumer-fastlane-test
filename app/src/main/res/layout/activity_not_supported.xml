@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/img_cleaner"
             />
+
         <TextView
             android:id="@+id/text_zip"
             android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_double"
             android:gravity="center"
-            android:text="@string/dont_support_title"
+            android:text="@string/not_supported_title"
             />
 
         <TextView
@@ -52,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
             android:gravity="center"
-            android:text="@string/dont_support_sub_title"
+            android:text="@string/not_supported_sub_title"
             />
 
     </LinearLayout>

@@ -58,4 +58,9 @@ public final class OnboardActivity extends MenuDrawerActivity {
         super.onCreate(savedInstanceState);
         disableDrawer = true;
     }
+
+    public Fragment getActiveFragment()
+    {
+        return mFragment;
+    }
 }

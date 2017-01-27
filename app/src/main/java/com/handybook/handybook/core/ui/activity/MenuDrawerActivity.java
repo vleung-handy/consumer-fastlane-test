@@ -38,6 +38,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
+import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.shared.layer.LayerHelper;
@@ -377,6 +378,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
             mDrawerLayout.closeDrawers();
         }
         else if (isTaskRoot() && !(this instanceof ServiceCategoriesActivity)
+                && !isOnboardingV2Showing()
                 && getSupportFragmentManager().getBackStackEntryCount() == 0)
         {
             //if back press results in exiting the app AND this is not the home page
@@ -396,6 +398,19 @@ public abstract class MenuDrawerActivity extends BaseActivity
             Utils.hideSoftKeyboard(this, getCurrentFocus());
             super.onBackPressed();
         }
+    }
+
+    private boolean isOnboardingV2Showing()
+    {
+        if (this instanceof OnboardActivity)
+        {
+            if (((OnboardActivity) this).getActiveFragment() instanceof OnboardV2Fragment)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void toggleMenu()

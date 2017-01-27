@@ -12,13 +12,16 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.handybook.handybook.R;
@@ -141,6 +144,24 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             }
         });
 
+        mEditZip.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(
+                    final TextView v,
+                    final int actionId,
+                    final KeyEvent event
+            )
+            {
+                if (actionId == EditorInfo.IME_ACTION_DONE)
+                {
+                    nextClicked();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mEditEmail.addTextChangedListener(new TextWatcherAdapter()
         {
             @Override
@@ -157,6 +178,25 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
                 }
             }
         });
+
+        mEditEmail.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(
+                    final TextView v,
+                    final int actionId,
+                    final KeyEvent event
+            )
+            {
+                if (actionId == EditorInfo.IME_ACTION_DONE)
+                {
+                    emailSubmitClicked();
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         //try to prepopulate the zip fields with any data we already have.
         mEditZip.setText(mDefaultPreferencesManager.getString(PrefsKey.ZIP));
@@ -226,6 +266,8 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
         else
         {
+            //we're backing out of the zip, which is the same as exiting the app.
+            getActivity().finish();
             return false;
         }
     }

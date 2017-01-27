@@ -509,8 +509,8 @@
     <string name="sign_in">Sign In</string>
     <string name="label_continue">Continue</string>
 
-    <string name="dont_support_title">Handy is not in \n your area yet!</string>
-    <string name="dont_support_sub_title">We\'ll let you know when we\'re \n in your city</string>
+    <string name="not_supported_title">Handy is not in \n your area yet!</string>
+    <string name="not_supported_sub_title">We\'ll let you know when we\'re \n in your city</string>
     <string name="onboard_try_another_zip">Try Another ZIP Code</string>
     <string name="onboard_title"><![CDATA[Book trusted cleaners & handymen instantly]]></string>
     <string name="onboard_already_account">Already have an account?</string>
