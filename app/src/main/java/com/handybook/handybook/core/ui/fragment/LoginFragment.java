@@ -434,6 +434,12 @@ public final class LoginFragment extends BookingFlowFragment
                             }
                             else
                             {
+
+                                //this is when the user doesn't already exist.
+                                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.EmailCollectedLog(
+                                        email
+                                )));
+
                                 mBookingRequest.setEmail(email);
                                 continueBookingFlow();
                             }

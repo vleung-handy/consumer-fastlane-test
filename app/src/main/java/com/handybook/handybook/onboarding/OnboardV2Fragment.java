@@ -35,8 +35,11 @@ import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.OnboardingLog;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -215,7 +218,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         showNext();
     }
 
-    private void requestForServices(String zip)
+    private void requestForServices(final String zip)
     {
         mServices = null;
         dataManager.getServices(zip, new FragmentSafeCallback<List<Service>>(this)
@@ -224,6 +227,10 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             public void onCallbackSuccess(@NonNull final List<Service> services)
             {
                 mServices = services;
+
+                bus.post(new LogEvent.AddLogEvent(new OnboardingLog.ZipSubmittedLog(
+                        zip, Locale.getDefault().toString()
+                )));
 
                 //it could be possible that this zip response comes after the user enters email.
                 //if that is the case, we need to call userCreateLead();
@@ -314,6 +321,10 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
                         @Override
                         public void onSuccess(final UserExistsResponse response)
                         {
+                            bus.post(new LogEvent.AddLogEvent(new OnboardingLog.EmailCollectedLog(
+                                    mEmail
+                            )));
+
                             handleEmailResponse(response);
                         }
 
