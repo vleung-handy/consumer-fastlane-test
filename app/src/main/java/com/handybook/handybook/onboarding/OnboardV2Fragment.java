@@ -300,10 +300,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @OnClick(R.id.button_submit)
     public void emailSubmitClicked()
     {
-        //mark onboarding shown, so we don't show the old one, even if the config eventually gets turned off.
-        mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
         mEmail = mEditEmail.getText().toString();
-        mDefaultPreferencesManager.setString(PrefsKey.EMAIL, mEmail);
         userCreateLead();
     }
 
@@ -353,10 +350,16 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, mEmail);
             intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, emailResponse.getFirstName());
+            intent.putExtra(LoginActivity.EXTRA_FROM_ONBOARDING, true);
             startActivity(intent);
         }
         else
         {
+            //mark onboarding shown, so we don't show the old one, even if the config eventually gets turned off.
+            //we only store the email after we know this email doesn't already exist.
+            mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
+            mDefaultPreferencesManager.setString(PrefsKey.EMAIL, mEmail);
+
             if (mServices.isEmpty())
             {
                 //we don't support this zip

@@ -12,26 +12,20 @@ import android.widget.Button;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
-import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
+import com.handybook.handybook.library.ui.view.InputTextField;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.core.ui.activity.BaseActivity;
-import com.handybook.handybook.library.ui.view.InputTextField;
-import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -217,48 +211,5 @@ public final class BookingLocationFragment extends BookingFlowFragment
         }
     };
 
-    private void displayBookingOptions()
-    {
-        final BookingRequest request = bookingManager.getCurrentRequest();
-        String userId = null;
-        final User user = userManager.getCurrentUser();
-        if (user != null)
-        {
-            userId = user.getId();
-        }
-        dataManager.getQuoteOptions(request.getServiceId(), userId,
-                new FragmentSafeCallback<BookingOptionsWrapper>(this)
-                {
-                    @Override
-                    public void onCallbackSuccess(final BookingOptionsWrapper options)
-                    {
-                        if (!allowCallbacks) { return; }
-                        List<BookingOption> bookingOptions = options.getBookingOptions();
-                        final ProTeam proTeam = options.getProTeam();
-                        bookingManager.setCurrentProTeam(proTeam);
-                        final Intent intent = new Intent(
-                                getActivity(),
-                                BookingOptionsActivity.class
-                        );
-                        intent.putParcelableArrayListExtra(
-                                BookingOptionsActivity.EXTRA_OPTIONS,
-                                new ArrayList<>(bookingOptions)
-                        );
-                        intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, 0);
-                        startActivity(intent);
-                        enableInputs();
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
-                        if (!allowCallbacks) { return; }
-                        enableInputs();
-                        progressDialog.dismiss();
-                        dataManagerErrorHandler.handleError(getActivity(), error);
-                    }
-                });
-    }
 
 }

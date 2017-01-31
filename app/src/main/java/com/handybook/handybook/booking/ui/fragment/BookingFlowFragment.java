@@ -8,20 +8,29 @@ import android.support.v4.util.Pair;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingOption;
+import com.handybook.handybook.booking.model.BookingOptionsWrapper;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
+import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingProTeamActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
@@ -37,6 +46,7 @@ import com.handybook.handybook.proteam.model.ProTeam;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BookingFlowFragment extends InjectedFragment
 {
@@ -96,8 +106,85 @@ public class BookingFlowFragment extends InjectedFragment
         }
         bookingManager.clear();
         bookingManager.setCurrentRequest(request);
-        final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
-        startActivity(intent);
+
+        Configuration config = mConfigurationManager.getLastKnowConfiguration();
+        String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
+        if (config != null && config.isOnboardingEnabled() && !android.text.TextUtils.isEmpty(zip))
+        {
+            //if we are in "onboarding" mode, and we have a zip, then skip the BookingLocationActivity
+            //and go directly to the Booking options (beds, bath)
+            bookingManager.getCurrentRequest().setZipCode(zip);
+            if (android.text.TextUtils.isEmpty(request.getPromoCode()))
+            {
+                //we're not in a promotional flow, so we can display booking options
+                progressDialog.show();
+                displayBookingOptions();
+            }
+            else
+            {
+                //if we're in a promotional flow, we go straight to the date selection
+                final Intent intent = new Intent(
+                        getActivity(),
+                        BookingDateActivity.class
+                );
+                startActivity(intent);
+            }
+        }
+        else
+        {
+            final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    /**
+     * proceeds to display the Booking options (beds, baths)
+     */
+    protected void displayBookingOptions()
+    {
+        final BookingRequest request = bookingManager.getCurrentRequest();
+        String userId = null;
+        final User user = userManager.getCurrentUser();
+        if (user != null)
+        {
+            userId = user.getId();
+        }
+        dataManager.getQuoteOptions(
+                request.getServiceId(), userId,
+                new FragmentSafeCallback<BookingOptionsWrapper>(this)
+                {
+                    @Override
+                    public void onCallbackSuccess(final BookingOptionsWrapper options)
+                    {
+                        if (!allowCallbacks) { return; }
+                        List<BookingOption> bookingOptions = options.getBookingOptions();
+                        final ProTeam proTeam = options.getProTeam();
+                        bookingManager.setCurrentProTeam(proTeam);
+                        final Intent intent = new Intent(
+                                getActivity(),
+                                BookingOptionsActivity.class
+                        );
+                        intent.putParcelableArrayListExtra(
+                                BookingOptionsActivity.EXTRA_OPTIONS,
+                                new ArrayList<>(bookingOptions)
+                        );
+                        intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, 0);
+                        startActivity(intent);
+                        enableInputs();
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error)
+                    {
+                        if (!allowCallbacks) { return; }
+                        enableInputs();
+                        progressDialog.dismiss();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                }
+        );
     }
 
     public final void continueBookingFlow()
@@ -138,8 +225,10 @@ public class BookingFlowFragment extends InjectedFragment
             request.setUserId(user.getId());
             request.setEmail(user.getEmail());
         }
-        else if (!(this instanceof LoginFragment))
+        else if (!hasStoredEmailAndZip() && !(this instanceof LoginFragment))
         {
+            //if we are not in the new onboarding flow (i.e., we don't have zip & email stored),
+            //then we should prompt the user to login.
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra(LoginActivity.EXTRA_FIND_USER, true);
             intent.putExtra(LoginActivity.EXTRA_FROM_BOOKING_FUNNEL, true);
@@ -150,6 +239,27 @@ public class BookingFlowFragment extends InjectedFragment
         progressDialog.show();
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestSubmitted()));
         dataManager.createQuote(request, bookingQuoteCallback);
+    }
+
+    /**
+     * returns true if we already have zip and email stored in shared prefs.
+     * @return
+     */
+    protected boolean hasStoredEmailAndZip()
+    {
+        return hasStoredEmail() && hasStoredZip();
+    }
+
+    protected boolean hasStoredZip()
+    {
+        String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
+        return !android.text.TextUtils.isEmpty(zip);
+    }
+
+    protected boolean hasStoredEmail()
+    {
+        String email = mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null);
+        return !android.text.TextUtils.isEmpty(email);
     }
 
     protected void rescheduleBooking(

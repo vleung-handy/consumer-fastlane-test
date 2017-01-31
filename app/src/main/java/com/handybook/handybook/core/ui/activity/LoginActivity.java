@@ -13,6 +13,7 @@ public final class LoginActivity extends MenuDrawerActivity {
     public static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
     public static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
     public static final String EXTRA_BOOKING_EMAIL = "com.handy.handy.EXTRA_BOOKING_EMAIL";
+    public static final String EXTRA_FROM_ONBOARDING = "com.handy.handy.EXTRA_FROM_ONBOARDING";
 
 
     @Override
@@ -21,7 +22,14 @@ public final class LoginActivity extends MenuDrawerActivity {
         final String userName = getIntent().getStringExtra(EXTRA_BOOKING_USER_NAME);
         final String userEmail = getIntent().getStringExtra(EXTRA_BOOKING_EMAIL);
         final boolean fromBookingFunnel = getIntent().getBooleanExtra(EXTRA_FROM_BOOKING_FUNNEL, false);
-        return LoginFragment.newInstance(findUser, userName, userEmail, fromBookingFunnel);
+        final boolean fromOnboarding = getIntent().getBooleanExtra(EXTRA_FROM_ONBOARDING, false);
+        return LoginFragment.newInstance(
+                findUser,
+                userName,
+                userEmail,
+                fromBookingFunnel,
+                fromOnboarding
+        );
     }
 
     @Override

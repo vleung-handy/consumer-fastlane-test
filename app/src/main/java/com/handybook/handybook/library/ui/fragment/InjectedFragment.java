@@ -19,6 +19,7 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.squareup.otto.Bus;
@@ -48,6 +49,8 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     protected NavigationManager navigationManager;
     @Inject
     protected ConfigurationManager mConfigurationManager;
+    @Inject
+    protected DefaultPreferencesManager mDefaultPreferencesManager;
 
     //TODO: acknowledged this is not ideal
     @Inject

@@ -220,6 +220,7 @@
                         android:maxLines="1"
                         android:inputType="text"
                         android:imeOptions="actionDone"
+                        style="@style/EditText.Email"
                         />
                 </android.support.design.widget.TextInputLayout>
 

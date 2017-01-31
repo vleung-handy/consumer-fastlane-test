@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,12 @@ import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.model.response.UserExistsResponse;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
+import com.handybook.handybook.core.ui.widget.EmailInputTextView;
 import com.handybook.handybook.core.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.core.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -39,6 +46,10 @@ public final class BookingAddressFragment extends BookingFlowFragment
     TextView mTextPhonePrefix;
     @Bind(R.id.text_phone)
     PhoneInputTextView mTextPhone;
+
+    @Bind(R.id.text_email)
+    EmailInputTextView mTextEmail;
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -100,6 +111,15 @@ public final class BookingAddressFragment extends BookingFlowFragment
         }
         else
         {
+            //user is not logged in. There will be a stored email only via the new "onboarding"
+            //process.
+            String email = mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null);
+            if (!TextUtils.isEmpty(email))
+            {
+                //if there is a stored email on the phone, then show that.
+                mTextEmail.setText(email);
+                mTextEmail.setVisibility(View.VISIBLE);
+            }
             final String prefix = bookingManager.getCurrentQuote().getPhonePrefix();
             mTextPhone.setCountryCode(prefix);
             mTextPhonePrefix.setText(prefix);
@@ -127,7 +147,10 @@ public final class BookingAddressFragment extends BookingFlowFragment
 
         if (!mTextFullName.validate()) { validate = false; }
         if (!mTextPhone.validate()) { validate = false; }
-
+        if (hasStoredEmail() && !mTextEmail.validate())
+        {
+            validate = false;
+        }
         return validate;
     }
 
@@ -138,6 +161,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
         {
             if (validateFields())
             {
+
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressSubmittedLog()));
                 final BookingTransaction transaction = bookingManager.getCurrentTransaction();
                 transaction.setAddress1(mAutoCompleteFragment.mStreet.getAddress());
@@ -145,14 +169,81 @@ public final class BookingAddressFragment extends BookingFlowFragment
                 transaction.setFirstName(mTextFullName.getFirstName());
                 transaction.setLastName(mTextFullName.getLastName());
                 transaction.setPhone(mTextPhone.getPhoneNumber());
-                updateQuote(); // Request updated quote with bill from server
+
+                showUiBlockers();
+                final String email = mTextEmail.getEmail();
+                if (!TextUtils.isEmpty(email) && !userManager.isUserLoggedIn())
+                {
+                    //following the new onboarding process, if the user hasn't logged in by this
+                    //point, it is a new user. We still have to check whether it's existing,
+                    //because the user could've changed the email on this screen.
+
+                    dataManager.getUserExists(
+                            email,
+                            new FragmentSafeCallback<UserExistsResponse>(BookingAddressFragment.this)
+                            {
+                                @Override
+                                public void onCallbackSuccess(final UserExistsResponse userExistsResponse)
+                                {
+                                    bookingManager.getCurrentRequest()
+                                                  .setEmail(email);
+                                    if (userExistsResponse.exists())
+                                    {
+                                        //existing user, we must make them login.
+                                        //we can only get here IFF both of this happens:
+                                        //1. During onboarding, user provided email that didn't exist in the system.
+                                        //2. On the address page, the user changed the email to something that did exist in the system.
+                                        final Intent intent = new Intent(
+                                                getActivity(),
+                                                LoginActivity.class
+                                        );
+                                        intent.putExtra(
+                                                LoginActivity.EXTRA_BOOKING_EMAIL,
+                                                email
+                                        );
+                                        intent.putExtra(
+                                                LoginActivity.EXTRA_BOOKING_USER_NAME,
+                                                userExistsResponse.getFirstName()
+                                        );
+                                        removeUiBlockers();
+                                        startActivity(intent);
+                                    }
+                                    else
+                                    {
+                                        //new user, we can proceed to payment plan.
+                                        proceedToPayment();
+                                    }
+                                }
+
+                                @Override
+                                public void onCallbackError(DataManager.DataManagerError error)
+                                {
+                                    removeUiBlockers();
+                                    dataManagerErrorHandler.handleError(
+                                            getActivity(),
+                                            error
+                                    );
+
+                                }
+                            }
+                    );
+                }
+                else
+                {
+                    proceedToPayment();
+                }
             }
         }
     };
 
+    private void proceedToPayment() {
+        //before we can actually proceed to payment, we have to get an updated quote
+        updateQuote();
+    }
+
     private void updateQuote()
     {
-        showUiBlockers();
+        //UI Blockers should still be showing at this point
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         dataManager.updateQuote(
                 transaction.getBookingId(),

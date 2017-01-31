@@ -68,11 +68,20 @@
                 android:layout_below="@id/phone_layout"
                 />
             <View
+                android:id="@+id/empty_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/booking_address_fragment_container"
                 android:layout_marginTop="@dimen/default_margin" />
 
+            <com.handybook.handybook.core.ui.widget.EmailInputTextView
+                android:id="@+id/text_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/empty_view"
+                style="@style/EditText.Email"
+                android:visibility="gone"
+                />
         </RelativeLayout>
 
     </ScrollView>
