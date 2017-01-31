@@ -552,7 +552,7 @@ public class BookingQuote extends Observable
 
     public String toJson()
     {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
                                            .setExclusionStrategies(getExclusionStrategy())
                                            .registerTypeAdapter(
                                                    BookingQuote.class,
