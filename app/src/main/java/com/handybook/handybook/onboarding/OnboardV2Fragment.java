@@ -48,6 +48,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.handybook.handybook.core.constant.BundleKeys.ZIP;
+import static com.handybook.handybook.core.constant.RequestCode.LOGIN_FROM_ONBOARDING;
 
 /**
  * This is the new onboarding fragment that is supposed to
@@ -294,7 +295,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     private void redirectToLogin()
     {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, LOGIN_FROM_ONBOARDING);
     }
 
     @OnClick(R.id.button_submit)
@@ -351,7 +352,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, mEmail);
             intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, emailResponse.getFirstName());
             intent.putExtra(LoginActivity.EXTRA_FROM_ONBOARDING, true);
-            startActivity(intent);
+            startActivityForResult(intent, LOGIN_FROM_ONBOARDING);
         }
         else
         {

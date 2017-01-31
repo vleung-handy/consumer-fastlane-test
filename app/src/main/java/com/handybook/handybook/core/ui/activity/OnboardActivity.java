@@ -1,11 +1,14 @@
 package com.handybook.handybook.core.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.handybook.handybook.core.ui.fragment.OnboardFragment;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
+
+import static com.handybook.handybook.core.constant.ActivityResult.LOGIN_FINISH;
 
 public final class OnboardActivity extends MenuDrawerActivity {
     private static final String TAG = "OnboardActivity";
@@ -62,5 +65,16 @@ public final class OnboardActivity extends MenuDrawerActivity {
     public Fragment getActiveFragment()
     {
         return mFragment;
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == LOGIN_FINISH)
+        {
+            //Will reach here if a login request originated from this activity is completed.
+            finish();
+        }
     }
 }

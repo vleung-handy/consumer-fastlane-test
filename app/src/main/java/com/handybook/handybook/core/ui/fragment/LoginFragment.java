@@ -32,7 +32,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
@@ -58,6 +57,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.handybook.handybook.core.constant.ActivityResult.LOGIN_FINISH;
 
 public final class LoginFragment extends BookingFlowFragment
 {
@@ -433,7 +433,7 @@ public final class LoginFragment extends BookingFlowFragment
                                         LoginActivity.EXTRA_BOOKING_USER_NAME,
                                         userExistsResponse.getFirstName()
                                 );
-                                startActivityForResult(intent, ActivityResult.LOGIN_FINISH);
+                                startActivityForResult(intent, LOGIN_FINISH);
 
                                 progressDialog.dismiss();
                                 enableInputs();
@@ -611,7 +611,11 @@ public final class LoginFragment extends BookingFlowFragment
             //onboarding, or from the booking process, we direct the user to the home page for a
             //clean start.
             bookingManager.clear();
-            activity.navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+            getActivity().setResult(LOGIN_FINISH);
+            ((MenuDrawerActivity) getActivity()).navigateToActivity(
+                    ServiceCategoriesActivity.class,
+                    R.id.nav_menu_home
+            );
         }
         else
         {
