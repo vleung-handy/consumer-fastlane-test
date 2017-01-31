@@ -6,11 +6,11 @@ import android.text.TextUtils;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.configuration.model.Configuration;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -42,9 +42,9 @@ public class ConfigurationManager
         mBus.register(this);
 
         mConfigurationCache = CacheBuilder.newBuilder()
-                .maximumSize(1)
-                .expireAfterWrite(3, TimeUnit.MINUTES)
-                .build();
+                                          .maximumSize(1)
+                                          .expireAfterWrite(3, TimeUnit.MINUTES)
+                                          .build();
     }
 
     @Subscribe
@@ -62,8 +62,8 @@ public class ConfigurationManager
                 @Override
                 public void onSuccess(final Configuration configuration)
                 {
-                    mBus.post(new ConfigurationEvent.ReceiveConfigurationSuccess(configuration));
                     setCachedConfiguration(configuration);
+                    mBus.post(new ConfigurationEvent.ReceiveConfigurationSuccess(configuration));
                 }
 
                 @Override

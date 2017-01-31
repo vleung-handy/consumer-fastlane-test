@@ -25,8 +25,8 @@ import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.User;
@@ -38,7 +38,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
-import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.shared.layer.LayerHelper;
@@ -72,7 +71,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
     LayerHelper mLayerHelper;
 
     protected boolean disableDrawer;
-    protected Configuration mConfiguration;
     protected boolean mShouldShowNavForTransition;
     private Object mBusEventListener;
 
@@ -139,10 +137,10 @@ public abstract class MenuDrawerActivity extends BaseActivity
             {
                 if (event != null)
                 {
-                    mConfiguration = event.getConfiguration();
                     checkLayerInitiation();
                     refreshMenu();
-                    setDrawerDisabled(mConfiguration.isBottomNavEnabled());
+                    setDrawerDisabled(mConfigurationManager.getPersistentConfiguration()
+                                                           .isBottomNavEnabled());
                 }
             }
         };
@@ -383,7 +381,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         {
             //if back press results in exiting the app AND this is not the home page
             // AND there is no fragment in the backstack, then bring back to the home page first
-            if (mConfiguration.isBottomNavEnabled())
+            if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
             {
                 startActivity(new Intent(this, BottomNavActivity.class));
                 finish();
