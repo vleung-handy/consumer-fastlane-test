@@ -1,5 +1,6 @@
 package com.handybook.handybook.test.util;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;
 
 import com.handybook.handybook.R;
@@ -85,6 +86,7 @@ public class AppInteractionUtil
         onView(withText(R.string.log_in)).perform(click());
         TextViewUtil.updateEditTextView(R.id.email_text, testUser.getEmail());
         TextViewUtil.updateEditTextView(R.id.password_text, testUser.getPassword());
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.login_button)).perform(click());
     }
 

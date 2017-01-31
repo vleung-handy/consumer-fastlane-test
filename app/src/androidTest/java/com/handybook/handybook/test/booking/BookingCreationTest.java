@@ -1,5 +1,6 @@
 package com.handybook.handybook.test.booking;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
@@ -147,6 +148,7 @@ public class BookingCreationTest
 
         //enter zip code
         ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         //use default beds + baths
@@ -185,6 +187,7 @@ public class BookingCreationTest
                 R.id.autocomplete_address_text_street,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
+        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         //use previous credit card
@@ -233,6 +236,7 @@ public class BookingCreationTest
 
         //enter zip code
         ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         //wait for network and select blinds option
@@ -264,11 +268,12 @@ public class BookingCreationTest
                 R.id.autocomplete_address_text_street,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
+        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         //use previous credit card
         ViewUtil.waitForViewVisible(
-                R.id.next_button,
+                R.id.payment_fragment_credit_card_info_container,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
         clickNextButton();
