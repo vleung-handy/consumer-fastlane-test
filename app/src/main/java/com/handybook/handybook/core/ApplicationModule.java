@@ -142,6 +142,7 @@ import com.handybook.handybook.core.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.helpcenter.HelpModule;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
@@ -453,7 +454,7 @@ public final class ApplicationModule
                         })
                         .setConverter(new GsonConverter(
                                 new GsonBuilder()
-                                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+                                        .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                                         .setExclusionStrategies(
                                                 BookingRequest.getExclusionStrategy()
                                         )

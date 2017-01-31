@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.model;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,9 @@ public final class BookingCoupon
 
     public static BookingCoupon fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
-                                .fromJson(json, BookingCoupon.class);
+        return new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create()
+                .fromJson(json, BookingCoupon.class);
     }
 }

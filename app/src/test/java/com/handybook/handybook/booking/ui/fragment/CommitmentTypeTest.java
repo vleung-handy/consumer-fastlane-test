@@ -5,6 +5,7 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.subscription.Price;
 import com.handybook.handybook.booking.model.subscription.SubscriptionFrequency;
 import com.handybook.handybook.booking.model.subscription.SubscriptionLength;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.IOUtils;
 
 import junit.framework.Assert;
@@ -24,9 +25,10 @@ public class CommitmentTypeTest
     {
         String json = IOUtils.getJsonStringForTest("commitment_quote.json");
 
-        mQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                                  .create()
-                                  .fromJson(json, BookingQuote.class);
+        mQuote = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create()
+                .fromJson(json, BookingQuote.class);
 
         if (mQuote != null && mQuote.getCommitmentPrices() != null)
         {

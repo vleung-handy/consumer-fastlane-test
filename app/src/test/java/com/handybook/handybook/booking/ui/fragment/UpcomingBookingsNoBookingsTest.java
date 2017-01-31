@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Before;
@@ -19,11 +20,15 @@ public class UpcomingBookingsNoBookingsTest extends UpcomingBookingsBaseTest
     {
         super.setup();
         String json = IOUtils.getJsonStringForTest("no_bookings.json");
-        final UserBookingsWrapper bookings = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+        final UserBookingsWrapper bookings = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                 .create()
                 .fromJson(json, UserBookingsWrapper.class);
 
-        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(bookings, Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING);
+        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(
+                bookings,
+                Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING
+        );
         mUpcomingBookingsFragment.onReceiveBookingsSuccess(mBookingReceiveSuccessfulEvent);
     }
 

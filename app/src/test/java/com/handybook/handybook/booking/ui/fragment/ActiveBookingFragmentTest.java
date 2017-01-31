@@ -9,6 +9,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Before;
@@ -41,9 +42,10 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
     {
         String json = IOUtils.getJsonStringForTest("active_booking.json");
 
-        mActiveBooking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                                          .create()
-                                          .fromJson(json, Booking.class);
+        mActiveBooking = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create()
+                .fromJson(json, Booking.class);
 
         mActiveFragment = ActiveBookingFragment.newInstance(mActiveBooking);
     }
@@ -52,7 +54,8 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
     {
         String json = IOUtils.getJsonStringForTest("active_booking_no_provider.json");
 
-        Booking booking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+        Booking booking = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                 .create()
                 .fromJson(json, Booking.class);
 
@@ -72,12 +75,12 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         SupportFragmentTestUtil.startFragment(mActiveFragment);
 
         assertEquals(mActiveFragment.mProfileContainer.getVisibility(), View.VISIBLE);
-        assertEquals(((TextView) mActiveFragment.mProProfile.findViewById(R.id.mini_pro_profile_title)).getText(), "Marky S.");
+        assertEquals(((TextView) mActiveFragment.mProProfile.findViewById(R.id.mini_pro_profile_title))
+                             .getText(), "Marky S.");
         assertEquals(mActiveFragment.mTextCall.getVisibility(), View.VISIBLE);
         assertEquals(mActiveFragment.mTextText.getVisibility(), View.VISIBLE);
         assertEquals(mActiveFragment.mMapDivider.getVisibility(), View.VISIBLE);
     }
-
 
     /**
      * If there are no provider information with the active booking, then the provider views
@@ -92,7 +95,8 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         SupportFragmentTestUtil.startFragment(mNoProviderFragment);
 
         assertEquals(mNoProviderFragment.mProfileContainer.getVisibility(), View.GONE);
-        assertEquals(((TextView) mNoProviderFragment.mProProfile.findViewById(R.id.mini_pro_profile_title)).getText(), "");
+        assertEquals(((TextView) mNoProviderFragment.mProProfile.findViewById(R.id.mini_pro_profile_title))
+                             .getText(), "");
         assertEquals(mNoProviderFragment.mTextCall.getVisibility(), View.GONE);
         assertEquals(mNoProviderFragment.mTextText.getVisibility(), View.GONE);
     }
@@ -111,16 +115,21 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         ShadowActivity shadowActivity = shadowOf(mActiveFragment.getActivity());
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
-        assertEquals(BookingDetailActivity.class.getName(), shadowIntent.getIntentClass().getName());
+        assertEquals(
+                BookingDetailActivity.class.getName(),
+                shadowIntent.getIntentClass().getName()
+        );
 
         //when the provider cell is clicked it should also launch the bookings activity
         mActiveFragment.mProfileContainer.performClick();
         shadowActivity = shadowOf(mActiveFragment.getActivity());
         startedIntent = shadowActivity.getNextStartedActivity();
         shadowIntent = shadowOf(startedIntent);
-        assertEquals(BookingDetailActivity.class.getName(), shadowIntent.getIntentClass().getName());
+        assertEquals(
+                BookingDetailActivity.class.getName(),
+                shadowIntent.getIntentClass().getName()
+        );
     }
-
 
     /**
      * Since this is a valid booking, we want to see that all the booking fields are filled out.

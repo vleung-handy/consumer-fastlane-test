@@ -24,6 +24,7 @@ import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.model.response.HelpCenterResponse;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
@@ -33,8 +34,9 @@ import org.json.JSONObject;
 
 public abstract class TypedHandyRetrofitCallback<T> extends HandyRetrofitCallback
 {
-    protected static final Gson gsonBuilder = new GsonBuilder().setDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ssX").create();
+    protected static final Gson gsonBuilder = new GsonBuilder()
+            .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+            .create();
     protected T returnData;
 
     TypedHandyRetrofitCallback(DataManager.Callback callback)
@@ -155,6 +157,7 @@ class EditHoursInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<Book
     }
 }
 
+
 class EntryMethodsInfoHandyRetroFitCallback extends TypedHandyRetrofitCallback<EntryMethodsInfo>
 {
     EntryMethodsInfoHandyRetroFitCallback(DataManager.Callback callback)
@@ -235,6 +238,7 @@ class HelpCenterResponseHandyRetrofitCallback
         super(callback);
     }
 }
+
 
 class ConfigurationHandyRetrofitCallback extends TypedHandyRetrofitCallback<Configuration>
 {

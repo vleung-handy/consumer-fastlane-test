@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.lang.reflect.Type;
 
@@ -72,25 +73,31 @@ public class BookingCompleteTransaction
 
     String toJson()
     {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                                           .registerTypeAdapter(BookingCompleteTransaction.class,
-                        new BookingCompleteTransaction()).create();
+        final Gson gson = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .registerTypeAdapter(
+                        BookingCompleteTransaction.class,
+                        new BookingCompleteTransaction()
+                ).create();
 
         return gson.toJson(this);
     }
 
     public static BookingCompleteTransaction fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
-                                .fromJson(json, BookingCompleteTransaction.class);
+        return new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
+                .fromJson(json, BookingCompleteTransaction.class);
     }
 
     static class BookingCompleteTransactionSerializer
             implements JsonSerializer<BookingCompleteTransaction>
     {
         @Override
-        public JsonElement serialize(final BookingCompleteTransaction value, final Type type,
-                                     final JsonSerializationContext context)
+        public JsonElement serialize(
+                final BookingCompleteTransaction value, final Type type,
+                final JsonSerializationContext context
+        )
         {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add(ID, context.serialize(value.getId()));

@@ -11,6 +11,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.R;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.io.Serializable;
 import java.lang.annotation.Retention;
@@ -469,7 +470,7 @@ public class Booking implements Parcelable
 
     public static Booking fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
+        return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
                                 .fromJson(json, Booking.class);
     }
 

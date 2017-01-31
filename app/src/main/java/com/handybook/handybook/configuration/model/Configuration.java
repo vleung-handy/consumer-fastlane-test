@@ -2,12 +2,12 @@ package com.handybook.handybook.configuration.model;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.io.Serializable;
 
 public class Configuration implements Serializable
 {
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
 
     @SerializedName("help_center_url")
     private String mHelpCenterUrl;
@@ -92,13 +92,17 @@ public class Configuration implements Serializable
 
     public String toJson()
     {
-        return new GsonBuilder().setDateFormat(DATE_FORMAT).create().toJson(this);
+        return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                                .create()
+                                .toJson(this);
     }
 
     public static Configuration fromJson(final String json)
     {
         return new GsonBuilder()
-                .setDateFormat(DATE_FORMAT).create().fromJson(json, Configuration.class);
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create()
+                .fromJson(json, Configuration.class);
     }
 
     public boolean isProTeamFacebookLoginEnabled() { return mProTeamFacebookLoginEnabled; }

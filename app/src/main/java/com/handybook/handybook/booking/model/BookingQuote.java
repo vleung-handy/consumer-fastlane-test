@@ -15,6 +15,7 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.subscription.CommitmentType;
 import com.handybook.handybook.booking.model.subscription.Price;
 import com.handybook.handybook.core.model.bill.Bill;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -552,7 +553,7 @@ public class BookingQuote extends Observable
 
     public String toJson()
     {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+        final Gson gson = new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                                            .setExclusionStrategies(getExclusionStrategy())
                                            .registerTypeAdapter(
                                                    BookingQuote.class,
@@ -569,9 +570,10 @@ public class BookingQuote extends Observable
 
     public static BookingQuote fromJson(final String json)
     {
-        final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                                                           .create()
-                                                           .fromJson(json, BookingQuote.class);
+        final BookingQuote bookingQuote = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create()
+                .fromJson(json, BookingQuote.class);
 
         if (bookingQuote != null && bookingQuote.getCommitmentPrices() != null)
         {

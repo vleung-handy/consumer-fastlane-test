@@ -11,6 +11,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -296,7 +297,7 @@ public class User extends Observable
 
     final String toJson()
     {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+        final Gson gson = new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                                            .setExclusionStrategies(getExclusionStrategy())
                                            .registerTypeAdapter(User.class, new UserSerializer()).create();
 
@@ -307,7 +308,7 @@ public class User extends Observable
     {
         try
         {
-            return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
+            return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
                                     .fromJson(json, User.class);
         }
         catch (Exception e)

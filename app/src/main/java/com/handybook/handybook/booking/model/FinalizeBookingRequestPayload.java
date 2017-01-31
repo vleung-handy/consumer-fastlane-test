@@ -2,9 +2,9 @@ package com.handybook.handybook.booking.model;
 
 import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +18,6 @@ import java.util.Observable;
  */
 public class FinalizeBookingRequestPayload extends Observable
 {
-    public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                                                     .create();
     @SerializedName("password")
     private String mPassword;
     @SerializedName("apply_to_all")
@@ -76,13 +74,16 @@ public class FinalizeBookingRequestPayload extends Observable
 
     public static FinalizeBookingRequestPayload fromJson(final String jsonIn)
     {
-        return GSON.fromJson(jsonIn, FinalizeBookingRequestPayload.class);
+        return new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create().fromJson(jsonIn, FinalizeBookingRequestPayload.class);
     }
 
     public String toJson()
     {
-        final Gson gson = GSON;
-        return gson.toJson(this);
+        return new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .create().toJson(this);
     }
 
     private void triggerObservers()
@@ -159,7 +160,7 @@ public class FinalizeBookingRequestPayload extends Observable
         check if these instructions are already present in the global booking instructions list.
         if so, update and remove from list to be added
          */
-        for(BookingInstruction bookingInstruction : mBookingInstructions)
+        for (BookingInstruction bookingInstruction : mBookingInstructions)
         {
             String bookingInstructionMachineName = bookingInstruction.getMachineName();
             BookingInstruction entryMethodBookingInstruction =
@@ -206,7 +207,8 @@ public class FinalizeBookingRequestPayload extends Observable
                 null,
                 null,
                 noteToPro,
-                null);
+                null
+        );
 
         // Find it and if it exists update it
         for (BookingInstruction eBookingInstruction : mBookingInstructions)
