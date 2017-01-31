@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
@@ -528,6 +529,19 @@ public final class LoginFragment extends BookingFlowFragment
         handleUserCallbackError(event.error, event.getAuthType());
     }
 
+    private
+    @Nullable
+    String getUserZip(User user)
+    {
+
+        if (user != null && user.getAddress() != null)
+        {
+            return user.getAddress().getZip();
+        }
+
+        return null;
+    }
+
     @Subscribe
     public void onReceiveUserSuccess(final HandyEvent.ReceiveUserSuccess event)
     {
@@ -548,7 +562,7 @@ public final class LoginFragment extends BookingFlowFragment
         }
 
         //the fact that the user is logged in guarantees at least email and zip information
-        mDefaultPreferencesManager.setString(PrefsKey.ZIP, event.getUser().getAddress().getZip());
+        mDefaultPreferencesManager.setString(PrefsKey.ZIP, getUserZip(event.getUser()));
 
         //storing of EMAIl in shared prefs is only used for users that are not logged in. Now that
         //the user is logged in, it' safe to remove this.
