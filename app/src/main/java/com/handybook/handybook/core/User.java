@@ -296,9 +296,9 @@ public class User extends Observable
 
     final String toJson()
     {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .setExclusionStrategies(getExclusionStrategy())
-                .registerTypeAdapter(User.class, new UserSerializer()).create();
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+                                           .setExclusionStrategies(getExclusionStrategy())
+                                           .registerTypeAdapter(User.class, new UserSerializer()).create();
 
         return gson.toJson(this);
     }
@@ -307,7 +307,7 @@ public class User extends Observable
     {
         try
         {
-            return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+            return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
                                     .fromJson(json, User.class);
         }
         catch (Exception e)

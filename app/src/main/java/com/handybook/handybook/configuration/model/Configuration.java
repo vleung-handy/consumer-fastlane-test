@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class Configuration implements Serializable
 {
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
 
     @SerializedName("help_center_url")
     private String mHelpCenterUrl;

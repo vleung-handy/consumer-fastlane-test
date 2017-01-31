@@ -17,7 +17,7 @@ import java.util.Observer;
 
 public class BookingTransaction extends Observable
 {
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
 
     @SerializedName("booking_id")
     private int mBookingId;

@@ -469,7 +469,7 @@ public class Booking implements Parcelable
 
     public static Booking fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
                                 .fromJson(json, Booking.class);
     }
 

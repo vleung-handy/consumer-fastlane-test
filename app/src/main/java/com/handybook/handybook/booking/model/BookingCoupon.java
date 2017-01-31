@@ -32,7 +32,7 @@ public final class BookingCoupon
 
     public static BookingCoupon fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
                                 .fromJson(json, BookingCoupon.class);
     }
 }

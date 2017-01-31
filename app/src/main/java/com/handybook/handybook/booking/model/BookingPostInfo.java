@@ -63,17 +63,17 @@ public final class BookingPostInfo extends Observable {
     }
 
     public final String toJson() {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .setExclusionStrategies(getExclusionStrategy())
-                .registerTypeAdapter(BookingPostInfo.class,
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+                                           .setExclusionStrategies(getExclusionStrategy())
+                                           .registerTypeAdapter(BookingPostInfo.class,
                         new BookingPostInfoSerializer()).create();
 
         return gson.toJson(this);
     }
 
     public static BookingPostInfo fromJson(final String json) {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, BookingPostInfo.class);
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
+                                .fromJson(json, BookingPostInfo.class);
     }
 
     public static ExclusionStrategy getExclusionStrategy() {

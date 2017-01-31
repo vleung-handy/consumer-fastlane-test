@@ -72,8 +72,8 @@ public class BookingCompleteTransaction
 
     String toJson()
     {
-        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .registerTypeAdapter(BookingCompleteTransaction.class,
+        final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+                                           .registerTypeAdapter(BookingCompleteTransaction.class,
                         new BookingCompleteTransaction()).create();
 
         return gson.toJson(this);
@@ -81,8 +81,8 @@ public class BookingCompleteTransaction
 
     public static BookingCompleteTransaction fromJson(final String json)
     {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, BookingCompleteTransaction.class);
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
+                                .fromJson(json, BookingCompleteTransaction.class);
     }
 
     static class BookingCompleteTransactionSerializer

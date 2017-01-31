@@ -18,7 +18,8 @@ import java.util.Observable;
  */
 public class FinalizeBookingRequestPayload extends Observable
 {
-    public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+    public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+                                                     .create();
     @SerializedName("password")
     private String mPassword;
     @SerializedName("apply_to_all")
