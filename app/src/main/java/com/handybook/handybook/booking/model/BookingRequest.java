@@ -22,6 +22,7 @@ public class BookingRequest extends Observable
 {
     public static final String KEY_UNIQ = "uniq";
     public static final String KEY_SERVICE_ID = "service_id";
+    public static final String KEY_PROVIDER_ID = "provider_id";
     public static final String KEY_ZIPCODE = "zipcode";
     public static final String KEY_ZIP_AREA = "zip_area";
     public static final String KEY_EMAIL = "email";
@@ -34,6 +35,8 @@ public class BookingRequest extends Observable
 
     @SerializedName(KEY_SERVICE_ID)
     private int mServiceId;
+    @SerializedName(KEY_PROVIDER_ID)
+    private String mProviderId;
     @SerializedName(KEY_UNIQ)
     private String mUniq;
 
@@ -195,6 +198,17 @@ public class BookingRequest extends Observable
         triggerObservers();
     }
 
+    public String getProviderId()
+    {
+        return mProviderId;
+    }
+
+    public void setProviderId(final String providerId)
+    {
+        mProviderId = providerId;
+        triggerObservers();
+    }
+
     private void triggerObservers()
     {
         setChanged();
@@ -244,6 +258,7 @@ public class BookingRequest extends Observable
         {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add(KEY_SERVICE_ID, context.serialize(value.getServiceId()));
+            jsonObj.add(KEY_PROVIDER_ID, context.serialize(value.getProviderId()));
             jsonObj.add(KEY_UNIQ, context.serialize(value.getUniq()));
             jsonObj.add(KEY_ZIPCODE, context.serialize(value.getZipCode()));
             jsonObj.add(KEY_ZIP_AREA, context.serialize(value.getZipArea()));
