@@ -10,21 +10,28 @@ import java.io.Serializable;
 
 /**
  * {
- * “warning_message”: "A $15 fee will be charged when skipping less than 24 hours in advance.",
- *  "cancellation_info" : {
- *    "title": "Please let us know why you're skipping.",
- *    "reasons": [
- *      $REASON_1,
- *      $REASON_2,
- *      ...
- *    ],
- *  },
- *  "precancellation_info": {
- *    "title": "Your plan term ends Dec 12, 2017"
- *    "description": "The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use."
- *  }
+ *   "warning_message": "A $15 fee will be charged when skipping less than 24 hours in advance.",
+ *   "cancellation_info": {
+ *     "title": "Please let us know why you're skipping.",
+ *     "reasons": [{
+ *       "id": 4,
+ *       "label": "Solid Reason"
+ *     }, {
+ *       "id": 3,
+ *       "label": "Another great reason"
+ *     }, {
+ *       "id": 2,
+ *       "label": "Not really sure"
+ *     }, {
+ *       "id": 1,
+ *       "label": "I really like radio buttons"
+ *     }]
+ *   },
+ *   "precancellation_info": {
+ *     "title": "Your plan term ends Dec 12, 2017",
+ *     "description": "The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use."
+ *   }
  * }
-
  */
 public class BookingCancellationData implements Serializable
 {
@@ -131,4 +138,34 @@ public class BookingCancellationData implements Serializable
             return mLabel;
         }
     }
+
+
+    public static String EXAMPLE_PAYLOAD = "{\n" +
+            "  \"warning_message\": \"A $15 fee will be charged when skipping less than 24 hours in advance.\",\n" +
+            "  \"cancellation_info\": {\n" +
+            "    \"title\": \"Please let us know why you're skipping.\",\n" +
+            "    \"reasons\": [\n" +
+            "      {\n" +
+            "        \"id\": 4,\n" +
+            "        \"label\": \"Solid Reason\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"id\": 3,\n" +
+            "        \"label\": \"Another great reason\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"id\": 2,\n" +
+            "        \"label\": \"Not really sure\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"id\": 1,\n" +
+            "        \"label\": \"I really like radio buttons\"\n" +
+            "      }\n" +
+            "    ]\n" +
+            "  },\n" +
+            "  \"precancellation_info\": {\n" +
+            "    \"title\": \"Your plan term ends Dec 12, 2017\",\n" +
+            "    \"description\": \"The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use.\"\n" +
+            "  }\n" +
+            "}";
 }
