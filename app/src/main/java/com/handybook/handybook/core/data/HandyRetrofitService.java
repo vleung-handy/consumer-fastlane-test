@@ -310,8 +310,8 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
-    @GET("/bookings/precancelation_info")
-    void getPreCancelationInfo(@Query("booking_id") String bookingId, HandyRetrofitCallback cb);
+    @GET("/bookings/{booking}/cancellation_data")
+    void getCancellationData(@Path("booking") String bookingId, HandyRetrofitCallback cb);
 
     @FormUrlEncoded
     @POST("/bookings/{booking}/cancel")

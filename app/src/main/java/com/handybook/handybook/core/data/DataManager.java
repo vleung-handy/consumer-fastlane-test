@@ -20,6 +20,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
@@ -749,29 +750,17 @@ public class DataManager
         );
     }
 
-    public void getPreCancelationInfo(
+    public void getBookingCancellationData(
             final String bookingId,
-            final Callback<Pair<String, List<String>>> cb
+            final Callback<BookingCancellationData> cb
     )
     {
-        mService.getPreCancelationInfo(bookingId, new HandyRetrofitCallback(cb)
+        mService.getCancellationData(bookingId, new HandyRetrofitCallback(cb)
         {
             @Override
             protected void success(final JSONObject response)
             {
-                final String notice = response.isNull("notice") ? null
-                        : response.optString("notice", null);
-
-                final JSONArray array = response.optJSONArray("options");
-                final Gson gson = new Gson();
-                final List<String> options = gson.fromJson(
-                        array.toString(),
-                        new TypeToken<List<String>>()
-                        {
-                        }.getType()
-                );
-
-                cb.onSuccess(new Pair<>(notice, options));
+                cb.onSuccess(BookingCancellationData.fromJson(response.toString()));
             }
         });
     }

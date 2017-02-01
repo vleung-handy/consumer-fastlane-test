@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
@@ -25,16 +25,13 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
 import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -254,7 +251,7 @@ public final class ReportIssueFragment extends InjectedFragment
                                 mBooking.getId())
                         ));
 
-                        bus.post(new BookingEvent.RequestPreCancelationInfo(mBooking.getId()));
+                        bus.post(new BookingEvent.RequestBookingCancellationData(mBooking.getId()));
                     }
                     else if (JobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType()))
                     {
@@ -300,28 +297,22 @@ public final class ReportIssueFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
+    public void onReceiveBookingCancellationDataSuccess(
+            final BookingEvent.ReceiveBookingCancellationDataSuccess event
+    )
     {
         removeUiBlockers();
-
-        Pair<String, List<String>> result = event.result;
-
+        BookingCancellationData bookingCancellationData = event.result;
         final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
-        if (result.second != null)
-        {
-            intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
-        }
-        else
-        {
-            intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>());
-        }
-        intent.putExtra(BundleKeys.NOTICE, result.first);
+        intent.putExtra(BundleKeys.BOOKING_CANCELLATION_DATA, bookingCancellationData);
         intent.putExtra(BundleKeys.BOOKING, mBooking);
         startActivityForResult(intent, ActivityResult.BOOKING_CANCELED);
     }
 
     @Subscribe
-    public void onReceivePreCancellationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
+    public void onReceiveBookingCancellationDataError(
+            final BookingEvent.ReceiveBookingCancellationDataError event
+    )
     {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);

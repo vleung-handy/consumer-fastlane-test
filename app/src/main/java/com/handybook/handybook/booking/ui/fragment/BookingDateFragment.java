@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
@@ -25,17 +25,16 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.view.GroovedTimePicker;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.core.ui.view.GroovedTimePicker;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 
@@ -473,20 +472,19 @@ public final class BookingDateFragment extends BookingFlowFragment
      * @param event
      */
     @Subscribe
-    public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
+    public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceiveBookingCancellationDataSuccess event)
     {
         removeUiBlockers();
-        Pair<String, List<String>> result = event.result;
+        BookingCancellationData bookingCancellationData = event.result;
 
         final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
-        intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
-        intent.putExtra(BundleKeys.NOTICE, result.first);
         intent.putExtra(BundleKeys.BOOKING, mRescheduleBooking);
+        intent.putExtra(BundleKeys.BOOKING_CANCELLATION_DATA, bookingCancellationData);
         startActivityForResult(intent, ActivityResult.BOOKING_CANCELED);
     }
 
     @Subscribe
-    public void onReceivePreCancelationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
+    public void onReceivePreCancelationInfoError(BookingEvent.ReceiveBookingCancellationDataError event)
     {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
@@ -504,7 +502,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             bus.post(new LogEvent.AddLogEvent(
                     new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId())
             ));
-            bus.post(new BookingEvent.RequestPreCancelationInfo(mRescheduleBooking.getId()));
+            bus.post(new BookingEvent.RequestBookingCancellationData(mRescheduleBooking.getId()));
         }
     }
 }
