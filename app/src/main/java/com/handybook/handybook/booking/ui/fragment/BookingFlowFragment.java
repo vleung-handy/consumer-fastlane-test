@@ -325,7 +325,7 @@ public class BookingFlowFragment extends InjectedFragment
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
         transaction.setProviderId(request.getProviderId());
-        transaction.setPromoCode(bookingManager.getPromoTabCoupon());
+        transaction.setPromoCode(bookingManager.getPromoTabCoupon(), transaction.shouldPromoCodeBeHidden());
         if (user != null)
         {
             transaction.setEmail(user.getEmail());
@@ -513,12 +513,13 @@ public class BookingFlowFragment extends InjectedFragment
             quote.setBookingOption(oldQuote.getBookingOption());
             quote.setSurgePriceTable(oldQuote.getSurgePriceTable());
         }
-        // remove promo if new quote requested
+        // remove promo and reset its hidden state if new quote requested
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         if (transaction != null && oldQuote != null && oldQuote.getBookingId()
                 != quote.getBookingId())
         {
-            transaction.setPromoCode(null);
+            //TODO for ugly promo code hotfix
+            transaction.setPromoCode(null, false);
         }
         bookingManager.setCurrentQuote(quote);
         continueFlow();

@@ -164,9 +164,27 @@ public final class BookingAddressFragment extends BookingFlowFragment
                     {
                         removeUiBlockers();
                         transaction.setBookingId(newQuote.getBookingId());
+
                         if (newQuote.getCoupon() != null)
                         {
-                            transaction.setPromoCode(newQuote.getCoupon().getCode());
+                            /*
+                            TODO for ugly promo code hotfix
+                            for issue in which promo code not entered by user or deeplink
+                            was visible in the promo text field
+
+                            at this point, we got a non-null coupon from the server.
+                            note in the booking transaction that the coupon should be hidden if:
+                            - the transaction coupon is null. this means the user or deeplink didn't set it before
+                            - or, the transaction notes that the coupon code should be hidden
+                            to account for case in which user goes backwards in the flow
+                            (it's only set to false on new quote or user manually enters a coupon)
+                             */
+                            boolean shouldPromoCodeBeHidden = transaction.getPromoCode() == null
+                                    || transaction.shouldPromoCodeBeHidden();
+                            transaction.setPromoCode(
+                                    newQuote.getCoupon().getCode(),
+                                    shouldPromoCodeBeHidden
+                            );
                         }
                         BookingQuote.updateQuote(
                                 bookingManager.getCurrentQuote(),
