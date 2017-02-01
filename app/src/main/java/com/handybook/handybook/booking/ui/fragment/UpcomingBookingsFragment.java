@@ -98,6 +98,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Bind(R.id.fetch_error_view)
     ViewGroup mFetchErrorView;
 
+    @Bind(R.id.bookings_share_button)
+    View mShareMenuItem;
 
     private List<Booking> mBookings;
     private List<RecurringBooking> mRecurringBookings;
@@ -172,6 +174,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
+            mShareMenuItem.setVisibility(View.GONE);
         }
         else if (getActivity() instanceof MenuDrawerActivity)
         {
