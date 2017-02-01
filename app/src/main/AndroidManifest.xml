@@ -515,6 +515,7 @@
         </activity>
         <activity
             android:name=".bottomnav.BottomNavActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
             >
