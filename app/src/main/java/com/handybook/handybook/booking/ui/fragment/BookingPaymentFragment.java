@@ -366,10 +366,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         if (mCurrentQuote.getBill() == null)
         {
             mBillView.setVisibility(View.GONE);
+            mHeaderContainer.setVisibility(View.VISIBLE);
             initializeBookingHeader();
         }
         else
         {
+            mHeaderContainer.setVisibility(View.GONE);
             mBillView.setVisibility(View.VISIBLE);
             mBillView.setBill(mCurrentQuote.getBill());
         }

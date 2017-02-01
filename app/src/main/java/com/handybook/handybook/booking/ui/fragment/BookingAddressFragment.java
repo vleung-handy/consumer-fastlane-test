@@ -18,8 +18,6 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
@@ -177,7 +175,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
                     //following the new onboarding process, if the user hasn't logged in by this
                     //point, it is a new user. We still have to check whether it's existing,
                     //because the user could've changed the email on this screen.
-
+                    bookingManager.getCurrentTransaction().setEmail(email);
                     dataManager.getUserExists(
                             email,
                             new FragmentSafeCallback<UserExistsResponse>(BookingAddressFragment.this)

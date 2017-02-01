@@ -23,9 +23,6 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingProTeamActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
-import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.constant.ActivityResult;
-import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
@@ -234,6 +231,10 @@ public class BookingFlowFragment extends InjectedFragment
             intent.putExtra(LoginActivity.EXTRA_FROM_BOOKING_FUNNEL, true);
             startActivity(intent);
             return;
+        }
+        else if (hasStoredEmail())
+        {
+            request.setEmail(mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null));
         }
         disableInputs();
         progressDialog.show();
