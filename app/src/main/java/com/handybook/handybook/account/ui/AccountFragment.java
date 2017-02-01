@@ -305,13 +305,17 @@ public class AccountFragment extends InjectedFragment
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
+
+                        //remove user email and zip when they logout. Do this before setting the user
+                        //to null, as that action will trigger more downstream action that is dependent
+                        //on these shared prefs being removed.
+                        mDefaultPreferencesManager.removeValue(PrefsKey.ZIP);
+                        mDefaultPreferencesManager.removeValue(PrefsKey.EMAIL);
+
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
 
-                        //remove user email and zip when they logout
-                        mDefaultPreferencesManager.removeValue(PrefsKey.ZIP);
-                        mDefaultPreferencesManager.removeValue(PrefsKey.EMAIL);
 
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();

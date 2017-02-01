@@ -30,6 +30,7 @@ import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
@@ -121,7 +122,26 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 checkLayerInitiation();
                 if (!event.isLoggedIn())
                 {
-                    navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                    if (mConfiguration == null)
+                    {
+                        mConfiguration = mConfigurationManager.getPersistentConfiguration();
+                    }
+
+                    if (mConfiguration.isOnboardingEnabled() && !hasStoredZip())
+                    {
+                        //upon logout, if onboarding is enabled, then we bring user back to onboarding screen.
+                        final Intent intent = new Intent(
+                                MenuDrawerActivity.this,
+                                OnboardActivity.class
+                        );
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else
+                    {
+                        navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                    }
                 }
             }
 
@@ -167,6 +187,12 @@ public abstract class MenuDrawerActivity extends BaseActivity
         }
         //The menu should always be refreshed
         refreshMenu();
+    }
+
+    protected boolean hasStoredZip()
+    {
+        String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
+        return !android.text.TextUtils.isEmpty(zip);
     }
 
     protected boolean requiresUser()
