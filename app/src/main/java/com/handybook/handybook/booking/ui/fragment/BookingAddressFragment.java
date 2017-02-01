@@ -203,6 +203,10 @@ public final class BookingAddressFragment extends BookingFlowFragment
                                                 LoginActivity.EXTRA_BOOKING_USER_NAME,
                                                 userExistsResponse.getFirstName()
                                         );
+                                        intent.putExtra(
+                                                LoginActivity.EXTRA_FROM_ONBOARDING,
+                                                true
+                                        );
                                         removeUiBlockers();
                                         startActivity(intent);
                                     }

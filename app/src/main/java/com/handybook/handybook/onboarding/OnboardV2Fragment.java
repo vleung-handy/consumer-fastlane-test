@@ -336,6 +336,17 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (userManager.isUserLoggedIn())
+        {
+            //don't need to show this screen if the user is already logged in.
+            getActivity().finish();
+        }
+    }
+
     /**
      * IF the email already exists, redirect to login page
      * ELSE IF we don't support this zip, redirect to {@link NotSupportedActivity}

@@ -612,10 +612,9 @@ public final class LoginFragment extends BookingFlowFragment
             //clean start.
             bookingManager.clear();
             getActivity().setResult(LOGIN_FINISH);
-            ((MenuDrawerActivity) getActivity()).navigateToActivity(
-                    ServiceCategoriesActivity.class,
-                    R.id.nav_menu_home
-            );
+            Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            getActivity().startActivity(intent);
         }
         else
         {
