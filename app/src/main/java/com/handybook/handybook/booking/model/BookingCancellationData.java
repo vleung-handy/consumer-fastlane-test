@@ -29,7 +29,7 @@ import java.io.Serializable;
  *   },
  *   "precancellation_info": {
  *     "title": "Your plan term ends Dec 12, 2017",
- *     "description": "The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use."
+ *     "message": "The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use."
  *   }
  * }
  */
@@ -106,17 +106,17 @@ public class BookingCancellationData implements Serializable
     {
         @SerializedName("title")
         private String mTitle;
-        @SerializedName("description")
-        private String mDescription;
+        @SerializedName("message")
+        private String mMessage;
 
         public String getTitle()
         {
             return mTitle;
         }
 
-        public String getDescription()
+        public String getMessage()
         {
-            return mDescription;
+            return mMessage;
         }
     }
 
@@ -165,7 +165,7 @@ public class BookingCancellationData implements Serializable
             "  },\n" +
             "  \"precancellation_info\": {\n" +
             "    \"title\": \"Your plan term ends Dec 12, 2017\",\n" +
-            "    \"description\": \"The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use.\"\n" +
+            "    \"message\": \"The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use.\"\n" +
             "  }\n" +
             "}";
 }
