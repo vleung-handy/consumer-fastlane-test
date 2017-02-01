@@ -324,6 +324,7 @@ public class BookingFlowFragment extends InjectedFragment
         transaction.setZipCode(quote.getAddress().getZip());
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
+        transaction.setProviderId(request.getProviderId());
         transaction.setPromoCode(bookingManager.getPromoTabCoupon());
         if (user != null)
         {
@@ -344,7 +345,8 @@ public class BookingFlowFragment extends InjectedFragment
         {
             final ProTeam proTeam = bookingManager.getCurrentProTeam();
             final Intent intent;
-            if (this instanceof BookingProTeamFragment || proTeam == null || proTeam.isEmpty())
+            if (this instanceof BookingProTeamFragment || proTeam == null || proTeam.isEmpty()
+                    || !TextUtils.isBlank(request.getProviderId()))
             {
                 intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             }

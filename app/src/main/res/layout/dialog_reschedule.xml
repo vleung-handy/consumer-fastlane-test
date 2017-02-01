@@ -24,7 +24,7 @@
             android:layout_marginRight="@dimen/default_margin"
             android:layout_marginTop="@dimen/default_margin"
             android:gravity="center"
-            android:text="@string/not_seeing_pro"
+            android:text="@string/prefer_different_pro"
             android:textStyle="bold"
             />
 

@@ -25,6 +25,8 @@ public class BookingTransaction extends Observable
     private String mUserId;
     @SerializedName("service_id")
     private int mServiceId;
+    @SerializedName("provider_id")
+    private String mProviderId;
     @SerializedName("first_name")
     private String mFirstName;
     @SerializedName("last_name")
@@ -108,6 +110,17 @@ public class BookingTransaction extends Observable
     public void setServiceId(final int serviceId)
     {
         mServiceId = serviceId;
+        triggerObservers();
+    }
+
+    public String getProviderId()
+    {
+        return mProviderId;
+    }
+
+    public void setProviderId(final String providerId)
+    {
+        mProviderId = providerId;
         triggerObservers();
     }
 
@@ -374,6 +387,7 @@ public class BookingTransaction extends Observable
             jsonObj.add("booking_id", context.serialize(value.getBookingId()));
             jsonObj.add("user_id", context.serialize(value.getUserId()));
             jsonObj.add("service_id", context.serialize(value.getServiceId()));
+            jsonObj.add("provider_id", context.serialize(value.getProviderId()));
             jsonObj.add("first_name", context.serialize(value.getFirstName()));
             jsonObj.add("last_name", context.serialize(value.getLastName()));
             jsonObj.add("address1", context.serialize(value.getAddress1()));
