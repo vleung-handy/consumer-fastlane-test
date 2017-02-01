@@ -130,8 +130,6 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         mSlideInFromLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_left);
         mSlideOutToRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
 
-        //        TODO: JIA: add key press listener, to treat "enter" keys as next clicks
-
         mEditZip.addTextChangedListener(new TextWatcherAdapter()
         {
             @Override
@@ -241,7 +239,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             @Override
             public void onCallbackError(final DataManager.DataManagerError error)
             {
-                //TODO: JIA: figure out what to do here on zip error
+                dataManagerErrorHandler.handleError(getActivity(), error);
             }
         });
     }
@@ -329,7 +327,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
                         @Override
                         public void onError(final DataManager.DataManagerError error)
                         {
-                            //TODO: JIA: handle this error
+                            dataManagerErrorHandler.handleError(getActivity(), error);
                         }
                     }
             );
@@ -383,8 +381,6 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             else
             {
                 //we do support this zip, just go to home page without prompting to login
-
-                //TODO: JIA: this might be a redirection to the home page.
                 startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
             }
         }
