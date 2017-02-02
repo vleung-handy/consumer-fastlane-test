@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TextInputEditText;
@@ -242,15 +243,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             @Override
             public void onCallbackSuccess(@NonNull final List<Service> services)
             {
-                mServices = services;
-
-                bus.post(new LogEvent.AddLogEvent(new OnboardingLog.ZipSubmittedLog(
-                        zip, Locale.getDefault().toString()
-                )));
-
-                //it could be possible that this zip response comes after the user enters email.
-                //if that is the case, we need to call userCreateLead();
-                userCreateLead();
+                onServicesReceived(services, zip);
             }
 
             @Override
@@ -281,6 +274,20 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
 
         return true;
+    }
+
+    @VisibleForTesting
+    public void onServicesReceived(@NonNull final List<Service> services, final String zip)
+    {
+        mServices = services;
+
+        bus.post(new LogEvent.AddLogEvent(new OnboardingLog.ZipSubmittedLog(
+                zip, Locale.getDefault().toString()
+        )));
+
+        //it could be possible that this zip response comes after the user enters email.
+        //if that is the case, we need to call userCreateLead();
+        userCreateLead();
     }
 
     private void showNext()
@@ -392,7 +399,8 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
      *
      * @param emailResponse
      */
-    private void handleEmailResponse(UserExistsResponse emailResponse)
+    @VisibleForTesting
+    public void handleEmailResponse(UserExistsResponse emailResponse)
     {
         if (emailResponse.exists())
         {
@@ -410,7 +418,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
             mDefaultPreferencesManager.setString(PrefsKey.EMAIL, mEmail);
 
-            if (mServices.isEmpty())
+            if (mServices == null || mServices.isEmpty())
             {
                 //we don't support this zip
                 Intent intent = new Intent(getActivity(), ServiceNotSupportedActivity.class);
