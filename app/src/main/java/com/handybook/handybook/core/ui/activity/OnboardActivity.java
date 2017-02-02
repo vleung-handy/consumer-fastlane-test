@@ -19,7 +19,7 @@ public final class OnboardActivity extends MenuDrawerActivity {
     protected final Fragment createFragment() {
         if (mConfiguration == null)
         {
-            mConfiguration = mConfigurationManager.getLastKnowConfiguration();
+            mConfiguration = mConfigurationManager.getPersistentConfiguration();
 
             if (mConfiguration == null)
             {

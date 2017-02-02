@@ -28,6 +28,12 @@
         <item name="android:textColorPrimary">@color/handy_white</item>
     </style>
 
+    <style name="HandyTheme.AppBarOverlay.Bold">
+        <item name="android:textAppearance">@style/TextView.Bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+    </style>
+
     <style name="CircularBold">
         <item name="fontPath">fonts/CircularStd-Bold.otf</item>
     </style>

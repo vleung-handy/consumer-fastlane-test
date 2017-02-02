@@ -8,12 +8,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -70,9 +73,6 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @Bind(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
 
-    @Bind(R.id.collapsed_view)
-    View mCollapsedView;
-
     @Bind(R.id.edit_zip)
     TextInputEditText mEditZip;
 
@@ -105,10 +105,20 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     private List<Service> mServices;
     private String mZip;
     private String mEmail;
+    private String mZipCodeString;
+    private String mEmailString;
 
     public static OnboardV2Fragment newInstance()
     {
         return new OnboardV2Fragment();
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -125,11 +135,16 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         mAppBar.addOnOffsetChangedListener(this);
         registerKeyboardListener();
 
+        mCollapsingToolbar.setTitleEnabled(false);
+
         mSlideInFromRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
         mSlideOutToLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_left);
         mSlideInFromLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_left);
         mSlideOutToRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
+        mZipCodeString = getString(R.string.zip_code);
+        mEmailString = getString(R.string.email);
 
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mEditZip.addTextChangedListener(new TextWatcherAdapter()
         {
             @Override
@@ -244,8 +259,16 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         });
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.menu_onboarding, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     private void showNext()
     {
+        mToolbar.setTitle(mEmailString);
         mViewSwitcher.setInAnimation(mSlideInFromRight);
         mViewSwitcher.setOutAnimation(mSlideOutToLeft);
         mViewSwitcher.showNext();
@@ -253,6 +276,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
 
     private void showPrevious()
     {
+        mToolbar.setTitle(mZipCodeString);
         mViewSwitcher.setInAnimation(mSlideInFromLeft);
         mViewSwitcher.setOutAnimation(mSlideOutToRight);
         mViewSwitcher.showPrevious();
@@ -280,12 +304,6 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
 
     @OnClick(R.id.button_signin_1)
     public void signinClicked()
-    {
-        redirectToLogin();
-    }
-
-    @OnClick(R.id.button_signin_2)
-    public void signin2Clicked()
     {
         redirectToLogin();
     }
@@ -460,14 +478,14 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         if (verticalOffset == 0)
         {
             //fully expanded
-            mCollapsedView.setVisibility(View.GONE);
-            mCollapsedView.setAlpha(0);
+            mToolbar.setVisibility(View.INVISIBLE);
+            mToolbar.setAlpha(0);
         }
         else if (mToolbar.getHeight() - mCollapsingToolbar.getHeight() == verticalOffset)
         {
             //fully collapsed
-            mCollapsedView.setVisibility(View.VISIBLE);
-            mCollapsedView.animate()
+            mToolbar.setVisibility(View.VISIBLE);
+            mToolbar.animate()
                           .alpha(1)
                           .start();
         }

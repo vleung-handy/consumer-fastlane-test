@@ -45,11 +45,11 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_home_logo"
+                    android:layout_marginTop="@dimen/default_margin"
                     />
 
                 <TextView
                     android:id="@+id/text_title"
-                    android:textSize="25sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/image_logo"
@@ -57,31 +57,40 @@
                     android:gravity="center_horizontal"
                     android:text="@string/onboard_title"
                     android:textAllCaps="false"
+                    style="@style/TextView.XLarge"
                     android:textColor="@color/handy_white"
+
                     />
 
-                <TextView
-                    android:id="@+id/text_already_have_account"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_below="@id/text_title"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:text="@string/onboard_already_account"
-                    />
-
-                <Button
-                    android:id="@+id/button_signin_1"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/text_already_have_account"
-                    android:layout_below="@id/text_title"
-                    android:layout_toRightOf="@id/text_already_have_account"
-                    android:text="@string/sign_in"
-                    android:textColor="@color/handy_white"
-                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
                     app:layout_collapseMode="pin"
-                    />
+                    android:layout_marginTop="@dimen/default_margin"
+                    >
+
+                    <TextView
+                        android:id="@+id/text_already_have_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboard_already_account"
+                        android:textColor="@color/handy_white"
+                        />
+
+                    <Button
+                        android:id="@+id/button_signin_1"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sign_in"
+                        android:textColor="@color/handy_white"
+                        android:textAppearance="@style/TextView.Bold"
+                        />
+                </LinearLayout>
+
             </RelativeLayout>
 
             <android.support.v7.widget.Toolbar
@@ -89,33 +98,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:theme="@style/HandyTheme.AppBarOverlay.Bold"
+                app:title="@string/zip_code"
                 >
-
-                <RelativeLayout
-                    android:id="@+id/collapsed_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
-                    <TextView
-                        android:id="@+id/text_your_area"
-                        android:layout_centerInParent="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Base.TextAppearance.AppCompat.Title"
-                        android:text="@string/onboard_your_area"
-                        />
-
-                    <Button
-                        android:id="@+id/button_signin_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        style="@style/Base.Widget.AppCompat.Button.Borderless"
-                        android:text="@string/sign_in"
-                        />
-                </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -142,11 +127,10 @@
             android:id="@+id/view_switcher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin_double"
-            android:layout_marginRight="@dimen/default_margin_double"
+            android:layout_marginLeft="@dimen/default_margin_3x"
+            android:layout_marginRight="@dimen/default_margin_3x"
             android:layout_marginTop="@dimen/default_margin_double"
             android:background="@color/handy_white"
-            android:padding="@dimen/default_margin_double"
             android:elevation="@dimen/med_elevation"
             android:clipToPadding="false"
             >
@@ -156,13 +140,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/default_margin_double"
                 >
 
                 <TextView
-                    android:textSize="25sp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/onboard_location_prompt"
+                    android:gravity="center"
+                    style="@style/TextView.Large.Bold"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
                     />
 
                 <android.support.design.widget.TextInputLayout
@@ -170,6 +158,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/zip_code"
                     android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
                     >
 
                     <android.support.design.widget.TextInputEditText
@@ -182,13 +172,12 @@
                         />
                 </android.support.design.widget.TextInputLayout>
 
-
                 <Button
                     android:id="@+id/button_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/next"
                     android:enabled="false"
+                    style="@style/Button.Green"
+                    android:layout_marginTop="@dimen/default_margin"
                     />
             </LinearLayout>
 
@@ -197,20 +186,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/default_margin_double"
                 >
 
                 <TextView
-                    android:textSize="25sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/onboard_email_prompt"
+                    android:gravity="center"
+                    style="@style/TextView.Large.Bold"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
                     />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
+                    android:hint="@string/email"
                     android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
                     >
 
                     <android.support.design.widget.TextInputEditText
@@ -218,18 +213,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:inputType="text"
+                        android:inputType="textEmailAddress"
                         android:imeOptions="actionDone"
-                        style="@style/EditText.Email"
                         />
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
                     android:id="@+id/button_submit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/next"
                     android:enabled="false"
+                    style="@style/Button.Green"
+                    android:layout_marginTop="@dimen/default_margin"
                     />
             </LinearLayout>
         </ViewSwitcher>
