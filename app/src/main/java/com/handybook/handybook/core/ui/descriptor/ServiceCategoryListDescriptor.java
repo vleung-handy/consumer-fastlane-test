@@ -1,6 +1,9 @@
 package com.handybook.handybook.core.ui.descriptor;
 
+import android.support.annotation.NonNull;
+
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Service;
 
 public enum ServiceCategoryListDescriptor
 {
@@ -67,5 +70,11 @@ public enum ServiceCategoryListDescriptor
     public int getImageDrawable()
     {
         return mImageDrawable;
+    }
+
+    public static final ServiceCategoryListDescriptor getServiceDescriptorFromService(@NonNull Service service)
+    {
+        String serviceMachineName = service.getUniq().toUpperCase();
+        return ServiceCategoryListDescriptor.valueOf(serviceMachineName);
     }
 }

@@ -106,6 +106,7 @@ import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
+import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
@@ -311,6 +312,7 @@ import retrofit.converter.GsonConverter;
         ProTeamPerBookingActivity.class,
         BookingProTeamConversationsFragment.class,
         RescheduleDialogFragment.class,
+        ServiceCategoriesHomeFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

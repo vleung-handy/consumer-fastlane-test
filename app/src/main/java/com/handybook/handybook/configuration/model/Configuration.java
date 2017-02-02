@@ -33,6 +33,8 @@ public class Configuration implements Serializable
     private boolean isProTeamProfilePicturesEnabled;
     @SerializedName("tab_bar_navigation_enabled")
     private boolean mBottomNavEnabled;
+    @SerializedName("new_services_home_page_enabled")
+    private boolean mHomeScreenV2Enabled;
 
     //default this to false
     @SerializedName("snow_enabled")
@@ -88,6 +90,9 @@ public class Configuration implements Serializable
     // TODO sammy: turn this on after tested throughtly
     public boolean isBottomNavEnabled() {
         return false;
+
+    public boolean isHomeScreenV2Enabled() {
+        return true;
     }
 
     public String toJson()

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        >
+
+        <TextView
+            android:id="@+id/fragment_service_categories_sign_in_text"
+            style="@style/TextView.Medium.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="@dimen/default_margin"
+            android:text="@string/sign_in"
+            android:textColor="@color/white"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextView.XXLarge.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/services_home_title"
+            android:textColor="@color/white"
+            />
+
+        <LinearLayout
+            android:id="@+id/change_zip_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/default_padding_half"
+            android:visibility="gone"
+            tools:visibility="visible"
+            >
+
+            <TextView
+                style="@style/TextView.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/white"
+                tools:text="Not in 10011?"
+                />
+
+            <TextView
+                style="@style/TextView.Small.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/change"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_down_drop"
+        />
+
+    <GridView
+        android:id="@+id/services_home_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:animateLayoutChanges="true"
+        android:clipToPadding="true"
+        android:horizontalSpacing="@dimen/service_home_padding"
+        android:numColumns="2"
+        android:paddingBottom="@dimen/service_home_padding"
+        android:paddingLeft="@dimen/service_home_padding"
+        android:paddingRight="@dimen/service_home_padding"
+        android:paddingTop="@dimen/default_padding"
+        android:verticalSpacing="@dimen/service_home_padding"
+        />
+</LinearLayout>
