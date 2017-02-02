@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.model;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.library.util.DateTimeUtils;
@@ -41,6 +42,10 @@ import java.io.Serializable;
  */
 public class BookingCancellationData implements Serializable
 {
+    private static final Gson GSON = new GsonBuilder()
+            .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+            .create();
+
     @SerializedName("warning_message")
     private String mWarningMessage;
     @SerializedName("cancellation_info")
@@ -50,18 +55,12 @@ public class BookingCancellationData implements Serializable
 
     public static BookingCancellationData fromJson(final String json)
     {
-        return new GsonBuilder()
-                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
-                .create()
-                .fromJson(json, BookingCancellationData.class);
+        return GSON.fromJson(json, BookingCancellationData.class);
     }
 
     public static String toJson(final BookingCancellationData value)
     {
-        return new GsonBuilder()
-                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
-                .create()
-                .toJson(value, BookingCancellationData.class);
+        return GSON.toJson(value, BookingCancellationData.class);
     }
 
     public String getWarningMessage() { return mWarningMessage; }
