@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.library.util.FragmentUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -95,8 +95,10 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
             @Override
             public void onClick(final View v)
             {
-                ((MenuDrawerActivity) getActivity()).replaceFragment(
-                        BookingCancelReasonFragment.newInstance(mBooking, mBookingCancellationData)
+                FragmentUtils.switchToFragment(
+                        BookingCancelWarningFragment.this,
+                        BookingCancelReasonFragment.newInstance(mBooking, mBookingCancellationData),
+                        false
                 );
             }
         });

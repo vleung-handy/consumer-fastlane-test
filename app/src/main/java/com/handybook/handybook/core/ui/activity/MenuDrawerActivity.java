@@ -412,11 +412,4 @@ public abstract class MenuDrawerActivity extends BaseActivity
         }
     }
 
-    public void replaceFragment(Fragment fragment)
-    {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
-    }
 }
