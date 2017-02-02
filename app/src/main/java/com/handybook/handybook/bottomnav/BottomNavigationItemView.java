@@ -1,6 +1,5 @@
 package com.handybook.handybook.bottomnav;
 
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -14,6 +13,7 @@ import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +28,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     private ImageView mIcon;
     private final TextView mLabel;
+    //This is a custom handy indicator used for when there is chat messages
+    private final View mIndicator;
     private int mItemPosition = INVALID_ITEM_POSITION;
 
     private MenuItemImpl mItemData;
@@ -49,6 +51,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         setBackgroundResource(com.handybook.handybook.R.drawable.background_bottom_nav_item);
         mIcon = (ImageView) findViewById(R.id.icon);
         mLabel = (TextView) findViewById(com.handybook.handybook.R.id.bottom_nav_item_label);
+        mIndicator = findViewById(com.handybook.handybook.R.id.indicator);
     }
 
     @Override
@@ -153,5 +156,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         Drawable backgroundDrawable = background == 0
                 ? null : ContextCompat.getDrawable(getContext(), background);
         ViewCompat.setBackground(this, backgroundDrawable);
+    }
+
+    public void showIndicator(boolean showIndicator)
+    {
+        mIndicator.setVisibility(showIndicator ? View.VISIBLE : View.GONE);
     }
 }

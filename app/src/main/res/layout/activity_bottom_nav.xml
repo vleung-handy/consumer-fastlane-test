@@ -14,11 +14,19 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/border_grey_bottom"
+        />
+
     <com.handybook.handybook.bottomnav.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:chatIndicatorIndex="1"
         app:itemBackground="@color/white"
         app:itemTextColor="@color/black"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu"
+        />
 </LinearLayout>

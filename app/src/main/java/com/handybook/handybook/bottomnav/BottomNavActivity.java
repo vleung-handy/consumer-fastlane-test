@@ -1,6 +1,9 @@
 package com.handybook.handybook.bottomnav;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,7 +16,6 @@ import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
@@ -23,6 +25,7 @@ import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.referral.ui.ReferralFragment;
+import com.handybook.shared.layer.LayerConstants;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Subscribe;
 
@@ -49,6 +52,11 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     @Inject
     LayerHelper mLayerHelper;
 
+    private BroadcastReceiver mChatNotificationReceiver;
+
+    //This is used for the Handy pro chat indicator
+    private boolean isProChatCurrentlySelected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -65,6 +73,18 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                         return onMenuItemSelected(item);
                     }
                 });
+
+        mChatNotificationReceiver = new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(final Context context, final Intent intent)
+            {
+                if (!isProChatCurrentlySelected && mBottomNavigationView != null)
+                {
+                    mBottomNavigationView.showChatIndicator(true);
+                }
+            }
+        };
 
         navigateToMainNavTab(getIntent());
     }
@@ -105,6 +125,13 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     }
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        registerChatNotificationReceiver();
+    }
+
+    @Override
     protected void onResumeFragments()
     {
         super.onResumeFragments();
@@ -116,11 +143,13 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     protected void onPause()
     {
         mBus.unregister(this);
+        unregisterReceiver(mChatNotificationReceiver);
         super.onPause();
     }
 
     /**
      * navigate to the bottom nav tab associated with the Tab in the given intent's bundle
+     * If there is no intent data, then will go to default tabs
      * @param intent
      */
     private void navigateToMainNavTab(Intent intent)
@@ -129,23 +158,25 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
         if (intent != null && intent.getSerializableExtra(BUNDLE_KEY_TAB) != null)
         {
             tab = (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
+            navigateToMainNavTab(tab);
         }
         else
         {
             User user = mUserManager.getCurrentUser();
+            View view;
             if (user != null
                     && user.getAnalytics() != null
-                    && user.getAnalytics().getUpcomingBookings() > 0
-                    && ((BaseApplication) getApplication()).isNewlyLaunched())
+                    && user.getAnalytics().getUpcomingBookings() > 0)
             {
-                tab = MainNavTab.BOOKINGS;
+                view = mBottomNavigationView.findViewById(R.id.bookings);
             }
             else
             {
-                tab = MainNavTab.SERVICES;
+                view = mBottomNavigationView.findViewById(R.id.add_booking);
             }
+            //go to the correct tab
+            view.performClick();
         }
-        navigateToMainNavTab(tab);
     }
 
     /**
@@ -194,8 +225,16 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
         }
     }
 
+    private void registerChatNotificationReceiver()
+    {
+        final IntentFilter filter = new IntentFilter(LayerConstants.ACTION_SHOW_NOTIFICATION);
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        registerReceiver(mChatNotificationReceiver, filter);
+    }
+
     private boolean onMenuItemSelected(@NonNull MenuItem menuItem)
     {
+        isProChatCurrentlySelected = false;
         MainNavTab mainNavTab = null;
         switch (menuItem.getItemId())
         {
@@ -203,6 +242,8 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                 mainNavTab = MainNavTab.BOOKINGS;
                 break;
             case R.id.pro_team:
+                isProChatCurrentlySelected = true;
+                mBottomNavigationView.showChatIndicator(false);
                 mainNavTab = MainNavTab.PRO_TEAM;
                 break;
             case R.id.add_booking:
@@ -215,6 +256,7 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                 mainNavTab = MainNavTab.ACCOUNT;
                 break;
         }
+
         if (mainNavTab == null)
         {
             Crashlytics.logException(new Exception("Unable to navigate to tab for menu item " + menuItem
