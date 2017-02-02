@@ -42,6 +42,9 @@ public class Configuration implements Serializable
     private boolean mEnableProTeamReschedule;
     @SerializedName("pro_team_reschedule_cta_enabled")
     private boolean mEnableProTeamRescheduleCTA;
+
+    @SerializedName("direct_sms_to_chat_enabled")
+    private boolean mDirectSmsToChatEnabled;
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
      * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
@@ -116,4 +119,9 @@ public class Configuration implements Serializable
     public boolean isProTeamRescheduleEnabled() { return mEnableProTeamReschedule; }
 
     public boolean isProTeamRescheduleCTAEnabled() { return mEnableProTeamRescheduleCTA; }
+
+    public boolean isDirectSmsToChatEnabled()
+    {
+        return mDirectSmsToChatEnabled;
+    }
 }

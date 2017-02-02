@@ -82,7 +82,9 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
         {
             final Booking.ProviderAssignmentInfo providerAssignmentInfo =
                     mBooking.getProviderAssignmentInfo();
-            if (providerAssignmentInfo != null && providerAssignmentInfo.isProTeamMatch())
+            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
+                    && providerAssignmentInfo != null
+                    && providerAssignmentInfo.isProTeamMatch())
             {
                 progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(

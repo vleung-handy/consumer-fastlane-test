@@ -774,7 +774,9 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     {
         final Booking.ProviderAssignmentInfo providerAssignmentInfo =
                 mBooking.getProviderAssignmentInfo();
-        if (providerAssignmentInfo != null && providerAssignmentInfo.isProTeamMatch())
+        if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
+                && providerAssignmentInfo != null
+                && providerAssignmentInfo.isProTeamMatch())
         {
             progressDialog.show();
             bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(

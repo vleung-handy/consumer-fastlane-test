@@ -394,7 +394,9 @@ public class BookingDetailSectionFragmentProInformation extends
 
             final Booking.ProviderAssignmentInfo providerAssignmentInfo =
                     booking.getProviderAssignmentInfo();
-            if (providerAssignmentInfo != null && providerAssignmentInfo.isProTeamMatch())
+            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
+                    && providerAssignmentInfo != null
+                    && providerAssignmentInfo.isProTeamMatch())
             {
                 progressDialog.show();
                 HandyLibrary.getInstance()
