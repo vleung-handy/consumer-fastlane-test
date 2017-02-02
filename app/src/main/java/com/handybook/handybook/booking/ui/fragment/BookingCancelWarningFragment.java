@@ -13,6 +13,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.library.util.FragmentUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,9 +24,7 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
     public static final String EXTRA_BOOKING_CANCELLATION_DATA
             = "com.handy.handy.EXTRA_BOOKING_CANCELLATION_DATA";
     public static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
-    private static final String STATE_OPTION_INDEX = "OPTION_INDEX";
 
-    private int mOptionIndex = -1;
     private Booking mBooking;
     private BookingCancellationData mBookingCancellationData;
 
@@ -59,6 +59,10 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
         mBookingCancellationData = (BookingCancellationData) getArguments()
                 .getSerializable(EXTRA_BOOKING_CANCELLATION_DATA);
         mBooking = getArguments().getParcelable(EXTRA_BOOKING);
+        bus.post(new LogEvent.AddLogEvent(
+                         new BookingLog.BookingCancelWarningShown(mBooking.getId())
+                 )
+        );
     }
 
     @Override
@@ -78,7 +82,6 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
 
     private void initUI()
     {
-        final boolean isRecurring = mBooking != null && mBooking.isRecurring();
         setupToolbar(
                 mToolbar,
                 mBookingCancellationData.getPreCancellationInfo().getNavigationTitle(),
