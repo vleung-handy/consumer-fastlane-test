@@ -20,6 +20,7 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
@@ -413,7 +414,6 @@ public class DataManager
         );
     }
 
-
     public void getQuoteOptions(
             final int serviceId, final String userId,
             final Callback<BookingOptionsWrapper> cb
@@ -730,54 +730,43 @@ public class DataManager
                 userId,
                 providerId,
                 chatRescheduleAgreement ? 1 : 0,
-                                   new HandyRetrofitCallback(cb)
-                                   {
-                                       @Override
-                                       protected void success(final JSONObject response)
-                                       {
-                                           final String message = parseAlertMessage(response);
-                                           BookingQuote quote = null;
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        final String message = parseAlertMessage(response);
+                        BookingQuote quote = null;
 
-                                           if (response.optJSONArray("dynamic_options") != null)
-                                           {
-                                               quote = BookingQuote.fromJson(response.toString());
-                                           }
+                        if (response.optJSONArray("dynamic_options") != null)
+                        {
+                            quote = BookingQuote.fromJson(response.toString());
+                        }
 
-                                           cb.onSuccess(new Pair<>(message, quote));
-                                       }
-                                   }
+                        cb.onSuccess(new Pair<>(message, quote));
+                    }
+                }
         );
     }
 
-    public void getPreCancelationInfo(
+    public void getBookingCancellationData(
             final String bookingId,
-            final Callback<Pair<String, List<String>>> cb
+            final Callback<BookingCancellationData> cb
     )
     {
-        mService.getPreCancelationInfo(bookingId, new HandyRetrofitCallback(cb)
+        mService.getCancellationData(bookingId, new HandyRetrofitCallback(cb)
         {
             @Override
             protected void success(final JSONObject response)
             {
-                final String notice = response.isNull("notice") ? null
-                        : response.optString("notice", null);
-
-                final JSONArray array = response.optJSONArray("options");
-                final Gson gson = new Gson();
-                final List<String> options = gson.fromJson(
-                        array.toString(),
-                        new TypeToken<List<String>>()
-                        {
-                        }.getType()
-                );
-
-                cb.onSuccess(new Pair<>(notice, options));
+                cb.onSuccess(BookingCancellationData.fromJson(response.toString()));
             }
         });
     }
 
     public void cancelBooking(
-            final String bookingId, final int reasonCode, final String userId,
+            final String bookingId,
+            final Integer reasonId,
             final Callback<String> cb
     )
     {
@@ -790,15 +779,7 @@ public class DataManager
                 cb.onSuccess(message);
             }
         };
-
-        if (reasonCode >= 0)
-        {
-            mService.cancelBooking(bookingId, reasonCode, userId, callback);
-        }
-        else
-        {
-            mService.cancelBooking(bookingId, userId, callback);
-        }
+        mService.cancelBooking(bookingId, reasonId, callback);
     }
 
     public void getLaundryScheduleInfo(
@@ -1320,7 +1301,9 @@ public class DataManager
                 try
                 {
                     cb.onSuccess(new Gson().fromJson(response.toString(), EventLogResponse.class));
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Crashlytics.log("EventLogResponse error: " + response);
                     cb.onError(null);
                 }

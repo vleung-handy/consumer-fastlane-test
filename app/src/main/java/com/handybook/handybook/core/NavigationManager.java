@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.util.Pair;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
@@ -17,14 +17,12 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
-import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.core.ui.widget.CTANavigationData;
+import com.handybook.handybook.library.util.PropertiesReader;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -331,20 +329,19 @@ public final class NavigationManager
     {
         if (targetClass == BookingCancelOptionsActivity.class)
         {
-            dataManager.getPreCancelationInfo(
+            dataManager.getBookingCancellationData(
                     booking.getId(),
-                    new DataManager.Callback<Pair<String, List<String>>>()
+                    new DataManager.Callback<BookingCancellationData>()
                     {
                         @Override
-                        public void onSuccess(final Pair<String, List<String>> result)
+                        public void onSuccess(final BookingCancellationData bcd)
                         {
                             final Intent intent = new Intent(
                                     context,
                                     BookingCancelOptionsActivity.class
                             );
-                            intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
-                            intent.putExtra(BundleKeys.NOTICE, result.first);
                             intent.putExtra(BundleKeys.BOOKING, booking);
+                            intent.putExtra(BundleKeys.BOOKING_CANCELLATION_DATA, bcd);
                             startActivity(intent);
                         }
 

@@ -25,6 +25,7 @@ import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BaseApplication;
@@ -38,7 +39,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
-import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.shared.layer.LayerHelper;
@@ -411,4 +411,5 @@ public abstract class MenuDrawerActivity extends BaseActivity
             mDrawerLayout.openDrawer(GravityCompat.START);
         }
     }
+
 }

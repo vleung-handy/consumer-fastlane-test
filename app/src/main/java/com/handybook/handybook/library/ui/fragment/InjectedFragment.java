@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.manager.BookingManager;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.UserManager;
@@ -20,7 +21,6 @@ import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.library.util.ValidationUtils;
-import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
@@ -53,7 +53,6 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     @Inject
     public Bus bus;
 
-
     @Override
     public void onCreate(final Bundle savedInstanceState)
     {
@@ -76,10 +75,20 @@ public class InjectedFragment extends android.support.v4.app.Fragment
      */
     public void setupToolbar(Toolbar toolbar, String title)
     {
+        setupToolbar(toolbar, title, false);
+    }
+
+    public void setupToolbar(Toolbar toolbar, String title, boolean setDisplayHomeAsUp)
+    {
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         setToolbarTitle(title);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        if (setDisplayHomeAsUp)
+        {
+            activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_x_white);
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener()
         {
             @Override
