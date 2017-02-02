@@ -15,6 +15,7 @@ import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.robolectric.shadows.ShadowApplication;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
+@Ignore
 public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrapper
 {
     private static final String JSON_SUBSCRIPTION_NEW_QUOTE = "subscription_new_quote.json";
