@@ -253,6 +253,19 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         mMenu.getItem(mActiveButton).setChecked(true);
     }
 
+    /**
+     * Handy Custom method
+     * @param showIndicator true to show indicator, false to hide
+     * @param position the position in the menu to show/hide indicator
+     */
+    public void showIndicator(boolean showIndicator, int position)
+    {
+        if(mButtons != null && position < mButtons.length)
+        {
+            mButtons[position].showIndicator(showIndicator);
+        }
+    }
+
     public void updateMenuView() {
         final int menuSize = mMenu.size();
         if (menuSize != mButtons.length) {

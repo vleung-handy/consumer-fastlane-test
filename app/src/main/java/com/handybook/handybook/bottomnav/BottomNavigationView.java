@@ -92,6 +92,9 @@ public class BottomNavigationView extends FrameLayout {
     private final BottomNavigationPresenter mPresenter = new BottomNavigationPresenter();
     private MenuInflater mMenuInflater;
 
+    //Handy chat indicator index
+    private int mChatIndicatorIndex;
+
     private OnNavigationItemSelectedListener mListener;
 
     public BottomNavigationView(Context context) {
@@ -166,6 +169,12 @@ public class BottomNavigationView extends FrameLayout {
                 R.styleable.HandyBottomNavigationView_itemBackground,
                 0
         );
+        //Get the chat indicator index in the bottom nav
+        mChatIndicatorIndex = a.getInteger(
+                R.styleable.HandyBottomNavigationView_chatIndicatorIndex,
+                -1
+        );
+
         mMenuView.setItemBackgroundRes(itemBackground);
 
         if (a.hasValue(R.styleable.HandyBottomNavigationView_menu))
@@ -201,6 +210,19 @@ public class BottomNavigationView extends FrameLayout {
     public void setOnNavigationItemSelectedListener(
             @Nullable OnNavigationItemSelectedListener listener) {
         mListener = listener;
+    }
+
+
+    /**
+     * Handy Custom method
+     * @param showIndicator true to show chat indicator, false to hide
+     */
+    public void showChatIndicator(boolean showIndicator)
+    {
+        if(mChatIndicatorIndex > -1 && mMenuView != null)
+        {
+            mMenuView.showIndicator(showIndicator, mChatIndicatorIndex);
+        }
     }
 
     /**

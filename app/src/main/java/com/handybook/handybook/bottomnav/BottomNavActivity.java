@@ -1,28 +1,30 @@
 package com.handybook.handybook.bottomnav;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
-import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.referral.ui.ReferralFragment;
+import com.handybook.shared.layer.LayerConstants;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Subscribe;
 
@@ -32,11 +34,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * TODO this is a work in progress and the relevant config should not be turned on in prod yet
  * this should eventually replace the menu drawer activity
  * not bothering to spend time consolidating duplicate code for this reason
  */
-public class BottomNavActivity extends BaseActivity implements MainNavTab.Navigator
+public class BottomNavActivity extends BaseActivity
 {
     public static final String BUNDLE_KEY_TAB = "key_tab";
 
@@ -48,6 +49,11 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
 
     @Inject
     LayerHelper mLayerHelper;
+
+    private BroadcastReceiver mChatNotificationReceiver;
+
+    //This is used for the Handy pro chat indicator
+    private boolean isProChatCurrentlySelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,9 +68,21 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
                     @Override
                     public boolean onNavigationItemSelected(@NonNull final MenuItem item)
                     {
-                        return onMenuItemSelected(item);
+                        return onTabItemSelected(item);
                     }
                 });
+
+        mChatNotificationReceiver = new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(final Context context, final Intent intent)
+            {
+                if (!isProChatCurrentlySelected && mBottomNavigationView != null)
+                {
+                    mBottomNavigationView.showChatIndicator(true);
+                }
+            }
+        };
 
         navigateToMainNavTab(getIntent());
     }
@@ -74,22 +92,6 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     {
         super.onNewIntent(intent);
         navigateToMainNavTab(intent);
-    }
-
-    @Subscribe
-    public void userAuthUpdated(final UserLoggedInEvent event)
-    {
-        checkLayerInitiation();
-        if (!event.isLoggedIn())
-        {
-            navigateToMainNavTab(MainNavTab.SERVICES);
-        }
-    }
-
-    @Subscribe
-    public void envUpdated(final EnvironmentUpdatedEvent event)
-    {
-        setupEnvButton();
     }
 
     @Subscribe
@@ -105,6 +107,13 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     }
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        registerChatNotificationReceiver();
+    }
+
+    @Override
     protected void onResumeFragments()
     {
         super.onResumeFragments();
@@ -116,112 +125,79 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
     protected void onPause()
     {
         mBus.unregister(this);
+        unregisterReceiver(mChatNotificationReceiver);
         super.onPause();
     }
 
-    /**
-     * navigate to the bottom nav tab associated with the Tab in the given intent's bundle
-     * @param intent
-     */
-    private void navigateToMainNavTab(Intent intent)
+    private void navigateToMainNavTab(@Nullable Intent intent)
     {
-        MainNavTab tab;
-        if (intent != null && intent.getSerializableExtra(BUNDLE_KEY_TAB) != null)
-        {
-            tab = (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
-        }
-        else
-        {
-            User user = mUserManager.getCurrentUser();
-            if (user != null
-                    && user.getAnalytics() != null
-                    && user.getAnalytics().getUpcomingBookings() > 0
-                    && ((BaseApplication) getApplication()).isNewlyLaunched())
-            {
-                tab = MainNavTab.BOOKINGS;
-            }
-            else
-            {
-                tab = MainNavTab.SERVICES;
-            }
-        }
-        navigateToMainNavTab(tab);
-    }
+        MainNavTab tab = (intent == null || intent.getSerializableExtra(BUNDLE_KEY_TAB) == null) ?
+                MainNavTab.UNKNOWN : (MainNavTab) intent.getSerializableExtra(BUNDLE_KEY_TAB);
 
-    /**
-     * navigate to the fragment associated with the given tab
-     * mapping menu item -> tab instead of tab -> menu item in case we want to launch a tab whose
-     * menu item isn't present
-     *
-     * @param mainNavTab
-     * @return true if navigation was resolved
-     */
-    @Override
-    public boolean navigateToMainNavTab(@NonNull MainNavTab mainNavTab)
-    {
-        Fragment fragment = null;
-        switch (mainNavTab)
+        switch (tab)
         {
             case BOOKINGS:
-                fragment = UpcomingBookingsFragment.newInstance();
+                goToSelectedTab(R.id.bookings);
                 break;
             case PRO_TEAM:
-                fragment = ProTeamConversationsFragment.newInstance();
+                goToSelectedTab(R.id.pro_team);
                 break;
             case SERVICES:
-                fragment = ServiceCategoriesFragment.newInstance(null, null);
+                goToSelectedTab(R.id.add_booking);
                 break;
             case SHARE:
-                fragment = ReferralFragment.newInstance(null);
+                goToSelectedTab(R.id.gift);
                 break;
             case ACCOUNT:
-                fragment = AccountFragment.newInstance();
+                goToSelectedTab(R.id.account);
                 break;
             default:
-                Crashlytics.logException(new Exception(
-                        "Don't know how to handle navigation for the given tab: " + mainNavTab
-                                .toString()));
-                break;
-        }
-        if (fragment != null)
-        {
-            FragmentUtils.switchToFragment(BottomNavActivity.this, fragment, false);
-            return true;
-        }
-        else
-        {
-            return false;
+                User user = mUserManager.getCurrentUser();
+                if (user != null && user.getAnalytics() != null
+                        && user.getAnalytics().getUpcomingBookings() > 0)
+                {
+                    goToSelectedTab(R.id.bookings);
+                }
+                else
+                {
+                    goToSelectedTab(R.id.add_booking);
+                }
         }
     }
 
-    private boolean onMenuItemSelected(@NonNull MenuItem menuItem)
+    private void goToSelectedTab(@IdRes int id)
     {
-        MainNavTab mainNavTab = null;
-        switch (menuItem.getItemId())
+        mBottomNavigationView.findViewById(R.id.bookings).performClick();
+    }
+
+    private boolean onTabItemSelected(@NonNull final MenuItem item)
+    {
+        Fragment fragment = null;
+        switch (item.getItemId())
         {
             case R.id.bookings:
-                mainNavTab = MainNavTab.BOOKINGS;
+                fragment = UpcomingBookingsFragment.newInstance();
                 break;
             case R.id.pro_team:
-                mainNavTab = MainNavTab.PRO_TEAM;
+                isProChatCurrentlySelected = true;
+                mBottomNavigationView.showChatIndicator(false);
+                fragment = ProTeamConversationsFragment.newInstance();
                 break;
             case R.id.add_booking:
-                mainNavTab = MainNavTab.SERVICES;
+                fragment = ServiceCategoriesFragment.newInstance(null, null);
                 break;
             case R.id.gift:
-                mainNavTab = MainNavTab.SHARE;
+                fragment = ReferralFragment.newInstance(null);
                 break;
             case R.id.account:
-                mainNavTab = MainNavTab.ACCOUNT;
+                fragment = AccountFragment.newInstance();
                 break;
         }
-        if (mainNavTab == null)
-        {
-            Crashlytics.logException(new Exception("Unable to navigate to tab for menu item " + menuItem
-                    .getItemId()));
-            return false;
-        }
-        return navigateToMainNavTab(mainNavTab);
+
+        if (fragment == null) { return false; }
+
+        FragmentUtils.switchToFragment(BottomNavActivity.this, fragment, false);
+        return true;
     }
 
     /**
@@ -257,48 +233,10 @@ public class BottomNavActivity extends BaseActivity implements MainNavTab.Naviga
         mBottomNavigationView.setVisibility(userLoggedIn ? View.VISIBLE : View.GONE);
     }
 
-    protected boolean requiresUser()
+    private void registerChatNotificationReceiver()
     {
-        return false;
-    }
-
-    //TODO need to ask where env button should be placed
-    private void setupEnvButton()
-    {
-//        Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
-//        envButton.setText(String.format(
-//                getString(R.string.env_format),
-//                mEnvironmentModifier.getEnvironment(),
-//                BuildConfig.VERSION_NAME,
-//                Integer.valueOf(BuildConfig.VERSION_CODE).toString()
-//                          )
-//        );
-//        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-//        {
-//            envButton.setVisibility(View.GONE);
-//        }
-//        envButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                final EditText input = new EditText(BottomNavActivity.this);
-//                input.setText(mEnvironmentModifier.getEnvironment());
-//                new AlertDialog.Builder(BottomNavActivity.this)
-//                        .setTitle(R.string.set_environment)
-//                        .setView(input)
-//                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
-//                        {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i)
-//                            {
-//                                mEnvironmentModifier.setEnvironment(input.getText().toString());
-//                            }
-//                        })
-//                        .setNegativeButton(R.string.cancel, null)
-//                        .create()
-//                        .show();
-//            }
-//        });
+        final IntentFilter filter = new IntentFilter(LayerConstants.ACTION_SHOW_NOTIFICATION);
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        registerReceiver(mChatNotificationReceiver, filter);
     }
 }

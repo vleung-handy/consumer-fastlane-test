@@ -23,4 +23,19 @@
             android:singleLine="true"
             android:duplicateParentState="true" />
     </android.support.design.internal.BaselineLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="17dp"
+        android:paddingRight="25dp"
+        android:id="@+id/indicator"
+        android:visibility="gone"
+        >
+        <View android:layout_width="5dp"
+              android:layout_height="5dp"
+              android:background="@drawable/circle_red"
+              android:layout_alignParentRight="true"
+              android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 </merge>

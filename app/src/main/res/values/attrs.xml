@@ -54,5 +54,7 @@
               format="reference"/>
         <attr name="menu"
               format="reference"/>
+        <attr name="chatIndicatorIndex"
+              format="integer"/>
     </declare-styleable>
 </resources>

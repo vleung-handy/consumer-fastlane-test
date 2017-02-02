@@ -452,7 +452,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     {
         mApplyPromoButton.setVisibility(View.GONE);
         mPromoLayout.setVisibility(View.VISIBLE);
-        updatePromoUI(); //update the promo input UI
+        updatePromoUI(mCurrentTransaction.getPromoCode(), mCurrentTransaction.shouldPromoCodeBeHidden());
     }
 
     /**
@@ -856,15 +856,18 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     public void onPromobButtonClicked()
     {
         final String promoCode = mPromoText.getText().toString();
-        final boolean hasPromo = (mCurrentTransaction.getPromoCode() != null);
 
-        if (hasPromo || promoCode.length() > 0)
+        //TODO related to ugly promo code hotfix
+        final boolean hasVisibleAppliedPromo = mCurrentTransaction.getPromoCode() != null
+                && !mCurrentTransaction.shouldPromoCodeBeHidden();
+
+        if (hasVisibleAppliedPromo || promoCode.length() > 0)
         {
             mPromoProgress.setVisibility(View.VISIBLE);
             mPromoButton.setText(null);
             mPromoButton.setVisibility(View.GONE);
 
-            if (hasPromo)
+            if (hasVisibleAppliedPromo)
             {
                 removePromo();
             }
@@ -1042,6 +1045,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             //we'll be making the request with this coupon applied. Also saving i
             bookingManager.getCurrentRequest().setCoupon(promo);
         }
+        /*
+        TODO for ugly promo code hotfix
+        note in the booking transaction object that the promo code should no longer be hidden
+        because assuming here that the promo was applied by the user
+        */
+        transaction.setPromoCode(promo, false);
         updateQuote(newQuote, transaction, promo);
     }
 
@@ -1061,12 +1070,17 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final String promo
     )
     {
-        transaction.setPromoCode(promo);
+        /*
+        TODO for ugly promo code hotfix
+        note in the booking transaction object that the promo code should no longer be hidden
+        because assuming here that the promo was applied by the user
+        */
+        transaction.setPromoCode(promo, false);
         transaction.setBookingId(newQuote.getBookingId());
         BookingQuote.updateQuote(mCurrentQuote, newQuote);
         initializeBill();
         showBookingWarningIfApplicable(mCurrentQuote);
-        updatePromoUI();
+        updatePromoUI(mCurrentTransaction.getPromoCode(), mCurrentTransaction.shouldPromoCodeBeHidden());
         mPromoText.setText(null);
     }
 
@@ -1081,20 +1095,19 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     private void handlePromoFailure(final DataManager.DataManagerError error)
     {
         if (!allowCallbacks) { return; }
-        updatePromoUI();
+        updatePromoUI(mCurrentTransaction.getPromoCode(), mCurrentTransaction.shouldPromoCodeBeHidden());
         mPromoText.setText(null);
         dataManagerErrorHandler.handleError(getActivity(), error);
     }
 
-    private void updatePromoUI()
+    private void updatePromoUI(final String promoCode, final boolean shouldPromoCodeBeHidden)
     {
-        final String promo = mCurrentTransaction.getPromoCode();
-        final boolean applied = (promo != null);
+        final boolean shouldShowPromoCode = promoCode != null && !shouldPromoCodeBeHidden;
         mPromoProgress.setVisibility(View.INVISIBLE);
-        mPromoButton.setText(applied ? getString(R.string.remove) : getString(R.string.apply));
+        mPromoButton.setText(shouldShowPromoCode ? getString(R.string.remove) : getString(R.string.apply));
         mPromoButton.setVisibility(View.VISIBLE);
         String promoCodeDisplayString;
-        if (applied)
+        if (shouldShowPromoCode)
         {
             if (isAndroidPayPromoApplied()) //show the obfuscated Android pay promo code
             {
@@ -1102,14 +1115,14 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             }
             else //show the actual promo code
             {
-                promoCodeDisplayString = promo;
+                promoCodeDisplayString = promoCode;
             }
         }
         else //show a hint
         {
             promoCodeDisplayString = getString(R.string.promo_code_opt);
         }
-        mPromoText.setDisabled(applied, promoCodeDisplayString);
+        mPromoText.setDisabled(shouldShowPromoCode, promoCodeDisplayString);
     }
 
 }

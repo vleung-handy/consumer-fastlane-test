@@ -31,7 +31,7 @@ public class Configuration implements Serializable
     private boolean mAppseeAnalyticsEnabled;
     @SerializedName("pro_team_profile_pictures_enabled")
     private boolean isProTeamProfilePicturesEnabled;
-    @SerializedName("bottom_nav_enabled")
+    @SerializedName("tab_bar_navigation_enabled")
     private boolean mBottomNavEnabled;
 
     //default this to false
@@ -85,9 +85,8 @@ public class Configuration implements Serializable
         return mAddressAutoCompleteEnabled;
     }
 
-    // TODO: turn this on after tested throughtly
     public boolean isBottomNavEnabled() {
-        return false;
+        return mBottomNavEnabled;
     }
 
     public String toJson()

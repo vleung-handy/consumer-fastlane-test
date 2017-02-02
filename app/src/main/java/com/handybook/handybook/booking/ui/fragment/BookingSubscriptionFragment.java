@@ -50,8 +50,8 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     Toolbar mToolbar;
 
     private BookingTransaction mBookingTransaction;
-    private BookingOptionsSelectView mSubscriptionOptionsView;
-    private BookingOptionsSpinnerView mFrequencyOptionsSpinnerView;
+    protected BookingOptionsSelectView mSubscriptionOptionsView;
+    protected BookingOptionsSpinnerView mFrequencyOptionsSpinnerView;
     //This used to do a looking up from the selected subscription value to the subscription key
     private Map<String, String> mSubscriptionLengthToKey;
     //This used to do a looking up from the selected frequency value to the frequency key

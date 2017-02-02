@@ -111,7 +111,7 @@ public class BookingDetailSectionFragmentBookingActions
             }
 
             //if there were no configuration suggesting rescheduling, then proceed with normal cancelation
-            bus.post(new BookingEvent.RequestPreCancelationInfo(booking.getId()));
+            bus.post(new BookingEvent.RequestBookingCancellationData(booking.getId()));
         }
     };
 

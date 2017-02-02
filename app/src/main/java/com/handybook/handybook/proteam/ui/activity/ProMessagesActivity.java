@@ -350,6 +350,7 @@ public class ProMessagesActivity extends MessagesListActivity
         request.setServiceId(mCleaningService.getId());
         request.setUniq(mCleaningService.getUniq());
         request.setCoupon(mBookingManager.getPromoTabCoupon());
+        request.setProviderId(String.valueOf(mProTeamProViewModel.getProTeamPro().getId()));
         if (mUser != null)
         {
             request.setEmail(mUser.getEmail());

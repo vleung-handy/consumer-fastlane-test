@@ -22,6 +22,7 @@ import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingConfirmationLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
@@ -257,7 +258,14 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     {
         bookingManager.clearAll();
 
-        final Intent intent = new Intent(getActivity(), BookingsActivity.class);
+        Intent intent;
+        if(mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            intent = new Intent(getActivity(), BottomNavActivity.class);
+        } else
+        {
+            intent = new Intent(getActivity(), BookingsActivity.class);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

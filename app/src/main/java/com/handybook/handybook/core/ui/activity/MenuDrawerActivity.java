@@ -409,4 +409,5 @@ public abstract class MenuDrawerActivity extends BaseActivity
             mDrawerLayout.openDrawer(GravityCompat.START);
         }
     }
+
 }

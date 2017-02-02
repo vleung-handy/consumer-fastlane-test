@@ -98,6 +98,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     @Bind(R.id.fetch_error_view)
     ViewGroup mFetchErrorView;
 
+    @Bind(R.id.bookings_share_button)
+    View mShareMenuItem;
 
     private List<Booking> mBookings;
     private List<RecurringBooking> mRecurringBookings;
@@ -172,6 +174,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
+            mShareMenuItem.setVisibility(View.GONE);
         }
         else if (getActivity() instanceof MenuDrawerActivity)
         {
@@ -216,7 +219,9 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         }
         mServiceRequestCompleted = true;
         mServices = event.getServices();
-        if (mServices != null)
+
+        //If this is bottom nav, don't show FAB
+        if (mServices != null && !mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             if (ViewCompat.isAttachedToWindow(mAddBookingButton))
             {
@@ -644,16 +649,26 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                                                 24, getResources().getDisplayMetrics()
                 )
         );
-        getActivity().getSupportFragmentManager()
-                     .addOnBackStackChangedListener(mOnBackStackChangedListener);
+
+        //If this is bottom nav, don't bother with the on back stack change lister
+        if(!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            getActivity().getSupportFragmentManager()
+                         .addOnBackStackChangedListener(mOnBackStackChangedListener);
+        }
     }
 
     @Override
     public void onStop()
     {
         super.onStop();
-        getActivity().getSupportFragmentManager()
-                     .removeOnBackStackChangedListener(mOnBackStackChangedListener);
+
+        //If this is bottom nav, don't bother with the on back stack change lister
+        if(!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            getActivity().getSupportFragmentManager()
+                         .removeOnBackStackChangedListener(mOnBackStackChangedListener);
+        }
     }
 
     @Override
