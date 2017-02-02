@@ -2,7 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +26,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLo
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingCancelOptionsFragment extends BookingFlowFragment
+public final class BookingCancelReasonFragment extends BookingFlowFragment
 {
     public static final String EXTRA_BOOKING_CANCELLATION_DATA
             = "com.handy.handy.EXTRA_BOOKING_CANCELLATION_DATA";
@@ -37,21 +37,23 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
     private Booking mBooking;
     private BookingCancellationData mBookingCancellationData;
 
-    @Bind(R.id.booking_cancel_options_title)
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Bind(R.id.booking_cancel_reason_title)
     TextView mTitle;
-    @Bind(R.id.options_layout)
-    FrameLayout mOptionsLayout;
-    @Bind(R.id.notice_text)
-    TextView mNoticeText;
-    @Bind(R.id.booking_cancel_options_button)
+    @Bind(R.id.booking_cancel_reason_warning)
+    TextView mWarning;
+    @Bind(R.id.booking_cancel_reason_button)
     Button mButton;
+    @Bind(R.id.booking_cancel_reason_options)
+    FrameLayout mOptionsContainer;
 
-    public static BookingCancelOptionsFragment newInstance(
+    public static BookingCancelReasonFragment newInstance(
             final Booking booking,
             final BookingCancellationData bookingCancellationData
     )
     {
-        final BookingCancelOptionsFragment fragment = new BookingCancelOptionsFragment();
+        final BookingCancelReasonFragment fragment = new BookingCancelReasonFragment();
         final Bundle args = new Bundle();
         args.putSerializable(EXTRA_BOOKING_CANCELLATION_DATA, bookingCancellationData);
         args.putParcelable(EXTRA_BOOKING, booking);
@@ -85,10 +87,24 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
 
     private void initUI()
     {
-        final boolean isRecurring = mBooking != null && mBooking.isRecurring();
-        @StringRes final int strRes = isRecurring ? R.string.skip_booking : R.string.cancel_booking;
-        mTitle.setText(strRes);
-        mButton.setText(strRes);
+        setupToolbar(
+                mToolbar,
+                mBookingCancellationData.getCancellationInfo().getNavigationTitle(),
+                true
+        );
+        mTitle.setText(mBookingCancellationData.getCancellationInfo().getTitle());
+        if (mBookingCancellationData.hasWarning())
+        {
+            mWarning.setText(mBookingCancellationData.getWarningMessage());
+            mWarning.setVisibility(View.VISIBLE);
+        }
+        initButton();
+        initOptions();
+    }
+
+    private void initButton()
+    {
+        mButton.setText(mBookingCancellationData.getCancellationInfo().getButtonLabel());
         mButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -102,7 +118,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                          ))
                 );
                 final FragmentSafeCallback<String> cb = new FragmentSafeCallback<String>(
-                        BookingCancelOptionsFragment.this
+                        BookingCancelReasonFragment.this
                 )
                 {
                     @Override
@@ -146,20 +162,24 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                 dataManager.cancelBooking(mBooking.getId(), reasonId, cb);
             }
         });
+    }
 
-        final BookingOption options = new BookingOption();
-        options.setType(BookingOption.TYPE_OPTION);
-
+    private void initOptions()
+    {
         final BookingCancellationData.CancellationReason[] reasons = mBookingCancellationData
-                .getCancellationInfo().getReasons();
+                .getCancellationInfo()
+                .getReasons();
         final String[] stringReasons = new String[reasons.length];
         for (int i = 0; i < reasons.length; i++)
         {
             stringReasons[i] = reasons[i].getLabel();
         }
-        options.setOptions(stringReasons);
 
+        final BookingOption options = new BookingOption();
+        options.setType(BookingOption.TYPE_OPTION);
+        options.setOptions(stringReasons);
         options.setDefaultValue(Integer.toString(mOptionIndex));
+
         final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
                 getActivity(),
                 options,
@@ -189,12 +209,8 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                 }
         );
         optionsView.hideTitle();
-        mOptionsLayout.addView(optionsView, 0);
-        if (mBookingCancellationData.hasWarning())
-        {
-            mNoticeText.setText(mBookingCancellationData.getWarningMessage());
-            mNoticeText.setVisibility(View.VISIBLE);
-        }
+        mOptionsContainer.removeAllViews();
+        mOptionsContainer.addView(optionsView);
     }
 
     @Override

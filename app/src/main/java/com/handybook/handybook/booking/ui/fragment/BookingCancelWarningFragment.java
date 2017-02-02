@@ -80,7 +80,8 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
         final boolean isRecurring = mBooking != null && mBooking.isRecurring();
         setupToolbar(
                 mToolbar,
-                getString(isRecurring ? R.string.skip_booking : R.string.cancel_booking)
+                mBookingCancellationData.getPreCancellationInfo().getNavigationTitle(),
+                true
         );
         mWarningMessage.setText(mBookingCancellationData.getWarningMessage());
         mWarningMessage.setVisibility(
@@ -88,13 +89,14 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
         );
         mTitle.setText(mBookingCancellationData.getPreCancellationInfo().getTitle());
         mMessage.setText(mBookingCancellationData.getPreCancellationInfo().getMessage());
+        mButton.setText(mBookingCancellationData.getPreCancellationInfo().getButtonLabel());
         mButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
             {
                 ((MenuDrawerActivity) getActivity()).replaceFragment(
-                        BookingCancelOptionsFragment.newInstance(mBooking, mBookingCancellationData)
+                        BookingCancelReasonFragment.newInstance(mBooking, mBookingCancellationData)
                 );
             }
         });

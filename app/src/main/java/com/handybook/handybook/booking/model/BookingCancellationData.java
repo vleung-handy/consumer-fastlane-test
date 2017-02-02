@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.model;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.GsonBuilder;
@@ -13,22 +14,27 @@ import java.io.Serializable;
  *   "warning_message": "A $15 fee will be charged when skipping less than 24 hours in advance.",
  *   "cancellation_info": {
  *     "title": "Please let us know why you're skipping.",
- *     "reasons": [{
- *       "id": 4,
- *       "label": "Solid Reason"
- *     }, {
- *       "id": 3,
- *       "label": "Another great reason"
- *     }, {
- *       "id": 2,
- *       "label": "Not really sure"
- *     }, {
- *       "id": 1,
- *       "label": "I really like radio buttons"
- *     }]
+ *     "navigation_title": "Skip Booking",
+ *     "button_label": "Skip and Add Credits",
+ *     "reasons": [
+ *       {
+ *         "id": 100,
+ *         "label": "Lost track of this booking"
+ *       },
+ *       {
+ *         "id": 110,
+ *         "label": "Lost track of this"
+ *       },
+ *       {
+ *         "id": 120,
+ *         "label": "Lost track"
+ *       }
+ *     ]
  *   },
  *   "precancellation_info": {
  *     "title": "Your plan term ends Dec 12, 2017",
+ *     "navigation_title": "Skip Booking",
+ *     "button_label": "Continue",
  *     "message": "The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use."
  *   }
  * }
@@ -58,114 +64,77 @@ public class BookingCancellationData implements Serializable
                 .toJson(value, BookingCancellationData.class);
     }
 
-    public String getWarningMessage()
-    {
-        return mWarningMessage;
-    }
+    public String getWarningMessage() { return mWarningMessage; }
 
-    public CancellationInfo getCancellationInfo()
-    {
-        return mCancellationInfo;
-    }
+    public CancellationInfo getCancellationInfo() { return mCancellationInfo; }
 
-    public PreCancellationInfo getPreCancellationInfo()
-    {
-        return mPreCancellationInfo;
-    }
+    public PreCancellationInfo getPreCancellationInfo() { return mPreCancellationInfo; }
 
-    public boolean hasWarning()
-    {
-        return !TextUtils.isEmpty(getWarningMessage());
-    }
+    public boolean hasWarning() { return !TextUtils.isEmpty(getWarningMessage()); }
 
-    public boolean hasPrecancellationInfo()
-    {
-        return getPreCancellationInfo() != null;
-    }
+    public boolean hasPrecancellationInfo() { return getPreCancellationInfo() != null; }
 
-    public class CancellationInfo implements Serializable
+    public static class CancellationInfo implements Serializable
     {
         @SerializedName("title")
         private String mTitle;
         @SerializedName("reasons")
         private CancellationReason[] mReasons;
+        @SerializedName("button_label")
+        private String mButtonLabel;
+        @SerializedName("navigation_title")
+        private String mNavigationTitle;
 
-        public String getTitle()
-        {
-            return mTitle;
-        }
+        @NonNull
+        public String getTitle() { return mTitle; }
 
-        public CancellationReason[] getReasons()
-        {
-            return mReasons;
-        }
+        @NonNull
+        public CancellationReason[] getReasons() { return mReasons; }
+
+        @NonNull
+        public String getButtonLabel() { return mButtonLabel; }
+
+        @NonNull
+        public String getNavigationTitle() { return mNavigationTitle; }
     }
 
 
-    public class PreCancellationInfo implements Serializable
+    public static class PreCancellationInfo implements Serializable
     {
         @SerializedName("title")
         private String mTitle;
         @SerializedName("message")
         private String mMessage;
+        @SerializedName("button_label")
+        private String mButtonLabel;
+        @SerializedName("navigation_title")
+        private String mNavigationTitle;
 
-        public String getTitle()
-        {
-            return mTitle;
-        }
+        @NonNull
+        public String getTitle() { return mTitle; }
 
-        public String getMessage()
-        {
-            return mMessage;
-        }
+        @NonNull
+        public String getMessage() { return mMessage; }
+
+        @NonNull
+        public String getButtonLabel() { return mButtonLabel; }
+
+        @NonNull
+        public String getNavigationTitle() { return mNavigationTitle; }
     }
 
 
-    public class CancellationReason implements Serializable
+    public static class CancellationReason implements Serializable
     {
         @SerializedName("id")
         private Integer mId;
         @SerializedName("label")
         private String mLabel;
 
-        public Integer getId()
-        {
-            return mId;
-        }
+        @NonNull
+        public Integer getId() { return mId; }
 
-        public String getLabel()
-        {
-            return mLabel;
-        }
+        @NonNull
+        public String getLabel() { return mLabel; }
     }
-
-
-    public static String EXAMPLE_PAYLOAD = "{\n" +
-            "  \"warning_message\": \"A $15 fee will be charged when skipping less than 24 hours in advance.\",\n" +
-            "  \"cancellation_info\": {\n" +
-            "    \"title\": \"Please let us know why you're skipping.\",\n" +
-            "    \"reasons\": [\n" +
-            "      {\n" +
-            "        \"id\": 4,\n" +
-            "        \"label\": \"Solid Reason\"\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"id\": 3,\n" +
-            "        \"label\": \"Another great reason\"\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"id\": 2,\n" +
-            "        \"label\": \"Not really sure\"\n" +
-            "      },\n" +
-            "      {\n" +
-            "        \"id\": 1,\n" +
-            "        \"label\": \"I really like radio buttons\"\n" +
-            "      }\n" +
-            "    ]\n" +
-            "  },\n" +
-            "  \"precancellation_info\": {\n" +
-            "    \"title\": \"Your plan term ends Dec 12, 2017\",\n" +
-            "    \"message\": \"The value of your cleaning ($75.50) will be charged, and added to your account as credits for later use.\"\n" +
-            "  }\n" +
-            "}";
 }
