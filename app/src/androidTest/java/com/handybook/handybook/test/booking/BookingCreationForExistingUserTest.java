@@ -1,5 +1,6 @@
 package com.handybook.handybook.test.booking;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -86,6 +87,7 @@ public class BookingCreationForExistingUserTest
                 R.id.autocomplete_address_text_street,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
+        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         //use previous credit card
@@ -93,6 +95,7 @@ public class BookingCreationForExistingUserTest
                 R.id.payment_fragment_credit_card_info_container,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
+        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         /*post-confirmation pages*/
