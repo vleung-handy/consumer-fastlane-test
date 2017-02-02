@@ -853,15 +853,18 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     public void onPromobButtonClicked()
     {
         final String promoCode = mPromoText.getText().toString();
-        final boolean hasPromo = (mCurrentTransaction.getPromoCode() != null);
 
-        if (hasPromo || promoCode.length() > 0)
+        //TODO related to ugly promo code hotfix
+        final boolean hasVisibleAppliedPromo = mCurrentTransaction.getPromoCode() != null
+                && !mCurrentTransaction.shouldPromoCodeBeHidden();
+
+        if (hasVisibleAppliedPromo || promoCode.length() > 0)
         {
             mPromoProgress.setVisibility(View.VISIBLE);
             mPromoButton.setText(null);
             mPromoButton.setVisibility(View.GONE);
 
-            if (hasPromo)
+            if (hasVisibleAppliedPromo)
             {
                 removePromo();
             }
