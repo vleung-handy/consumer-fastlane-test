@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -136,32 +137,37 @@ public class BottomNavActivity extends BaseActivity
         switch (tab)
         {
             case BOOKINGS:
-                mBottomNavigationView.findViewById(R.id.bookings).performClick();
+                goToSelectedTab(R.id.bookings);
                 break;
             case PRO_TEAM:
-                mBottomNavigationView.findViewById(R.id.pro_team).performClick();
+                goToSelectedTab(R.id.pro_team);
                 break;
             case SERVICES:
-                mBottomNavigationView.findViewById(R.id.add_booking).performClick();
+                goToSelectedTab(R.id.add_booking);
                 break;
             case SHARE:
-                mBottomNavigationView.findViewById(R.id.gift).performClick();
+                goToSelectedTab(R.id.gift);
                 break;
             case ACCOUNT:
-                mBottomNavigationView.findViewById(R.id.account).performClick();
+                goToSelectedTab(R.id.account);
                 break;
             default:
                 User user = mUserManager.getCurrentUser();
                 if (user != null && user.getAnalytics() != null
                         && user.getAnalytics().getUpcomingBookings() > 0)
                 {
-                    mBottomNavigationView.findViewById(R.id.bookings).performClick();
+                    goToSelectedTab(R.id.bookings);
                 }
                 else
                 {
-                    mBottomNavigationView.findViewById(R.id.add_booking).performClick();
+                    goToSelectedTab(R.id.add_booking);
                 }
         }
+    }
+
+    private void goToSelectedTab(@IdRes int id)
+    {
+        mBottomNavigationView.findViewById(R.id.bookings).performClick();
     }
 
     private boolean onTabItemSelected(@NonNull final MenuItem item)
