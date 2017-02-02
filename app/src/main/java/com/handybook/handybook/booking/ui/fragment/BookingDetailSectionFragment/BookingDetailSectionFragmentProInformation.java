@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,10 +25,15 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.proteam.callback.ConversationCallback;
+import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
+import com.handybook.shared.core.HandyLibrary;
+import com.handybook.shared.layer.LayerConstants;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -36,7 +42,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class BookingDetailSectionFragmentProInformation extends
-        BookingDetailSectionFragment<BookingDetailSectionProInfoView>
+        BookingDetailSectionFragment<BookingDetailSectionProInfoView> implements ConversationCallback
 {
     @Inject
     ProTeamManager mProTeamManager;
@@ -385,7 +391,25 @@ public class BookingDetailSectionFragmentProInformation extends
         @Override
         public void onClick(final View v)
         {
-            if (validateProPhoneInformation(booking))
+
+            final Booking.ProviderAssignmentInfo providerAssignmentInfo =
+                    booking.getProviderAssignmentInfo();
+            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
+                    && providerAssignmentInfo != null
+                    && providerAssignmentInfo.isProTeamMatch())
+            {
+                progressDialog.show();
+                HandyLibrary.getInstance()
+                            .getHandyService()
+                            .createConversation(
+                                    booking.getProvider().getId(),
+                                    userManager.getCurrentUser().getAuthToken(),
+                                    "",
+                                    new ConversationCallbackWrapper(
+                                            BookingDetailSectionFragmentProInformation.this)
+                            );
+            }
+            else if (validateProPhoneInformation(booking))
             {
                 BookingUtil.textPhoneNumber(
                         booking.getProvider().getPhone(),
@@ -411,5 +435,22 @@ public class BookingDetailSectionFragmentProInformation extends
         }
 
         return validPhoneNumber;
+    }
+
+    @Override
+    public void onCreateConversationSuccess(final String conversationId)
+    {
+        progressDialog.hide();
+        startActivity(new Intent(getActivity(), ProMessagesActivity.class).putExtra(
+                LayerConstants.LAYER_CONVERSATION_KEY,
+                Uri.parse(conversationId)
+        ));
+    }
+
+    @Override
+    public void onCreateConversationError()
+    {
+        progressDialog.hide();
+        showToast(R.string.an_error_has_occurred);
     }
 }

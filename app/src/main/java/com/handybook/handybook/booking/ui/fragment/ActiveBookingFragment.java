@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -48,6 +49,11 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.PlayServicesUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
+import com.handybook.handybook.proteam.callback.ConversationCallback;
+import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
+import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.shared.core.HandyLibrary;
+import com.handybook.shared.layer.LayerConstants;
 
 import java.util.Date;
 
@@ -61,7 +67,7 @@ import butterknife.OnClick;
  * location information periodically. Also shows the provider's name, and allows calling/texting to
  * the provider.
  */
-public class ActiveBookingFragment extends InjectedFragment implements OnMapReadyCallback
+public class ActiveBookingFragment extends InjectedFragment implements OnMapReadyCallback, ConversationCallback
 {
     private static final String KEY_BOOKING = "booking";
     private static final int GEO_STATUS_PING_INTERVAL_MS = 10000;  //ping for geo status every 10 seconds
@@ -766,9 +772,47 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     @OnClick(R.id.active_booking_text)
     public void textClicked()
     {
-        bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
-                mBooking.getId(), ActiveBookingLog.BookingProContactedLog.SMS)));
-        BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
+        final Booking.ProviderAssignmentInfo providerAssignmentInfo =
+                mBooking.getProviderAssignmentInfo();
+        if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
+                && providerAssignmentInfo != null
+                && providerAssignmentInfo.isProTeamMatch())
+        {
+            progressDialog.show();
+            bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
+                    mBooking.getId(), ActiveBookingLog.BookingProContactedLog.CHAT)));
+            HandyLibrary.getInstance()
+                        .getHandyService()
+                        .createConversation(
+                                mBooking.getProvider().getId(),
+                                userManager.getCurrentUser().getAuthToken(),
+                                "",
+                                new ConversationCallbackWrapper(ActiveBookingFragment.this)
+                        );
+        }
+        else
+        {
+            bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
+                    mBooking.getId(), ActiveBookingLog.BookingProContactedLog.SMS)));
+            BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
+        }
+    }
+
+    @Override
+    public void onCreateConversationSuccess(final String conversationId)
+    {
+        progressDialog.hide();
+        startActivity(new Intent(getActivity(), ProMessagesActivity.class).putExtra(
+                LayerConstants.LAYER_CONVERSATION_KEY,
+                Uri.parse(conversationId)
+        ));
+    }
+
+    @Override
+    public void onCreateConversationError()
+    {
+        progressDialog.hide();
+        showToast(R.string.an_error_has_occurred);
     }
 
     @OnClick(R.id.active_booking_report_issue)

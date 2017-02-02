@@ -22,12 +22,16 @@ import android.widget.Toast;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.RequestCode;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
+import com.handybook.handybook.proteam.callback.ConversationCallback;
+import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
@@ -35,30 +39,23 @@ import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
 import com.handybook.shared.layer.LayerHelper;
-import com.handybook.shared.layer.model.CreateConversationResponse;
 import com.handybook.shared.layer.receiver.PushNotificationReceiver;
 import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
-
-import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 import static com.handybook.handybook.logger.handylogger.model.LogConstants.PRO_TEAM_CONVERSATIONS;
 
-public class ProTeamConversationsFragment extends InjectedFragment implements SwipeRefreshLayout.OnRefreshListener
+public class ProTeamConversationsFragment extends InjectedFragment
+        implements SwipeRefreshLayout.OnRefreshListener, ConversationCallback
 {
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
@@ -298,7 +295,7 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
                             providerId,
                             userManager.getCurrentUser().getAuthToken(),
                             "",
-                            new ConversationCallback(this)
+                            new ConversationCallbackWrapper(this)
                     );
     }
 
@@ -307,7 +304,8 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
      *
      * @param conversationId
      */
-    public void onConversationCreated(String conversationId)
+    @Override
+    public void onCreateConversationSuccess(String conversationId)
     {
         bus.post(new LogEvent.AddLogEvent(new ChatLog.ConversationCreatedLog(String.valueOf(
                 mSelectedProTeamMember.getProTeamPro().getId()), conversationId)));
@@ -321,7 +319,8 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
         progressDialog.dismiss();
     }
 
-    public void onError()
+    @Override
+    public void onCreateConversationError()
     {
         progressDialog.dismiss();
         Toast.makeText(getContext(), R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
@@ -427,45 +426,6 @@ public class ProTeamConversationsFragment extends InjectedFragment implements Sw
     public void onRefresh()
     {
         requestProTeam();
-    }
-
-    public static class ConversationCallback implements Callback<CreateConversationResponse>
-    {
-
-        private WeakReference<ProTeamConversationsFragment> mFragment;
-
-        public ConversationCallback(ProTeamConversationsFragment fragment)
-        {
-            mFragment = new WeakReference<>(fragment);
-        }
-
-        @Override
-        public void success(
-                final CreateConversationResponse createConversationResponse, final Response response
-        )
-        {
-            if (mFragment.get() != null)
-            {
-                if (createConversationResponse.isSuccess())
-                {
-                    mFragment.get()
-                             .onConversationCreated(createConversationResponse.getConversationId());
-                }
-                else
-                {
-                    mFragment.get().onError();
-                }
-            }
-        }
-
-        @Override
-        public void failure(final RetrofitError error)
-        {
-            if (mFragment.get() != null)
-            {
-                mFragment.get().onError();
-            }
-        }
     }
 
     private void clearNotifications()
