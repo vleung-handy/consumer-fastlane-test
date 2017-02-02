@@ -96,7 +96,7 @@ public class BookingCreationHandyManTest
 
         //use previous credit card
         ViewUtil.waitForViewVisible(
-                R.id.next_button,
+                R.id.payment_fragment_terms_of_use_text,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
         clickNextButton();
