@@ -361,6 +361,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     private void showCouponAppliedNotificationIfNecessary()
     {
+        //TODO currently not showing anything for hidden coupons; confirm with PM this behavior is OK
         final String coupon = bookingManager.getPromoTabCoupon();
         if (coupon != null)
         {
