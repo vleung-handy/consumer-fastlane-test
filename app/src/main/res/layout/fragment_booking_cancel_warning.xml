@@ -25,7 +25,7 @@
                 android:id="@+id/fragment_booking_cancel_warning_warning"
                 style="@style/TextView"
                 android:padding="12dp"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/handy_white"
                 android:background="@color/error_red_pressed"
                 android:layout_gravity="center"
@@ -42,7 +42,7 @@
                 android:gravity="center"
                 android:padding="@dimen/default_padding"
                 android:textColor="@color/handy_text_black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_medium"
                 tools:text="Your plan term ends Dec 12, 2017"
                 />
 
@@ -56,7 +56,7 @@
                 android:gravity="center"
                 android:padding="@dimen/default_padding_double"
                 android:textColor="@color/handy_text_black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_medium"
                 tools:text="The value of your cleaning ($75.50) will be charged, and added to your account as credits for late use."
                 />
 
