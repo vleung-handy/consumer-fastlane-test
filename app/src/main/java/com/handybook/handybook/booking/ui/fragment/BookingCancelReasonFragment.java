@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -49,8 +50,8 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
     FrameLayout mOptionsContainer;
 
     public static BookingCancelReasonFragment newInstance(
-            final Booking booking,
-            final BookingCancellationData bookingCancellationData
+            @NonNull final Booking booking,
+            @NonNull final BookingCancellationData bookingCancellationData
     )
     {
         final BookingCancelReasonFragment fragment = new BookingCancelReasonFragment();
