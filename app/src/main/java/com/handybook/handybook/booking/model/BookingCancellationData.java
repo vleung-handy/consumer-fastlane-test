@@ -75,7 +75,7 @@ public class BookingCancellationData implements Serializable
 
     public boolean hasWarning()
     {
-        return TextUtils.isEmpty(getWarningMessage());
+        return !TextUtils.isEmpty(getWarningMessage());
     }
 
     public boolean hasPrecancellationInfo()

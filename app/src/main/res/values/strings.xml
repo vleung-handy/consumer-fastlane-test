@@ -499,4 +499,5 @@
     <string name="conversation_no_pros">You\'ll be able to chat directly with past pros once you add them to your Pro Team.</string>
     <string name="bill_view_expand_target_text">Payment Details</string>
     <string name="sign_in">Sign In</string>
+    <string name="label_continue">Continue</string>
 </resources>
