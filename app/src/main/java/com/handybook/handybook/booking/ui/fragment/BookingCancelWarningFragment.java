@@ -1,7 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,8 +78,10 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
     private void initUI()
     {
         final boolean isRecurring = mBooking != null && mBooking.isRecurring();
-        @StringRes final int strRes = isRecurring ? R.string.skip_booking : R.string.cancel_booking;
-        mToolbar.setTitle(strRes);
+        setupToolbar(
+                mToolbar,
+                getString(isRecurring ? R.string.skip_booking : R.string.cancel_booking)
+        );
         mWarningMessage.setText(mBookingCancellationData.getWarningMessage());
         mWarningMessage.setVisibility(
                 mBookingCancellationData.hasWarning() ? View.VISIBLE : View.GONE

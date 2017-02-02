@@ -11,14 +11,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
@@ -98,18 +96,11 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
             {
                 disableInputs();
                 progressDialog.show();
-                final User user = userManager.getCurrentUser();
                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                                  BookingDetailsLog.EventType.SUBMITTED,
                                  mBooking.getId()
                          ))
                 );
-                if (user == null)
-                {
-                    Crashlytics.logException(new NullPointerException("User is null"));
-                    showToast(R.string.default_error_string);
-                    return;
-                }
                 final FragmentSafeCallback<String> cb = new FragmentSafeCallback<String>(
                         BookingCancelOptionsFragment.this
                 )
@@ -124,7 +115,7 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                         if (!allowCallbacks) { return; }
                         progressDialog.dismiss();
                         enableInputs();
-                        if (TextUtils.isEmpty(message)) { showToast(message); }
+                        if (!TextUtils.isEmpty(message)) { showToast(message); }
                         getActivity().setResult(ActivityResult.BOOKING_CANCELED, new Intent());
                         getActivity().finish();
                     }
@@ -144,7 +135,15 @@ public final class BookingCancelOptionsFragment extends BookingFlowFragment
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 };
-                dataManager.cancelBooking(mBooking.getId(), mOptionIndex, user.getId(), cb);
+                Integer reasonId = null;
+                if (mOptionIndex > 0)
+                {
+                    reasonId = mBookingCancellationData
+                            .getCancellationInfo()
+                            .getReasons()[mOptionIndex]
+                            .getId();
+                }
+                dataManager.cancelBooking(mBooking.getId(), reasonId, cb);
             }
         });
 

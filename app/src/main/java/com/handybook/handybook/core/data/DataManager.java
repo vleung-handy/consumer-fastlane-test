@@ -414,7 +414,6 @@ public class DataManager
         );
     }
 
-
     public void getQuoteOptions(
             final int serviceId, final String userId,
             final Callback<BookingOptionsWrapper> cb
@@ -731,22 +730,22 @@ public class DataManager
                 userId,
                 providerId,
                 chatRescheduleAgreement ? 1 : 0,
-                                   new HandyRetrofitCallback(cb)
-                                   {
-                                       @Override
-                                       protected void success(final JSONObject response)
-                                       {
-                                           final String message = parseAlertMessage(response);
-                                           BookingQuote quote = null;
+                new HandyRetrofitCallback(cb)
+                {
+                    @Override
+                    protected void success(final JSONObject response)
+                    {
+                        final String message = parseAlertMessage(response);
+                        BookingQuote quote = null;
 
-                                           if (response.optJSONArray("dynamic_options") != null)
-                                           {
-                                               quote = BookingQuote.fromJson(response.toString());
-                                           }
+                        if (response.optJSONArray("dynamic_options") != null)
+                        {
+                            quote = BookingQuote.fromJson(response.toString());
+                        }
 
-                                           cb.onSuccess(new Pair<>(message, quote));
-                                       }
-                                   }
+                        cb.onSuccess(new Pair<>(message, quote));
+                    }
+                }
         );
     }
 
@@ -766,7 +765,8 @@ public class DataManager
     }
 
     public void cancelBooking(
-            final String bookingId, final int reasonCode, final String userId,
+            final String bookingId,
+            final Integer reasonId,
             final Callback<String> cb
     )
     {
@@ -779,15 +779,7 @@ public class DataManager
                 cb.onSuccess(message);
             }
         };
-
-        if (reasonCode >= 0)
-        {
-            mService.cancelBooking(bookingId, reasonCode, userId, callback);
-        }
-        else
-        {
-            mService.cancelBooking(bookingId, userId, callback);
-        }
+        mService.cancelBooking(bookingId, reasonId, callback);
     }
 
     public void getLaundryScheduleInfo(
@@ -1309,7 +1301,9 @@ public class DataManager
                 try
                 {
                     cb.onSuccess(new Gson().fromJson(response.toString(), EventLogResponse.class));
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Crashlytics.log("EventLogResponse error: " + response);
                     cb.onError(null);
                 }

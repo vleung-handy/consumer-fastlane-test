@@ -316,15 +316,8 @@ public interface HandyRetrofitService
     @FormUrlEncoded
     @POST("/bookings/{booking}/cancel")
     void cancelBooking(
-            @Path("booking") String bookingId, @Field("cancellation_reason") int reasonCode,
-            @Field("user_id") String userId, HandyRetrofitCallback cb
-    );
-
-    @FormUrlEncoded
-    @POST("/bookings/{booking}/cancel")
-    void cancelBooking(
             @Path("booking") String bookingId,
-            @Field("user_id") String userId,
+            @Field("cancellation_reason_id") Integer reasonId,
             HandyRetrofitCallback cb
     );
 
