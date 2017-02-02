@@ -191,7 +191,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         else if (resultCode == ActivityResult.BOOKING_CANCELED)
         {
             setCanceledBookingResult();
-            getActivity().finish();
+            getActivity().onBackPressed();
         }
         else if (resultCode == ActivityResult.BOOKING_UPDATED)
         {

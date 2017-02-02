@@ -7,15 +7,17 @@ import android.support.v4.app.Fragment;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public class HelpActivity extends MenuDrawerActivity
 {
     private static final String LINK_TYPE_ARTICLES = "/articles/";
     private static final String LINK_TYPE_SECTIONS = "/sections/";
+
 
     public enum DeepLink
     {
@@ -80,31 +82,21 @@ public class HelpActivity extends MenuDrawerActivity
 
     private Fragment launchHelpFragmentWithOptionalArgsIfEnabled()
     {
-        if (mConfiguration == null)
-        {
-            mConfiguration = mConfigurationManager.getCachedConfiguration();
-        }
+        Configuration config = mConfigurationManager.getPersistentConfiguration();
 
-        if (mConfiguration != null)
+        String helpCenterUrl = config.getHelpCenterUrl();
+        if (config.isNativeHelpCenterEnabled())
         {
-            String helpCenterUrl = mConfiguration.getHelpCenterUrl();
-            if (mConfiguration.isNativeHelpCenterEnabled())
-            {
-                return HelpFragment.newInstance(helpCenterUrl);
-            }
-            else
-            {
-                Bundle args = new Bundle();
-                if (!Strings.isNullOrEmpty(helpCenterUrl))
-                {
-                    args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
-                }
-                return HelpWebViewFragment.newInstance(args);
-            }
+            return HelpFragment.newInstance(helpCenterUrl);
         }
         else
         {
-            return HelpWebViewFragment.newInstance(new Bundle());
+            Bundle args = new Bundle();
+            if (!Strings.isNullOrEmpty(helpCenterUrl))
+            {
+                args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
+            }
+            return HelpWebViewFragment.newInstance(args);
         }
     }
 }

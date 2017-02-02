@@ -131,6 +131,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     Toolbar mToolbar;
     @Bind(R.id.payment_fragment_bill)
     BillView mBillView;
+    @Bind(R.id.payment_fragment_price_header_container)
+    View mHeaderContainer;
 
     private boolean mUseExistingCard;
     private boolean mUseAndroidPay;
@@ -375,6 +377,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
 
     private void initializeBookingHeader()
     {
+        mHeaderContainer.setVisibility(View.VISIBLE);
         final BookingHeaderFragment headerFragment = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.payment_fragment_price_header_container, headerFragment).commit();
