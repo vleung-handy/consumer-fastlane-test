@@ -15,6 +15,7 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
 import com.handybook.handybook.booking.model.PromoCode;
+import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
@@ -108,31 +109,67 @@ public class BookingFlowFragment extends InjectedFragment
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
         if (config != null && config.isOnboardingEnabled() && !android.text.TextUtils.isEmpty(zip))
         {
-            //if we are in "onboarding" mode, and we have a zip, then skip the BookingLocationActivity
-            //and go directly to the Booking options (beds, bath)
-            bookingManager.getCurrentRequest().setZipCode(zip);
-            if (android.text.TextUtils.isEmpty(request.getPromoCode()))
-            {
-                //we're not in a promotional flow, so we can display booking options
-                progressDialog.show();
-                displayBookingOptions();
-            }
-            else
-            {
-                //if we're in a promotional flow, we go straight to the date selection
-                final Intent intent = new Intent(
-                        getActivity(),
-                        BookingDateActivity.class
-                );
-                startActivity(intent);
-            }
+            validateZipAndProceed(zip);
         }
         else
         {
             final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
             startActivity(intent);
         }
+    }
 
+    /**
+     * Even though we're not showing the "zip" page to the user we still have to call this
+     * "zip validation" step, so we can have the proper time zone setup
+     */
+    private void validateZipAndProceed(final String zipCode)
+    {
+        showUiBlockers();
+        final BookingRequest request = bookingManager.getCurrentRequest();
+        final User user = userManager.getCurrentUser();
+        final String userId = user != null ? user.getId() : null;
+
+        dataManager.validateBookingZip(
+                request.getServiceId(),
+                zipCode,
+                userId,
+                request.getPromoCode(),
+                new FragmentSafeCallback<ZipValidationResponse>(BookingFlowFragment.this)
+                {
+                    @Override
+                    public void onCallbackSuccess(ZipValidationResponse response)
+                    {
+                        //if we are in "onboarding" mode, and we have a zip, then skip the BookingLocationActivity
+                        //and go directly to the Booking options (beds, bath)
+                        bookingManager.getCurrentRequest().setZipCode(zipCode);
+                        bookingManager.getCurrentRequest().setZipArea(response.getZipArea());
+                        bookingManager.getCurrentRequest().setTimeZone(response.getTimeZone());
+
+                        if (android.text.TextUtils.isEmpty(request.getPromoCode()))
+                        {
+                            //we're not in a promotional flow, so we can display booking options
+                            displayBookingOptions();
+                        }
+                        else
+                        {
+                            removeUiBlockers();
+                            //if we're in a promotional flow, we go straight to the date selection
+                            final Intent intent = new Intent(
+                                    getActivity(),
+                                    BookingDateActivity.class
+                            );
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error)
+                    {
+                        removeUiBlockers();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                }
+        );
     }
 
     /**
@@ -155,6 +192,7 @@ public class BookingFlowFragment extends InjectedFragment
                     public void onCallbackSuccess(final BookingOptionsWrapper options)
                     {
                         if (!allowCallbacks) { return; }
+                        removeUiBlockers();
                         List<BookingOption> bookingOptions = options.getBookingOptions();
                         final ProTeam proTeam = options.getProTeam();
                         bookingManager.setCurrentProTeam(proTeam);
@@ -168,16 +206,13 @@ public class BookingFlowFragment extends InjectedFragment
                         );
                         intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, 0);
                         startActivity(intent);
-                        enableInputs();
-                        progressDialog.dismiss();
                     }
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error)
                     {
                         if (!allowCallbacks) { return; }
-                        enableInputs();
-                        progressDialog.dismiss();
+                        removeUiBlockers();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 }
