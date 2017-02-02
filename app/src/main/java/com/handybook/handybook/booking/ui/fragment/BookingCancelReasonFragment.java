@@ -152,7 +152,7 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
                     }
                 };
                 Integer reasonId = null;
-                if (mOptionIndex > 0)
+                if (mOptionIndex >= 0)
                 {
                     reasonId = mBookingCancellationData
                             .getCancellationInfo()
