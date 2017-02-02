@@ -69,7 +69,8 @@ public class BookingTransaction extends Observable
     private String mPromoCode;
     /**
      * TODO for ugly promo code hotfix
-     * ideally this shouldn't be sent to server,
+     * ideally this shouldn't be sent to server
+     * (this entire object is sent to the /quotes/{quote} endpoint)
      * but need this field in this obj for a hotfix
      *
      * this is set to true when we get a promo code that is not set by the user or deeplink
