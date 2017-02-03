@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -30,24 +32,23 @@ import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.MainNavTab;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.library.util.ValidationUtils;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
-import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.widget.EmailInputTextView;
-import com.handybook.handybook.core.ui.widget.MenuButton;
 import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
+import com.handybook.handybook.library.util.ValidationUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
+import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -73,8 +74,6 @@ public final class LoginFragment extends BookingFlowFragment
 
     Class<? extends Activity> mDestinationClass;
 
-    @Bind(R.id.nav_text)
-    TextView mNavText;
     @Bind(R.id.login_button)
     Button mLoginButton;
     @Bind(R.id.forgot_button)
@@ -93,10 +92,11 @@ public final class LoginFragment extends BookingFlowFragment
     TextView mOrText;
     @Bind(R.id.welcome_text)
     TextView mWelcomeText;
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
     @Bind(R.id.login_scroll_view)
     ScrollView mLoginScrollView;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
     private Bundle mDestinationExtras;
@@ -173,13 +173,14 @@ public final class LoginFragment extends BookingFlowFragment
                                        .inflate(R.layout.fragment_login, container, false);
 
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.log_in));
 
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
         if (mFindUser)
         {
             activity.setDrawerDisabled(true);
-            mNavText.setText(getString(R.string.contact));
+            mToolbar.setTitle(getString(R.string.contact));
             mPasswordText.setVisibility(View.GONE);
             mForgotButton.setVisibility(View.GONE);
             mLoginButton.setText(getString(R.string.next));
@@ -202,11 +203,13 @@ public final class LoginFragment extends BookingFlowFragment
             }
             mBookingRequest.setEmail(mBookingUserEmail);
         }
-        else
+        else if(!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
+                    && getActivity() instanceof MenuDrawerActivity)
         {
-            final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-            menuButton.setColor(ContextCompat.getColor(getContext(), R.color.white));
-            mMenuButtonLayout.addView(menuButton);
+            //by default, the toolbar has a back button which goes back when pressed
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+
         }
 
         mFbLoginButton.setFragment(this);
