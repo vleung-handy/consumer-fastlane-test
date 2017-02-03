@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -143,8 +144,8 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         mSlideOutToRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
         mZipCodeString = getString(R.string.zip_code);
         mEmailString = getString(R.string.email);
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mEditZip.addTextChangedListener(new TextWatcherAdapter()
         {
             @Override
@@ -266,9 +267,25 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item)
+    {
+        if (item.getItemId() == R.id.menu_sign_in)
+        {
+            signinClicked();
+        }
+        else if (item.getItemId() == android.R.id.home)
+        {
+            getActivity().onBackPressed();
+        }
+
+        return true;
+    }
+
     private void showNext()
     {
         mToolbar.setTitle(mEmailString);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mViewSwitcher.setInAnimation(mSlideInFromRight);
         mViewSwitcher.setOutAnimation(mSlideOutToLeft);
         mViewSwitcher.showNext();
@@ -276,6 +293,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
 
     private void showPrevious()
     {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mToolbar.setTitle(mZipCodeString);
         mViewSwitcher.setInAnimation(mSlideInFromLeft);
         mViewSwitcher.setOutAnimation(mSlideOutToRight);

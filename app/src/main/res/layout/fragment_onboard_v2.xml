@@ -100,6 +100,7 @@
                 app:layout_collapseMode="pin"
                 android:theme="@style/HandyTheme.AppBarOverlay.Bold"
                 app:title="@string/zip_code"
+                app:navigationIcon="@drawable/ic_back"
                 >
             </android.support.v7.widget.Toolbar>
 
