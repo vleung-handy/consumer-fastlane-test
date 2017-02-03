@@ -132,7 +132,7 @@ public class SplashActivity extends BaseActivity
         }
     }
 
-    private final void navigateToServiceCategoriesActivity()
+    private void navigateToServiceCategoriesActivity()
     {
         final Intent intent = ServiceCategoriesActivity.getIntent(
                 this,
@@ -141,7 +141,6 @@ public class SplashActivity extends BaseActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //don't need history when launching this activity from splash
         startActivity(intent);
-        finish();
     }
 
     @Override
