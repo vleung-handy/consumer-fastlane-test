@@ -785,4 +785,9 @@
         <item name="android:textColor">@color/handy_tertiary_gray</item>
     </style>
 
+    <style name="TextInputBlueTheme"
+           parent="HandyTheme">
+        <item name="colorAccent">@color/handy_blue</item>
+    </style>
+
 </resources>

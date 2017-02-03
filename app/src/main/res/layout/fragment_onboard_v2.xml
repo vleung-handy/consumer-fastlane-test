@@ -34,7 +34,6 @@
                 android:paddingRight="@dimen/default_padding_double"
                 android:paddingTop="@dimen/default_padding"
                 app:layout_collapseMode="pin"
-
                 >
 
                 <ImageView
@@ -88,6 +87,8 @@
                         android:text="@string/sign_in"
                         android:textColor="@color/handy_white"
                         android:textAppearance="@style/TextView.Bold"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
                         />
                 </LinearLayout>
 
@@ -101,6 +102,10 @@
                 android:theme="@style/HandyTheme.AppBarOverlay.Bold"
                 app:title="@string/zip_code"
                 app:navigationIcon="@drawable/ic_back"
+                app:titleMargin="@dimen/default_margin"
+                app:contentInsetStart="0dp"
+                app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
                 >
             </android.support.v7.widget.Toolbar>
 
@@ -112,8 +117,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         >
 
         <ImageView
@@ -161,6 +164,7 @@
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginLeft="@dimen/default_margin_double"
                     android:layout_marginRight="@dimen/default_margin_double"
+                    android:theme="@style/TextInputBlueTheme"
                     >
 
                     <android.support.design.widget.TextInputEditText
@@ -207,6 +211,7 @@
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginLeft="@dimen/default_margin_double"
                     android:layout_marginRight="@dimen/default_margin_double"
+                    android:theme="@style/TextInputBlueTheme"
                     >
 
                     <android.support.design.widget.TextInputEditText

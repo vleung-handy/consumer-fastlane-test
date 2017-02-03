@@ -32,7 +32,9 @@ public class NotSupportedActivity extends BaseActivity
     @OnClick(R.id.button_try_another_zip)
     public void submitClicked()
     {
-        startActivity(new Intent(this, OnboardActivity.class));
+        Intent intent = new Intent(this, OnboardActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
     }
 }

@@ -195,6 +195,7 @@ public final class LoginFragment extends BookingFlowFragment
 
         ButterKnife.bind(this, view);
 
+        mEmailText.clearFocus();
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
         if (mFindUser)

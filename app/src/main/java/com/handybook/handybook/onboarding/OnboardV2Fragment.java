@@ -412,7 +412,6 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
                 Intent intent = new Intent(getActivity(), NotSupportedActivity.class);
                 intent.putExtra(ZIP, mZip);
                 startActivity(intent);
-                getActivity().finish();
             }
             else
             {

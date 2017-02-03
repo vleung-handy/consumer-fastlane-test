@@ -25,7 +25,7 @@
             android:id="@+id/image_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/img_cleaner"
+            android:src="@drawable/ic_city"
             />
 
         <TextView

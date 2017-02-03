@@ -41,6 +41,6 @@ public final class LoginActivity extends MenuDrawerActivity {
 
     @Override
     protected final String getNavItemTitle() {
-        return getString(R.string.log_in);
+        return getString(R.string.sign_in);
     }
 }
