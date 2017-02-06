@@ -513,5 +513,5 @@
     <string name="onboard_title">Book trusted cleaners &amp; handymen instantly</string>
     <string name="onboard_already_account">Already have an account?</string>
     <string name="onboard_location_prompt">Where are you \n located?</string>
-    <string name="onboard_email_prompt">What\'s your email address?</string>
+    <string name="onboard_email_prompt">What\'s your email \n address?</string>
 </resources>
