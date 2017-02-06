@@ -3,7 +3,6 @@ package com.handybook.handybook.configuration.manager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -19,10 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-//TODO: JIA: remove some of the debug / logging below
 public class ConfigurationManager
 {
-    private static final String TAG = "ConfigurationManager";
     private final Bus mBus;
     private final DataManager mDataManager;
     private final DefaultPreferencesManager mDefaultPreferencesManager;
@@ -112,14 +109,7 @@ public class ConfigurationManager
     @Nullable
     public Configuration getCachedConfiguration()
     {
-        Log.d(TAG, "getCachedConfiguration: ");
-        Configuration rval = mConfigurationCache.getIfPresent(KEY_CONFIGURATION_CACHE);
-
-        if (rval == null)
-        {
-            Log.d(TAG, "getCachedConfiguration: returning null");
-        }
-        return rval;
+        return mConfigurationCache.getIfPresent(KEY_CONFIGURATION_CACHE);
     }
 
     /**
@@ -129,13 +119,6 @@ public class ConfigurationManager
      */
     public Configuration getLastKnowConfiguration()
     {
-
-        Log.d(TAG, "getLastKnowConfiguration: ");
-
-        if (mLastKnowConfiguration == null)
-        {
-            Log.d(TAG, "getLastKnowConfiguration: returning null");
-        }
         return mLastKnowConfiguration;
     }
 
@@ -147,7 +130,6 @@ public class ConfigurationManager
     @NonNull
     public Configuration getPersistentConfiguration()
     {
-        Log.d(TAG, "getPersistentConfiguration: ");
         Configuration rval = getCachedConfiguration();
 
         if (rval == null)
@@ -163,11 +145,6 @@ public class ConfigurationManager
         if (rval == null)
         {
             rval = new Configuration();
-        }
-
-        if (rval == null)
-        {
-            Log.d(TAG, "getPersistentConfiguration: returning null");
         }
         return rval;
     }
