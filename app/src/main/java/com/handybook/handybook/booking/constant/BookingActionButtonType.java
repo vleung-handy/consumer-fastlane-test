@@ -10,6 +10,9 @@ public enum BookingActionButtonType
     EDIT_HOURS(BookingAction.ACTION_EDIT_HOURS, R.string.booking_edit_hours_action_button,
                BookingActionButtonStyle.BLUE, R.id.action_button_edit_hours
     ),
+    SKIP(BookingAction.ACTION_SKIP, R.string.skip_booking,
+         BookingActionButtonStyle.GREY, R.id.action_button_skip_booking
+    ),
     CANCEL(BookingAction.ACTION_CANCEL, R.string.cancel_booking,
            BookingActionButtonStyle.GREY, R.id.action_button_cancel_booking
     ),
