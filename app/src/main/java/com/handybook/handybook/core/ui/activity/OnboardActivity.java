@@ -17,17 +17,7 @@ public final class OnboardActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        if (mConfiguration == null)
-        {
-            mConfiguration = mConfigurationManager.getPersistentConfiguration();
-
-            if (mConfiguration == null)
-            {
-                Log.d(TAG, "createFragment: mConfiguration is null");
-            }
-        }
-
-        if (mConfiguration != null && mConfiguration.isOnboardingEnabled())
+        if (mConfigurationManager.getPersistentConfiguration().isOnboardingEnabled())
         {
             mFragment = OnboardV2Fragment.newInstance();
             return mFragment;
