@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
@@ -25,21 +25,24 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
-import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
+import com.handybook.handybook.proteam.callback.ConversationCallback;
+import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
+import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.shared.core.HandyLibrary;
+import com.handybook.shared.layer.LayerConstants;
 import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class ReportIssueFragment extends InjectedFragment
+public final class ReportIssueFragment extends InjectedFragment implements ConversationCallback
 {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -56,8 +59,83 @@ public final class ReportIssueFragment extends InjectedFragment
 
     private Booking mBooking;
     private JobStatus mJobStatus;
+    private View.OnClickListener mCallButtonOnClickListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
+                    mBooking.getId(), IssueResolutionLog.ProContacted.PHONE)));
+            final String phone = mBooking.getProvider().getPhone();
+            Intent intent =
+                    new Intent(
+                            Intent.ACTION_DIAL,
+                            Uri.fromParts("tel", phone, null)
+                    );
+            Utils.safeLaunchIntent(intent, getContext());
+        }
+    };
+    private View.OnClickListener mTextButtonOnClickListener = new View.OnClickListener()
+    {
+        @Override
+        public void onClick(final View v)
+        {
+            final Booking.ProviderAssignmentInfo providerAssignmentInfo =
+                    mBooking.getProviderAssignmentInfo();
+            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
+                    && providerAssignmentInfo != null
+                    && providerAssignmentInfo.isProTeamMatch())
+            {
+                progressDialog.show();
+                bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
+                        mBooking.getId(), ActiveBookingLog.BookingProContactedLog.CHAT)));
+                HandyLibrary.getInstance()
+                            .getHandyService()
+                            .createConversation(
+                                    mBooking.getProvider().getId(),
+                                    userManager.getCurrentUser().getAuthToken(),
+                                    "",
+                                    new ConversationCallbackWrapper(ReportIssueFragment.this)
+                            );
+            }
+            else
+            {
+                bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
+                        mBooking.getId(),
+                        IssueResolutionLog.ProContacted.SMS
+                )));
+                final String phone = mBooking.getProvider().getPhone();
+                Intent intent =
+                        new Intent(
+                                Intent.ACTION_SENDTO,
+                                Uri.fromParts("sms", phone, null)
+                        );
+                Utils.safeLaunchIntent(intent, getContext());
+            }
+        }
+    };
 
-    public static ReportIssueFragment newInstance(final Booking booking, final JobStatus proStatuses)
+    @Override
+    public void onCreateConversationSuccess(final String conversationId)
+    {
+        progressDialog.hide();
+        startActivity(new Intent(getActivity(), ProMessagesActivity.class).putExtra(
+                LayerConstants.LAYER_CONVERSATION_KEY,
+                Uri.parse(conversationId)
+        ));
+    }
+
+    @Override
+    public void onCreateConversationError()
+    {
+        progressDialog.hide();
+        showToast(R.string.an_error_has_occurred);
+    }
+
+    public static ReportIssueFragment newInstance(
+            final Booking booking,
+            final JobStatus proStatuses
+    )
     {
         final ReportIssueFragment fragment = new ReportIssueFragment();
         final Bundle args = new Bundle();
@@ -77,17 +155,28 @@ public final class ReportIssueFragment extends InjectedFragment
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mJobStatus = (JobStatus) getArguments().getSerializable(BundleKeys.PRO_JOB_STATUS);
 
-        bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ReportIssueOpened(mBooking.getId(), getLastMilestoneTitle())));
+        bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ReportIssueOpened(
+                mBooking.getId(),
+                getLastMilestoneTitle()
+        )));
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
+    public final View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    )
     {
         final View view = inflater.inflate(R.layout.fragment_report_issue, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.help));
         //Add the booking id to the subtitle
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(getString(R.string.booking_number, mBooking.getId()));
+        ((AppCompatActivity) getActivity()).getSupportActionBar()
+                                           .setSubtitle(getString(
+                                                   R.string.booking_number,
+                                                   mBooking.getId()
+                                           ));
         return view;
     }
 
@@ -141,12 +230,15 @@ public final class ReportIssueFragment extends InjectedFragment
     private void setHeader()
     {
         mDateText.setText(DateTimeUtils.formatDate(mBooking.getStartDate(), "EEEE',' MMM d',' yyyy",
-                mBooking.getBookingTimezone()));
+                                                   mBooking.getBookingTimezone()
+        ));
 
         final String startTime = DateTimeUtils.formatDate(mBooking.getStartDate(), "h:mm aaa",
-                mBooking.getBookingTimezone()).toLowerCase();
+                                                          mBooking.getBookingTimezone()
+        ).toLowerCase();
         final String endTime = DateTimeUtils.formatDate(mBooking.getEndDate(), "h:mm aaa",
-                mBooking.getBookingTimezone()).toLowerCase();
+                                                        mBooking.getBookingTimezone()
+        ).toLowerCase();
         mTimeText.setText(getString(R.string.dash_formatted, startTime, endTime));
 
         mProviderText.setText(mBooking.getProvider().getFirstNameAndLastInitial());
@@ -180,32 +272,9 @@ public final class ReportIssueFragment extends InjectedFragment
                     if (JobStatus.Action.CALL_OR_TEXT.equals(action.getType())
                             && !Strings.isNullOrEmpty(mBooking.getProvider().getPhone()))
                     {
-                        final String phone = mBooking.getProvider().getPhone();
                         milestoneView.setCallAndTextButtonVisibility(View.VISIBLE);
-                        milestoneView.setCallButtonOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(final View v)
-                            {
-                                bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
-                                        mBooking.getId(), IssueResolutionLog.ProContacted.PHONE)));
-                                Intent intent =
-                                        new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                                Utils.safeLaunchIntent(intent, getContext());
-                            }
-                        });
-                        milestoneView.setTextButtonOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(final View v)
-                            {
-                                bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
-                                        mBooking.getId(), IssueResolutionLog.ProContacted.SMS)));
-                                Intent intent =
-                                        new Intent(Intent.ACTION_SENDTO, Uri.fromParts("sms", phone, null));
-                                Utils.safeLaunchIntent(intent, getContext());
-                            }
-                        });
+                        milestoneView.setCallButtonOnClickListener(mCallButtonOnClickListener);
+                        milestoneView.setTextButtonOnClickListener(mTextButtonOnClickListener);
                     }
                 }
                 mMilestonesLayout.addView(milestoneView);
@@ -244,26 +313,31 @@ public final class ReportIssueFragment extends InjectedFragment
                 public void onClick(final View v)
                 {
                     bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.HelpLinkTapped(
-                            mBooking.getId(), deepLinkWrapper.getText(), deepLinkWrapper.getDeeplink())));
+                            mBooking.getId(),
+                            deepLinkWrapper.getText(),
+                            deepLinkWrapper.getDeeplink()
+                    )));
 
                     if (JobStatus.DeepLinkWrapper.TYPE_CANCEL.equals(deepLinkWrapper.getType()))
                     {
                         // show cancel page
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                                 BookingDetailsLog.EventType.SELECTED,
-                                mBooking.getId())
+                                mBooking.getId()
+                        )
                         ));
 
-                        bus.post(new BookingEvent.RequestPreCancelationInfo(mBooking.getId()));
+                        bus.post(new BookingEvent.RequestBookingCancellationData(mBooking.getId()));
                     }
                     else if (JobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType()))
                     {
                         // show reschedule page
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                BookingDetailsLog.EventType.SELECTED,
-                                mBooking.getId(),
-                                mBooking.getStartDate(),
-                                null))
+                                         BookingDetailsLog.EventType.SELECTED,
+                                         mBooking.getId(),
+                                         mBooking.getStartDate(),
+                                         null
+                                 ))
                         );
 
                         bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
@@ -300,28 +374,22 @@ public final class ReportIssueFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
+    public void onReceiveBookingCancellationDataSuccess(
+            final BookingEvent.ReceiveBookingCancellationDataSuccess event
+    )
     {
         removeUiBlockers();
-
-        Pair<String, List<String>> result = event.result;
-
+        BookingCancellationData bookingCancellationData = event.result;
         final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
-        if (result.second != null)
-        {
-            intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
-        }
-        else
-        {
-            intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>());
-        }
-        intent.putExtra(BundleKeys.NOTICE, result.first);
+        intent.putExtra(BundleKeys.BOOKING_CANCELLATION_DATA, bookingCancellationData);
         intent.putExtra(BundleKeys.BOOKING, mBooking);
         startActivityForResult(intent, ActivityResult.BOOKING_CANCELED);
     }
 
     @Subscribe
-    public void onReceivePreCancellationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
+    public void onReceiveBookingCancellationDataError(
+            final BookingEvent.ReceiveBookingCancellationDataError event
+    )
     {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);

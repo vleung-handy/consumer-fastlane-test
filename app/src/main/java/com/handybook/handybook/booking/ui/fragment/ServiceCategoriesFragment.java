@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -15,12 +17,17 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
@@ -28,6 +35,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
@@ -90,12 +98,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     @Inject
     public Bus bus;
-
     @Inject
     DefaultPreferencesManager mDefaultPreferencesManager;
-
     @Inject
     UserManager mUserManager;
+    @Inject
+    EnvironmentModifier mEnvironmentModifier;
 
     public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
     {
@@ -116,9 +124,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageShownLog()));
-
     }
 
     @Override
@@ -146,7 +153,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
         else
         {
-            if(activity instanceof MenuDrawerActivity)
+            if (activity instanceof MenuDrawerActivity)
             {
                 ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
             }
@@ -178,6 +185,59 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         mRecyclerView.setAdapter(mAdapter);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        // We will only enable environment modifier if we are in debug bottom nav mode
+        if (BuildConfig.DEBUG
+                && mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            inflater.inflate(R.menu.menu_service_categories, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        super.onPrepareOptionsMenu(menu);
+        final MenuItem menuItem = menu.findItem(R.id.menu_environment);
+        if (menuItem != null)
+        {
+            menuItem.setTitle(mEnvironmentModifier.getEnvironment());
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.menu_environment:
+                final EditText input = new EditText(getContext());
+                input.setText(mEnvironmentModifier.getEnvironment());
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.set_environment)
+                        .setView(input)
+                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i)
+                            {
+                                // change the environment and update the menu text
+                                mEnvironmentModifier.setEnvironment(input.getText().toString());
+                                item.setTitle(input.getText().toString());
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create()
+                        .show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     //only enabled when bottom nav enabled
@@ -301,6 +361,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
     private void showCouponAppliedNotificationIfNecessary()
     {
+        //TODO currently not showing anything for hidden coupons; confirm with PM this behavior is OK
         final String coupon = bookingManager.getPromoTabCoupon();
         if (coupon != null)
         {

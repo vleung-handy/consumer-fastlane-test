@@ -257,6 +257,10 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         handleChildren(getCurrentIndex());
     }
 
+    public final int getOptionViewsCount()
+    {
+        return optionViews.length;
+    }
     public final void showAllOptions()
     {
         if (optionViews == null)
@@ -306,6 +310,11 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
             selectOption(checkBox, false);
         }
+    }
+
+    public final boolean isOptionEnabled(int position)
+    {
+        return checkMap.get(position).isEnabled();
     }
 
     public final void updateRightOptionsTitleText(String text, int position)

@@ -25,6 +25,8 @@ public class BookingTransaction extends Observable
     private String mUserId;
     @SerializedName("service_id")
     private int mServiceId;
+    @SerializedName("provider_id")
+    private String mProviderId;
     @SerializedName("first_name")
     private String mFirstName;
     @SerializedName("last_name")
@@ -65,6 +67,17 @@ public class BookingTransaction extends Observable
     private String mReferrerToken;
     @SerializedName("_android_promo_applied")
     private String mPromoCode;
+    /**
+     * TODO for ugly promo code hotfix
+     * ideally this shouldn't be sent to server
+     * (this entire object is sent to the /quotes/{quote} endpoint)
+     * but need this field in this obj for a hotfix
+     *
+     * this is set to true when we get a promo code that is not set by the user or deeplink
+     * and will make the promo text field not show
+     */
+    @SerializedName("should_promo_code_be_hidden")
+    private boolean mShouldPromoCodeBeHidden;
 
     /**
      * holds values like : {"no_commitment", "months"}
@@ -77,6 +90,11 @@ public class BookingTransaction extends Observable
      */
     @SerializedName("commitment_length")
     private int mCommitmentLength;
+
+    public boolean shouldPromoCodeBeHidden()
+    {
+        return mShouldPromoCodeBeHidden;
+    }
 
     public int getBookingId()
     {
@@ -108,6 +126,17 @@ public class BookingTransaction extends Observable
     public void setServiceId(final int serviceId)
     {
         mServiceId = serviceId;
+        triggerObservers();
+    }
+
+    public String getProviderId()
+    {
+        return mProviderId;
+    }
+
+    public void setProviderId(final String providerId)
+    {
+        mProviderId = providerId;
         triggerObservers();
     }
 
@@ -292,9 +321,16 @@ public class BookingTransaction extends Observable
         return mPromoCode;
     }
 
-    public void setPromoCode(final String promoCode)
+    /**
+     * requiring both the promo code and its hidden state to be passed as arguments
+     * to enforce that the promo hidden state gets updated whenever the promo code does
+     * @param promoCode
+     * @param shouldPromoCodeBeHidden we want the promo code hidden if not from deeplink or user input (temporary solution for hotfix)
+     */
+    public void setPromoCode(final String promoCode, final boolean shouldPromoCodeBeHidden)
     {
         mPromoCode = promoCode;
+        mShouldPromoCodeBeHidden = shouldPromoCodeBeHidden;
         triggerObservers();
     }
 
@@ -374,6 +410,7 @@ public class BookingTransaction extends Observable
             jsonObj.add("booking_id", context.serialize(value.getBookingId()));
             jsonObj.add("user_id", context.serialize(value.getUserId()));
             jsonObj.add("service_id", context.serialize(value.getServiceId()));
+            jsonObj.add("provider_id", context.serialize(value.getProviderId()));
             jsonObj.add("first_name", context.serialize(value.getFirstName()));
             jsonObj.add("last_name", context.serialize(value.getLastName()));
             jsonObj.add("address1", context.serialize(value.getAddress1()));
@@ -390,6 +427,7 @@ public class BookingTransaction extends Observable
             jsonObj.add("mobile", context.serialize(1));
             jsonObj.add("button_referrer_token", context.serialize(value.getReferrerToken()));
             jsonObj.add("_android_promo_applied", context.serialize(value.getPromoCode()));
+            jsonObj.add("should_promo_code_be_hidden", context.serialize(value.shouldPromoCodeBeHidden()));
 
             if (value.getCommitmentType() != null)
             {

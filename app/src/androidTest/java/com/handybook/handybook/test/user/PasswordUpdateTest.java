@@ -1,6 +1,8 @@
 package com.handybook.handybook.test.user;
 
 
+import android.support.test.espresso.Espresso;
+
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.test.LauncherActivityTestRule;
@@ -56,6 +58,7 @@ public class PasswordUpdateTest
         TextViewUtil.updateEditTextView(R.id.profile_new_password_text, NEW_PASSWORD);
         TextViewUtil.updateEditTextView(R.id.profile_new_password_confirmation_text, NEW_PASSWORD);
 
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.profile_password_update_button)).perform(click());
 
         ViewUtil.waitForToastMessageVisibility(

@@ -67,7 +67,8 @@ import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.fragment.ActiveBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
-import com.handybook.handybook.booking.ui.fragment.BookingCancelOptionsFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingCancelReasonFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingCancelWarningFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
@@ -230,7 +231,8 @@ import retrofit.converter.GsonConverter;
         BookingRescheduleOptionsActivity.class,
         BookingRescheduleOptionsFragment.class,
         BookingCancelOptionsActivity.class,
-        BookingCancelOptionsFragment.class,
+        BookingCancelReasonFragment.class,
+        BookingCancelWarningFragment.class,
         YozioMetaDataCallback.class,
         OnboardActivity.class,
         OnboardFragment.class,

@@ -1,13 +1,13 @@
 package com.handybook.handybook.booking.manager;
 
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -18,8 +18,8 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
-import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.SuccessWrapper;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.BookingFlowClearedEvent;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
@@ -29,7 +29,6 @@ import com.handybook.handybook.proteam.model.ProTeam;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -153,25 +152,26 @@ public class BookingManager implements Observer
     }
 
     @Subscribe
-    public void onRequestPreCancelationInfo(BookingEvent.RequestPreCancelationInfo event)
+    public void onRequestPreCancelationInfo(BookingEvent.RequestBookingCancellationData event)
     {
-        mDataManager.getPreCancelationInfo(event.bookingId, new DataManager.Callback<Pair<String,
-                List<String>>>()
-        {
-            @Override
-            public void onSuccess(final Pair<String, List<String>> result)
-            {
-                mBus.post(new BookingEvent.ReceivePreCancelationInfoSuccess(result));
-            }
+        mDataManager.getBookingCancellationData(
+                event.bookingId,
+                new DataManager.Callback<BookingCancellationData>()
+                {
+                    @Override
+                    public void onSuccess(final BookingCancellationData result)
+                    {
+                        mBus.post(new BookingEvent.ReceiveBookingCancellationDataSuccess(result));
+                    }
 
-            @Override
-            public void onError(DataManager.DataManagerError error)
-            {
-                mBus.post(new BookingEvent.ReceivePreCancelationInfoError(error));
-            }
-        });
+                    @Override
+                    public void onError(DataManager.DataManagerError error)
+                    {
+                        mBus.post(new BookingEvent.ReceiveBookingCancellationDataError(error));
+                    }
+                }
+        );
     }
-
 
     @Subscribe
     public void onRequestUpdateBookingNoteToPro(BookingEditEvent.RequestUpdateBookingNoteToPro event)
@@ -287,7 +287,7 @@ public class BookingManager implements Observer
         });
     }
 
-//Old Direct References, to eventually be handled in the events way
+    //Old Direct References, to eventually be handled in the events way
 
     public BookingRequest getCurrentRequest()
     {
@@ -645,7 +645,6 @@ public class BookingManager implements Observer
             }
         });
     }
-
 
     /**
      * TODO: no endpoint to only return the recurring bookings, must fetch part of the user bookings

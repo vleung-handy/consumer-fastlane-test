@@ -324,7 +324,8 @@ public class BookingFlowFragment extends InjectedFragment
         transaction.setZipCode(quote.getAddress().getZip());
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
-        transaction.setPromoCode(bookingManager.getPromoTabCoupon());
+        transaction.setProviderId(request.getProviderId());
+        transaction.setPromoCode(bookingManager.getPromoTabCoupon(), transaction.shouldPromoCodeBeHidden());
         if (user != null)
         {
             transaction.setEmail(user.getEmail());
@@ -344,7 +345,8 @@ public class BookingFlowFragment extends InjectedFragment
         {
             final ProTeam proTeam = bookingManager.getCurrentProTeam();
             final Intent intent;
-            if (this instanceof BookingProTeamFragment || proTeam == null || proTeam.isEmpty())
+            if (this instanceof BookingProTeamFragment || proTeam == null || proTeam.isEmpty()
+                    || !TextUtils.isBlank(request.getProviderId()))
             {
                 intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             }
@@ -511,12 +513,13 @@ public class BookingFlowFragment extends InjectedFragment
             quote.setBookingOption(oldQuote.getBookingOption());
             quote.setSurgePriceTable(oldQuote.getSurgePriceTable());
         }
-        // remove promo if new quote requested
+        // remove promo and reset its hidden state if new quote requested
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         if (transaction != null && oldQuote != null && oldQuote.getBookingId()
                 != quote.getBookingId())
         {
-            transaction.setPromoCode(null);
+            //TODO for ugly promo code hotfix
+            transaction.setPromoCode(null, false);
         }
         bookingManager.setCurrentQuote(quote);
         continueFlow();

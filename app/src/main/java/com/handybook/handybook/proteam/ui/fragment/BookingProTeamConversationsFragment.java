@@ -23,6 +23,8 @@ import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.proteam.callback.ConversationCallback;
+import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamPro;
@@ -32,22 +34,17 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
 import com.handybook.shared.layer.LayerHelper;
-import com.handybook.shared.layer.model.CreateConversationResponse;
 import com.layer.sdk.messaging.Conversation;
 import com.squareup.otto.Subscribe;
-
-import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 // TODO: a lot of these code are duplicated from ProTeamConversationsFragment. Consider a refactor.
 public class BookingProTeamConversationsFragment extends InjectedFragment
+        implements ConversationCallback
 {
     @Inject
     ProTeamManager mProTeamManager;
@@ -248,7 +245,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
                             providerId,
                             userManager.getCurrentUser().getAuthToken(),
                             "",
-                            new ConversationCallback(this)
+                            new ConversationCallbackWrapper(this)
                     );
     }
 
@@ -257,7 +254,8 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
      *
      * @param conversationId
      */
-    public void onConversationCreated(String conversationId)
+    @Override
+    public void onCreateConversationSuccess(String conversationId)
     {
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ConversationCreatedLog(String.valueOf(
                 mSelectedProTeamMember.getProTeamPro().getId()), conversationId)));
@@ -271,7 +269,8 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
         progressDialog.dismiss();
     }
 
-    private void onError()
+    @Override
+    public void onCreateConversationError()
     {
         progressDialog.dismiss();
         Toast.makeText(getContext(), R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
@@ -297,44 +296,6 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
             if (requestCode == ActivityResult.START_RESCHEDULE)
             {
                 getActivity().finish();
-            }
-        }
-    }
-
-    public static class ConversationCallback implements Callback<CreateConversationResponse>
-    {
-        private WeakReference<BookingProTeamConversationsFragment> mFragment;
-
-        public ConversationCallback(BookingProTeamConversationsFragment fragment)
-        {
-            mFragment = new WeakReference<>(fragment);
-        }
-
-        @Override
-        public void success(
-                final CreateConversationResponse createConversationResponse, final Response response
-        )
-        {
-            if (mFragment.get() != null)
-            {
-                if (createConversationResponse.isSuccess())
-                {
-                    mFragment.get()
-                             .onConversationCreated(createConversationResponse.getConversationId());
-                }
-                else
-                {
-                    mFragment.get().onError();
-                }
-            }
-        }
-
-        @Override
-        public void failure(final RetrofitError error)
-        {
-            if (mFragment.get() != null)
-            {
-                mFragment.get().onError();
             }
         }
     }

@@ -1,17 +1,16 @@
 package com.handybook.handybook.core.ui.fragment;
 
-
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
-import com.handybook.handybook.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.configuration.model.Configuration;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +45,7 @@ public class HelpCenterTest extends RobolectricGradleTestWrapper
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
-        when(mConfigurationManager.getCachedConfiguration()).thenReturn(mConfiguration);
+        when(mConfigurationManager.getPersistentConfiguration()).thenReturn(mConfiguration);
     }
 
     @Test

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +18,7 @@ import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
@@ -191,7 +191,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         else if (resultCode == ActivityResult.BOOKING_CANCELED)
         {
             setCanceledBookingResult();
-            getActivity().finish();
+            getActivity().onBackPressed();
         }
         else if (resultCode == ActivityResult.BOOKING_UPDATED)
         {
@@ -413,7 +413,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         {
             //if this reschedule event was originated from a cancelation, and it fails, then we
             //should just go forward with the cancelation
-            bus.post(new BookingEvent.RequestPreCancelationInfo(mBooking.getId()));
+            bus.post(new BookingEvent.RequestBookingCancellationData(mBooking.getId()));
         }
         else
         {
@@ -458,21 +458,20 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceivePreCancelationInfoSuccess event)
+    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceiveBookingCancellationDataSuccess event)
     {
         removeUiBlockers();
 
-        Pair<String, List<String>> result = event.result;
+        BookingCancellationData bcd = event.result;
 
         final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
-        intent.putExtra(BundleKeys.OPTIONS, new ArrayList<>(result.second));
-        intent.putExtra(BundleKeys.NOTICE, result.first);
         intent.putExtra(BundleKeys.BOOKING, mBooking);
+        intent.putExtra(BundleKeys.BOOKING_CANCELLATION_DATA, bcd);
         startActivityForResult(intent, ActivityResult.BOOKING_CANCELED);
     }
 
     @Subscribe
-    public void onReceivePreCancellationInfoError(BookingEvent.ReceivePreCancelationInfoError event)
+    public void onReceivePreCancellationInfoError(BookingEvent.ReceiveBookingCancellationDataError event)
     {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);

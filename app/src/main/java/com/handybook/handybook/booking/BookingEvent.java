@@ -1,9 +1,9 @@
 package com.handybook.handybook.booking;
 
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBooking;
@@ -213,22 +213,22 @@ public abstract class BookingEvent
     }
 
 
-    public static class RequestPreCancelationInfo extends HandyEvent.RequestEvent
+    public static class RequestBookingCancellationData extends HandyEvent.RequestEvent
     {
         public String bookingId;
 
-        public RequestPreCancelationInfo(String bookingId)
+        public RequestBookingCancellationData(String bookingId)
         {
             this.bookingId = bookingId;
         }
     }
 
 
-    public static class ReceivePreCancelationInfoSuccess extends HandyEvent.ReceiveSuccessEvent
+    public static class ReceiveBookingCancellationDataSuccess extends HandyEvent.ReceiveSuccessEvent
     {
-        public Pair<String, List<String>> result;
+        public BookingCancellationData result;
 
-        public ReceivePreCancelationInfoSuccess(Pair<String, List<String>> result)
+        public ReceiveBookingCancellationDataSuccess(final BookingCancellationData result)
         {
             this.result = result;
         }
@@ -236,9 +236,9 @@ public abstract class BookingEvent
     }
 
 
-    public static class ReceivePreCancelationInfoError extends HandyEvent.ReceiveErrorEvent
+    public static class ReceiveBookingCancellationDataError extends HandyEvent.ReceiveErrorEvent
     {
-        public ReceivePreCancelationInfoError(DataManager.DataManagerError error)
+        public ReceiveBookingCancellationDataError(DataManager.DataManagerError error)
         {
             this.error = error;
         }
