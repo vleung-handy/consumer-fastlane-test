@@ -22,6 +22,8 @@
           type="id"/>
     <item name="action_button_edit_hours"
           type="id"/>
+    <item name="action_button_skip_booking"
+          type="id"/>
     <item name="action_button_cancel_booking"
           type="id"/>
     <item name="action_button_contact_phone"
