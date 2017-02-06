@@ -44,4 +44,58 @@ public abstract class AppLog extends EventLog
             mPage = page;
         }
     }
+
+    //TODO log in right place
+    public abstract static class PersistentPromoLog extends AppLog
+    {
+        //TODO verify these with PM
+        private static final String EVENT_TYPE = "persistent_promo";
+
+        @SerializedName("promo_id")
+        private final String mPromoId;
+
+        PersistentPromoLog(String eventSubType, String promoId)
+        {
+            super(EVENT_TYPE + "_" + eventSubType);
+            mPromoId = promoId;
+        }
+
+        /**
+         * persistent promo preview is shown
+         */
+        public static class PreviewShown extends PersistentPromoLog
+        {
+            private static final String EVENT_TYPE = "preview_shown";
+            public PreviewShown(String offerId)
+            {
+                super(EVENT_TYPE, offerId);
+            }
+        }
+
+
+        /**
+         * persistent promo is fully expanded
+         */
+        public static class ExpandedViewShown extends PersistentPromoLog
+        {
+            private static final String EVENT_TYPE = "expanded_view_shown";
+            public ExpandedViewShown(String offerId)
+            {
+                super(EVENT_TYPE, offerId);
+            }
+        }
+
+
+        /**
+         * persistent promo expanded view action button is clicked
+         */
+        public static class ExpandedViewActionClicked extends PersistentPromoLog
+        {
+            private static final String EVENT_TYPE = "expanded_view_action_clicked";
+            public ExpandedViewActionClicked(String offerId)
+            {
+                super(EVENT_TYPE, offerId);
+            }
+        }
+    }
 }
