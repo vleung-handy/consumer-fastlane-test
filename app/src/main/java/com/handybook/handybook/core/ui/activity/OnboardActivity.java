@@ -3,7 +3,6 @@ package com.handybook.handybook.core.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.handybook.handybook.core.ui.fragment.OnboardFragment;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
@@ -11,7 +10,6 @@ import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import static com.handybook.handybook.core.constant.ActivityResult.LOGIN_FINISH;
 
 public final class OnboardActivity extends MenuDrawerActivity {
-    private static final String TAG = "OnboardActivity";
 
     Fragment mFragment;
 
@@ -23,7 +21,6 @@ public final class OnboardActivity extends MenuDrawerActivity {
             return mFragment;
         }
 
-        Log.d(TAG, "createFragment: returning legacy onboarding fragment");
         return OnboardFragment.newInstance();
     }
 
