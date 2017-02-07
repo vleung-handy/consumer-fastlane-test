@@ -39,6 +39,7 @@ import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
+import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.OnboardingLog;
 
@@ -192,7 +193,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             public void afterTextChanged(final Editable s)
             {
                 final String email = s.toString().trim();
-                if (email.matches("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"))
+                if (email.matches(Utils.EMAIL_VALIDATION_REGEX))
                 {
                     mSubmitButton.setEnabled(true);
                 }
