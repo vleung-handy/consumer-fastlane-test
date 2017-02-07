@@ -7,29 +7,31 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.core.ui.fragment.OnboardFragment;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
 
-import static com.handybook.handybook.core.constant.ActivityResult.LOGIN_FINISH;
+import com.handybook.handybook.core.constant.ActivityResult;
 
 public final class OnboardActivity extends MenuDrawerActivity {
 
-    Fragment mFragment;
 
     @Override
     protected final Fragment createFragment() {
         if (mConfigurationManager.getPersistentConfiguration().isOnboardingEnabled())
         {
-            mFragment = OnboardV2Fragment.newInstance();
-            return mFragment;
+            mActiveFragment = OnboardV2Fragment.newInstance();
+        }
+        else
+        {
+            mActiveFragment = OnboardFragment.newInstance();
         }
 
-        return OnboardFragment.newInstance();
+        return mActiveFragment;
     }
 
     @Override
     public void onBackPressed()
     {
-        if (mFragment != null && mFragment instanceof OnboardV2Fragment)
+        if (mActiveFragment != null && mActiveFragment instanceof OnboardV2Fragment)
         {
-            if (((OnboardV2Fragment) mFragment).onBackPressed())
+            if (((OnboardV2Fragment) mActiveFragment).onBackPressed())
             {
                 return;
             }
@@ -49,16 +51,11 @@ public final class OnboardActivity extends MenuDrawerActivity {
         disableDrawer = true;
     }
 
-    public Fragment getActiveFragment()
-    {
-        return mFragment;
-    }
-
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == LOGIN_FINISH)
+        if (resultCode == ActivityResult.LOGIN_FINISH)
         {
             //Will reach here if a login request originated from this activity is completed.
             finish();

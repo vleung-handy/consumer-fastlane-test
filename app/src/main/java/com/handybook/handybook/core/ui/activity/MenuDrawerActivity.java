@@ -72,6 +72,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
     @Inject
     LayerHelper mLayerHelper;
 
+    Fragment mActiveFragment;
+
     protected boolean disableDrawer;
     protected boolean mShouldShowNavForTransition;
     private Object mBusEventListener;
@@ -79,6 +81,11 @@ public abstract class MenuDrawerActivity extends BaseActivity
     protected abstract Fragment createFragment();
 
     protected abstract String getNavItemTitle();
+
+    protected Fragment getActiveFragemnt()
+    {
+        return mActiveFragment;
+    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -424,12 +431,9 @@ public abstract class MenuDrawerActivity extends BaseActivity
 
     private boolean isOnboardingV2Showing()
     {
-        if (this instanceof OnboardActivity)
+        if (this instanceof OnboardActivity && mActiveFragment instanceof OnboardV2Fragment)
         {
-            if (((OnboardActivity) this).getActiveFragment() instanceof OnboardV2Fragment)
-            {
-                return true;
-            }
+            return true;
         }
 
         return false;

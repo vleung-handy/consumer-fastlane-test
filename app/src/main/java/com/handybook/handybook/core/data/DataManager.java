@@ -120,9 +120,8 @@ public class DataManager
      * Takes in a JSONObject that is returned from /services call and converts them into a list of Service
      * @return
      */
-    private
     @NonNull
-    List<Service> getServicesFromJson(JSONObject response)
+    private List<Service> getServicesFromJson(JSONObject response)
     {
         final JSONArray array = response.optJSONArray("services_list");
 

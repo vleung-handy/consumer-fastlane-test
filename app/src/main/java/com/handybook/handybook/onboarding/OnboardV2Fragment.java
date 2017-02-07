@@ -55,7 +55,13 @@ import static com.handybook.handybook.core.constant.BundleKeys.ZIP;
 import static com.handybook.handybook.core.constant.RequestCode.LOGIN_FROM_ONBOARDING;
 
 /**
- * This is the new onboarding fragment that is supposed to
+ * This is the new onboarding fragment that is supposed to prompt the user for zip and email.
+ * If the email is an existing user, we prompt them to login. Otherwise, if we have services
+ * supporting the user's zip, we display those. If we don't support that zip, the user will
+ * be brought to {@link NotSupportedActivity}.
+ *
+ * The ZIP will always be stored locally in shared prefs. The email will only be stored if it's a
+ * new user to Handy.
  */
 public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.OnOffsetChangedListener
 {
@@ -223,7 +229,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         return view;
     }
 
-    @OnClick(R.id.button_next)
+    @OnClick(R.id.onboard_button_next)
     public void nextClicked()
     {
         mZip = mEditZip.getText().toString();
@@ -272,7 +278,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     {
         if (item.getItemId() == R.id.menu_sign_in)
         {
-            signinClicked();
+            redirectToLogin();
         }
         else if (item.getItemId() == android.R.id.home)
         {
@@ -320,7 +326,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
     }
 
-    @OnClick(R.id.button_signin_1)
+    @OnClick(R.id.onboard_signin_1)
     public void signinClicked()
     {
         redirectToLogin();
@@ -332,7 +338,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         startActivityForResult(intent, LOGIN_FROM_ONBOARDING);
     }
 
-    @OnClick(R.id.button_submit)
+    @OnClick(R.id.onboard_button_submit)
     public void emailSubmitClicked()
     {
         mEmail = mEditEmail.getText().toString();

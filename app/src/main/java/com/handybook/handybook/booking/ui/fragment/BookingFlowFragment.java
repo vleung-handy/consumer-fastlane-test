@@ -32,6 +32,7 @@ import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
@@ -46,8 +47,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class BookingFlowFragment extends InjectedFragment
 {
+    @Inject
+    protected DefaultPreferencesManager mDefaultPreferencesManager;
 
     @Override
     public void onCreate(final Bundle savedInstanceState)

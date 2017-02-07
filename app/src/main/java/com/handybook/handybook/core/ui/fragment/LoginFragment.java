@@ -37,7 +37,6 @@ import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
@@ -52,12 +51,11 @@ import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.squareup.otto.Subscribe;
 
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.handybook.handybook.core.constant.ActivityResult.LOGIN_FINISH;
+import com.handybook.handybook.core.constant.ActivityResult;
 
 public final class LoginFragment extends BookingFlowFragment
 {
@@ -105,9 +103,6 @@ public final class LoginFragment extends BookingFlowFragment
     @Bind(R.id.login_scroll_view)
     ScrollView mLoginScrollView;
 
-    @Inject
-    DefaultPreferencesManager mDefaultPreferencesManager;
-
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
     private Bundle mDestinationExtras;
@@ -116,8 +111,8 @@ public final class LoginFragment extends BookingFlowFragment
             final boolean findUser,
             final String bookingUserName,
             final String bookingUserEmail,
-            boolean fromBookingFunnel,
-            boolean fromOnboarding
+            final boolean fromBookingFunnel,
+            final boolean fromOnboarding
     )
     {
         final LoginFragment fragment = new LoginFragment();
@@ -434,7 +429,7 @@ public final class LoginFragment extends BookingFlowFragment
                                         LoginActivity.EXTRA_BOOKING_USER_NAME,
                                         userExistsResponse.getFirstName()
                                 );
-                                startActivityForResult(intent, LOGIN_FINISH);
+                                startActivityForResult(intent, ActivityResult.LOGIN_FINISH);
 
                                 progressDialog.dismiss();
                                 enableInputs();
@@ -612,7 +607,7 @@ public final class LoginFragment extends BookingFlowFragment
             //onboarding, or from the booking process, we direct the user to the home page for a
             //clean start.
             bookingManager.clear();
-            getActivity().setResult(LOGIN_FINISH);
+            getActivity().setResult(ActivityResult.LOGIN_FINISH);
             Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             getActivity().startActivity(intent);
