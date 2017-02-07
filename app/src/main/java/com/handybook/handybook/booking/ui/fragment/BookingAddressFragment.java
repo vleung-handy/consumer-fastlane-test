@@ -34,18 +34,18 @@ import butterknife.ButterKnife;
 
 public final class BookingAddressFragment extends BookingFlowFragment
 {
-    @Bind(R.id.main_container)
+    @Bind(R.id.booking_address_main_container)
     View mMainContainer;
     @Bind(R.id.next_button)
     Button mButtonNext;
-    @Bind(R.id.text_fullname)
+    @Bind(R.id.booking_address_fullname)
     FullNameInputTextView mTextFullName;
-    @Bind(R.id.text_phone_prefix)
+    @Bind(R.id.booking_address_phone_prefix)
     TextView mTextPhonePrefix;
-    @Bind(R.id.text_phone)
+    @Bind(R.id.booking_address_phone)
     PhoneInputTextView mTextPhone;
 
-    @Bind(R.id.text_email)
+    @Bind(R.id.booking_address_email)
     EmailInputTextView mTextEmail;
 
     @Bind(R.id.toolbar)
@@ -82,7 +82,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
         setupToolbar(mToolbar, getString(R.string.address));
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.info_header_layout, header).commit();
+        transaction.replace(R.id.booking_address_info_header_layout, header).commit();
         ZipValidationResponse.ZipArea filter = null;
         if (bookingManager.getCurrentRequest() != null)
         {

@@ -9,7 +9,7 @@
     >
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/onboard_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -17,7 +17,7 @@
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+            android:id="@+id/onboard_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -26,7 +26,7 @@
             >
 
             <RelativeLayout
-                android:id="@+id/expanded_view"
+                android:id="@+id/onboard_expanded_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/default_padding"
@@ -37,7 +37,7 @@
                 >
 
                 <ImageView
-                    android:id="@+id/image_logo"
+                    android:id="@+id/onboard_image_logo"
                     android:layout_width="@dimen/onboarding_logo_width"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -48,10 +48,10 @@
                     />
 
                 <TextView
-                    android:id="@+id/text_title"
+                    android:id="@+id/onboard_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/image_logo"
+                    android:layout_below="@id/onboard_image_logo"
                     android:layout_marginTop="@dimen/default_margin"
                     android:gravity="center_horizontal"
                     android:text="@string/onboard_title"
@@ -65,14 +65,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_below="@id/text_title"
+                    android:layout_below="@id/onboard_title"
                     android:layout_centerHorizontal="true"
                     app:layout_collapseMode="pin"
                     android:layout_marginTop="@dimen/default_margin"
                     >
 
                     <TextView
-                        android:id="@+id/text_already_have_account"
+                        android:id="@+id/onboard_already_have_account"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/onboard_already_account"
@@ -80,7 +80,7 @@
                         />
 
                     <Button
-                        android:id="@+id/button_signin_1"
+                        android:id="@+id/onboard_signin_1"
                         style="@style/Base.Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
             </RelativeLayout>
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/onboard_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
@@ -128,7 +128,7 @@
             />
 
         <ViewSwitcher
-            android:id="@+id/view_switcher"
+            android:id="@+id/onboard_view_switcher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin_3x"
@@ -140,7 +140,7 @@
             >
 
             <LinearLayout
-                android:id="@+id/view_zip"
+                android:id="@+id/onboard_zip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -168,7 +168,7 @@
                     >
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_zip"
+                        android:id="@+id/onboard_edit_zip"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -178,7 +178,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
-                    android:id="@+id/button_next"
+                    android:id="@+id/onboard_button_next"
                     android:text="@string/next"
                     android:enabled="false"
                     style="@style/Button.Green"
@@ -187,7 +187,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/view_email"
+                android:id="@+id/onboard_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -215,7 +215,7 @@
                     >
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_email"
+                        android:id="@+id/onboard_edit_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -225,7 +225,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
-                    android:id="@+id/button_submit"
+                    android:id="@+id/onboard_button_submit"
                     android:text="@string/next"
                     android:enabled="false"
                     style="@style/Button.Green"

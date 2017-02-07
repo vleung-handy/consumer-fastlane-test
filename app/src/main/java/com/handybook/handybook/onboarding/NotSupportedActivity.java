@@ -16,7 +16,7 @@ import butterknife.OnClick;
 public class NotSupportedActivity extends BaseActivity
 {
 
-    @Bind(R.id.text_zip)
+    @Bind(R.id.not_supported_zip)
     TextView mTextZip;
 
     @Override
@@ -29,7 +29,7 @@ public class NotSupportedActivity extends BaseActivity
         mTextZip.setText(zipPrefix + ": " + getIntent().getStringExtra(BundleKeys.ZIP));
     }
 
-    @OnClick(R.id.button_try_another_zip)
+    @OnClick(R.id.not_supported_try_another_zip)
     public void submitClicked()
     {
         Intent intent = new Intent(this, OnboardActivity.class);

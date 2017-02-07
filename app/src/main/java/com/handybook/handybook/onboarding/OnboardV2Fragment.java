@@ -65,34 +65,34 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     // Threshold for minimal keyboard height.
     final int MIN_KEYBOARD_HEIGHT_PX = 150;
 
-    @Bind(R.id.toolbar)
+    @Bind(R.id.onboard_toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.appbar)
+    @Bind(R.id.onboard_appbar)
     AppBarLayout mAppBar;
 
-    @Bind(R.id.collapsing_toolbar)
+    @Bind(R.id.onboard_collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
 
-    @Bind(R.id.edit_zip)
+    @Bind(R.id.onboard_edit_zip)
     TextInputEditText mEditZip;
 
-    @Bind(R.id.edit_email)
+    @Bind(R.id.onboard_edit_email)
     TextInputEditText mEditEmail;
 
-    @Bind(R.id.view_switcher)
+    @Bind(R.id.onboard_view_switcher)
     ViewSwitcher mViewSwitcher;
 
-    @Bind(R.id.button_next)
+    @Bind(R.id.onboard_button_next)
     Button mNextButton;
 
-    @Bind(R.id.button_submit)
+    @Bind(R.id.onboard_button_submit)
     Button mSubmitButton;
 
-    @Bind(R.id.view_email)
+    @Bind(R.id.onboard_email)
     View mEmailView;
 
-    @Bind(R.id.view_zip)
+    @Bind(R.id.onboard_zip)
     View mZipView;
 
     @Inject

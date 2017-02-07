@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/activity_dont_support"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,14 +21,14 @@
         >
 
         <ImageView
-            android:id="@+id/image_main"
+            android:id="@+id/not_supported_image_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_city"
             />
 
         <TextView
-            android:id="@+id/text_zip"
+            android:id="@+id/not_supported_zip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="ZIP Code: 10022"
@@ -38,7 +37,7 @@
             />
 
         <TextView
-            android:id="@+id/text_title"
+            android:id="@+id/not_supported_title"
             style="@style/TextView.XLarge.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +47,7 @@
             />
 
         <TextView
-            android:id="@+id/text_sub_title"
+            android:id="@+id/not_supported_sub_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
@@ -59,7 +58,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_try_another_zip"
+        android:id="@+id/not_supported_try_another_zip"
         android:layout_alignParentBottom="true"
         style="@style/Button.Green"
         android:text="@string/onboard_try_another_zip"
