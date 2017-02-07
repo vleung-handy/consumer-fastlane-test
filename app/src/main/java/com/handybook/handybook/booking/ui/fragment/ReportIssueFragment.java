@@ -29,7 +29,6 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
@@ -87,8 +86,8 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                     && providerAssignmentInfo.isProTeamMatch())
             {
                 progressDialog.show();
-                bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
-                        mBooking.getId(), ActiveBookingLog.BookingProContactedLog.CHAT)));
+                bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
+                        mBooking.getId(), IssueResolutionLog.ProContacted.CHAT)));
                 HandyLibrary.getInstance()
                             .getHandyService()
                             .createConversation(
