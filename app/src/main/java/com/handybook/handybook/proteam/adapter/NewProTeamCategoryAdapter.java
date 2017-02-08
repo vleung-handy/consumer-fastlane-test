@@ -141,7 +141,7 @@ public class NewProTeamCategoryAdapter
                 @Override
                 public void onClick(final View v)
                 {
-                    // FIXME: Implement
+                    // TODO: Implement
                 }
             });
         }
@@ -195,7 +195,7 @@ public class NewProTeamCategoryAdapter
                 @Override
                 public void onClick(final View v)
                 {
-                    // FIXME: Implement
+                    // TODO: Implement
                 }
             });
             // This listener will give the illusion that the checkbox doesn't change state which is
