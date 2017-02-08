@@ -93,13 +93,49 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:animateLayoutChanges="true"
-        android:clipToPadding="true"
+        android:clipToPadding="false"
         android:horizontalSpacing="@dimen/service_home_padding"
         android:numColumns="2"
-        android:paddingBottom="@dimen/service_home_padding"
-        android:paddingLeft="@dimen/service_home_padding"
-        android:paddingRight="@dimen/service_home_padding"
+        android:paddingBottom="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
         android:paddingTop="@dimen/default_padding"
         android:verticalSpacing="@dimen/service_home_padding"
         />
+
+    <LinearLayout
+        android:id="@+id/coupon_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_padding"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+
+        <ImageView
+            android:id="@+id/promo_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="promotion"
+            android:src="@drawable/ic_price_tag"
+            />
+
+        <TextView
+            android:id="@+id/promo_text"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/using_promo"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
 </LinearLayout>

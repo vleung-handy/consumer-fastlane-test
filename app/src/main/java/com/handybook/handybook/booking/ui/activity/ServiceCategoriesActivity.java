@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
-import com.handybook.handybook.deeplink.DeepLinkParams;
+import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.deeplink.DeepLinkParams;
 
 import javax.inject.Inject;
 
@@ -40,6 +42,13 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity
         //handle deep link params
         String serviceId = bundleOrUrlParam(DeepLinkParams.SERVICE_ID);
         String promoCode = bundleOrUrlParam(DeepLinkParams.PROMO_CODE);
+
+        Configuration configuration = mConfigurationManager.getPersistentConfiguration();
+        if(configuration.isBottomNavEnabled() && configuration.isHomeScreenV2Enabled())
+        {
+            return ServiceCategoriesHomeFragment.newInstance(serviceId, promoCode);
+        }
+
         return ServiceCategoriesFragment.newInstance(serviceId, promoCode);
     }
 
