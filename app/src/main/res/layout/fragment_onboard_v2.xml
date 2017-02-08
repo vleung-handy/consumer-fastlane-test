@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/onboard_already_account"
                         android:textColor="@color/handy_white"
-                        android:layout_marginRight="-2dp"
+                        android:layout_marginRight="-8dp"
                         />
 
                     <Button
@@ -168,7 +168,7 @@
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginLeft="@dimen/default_margin_double"
                     android:layout_marginRight="@dimen/default_margin_double"
-                    android:theme="@style/TextInputBlueTheme"
+                    android:theme="@style/TextInputBlackTheme"
                     >
 
                     <android.support.design.widget.TextInputEditText
@@ -215,7 +215,7 @@
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginLeft="@dimen/default_margin_double"
                     android:layout_marginRight="@dimen/default_margin_double"
-                    android:theme="@style/TextInputBlueTheme"
+                    android:theme="@style/TextInputBlackTheme"
                     >
 
                     <android.support.design.widget.TextInputEditText

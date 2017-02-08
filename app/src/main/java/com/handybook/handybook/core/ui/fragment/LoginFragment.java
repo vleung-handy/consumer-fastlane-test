@@ -227,6 +227,11 @@ public final class LoginFragment extends BookingFlowFragment
 
         }
 
+        if (mIsFromOnboarding)
+        {
+            //we don't show the "drawer" stuff if onboarding is enabled.
+            activity.setDrawerDisabled(true);
+        }
         mFbLoginButton.setFragment(this);
         mFbLoginButton.setReadPermissions("public_profile", "email", "user_friends");
 

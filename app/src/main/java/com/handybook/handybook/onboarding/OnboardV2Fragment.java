@@ -403,6 +403,7 @@ public class OnboardV2Fragment extends InjectedFragment
     private void redirectToLogin()
     {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.putExtra(LoginActivity.EXTRA_FROM_ONBOARDING, true);
         startActivityForResult(intent, LOGIN_FROM_ONBOARDING);
     }
 

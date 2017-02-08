@@ -166,7 +166,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
     }
 
     /**
-     * Tests that the sign in buttons launches the login activity
+     * Tests that the sign in button launches the login activity
      */
     @Test
     public void testSignin()
@@ -174,13 +174,6 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
         mFragment.signinClicked();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(
-                nextStartedActivity.getComponent().getClassName(),
-                equalTo(LoginActivity.class.getName())
-        );
-
-        mFragment.signin2Clicked();
-        nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(
                 nextStartedActivity.getComponent().getClassName(),
                 equalTo(LoginActivity.class.getName())
