@@ -1,6 +1,5 @@
 package com.handybook.handybook.proteam.ui.fragment;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +33,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 /**
  * A simple {@link Fragment} subclass. Use the {@link ProTeamEditFragment#newInstance} factory
  * method to create an instance of this fragment.
@@ -49,6 +47,8 @@ public class ProTeamEditFragment extends InjectedFragment implements
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.pro_team_list_holder)
     ViewGroup mProTeamListHolder;
+    @Bind(R.id.pro_team_toolbar_save_button)
+    View mSaveButton;
 
     private ProTeam mProTeam;
     private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
@@ -108,6 +108,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
                 requestProTeam();
             }
         });
+        mSaveButton.setVisibility(isSettingFavoriteProEnabled() ? View.GONE : View.VISIBLE);
         if (mProTeam != null)
         {
             initialize();
@@ -119,7 +120,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onResume()
     {
         super.onResume();
-        setupToolbar(mToolbar, getString(R.string.edit_pro_team));
+        setupToolbar(mToolbar, getString(R.string.pro_team));
         if (mProTeam == null)
         {
             mSwipeRefreshLayout.setRefreshing(true);
@@ -149,6 +150,23 @@ public class ProTeamEditFragment extends InjectedFragment implements
 
     private void initialize()
     {
+        if (isSettingFavoriteProEnabled())
+        {
+            initNewProTeamListFragment();
+        }
+        else
+        {
+            initProTeamListFragment();
+        }
+    }
+
+    private boolean isSettingFavoriteProEnabled()
+    {
+        return mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled();
+    }
+
+    private void initProTeamListFragment()
+    {
         mProTeamListFragment = ProTeamProListFragment.newInstance(mProTeam, null);
         mProTeamListFragment.setOnProInteraction(this);
         getChildFragmentManager()
@@ -158,11 +176,29 @@ public class ProTeamEditFragment extends InjectedFragment implements
         mProTeamListFragment.setProTeam(mProTeam);
     }
 
+    private void initNewProTeamListFragment()
+    {
+        if (mProTeam != null)
+        {
+            final NewProTeamProListFragment fragment = NewProTeamProListFragment.newInstance(
+                    mProTeam.getCategory(ProTeamCategoryType.CLEANING),
+                    ProTeamCategoryType.CLEANING
+            );
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.pro_team_list_holder, fragment)
+                    .commit();
+        }
+    }
+
     @Subscribe
     public void onReceiveProTeamEditSuccess(final ProTeamEvent.ReceiveProTeamEditSuccess event)
     {
         mProTeam = event.getProTeam();
-        mProTeamListFragment.setProTeam(mProTeam);
+        if (mProTeamListFragment != null)
+        {
+            mProTeamListFragment.setProTeam(mProTeam);
+        }
         clearEditHolders();
         removeUiBlockers();
         showToast(R.string.pro_team_update_successful);

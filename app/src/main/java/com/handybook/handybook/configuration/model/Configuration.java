@@ -45,6 +45,8 @@ public class Configuration implements Serializable
 
     @SerializedName("direct_sms_to_chat_enabled")
     private boolean mDirectSmsToChatEnabled;
+    @SerializedName("setting_favorite_pro_enabled")
+    private boolean mSettingFavoriteProEnabled;
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
      * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
@@ -122,5 +124,10 @@ public class Configuration implements Serializable
     public boolean isDirectSmsToChatEnabled()
     {
         return mDirectSmsToChatEnabled;
+    }
+
+    public boolean isSettingFavoriteProEnabled()
+    {
+        return mSettingFavoriteProEnabled && false;
     }
 }

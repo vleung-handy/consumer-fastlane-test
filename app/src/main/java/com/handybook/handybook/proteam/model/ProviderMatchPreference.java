@@ -39,7 +39,6 @@ public enum ProviderMatchPreference
         return preference == null ? INDIFFERENT.toString() : preference.toString();
     }
 
-
     /**
      * String constants that represent/can be converted to/from the ProviderMatchPreference
      */
