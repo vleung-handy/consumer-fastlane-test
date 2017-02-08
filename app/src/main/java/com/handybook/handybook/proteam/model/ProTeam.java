@@ -164,8 +164,8 @@ public class ProTeam implements Parcelable
         private List<ProTeamPro> mIndifferent;
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_NEVER)
         private List<ProTeamPro> mNever;
-        @SerializedName("favorite_pro_id")
-        private String mFavoriteProId;
+
+        private ProTeamPro mFavoritePro;
 
         ProTeamCategory() { }
 
@@ -177,7 +177,6 @@ public class ProTeam implements Parcelable
             in.readList(mIndifferent, ProTeamPro.class.getClassLoader());
             mNever = new ArrayList<>();
             in.readList(mNever, ProTeamPro.class.getClassLoader());
-            mFavoriteProId = in.readString();
         }
 
         public void filterFavorPros(@NonNull final List<ProTeamPro> pros)
@@ -307,9 +306,20 @@ public class ProTeam implements Parcelable
         }
 
         @Nullable
-        public String getFavoritePro()
+        public ProTeamPro getFavoritePro()
         {
-            return mFavoriteProId;
+            if (mFavoritePro == null && mPreferred != null)
+            {
+                for (final ProTeamPro proTeamPro : mPreferred)
+                {
+                    if (proTeamPro.isFavorite())
+                    {
+                        mFavoritePro = proTeamPro;
+                        break;
+                    }
+                }
+            }
+            return mFavoritePro;
         }
 
         public static class Builder

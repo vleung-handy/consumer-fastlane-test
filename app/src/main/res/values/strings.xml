@@ -397,6 +397,13 @@
     <string name="conversation_tip_body">Tap the calendar to set your new date and time.</string>
     <string name="prefer_different_pro">Prefer another pro?</string>
     <string name="reschedule_with_pro">None of your pros are free for this booking. Reschedule with them directly or try the top-rated Backup Pro we found for you.</string>
+    <string name="favorite_pro">Favorite Pro</string>
+    <string name="backup_pros">Backup Pros</string>
+    <string name="pro_team">Pro Team</string>
+    <string name="no_favorite_pro_title">Have a Favorite Pro?</string>
+    <string name="no_favorite_pro_subtitle">Tap the heart to make it official</string>
+    <string name="no_pro_team_title">Work with pro again?</string>
+    <string name="no_pro_team_subtitle">Rate them highly to see them again</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
