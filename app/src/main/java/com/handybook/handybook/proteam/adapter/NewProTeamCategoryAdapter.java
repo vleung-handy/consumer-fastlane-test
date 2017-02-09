@@ -192,7 +192,7 @@ public class NewProTeamCategoryAdapter
             }
             else
             {
-                showEmptyState(getAdapterPosition() == FAVORITE_PRO_POSITION);
+                showEmptyState();
             }
         }
 
@@ -241,11 +241,11 @@ public class NewProTeamCategoryAdapter
             mProProfile.setImage(pro.getImageUrl());
         }
 
-        private void showEmptyState(final boolean isFavoriteProPosition)
+        private void showEmptyState()
         {
             mProTeamProCardHolder.setVisibility(View.GONE);
             mEmptyStateHolder.setVisibility(View.VISIBLE);
-            if (isFavoriteProPosition)
+            if (getAdapterPosition() == FAVORITE_PRO_POSITION)
             {
                 mEmptyStateTitle.setText(R.string.no_favorite_pro_title);
                 mEmptyStateSubtitle.setText(R.string.no_favorite_pro_subtitle);
