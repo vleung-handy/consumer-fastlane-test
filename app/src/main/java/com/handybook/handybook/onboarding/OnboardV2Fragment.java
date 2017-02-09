@@ -49,8 +49,6 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import javax.inject.Inject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -83,7 +81,7 @@ public class OnboardV2Fragment extends InjectedFragment
     @Bind(R.id.onboard_collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
 
-    @Bind(R.id.text_already_have_account)
+    @Bind(R.id.onboard_already_have_account)
     TextView mAlreadyHaveAccount;
 
     @Bind(R.id.onboard_edit_zip)
@@ -98,7 +96,7 @@ public class OnboardV2Fragment extends InjectedFragment
     @Bind(R.id.pinned_layout)
     LinearLayout mPinnedLayout;
 
-    @Bind(R.id.button_signin_1)
+    @Bind(R.id.onboard_signin)
     Button mButtonSignIn;
 
     @Bind(R.id.onboard_button_next)
@@ -394,7 +392,7 @@ public class OnboardV2Fragment extends InjectedFragment
         }
     }
 
-    @OnClick(R.id.onboard_signin_1)
+    @OnClick(R.id.onboard_signin)
     public void signinClicked()
     {
         redirectToLogin();
