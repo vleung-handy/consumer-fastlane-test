@@ -29,7 +29,9 @@ public class BundleKeys
     public static final String PRO_TEAM_CATEGORY_TYPE = "pro_team_category_type";
     public static final String PRO_TEAM_EDIT = "pro_team_edit";
     public static final String PRO_TEAM_PRO = "pro_team_pro";
+    public static final String PRO_TEAM_PRO_ID = "pro_team_pro_id";
     public static final String PRO_TEAM_PRO_PREFERENCE = "pro_team_pro_preference";
+    public static final String EDIT_PRO_TEAM_PREFERENCE_ACTION_TYPE = "edit_pro_team_preference_action_type";
     public static final String RECURRING_BOOKING = "recurring_booking";
     public static final String RECURRING_PLAN = "recurring_plan";
     public static final String RECURRING_PLANS = "recurring_plans";

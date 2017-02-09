@@ -1,17 +1,20 @@
 package com.handybook.handybook.proteam.ui.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.SlideUpDialogFragment;
 import com.handybook.handybook.proteam.ui.view.ProTeamActionPickerItem;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
@@ -92,8 +95,22 @@ public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
                 @Override
                 public void onClick(final View view)
                 {
-                    // TODO: Implement
-                    Toast.makeText(getActivity(), actionType.name(), Toast.LENGTH_SHORT).show();
+                    final Fragment targetFragment = getTargetFragment();
+                    if (targetFragment != null)
+                    {
+                        final Intent data = new Intent().putExtra(
+                                BundleKeys.PRO_TEAM_PRO_ID,
+                                mViewModel.getProId()
+                        ).putExtra(
+                                BundleKeys.EDIT_PRO_TEAM_PREFERENCE_ACTION_TYPE,
+                                actionType
+                        );
+                        targetFragment.onActivityResult(
+                                getTargetRequestCode(),
+                                Activity.RESULT_OK,
+                                data
+                        );
+                    }
                     dismiss();
                 }
             });
