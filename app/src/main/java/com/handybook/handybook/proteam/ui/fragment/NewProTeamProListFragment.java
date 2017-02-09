@@ -9,14 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.proteam.adapter.NewProTeamCategoryAdapter;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamPro;
+import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
+import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,13 +47,56 @@ public class NewProTeamProListFragment extends InjectedFragment
                 @Override
                 public void onHeartClick(final ProTeamPro proTeamPro)
                 {
-                    // TODO: Implement
+                    String title;
+                    String subtitle = null;
+                    List<ActionType> actionTypes = new ArrayList<>();
+                    if (proTeamPro.isFavorite())
+                    {
+                        title = getString(
+                                R.string.remove_as_favorite_formatted,
+                                proTeamPro.getName()
+                        );
+                        actionTypes.add(ActionType.REMOVE);
+                        actionTypes.add(ActionType.BLOCK);
+                    }
+                    else
+                    {
+                        title = getString(R.string.set_as_favorite_formatted, proTeamPro.getName());
+                        final ProTeamPro favoritePro = mProTeamCategory.getFavoritePro();
+                        if (favoritePro != null)
+                        {
+                            subtitle = getString(
+                                    R.string.auto_remove_as_favorite_warning_formatted,
+                                    favoritePro.getName()
+                            );
+                        }
+                        actionTypes.add(ActionType.FAVORITE);
+                    }
+
+                    final ProTeamActionPickerViewModel viewModel = new ProTeamActionPickerViewModel(
+                            proTeamPro.getImageUrl(),
+                            title,
+                            subtitle,
+                            actionTypes
+                    );
+                    final ProTeamActionPickerDialogFragment dialogFragment =
+                            ProTeamActionPickerDialogFragment.newInstance(viewModel);
+                    FragmentUtils.safeLaunchDialogFragment(dialogFragment, getActivity(), null);
                 }
 
                 @Override
                 public void onLongClick(final ProTeamPro proTeamPro)
                 {
-                    // TODO: Implement
+
+                    final ProTeamActionPickerViewModel viewModel = new ProTeamActionPickerViewModel(
+                            proTeamPro.getImageUrl(),
+                            getString(R.string.block_formatted, proTeamPro.getName()),
+                            null,
+                            Lists.newArrayList(ActionType.BLOCK)
+                    );
+                    final ProTeamActionPickerDialogFragment dialogFragment =
+                            ProTeamActionPickerDialogFragment.newInstance(viewModel);
+                    FragmentUtils.safeLaunchDialogFragment(dialogFragment, getActivity(), null);
                 }
             };
 

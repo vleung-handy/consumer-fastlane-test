@@ -180,6 +180,15 @@ public class NewProTeamCategoryAdapter
             if (item != null)
             {
                 showActiveState((ProTeamPro) item);
+                mProTeamProCardHolder.setOnLongClickListener(new View.OnLongClickListener()
+                {
+                    @Override
+                    public boolean onLongClick(final View view)
+                    {
+                        mActionCallbacks.onLongClick((ProTeamPro) item);
+                        return true;
+                    }
+                });
             }
             else
             {
@@ -204,15 +213,6 @@ public class NewProTeamCategoryAdapter
                 public void onClick(final View v)
                 {
                     mActionCallbacks.onHeartClick(pro);
-                }
-            });
-            mHeartIcon.setOnLongClickListener(new View.OnLongClickListener()
-            {
-                @Override
-                public boolean onLongClick(final View view)
-                {
-                    mActionCallbacks.onLongClick(pro);
-                    return true;
                 }
             });
             // This listener will give the illusion that the checkbox doesn't change state which is

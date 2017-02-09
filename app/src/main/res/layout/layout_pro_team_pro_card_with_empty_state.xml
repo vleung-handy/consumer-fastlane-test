@@ -57,6 +57,7 @@
     <include
         android:id="@+id/pro_team_pro_card_holder"
         layout="@layout/layout_pro_team_pro_card"
+        android:background="@drawable/background_list_entry"
         tools:visibility="gone"
         />
 </FrameLayout>
