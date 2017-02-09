@@ -16,6 +16,7 @@ import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.proteam.adapter.NewProTeamCategoryAdapter;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProTeamPro;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +34,21 @@ public class NewProTeamProListFragment extends InjectedFragment
 
     private ProTeam.ProTeamCategory mProTeamCategory;
     private ProTeamCategoryType mProTeamCategoryType;
+    private NewProTeamCategoryAdapter.ActionCallbacks mProTeamActionCallbacks =
+            new NewProTeamCategoryAdapter.ActionCallbacks()
+            {
+                @Override
+                public void onHeartClick(final ProTeamPro proTeamPro)
+                {
+                    // TODO: Implement
+                }
+
+                @Override
+                public void onLongClick(final ProTeamPro proTeamPro)
+                {
+                    // TODO: Implement
+                }
+            };
 
     public static NewProTeamProListFragment newInstance(
             @NonNull final ProTeam.ProTeamCategory proTeamCategory,
@@ -84,7 +100,8 @@ public class NewProTeamProListFragment extends InjectedFragment
         mEmptyViewText.setText(R.string.pro_team_empty_card_text);
         mRecyclerView.setAdapter(new NewProTeamCategoryAdapter(
                 getActivity(),
-                mProTeamCategory
+                mProTeamCategory,
+                mProTeamActionCallbacks
         ));
     }
 }
