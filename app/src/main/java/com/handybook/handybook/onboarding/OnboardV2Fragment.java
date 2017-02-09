@@ -133,6 +133,13 @@ public class OnboardV2Fragment extends InjectedFragment
     }
 
     @Override
+    public void onCreate(final Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
@@ -141,7 +148,6 @@ public class OnboardV2Fragment extends InjectedFragment
     {
         View view = inflater.inflate(R.layout.fragment_onboard_v2, container, false);
         ButterKnife.bind(this, view);
-
         mEditZip.clearFocus();
         registerKeyboardListener();
 
