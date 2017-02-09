@@ -33,6 +33,9 @@ public class Configuration implements Serializable
     private boolean isProTeamProfilePicturesEnabled;
     @SerializedName("tab_bar_navigation_enabled")
     private boolean mBottomNavEnabled;
+    // We want to keep the navigation type for the session.
+    // Would be weird experience if user switches between zip codes where it's enabled/disabled
+    private static Boolean mIsBottomNavEnabledForSession;
 
     //default this to false
     @SerializedName("snow_enabled")
@@ -91,7 +94,13 @@ public class Configuration implements Serializable
     }
 
     public boolean isBottomNavEnabled() {
-        return mBottomNavEnabled;
+        //Do this if this is first time bottom nav is set for session
+        if(mIsBottomNavEnabledForSession == null)
+        {
+            mIsBottomNavEnabledForSession = mBottomNavEnabled;
+        }
+
+        return mIsBottomNavEnabledForSession;
     }
 
     public String toJson()

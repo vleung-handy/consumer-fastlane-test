@@ -21,7 +21,7 @@
             android:theme="@style/HandyTheme.AppBarOverlay"
             android:title="@string/title_activity_pro_team"
             app:contentInsetStart="0dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:layout_scrollFlags="enterAlways"
             app:navigationIcon="@drawable/ic_back"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             >
