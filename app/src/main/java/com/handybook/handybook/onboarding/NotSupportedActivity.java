@@ -13,6 +13,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * This is an activity that displays verbage to the user telling them the zip they entered
+ * is not supported at the moment.
+ */
 public class NotSupportedActivity extends BaseActivity
 {
 

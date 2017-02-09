@@ -131,7 +131,7 @@ public class Configuration implements Serializable
         return mSettingFavoriteProEnabled && false;
     }
 
-    public boolean isOnboardingEnabled()
+    public boolean isOnboardingV2Enabled()
     {
         //TODO: JIA: make this read from config
         return false;

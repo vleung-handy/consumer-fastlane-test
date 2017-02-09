@@ -24,7 +24,6 @@ import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
@@ -305,13 +304,6 @@ public class AccountFragment extends InjectedFragment
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
-
-                        //remove user email and zip when they logout. Do this before setting the user
-                        //to null, as that action will trigger more downstream action that is dependent
-                        //on these shared prefs being removed.
-                        mDefaultPreferencesManager.removeValue(PrefsKey.ZIP);
-                        mDefaultPreferencesManager.removeValue(PrefsKey.EMAIL);
-
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);

@@ -611,10 +611,11 @@ public final class ApplicationModule
     @Singleton
     final UserManager provideUserManager(
             final Bus bus,
-            final SecurePreferencesManager securePreferencesManager
+            final SecurePreferencesManager securePreferencesManager,
+            final DefaultPreferencesManager defaultPreferencesManager
     )
     {
-        return new UserManager(mContext, bus, securePreferencesManager);
+        return new UserManager(mContext, bus, securePreferencesManager, defaultPreferencesManager);
     }
 
     @Provides

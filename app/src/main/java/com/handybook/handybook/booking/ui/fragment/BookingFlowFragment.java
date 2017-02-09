@@ -112,7 +112,7 @@ public class BookingFlowFragment extends InjectedFragment
 
         Configuration config = mConfigurationManager.getLastKnowConfiguration();
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
-        if (config != null && config.isOnboardingEnabled() && !android.text.TextUtils.isEmpty(zip))
+        if (config != null && config.isOnboardingV2Enabled() && !TextUtils.isBlank(zip))
         {
             validateZipAndProceed(zip);
         }
@@ -150,7 +150,7 @@ public class BookingFlowFragment extends InjectedFragment
                         bookingManager.getCurrentRequest().setZipArea(response.getZipArea());
                         bookingManager.getCurrentRequest().setTimeZone(response.getTimeZone());
 
-                        if (android.text.TextUtils.isEmpty(request.getPromoCode()))
+                        if (TextUtils.isBlank(request.getPromoCode()))
                         {
                             //we're not in a promotional flow, so we can display booking options
                             displayBookingOptions();
@@ -294,13 +294,13 @@ public class BookingFlowFragment extends InjectedFragment
     protected boolean hasStoredZip()
     {
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
-        return !android.text.TextUtils.isEmpty(zip);
+        return !TextUtils.isBlank(zip);
     }
 
     protected boolean hasStoredEmail()
     {
         String email = mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null);
-        return !android.text.TextUtils.isEmpty(email);
+        return !TextUtils.isBlank(email);
     }
 
     protected void rescheduleBooking(

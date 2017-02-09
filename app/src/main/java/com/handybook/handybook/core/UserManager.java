@@ -7,6 +7,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -24,16 +25,19 @@ public class UserManager implements Observer
     private Bus mBus;
     private User mUser;
     private SecurePreferencesManager mSecurePreferencesManager;
+    private DefaultPreferencesManager mDefaultPreferencesManager;
 
     @Inject
     UserManager(
             final Context context,
             final Bus bus,
-            final SecurePreferencesManager securePreferencesManager
+            final SecurePreferencesManager securePreferencesManager,
+            final DefaultPreferencesManager defaultPreferencesManager
     )
     {
         mContext = context;
         mSecurePreferencesManager = securePreferencesManager;
+        mDefaultPreferencesManager = defaultPreferencesManager;
         mBus = bus;
         mBus.register(this);
     }
@@ -66,22 +70,52 @@ public class UserManager implements Observer
         }
     }
 
+    @Nullable
+    private String getUserZip(User user)
+    {
+
+        if (user != null && user.getAddress() != null)
+        {
+            return user.getAddress().getZip();
+        }
+
+        return null;
+    }
+
+
     public void setCurrentUser(final User newUser)
     {
         if (mUser != null)
         {
             mUser.deleteObserver(this);
+
+            //the fact that the user is logged in guarantees at least email and zip information
+            mDefaultPreferencesManager.setString(PrefsKey.ZIP, getUserZip(newUser));
+
+            //storing of EMAIl in shared prefs is only used for users that are not logged in. Now that
+            //the user is logged in, it' safe to remove this.
         }
 
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
         {
             mUser = null;
             mSecurePreferencesManager.removeValue(PrefsKey.USER);
+
+            //remove user email and zip when they logout. Do this before setting the user
+            //to null, as that action will trigger more downstream action that is dependent
+            //on these shared prefs being removed.
+            mDefaultPreferencesManager.removeValue(PrefsKey.ZIP);
+
             Button.getButton(mContext).logout();
             Crashlytics.setUserEmail(null);
             mBus.post(new UserLoggedInEvent(false));
             return;
         }
+
+        //whether we are logging in, or logging out, there is no longer a need to have EMAIL stored in
+        //the shared prefs. It's only needed for first time users who hasn't had the chance to log
+        //in or out.
+        mDefaultPreferencesManager.removeValue(PrefsKey.EMAIL);
 
         mUser = newUser;
         mUser.addObserver(this);

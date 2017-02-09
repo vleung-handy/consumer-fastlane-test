@@ -2,6 +2,7 @@ package com.handybook.handybook.core;
 
 import android.content.Context;
 
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.squareup.otto.Bus;
 
@@ -12,10 +13,11 @@ public class TestUserManager extends UserManager
     TestUserManager(
             final Context context,
             final Bus bus,
-            final SecurePreferencesManager securePreferencesManager
-    )
+            final SecurePreferencesManager securePreferencesManager,
+            final DefaultPreferencesManager defaultPreferencesManager
+            )
     {
-        super(context, bus, securePreferencesManager);
+        super(context, bus, securePreferencesManager, defaultPreferencesManager);
         mUser = new User();
         mUser.setFirstName("Test");
         mUser.setLastName("User");
