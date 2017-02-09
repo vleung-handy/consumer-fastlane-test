@@ -20,7 +20,9 @@
             android:layout_height="@dimen/mini_pro_profile_image_size"
             android:layout_marginLeft="@dimen/default_margin_half"
             android:layout_marginStart="@dimen/default_margin_half"
-            android:src="@drawable/circle_placeholder_grey"
+            android:paddingBottom="@dimen/default_padding_half"
+            android:paddingTop="@dimen/default_padding_half"
+            android:src="@drawable/ic_pro_team_heart_no_fill_large"
             />
 
         <LinearLayout

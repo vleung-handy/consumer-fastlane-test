@@ -400,14 +400,14 @@
     <string name="backup_pros">Backup Pros</string>
     <string name="pro_team">Pro Team</string>
     <string name="no_favorite_pro_title">Have a Favorite Pro?</string>
-    <string name="no_favorite_pro_subtitle">Tap the heart to make it official</string>
+    <string name="no_favorite_pro_subtitle">Tap the heart to make it official.</string>
     <string name="no_pro_team_title">Work with pro again?</string>
-    <string name="no_pro_team_subtitle">Rate them highly to see them again</string>
+    <string name="no_pro_team_subtitle">Request highly rated pros when your favorite is busy.</string>
     <string name="favorite">Favorite</string>
     <string name="block">Block</string>
     <string name="remove_as_favorite_formatted">Remove %1$s as your favorite?</string>
     <string name="set_as_favorite_formatted">Set %1$s as your favorite?</string>
-    <string name="auto_remove_as_favorite_warning_formatted">This will move %1$s to your backup pros.</string>
+    <string name="auto_remove_as_favorite_warning_formatted">This will move %1$s to your Backup Pros.</string>
     <string name="block_formatted">Block %1$s?</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
