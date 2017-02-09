@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +13,13 @@ import android.webkit.WebView;
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.HandyWebViewClient;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.core.HandyWebViewClient;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.core.ui.widget.MenuButton;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -30,8 +29,8 @@ public class HelpWebViewFragment extends InjectedFragment
 {
     private static final String REDIRECT_TO = "redirect_to";
 
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     @Bind(R.id.web_view)
     HandyWebView mWebView;
     private String mHelpCenterUrl;
@@ -71,9 +70,13 @@ public class HelpWebViewFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_help_web_view, container, false);
         ButterKnife.bind(this, view);
 
-        final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-        menuButton.setColor(ContextCompat.getColor(getContext(), R.color.white));
-        mMenuButtonLayout.addView(menuButton);
+        setupToolbar(mToolbar, getString(R.string.help));
+        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
+                && getActivity() instanceof MenuDrawerActivity)
+        {
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        }
 
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity())
         {
@@ -149,8 +152,10 @@ public class HelpWebViewFragment extends InjectedFragment
                 if (getActivity() instanceof MenuDrawerActivity)
                 {
                     ((MenuDrawerActivity) getActivity())
-                            .navigateToActivity(ServiceCategoriesActivity.class,
-                                                R.id.nav_menu_home);
+                            .navigateToActivity(
+                                    ServiceCategoriesActivity.class,
+                                    R.id.nav_menu_home
+                            );
                 }
                 else
                 {
@@ -171,8 +176,8 @@ public class HelpWebViewFragment extends InjectedFragment
         if (!Strings.isNullOrEmpty(mId) && !Strings.isNullOrEmpty(mLinkType))
         {
             mHelpCenterUrl = Uri.parse(mHelpCenterUrl).buildUpon()
-                    .appendQueryParameter(REDIRECT_TO, mLinkType + mId)
-                    .build().toString();
+                                .appendQueryParameter(REDIRECT_TO, mLinkType + mId)
+                                .build().toString();
         }
         mWebView.loadUrl(mHelpCenterUrl);
     }
