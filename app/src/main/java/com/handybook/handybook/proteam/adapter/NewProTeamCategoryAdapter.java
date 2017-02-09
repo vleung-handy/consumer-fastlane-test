@@ -252,7 +252,7 @@ public class NewProTeamCategoryAdapter
             }
             else
             {
-                mEmptyStateTitle.setText(R.string.no_pro_team_title);
+                mEmptyStateTitle.setText(R.string.backup_pros);
                 mEmptyStateSubtitle.setText(R.string.no_pro_team_subtitle);
             }
         }
