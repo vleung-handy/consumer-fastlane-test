@@ -73,7 +73,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
     @Inject
     LayerHelper mLayerHelper;
 
-    Fragment mActiveFragment;
+    private Fragment mActiveFragment;
 
     protected boolean disableDrawer;
     protected boolean mShouldShowNavForTransition;
