@@ -474,6 +474,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private void showProgress()
     {
         mSubmitProgress.setVisibility(View.VISIBLE);
+        mSubmitProgress.setIndeterminate(true);
     }
 
     private void hideProgress()
