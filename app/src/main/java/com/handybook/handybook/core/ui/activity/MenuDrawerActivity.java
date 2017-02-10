@@ -14,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -143,7 +144,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                     }
                     else
                     {
-                        navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                        goToNewHomeScreen();
                     }
                 }
             }
@@ -195,7 +196,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
     protected boolean hasStoredZip()
     {
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
-        return !android.text.TextUtils.isEmpty(zip);
+        return !TextUtils.isEmpty(zip);
     }
 
     protected boolean requiresUser()
@@ -412,20 +413,29 @@ public abstract class MenuDrawerActivity extends BaseActivity
         {
             //if back press results in exiting the app AND this is not the home page
             // AND there is no fragment in the backstack, then bring back to the home page first
-            if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-            {
-                startActivity(new Intent(this, BottomNavActivity.class));
-                finish();
-            }
-            else
-            {
-                navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
-            }
+            goToNewHomeScreen();
         }
         else
         {
             Utils.hideSoftKeyboard(this, getCurrentFocus());
             super.onBackPressed();
+        }
+    }
+
+    /**
+     * Depending on whether bottom nav is enabled or not, the new home screen would be either
+     * the Menu Drawer screen, or the new bottom nav screen.
+     */
+    private void goToNewHomeScreen()
+    {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            startActivity(new Intent(this, BottomNavActivity.class));
+            finish();
+        }
+        else
+        {
+            navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
         }
     }
 

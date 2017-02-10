@@ -2,7 +2,7 @@ package com.handybook.handybook.logger.handylogger.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OnboardingLog extends EventLog
+public abstract class OnboardingLog extends EventLog
 {
     private static final String EVENT_CONTEXT = "onboarding";
 

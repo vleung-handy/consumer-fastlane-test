@@ -17,7 +17,7 @@ import butterknife.OnClick;
  * This is an activity that displays verbage to the user telling them the zip they entered
  * is not supported at the moment.
  */
-public class NotSupportedActivity extends BaseActivity
+public class ServiceNotSupportedActivity extends BaseActivity
 {
 
     @Bind(R.id.not_supported_zip)
@@ -27,7 +27,7 @@ public class NotSupportedActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_not_supported);
+        setContentView(R.layout.activity_service_not_supported);
         ButterKnife.bind(this);
 
         mTextZip.setText(

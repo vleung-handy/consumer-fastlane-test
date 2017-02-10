@@ -31,6 +31,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
@@ -50,11 +51,8 @@ import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.squareup.otto.Subscribe;
 
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import com.handybook.handybook.core.constant.ActivityResult;
 
 public final class LoginFragment extends BookingFlowFragment
 {
@@ -605,9 +603,7 @@ public final class LoginFragment extends BookingFlowFragment
     private void goToHomePage()
     {
         //This is a case of login from Onboarding v2 -- whether it's a successful login from
-        //onboarding, or from the booking process, we direct the user to the home page for a
-        //clean start.
-        bookingManager.clear();
+        //onboarding, or from the booking process, we direct the user to the home page
         getActivity().setResult(ActivityResult.LOGIN_FINISH);
         Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

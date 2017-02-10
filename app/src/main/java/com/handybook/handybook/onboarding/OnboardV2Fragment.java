@@ -59,7 +59,7 @@ import static com.handybook.handybook.core.constant.RequestCode.LOGIN_FROM_ONBOA
  * This is the new onboarding fragment that is supposed to prompt the user for zip and email.
  * If the email is an existing user, we prompt them to login. Otherwise, if we have services
  * supporting the user's zip, we display those. If we don't support that zip, the user will
- * be brought to {@link NotSupportedActivity}.
+ * be brought to {@link ServiceNotSupportedActivity}.
  *
  * The ZIP will always be stored locally in shared prefs. The email will only be stored if it's a
  * new user to Handy.
@@ -390,7 +390,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
 
     /**
      * IF the email already exists, redirect to login page
-     * ELSE IF we don't support this zip, redirect to {@link NotSupportedActivity}
+     * ELSE IF we don't support this zip, redirect to {@link ServiceNotSupportedActivity}
      * ELSE IF we support this zip, redirect to new home page
      *
      * @param emailResponse
@@ -416,7 +416,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             if (mServices.isEmpty())
             {
                 //we don't support this zip
-                Intent intent = new Intent(getActivity(), NotSupportedActivity.class);
+                Intent intent = new Intent(getActivity(), ServiceNotSupportedActivity.class);
                 intent.putExtra(ZIP, mZip);
                 startActivity(intent);
             }

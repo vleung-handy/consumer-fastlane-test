@@ -71,7 +71,7 @@ public class UserManager implements Observer
     }
 
     @Nullable
-    private String getUserZip(User user)
+    private String getUserZip(@Nullable User user)
     {
 
         if (user != null && user.getAddress() != null)

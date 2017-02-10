@@ -522,7 +522,7 @@
             >
         </activity>
         <activity
-            android:name=".onboarding.NotSupportedActivity"
+            android:name=".onboarding.ServiceNotSupportedActivity"
             android:screenOrientation="portrait"
             >
         </activity>
