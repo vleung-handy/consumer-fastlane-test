@@ -89,8 +89,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     TextView mPromoText;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.fragment_service_categories_sign_in_text)
-    TextView mSignInText;
     @Bind(R.id.fragment_services_category_snowview)
     SnowView mSnowView;
 
@@ -135,8 +133,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_service_categories, container, false);
+        final View view = getActivity().getLayoutInflater().inflate(
+                R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
         mSnowView.setVisibility(mConfigurationManager.getPersistentConfiguration()
                                                      .isSnowEnabled() ? View.VISIBLE : View.GONE);
@@ -145,24 +143,14 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled() &&
+                activity instanceof MenuDrawerActivity)
         {
-            mToolbar.setNavigationIcon(null);
-            mSignInText.setVisibility(mUserManager.isUserLoggedIn() ? View.GONE : View.VISIBLE);
-            //the sign-in button is exclusive to the bottom nav feature and driven by same config
-        }
-        else
-        {
-            if (activity instanceof MenuDrawerActivity)
-            {
-                ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
-            }
-            mSignInText.setVisibility(View.GONE); //should never show when bottom nav disabled
+            ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
         }
 
         mPromoImage.setColorFilter(
-                ContextCompat.getColor(getContext(), R.color.handy_blue),
-                PorterDuff.Mode.SRC_ATOP);
+                ContextCompat.getColor(getContext(), R.color.handy_blue), PorterDuff.Mode.SRC_ATOP);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
@@ -176,7 +164,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 int itemPosition = mRecyclerView.getChildLayoutPosition(view);
                 Service service = mServices.get(itemPosition);
 
-                bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageSubmittedLog(service.getId())));
+                bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageSubmittedLog(
+                        service.getId())));
 
                 mServiceIconMap.put(service.getId(), ((ServiceCategoryView) view).getIcon());
                 launchServiceActivity(service);
@@ -190,23 +179,36 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        // We will only enable environment modifier if we are in debug bottom nav mode
-        if (BuildConfig.DEBUG
-                && mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             inflater.inflate(R.menu.menu_service_categories, menu);
         }
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu)
     {
         super.onPrepareOptionsMenu(menu);
-        final MenuItem menuItem = menu.findItem(R.id.menu_environment);
-        if (menuItem != null)
+
+        final MenuItem signInMenuItem = menu.findItem(R.id.menu_sign_in);
+        final MenuItem envMenuItem = menu.findItem(R.id.menu_environment);
+
+        if (signInMenuItem != null)
         {
-            menuItem.setTitle(mEnvironmentModifier.getEnvironment());
+            signInMenuItem.setVisible(!mUserManager.isUserLoggedIn());
+        }
+
+        if (envMenuItem != null)
+        {
+            // We will only enable environment modifier if we are in debug mode
+            if (BuildConfig.DEBUG)
+            {
+                envMenuItem.setTitle(mEnvironmentModifier.getEnvironment());
+            }
+            else
+            {
+                envMenuItem.setVisible(false);
+            }
         }
     }
 
@@ -215,6 +217,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         switch (item.getItemId())
         {
+            case R.id.menu_sign_in:
+                final Intent intent = new Intent(getActivity(), LoginActivity.class);
+                getActivity().startActivity(intent);
+                return true;
             case R.id.menu_environment:
                 final EditText input = new EditText(getContext());
                 input.setText(mEnvironmentModifier.getEnvironment());
@@ -238,14 +244,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             default:
                 return super.onContextItemSelected(item);
         }
-    }
-
-    //only enabled when bottom nav enabled
-    @OnClick(R.id.fragment_service_categories_sign_in_text)
-    public void onSignInTextClicked()
-    {
-        final Intent intent = new Intent(getActivity(), LoginActivity.class);
-        getActivity().startActivity(intent);
     }
 
     @Override
@@ -365,7 +363,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         final String coupon = bookingManager.getPromoTabCoupon();
         if (coupon != null)
         {
-            final Spannable text = new SpannableString(String.format(getString(R.string.using_promo), coupon));
+            final Spannable text =
+                    new SpannableString(String.format(getString(R.string.using_promo), coupon));
 
             final int index = text.toString().indexOf(coupon);
             text.setSpan(
@@ -467,7 +466,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
         {
             ServiceCategoryView v = new ServiceCategoryView(getContext());
-            v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            v.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            ));
             v.setOnClickListener(mListener);
             return new RecyclerViewHolder(v);
         }
