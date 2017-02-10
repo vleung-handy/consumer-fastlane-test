@@ -48,8 +48,8 @@ public class RateProTeamFragment extends Fragment
 
     private ProviderMatchPreference mInitialMatchPreference;
 
-    private boolean hadBeenOverridenByUser = false;
-    private ProviderMatchPreference mCurrentPMP;
+    private boolean mHasUserClickedYesOrNoButton = false;
+    private ProviderMatchPreference mCurrentProviderMatchPreference;
 
     public static RateProTeamFragment newInstance(ProviderMatchPreference matchPreference)
     {
@@ -82,7 +82,7 @@ public class RateProTeamFragment extends Fragment
             mInitialMatchPreference = (ProviderMatchPreference) getArguments()
                     .getSerializable(KEY_MATCH_PREFERENCE);
         }
-        mCurrentPMP = mInitialMatchPreference;
+        mCurrentProviderMatchPreference = mInitialMatchPreference;
         initUI();
         return v;
     }
@@ -103,13 +103,13 @@ public class RateProTeamFragment extends Fragment
             {
                 mButtonYes.setChecked(true);
                 mButtonYes.updateState();
-                if (mCurrentPMP != ProviderMatchPreference.PREFERRED)
+                if (mCurrentProviderMatchPreference != ProviderMatchPreference.PREFERRED)
                 {
                     mButtonNo.setChecked(false);
                     mButtonNo.updateState();
-                    mCurrentPMP = ProviderMatchPreference.PREFERRED;
+                    mCurrentProviderMatchPreference = ProviderMatchPreference.PREFERRED;
                 }
-                hadBeenOverridenByUser = true;
+                mHasUserClickedYesOrNoButton = true;
             }
         });
         // No
@@ -126,21 +126,21 @@ public class RateProTeamFragment extends Fragment
             {
                 mButtonNo.setChecked(true);
                 mButtonNo.updateState();
-                if (mCurrentPMP != ProviderMatchPreference.NEVER)
+                if (mCurrentProviderMatchPreference != ProviderMatchPreference.NEVER)
                 {
                     mButtonYes.setChecked(false);
                     mButtonYes.updateState();
-                    mCurrentPMP = ProviderMatchPreference.NEVER;
+                    mCurrentProviderMatchPreference = ProviderMatchPreference.NEVER;
                 }
-                hadBeenOverridenByUser = true;
+                mHasUserClickedYesOrNoButton = true;
             }
         });
     }
 
     public void setProviderMatchPreference(final ProviderMatchPreference pmp)
     {
-        if (hadBeenOverridenByUser) { return; }
-        mCurrentPMP = pmp;
+        if (mHasUserClickedYesOrNoButton) { return; }
+        mCurrentProviderMatchPreference = pmp;
         switch (pmp)
         {
             case PREFERRED:
