@@ -101,6 +101,13 @@ public class DataManager
     }
 
     /**
+     *
+     * NOTE:
+     * The Service object was architected in a way such that the pojo fields aren't so easily
+     * mapped to the json fields. The technique used here is similar to the one used below
+     * unfortunately, it's not worth refactoring it as part of the onboarding project,
+     * because it is a high risk area.
+     *
      * @param zip
      * @param cb
      */

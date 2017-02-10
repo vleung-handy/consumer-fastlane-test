@@ -32,7 +32,7 @@ public class ServiceNotSupportedActivity extends BaseActivity
 
         mTextZip.setText(
                 getString(
-                        R.string.not_supported_zip_formatted,
+                        R.string.service_not_supported_zip_formatted,
                         getIntent().getStringExtra(BundleKeys.ZIP
                         )
                 ));

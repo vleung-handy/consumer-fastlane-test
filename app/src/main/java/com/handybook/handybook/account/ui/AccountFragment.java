@@ -1,6 +1,8 @@
 package com.handybook.handybook.account.ui;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +22,7 @@ import com.handybook.handybook.booking.history.HistoryFragment;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -29,6 +32,7 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.OnboardActivity;
 import com.handybook.handybook.core.ui.view.PriceView;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
@@ -311,6 +315,29 @@ public class AccountFragment extends InjectedFragment
 
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();
+
+                        Intent intent;
+                        Activity activity = AccountFragment.this.getActivity();
+                        if (mConfigurationManager.getPersistentConfiguration()
+                                                 .isOnboardingV2Enabled())
+                        {
+                            intent = new Intent(activity, OnboardActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            activity.finish();
+                        }
+                        else if (mConfigurationManager.getPersistentConfiguration()
+                                                      .isBottomNavEnabled())
+                        {
+                            intent = new Intent(activity, BottomNavActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            activity.finish();
+                        }
+                        else
+                        {
+                            //do nothing. The MenuDrawerActivity is already going to handle the logout case.
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
