@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -42,7 +42,6 @@ import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.widget.EmailInputTextView;
-import com.handybook.handybook.core.ui.widget.MenuButton;
 import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -75,8 +74,6 @@ public final class LoginFragment extends BookingFlowFragment
 
     Class<? extends Activity> mDestinationClass;
 
-    @Bind(R.id.nav_text)
-    TextView mNavText;
     @Bind(R.id.login_button)
     Button mLoginButton;
     @Bind(R.id.forgot_button)
@@ -95,10 +92,10 @@ public final class LoginFragment extends BookingFlowFragment
     TextView mOrText;
     @Bind(R.id.welcome_text)
     TextView mWelcomeText;
-    @Bind(R.id.menu_button_layout)
-    ViewGroup mMenuButtonLayout;
     @Bind(R.id.login_scroll_view)
     ScrollView mLoginScrollView;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
@@ -186,6 +183,7 @@ public final class LoginFragment extends BookingFlowFragment
                                        .inflate(R.layout.fragment_login, container, false);
 
         ButterKnife.bind(this, view);
+        setupToolbar(mToolbar, getString(R.string.log_in));
 
         mEmailText.clearFocus();
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
@@ -193,7 +191,7 @@ public final class LoginFragment extends BookingFlowFragment
         if (mFindUser)
         {
             activity.setDrawerDisabled(true);
-            mNavText.setText(getString(R.string.contact));
+            mToolbar.setTitle(getString(R.string.contact));
             mPasswordText.setVisibility(View.GONE);
             mForgotButton.setVisibility(View.GONE);
             mLoginButton.setText(getString(R.string.next));
@@ -220,11 +218,13 @@ public final class LoginFragment extends BookingFlowFragment
                 mBookingRequest.setEmail(mBookingUserEmail);
             }
         }
-        else
+        else if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
+                && getActivity() instanceof MenuDrawerActivity)
         {
-            final MenuButton menuButton = new MenuButton(getActivity(), mMenuButtonLayout);
-            menuButton.setColor(ContextCompat.getColor(getContext(), R.color.white));
-            mMenuButtonLayout.addView(menuButton);
+            //by default, the toolbar has a back button which goes back when pressed
+            mToolbar.setNavigationIcon(R.drawable.ic_menu);
+            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+
         }
 
         mFbLoginButton.setFragment(this);
@@ -575,7 +575,7 @@ public final class LoginFragment extends BookingFlowFragment
                 intent = new Intent(getActivity(), BottomNavActivity.class);
                 intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
             }
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         }
         else if (hasStoredZip())

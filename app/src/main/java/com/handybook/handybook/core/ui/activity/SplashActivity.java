@@ -121,12 +121,7 @@ public class SplashActivity extends BaseActivity
                 {
                     if (event != null)
                     {
-                        final Intent intent = ServiceCategoriesActivity.getIntent(
-                                SplashActivity.this,
-                                getIntent()
-                        );
-                        startActivity(intent);
-                        finish();
+                        navigateToServiceCategoriesActivity();
                     }
                 }
             };
@@ -138,16 +133,22 @@ public class SplashActivity extends BaseActivity
                 {
                     if (event != null)
                     {
-                        final Intent intent = ServiceCategoriesActivity.getIntent(
-                                SplashActivity.this,
-                                getIntent()
-                        );
-                        startActivity(intent);
-                        finish();
+                        navigateToServiceCategoriesActivity();
                     }
                 }
             };
         }
+    }
+
+    private void navigateToServiceCategoriesActivity()
+    {
+        final Intent intent = ServiceCategoriesActivity.getIntent(
+                this,
+                getIntent()
+        );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //don't need history when launching this activity from splash
+        startActivity(intent);
     }
 
     @Override

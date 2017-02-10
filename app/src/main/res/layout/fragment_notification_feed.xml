@@ -24,7 +24,8 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="enterAlways"
+            >
 
             <ImageView
                 android:fitsSystemWindows="true"
@@ -41,7 +42,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_width="match_parent"
                 app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"
+                app:layout_scrollFlags="enterAlways"
                 app:popupTheme="@style/HandyTheme.PopupOverlay"
                 >
             </android.support.v7.widget.Toolbar>

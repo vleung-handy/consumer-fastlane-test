@@ -8,29 +8,7 @@
     android:focusableInTouchMode="true"
     >
 
-    <RelativeLayout
-        android:id="@+id/nav_layout"
-        style="@style/RelativeLayout.NavBar.Blue"
-        >
-
-        <RelativeLayout
-            android:id="@+id/menu_button_layout"
-            style="@style/MenuButtonLayout"
-            />
-
-        <TextView
-            android:id="@+id/nav_text"
-            style="@style/TextView.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/menu_button_layout"
-            android:text="@string/sign_in"
-            android:textColor="@color/handy_white"
-            android:textSize="@dimen/text_size_large"
-            />
-
-    </RelativeLayout>
+    <include layout="@layout/toolbar"/>
 
     <Button
         android:id="@+id/login_button"
@@ -41,7 +19,7 @@
         android:id="@+id/login_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nav_layout"
+        android:layout_below="@id/toolbar"
         android:layout_above="@id/login_button">
 
         <RelativeLayout
