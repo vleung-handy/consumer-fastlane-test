@@ -86,8 +86,7 @@ public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
         {
             final ProTeamActionPickerItem actionPickerItem = new ProTeamActionPickerItem(
                     getActivity(),
-                    actionType.getStringResId(),
-                    actionType.getColorResId()
+                    actionType.getStringResId()
             );
             mOptionsHolder.addView(actionPickerItem, mOptionsHolder.getChildCount() - 1);
             actionPickerItem.setOnClickListener(new View.OnClickListener()
