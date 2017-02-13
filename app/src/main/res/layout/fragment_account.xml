@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/handy_bg"
     >
 
@@ -75,9 +75,9 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_padding"
                 android:text="@string/account.personal_info"
+                android:textAllCaps="true"
                 android:textColor="@color/handy_tertiary_gray"
                 android:textSize="@dimen/text_size_small"
-                android:textAllCaps="true"
                 />
 
             <LinearLayout
@@ -199,6 +199,32 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/account_pro_team_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_list_entry"
+                android:orientation="vertical"
+                android:padding="@dimen/default_padding"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pro_team"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/account.description_top_padding"
+                    android:text="@string/account.manage_your_pro_team"
+                    android:textColor="@color/handy_tertiary_gray"
+                    android:textSize="@dimen/text_size_small"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/account_promo_code_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -229,7 +255,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
 
                 <include layout="@layout/element_horizontal_divider"/>
 
@@ -239,9 +266,9 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/default_padding"
                     android:text="@string/account.support"
+                    android:textAllCaps="true"
                     android:textColor="@color/handy_tertiary_gray"
                     android:textSize="@dimen/text_size_small"
-                    android:textAllCaps="true"
                     />
 
                 <LinearLayout
@@ -306,8 +333,8 @@
                 android:layout_height="@dimen/account.sign_out_height"
                 android:background="@drawable/background_list_entry"
                 android:gravity="center_vertical"
-                android:text="@string/account.sign_out"
                 android:paddingLeft="@dimen/default_padding"
+                android:text="@string/account.sign_out"
                 android:textColor="@color/error_red"
                 />
 

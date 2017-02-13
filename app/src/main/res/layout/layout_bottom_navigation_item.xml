@@ -27,8 +27,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="17dp"
-        android:paddingRight="25dp"
+        android:paddingBottom="18dp"
+        android:paddingRight="20dp"
         android:id="@+id/indicator"
         android:visibility="gone"
         >

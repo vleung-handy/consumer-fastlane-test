@@ -38,6 +38,7 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
+import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 
 import java.util.ArrayList;
 
@@ -251,6 +252,12 @@ public class AccountFragment extends InjectedFragment
         {
             FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
         }
+    }
+
+    @OnClick(R.id.account_pro_team_layout)
+    public void editProTeamClicked()
+    {
+        FragmentUtils.switchToFragment(this, ProTeamEditFragment.newInstance(), true);
     }
 
     @OnClick(R.id.account_promo_code_layout)
