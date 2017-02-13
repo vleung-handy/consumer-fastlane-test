@@ -101,14 +101,7 @@ public class RateProTeamFragment extends Fragment
             @Override
             public void onClick(final View v)
             {
-                mButtonYes.setChecked(true);
-                mButtonYes.updateState();
-                if (mCurrentProviderMatchPreference != ProviderMatchPreference.PREFERRED)
-                {
-                    mButtonNo.setChecked(false);
-                    mButtonNo.updateState();
-                    mCurrentProviderMatchPreference = ProviderMatchPreference.PREFERRED;
-                }
+                setProviderMatchPreference(ProviderMatchPreference.PREFERRED);
                 mHasUserClickedYesOrNoButton = true;
             }
         });
@@ -124,24 +117,17 @@ public class RateProTeamFragment extends Fragment
             @Override
             public void onClick(final View v)
             {
-                mButtonNo.setChecked(true);
-                mButtonNo.updateState();
-                if (mCurrentProviderMatchPreference != ProviderMatchPreference.NEVER)
-                {
-                    mButtonYes.setChecked(false);
-                    mButtonYes.updateState();
-                    mCurrentProviderMatchPreference = ProviderMatchPreference.NEVER;
-                }
+                setProviderMatchPreference(ProviderMatchPreference.NEVER);
                 mHasUserClickedYesOrNoButton = true;
             }
         });
     }
 
-    public void setProviderMatchPreference(final ProviderMatchPreference pmp)
+    public void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference)
     {
         if (mHasUserClickedYesOrNoButton) { return; }
-        mCurrentProviderMatchPreference = pmp;
-        switch (pmp)
+        mCurrentProviderMatchPreference = providerMatchPreference;
+        switch (providerMatchPreference)
         {
             case PREFERRED:
                 mButtonYes.setChecked(true);
