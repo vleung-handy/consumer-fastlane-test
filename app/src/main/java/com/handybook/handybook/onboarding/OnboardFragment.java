@@ -19,7 +19,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.core.ui.fragment.OnboardPageFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import javax.inject.Inject;

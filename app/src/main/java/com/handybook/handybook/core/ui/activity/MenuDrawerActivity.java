@@ -89,6 +89,11 @@ public abstract class MenuDrawerActivity extends BaseActivity
         return mActiveFragment;
     }
 
+    public void setActiveFragment(final Fragment activeFragment)
+    {
+        mActiveFragment = activeFragment;
+    }
+
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {

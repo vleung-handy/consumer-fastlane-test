@@ -183,7 +183,7 @@ public final class LoginFragment extends BookingFlowFragment
                                        .inflate(R.layout.fragment_login, container, false);
 
         ButterKnife.bind(this, view);
-        setupToolbar(mToolbar, getString(R.string.log_in));
+        setupToolbar(mToolbar, getString(R.string.sign_in));
 
         mEmailText.clearFocus();
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();

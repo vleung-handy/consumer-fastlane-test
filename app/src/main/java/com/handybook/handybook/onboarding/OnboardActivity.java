@@ -15,22 +15,22 @@ public final class OnboardActivity extends MenuDrawerActivity
     protected final Fragment createFragment() {
         if (mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled())
         {
-            mActiveFragment = OnboardV2Fragment.newInstance();
+            setActiveFragment(OnboardV2Fragment.newInstance());
         }
         else
         {
-            mActiveFragment = OnboardFragment.newInstance();
+            setActiveFragment(OnboardFragment.newInstance());
         }
 
-        return mActiveFragment;
+        return getActiveFragemnt();
     }
 
     @Override
     public void onBackPressed()
     {
-        if (mActiveFragment != null && mActiveFragment instanceof OnboardV2Fragment)
+        if (getActiveFragemnt() != null && getActiveFragemnt() instanceof OnboardV2Fragment)
         {
-            if (((OnboardV2Fragment) mActiveFragment).onBackPressed())
+            if (((OnboardV2Fragment) getActiveFragemnt()).onBackPressed())
             {
                 return;
             }
