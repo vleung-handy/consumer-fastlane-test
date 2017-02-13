@@ -24,10 +24,10 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,6 +52,8 @@ public final class PromosFragment extends BookingFlowFragment
 
     private String mPromoCoupon;
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
+    // The snackbar that's used for undo removing promo code
+    private Snackbar mSnackbar;
 
     public static PromosFragment newInstance(@Nullable String extraPromoCode)
     {
@@ -133,7 +135,6 @@ public final class PromosFragment extends BookingFlowFragment
         return view;
     }
 
-
     /**
      * handles the bundle arguments. currently arguments are only passed from deep links
      * <p/>
@@ -162,6 +163,13 @@ public final class PromosFragment extends BookingFlowFragment
         InputMethodManager imm
                 = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(mPromoText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    @Override
+    public void onPause()
+    {
+        dismissSnackbar();
+        super.onPause();
     }
 
     @OnClick(R.id.promotions_apply_button)
@@ -240,15 +248,15 @@ public final class PromosFragment extends BookingFlowFragment
 
     private void showSnackbar()
     {
-        final Snackbar snackbar = Snackbar.make(
+        mSnackbar = Snackbar.make(
                 getView(),
                 R.string.snackbar_promo_code_deleted,
                 Snackbar.LENGTH_LONG
         );
-        final TextView snackText = (TextView) snackbar.getView()
-                                                      .findViewById(android.support.design.R.id.snackbar_text);
+        final TextView snackText = (TextView) mSnackbar.getView()
+                                                       .findViewById(android.support.design.R.id.snackbar_text);
         snackText.setTextColor(Color.WHITE);
-        snackbar.setAction(R.string.undo, new View.OnClickListener()
+        mSnackbar.setAction(R.string.undo, new View.OnClickListener()
         {
             @Override
             public void onClick(final View v)
@@ -266,12 +274,19 @@ public final class PromosFragment extends BookingFlowFragment
                 undoSnackbar.show();
             }
         });
-        snackbar.setActionTextColor(
+        mSnackbar.setActionTextColor(
                 getResources().getColor(R.color.handy_blue)
         );
-        snackbar.show();
+        mSnackbar.show();
     }
 
+    private void dismissSnackbar()
+    {
+        if (mSnackbar != null)
+        {
+            mSnackbar.dismiss();
+        }
+    }
 
     @OnClick(R.id.promotions_coupon_text_clear)
     public void clearPromoCode()

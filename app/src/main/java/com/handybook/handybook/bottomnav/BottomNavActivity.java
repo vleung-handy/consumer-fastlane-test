@@ -167,7 +167,7 @@ public class BottomNavActivity extends BaseActivity
 
     private void goToSelectedTab(@IdRes int id)
     {
-        mBottomNavigationView.findViewById(R.id.bookings).performClick();
+        mBottomNavigationView.findViewById(id).performClick();
     }
 
     private boolean onTabItemSelected(@NonNull final MenuItem item)

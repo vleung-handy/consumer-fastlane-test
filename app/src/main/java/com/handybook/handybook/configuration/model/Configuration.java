@@ -35,6 +35,9 @@ public class Configuration implements Serializable
     private boolean mBottomNavEnabled;
     @SerializedName("new_services_home_page_enabled")
     private boolean mHomeScreenV2Enabled;
+    // We want to keep the navigation type for the session.
+    // Would be weird experience if user switches between zip codes where it's enabled/disabled
+    private static Boolean mIsBottomNavEnabledForSession;
 
     //default this to false
     @SerializedName("snow_enabled")
@@ -90,9 +93,20 @@ public class Configuration implements Serializable
         return mAddressAutoCompleteEnabled;
     }
 
+<<<<<<< HEAD
     public boolean isBottomNavEnabled()
     {
         return mBottomNavEnabled;
+=======
+    public boolean isBottomNavEnabled() {
+        //Do this if this is first time bottom nav is set for session
+        if(mIsBottomNavEnabledForSession == null)
+        {
+            mIsBottomNavEnabledForSession = mBottomNavEnabled;
+        }
+
+        return mIsBottomNavEnabledForSession;
+>>>>>>> release_candidate_v1.38.x
     }
 
     public boolean isHomeScreenV2Enabled() {
