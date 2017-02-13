@@ -148,6 +148,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         {
             ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
         }
+        else
+        {
+            mToolbar.setNavigationIcon(null);
+        }
 
         mPromoImage.setColorFilter(
                 ContextCompat.getColor(getContext(), R.color.handy_blue), PorterDuff.Mode.SRC_ATOP);
