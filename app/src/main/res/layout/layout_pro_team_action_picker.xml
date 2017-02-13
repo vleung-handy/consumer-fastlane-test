@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/pro_image"
+        android:layout_width="@dimen/mini_pro_profile_image_size"
+        android:layout_height="@dimen/mini_pro_profile_image_size"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin_double"
+        tools:src="@drawable/img_pro_placeholder"
+        />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/TextView.Medium.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Set Sandra as your favorite?"
+        />
+
+    <TextView
+        android:id="@+id/subtitle"
+        style="@style/TextView.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_quarter"
+        android:visibility="gone"
+        tools:text="This will move Jessica to your backup pros."
+        tools:visibility="visible"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_margin_double"
+        android:background="@color/divider_gray"
+        />
+
+    <LinearLayout
+        android:id="@+id/options_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <!-- Elements will be dynamically added here -->
+
+        <TextView
+            android:id="@+id/cancel"
+            style="@style/TextView.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_list_entry"
+            android:gravity="center"
+            android:padding="@dimen/default_padding"
+            android:text="@string/cancel"
+            android:textColor="@color/handy_tertiary_gray"
+            />
+    </LinearLayout>
+
+</LinearLayout>

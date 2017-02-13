@@ -188,6 +188,22 @@ public abstract class ProTeamEvent
     }
 
 
+    public static class ProTeamUpdated
+    {
+        private ProTeam mUpdatedProTeam;
+
+        public ProTeamUpdated(final ProTeam updatedProTeam)
+        {
+            mUpdatedProTeam = updatedProTeam;
+        }
+
+        public ProTeam getUpdatedProTeam()
+        {
+            return mUpdatedProTeam;
+        }
+    }
+
+
     public enum Source
     {
         PRO_MANAGEMENT("pro_management"),

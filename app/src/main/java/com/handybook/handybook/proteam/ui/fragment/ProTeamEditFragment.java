@@ -206,6 +206,14 @@ public class ProTeamEditFragment extends InjectedFragment implements
         getActivity().onBackPressed();
     }
 
+    // This is triggered by NewProTeamProListFragment
+    @Subscribe
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
+    {
+        mProTeam = event.getUpdatedProTeam();
+        updateTargetFragment();
+    }
+
     private void updateTargetFragment()
     {
         final Fragment targetFragment = getTargetFragment();
