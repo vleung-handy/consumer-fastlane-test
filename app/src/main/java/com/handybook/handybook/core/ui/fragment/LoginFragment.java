@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -127,7 +125,6 @@ public final class LoginFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
         callbackManager = CallbackManager.Factory.create();
 
         mBookingRequest = bookingManager.getCurrentRequest();
@@ -184,12 +181,9 @@ public final class LoginFragment extends BookingFlowFragment
                                        .inflate(R.layout.fragment_login, container, false);
 
         ButterKnife.bind(this, view);
-        setupToolbar(mToolbar, getString(R.string.sign_in), true);
+        setupToolbar(mToolbar, getString(R.string.sign_in), true, R.drawable.ic_back);
 
         mEmailText.clearFocus();
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (mFindUser)
         {
@@ -277,17 +271,6 @@ public final class LoginFragment extends BookingFlowFragment
                 mPasswordText.highlight();
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item)
-    {
-        if (item.getItemId() == android.R.id.home)
-        {
-            getActivity().onBackPressed();
-        }
-
-        return true;
     }
 
     @Override
