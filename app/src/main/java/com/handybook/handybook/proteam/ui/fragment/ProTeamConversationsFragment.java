@@ -15,8 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
@@ -294,7 +292,14 @@ public class ProTeamConversationsFragment extends InjectedFragment
     public void onResume()
     {
         super.onResume();
-        setupToolbar(mToolbar, getString(R.string.messages));
+        if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled())
+        {
+            setupToolbar(mToolbar, getString(R.string.messages));
+        }
+        else
+        {
+            setupToolbar(mToolbar, getString(R.string.pro_team));
+        }
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
