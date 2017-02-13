@@ -159,8 +159,13 @@ public class NewProTeamProListFragment extends InjectedFragment
             {
                 progressDialog.dismiss();
                 showToast(R.string.pro_team_update_successful);
-                mProTeamCategory = proTeamWrapper.getProTeam().getCategory(mProTeamCategoryType);
-                initRecyclerView();
+                final ProTeam proTeam = proTeamWrapper.getProTeam();
+                if (proTeam != null)
+                {
+                    mProTeamCategory = proTeam.getCategory(mProTeamCategoryType);
+                    initRecyclerView();
+                    bus.post(new ProTeamEvent.ProTeamUpdated(proTeam));
+                }
             }
 
             @Override
