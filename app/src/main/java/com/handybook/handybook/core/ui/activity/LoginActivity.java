@@ -58,7 +58,7 @@ public final class LoginActivity extends BaseActivity
         );
 
         final FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        fm.beginTransaction().replace(R.id.login_fragment_container, fragment).commit();
     }
 
     /**

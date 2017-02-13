@@ -16,7 +16,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,13 +132,6 @@ public class OnboardV2Fragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
@@ -251,6 +243,15 @@ public class OnboardV2Fragment extends InjectedFragment
             }
         });
 
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().onBackPressed();
+            }
+        });
+
         //try to prepopulate the zip fields with any data we already have.
         mEditZip.setText(mDefaultPreferencesManager.getString(PrefsKey.ZIP));
         mEditEmail.setText(mDefaultPreferencesManager.getString(PrefsKey.EMAIL));
@@ -333,17 +334,6 @@ public class OnboardV2Fragment extends InjectedFragment
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item)
-    {
-        if (item.getItemId() == android.R.id.home)
-        {
-            getActivity().onBackPressed();
-        }
-
-        return true;
     }
 
     @VisibleForTesting
