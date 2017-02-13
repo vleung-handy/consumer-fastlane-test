@@ -48,9 +48,9 @@ public class RateProTeamFragment extends Fragment
 
     private ProviderMatchPreference mInitialMatchPreference;
 
-    private boolean mHasUserClickedYesOrNoButton = false;
-    private ProviderMatchPreference mCurrentProviderMatchPreference;
+    private boolean mHasUserTouchedYesOrNoButtons = false;
 
+    @NonNull
     public static RateProTeamFragment newInstance(ProviderMatchPreference matchPreference)
     {
         final RateProTeamFragment fragment = new RateProTeamFragment();
@@ -82,7 +82,6 @@ public class RateProTeamFragment extends Fragment
             mInitialMatchPreference = (ProviderMatchPreference) getArguments()
                     .getSerializable(KEY_MATCH_PREFERENCE);
         }
-        mCurrentProviderMatchPreference = mInitialMatchPreference;
         initUI();
         return v;
     }
@@ -101,8 +100,8 @@ public class RateProTeamFragment extends Fragment
             @Override
             public void onClick(final View v)
             {
-                setProviderMatchPreference(ProviderMatchPreference.PREFERRED);
-                mHasUserClickedYesOrNoButton = true;
+                updateUI(ProviderMatchPreference.PREFERRED);
+                mHasUserTouchedYesOrNoButtons = true;
             }
         });
         // No
@@ -117,16 +116,28 @@ public class RateProTeamFragment extends Fragment
             @Override
             public void onClick(final View v)
             {
-                setProviderMatchPreference(ProviderMatchPreference.NEVER);
-                mHasUserClickedYesOrNoButton = true;
+                updateUI(ProviderMatchPreference.NEVER);
+                mHasUserTouchedYesOrNoButtons = true;
             }
         });
     }
 
+    /**
+     * If user hasn't interacted with the Y/N buttons it updates the UI, otherwise, nothing.
+     * @param providerMatchPreference update UI to reflect this match preference
+     */
     public void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference)
     {
-        if (mHasUserClickedYesOrNoButton) { return; }
-        mCurrentProviderMatchPreference = providerMatchPreference;
+        if (mHasUserTouchedYesOrNoButtons) { return; }
+        updateUI(providerMatchPreference);
+    }
+
+    /**
+     * Configures the UI to reflect the provided match preference
+     * @param providerMatchPreference update UI to reflect this match preference
+     */
+    private void updateUI(final ProviderMatchPreference providerMatchPreference)
+    {
         switch (providerMatchPreference)
         {
             case PREFERRED:
@@ -147,11 +158,9 @@ public class RateProTeamFragment extends Fragment
     /**
      * This is the method that should be called to retrieve the user's final decision on what he's
      * selected through the possible combinations of buttons
-     *
-     * @return
      */
     @NonNull
-    public ProviderMatchPreference getNewProviderMatchPreference()
+    public ProviderMatchPreference getProviderMatchPreference()
     {
         if (mButtonYes.isChecked())
         {
@@ -166,10 +175,7 @@ public class RateProTeamFragment extends Fragment
     }
 
     /**
-     * As of today, a pro is considered already on the team if the match preference says
-     * "preferred"
-     *
-     * @return
+     * As of today, a pro is considered already on the team if the match preference says "preferred"
      */
     private boolean isProAlreadyOnTeam()
     {

@@ -114,7 +114,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
                 if (mRateProTeamFragment != null)
                 {
-                    matchPreference = mRateProTeamFragment.getNewProviderMatchPreference();
+                    matchPreference = mRateProTeamFragment.getProviderMatchPreference();
                 }
                 else
                 {
