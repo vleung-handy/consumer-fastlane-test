@@ -20,6 +20,7 @@ import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitCallback;
 import com.handybook.handybook.core.data.HandyRetrofitService;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.library.util.FragmentUtils;
@@ -152,30 +153,31 @@ public class NewProTeamProListFragment extends InjectedFragment
             return;
         }
 
-        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>()
-        {
-            @Override
-            public void onSuccess(final ProTeamWrapper proTeamWrapper)
-            {
-                progressDialog.dismiss();
-                showToast(R.string.pro_team_update_successful);
-                final ProTeam proTeam = proTeamWrapper.getProTeam();
-                if (proTeam != null)
+        final DataManager.Callback<ProTeamWrapper> cb =
+                new FragmentSafeCallback<ProTeamWrapper>(this)
                 {
-                    mProTeamCategory = proTeam.getCategory(mProTeamCategoryType);
-                    initRecyclerView();
-                    bus.post(new ProTeamEvent.ProTeamUpdated(proTeam));
-                }
-            }
+                    @Override
+                    public void onCallbackSuccess(final ProTeamWrapper proTeamWrapper)
+                    {
+                        progressDialog.dismiss();
+                        showToast(R.string.pro_team_update_successful);
+                        final ProTeam proTeam = proTeamWrapper.getProTeam();
+                        if (proTeam != null)
+                        {
+                            mProTeamCategory = proTeam.getCategory(mProTeamCategoryType);
+                            initRecyclerView();
+                            bus.post(new ProTeamEvent.ProTeamUpdated(proTeam));
+                        }
+                    }
 
-            @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
-                progressDialog.dismiss();
-                showToast(!TextUtils.isEmpty(error.getMessage()) ? error.getMessage() :
-                                  getString(R.string.default_error_string));
-            }
-        };
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error)
+                    {
+                        progressDialog.dismiss();
+                        showToast(!TextUtils.isEmpty(error.getMessage()) ? error.getMessage() :
+                                          getString(R.string.default_error_string));
+                    }
+                };
 
         final String source = ProTeamEvent.Source.PRO_MANAGEMENT.toString();
         final ProTeamEdit proTeamEdit = new ProTeamEdit(matchPreference);
