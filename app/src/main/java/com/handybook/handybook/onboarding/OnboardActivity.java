@@ -1,15 +1,14 @@
-package com.handybook.handybook.core.ui.activity;
+package com.handybook.handybook.onboarding;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.core.ui.fragment.OnboardFragment;
-import com.handybook.handybook.onboarding.OnboardV2Fragment;
-
 import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public final class OnboardActivity extends MenuDrawerActivity {
+public final class OnboardActivity extends MenuDrawerActivity
+{
 
 
     @Override

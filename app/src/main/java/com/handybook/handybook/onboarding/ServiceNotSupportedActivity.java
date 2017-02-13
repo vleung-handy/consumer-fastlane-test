@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
-import com.handybook.handybook.core.ui.activity.OnboardActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

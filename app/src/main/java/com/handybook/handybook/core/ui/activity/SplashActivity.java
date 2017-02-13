@@ -17,6 +17,7 @@ import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.onboarding.OnboardActivity;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralResponse;
 import com.squareup.otto.Subscribe;

@@ -195,7 +195,7 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".core.ui.activity.OnboardActivity"
+            android:name=".onboarding.OnboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             />

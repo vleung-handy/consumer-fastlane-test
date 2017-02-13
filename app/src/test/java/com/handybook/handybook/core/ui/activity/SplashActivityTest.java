@@ -7,6 +7,7 @@ import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.onboarding.OnboardActivity;
 
 import org.junit.Before;
 import org.junit.Test;
