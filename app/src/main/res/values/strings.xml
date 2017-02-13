@@ -143,6 +143,7 @@
     <string name="item">Item</string>
     <string name="amount">Amount</string>
     <string name="title">Title</string>
+    <string name="ok">OK</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>
@@ -410,6 +411,8 @@
     <string name="block_formatted">Block %1$s?</string>
     <string name="messages_empty_state_subtitle">Save your favorite pro(s) to your Pro\u00a0Team to chat with them directly.</string>
     <string name="messages_empty_state_title">You have no messages</string>
+    <string name="favorite_pro_help_message">This pro is your favorite. We will always prioritize your request to get this pro on your bookings. If they aren\'t available we will request a backup pro.</string>
+    <string name="backup_pro_help_message">These are your backup pros. If your Favorite Pro isn\'t available, we will request a backup pro.</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
