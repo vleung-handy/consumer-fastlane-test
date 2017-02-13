@@ -26,6 +26,7 @@ import java.util.List;
 public final class Utils
 {
     private static final int CENTS_TO_DOLLAR_CONVERSION_VALUE = 100;
+    public static final String EMAIL_VALIDATION_REGEX = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
 
     public static int toDP(final float px, final Context context)
     {

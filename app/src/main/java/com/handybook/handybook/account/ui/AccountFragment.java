@@ -27,6 +27,7 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
@@ -52,6 +53,9 @@ public class AccountFragment extends InjectedFragment
     UserManager mUserManager;
     @Inject
     UserDataManager mUserDataManager;
+
+    @Inject
+    DefaultPreferencesManager mDefaultPreferencesManager;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -305,6 +309,8 @@ public class AccountFragment extends InjectedFragment
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
+
+
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();
                         Intent intent = new Intent(getContext(), SplashActivity.class);

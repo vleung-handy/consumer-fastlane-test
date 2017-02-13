@@ -95,7 +95,7 @@ public class Configuration implements Serializable
 
     public boolean isBottomNavEnabled() {
         //Do this if this is first time bottom nav is set for session
-        if(mIsBottomNavEnabledForSession == null)
+        if (mIsBottomNavEnabledForSession == null)
         {
             mIsBottomNavEnabledForSession = mBottomNavEnabled;
         }
@@ -138,5 +138,11 @@ public class Configuration implements Serializable
     public boolean isSettingFavoriteProEnabled()
     {
         return mSettingFavoriteProEnabled && false;
+    }
+
+    public boolean isOnboardingV2Enabled()
+    {
+        //TODO: JIA: make this read from config
+        return false;
     }
 }

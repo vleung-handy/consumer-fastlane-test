@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/onboard_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        >
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/onboard_collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            >
+
+            <RelativeLayout
+                android:id="@+id/onboard_expanded_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding_double"
+                android:paddingRight="@dimen/default_padding_double"
+                android:paddingTop="@dimen/default_padding"
+                app:layout_collapseMode="pin"
+                >
+
+                <ImageView
+                    android:id="@+id/onboard_image_logo"
+                    android:layout_width="@dimen/onboarding_logo_width"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_home_logo"
+                    android:layout_marginTop="@dimen/default_margin"
+                    />
+
+                <TextView
+                    android:id="@+id/onboard_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/onboard_image_logo"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:gravity="center_horizontal"
+                    android:text="@string/onboard_title"
+                    android:textAllCaps="false"
+                    style="@style/TextView.XLarge"
+                    android:textColor="@color/handy_white"
+
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/onboard_title"
+                    android:layout_centerHorizontal="true"
+                    app:layout_collapseMode="pin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    >
+
+                    <TextView
+                        android:id="@+id/onboard_already_have_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboard_already_account"
+                        android:textColor="@color/handy_white"
+                        />
+
+                    <Button
+                        android:id="@+id/onboard_signin_1"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sign_in"
+                        android:textColor="@color/handy_white"
+                        android:textAppearance="@style/TextView.Bold"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/onboard_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:theme="@style/HandyTheme.AppBarOverlay.Bold"
+                app:title="@string/zip_code"
+                app:navigationIcon="@drawable/ic_back"
+                app:titleMargin="@dimen/default_margin"
+                app:contentInsetStart="0dp"
+                app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                >
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/onboarding_map"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            />
+
+        <ViewSwitcher
+            android:id="@+id/onboard_view_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin_3x"
+            android:layout_marginRight="@dimen/default_margin_3x"
+            android:layout_marginTop="@dimen/default_margin_double"
+            android:background="@color/handy_white"
+            android:elevation="@dimen/med_elevation"
+            android:clipToPadding="false"
+            >
+
+            <LinearLayout
+                android:id="@+id/onboard_zip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/default_margin_double"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboard_location_prompt"
+                    android:gravity="center"
+                    style="@style/TextView.Large.Bold"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
+                    />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/zip_code"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
+                    android:theme="@style/TextInputBlueTheme"
+                    >
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/onboard_edit_zip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/onboard_button_next"
+                    android:text="@string/next"
+                    android:enabled="false"
+                    style="@style/Button.Green"
+                    android:layout_marginTop="@dimen/default_margin"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/onboard_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/default_margin_double"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onboard_email_prompt"
+                    android:gravity="center"
+                    style="@style/TextView.Large.Bold"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
+                    />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
+                    android:theme="@style/TextInputBlueTheme"
+                    >
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/onboard_edit_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:inputType="textEmailAddress"
+                        android:imeOptions="actionDone"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/onboard_button_submit"
+                    android:text="@string/next"
+                    android:enabled="false"
+                    style="@style/Button.Green"
+                    android:layout_marginTop="@dimen/default_margin"
+                    />
+            </LinearLayout>
+        </ViewSwitcher>
+
+
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

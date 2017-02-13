@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.booking.model.Booking;
@@ -23,23 +24,23 @@ import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
-import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.RequiredModalsEventListener;
 import com.handybook.handybook.core.RequiredModalsLauncher;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.event.ActivityLifecycleEvent;
+import com.handybook.handybook.core.manager.AppseeManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.handybook.handybook.core.manager.AppseeManager;
-import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.referral.manager.ReferralsManager;
@@ -99,6 +100,25 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
         }
+    }
+
+    /**
+     * If the new onboarding flag is enabled, and we don't have zip or email, then
+     * user is required to go to onboarding screen.
+     *
+     * Do this only if the user is not currently logged in
+     * @return
+     */
+    protected boolean requiresOnboardingV2()
+    {
+        return mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()
+                && !mUserManager.isUserLoggedIn() &&
+                (TextUtils.isEmpty(mDefaultPreferencesManager.getString(PrefsKey.ZIP, null))
+                        || TextUtils.isEmpty(mDefaultPreferencesManager.getString(
+                        PrefsKey.EMAIL,
+                        null
+                ))
+                );
     }
 
     @Override

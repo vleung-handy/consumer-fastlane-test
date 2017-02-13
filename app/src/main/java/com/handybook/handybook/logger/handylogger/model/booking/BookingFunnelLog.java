@@ -857,4 +857,19 @@ public class BookingFunnelLog extends EventLog
             super(EVENT_TYPE);
         }
     }
+
+
+    public static class EmailCollectedLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "email_collected";
+
+        @SerializedName("email_address")
+        private final String mEmailAddress;
+
+        public EmailCollectedLog(final String emailAddress)
+        {
+            super(EVENT_TYPE);
+            mEmailAddress = emailAddress;
+        }
+    }
 }

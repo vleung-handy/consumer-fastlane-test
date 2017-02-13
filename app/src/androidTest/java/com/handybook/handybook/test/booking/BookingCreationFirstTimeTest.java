@@ -76,7 +76,7 @@ public class BookingCreationFirstTimeTest
 
         //fill out address fields
         Address address = testUser.getAddress();
-        TextViewUtil.updateEditTextView(R.id.text_fullname, testUser.getFullName());
+        TextViewUtil.updateEditTextView(R.id.booking_address_fullname, testUser.getFullName());
         TextViewUtil.updateEditTextView(
                 R.id.autocomplete_address_text_street,
                 address.getStreetAddress1()
@@ -85,7 +85,7 @@ public class BookingCreationFirstTimeTest
                 R.id.autocomplete_address_text_other,
                 address.getStreetAddress2()
         );
-        TextViewUtil.updateEditTextView(R.id.text_phone, testUser.getPhoneNumber());
+        TextViewUtil.updateEditTextView(R.id.booking_address_phone, testUser.getPhoneNumber());
         clickNextButton();
 
         //fill out credit card fields

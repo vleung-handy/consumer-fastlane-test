@@ -50,6 +50,7 @@
     <color name="handy_blue">#00cded</color>
     <color name="handy_darkened_blue">#0bb8e3</color>
     <color name="handy_tertiary_gray">#9cabb5</color>
+    <color name="handy_tertiary_gray_50">#809cabb5</color>
     <color name="handy_tertiary_gray_dark">#93a0a9</color>
     <color name="handy_tertiary_gray_dark_pressed">#7a8790</color>
     <color name="handy_tertiary_gray_trans">#e69cabb5</color>

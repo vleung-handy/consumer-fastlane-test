@@ -24,7 +24,8 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="enterAlways">
+            app:layout_scrollFlags="enterAlways"
+            >
 
             <ImageView
                 android:fitsSystemWindows="true"

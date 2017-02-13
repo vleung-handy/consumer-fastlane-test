@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.event.ReferralsEvent.RequestConfirmReferral;
 import com.handybook.handybook.referral.model.ReferralChannels;
@@ -44,7 +44,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
 /**
- * TODO: JIA: fixed this in the future when we finally get the toolbar out of the fragment.
  * Currently, the toolbars are in the fragments, therefore, to setup the toolbar, it needs to call
  * the parent activity. Calling the parent activity will cause this test suite to fail
  */

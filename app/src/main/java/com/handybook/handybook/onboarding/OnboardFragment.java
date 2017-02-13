@@ -1,4 +1,4 @@
-package com.handybook.handybook.core.ui.fragment;
+package com.handybook.handybook.onboarding;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;

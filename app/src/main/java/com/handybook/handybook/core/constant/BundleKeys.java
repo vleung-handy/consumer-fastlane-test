@@ -46,4 +46,5 @@ public class BundleKeys
     public static final String TITLE = "title";
     public static final String UPDATED_BOOKING = "updated_booking";
     public static final String USER_ID = "user_id";
+    public static final String ZIP = "zip";
 }

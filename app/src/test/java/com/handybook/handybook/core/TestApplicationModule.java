@@ -323,10 +323,11 @@ public class TestApplicationModule
     @Singleton
     final UserManager provideUserManager(
             final Bus bus,
-            final SecurePreferencesManager securePreferencesManager
+            final SecurePreferencesManager securePreferencesManager,
+            final DefaultPreferencesManager defaultPreferencesManager
     )
     {
-        return spy(new TestUserManager(context, bus, securePreferencesManager));
+        return spy(new TestUserManager(context, bus, securePreferencesManager, defaultPreferencesManager));
     }
 
     @Provides

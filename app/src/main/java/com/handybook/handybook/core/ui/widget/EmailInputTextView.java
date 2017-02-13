@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.handybook.handybook.library.ui.view.InputTextField;
+import com.handybook.handybook.library.util.Utils;
+
 
 public final class EmailInputTextView extends InputTextField
 {
@@ -22,7 +24,8 @@ public final class EmailInputTextView extends InputTextField
 
     public final boolean validate() {
         final String email = this.getText().toString().trim();
-        if (email == null || !email.matches("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")) {
+        if (email == null || !email.matches(Utils.EMAIL_VALIDATION_REGEX))
+        {
             highlight();
             return false;
         }
