@@ -41,6 +41,7 @@ proguard/
 ## Ignore all AndroidStudio files except the codeStyleSetting
 .idea/*
 !.idea/codeStyleSettings.xml
+!.idea/inspectionProfiles
 
 ## File-based project format:
 *.ipr
