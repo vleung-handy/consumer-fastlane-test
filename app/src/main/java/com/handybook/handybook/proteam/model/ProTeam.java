@@ -165,6 +165,8 @@ public class ProTeam implements Parcelable
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_NEVER)
         private List<ProTeamPro> mNever;
 
+        private ProTeamPro mFavoritePro;
+
         ProTeamCategory() { }
 
         ProTeamCategory(Parcel in)
@@ -301,6 +303,23 @@ public class ProTeam implements Parcelable
                 return false;
             }
             return !(mPreferred != null && !mPreferred.isEmpty());
+        }
+
+        @Nullable
+        public ProTeamPro getFavoritePro()
+        {
+            if (mFavoritePro == null && mPreferred != null)
+            {
+                for (final ProTeamPro proTeamPro : mPreferred)
+                {
+                    if (proTeamPro.isFavorite())
+                    {
+                        mFavoritePro = proTeamPro;
+                        break;
+                    }
+                }
+            }
+            return mFavoritePro;
         }
 
         public static class Builder

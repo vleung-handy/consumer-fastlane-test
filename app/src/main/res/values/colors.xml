@@ -50,6 +50,7 @@
     <color name="handy_blue">#00cded</color>
     <color name="handy_darkened_blue">#0bb8e3</color>
     <color name="handy_tertiary_gray">#9cabb5</color>
+    <color name="handy_tertiary_gray_50">#809cabb5</color>
     <color name="handy_tertiary_gray_dark">#93a0a9</color>
     <color name="handy_tertiary_gray_dark_pressed">#7a8790</color>
     <color name="handy_tertiary_gray_trans">#e69cabb5</color>
@@ -67,6 +68,7 @@
     <color name="android_pay_black_trans">#e6333333</color>
     <color name="handy_black_trans">#bf000000</color>
     <color name="divider_gray">#e2e2e2</color>
+    <color name="placeholder_gray">#e2e2e2</color>
     <color name="cell_disabled">#F0F0F0</color>
 
 </resources>

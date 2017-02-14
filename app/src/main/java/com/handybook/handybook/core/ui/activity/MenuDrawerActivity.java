@@ -14,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,7 @@ import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
@@ -38,6 +40,8 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
+import com.handybook.handybook.onboarding.OnboardActivity;
+import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.shared.layer.LayerHelper;
@@ -70,6 +74,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
     @Inject
     LayerHelper mLayerHelper;
 
+    private Fragment mActiveFragment;
+
     protected boolean disableDrawer;
     protected boolean mShouldShowNavForTransition;
     private Object mBusEventListener;
@@ -77,6 +83,16 @@ public abstract class MenuDrawerActivity extends BaseActivity
     protected abstract Fragment createFragment();
 
     protected abstract String getNavItemTitle();
+
+    protected Fragment getActiveFragemnt()
+    {
+        return mActiveFragment;
+    }
+
+    public void setActiveFragment(final Fragment activeFragment)
+    {
+        mActiveFragment = activeFragment;
+    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
@@ -120,7 +136,21 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 checkLayerInitiation();
                 if (!event.isLoggedIn())
                 {
-                    navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                    if (requiresOnboardingV2())
+                    {
+                        //upon logout, if onboarding is enabled, then we bring user back to onboarding screen.
+                        final Intent intent = new Intent(
+                                MenuDrawerActivity.this,
+                                OnboardActivity.class
+                        );
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else
+                    {
+                        goToNewHomeScreen();
+                    }
                 }
             }
 
@@ -166,6 +196,12 @@ public abstract class MenuDrawerActivity extends BaseActivity
         }
         //The menu should always be refreshed
         refreshMenu();
+    }
+
+    protected boolean hasStoredZip()
+    {
+        String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
+        return !TextUtils.isEmpty(zip);
     }
 
     protected boolean requiresUser()
@@ -377,25 +413,45 @@ public abstract class MenuDrawerActivity extends BaseActivity
             mDrawerLayout.closeDrawers();
         }
         else if (isTaskRoot() && !(this instanceof ServiceCategoriesActivity)
+                && !isOnboardingV2Showing()
                 && getSupportFragmentManager().getBackStackEntryCount() == 0)
         {
             //if back press results in exiting the app AND this is not the home page
             // AND there is no fragment in the backstack, then bring back to the home page first
-            if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-            {
-                startActivity(new Intent(this, BottomNavActivity.class));
-                finish();
-            }
-            else
-            {
-                navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
-            }
+            goToNewHomeScreen();
         }
         else
         {
             Utils.hideSoftKeyboard(this, getCurrentFocus());
             super.onBackPressed();
         }
+    }
+
+    /**
+     * Depending on whether bottom nav is enabled or not, the new home screen would be either
+     * the Menu Drawer screen, or the new bottom nav screen.
+     */
+    private void goToNewHomeScreen()
+    {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            startActivity(new Intent(this, BottomNavActivity.class));
+            finish();
+        }
+        else
+        {
+            navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
+        }
+    }
+
+    private boolean isOnboardingV2Showing()
+    {
+        if (this instanceof OnboardActivity && mActiveFragment instanceof OnboardV2Fragment)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void toggleMenu()

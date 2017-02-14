@@ -218,7 +218,7 @@ public class ChatLog extends EventLog
         }
     }
 
-//    TODO: JIA: refactor all these reschedule logs to have some sort of a base with all those properties
+    //    TODO: refactor all these reschedule logs to have some sort of a base with all those properties
 
 
     /**

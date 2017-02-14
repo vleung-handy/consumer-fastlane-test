@@ -96,7 +96,10 @@ public class MiniProProfile extends FrameLayout
         mHandymanIndicator.setVisibility(handymanIndicatorEnabled ? VISIBLE : GONE);
     }
 
-    public void setRatingAndJobsCount(final Float rating, final Integer jobsCount)
+    public void setRatingAndJobsCount(
+            @Nullable final Float rating,
+            @Nullable final Integer jobsCount
+    )
     {
         if (rating != null && rating > 0.0f && jobsCount != null && jobsCount > 0)
         {

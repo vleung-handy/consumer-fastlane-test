@@ -32,6 +32,8 @@ public class ProTeamPro implements Serializable, Comparable
     private boolean mChatEnabled;
     @SerializedName("layer_user_id")
     private String mLayerUserId;
+    @SerializedName("is_favorite")
+    private boolean mIsFavorite;
 
     public int getId()
     {
@@ -86,6 +88,11 @@ public class ProTeamPro implements Serializable, Comparable
     public String getLayerUserId()
     {
         return mLayerUserId;
+    }
+
+    public boolean isFavorite()
+    {
+        return mIsFavorite;
     }
 
     @Override

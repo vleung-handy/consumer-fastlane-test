@@ -6,7 +6,6 @@
     <string name="help">Help</string>
     <string name="promotions">Promotions</string>
     <string name="promotions_menu">Apply Promo Code</string>
-    <string name="log_in">Log In</string>
     <string name="email">Email</string>
     <string name="full_name">Full Name</string>
     <string name="phone">Phone</string>
@@ -399,6 +398,18 @@
     <string name="conversation_tip_body">Tap the calendar to set your new date and time.</string>
     <string name="prefer_different_pro">Prefer another pro?</string>
     <string name="reschedule_with_pro">None of your pros are free for this booking. Reschedule with them directly or try the top-rated Backup Pro we found for you.</string>
+    <string name="favorite_pro">Favorite Pro</string>
+    <string name="backup_pros">Backup Pros</string>
+    <string name="pro_team">Pro Team</string>
+    <string name="no_favorite_pro_title">Have a Favorite Pro?</string>
+    <string name="no_favorite_pro_subtitle">Tap the heart to make it official.</string>
+    <string name="no_pro_team_subtitle">Request highly rated pros when your favorite is busy.</string>
+    <string name="favorite">Favorite</string>
+    <string name="block">Block</string>
+    <string name="remove_as_favorite_formatted">Remove %1$s as your favorite?</string>
+    <string name="set_as_favorite_formatted">Set %1$s as your favorite?</string>
+    <string name="auto_remove_as_favorite_warning_formatted">This will move %1$s to your Backup Pros.</string>
+    <string name="block_formatted">Block %1$s?</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
@@ -465,6 +476,7 @@
     <string name="account.next_cleaning">Next cleaning</string>
     <string name="account.promo_code_description">Apply a discount</string>
     <string name="account.sign_out">Sign out</string>
+    <string name="sign_in">Sign In</string>
     <string name="account.update_information">Update Information</string>
     <string name="account.select_plan">Select a Plan</string>
     <string name="account.update_password">Update Password</string>
@@ -500,6 +512,14 @@
     <string name="conversation_no_preferred_pros">Edit your Pro Team to start chatting.</string>
     <string name="conversation_no_pros">You\'ll be able to chat directly with past pros once you add them to your Pro Team.</string>
     <string name="bill_view_expand_target_text">Payment Details</string>
-    <string name="sign_in">Sign In</string>
     <string name="label_continue">Continue</string>
+
+    <string name="service_not_supported_title">Handy is not in \n your area yet!</string>
+    <string name="service_not_supported_sub_title">We\'ll let you know when we\'re \n in your city</string>
+    <string name="service_not_supported_zip_formatted">ZIP Code: %1$s</string>
+    <string name="onboard_try_another_zip">Try Another ZIP Code</string>
+    <string name="onboard_title">Book trusted cleaners &amp; handymen instantly</string>
+    <string name="onboard_already_account">Already have an account?</string>
+    <string name="onboard_location_prompt">Where are you \n located?</string>
+    <string name="onboard_email_prompt">What\'s your email \n address?</string>
 </resources>

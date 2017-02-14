@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:elevation="@dimen/med_elevation"
         android:minHeight="?attr/actionBarSize"
+        android:paddingRight="@dimen/default_padding"
         android:theme="@style/HandyTheme.AppBarOverlay"
         app:navigationIcon="@drawable/ic_menu"
         >
@@ -25,18 +26,6 @@
             android:padding="@dimen/default_logo_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_home_logo"
-            />
-
-        <TextView
-            android:id="@+id/fragment_service_categories_sign_in_text"
-            android:layout_margin="@dimen/default_margin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            style="@style/TextView.Small.Bold"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            android:text="@string/sign_in"
             />
     </android.support.v7.widget.Toolbar>
 

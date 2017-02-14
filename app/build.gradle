@@ -34,7 +34,7 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 16
         targetSdkVersion 25
-        versionName '1.38.7'
+        versionName '1.39.0'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -87,8 +87,8 @@ android {
     sourceSets {
         main {
             res.srcDirs = [
-                    'src/main/library-res',
-                    'src/main/res'
+                    'src/main/res',
+                    'src/main/library-res'
             ]
         }
     }

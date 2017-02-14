@@ -132,26 +132,29 @@ import com.handybook.handybook.core.ui.activity.BlockingActivity;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.OldDeeplinkSplashActivity;
-import com.handybook.handybook.core.ui.activity.OnboardActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.core.ui.activity.WebViewActivity;
 import com.handybook.handybook.core.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
-import com.handybook.handybook.core.ui.fragment.OnboardFragment;
-import com.handybook.handybook.core.ui.fragment.OnboardPageFragment;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.helpcenter.HelpModule;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
+import com.handybook.handybook.onboarding.OnboardActivity;
+import com.handybook.handybook.onboarding.OnboardFragment;
+import com.handybook.handybook.onboarding.OnboardPageFragment;
+import com.handybook.handybook.onboarding.OnboardV2Fragment;
+import com.handybook.handybook.onboarding.ServiceNotSupportedActivity;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamConversationsFragment;
+import com.handybook.handybook.proteam.ui.fragment.NewProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
@@ -236,6 +239,7 @@ import retrofit.converter.GsonConverter;
         YozioMetaDataCallback.class,
         OnboardActivity.class,
         OnboardFragment.class,
+        OnboardV2Fragment.class,
         OnboardPageFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,
@@ -293,6 +297,7 @@ import retrofit.converter.GsonConverter;
         ProTeamConversationsFragment.class,
         ProTeamEditFragment.class,
         ProTeamProListFragment.class,
+        NewProTeamProListFragment.class,
         BookingProTeamActivity.class,
         BookingProTeamFragment.class,
         RemoveProDialogFragment.class,
@@ -302,6 +307,7 @@ import retrofit.converter.GsonConverter;
         WebViewFragment.class,
         AccountFragment.class,
         ContactFragment.class,
+        ServiceNotSupportedActivity.class,
         ProfilePasswordFragment.class,
         PlansFragment.class,
         EditPlanFragment.class,
@@ -607,10 +613,11 @@ public final class ApplicationModule
     @Singleton
     final UserManager provideUserManager(
             final Bus bus,
-            final SecurePreferencesManager securePreferencesManager
+            final SecurePreferencesManager securePreferencesManager,
+            final DefaultPreferencesManager defaultPreferencesManager
     )
     {
-        return new UserManager(mContext, bus, securePreferencesManager);
+        return new UserManager(mContext, bus, securePreferencesManager, defaultPreferencesManager);
     }
 
     @Provides
