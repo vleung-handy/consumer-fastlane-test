@@ -292,7 +292,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     public void onResume()
     {
         super.onResume();
-        if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled())
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             setupToolbar(mToolbar, getString(R.string.messages));
         }
