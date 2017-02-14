@@ -1,5 +1,6 @@
 package com.handybook.handybook.proteam.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -137,14 +138,35 @@ public class NewProTeamCategoryAdapter
         @Override
         void bind(final Object item)
         {
-            final ProTeamSectionListHeaderView itemView = (ProTeamSectionListHeaderView) this.itemView;
-            itemView.setTitle((String) item);
+            final ProTeamSectionListHeaderView itemView =
+                    (ProTeamSectionListHeaderView) this.itemView;
+            final String text = (String) item;
+            itemView.setTitle(text);
             itemView.setHelpIconClickListener(new View.OnClickListener()
             {
                 @Override
-                public void onClick(final View v)
+                public void onClick(final View view)
                 {
-                    // TODO: Implement
+                    final Context context = view.getContext();
+                    String title;
+                    String message;
+                    final String favoriteProTitle = context.getString(R.string.favorite_pro);
+                    if (text.equals(favoriteProTitle))
+                    {
+                        title = favoriteProTitle;
+                        message = context.getString(R.string.favorite_pro_help_message);
+                    }
+                    else
+                    {
+                        title = context.getString(R.string.backup_pros);
+                        message = context.getString(R.string.backup_pro_help_message);
+                    }
+                    new AlertDialog.Builder(context)
+                            .setTitle(title)
+                            .setMessage(message)
+                            .setCancelable(true)
+                            .setPositiveButton(R.string.ok, null)
+                            .show();
                 }
             });
         }

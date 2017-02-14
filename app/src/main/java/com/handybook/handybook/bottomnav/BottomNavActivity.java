@@ -168,8 +168,8 @@ public class BottomNavActivity extends BaseActivity
             case BOOKINGS:
                 goToSelectedTab(R.id.bookings);
                 break;
-            case PRO_TEAM:
-                goToSelectedTab(R.id.pro_team);
+            case MESSAGES:
+                goToSelectedTab(R.id.messages);
                 break;
             case SERVICES:
                 goToSelectedTab(R.id.add_booking);
@@ -207,7 +207,7 @@ public class BottomNavActivity extends BaseActivity
             case R.id.bookings:
                 fragment = UpcomingBookingsFragment.newInstance();
                 break;
-            case R.id.pro_team:
+            case R.id.messages:
                 isProChatCurrentlySelected = true;
                 mBottomNavigationView.showChatIndicator(false);
                 fragment = ProTeamConversationsFragment.newInstance();

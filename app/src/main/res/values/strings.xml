@@ -19,7 +19,7 @@
     <string name="log_out">Log Out</string>
     <string name="share_using">Share using…</string>
     <string name="my_bookings">My Bookings</string>
-    <string name="my_pro_team">My Pro Team</string>
+    <string name="messages">Messages</string>
     <string name="edit_pro_team">Edit Pro Team</string>
     <string name="history">History</string>
     <string name="account">My Account</string>
@@ -142,7 +142,7 @@
     <string name="item">Item</string>
     <string name="amount">Amount</string>
     <string name="title">Title</string>
-    <string name="edit_list">Edit List</string>
+    <string name="ok">OK</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>
@@ -408,6 +408,10 @@
     <string name="set_as_favorite_formatted">Set %1$s as your favorite?</string>
     <string name="auto_remove_as_favorite_warning_formatted">This will move %1$s to your Backup Pros.</string>
     <string name="block_formatted">Block %1$s?</string>
+    <string name="messages_empty_state_subtitle">Save your favorite pro(s) to your Pro\u00a0Team to chat with them directly.</string>
+    <string name="messages_empty_state_title">You have no messages</string>
+    <string name="favorite_pro_help_message">This pro is your favorite. We will always prioritize your request to get this pro on your bookings. If they aren\'t available we will request a backup pro.</string>
+    <string name="backup_pro_help_message">These are your backup pros. If your Favorite Pro isn\'t available, we will request a backup pro.</string>
 
     <string name="booking_recurrence_show_more_options">More frequencies</string>
 
@@ -474,6 +478,8 @@
     <string name="account.next_cleaning">Next cleaning</string>
     <string name="account.promo_code_description">Apply a discount</string>
     <string name="account.sign_out">Sign out</string>
+    <string name="account.work_with_pros_you_love">Work with pros you love</string>
+    <string name="account.choose_favorite_pro">Choose your Favorite Pro</string>
     <string name="sign_in">Sign In</string>
     <string name="account.update_information">Update Information</string>
     <string name="account.select_plan">Select a Plan</string>

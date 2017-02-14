@@ -1,9 +1,7 @@
 package com.handybook.handybook.proteam.ui.view;
 
 import android.content.Context;
-import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -19,19 +17,17 @@ public class ProTeamActionPickerItem extends FrameLayout
 
     public ProTeamActionPickerItem(
             final Context context,
-            @StringRes final int stringResId,
-            @ColorRes final int colorResId
+            @StringRes final int stringResId
     )
     {
         super(context);
-        init(stringResId, colorResId);
+        init(stringResId);
     }
 
-    private void init(final int stringResId, final int colorResId)
+    private void init(final int stringResId)
     {
         inflate(getContext(), R.layout.view_pro_team_action_picker_item, this);
         ButterKnife.bind(this);
         mAction.setText(stringResId);
-        mAction.setTextColor(ContextCompat.getColor(getContext(), colorResId));
     }
 }
