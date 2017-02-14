@@ -54,19 +54,19 @@ public class Booking implements Parcelable
     @SerializedName("price")
     private float mPrice;
     @SerializedName("recurring")
-    private int mRecurring; //WARNING DECEPTIVE VARIABLE NAME! THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
+    private int mRecurring; // WARNING DECEPTIVE VARIABLE NAME! THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
     @SerializedName("recurring_id")
-    private String mRecurringId;  //This actually indicates if a booking is isRecurring, non-null/empty id
+    private String mRecurringId;  // This actually indicates if a booking is isRecurring, non-null/empty id
     @SerializedName("recurring_string")
-    private String mRecurringInfo; //User facing display string of frequency, i.e. once, every 2 weeks, every 4 weeks
+    private String mRecurringInfo; // User facing display string of frequency, i.e. once, every 2 weeks, every 4 weeks
     @SerializedName("getin")
-    private int mEntryType; //numeric, must keep synced against server, start using an auto deserialized enum?
+    private int mEntryType; // Numeric, must keep synced against server, start using an auto deserialized enum?
     @SerializedName("getin_string")
-    private String mEntryInfo;   //string descriptor of the entry type
+    private String mEntryInfo;   // String descriptor of the entry type
     @SerializedName("getintxt")
-    private String mExtraEntryInfo; //additional information i.e. where user will hide the key
+    private String mExtraEntryInfo; // Additional information i.e. where user will hide the key
     @SerializedName("lockbox_code")
-    private String mLockboxCode; //ugly because hack
+    private String mLockboxCode; // Ugly because hack
     @SerializedName("entry_option")
     private EntryMethodOption mEntryMethodOption;
     @SerializedName("msg_to_pro")
