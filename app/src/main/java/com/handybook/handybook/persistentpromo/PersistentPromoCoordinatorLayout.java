@@ -13,6 +13,11 @@ import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.AppLog;
+import com.squareup.otto.Bus;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,20 +43,37 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
     @Bind(R.id.persistent_promo_appbar_layout)
     PersistentPromoAppBarLayout mPersistentPromoAppBarLayout;
 
+    /**
+     * really don't like injecting this inside a view,
+     * but also don't want to create a bunch of custom callbacks
+     * just to be able to put this in the fragment
+     *
+     * TODO what are better alternatives?
+     */
+    @Inject
+    Bus mBus;
+
+    /**
+     * the model that was used to create the UI
+     * for logging purposes only
+     */
+    private PersistentPromo mPersistentPromo;
+
     public PersistentPromoCoordinatorLayout(final Context context)
     {
         super(context);
-        init(context, null);
+        init(context);
     }
 
     public PersistentPromoCoordinatorLayout(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
-        init(context, attrs);
+        init(context);
     }
 
-    private void init(@NonNull final Context context, @Nullable final AttributeSet attributeSet)
+    private void init(@NonNull final Context context)
     {
+        Utils.inject(getContext(), this);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         layoutInflater.inflate(R.layout.layout_persistent_promo_composite, this);
         ButterKnife.bind(this);
@@ -71,6 +93,7 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
             @Override
             public void onActionButtonClicked(final String deeplinkUrl)
             {
+                mBus.post(new LogEvent.AddLogEvent(new AppLog.PersistentPromoLog.ExpandedViewActionClicked(mPersistentPromo.getId())));
                 if(!TextUtils.isEmpty(deeplinkUrl))
                 {
                     Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
@@ -81,6 +104,14 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
                     //just collapse the offer view if no deep link
                     mPersistentPromoAppBarLayout.setExpanded(false, true);
                 }
+            }
+        });
+
+        mPersistentPromoAppBarLayout.setOnPersistentPromoFullyExpandedListener(new PersistentPromoAppBarLayout.OnPersistentPromoFullyExpandedListener() {
+            @Override
+            public void onPersistentPromoFullyExpanded()
+            {
+                mBus.post(new LogEvent.AddLogEvent(new AppLog.PersistentPromoLog.ExpandedViewShown(mPersistentPromo.getId())));
             }
         });
     }
@@ -101,12 +132,15 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
      */
     public void updateWithModel(@Nullable PersistentPromo persistentPromo)
     {
+        mPersistentPromo = persistentPromo;
         if(!canDisplayPersistentPromo(persistentPromo))
         {
             setPersistentPromoVisible(false);
             return;
         }
         setPersistentPromoVisible(true);
+        mBus.post(new LogEvent.AddLogEvent(new AppLog.PersistentPromoLog.PreviewShown(mPersistentPromo.getId())));
+
         mPersistentPromoExpandedLayout.updateWithModel(persistentPromo);
         mPersistentPromoAppBarLayout.updateWithModel(persistentPromo);
     }

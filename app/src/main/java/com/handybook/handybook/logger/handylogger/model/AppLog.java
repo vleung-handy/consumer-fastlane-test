@@ -66,9 +66,9 @@ public abstract class AppLog extends EventLog
         public static class PreviewShown extends PersistentPromoLog
         {
             private static final String EVENT_TYPE = "preview_shown";
-            public PreviewShown(String offerId)
+            public PreviewShown(String promoId)
             {
-                super(EVENT_TYPE, offerId);
+                super(EVENT_TYPE, promoId);
             }
         }
 
@@ -79,9 +79,9 @@ public abstract class AppLog extends EventLog
         public static class ExpandedViewShown extends PersistentPromoLog
         {
             private static final String EVENT_TYPE = "expanded_view_shown";
-            public ExpandedViewShown(String offerId)
+            public ExpandedViewShown(String promoId)
             {
-                super(EVENT_TYPE, offerId);
+                super(EVENT_TYPE, promoId);
             }
         }
 
@@ -92,9 +92,9 @@ public abstract class AppLog extends EventLog
         public static class ExpandedViewActionClicked extends PersistentPromoLog
         {
             private static final String EVENT_TYPE = "expanded_view_action_clicked";
-            public ExpandedViewActionClicked(String offerId)
+            public ExpandedViewActionClicked(String promoId)
             {
-                super(EVENT_TYPE, offerId);
+                super(EVENT_TYPE, promoId);
             }
         }
     }

@@ -27,6 +27,8 @@ public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarL
     @Bind(R.id.persistent_promo_preview_view)
     PersistentPromoPreviewToolbar mPersistentPromoPreviewToolbar;
 
+    private OnPersistentPromoFullyExpandedListener mOnPersistentPromoFullyExpandedListener;
+
     public PersistentPromoAppBarLayout(final Context context)
     {
         super(context);
@@ -45,6 +47,11 @@ public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarL
         layoutInflater.inflate(R.layout.layout_persistent_promo_collapsible, this);
         ButterKnife.bind(this);
         addOnOffsetChangedListener(this);
+    }
+
+    public void setOnPersistentPromoFullyExpandedListener(final OnPersistentPromoFullyExpandedListener onPersistentPromoFullyExpandedListener)
+    {
+        mOnPersistentPromoFullyExpandedListener = onPersistentPromoFullyExpandedListener;
     }
 
     public void updateWithModel(@NonNull PersistentPromo persistentPromo)
@@ -71,6 +78,10 @@ public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarL
         {
             //offer fully expanded. don't want this toolbar interfering with clicks meant for view below it
             mPersistentPromoPreviewToolbar.setVisibility(GONE);
+            if(mOnPersistentPromoFullyExpandedListener != null)
+            {
+                mOnPersistentPromoFullyExpandedListener.onPersistentPromoFullyExpanded();
+            }
         }
         else
         {
@@ -85,6 +96,11 @@ public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarL
     {
         //getY() is always negative here
         return 1 + getY()/getTotalScrollRange();
+    }
+
+    public interface OnPersistentPromoFullyExpandedListener
+    {
+        void onPersistentPromoFullyExpanded();
     }
     /**
      * defines a scrolling and alpha transition behavior for a view, that is dependent on this view
