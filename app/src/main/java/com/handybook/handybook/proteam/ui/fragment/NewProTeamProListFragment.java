@@ -209,15 +209,6 @@ public class NewProTeamProListFragment extends InjectedFragment
         return fragment;
     }
 
-    @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
-        mProTeamCategoryType = (ProTeamCategoryType) getArguments().getSerializable(
-                BundleKeys.PRO_TEAM_CATEGORY_TYPE);
-    }
-
     @Nullable
     @Override
     public View onCreateView(
@@ -226,6 +217,10 @@ public class NewProTeamProListFragment extends InjectedFragment
             @Nullable final Bundle savedInstanceState
     )
     {
+        mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
+        mProTeamCategoryType = (ProTeamCategoryType) getArguments().getSerializable(
+                BundleKeys.PRO_TEAM_CATEGORY_TYPE);
+
         final View view = inflater.inflate(
                 R.layout.fragment_new_pro_team_pro_list,
                 container,

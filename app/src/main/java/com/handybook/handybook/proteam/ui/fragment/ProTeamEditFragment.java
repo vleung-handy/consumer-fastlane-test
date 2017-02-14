@@ -56,6 +56,8 @@ public class ProTeamEditFragment extends InjectedFragment implements
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.pro_team_view_pager)
     ViewPager mViewPager;
+    @Bind(R.id.pro_team_pro_list_holder)
+    ViewGroup mListHolder;
     @Bind(R.id.pro_team_tab_layout)
     TabLayout mTabLayout;
     @Bind(R.id.pro_team_toolbar_save_button)
@@ -179,11 +181,13 @@ public class ProTeamEditFragment extends InjectedFragment implements
 
     private void initProTeamListFragment()
     {
+        mViewPager.setVisibility(View.GONE);
+        mListHolder.setVisibility(View.VISIBLE);
         mProTeamListFragment = ProTeamProListFragment.newInstance(mProTeam, null, false);
         mProTeamListFragment.setOnProInteraction(this);
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.pro_team_view_pager, mProTeamListFragment)
+                .replace(R.id.pro_team_pro_list_holder, mProTeamListFragment)
                 .commit();
         mProTeamListFragment.setProTeam(mProTeam);
     }
@@ -192,6 +196,8 @@ public class ProTeamEditFragment extends InjectedFragment implements
     {
         if (mProTeam != null)
         {
+            mListHolder.setVisibility(View.GONE);
+            mViewPager.setVisibility(View.VISIBLE);
             mTabAdapter = new TabAdapter(getActivity(), getChildFragmentManager());
             mViewPager.setAdapter(mTabAdapter);
             mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(

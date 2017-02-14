@@ -124,13 +124,6 @@ public class ProTeamProListFragment extends InjectedFragment
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        final Bundle arguments = getArguments();
-        if (arguments != null)
-        {
-            mProTeam = arguments.getParcelable(KEY_PROTEAM);
-            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
-            mSaveButtonEnabled = arguments.getBoolean(KEY_SAVE_BUTTON_ENABLED);
-        }
         mFacebookCallbackManager = CallbackManager.Factory.create();
     }
 
@@ -141,6 +134,14 @@ public class ProTeamProListFragment extends InjectedFragment
             Bundle savedInstanceState
     )
     {
+        final Bundle arguments = getArguments();
+        if (arguments != null)
+        {
+            mProTeam = arguments.getParcelable(KEY_PROTEAM);
+            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+            mSaveButtonEnabled = arguments.getBoolean(KEY_SAVE_BUTTON_ENABLED);
+        }
+
         final View view = inflater.inflate(R.layout.fragment_pro_team_pro_list, container, false);
         ButterKnife.bind(this, view);
 
