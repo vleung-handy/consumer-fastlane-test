@@ -1,14 +1,19 @@
 package com.handybook.handybook.proteam.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +22,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
@@ -27,11 +33,14 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.squareup.otto.Subscribe;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 /**
  * A simple {@link Fragment} subclass. Use the {@link ProTeamEditFragment#newInstance} factory
@@ -45,12 +54,15 @@ public class ProTeamEditFragment extends InjectedFragment implements
     Toolbar mToolbar;
     @Bind(R.id.pro_team_swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.pro_team_list_holder)
-    ViewGroup mProTeamListHolder;
+    @Bind(R.id.pro_team_view_pager)
+    ViewPager mViewPager;
+    @Bind(R.id.pro_team_tab_layout)
+    TabLayout mTabLayout;
     @Bind(R.id.pro_team_toolbar_save_button)
-    View mSaveButton;
+    View mToolbarSaveButton;
 
     private ProTeam mProTeam;
+    private TabAdapter mTabAdapter;
     private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
     private HashSet<ProTeamPro> mCleanersToRemove = new HashSet<>();
     private HashSet<ProTeamPro> mHandymenToAdd = new HashSet<>();
@@ -108,7 +120,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
                 requestProTeam();
             }
         });
-        mSaveButton.setVisibility(isSettingFavoriteProEnabled() ? View.GONE : View.VISIBLE);
+        mToolbarSaveButton.setVisibility(isSettingFavoriteProEnabled() ? View.GONE : View.VISIBLE);
         if (mProTeam != null)
         {
             initialize();
@@ -152,7 +164,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     {
         if (isSettingFavoriteProEnabled())
         {
-            initNewProTeamListFragment();
+            initProTeamViewPager();
         }
         else
         {
@@ -167,27 +179,25 @@ public class ProTeamEditFragment extends InjectedFragment implements
 
     private void initProTeamListFragment()
     {
-        mProTeamListFragment = ProTeamProListFragment.newInstance(mProTeam, null);
+        mProTeamListFragment = ProTeamProListFragment.newInstance(mProTeam, null, false);
         mProTeamListFragment.setOnProInteraction(this);
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.pro_team_list_holder, mProTeamListFragment)
+                .replace(R.id.pro_team_view_pager, mProTeamListFragment)
                 .commit();
         mProTeamListFragment.setProTeam(mProTeam);
     }
 
-    private void initNewProTeamListFragment()
+    private void initProTeamViewPager()
     {
         if (mProTeam != null)
         {
-            final NewProTeamProListFragment fragment = NewProTeamProListFragment.newInstance(
-                    mProTeam.getCategory(ProTeamCategoryType.CLEANING),
-                    ProTeamCategoryType.CLEANING
-            );
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.pro_team_list_holder, fragment)
-                    .commit();
+            mTabAdapter = new TabAdapter(getActivity(), getChildFragmentManager());
+            mViewPager.setAdapter(mTabAdapter);
+            mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(
+                    mTabLayout));
+            mTabLayout.setupWithViewPager(mViewPager);
+            mTabLayout.setVisibility(mTabAdapter.getCount() == 1 ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -199,11 +209,14 @@ public class ProTeamEditFragment extends InjectedFragment implements
         {
             mProTeamListFragment.setProTeam(mProTeam);
         }
+        if (mTabAdapter != null)
+        {
+            mTabAdapter.notifyProTeamUpdate();
+        }
         clearEditHolders();
         removeUiBlockers();
         showToast(R.string.pro_team_update_successful);
         updateTargetFragment();
-        getActivity().onBackPressed();
     }
 
     // This is triggered by NewProTeamProListFragment
@@ -240,7 +253,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     @OnClick(R.id.pro_team_toolbar_save_button)
-    void onSaveButtonClicked()
+    void saveProTeamEdits()
     {
         if (mCleanersToAdd.isEmpty()
                 && mCleanersToRemove.isEmpty()
@@ -392,5 +405,82 @@ public class ProTeamEditFragment extends InjectedFragment implements
                 isChecked,
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
+    }
+
+    @Override
+    public void onSave()
+    {
+        saveProTeamEdits();
+    }
+
+    private class TabAdapter extends FragmentPagerAdapter
+    {
+        private final Context mContext;
+        private List<InjectedFragment> mFragments = new ArrayList<>();
+        private List<CharSequence> mPageTitles = new ArrayList<>();
+
+        TabAdapter(final Context context, final FragmentManager fragmentManager)
+        {
+            super(fragmentManager);
+            mContext = context;
+            mFragments.add(NewProTeamProListFragment.newInstance(
+                    mProTeam.getCategory(ProTeamCategoryType.CLEANING),
+                    ProTeamCategoryType.CLEANING
+            ));
+            mPageTitles.add(mContext.getString(R.string.cleaners));
+            if (shouldShowHandymenTab())
+            {
+                final ProTeamProListFragment fragment = ProTeamProListFragment.newInstance(
+                        mProTeam,
+                        ProTeamCategoryType.HANDYMEN,
+                        true
+                );
+                fragment.setOnProInteraction(ProTeamEditFragment.this);
+                mFragments.add(fragment);
+                mPageTitles.add(mContext.getString(R.string.handymen));
+            }
+        }
+
+        private boolean shouldShowHandymenTab()
+        {
+            final ProTeam.ProTeamCategory handymenCategory =
+                    mProTeam.getCategory(ProTeamCategoryType.HANDYMEN);
+            return handymenCategory != null && !handymenCategory.isEmpty();
+        }
+
+        @Override
+        public CharSequence getPageTitle(final int position)
+        {
+            final CharSequence text = mPageTitles.get(position);
+            final CalligraphyTypefaceSpan titleType = new CalligraphyTypefaceSpan(
+                    TextUtils.get(mContext, TextUtils.Fonts.CIRCULAR_BOOK));
+            final SpannableStringBuilder stringBuilder = new SpannableStringBuilder(text);
+            stringBuilder.setSpan(titleType, 0, text.length(), 0);
+            return stringBuilder;
+        }
+
+        @Override
+        public int getCount()
+        {
+            return mFragments.size();
+        }
+
+        @Override
+        public InjectedFragment getItem(int position)
+        {
+            return mFragments.get(position);
+        }
+
+        void notifyProTeamUpdate()
+        {
+            for (final InjectedFragment fragment : mFragments)
+            {
+                if (fragment instanceof ProTeamProListFragment)
+                {
+                    ((ProTeamProListFragment) fragment).setProTeam(mProTeam);
+                }
+            }
+
+        }
     }
 }

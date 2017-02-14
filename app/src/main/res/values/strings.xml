@@ -143,6 +143,8 @@
     <string name="amount">Amount</string>
     <string name="title">Title</string>
     <string name="ok">OK</string>
+    <string name="cleaners">Cleaners</string>
+    <string name="handymen">Handymen</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>

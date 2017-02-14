@@ -592,7 +592,6 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_xsmall</item>
         <item name="android:textAllCaps">true</item>
-
     </style>
 
     <style name="BookingsCell">
