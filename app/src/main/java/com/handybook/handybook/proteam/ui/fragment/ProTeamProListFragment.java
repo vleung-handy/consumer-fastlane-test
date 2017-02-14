@@ -157,7 +157,10 @@ public class ProTeamProListFragment extends InjectedFragment
 
     private void initialize()
     {
-        mSaveButton.setVisibility(View.GONE);
+        if (mSaveButton != null)
+        {
+            mSaveButton.setVisibility(View.GONE);
+        }
         initEmptyView();
         initRecyclerView();
     }
