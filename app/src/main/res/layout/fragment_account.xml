@@ -214,10 +214,11 @@
                     />
 
                 <TextView
+                    android:id="@+id/account_pro_team_subtext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/account.description_top_padding"
-                    android:text="@string/account.manage_your_pro_team"
+                    android:text="@string/account.choose_favorite_pro"
                     android:textColor="@color/handy_tertiary_gray"
                     android:textSize="@dimen/text_size_small"
                     />

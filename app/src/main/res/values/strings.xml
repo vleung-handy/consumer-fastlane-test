@@ -478,7 +478,8 @@
     <string name="account.next_cleaning">Next cleaning</string>
     <string name="account.promo_code_description">Apply a discount</string>
     <string name="account.sign_out">Sign out</string>
-    <string name="account.manage_your_pro_team">Choose your Favorite Pro</string>
+    <string name="account.work_with_pros_you_love">Work with pros you love</string>
+    <string name="account.choose_favorite_pro">Choose your Favorite Pro</string>
     <string name="sign_in">Sign In</string>
     <string name="account.update_information">Update Information</string>
     <string name="account.select_plan">Select a Plan</string>

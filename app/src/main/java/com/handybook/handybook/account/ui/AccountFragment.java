@@ -66,6 +66,8 @@ public class AccountFragment extends InjectedFragment
     TextView mActivePlansText;
     @Bind(R.id.account_active_plans_layout)
     ViewGroup mActivePlansLayout;
+    @Bind(R.id.account_pro_team_subtext)
+    TextView mProTeamSubtext;
     @Bind(R.id.account_history_help_layout)
     ViewGroup mHistoryHelpLayout;
     @Bind(R.id.horizontal_progress_bar)
@@ -113,9 +115,18 @@ public class AccountFragment extends InjectedFragment
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
+
+        if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled())
+        {
+            mProTeamSubtext.setText(R.string.account_choose_favorite_pro);
+        }
+        else
+        {
+            mProTeamSubtext.setText(R.string.account_work_with_pros_you_love);
+        }
+
         return view;
     }
-
 
     @Override
     public void onViewCreated(
@@ -317,7 +328,6 @@ public class AccountFragment extends InjectedFragment
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
 
-
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();
                         Intent intent = new Intent(getContext(), SplashActivity.class);
@@ -337,7 +347,8 @@ public class AccountFragment extends InjectedFragment
         alertDialog.show();
     }
 
-    private void showHorizontalProgressBar() {
+    private void showHorizontalProgressBar()
+    {
         mHorizontalProgressRequestCounter++;
         mHorizontalProgressBar.setVisibility(View.VISIBLE);
     }
@@ -346,13 +357,15 @@ public class AccountFragment extends InjectedFragment
      * This method will hide the horizontal progress bar if api call backs are completed.
      * If not, it will decrement the counter
      */
-    private void hideHorizontalProgressBarIfReady() {
+    private void hideHorizontalProgressBarIfReady()
+    {
         //only decrement if greater then 0
-        if(mHorizontalProgressRequestCounter > 0)
-            --mHorizontalProgressRequestCounter;
+        if (mHorizontalProgressRequestCounter > 0)
+        { --mHorizontalProgressRequestCounter; }
 
-        if(mHorizontalProgressRequestCounter == 0) {
-           mHorizontalProgressBar.setVisibility(View.GONE);
+        if (mHorizontalProgressRequestCounter == 0)
+        {
+            mHorizontalProgressBar.setVisibility(View.GONE);
         }
     }
 }
