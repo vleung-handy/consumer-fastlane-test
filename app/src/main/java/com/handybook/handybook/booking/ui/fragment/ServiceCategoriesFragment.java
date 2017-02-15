@@ -416,7 +416,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
      */
     private void launchServiceActivity(@NonNull Service service)
     {
-        if (service.getServices().size() > 0)
+        if (service.getChildServices().size() > 0)
         {
             final Intent intent = new Intent(getActivity(), ServicesActivity.class);
             intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);

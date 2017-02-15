@@ -11,11 +11,16 @@ import java.util.List;
 public class Service implements Parcelable {
     @SerializedName("id") private int id;
     @SerializedName("name") private String name;
-    @SerializedName("uniq") private String uniq;
     @SerializedName("order") private int order;
     @SerializedName("parent") private int parentId;
-    @SerializedName("services") private List<Service> services;
+    @SerializedName("machine_name") private String machineName;
+    @SerializedName("no_show") private boolean isNoShow;
+    @SerializedName("ignore") private boolean isIgnore;
 
+    //This is used only for the service/common endpoint response
+    private String mUniq;
+
+    private List<Service> services;
     public static String PREFIX_CLEAN_CONSTANT = "clean";
 
     public Service() {}
@@ -36,12 +41,21 @@ public class Service implements Parcelable {
         this.name = name;
     }
 
+    public String getMachineName()
+    {
+        return machineName;
+    }
+
+    /**
+     * Will return machine name if uniq was null
+     * @return
+     */
     public String getUniq() {
-        return uniq;
+        return mUniq == null ? machineName : mUniq;
     }
 
     public final void setUniq(final String uniq) {
-        this.uniq = uniq;
+        this.mUniq = uniq;
     }
 
     public final int getOrder() {
@@ -60,16 +74,32 @@ public class Service implements Parcelable {
         this.parentId = parentId;
     }
 
-    public List<Service> getServices() {
+    public boolean isNoShow()
+    {
+        return isNoShow;
+    }
+
+    public boolean isIgnore()
+    {
+        return isIgnore;
+    }
+
+    public void addChildService(Service service)
+    {
+        services = getChildServices();
+        services.add(service);
+    }
+
+    public List<Service> getChildServices() {
         if (services == null) services = new ArrayList<>();
         return services;
     }
 
     public boolean isCleaning()
     {
-        if (uniq != null)
+        if (machineName != null)
         {
-            return uniq.toLowerCase().contains(PREFIX_CLEAN_CONSTANT);
+            return machineName.toLowerCase().contains(PREFIX_CLEAN_CONSTANT);
         }
 
         if (name != null)
@@ -85,10 +115,11 @@ public class Service implements Parcelable {
     }
 
     private Service(final Parcel in) {
-        final String[] stringData = new String[2];
+        final String[] stringData = new String[3];
         in.readStringArray(stringData);
         name = stringData[0];
-        uniq = stringData[1];
+        mUniq = stringData[1];
+        machineName = stringData[2];
 
         final int[] intData = new int[3];
         in.readIntArray(intData);
@@ -96,14 +127,20 @@ public class Service implements Parcelable {
         parentId = intData[1];
         id = intData[2];
 
+        final boolean[] boolData = new boolean[2];
+        in.readBooleanArray(boolData);
+        isNoShow = boolData[0];
+        isIgnore = boolData[1];
+
         services = new ArrayList<>();
         in.readTypedList(services, Service.CREATOR);
     }
 
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
-        out.writeStringArray(new String[]{ name, uniq });
+        out.writeStringArray(new String[]{ name, mUniq, machineName });
         out.writeIntArray(new int[]{ order, parentId, id });
+        out.writeBooleanArray(new boolean[]{ isNoShow, isIgnore});
         out.writeTypedList(services);
     }
 

@@ -363,7 +363,7 @@ public final class ServicesFragment extends BookingFlowFragment
         {
             mListWrapper.setAlpha(0);
         }
-        for (final Service service : mService.getServices())
+        for (final Service service : mService.getChildServices())
         {
             ServiceView serviceView = new ServiceView(getActivity());
 
