@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/TextView.Medium.Bold"
+        style="@style/TextView.Large.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Set Sandra as your favorite?"
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/subtitle"
-        style="@style/TextView.Small"
+        style="@style/TextView.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin_quarter"
@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/cancel"
-            style="@style/TextView.Medium"
+            style="@style/TextView.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_list_entry"

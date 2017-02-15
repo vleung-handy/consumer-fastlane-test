@@ -233,14 +233,16 @@ public class NewProTeamCategoryAdapter
         private void initHeartIcon(final ProTeamPro pro)
         {
             mHeartIcon.setChecked(pro.isFavorite());
-            mHeartIcon.setOnClickListener(new View.OnClickListener()
+            final View.OnClickListener onHeartClickListener = new View.OnClickListener()
             {
                 @Override
                 public void onClick(final View v)
                 {
                     mActionCallbacks.onHeartClick(pro);
                 }
-            });
+            };
+            mHeartIcon.setOnClickListener(onHeartClickListener);
+            mProTeamProCardHolder.setOnClickListener(onHeartClickListener);
             // This listener will give the illusion that the checkbox doesn't change state which is
             // exactly what we want.
             mHeartIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()

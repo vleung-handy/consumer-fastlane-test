@@ -7,7 +7,6 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.layer.atlas.util.picasso.transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -61,7 +60,7 @@ public class ProAvatarView extends RelativeLayout
      */
     public void bindPro(ProTeamProViewModel pro)
     {
-        mHeartContainer.setVisibility(pro.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED ? VISIBLE : GONE);
+        mHeartContainer.setVisibility(pro.isFavorite() ? VISIBLE : GONE);
 
         Picasso.with(mCircleImageView.getContext())
                .load(pro.getImageUrl())

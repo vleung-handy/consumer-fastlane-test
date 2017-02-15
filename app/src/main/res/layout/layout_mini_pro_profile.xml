@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_quarter"
-            android:background="@drawable/pill_white"
+            android:background="@drawable/pill_transparent"
             android:gravity="end"
             android:orientation="horizontal"
             android:paddingEnd="@dimen/pro_team_average_rating_star_margin"
