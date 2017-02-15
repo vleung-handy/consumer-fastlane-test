@@ -1,6 +1,6 @@
 package com.handybook.handybook.account.ui;
 
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
@@ -9,10 +9,11 @@ import com.handybook.handybook.testutil.ModelFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.robolectric.Shadows.shadowOf;
 
 public class EditPlanFragmentTest extends RobolectricGradleTestWrapper
 {
@@ -42,17 +43,20 @@ public class EditPlanFragmentTest extends RobolectricGradleTestWrapper
     public void shouldNavigateToEditFrequencyFragment()
     {
         mFragment.getView().findViewById(R.id.edit_plan_frequency).performClick();
-        Fragment newFragment =
-                mFragment.getFragmentManager().findFragmentById(R.id.fragment_container);
-        assertTrue(newFragment instanceof EditPlanFrequencyFragment);
+        ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
+        Intent intent = shadowActivity.getNextStartedActivity();
+        assertEquals(
+                intent.getComponent().getClassName(),
+                EditPlanFrequencyActivity.class.getName()
+        );
     }
 
     @Test
     public void shouldNavigateToEditAddressFragment()
     {
         mFragment.getView().findViewById(R.id.edit_plan_address).performClick();
-        Fragment newFragment =
-                mFragment.getFragmentManager().findFragmentById(R.id.fragment_container);
-        assertTrue(newFragment instanceof EditPlanAddressFragment);
+        ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
+        Intent intent = shadowActivity.getNextStartedActivity();
+        assertEquals(intent.getComponent().getClassName(), EditPlanAddressActivity.class.getName());
     }
 }
