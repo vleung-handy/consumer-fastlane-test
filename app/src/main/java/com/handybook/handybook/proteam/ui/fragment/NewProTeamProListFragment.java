@@ -35,6 +35,7 @@ import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
+import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
 
@@ -239,6 +240,13 @@ public class NewProTeamProListFragment extends InjectedFragment
         mRecyclerView.setEmptyView(mEmptyView);
         mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
         mEmptyViewText.setText(R.string.pro_team_empty_card_text);
+        initRecyclerView();
+    }
+
+    @Subscribe
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
+    {
+        mProTeamCategory = event.getUpdatedProTeam().getCategory(mProTeamCategoryType);
         initRecyclerView();
     }
 

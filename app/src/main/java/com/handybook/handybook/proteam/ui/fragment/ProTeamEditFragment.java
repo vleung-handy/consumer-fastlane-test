@@ -153,6 +153,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
         mSwipeRefreshLayout.setRefreshing(false);
         mProTeam = event.getProTeam();
         initialize();
+        bus.post(new ProTeamEvent.ProTeamUpdated(mProTeam));
     }
 
     @Subscribe
