@@ -54,7 +54,6 @@ import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
-import com.handybook.handybook.booking.ui.activity.BookingProTeamActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
@@ -88,7 +87,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPasswordPromptFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
-import com.handybook.handybook.booking.ui.fragment.BookingProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragment;
@@ -297,8 +295,6 @@ import retrofit.converter.GsonConverter;
         ProTeamEditFragment.class,
         ProTeamProListFragment.class,
         NewProTeamProListFragment.class,
-        BookingProTeamActivity.class,
-        BookingProTeamFragment.class,
         RemoveProDialogFragment.class,
         ReportIssueActivity.class,
         ReportIssueFragment.class,

@@ -21,7 +21,6 @@ import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
-import com.handybook.handybook.booking.ui.activity.BookingProTeamActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
 import com.handybook.handybook.configuration.model.Configuration;
@@ -41,7 +40,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
-import com.handybook.handybook.proteam.model.ProTeam;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -199,8 +197,6 @@ public class BookingFlowFragment extends InjectedFragment
                         if (!allowCallbacks) { return; }
                         removeUiBlockers();
                         List<BookingOption> bookingOptions = options.getBookingOptions();
-                        final ProTeam proTeam = options.getProTeam();
-                        bookingManager.setCurrentProTeam(proTeam);
                         final Intent intent = new Intent(
                                 getActivity(),
                                 BookingOptionsActivity.class
@@ -234,8 +230,7 @@ public class BookingFlowFragment extends InjectedFragment
                 || this instanceof BookingSubscriptionFragment
                 || this instanceof PeakPricingFragment
                 || this instanceof BookingExtrasFragment
-                || this instanceof PeakPricingFragment
-                || this instanceof BookingProTeamFragment)
+                || this instanceof PeakPricingFragment)
         {
             continueFlow();
             return;
@@ -494,18 +489,7 @@ public class BookingFlowFragment extends InjectedFragment
         // show recurrence options if available (show first if regular flow)
         if (!isVoucherFlow && shouldShowRecurrenceOptions(request, false))
         {
-            final ProTeam proTeam = bookingManager.getCurrentProTeam();
-            final Intent intent;
-            if (this instanceof BookingProTeamFragment || proTeam == null || proTeam.isEmpty()
-                    || !TextUtils.isBlank(request.getProviderId()))
-            {
-                intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
-            }
-            else
-            {
-                intent = new Intent(getActivity(), BookingProTeamActivity.class);
-            }
-            startActivity(intent);
+            startActivity(new Intent(getActivity(), BookingRecurrenceActivity.class));
         }
         // show surge pricing options if necessary (show second if regular flow)
         else if (!isVoucherFlow && shouldShowSurgePricingOptions(peakTable, false))
