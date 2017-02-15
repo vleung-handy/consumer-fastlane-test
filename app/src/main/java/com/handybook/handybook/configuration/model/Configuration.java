@@ -95,11 +95,6 @@ public class Configuration implements Serializable
         return mAddressAutoCompleteEnabled;
     }
 
-<<<<<<< HEAD
-    public boolean isBottomNavEnabled()
-    {
-        return mBottomNavEnabled;
-=======
     public boolean isBottomNavEnabled() {
         //Do this if this is first time bottom nav is set for session
         if (mIsBottomNavEnabledForSession == null)

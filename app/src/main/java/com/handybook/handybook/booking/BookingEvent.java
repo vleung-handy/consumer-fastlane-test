@@ -363,7 +363,20 @@ public abstract class BookingEvent
         }
     }
 
-    public static class RequestServices {}
+    public static class RequestServices {
+        private String mZip;
+
+        public RequestServices() {};
+
+        public RequestServices(@NonNull final String zip) {
+            mZip = zip;
+        };
+
+        public String getZip()
+        {
+            return mZip;
+        }
+    }
 
 
     public static class RequestCachedServices {}
