@@ -1,5 +1,7 @@
 package com.handybook.handybook.account.ui;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -162,7 +164,11 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         mPlan.setFrequency(StringUtils.getFrequencyText(
                 getContext(), mFrequencySelectionsView.getCurrentlySelectedFrequency()));
         mPlan.setFrequencyValue(mFrequencySelectionsView.getCurrentlySelectedFrequency());
-        getFragmentManager().popBackStack();
+
+        Intent data = new Intent();
+        data.putExtra(BundleKeys.RECURRING_PLAN, mPlan);
+        getActivity().setResult(Activity.RESULT_OK, data);
+        getActivity().onBackPressed();
     }
 
     private void updateError(DataManager.DataManagerError error)

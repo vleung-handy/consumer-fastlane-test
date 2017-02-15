@@ -17,10 +17,10 @@ import com.crashlytics.android.Crashlytics;
 import com.facebook.login.LoginManager;
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.history.HistoryFragment;
+import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
-import com.handybook.handybook.booking.ui.fragment.PromosFragment;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -30,6 +30,7 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
+import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.core.ui.view.PriceView;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
@@ -217,7 +218,8 @@ public class AccountFragment extends InjectedFragment
     public void contactClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditProfileTapped()));
-        FragmentUtils.switchToFragment(this, new ContactFragment(), true);
+        Intent intent = new Intent(getContext(), EditContactInfoActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_password_layout)
@@ -225,14 +227,16 @@ public class AccountFragment extends InjectedFragment
     {
 
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPasswordTapped()));
-        FragmentUtils.switchToFragment(this, ProfilePasswordFragment.newInstance(), true);
+        Intent intent = new Intent(getContext(), EditPasswordActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_payment_method_layout)
     public void paymentClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPaymentTapped()));
-        FragmentUtils.switchToFragment(this, UpdatePaymentFragment.newInstance(), true);
+        Intent intent = new Intent(getContext(), UpdatePaymentActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_active_plans_layout)
@@ -253,7 +257,8 @@ public class AccountFragment extends InjectedFragment
     public void promoClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.ApplyPromoTapped()));
-        FragmentUtils.switchToFragment(this, PromosFragment.newInstance(), true);
+        Intent intent = new Intent(getContext(), PromosActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_help_layout)
@@ -289,7 +294,8 @@ public class AccountFragment extends InjectedFragment
     public void bookingHistoryClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.BookingHistoryTapped()));
-        FragmentUtils.switchToFragment(this, new HistoryFragment(), true);
+        Intent intent = new Intent(getContext(), HistoryActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_sign_out_button)

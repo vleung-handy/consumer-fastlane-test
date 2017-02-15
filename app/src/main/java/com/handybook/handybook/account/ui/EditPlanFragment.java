@@ -1,5 +1,7 @@
 package com.handybook.handybook.account.ui;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +14,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
@@ -80,16 +83,34 @@ public class EditPlanFragment extends InjectedFragment
         bus.post(new LogEvent.AddLogEvent(
                 new EditPlanLog.EditFrequencyTapped(mPlan.getId(), mPlan.getFrequencyValue())));
 
-        EditPlanFrequencyFragment fragment = EditPlanFrequencyFragment.newInstance(mPlan);
-        FragmentUtils.switchToFragment(this, fragment, true);
+        Intent intent = new Intent(getContext(), EditPlanFrequencyActivity.class);
+        intent.putExtra(BundleKeys.RECURRING_PLAN, mPlan);
+        startActivityForResult(intent, RequestCode.EDIT_PLAN_FREQUENCY);
     }
 
     @OnClick(R.id.edit_plan_address)
     public void editAddress()
     {
         bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditAddressTapped(mPlan.getId())));
-        EditPlanAddressFragment fragment = EditPlanAddressFragment.newInstance(mPlan);
-        FragmentUtils.switchToFragment(this, fragment, true);
+
+        Intent intent = new Intent(getContext(), EditPlanAddressActivity.class);
+        intent.putExtra(BundleKeys.RECURRING_PLAN, mPlan);
+        startActivityForResult(intent, RequestCode.EDIT_PLAN_ADDRESS);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        if (resultCode == Activity.RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case RequestCode.EDIT_PLAN_ADDRESS:
+                case RequestCode.EDIT_PLAN_FREQUENCY:
+                    mPlan = (RecurringBooking) data.getSerializableExtra(BundleKeys.RECURRING_PLAN);
+                    break;
+            }
+        }
     }
 
     @OnClick(R.id.edit_plan_cancel)

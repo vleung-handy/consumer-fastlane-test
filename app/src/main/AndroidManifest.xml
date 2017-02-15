@@ -102,6 +102,26 @@
             android:screenOrientation="portrait"
             />
         <activity
+            android:name=".account.ui.EditContactInfoActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".account.ui.EditPlanFrequencyActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".account.ui.EditPlanAddressActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".proteam.ui.activity.ProTeamEditActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".account.ui.EditPasswordActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name=".booking.ui.activity.ServicesActivity"
             android:screenOrientation="portrait"
             />
