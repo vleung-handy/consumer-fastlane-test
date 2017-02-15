@@ -525,11 +525,10 @@ public final class ApplicationModule
     @Singleton
     final DataManager provideDataManager(
             final HandyRetrofitService service,
-            final HandyRetrofitEndpoint endpoint,
-            final SecurePreferencesManager securePreferencesManager
+            final HandyRetrofitEndpoint endpoint
     )
     {
-        return new DataManager(service, endpoint, securePreferencesManager);
+        return new DataManager(service, endpoint);
     }
 
     @Provides
@@ -635,10 +634,12 @@ public final class ApplicationModule
     @Singleton
     final ServicesManager provideServicesManager(
             final DataManager dataManager,
-            final Bus bus
-    )
+            final Bus bus,
+            final SecurePreferencesManager securePreferencesManager,
+            final ConfigurationManager configurationManager
+            )
     {
-        return new ServicesManager(dataManager, bus);
+        return new ServicesManager(dataManager, bus, securePreferencesManager, configurationManager);
     }
 
     @Provides

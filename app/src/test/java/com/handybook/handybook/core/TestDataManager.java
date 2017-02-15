@@ -12,18 +12,16 @@ import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.core.data.HandyRetrofitService;
-import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.testutil.ModelFactory;
 
 public class TestDataManager extends DataManager
 {
     public TestDataManager(
             final HandyRetrofitService service,
-            final HandyRetrofitEndpoint endpoint,
-            final SecurePreferencesManager securePreferencesManager
-    )
+            final HandyRetrofitEndpoint endpoint
+            )
     {
-        super(service, endpoint, securePreferencesManager);
+        super(service, endpoint);
     }
 
     @Override

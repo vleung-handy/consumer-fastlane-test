@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.account.model.RecurringPlanWrapper;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
@@ -36,7 +35,6 @@ import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
-import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
@@ -45,8 +43,6 @@ import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.constant.PrefsKey;
-import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.model.request.CreateUserRequest;
 import com.handybook.handybook.core.model.request.UpdateUserRequest;
 import com.handybook.handybook.core.model.response.HelpCenterResponse;
@@ -62,12 +58,7 @@ import com.handybook.handybook.referral.model.ReferralResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -79,20 +70,18 @@ public class DataManager
 {
     private static final String TAG = DataManager.class.getName();
 
+
     private final HandyRetrofitService mService;
     private final HandyRetrofitEndpoint mEndpoint;
-    private final SecurePreferencesManager mSecurePreferencesManager;
 
     @Inject
     public DataManager(
             final HandyRetrofitService service,
-            final HandyRetrofitEndpoint endpoint,
-            final SecurePreferencesManager securePreferencesManager
+            final HandyRetrofitEndpoint endpoint
     )
     {
         mService = service;
         mEndpoint = endpoint;
-        mSecurePreferencesManager = securePreferencesManager;
     }
 
     public String getBaseUrl()
@@ -101,240 +90,56 @@ public class DataManager
     }
 
     /**
-     *
-     * NOTE:
-     * The Service object was architected in a way such that the pojo fields aren't so easily
-     * mapped to the json fields. The technique used here is similar to the one used below
-     * unfortunately, it's not worth refactoring it as part of the onboarding project,
-     * because it is a high risk area.
-     *
-     * @param zip
-     * @param cb
-     */
-    public final void getServices(@NonNull final String zip, final Callback<List<Service>> cb)
-    {
-        mService.getServices(zip, new HandyRetrofitCallback(cb)
-        {
-            @Override
-            protected void success(final JSONObject response)
-            {
-                cb.onSuccess(getServicesFromJson(response));
-            }
-        });
-    }
-
-    /**
-     * Takes in a JSONObject that is returned from /services call and converts them into a list of Service
-     * @return
-     */
-    @NonNull
-    private List<Service> getServicesFromJson(JSONObject response)
-    {
-        final JSONArray array = response.optJSONArray("services_list");
-
-        List<Service> services = new ArrayList<>();
-
-        for (int i = 0; i <= array.length(); i++)
-        {
-            final JSONObject obj = array.optJSONObject(i);
-
-            if (obj != null && obj.optBoolean("no_show", true))
-            {
-                final Service service = new Service();
-                service.setId(obj.optInt("id"));
-
-                service.setUniq(obj.isNull("machine_name") ? null
-                                        : obj.optString("machine_name"));
-
-                service.setName(obj.isNull("name") ? null : obj.optString("name"));
-                service.setOrder(obj.optInt("order", 0));
-                service.setParentId(obj.optInt("parent", 0));
-
-                services.add(service);
-            }
-        }
-
-        return services;
-    }
-
-    /**
      * If there is a cached version, return the cache, and updates the cache in the background. If
      * there was a cached version, then cache update success will not be broadcasted. This is to
      * prevent a client from having to deal with multiple broadcasts (cache, updates, etc).
+     * Get all services include the subcategories
+     * @param cb
      */
-    public final void getServices(
-            final CacheResponse<List<Service>> cache,
-            final Callback<List<Service>> cb
-    )
+    public final void getServices(final Callback<JSONArray> cb)
     {
-        final List<Service> cachedServices = getCachedServices();
+        getServices(null, cb);
+    }
 
-        if (cachedServices != null && cache != null)
+    /**
+     * Get all services supported in a zip include the subcategories
+     * @param zip
+     * @param cb
+     */
+    public final void getServices(@NonNull final String zip, final Callback<JSONArray> cb)
+    {
+        HandyRetrofitCallback retrofitCallback = new HandyRetrofitCallback(cb)
         {
-            //if there is a cached version, we notify right away.
-            cache.onResponse(cachedServices);
+            @Override
+            protected void success(JSONObject response)
+            {
+                cb.onSuccess(response.optJSONArray("services_list"));
+            }
+        };
+
+        //If there's no zip request all the services
+        if(TextUtils.isEmpty(zip))
+        {
+            mService.getServices(retrofitCallback);
+        } else
+        {
+            mService.getServices(zip, retrofitCallback);
         }
+    }
 
-        final ArrayList<Service> servicesMenu = new ArrayList<>();
-        final HashMap<String, Service> menuMap = new HashMap<>();
-
+    /**
+     * Get the service menu for the home services
+     */
+    public final void getServiceMenu(final Callback<JSONArray> cb)
+    {
         mService.getServicesMenu(new HandyRetrofitCallback(cb)
         {
             @Override
             protected void success(final JSONObject response)
             {
-                final JSONArray array = response.optJSONArray("menu_structure");
-
-                if (array == null && cachedServices == null)
-                {
-                    //we only notify of error if there is not already a cached version returned.
-                    cb.onError(new DataManagerError(Type.SERVER));
-                    return;
-                }
-
-                for (int i = 0; i <= array.length(); i++)
-                {
-                    final JSONObject obj = array.optJSONObject(i);
-
-                    if (obj != null)
-                    {
-                        final String name = obj.isNull("name") ? null : obj.optString("name", null);
-                        final int ignore = obj.optInt("ignore", 1);
-
-                        if (name == null || ignore == 1)
-                        {
-                            continue;
-                        }
-
-                        final Service service = new Service();
-                        service.setUniq(obj.isNull("uniq") ? null : obj.optString("uniq"));
-                        service.setName(obj.isNull("name") ? null : obj.optString("name"));
-                        service.setOrder(obj.optInt("order", 0));
-                        servicesMenu.add(service);
-                        menuMap.put(service.getUniq(), service);
-                    }
-                }
-
-                final HashMap<Integer, ArrayList<Service>> servicesMap = new HashMap<>();
-
-                mService.getServices(new HandyRetrofitCallback(cb)
-                {
-                    @Override
-                    protected void success(final JSONObject response)
-                    {
-                        final JSONArray array = response.optJSONArray("services_list");
-
-                        if (array == null && cachedServices == null)
-                        {
-                            //we only notify of error if there is not already a cached version returned.
-                            cb.onError(new DataManagerError(Type.SERVER));
-                            return;
-                        }
-
-                        for (int i = 0; i <= array.length(); i++)
-                        {
-                            final JSONObject obj = array.optJSONObject(i);
-
-                            if (obj != null && obj.optBoolean("no_show", true))
-                            {
-                                final Service service = new Service();
-                                service.setId(obj.optInt("id"));
-
-                                service.setUniq(obj.isNull("machine_name") ? null
-                                                        : obj.optString("machine_name"));
-
-                                service.setName(obj.isNull("name") ? null : obj.optString("name"));
-                                service.setOrder(obj.optInt("order", 0));
-                                service.setParentId(obj.optInt("parent", 0));
-
-                                final Service menuService;
-                                if ((menuService = menuMap.get(service.getUniq())) != null)
-                                {
-                                    menuService.setId(service.getId());
-                                    continue;
-                                }
-
-                                ArrayList<Service> list;
-                                if ((list = servicesMap.get(service.getParentId())) != null)
-                                {
-                                    list.add(service);
-                                }
-                                else
-                                {
-                                    list = new ArrayList<>();
-                                    list.add(service);
-                                    servicesMap.put(service.getParentId(), list);
-                                }
-                            }
-                        }
-
-                        for (final Service service : servicesMenu)
-                        {
-                            final List<Service> services;
-                            if ((services = servicesMap.get(service.getId())) != null)
-                            {
-                                Collections.sort(services, new Comparator<Service>()
-                                {
-                                    @Override
-                                    public int compare(final Service lhs, final Service rhs)
-                                    {
-                                        return lhs.getOrder() - rhs.getOrder();
-                                    }
-                                });
-                                service.setServices(services);
-                            }
-                        }
-
-                        Collections.sort(servicesMenu, new Comparator<Service>()
-                        {
-                            @Override
-                            public int compare(final Service lhs, final Service rhs)
-                            {
-                                return lhs.getOrder() - rhs.getOrder();
-                            }
-                        });
-
-                        //updates the cache with fresh version of services
-                        mSecurePreferencesManager.setString(PrefsKey.CACHED_SERVICES, new Gson()
-                                .toJsonTree(servicesMenu).getAsJsonArray().toString());
-
-                        //we only notify of error if there is not already a cached version returned.
-                        if (cachedServices == null)
-                        {
-                            cb.onSuccess(servicesMenu);
-                        }
-                    }
-                });
+                cb.onSuccess(response.optJSONArray("menu_structure"));
             }
         });
-    }
-
-    @Nullable
-    public List<Service> getCachedServices()
-    {
-        String cachedServicesJson = mSecurePreferencesManager.getString(PrefsKey.CACHED_SERVICES);
-        List<Service> cachedServices = null;
-        if (cachedServicesJson != null)
-        {
-            try
-            {
-                cachedServices = new Gson().fromJson(
-                        cachedServicesJson,
-                        new TypeToken<List<Service>>()
-                        {
-                        }.getType()
-                );
-            }
-            catch (Exception e)
-            {
-                //if there is ever an error parsing this, fall out and let it create a new set
-                Crashlytics.log(TAG + " error when deserializing JSON:" + cachedServicesJson);
-                Crashlytics.logException(e);
-            }
-
-        }
-
-        return cachedServices;
     }
 
     public void getAvailableSplashPromo(
