@@ -16,17 +16,17 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.JobStatus;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
+import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.model.response.HelpCenterResponse;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.view.HelpCenterActionItemView;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HelpCenterLog;
-import com.handybook.handybook.core.model.response.HelpCenterResponse;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.core.ui.view.HelpCenterActionItemView;
-import com.handybook.handybook.booking.util.BookingUtil;
 import com.squareup.otto.Subscribe;
 
 import java.text.DecimalFormat;
@@ -110,6 +110,13 @@ public class HelpFragment extends InjectedFragment
         super.onResume();
         showUiBlockers();
         bus.post(new HelpEvent.RequestHelpCenter());
+    }
+
+    @Override
+    public void onPause()
+    {
+        removeUiBlockers();
+        super.onPause();
     }
 
     @OnClick(R.id.recent_booking_layout)
