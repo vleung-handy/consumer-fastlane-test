@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:text="@string/save"
         android:visibility="gone"
+        tools:visibility="visible"
         />
 
     <include layout="@layout/layout_pro_team_empty"/>
