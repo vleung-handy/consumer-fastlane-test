@@ -166,19 +166,11 @@ public class ProTeamEditFragment extends InjectedFragment implements
         clearEditHolders();
         removeUiBlockers();
         showToast(R.string.pro_team_update_successful);
-        updateTargetFragment();
-        getActivity().onBackPressed();
-    }
 
-    private void updateTargetFragment()
-    {
-        final Fragment targetFragment = getTargetFragment();
-        if (targetFragment != null)
-        {
-            final Intent data = new Intent();
-            data.putExtra(BundleKeys.PRO_TEAM, mProTeam);
-            targetFragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
-        }
+        final Intent data = new Intent();
+        data.putExtra(BundleKeys.PRO_TEAM, mProTeam);
+        getActivity().setResult(Activity.RESULT_OK, data);
+        getActivity().onBackPressed();
     }
 
     private void clearEditHolders()

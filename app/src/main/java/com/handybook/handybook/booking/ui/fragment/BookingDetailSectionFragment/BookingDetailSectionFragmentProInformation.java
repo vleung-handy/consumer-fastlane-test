@@ -21,7 +21,6 @@ import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
@@ -31,7 +30,7 @@ import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
-import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
 import com.squareup.otto.Subscribe;
@@ -287,8 +286,7 @@ public class BookingDetailSectionFragmentProInformation extends
     {
         //start pro team activity
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ProTeamOpenTapped()));
-        startActivity(new Intent(getActivity(), ProTeamActivity.class)
-                              .putExtra(BundleKeys.PRO_TEAM_EDIT, true));
+        startActivity(new Intent(getActivity(), ProTeamEditActivity.class));
     }
 
     /*
