@@ -118,7 +118,7 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".account.ui.UpdatePasswordActivity"
+            android:name=".account.ui.EditPasswordActivity"
             android:screenOrientation="portrait"
             />
         <activity

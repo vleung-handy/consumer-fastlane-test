@@ -55,7 +55,7 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
         view.performClick();
         ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
         Intent intent = shadowActivity.getNextStartedActivity();
-        assertEquals(intent.getComponent().getClassName(), UpdatePasswordActivity.class.getName());
+        assertEquals(intent.getComponent().getClassName(), EditPasswordActivity.class.getName());
     }
 
     @Test

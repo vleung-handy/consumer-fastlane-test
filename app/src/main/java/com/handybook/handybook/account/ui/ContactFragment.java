@@ -39,11 +39,7 @@ public class ContactFragment extends InjectedFragment
 
     public static ContactFragment newInstance()
     {
-        Bundle args = new Bundle();
-
-        ContactFragment fragment = new ContactFragment();
-        fragment.setArguments(args);
-        return fragment;
+        return new ContactFragment();
     }
 
     @Override

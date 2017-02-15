@@ -227,7 +227,7 @@ public class AccountFragment extends InjectedFragment
     {
 
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPasswordTapped()));
-        Intent intent = new Intent(getContext(), UpdatePasswordActivity.class);
+        Intent intent = new Intent(getContext(), EditPasswordActivity.class);
         startActivity(intent);
     }
 

@@ -20,7 +20,7 @@ public final class EditPlanAddressActivity extends MenuDrawerActivity
     protected final Fragment createFragment()
     {
         RecurringBooking recurringBooking =
-                (RecurringBooking) getIntent().getExtras().getSerializable(BundleKeys.RECURRING_PLAN);
+                (RecurringBooking) getIntent().getSerializableExtra(BundleKeys.RECURRING_PLAN);
         return EditPlanAddressFragment.newInstance(recurringBooking);
     }
 

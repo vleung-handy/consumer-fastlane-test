@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public final class UpdatePasswordActivity extends MenuDrawerActivity
+public final class EditPasswordActivity extends MenuDrawerActivity
 {
     @Override
     protected boolean requiresUser()

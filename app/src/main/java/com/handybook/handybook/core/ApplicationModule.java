@@ -11,6 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.account.ui.ContactFragment;
 import com.handybook.handybook.account.ui.EditContactInfoActivity;
+import com.handybook.handybook.account.ui.EditPasswordActivity;
 import com.handybook.handybook.account.ui.EditPlanAddressActivity;
 import com.handybook.handybook.account.ui.EditPlanAddressFragment;
 import com.handybook.handybook.account.ui.EditPlanFragment;
@@ -19,7 +20,6 @@ import com.handybook.handybook.account.ui.EditPlanFrequencyFragment;
 import com.handybook.handybook.account.ui.PlansFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
-import com.handybook.handybook.account.ui.UpdatePasswordActivity;
 import com.handybook.handybook.account.ui.UpdatePaymentFragment;
 import com.handybook.handybook.autocomplete.AddressAutoCompleteManager;
 import com.handybook.handybook.autocomplete.AutoCompleteAddressFragment;
@@ -319,7 +319,7 @@ import retrofit.converter.GsonConverter;
         BookingProTeamConversationsFragment.class,
         RescheduleDialogFragment.class,
         EditContactInfoActivity.class,
-        UpdatePasswordActivity.class,
+        EditPasswordActivity.class,
         EditPlanFrequencyActivity.class,
         EditPlanAddressActivity.class,
         ProTeamEditActivity.class,
