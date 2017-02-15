@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
 
     <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
         android:id="@+id/pro_team_pro_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/pro_team_pro_list_save_button"
+        android:layout_alignWithParentIfMissing="true"
         android:clipToPadding="false"
         tools:listitem="@layout/layout_pro_team_pro_card"
         />
 
+    <Button
+        android:id="@+id/pro_team_pro_list_save_button"
+        style="@style/Button.Green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
     <include layout="@layout/layout_pro_team_empty"/>
 
-</FrameLayout>
+</RelativeLayout>

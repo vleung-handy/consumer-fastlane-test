@@ -102,7 +102,8 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         mProTeamProListFragment = ProTeamProListFragment.newInstance(
                 mProTeam,
-                mProTeamCategoryType
+                mProTeamCategoryType,
+                false
         );
         mProTeamProListFragment.setOnProInteraction(this);
         fragmentTransaction.add(R.id.booking_pro_team_fragment_container, mProTeamProListFragment);
@@ -318,6 +319,12 @@ public final class BookingProTeamFragment extends BookingFlowFragment implements
                 isChecked,
                 ProTeamPageLog.Context.BOOKING_FLOW
         )));
+    }
+
+    @Override
+    public void onSave()
+    {
+
     }
 
 

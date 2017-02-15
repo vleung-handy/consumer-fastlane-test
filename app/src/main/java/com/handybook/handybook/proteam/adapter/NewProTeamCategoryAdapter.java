@@ -54,12 +54,16 @@ public class NewProTeamCategoryAdapter
             mItems.add(favoritePro);
             mItems.add(mContext.getString(R.string.backup_pros));
 
-            final List<ProTeamPro> preferredPros = proTeamCategory.getPreferred();
-            if (favoritePro != null && preferredPros != null && !preferredPros.isEmpty())
+            final List<ProTeamPro> preferredPros = new ArrayList<>();
+            if (proTeamCategory.getPreferred() != null)
+            {
+                preferredPros.addAll(proTeamCategory.getPreferred());
+            }
+            if (favoritePro != null && !preferredPros.isEmpty())
             {
                 preferredPros.remove(favoritePro);
             }
-            if (preferredPros != null && !preferredPros.isEmpty())
+            if (!preferredPros.isEmpty())
             {
                 mItems.addAll(preferredPros);
             }
