@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
@@ -21,11 +22,13 @@ import butterknife.ButterKnife;
 /**
  * This is the fragment that holds views for adding / removing / blocking a pro
  */
-public class RateProTeamFragment extends Fragment
-{
+public class RateProTeamFragment extends Fragment {
 
     private static final String KEY_MATCH_PREFERENCE = "match-preference";
+    private static final String KEY_PROVIDER_NAME = "provider-name";
 
+    @Bind(R.id.rate_pro_team_buttons_title)
+    TextView mButtonsTitle;
     @Bind(R.id.rate_pro_team_button_yes)
     ImageToggleButton mButtonYes;
     @Bind(R.id.rate_pro_team_button_no)
@@ -50,19 +53,23 @@ public class RateProTeamFragment extends Fragment
 
     private boolean mHasUserTouchedYesOrNoButtons = false;
 
+    private String mProName;
+
     @NonNull
-    public static RateProTeamFragment newInstance(ProviderMatchPreference matchPreference)
-    {
+    public static RateProTeamFragment newInstance(
+            @NonNull ProviderMatchPreference matchPreference,
+            @NonNull String providerName
+    ) {
         final RateProTeamFragment fragment = new RateProTeamFragment();
         final Bundle args = new Bundle();
         args.putSerializable(KEY_MATCH_PREFERENCE, matchPreference);
+        args.putSerializable(KEY_PROVIDER_NAME, providerName);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getActivity().getApplication()).inject(this);
     }
@@ -73,21 +80,24 @@ public class RateProTeamFragment extends Fragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         View v = inflater.inflate(R.layout.fragment_rate_pro_team, container, false);
         ButterKnife.bind(this, v);
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             mInitialMatchPreference = (ProviderMatchPreference) getArguments()
                     .getSerializable(KEY_MATCH_PREFERENCE);
+            mProName = getArguments().getString(KEY_PROVIDER_NAME);
         }
         initUI();
         return v;
     }
 
-    private void initUI()
-    {
+    private void initUI() {
+        // Title
+        mButtonsTitle.setText(
+                String.format(getString(R.string.would_you_like_to_work_with_x_again), mProName)
+        );
+
         // Yes
         mButtonYes.setChecked(isProAlreadyOnTeam());
         mButtonYes.setCheckedText(getString(R.string.yes));
@@ -95,11 +105,9 @@ public class RateProTeamFragment extends Fragment
         mButtonYes.setCheckedDrawable(mActiveAddDrawable);
         mButtonYes.setUncheckedDrawable(mInactiveAddDrawable);
         mButtonYes.updateState();
-        mButtonYes.setListener(new View.OnClickListener()
-        {
+        mButtonYes.setListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 updateUI(ProviderMatchPreference.PREFERRED);
                 mHasUserTouchedYesOrNoButtons = true;
             }
@@ -111,11 +119,9 @@ public class RateProTeamFragment extends Fragment
         mButtonNo.setCheckedDrawable(mActiveBlockDrawable);
         mButtonNo.setUncheckedDrawable(mInactiveBlockDrawable);
         mButtonNo.updateState();
-        mButtonNo.setListener(new View.OnClickListener()
-        {
+        mButtonNo.setListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 updateUI(ProviderMatchPreference.NEVER);
                 mHasUserTouchedYesOrNoButtons = true;
             }
@@ -126,8 +132,7 @@ public class RateProTeamFragment extends Fragment
      * If user hasn't interacted with the Y/N buttons it updates the UI, otherwise, nothing.
      * @param providerMatchPreference update UI to reflect this match preference
      */
-    public void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference)
-    {
+    public void setProviderMatchPreference(final ProviderMatchPreference providerMatchPreference) {
         if (mHasUserTouchedYesOrNoButtons) { return; }
         updateUI(providerMatchPreference);
     }
@@ -136,10 +141,8 @@ public class RateProTeamFragment extends Fragment
      * Configures the UI to reflect the provided match preference
      * @param providerMatchPreference update UI to reflect this match preference
      */
-    private void updateUI(final ProviderMatchPreference providerMatchPreference)
-    {
-        switch (providerMatchPreference)
-        {
+    private void updateUI(final ProviderMatchPreference providerMatchPreference) {
+        switch (providerMatchPreference) {
             case PREFERRED:
                 mButtonYes.setChecked(true);
                 mButtonNo.setChecked(false);
@@ -160,14 +163,11 @@ public class RateProTeamFragment extends Fragment
      * selected through the possible combinations of buttons
      */
     @NonNull
-    public ProviderMatchPreference getProviderMatchPreference()
-    {
-        if (mButtonYes.isChecked())
-        {
+    public ProviderMatchPreference getProviderMatchPreference() {
+        if (mButtonYes.isChecked()) {
             return ProviderMatchPreference.PREFERRED;
         }
-        else if (mButtonNo.isChecked())
-        {
+        else if (mButtonNo.isChecked()) {
             return ProviderMatchPreference.NEVER;
         }
         //In theory this should never happen :)
@@ -177,8 +177,7 @@ public class RateProTeamFragment extends Fragment
     /**
      * As of today, a pro is considered already on the team if the match preference says "preferred"
      */
-    private boolean isProAlreadyOnTeam()
-    {
+    private boolean isProAlreadyOnTeam() {
         return mInitialMatchPreference == ProviderMatchPreference.PREFERRED;
     }
 
