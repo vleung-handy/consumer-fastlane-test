@@ -35,6 +35,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
@@ -204,8 +205,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         if (envMenuItem != null)
         {
-            // We will only enable environment modifier if we are in debug mode
-            if (BuildConfig.DEBUG)
+            // We will only enable environment modifier if this is a stage build
+            if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
             {
                 envMenuItem.setTitle(mEnvironmentModifier.getEnvironment());
             }
