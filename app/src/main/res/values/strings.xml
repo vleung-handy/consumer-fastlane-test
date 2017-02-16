@@ -169,6 +169,7 @@
     <string name="edit">Edit</string>
     <string name="opt">(optional)</string>
     <string name="rating_tip_prompt">Leave a tip?</string>
+    <string name="would_you_like_to_work_with_x_again">Would you like to work with %1$s again?</string>
     <string name="leave_tip_prompt_formatted">Would you like to leave a tip for %1$s?</string>
     <string name="leave_a_tip">Leave a Tip</string>
     <string name="other_tip_amount">Other</string>

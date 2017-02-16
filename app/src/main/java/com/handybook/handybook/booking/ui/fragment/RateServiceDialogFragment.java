@@ -5,6 +5,8 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -39,15 +41,17 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RateServiceDialogFragment extends BaseDialogFragment
-{
+public class RateServiceDialogFragment extends BaseDialogFragment {
+
     private static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     private static final String EXTRA_PRO_NAME = "com.handy.handy.EXTRA_PRO_NAME";
     private static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
     private static final String STATE_RATING = "RATING";
     private static final int GOOD_RATING = 4; //threshold for what is considered a good rating.
-    private static final int RAW_RATING_THRESHOLD = 3; //raw threshold for what is considered a good rating.
-    private static final String RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT = "RateServiceConfirmDialogFragment";
+    //raw threshold for what is considered a good rating.
+    private static final int RAW_RATING_THRESHOLD = 3;
+    private static final String RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT
+            = "RateServiceConfirmDialogFragment";
 
     @Bind(R.id.rate_dialog_service_icon)
     ImageView mServiceIcon;
@@ -99,11 +103,9 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private View.OnClickListener mSubmitListener;
 
     {
-        mSubmitListener = new View.OnClickListener()
-        {
+        mSubmitListener = new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 disableInputs();
                 showProgress();
                 mSubmitButton.setText(null);
@@ -112,12 +114,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
                 ProviderMatchPreference matchPreference;
 
-                if (mRateProTeamFragment != null)
-                {
+                if (mRateProTeamFragment != null) {
                     matchPreference = mRateProTeamFragment.getProviderMatchPreference();
                 }
-                else
-                {
+                else {
                     matchPreference = mPrerateProInfo.getProviderMatchPreference();
                 }
 
@@ -137,14 +137,14 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         };
     }
 
+    @NonNull
     public static RateServiceDialogFragment newInstance(
             final int bookingId,
             final String proName,
             final int rating,
             final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts,
             final String currencyPrefixSymbol
-    )
-    {
+    ) {
         final RateServiceDialogFragment rateServiceDialogFragment = new RateServiceDialogFragment();
         final Bundle bundle = new Bundle();
 
@@ -159,34 +159,29 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        if (mPrerateProInfo == null)
-        {
+        if (mPrerateProInfo == null) {
             mBus.post(new BookingEvent.RequestPrerateProInfo(String.valueOf(mBookingId)));
             disableInputs();
             showProgress();
         }
 
-        if (mConfiguration == null)
-        {
+        if (mConfiguration == null) {
             mBus.post(new ConfigurationEvent.RequestConfiguration());
         }
 
     }
 
     @Override
-    protected void disableInputs()
-    {
+    protected void disableInputs() {
         super.disableInputs();
         mSubmitButton.setClickable(false);
         mSkipButton.setClickable(false);
     }
 
     @Override
-    protected void enableInputs()
-    {
+    protected void enableInputs() {
         super.enableInputs();
         mSubmitButton.setClickable(true);
         mSkipButton.setClickable(true);
@@ -196,18 +191,15 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     public View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.dialog_rate_service, container, true);
         ButterKnife.bind(this, view);
         final Bundle args = getArguments();
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             mRating = savedInstanceState.getInt(STATE_RATING, -1);
         }
-        else
-        {
+        else {
             mRating = args.getInt(EXTRA_RATING, -1);
         }
         mBookingId = args.getInt(EXTRA_BOOKING);
@@ -215,23 +207,19 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         initStars();
         setRating(mRating);
 
-        if (TextUtils.isEmpty(mProName))
-        {
+        if (TextUtils.isEmpty(mProName)) {
             mTitleText.setText(getResources().getString(R.string.how_was_last_service));
         }
-        else
-        {
+        else {
             mTitleText.setText(String.format(
                     getString(R.string.how_was_last_service_with),
                     mProName
             ));
         }
         mSubmitButton.setOnClickListener(mSubmitListener);
-        mSkipButton.setOnClickListener(new View.OnClickListener()
-        {
+        mSkipButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 dismiss();
             }
         });
@@ -239,8 +227,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                 getArguments().getParcelableArrayList(TipFragment.EXTRA_DEFAULT_TIP_AMOUNTS);
         String currency = getArguments().getString(TipFragment.EXTRA_CURRENCY_CHAR);
         TipFragment tipFragment = TipFragment.newInstance(defaultTipAmounts, currency);
-        if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
-        {
+        if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty()) {
             mTipDivider.setVisibility(View.VISIBLE);
             mTipSection.setVisibility(View.VISIBLE);
             getChildFragmentManager().beginTransaction()
@@ -251,8 +238,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onSaveInstanceState(final Bundle outState)
-    {
+    public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_RATING, mRating);
     }
@@ -260,19 +246,15 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     @Subscribe
     public void onReceivePrerateInfoSuccess(
             BookingEvent.ReceivePrerateProInfoSuccess receivePrerateProInfoSuccess
-    )
-    {
+    ) {
         mPrerateProInfo = receivePrerateProInfoSuccess.getPrerateProInfo();
 
-        if (mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED)
-        {
+        if (mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED) {
             mTextProTeamMember.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mTextProTeamMember.setVisibility(View.GONE);
         }
-
         initProTeamSection();
         hideProgress();
         enableInputs();
@@ -282,24 +264,20 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     @Subscribe
     public void onReceivePrerateInfoSuccess(
             BookingEvent.ReceivePrerateProInfoError receivePrerateProInfoSuccess
-    )
-    {
+    ) {
         Crashlytics.logException(new NetworkErrorException("Could not get prerate_pro_info"));
         dismiss();
     }
 
     @Subscribe
-    public void onReceiveRateBookingSuccess(BookingEvent.ReceiveRateBookingSuccess event)
-    {
-        if (getTipAmount() != null)
-        {
+    public void onReceiveRateBookingSuccess(BookingEvent.ReceiveRateBookingSuccess event) {
+        if (getTipAmount() != null) {
             final String message = getString(R.string.tip_success_message_formatted, mProName);
             HandySnackbar.show(getActivity(), message, HandySnackbar.TYPE_SUCCESS);
         }
         dismiss();
         final int finalRating = mRating + 1;
-        if (finalRating < GOOD_RATING)
-        {
+        if (finalRating < GOOD_RATING) {
             FragmentUtils.safeLaunchDialogFragment(
                     RateImprovementDialogFragment.newInstance(
                             String.valueOf(mBookingId),
@@ -309,8 +287,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                     RateImprovementDialogFragment.class.getSimpleName()
             );
         }
-        else
-        {
+        else {
             FragmentUtils.safeLaunchDialogFragment(
                     RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),
                     getActivity(),
@@ -322,18 +299,15 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     @Subscribe
     public void onReceiveConfigurationSuccess(
             final ConfigurationEvent.ReceiveConfigurationSuccess event
-    )
-    {
-        if (event != null)
-        {
+    ) {
+        if (event != null) {
             mConfiguration = event.getConfiguration();
             initProTeamSection();
         }
     }
 
     @Subscribe
-    public void onReceiveRateBookingError(BookingEvent.ReceiveRateBookingError event)
-    {
+    public void onReceiveRateBookingError(BookingEvent.ReceiveRateBookingError event) {
         hideProgress();
         mSubmitButton.setText(R.string.submit);
         mSkipButton.setVisibility(View.VISIBLE);
@@ -346,42 +320,33 @@ public class RateServiceDialogFragment extends BaseDialogFragment
      *
      * @param rating Zero indexed rating
      */
-    private void setRating(final int rating)
-    {
+    private void setRating(final int rating) {
         mRating = rating;
-        for (int starIndex = 0; starIndex < mStars.size(); starIndex++)
-        {
+        for (int starIndex = 0; starIndex < mStars.size(); starIndex++) {
             final ImageView star = mStars.get(starIndex);
 
-            if (starIndex <= mRating)
-            {
+            if (starIndex <= mRating) {
                 star.clearColorFilter();
             }
-            else
-            {
+            else {
                 star.setColorFilter(
                         ContextCompat.getColor(getContext(), R.color.light_grey),
                         PorterDuff.Mode.SRC_ATOP
                 );
             }
         }
-        if (mRating >= 0)
-        {
+        if (mRating >= 0) {
             mSubmitButtonLayout.setVisibility(View.VISIBLE);
             mProTeamSection.setVisibility(View.VISIBLE);
             //this is zero indexed, so this means 4 stars or higher
-            if (rating >= RAW_RATING_THRESHOLD && mPrerateProInfo != null)
-            {
-                if (mRateProTeamFragment != null)
-                {
+            if (rating >= RAW_RATING_THRESHOLD && mPrerateProInfo != null) {
+                if (mRateProTeamFragment != null) {
                     mRateProTeamFragment
                             .setProviderMatchPreference(ProviderMatchPreference.PREFERRED);
                 }
             }
-            else
-            {
-                if (mRateProTeamFragment != null)
-                {
+            else {
+                if (mRateProTeamFragment != null) {
                     mRateProTeamFragment
                             .setProviderMatchPreference(ProviderMatchPreference.NEVER);
                 }
@@ -390,36 +355,31 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         }
     }
 
-    private Integer getTipAmount()
-    {
+    @Nullable
+    private Integer getTipAmount() {
         final TipFragment tipFragment = (TipFragment) getChildFragmentManager()
                 .findFragmentById(R.id.rate_dialog_tip_layout_container);
         return tipFragment != null ? tipFragment.getTipAmount() : null;
     }
 
-    private void initStars()
-    {
+    private void initStars() {
         mStars.add(mStar1);
         mStars.add(mStar2);
         mStars.add(mStar3);
         mStars.add(mStar4);
         mStars.add(mStar5);
         // init all stars to empty
-        for (final ImageView star : mStars)
-        {
+        for (final ImageView star : mStars) {
             star.setColorFilter(
                     ContextCompat.getColor(getContext(), R.color.light_grey),
                     PorterDuff.Mode.SRC_ATOP
             );
         }
         // fill mStars when dragging across them
-        mRatingsLayout.setOnTouchListener(new View.OnTouchListener()
-        {
+        mRatingsLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(final View v, final MotionEvent event)
-            {
-                for (int i = 0; i < mRatingsLayout.getChildCount(); i++)
-                {
+            public boolean onTouch(final View v, final MotionEvent event) {
+                for (int i = 0; i < mRatingsLayout.getChildCount(); i++) {
                     final ImageView imageView = (ImageView) mRatingsLayout.getChildAt(i);
                     final Rect outRect = new Rect(
                             imageView.getLeft(),
@@ -427,8 +387,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
                             imageView.getRight(),
                             imageView.getBottom()
                     );
-                    if (outRect.contains((int) event.getX(), (int) event.getY()))
-                    {
+                    if (outRect.contains((int) event.getX(), (int) event.getY())) {
                         final int starsIndex = mStars.indexOf(imageView);
                         setRating(starsIndex);
                         break;
@@ -440,16 +399,20 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         });
     }
 
-    private void initProTeamSection()
-    {
-        if (mPrerateProInfo != null)
-        {
-            mRateProTeamFragment = (RateProTeamFragment) getChildFragmentManager().findFragmentByTag(
+    private void initProTeamSection() {
+        if (mPrerateProInfo != null) {
+            mRateProTeamFragment
+                    = (RateProTeamFragment) getChildFragmentManager().findFragmentByTag(
                     RateProTeamFragment.class.getSimpleName());
-            if (mRateProTeamFragment == null)
-            {
-                mRateProTeamFragment = RateProTeamFragment
-                        .newInstance(mPrerateProInfo.getProviderMatchPreference());
+            if (mRateProTeamFragment == null) {
+                final ProviderMatchPreference providerMatchPreference
+                        = mPrerateProInfo.getProviderMatchPreference() == null
+                          ? ProviderMatchPreference.INDIFFERENT
+                          : mPrerateProInfo.getProviderMatchPreference();
+                mRateProTeamFragment = RateProTeamFragment.newInstance(
+                        providerMatchPreference,
+                        mProName
+                );
                 getChildFragmentManager()
                         .beginTransaction()
                         .add(R.id.rate_pro_team_container, mRateProTeamFragment)
@@ -459,26 +422,21 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         }
     }
 
-    private void scrollToBottom()
-    {
-        new Handler().postDelayed(new Runnable()
-        { // Scroll to the bottom
+    private void scrollToBottom() {
+        new Handler().postDelayed(new Runnable() { // Scroll to the bottom
             @Override
-            public void run()
-            {
+            public void run() {
                 mScroll.fullScroll(View.FOCUS_DOWN);
             }
         }, 100);
     }
 
-    private void showProgress()
-    {
+    private void showProgress() {
         mSubmitProgress.setVisibility(View.VISIBLE);
         mSubmitProgress.setIndeterminate(true);
     }
 
-    private void hideProgress()
-    {
+    private void hideProgress() {
         mSubmitProgress.setVisibility(View.GONE);
     }
 }
