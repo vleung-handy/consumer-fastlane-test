@@ -24,6 +24,7 @@ import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
@@ -227,18 +228,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         final FragmentManager fm = getSupportFragmentManager();
         final User user = mUserManager.getCurrentUser();
         if (user == null
-                || fm.findFragmentByTag(RateServiceDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(ReferralDialogFragment.TAG) != null
-                || !(
-                BaseActivity.this instanceof ServiceCategoriesActivity
-                        || BaseActivity.this instanceof BookingDetailActivity
-                        || BaseActivity.this instanceof BookingsActivity
+            || fm.findFragmentByTag(RateServiceDialogFragment.class.getSimpleName()) != null
+            || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
+            || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
+            || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
+            || fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) != null
+            || fm.findFragmentByTag(ReferralDialogFragment.TAG) != null
+            || !(BaseActivity.this instanceof ServiceCategoriesActivity
+                 || BaseActivity.this instanceof BookingDetailActivity
+                 || BaseActivity.this instanceof BookingsActivity
+                 || BaseActivity.this instanceof BottomNavActivity)
         )
-                )
         {
             return;
         }
