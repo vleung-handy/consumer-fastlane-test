@@ -3,7 +3,7 @@
 
     <style name="HandyTheme"
            parent="BaseTheme">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
         <item name="android:statusBarColor">@color/handy_darkened_blue</item>
         <item name="android:windowContentTransitions">true</item>
     </style>

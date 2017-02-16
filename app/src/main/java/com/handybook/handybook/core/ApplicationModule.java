@@ -160,7 +160,6 @@ import com.handybook.handybook.proteam.ui.fragment.NewProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
-import com.handybook.handybook.proteam.ui.fragment.RemoveProDialogFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.push.receiver.PushReceiver;
 import com.handybook.handybook.referral.manager.ReferralsManager;
@@ -300,7 +299,6 @@ import retrofit.converter.GsonConverter;
         ProTeamEditFragment.class,
         ProTeamProListFragment.class,
         NewProTeamProListFragment.class,
-        RemoveProDialogFragment.class,
         ReportIssueActivity.class,
         ReportIssueFragment.class,
         WebViewActivity.class,

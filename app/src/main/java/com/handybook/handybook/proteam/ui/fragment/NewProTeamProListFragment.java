@@ -24,6 +24,8 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.library.util.FragmentUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.proteam.adapter.NewProTeamCategoryAdapter;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeam;
@@ -35,6 +37,7 @@ import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
+import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
 
@@ -96,7 +99,7 @@ public class NewProTeamProListFragment extends InjectedFragment
 
                     launchProTeamActionPicker(new ProTeamActionPickerViewModel(
                             proTeamPro.getId(),
-                            proTeamPro.getImageUrl(),
+                            proTeamPro.getCategoryType(), proTeamPro.getImageUrl(),
                             title,
                             subtitle,
                             actionTypes
@@ -108,7 +111,7 @@ public class NewProTeamProListFragment extends InjectedFragment
                 {
                     launchProTeamActionPicker(new ProTeamActionPickerViewModel(
                             proTeamPro.getId(),
-                            proTeamPro.getImageUrl(),
+                            proTeamPro.getCategoryType(), proTeamPro.getImageUrl(),
                             getString(R.string.block_formatted, proTeamPro.getName()),
                             null,
                             Lists.newArrayList(ActionType.BLOCK)
@@ -153,6 +156,10 @@ public class NewProTeamProListFragment extends InjectedFragment
             return;
         }
 
+        final ProTeamEdit proTeamEdit = new ProTeamEdit(matchPreference);
+        proTeamEdit.addId(proId, mProTeamCategoryType);
+        final ArrayList<ProTeamEdit> proTeamEdits = Lists.newArrayList(proTeamEdit);
+
         final DataManager.Callback<ProTeamWrapper> cb =
                 new FragmentSafeCallback<ProTeamWrapper>(this)
                 {
@@ -168,6 +175,8 @@ public class NewProTeamProListFragment extends InjectedFragment
                             initRecyclerView();
                             bus.post(new ProTeamEvent.ProTeamUpdated(proTeam));
                         }
+                        bus.post(new LogEvent.AddLogEvent(
+                                new ProTeamPageLog.EditProTeamSuccess(proTeamEdits)));
                     }
 
                     @Override
@@ -176,15 +185,15 @@ public class NewProTeamProListFragment extends InjectedFragment
                         progressDialog.dismiss();
                         showToast(!TextUtils.isEmpty(error.getMessage()) ? error.getMessage() :
                                           getString(R.string.default_error_string));
+                        bus.post(new LogEvent.AddLogEvent(
+                                new ProTeamPageLog.EditProTeamFailure(proTeamEdits)));
                     }
                 };
 
         final String source = ProTeamEvent.Source.PRO_MANAGEMENT.toString();
-        final ProTeamEdit proTeamEdit = new ProTeamEdit(matchPreference);
-        proTeamEdit.addId(proId, mProTeamCategoryType);
         progressDialog.show();
         mService.editProTeam(currentUser.getId(), new ProTeamEditWrapper(
-                Lists.newArrayList(proTeamEdit),
+                proTeamEdits,
                 source
         ), new HandyRetrofitCallback(cb)
         {
@@ -194,6 +203,9 @@ public class NewProTeamProListFragment extends InjectedFragment
                 cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
             }
         });
+
+        bus.post(new LogEvent.AddLogEvent(
+                new ProTeamPageLog.EditProTeamSubmitted(proTeamEdits)));
     }
 
     public static NewProTeamProListFragment newInstance(
@@ -239,6 +251,13 @@ public class NewProTeamProListFragment extends InjectedFragment
         mRecyclerView.setEmptyView(mEmptyView);
         mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
         mEmptyViewText.setText(R.string.pro_team_empty_card_text);
+        initRecyclerView();
+    }
+
+    @Subscribe
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
+    {
+        mProTeamCategory = event.getUpdatedProTeam().getCategory(mProTeamCategoryType);
         initRecyclerView();
     }
 

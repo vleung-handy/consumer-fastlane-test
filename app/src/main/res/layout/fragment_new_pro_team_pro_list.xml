@@ -9,6 +9,7 @@
         android:id="@+id/edit_my_pros_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/default_padding"
         android:clipToPadding="false"
         tools:listitem="@layout/layout_pro_team_pro_card"
         />

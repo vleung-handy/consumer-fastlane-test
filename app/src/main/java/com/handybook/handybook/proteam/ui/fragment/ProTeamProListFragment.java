@@ -20,12 +20,14 @@ import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.proteam.adapter.ProTeamCategoryAdapter;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.holder.ProTeamFacebookHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -105,7 +107,7 @@ public class ProTeamProListFragment extends InjectedFragment
         ProTeamProListFragment fragment = new ProTeamProListFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_PROTEAM, proTeam);
-        bundle.putParcelable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
+        bundle.putSerializable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
         bundle.putBoolean(KEY_SAVE_BUTTON_ENABLED, saveButtonEnabled);
         fragment.setArguments(bundle);
         return fragment;
@@ -138,7 +140,8 @@ public class ProTeamProListFragment extends InjectedFragment
         if (arguments != null)
         {
             mProTeam = arguments.getParcelable(KEY_PROTEAM);
-            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+            mProTeamCategoryType = (ProTeamCategoryType)
+                    arguments.getSerializable(KEY_PROTEAM_CATEGORY_TYPE);
             mSaveButtonEnabled = arguments.getBoolean(KEY_SAVE_BUTTON_ENABLED);
         }
 
@@ -261,14 +264,16 @@ public class ProTeamProListFragment extends InjectedFragment
         initialize();
     }
 
+    @Subscribe
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
+    {
+        mProTeam = event.getUpdatedProTeam();
+        initialize();
+    }
+
     public void setOnProInteraction(final OnProInteraction onProInteraction)
     {
         mOnProInteraction = onProInteraction;
-    }
-
-    public ProTeamCategoryType getProTeamCategoryType()
-    {
-        return mProTeamCategoryType;
     }
 
     /**

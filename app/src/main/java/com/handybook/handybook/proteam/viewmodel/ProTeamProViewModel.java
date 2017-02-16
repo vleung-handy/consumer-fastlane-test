@@ -19,6 +19,7 @@ public class ProTeamProViewModel
     private boolean mIsHandymanIndicatorEnabled;
     private String mImageUrl;
     private Conversation mConversation;
+    private boolean mIsFavorite;
 
     private ProTeamProViewModel(
             @NonNull final ProTeamPro proTeamPro,
@@ -35,6 +36,7 @@ public class ProTeamProViewModel
         mIsHandymanIndicatorEnabled = shouldShowHandymanIndicators &&
                 proTeamPro.getCategoryType() == ProTeamCategoryType.HANDYMEN;
         mImageUrl = proTeamPro.getImageUrl();
+        mIsFavorite = proTeamPro.isFavorite();
     }
 
     public static ProTeamProViewModel from(
@@ -96,6 +98,11 @@ public class ProTeamProViewModel
     public boolean isHandymanIndicatorEnabled()
     {
         return mIsHandymanIndicatorEnabled;
+    }
+
+    public boolean isFavorite()
+    {
+        return mIsFavorite;
     }
 
     public interface OnInteractionListener
