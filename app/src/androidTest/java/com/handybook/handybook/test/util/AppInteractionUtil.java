@@ -1,5 +1,7 @@
 package com.handybook.handybook.test.util;
 
+import android.preference.PreferenceManager;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;
 
@@ -96,6 +98,33 @@ public class AppInteractionUtil
         ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
+    public static void waitForOnboardZipPage()
+    {
+        ViewUtil.waitForViewVisible(R.id.onboard_edit_zip, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+    }
+
+    public static void waitForOnboardEmailPage()
+    {
+        ViewUtil.waitForViewVisible(R.id.onboard_edit_email, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+    }
+
+    public static void waitForBottomNavPage()
+    {
+        ViewUtil.waitForViewVisible(R.id.activity_bottom_nav, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+    }
+
+    public static void pauseTestFor(long milliseconds)
+    {
+        try
+        {
+            Thread.sleep(milliseconds);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Open drawer
      */
@@ -104,6 +133,16 @@ public class AppInteractionUtil
         ViewUtil.waitForViewVisible(R.id.drawer_layout, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         dismissShareTheLoveIfNeeded();
+    }
+
+    /**
+     * NOTE: make sure to do commit instead of apply, we need these to be 100% committed for the
+     * tests to pass.
+     */
+    public static void clearSharedPrefs()
+    {
+        PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext())
+                         .edit().clear().commit();
     }
 
     /**

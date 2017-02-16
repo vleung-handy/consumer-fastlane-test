@@ -6,9 +6,20 @@ import android.support.test.rule.ActivityTestRule;
 
 public class LauncherActivityTestRule<T extends Activity> extends ActivityTestRule<T>
 {
+    private static final String TAG = LauncherActivityTestRule.class.getName();
+
     public LauncherActivityTestRule(final Class<T> activityClass)
     {
         super(activityClass);
+    }
+
+    public LauncherActivityTestRule(
+            final Class<T> activityClass,
+            boolean initialTouchMode,
+            boolean launchActivity
+    )
+    {
+        super(activityClass, initialTouchMode, launchActivity);
     }
 
     @Override
