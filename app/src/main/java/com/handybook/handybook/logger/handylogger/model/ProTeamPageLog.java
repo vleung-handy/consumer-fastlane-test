@@ -22,12 +22,10 @@ public abstract class ProTeamPageLog extends EventLog
         "provider_team_context"
          */
         public static final String MAIN_MANAGEMENT = "main_management";
-        public static final String BOOKING_FLOW = "booking_flow";
     }
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
             Context.MAIN_MANAGEMENT,
-            Context.BOOKING_FLOW,
     })
     public @interface ProviderTeamContext
     {

@@ -40,9 +40,10 @@ public class IssueResolutionLog extends EventLog
 
         public static final String PHONE = "phone";
         public static final String SMS = "sms";
+        public static final String CHAT = "chat";
 
 
-        @StringDef({PHONE, SMS})
+        @StringDef({PHONE, SMS, CHAT})
         public @interface Type {}
 
 

@@ -20,7 +20,6 @@ import javax.inject.Inject;
 
 public class ConfigurationManager
 {
-
     private final Bus mBus;
     private final DataManager mDataManager;
     private final DefaultPreferencesManager mDefaultPreferencesManager;
@@ -147,7 +146,6 @@ public class ConfigurationManager
         {
             rval = new Configuration();
         }
-
         return rval;
     }
 }

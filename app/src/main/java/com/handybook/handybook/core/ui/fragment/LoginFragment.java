@@ -33,6 +33,7 @@ import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
@@ -52,10 +53,10 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-
 public final class LoginFragment extends BookingFlowFragment
 {
     public static final String EXTRA_FROM_BOOKING_FUNNEL = "com.handy.handy.EXTRA_FROM_BOOKING_FUNNEL";
+    public static final String EXTRA_FROM_ONBOARDING = "com.handy.handy.EXTRA_FROM_ONBOARDING";
     static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
     static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
     static final String EXTRA_BOOKING_EMAIL = "com.handy.handy.EXTRA_BOOKING_EMAIL";
@@ -67,6 +68,7 @@ public final class LoginFragment extends BookingFlowFragment
     private boolean mHandleFBSessionUpdates = false;
     private boolean mFindUser;
     private boolean mIsFromBookingFunnel;
+    private boolean mIsFromOnboarding;
     private String mBookingUserName, mBookingUserEmail;
     private BookingRequest mBookingRequest;
 
@@ -103,13 +105,15 @@ public final class LoginFragment extends BookingFlowFragment
             final boolean findUser,
             final String bookingUserName,
             final String bookingUserEmail,
-            boolean fromBookingFunnel
+            final boolean fromBookingFunnel,
+            final boolean fromOnboarding
     )
     {
         final LoginFragment fragment = new LoginFragment();
         final Bundle args = new Bundle();
 
         args.putBoolean(EXTRA_FROM_BOOKING_FUNNEL, fromBookingFunnel);
+        args.putBoolean(EXTRA_FROM_ONBOARDING, fromOnboarding);
         args.putBoolean(EXTRA_FIND_USER, findUser);
         args.putString(EXTRA_BOOKING_USER_NAME, bookingUserName);
         args.putString(EXTRA_BOOKING_EMAIL, bookingUserEmail);
@@ -131,7 +135,15 @@ public final class LoginFragment extends BookingFlowFragment
         mFindUser = getArguments().getBoolean(EXTRA_FIND_USER);
         mBookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
         mBookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
+
+        if (TextUtils.isEmpty(mBookingUserEmail))
+        {
+            //if there is no email passed in, look in shared prefs
+            mBookingUserEmail = mDefaultPreferencesManager.getString(PrefsKey.EMAIL);
+        }
+
         mIsFromBookingFunnel = getArguments().getBoolean(EXTRA_FROM_BOOKING_FUNNEL);
+        mIsFromOnboarding = getArguments().getBoolean(EXTRA_FROM_ONBOARDING);
 
         String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
         mDestinationExtras = getActivity().getIntent().getExtras();
@@ -171,8 +183,9 @@ public final class LoginFragment extends BookingFlowFragment
                                        .inflate(R.layout.fragment_login, container, false);
 
         ButterKnife.bind(this, view);
-        setupToolbar(mToolbar, getString(R.string.log_in));
+        setupToolbar(mToolbar, getString(R.string.sign_in));
 
+        mEmailText.clearFocus();
         final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
         if (mFindUser)
@@ -199,10 +212,14 @@ public final class LoginFragment extends BookingFlowFragment
                 mWelcomeText.setText(getString(R.string.welcome_back, mBookingUserName));
                 mWelcomeText.setVisibility(View.VISIBLE);
             }
-            mBookingRequest.setEmail(mBookingUserEmail);
+            //NOTE: mBookingRequest could be null if this is a login coming from the onboarding process
+            if (mBookingRequest != null)
+            {
+                mBookingRequest.setEmail(mBookingUserEmail);
+            }
         }
-        else if(!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
-                    && getActivity() instanceof MenuDrawerActivity)
+        else if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
+                && getActivity() instanceof MenuDrawerActivity)
         {
             //by default, the toolbar has a back button which goes back when pressed
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
@@ -416,6 +433,12 @@ public final class LoginFragment extends BookingFlowFragment
                             }
                             else
                             {
+
+                                //this is when the user doesn't already exist.
+                                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.EmailCollectedLog(
+                                        email
+                                )));
+
                                 mBookingRequest.setEmail(email);
                                 continueBookingFlow();
                             }
@@ -520,8 +543,9 @@ public final class LoginFragment extends BookingFlowFragment
 
         mConfigurationManager.invalidateCache();
 
-        if (mBookingUserName != null ||
-                authType == UserDataManager.AuthType.FACEBOOK && mFindUser)
+        if (!mIsFromOnboarding &&
+                (mBookingUserName != null ||
+                        authType == UserDataManager.AuthType.FACEBOOK && mFindUser))
         {
             continueBookingFlow();
             return;
@@ -554,6 +578,10 @@ public final class LoginFragment extends BookingFlowFragment
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         }
+        else if (hasStoredZip())
+        {
+            goToHomePage();
+        }
         else
         {
             final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
@@ -570,7 +598,16 @@ public final class LoginFragment extends BookingFlowFragment
                 activity.navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
             }
         }
+    }
 
+    private void goToHomePage()
+    {
+        //This is a case of login from Onboarding v2 -- whether it's a successful login from
+        //onboarding, or from the booking process, we direct the user to the home page
+        getActivity().setResult(ActivityResult.LOGIN_FINISH);
+        Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        getActivity().startActivity(intent);
     }
 
     @Subscribe

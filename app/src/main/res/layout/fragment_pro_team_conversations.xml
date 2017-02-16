@@ -30,12 +30,12 @@
             >
             <!--TODO: this should be a menu item instead of a textview. It breaks the core test-->
             <TextView
-                android:id="@+id/pro_team_toolbar_edit_list_button"
+                android:id="@+id/pro_team_toolbar_edit_pro_team_button"
                 style="@style/TextView.NavbarAction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="@string/edit_list"
+                android:text="@string/edit_pro_team"
                 />
         </android.support.v7.widget.Toolbar>
 
@@ -62,7 +62,7 @@
                 />
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <include layout="@layout/layout_pro_team_empty"/>
+        <include layout="@layout/layout_messages_empty"/>
     </FrameLayout>
 
 </LinearLayout>

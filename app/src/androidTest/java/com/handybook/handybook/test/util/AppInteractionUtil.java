@@ -44,7 +44,7 @@ public class AppInteractionUtil
 
             //log out
             onView(withId(android.R.id.content)).perform(swipeUp());
-            if (!ViewUtil.isViewDisplayed(withText(R.string.log_in)))
+            if (!ViewUtil.isViewDisplayed(withText(R.string.sign_in)))
             {
                 //press the my account button in the nav drawer
                 onView(withText(R.string.account)).perform(click());
@@ -82,8 +82,8 @@ public class AppInteractionUtil
     {
         openDrawer();
         //the side menu items are loaded async and sometimes take a little longer to show
-        ViewUtil.waitForTextVisible(R.string.log_in, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        onView(withText(R.string.log_in)).perform(click());
+        ViewUtil.waitForTextVisible(R.string.sign_in, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        onView(withText(R.string.sign_in)).perform(click());
         TextViewUtil.updateEditTextView(R.id.email_text, testUser.getEmail());
         TextViewUtil.updateEditTextView(R.id.password_text, testUser.getPassword());
         Espresso.closeSoftKeyboard();

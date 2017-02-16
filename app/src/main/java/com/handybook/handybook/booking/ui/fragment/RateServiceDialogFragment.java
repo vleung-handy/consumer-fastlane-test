@@ -24,13 +24,13 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementDialogFragment;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.ui.view.HandySnackbar;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
-import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.squareup.otto.Subscribe;
 
@@ -114,7 +114,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
 
                 if (mRateProTeamFragment != null)
                 {
-                    matchPreference = mRateProTeamFragment.getNewProviderMatchPreference();
+                    matchPreference = mRateProTeamFragment.getProviderMatchPreference();
                 }
                 else
                 {
@@ -221,7 +221,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         }
         else
         {
-            mTitleText.setText(String.format(getString(R.string.how_was_last_service_with), mProName));
+            mTitleText.setText(String.format(
+                    getString(R.string.how_was_last_service_with),
+                    mProName
+            ));
         }
         mSubmitButton.setOnClickListener(mSubmitListener);
         mSkipButton.setOnClickListener(new View.OnClickListener()
@@ -241,8 +244,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             mTipDivider.setVisibility(View.VISIBLE);
             mTipSection.setVisibility(View.VISIBLE);
             getChildFragmentManager().beginTransaction()
-                    .replace(R.id.rate_dialog_tip_layout_container, tipFragment)
-                    .commit();
+                                     .replace(R.id.rate_dialog_tip_layout_container, tipFragment)
+                                     .commit();
         }
         return view;
     }
@@ -311,7 +314,8 @@ public class RateServiceDialogFragment extends BaseDialogFragment
             FragmentUtils.safeLaunchDialogFragment(
                     RateServiceConfirmDialogFragment.newInstance(mBookingId, finalRating),
                     getActivity(),
-                    RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT);
+                    RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT
+            );
         }
     }
 
@@ -364,24 +368,25 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         if (mRating >= 0)
         {
             mSubmitButtonLayout.setVisibility(View.VISIBLE);
-
+            mProTeamSection.setVisibility(View.VISIBLE);
             //this is zero indexed, so this means 4 stars or higher
-            if (rating >= RAW_RATING_THRESHOLD && mPrerateProInfo != null &&
-                    mPrerateProInfo.getProviderMatchPreference() == ProviderMatchPreference.PREFERRED)
+            if (rating >= RAW_RATING_THRESHOLD && mPrerateProInfo != null)
             {
-                mProTeamSection.setVisibility(View.GONE);
+                if (mRateProTeamFragment != null)
+                {
+                    mRateProTeamFragment
+                            .setProviderMatchPreference(ProviderMatchPreference.PREFERRED);
+                }
             }
             else
             {
-                mProTeamSection.setVisibility(View.VISIBLE);
+                if (mRateProTeamFragment != null)
+                {
+                    mRateProTeamFragment
+                            .setProviderMatchPreference(ProviderMatchPreference.NEVER);
+                }
             }
 
-            //must make this call to update with new rating, even if the above sets the layout to
-            //GONE. This is needed for tracking previous rating.
-            if (mRateProTeamFragment != null && mRateProTeamFragment.isVisible())
-            {
-                mRateProTeamFragment.updateWithNewRating(mRating);
-            }
         }
     }
 
@@ -402,7 +407,10 @@ public class RateServiceDialogFragment extends BaseDialogFragment
         // init all stars to empty
         for (final ImageView star : mStars)
         {
-            star.setColorFilter(ContextCompat.getColor(getContext(), R.color.light_grey), PorterDuff.Mode.SRC_ATOP);
+            star.setColorFilter(
+                    ContextCompat.getColor(getContext(), R.color.light_grey),
+                    PorterDuff.Mode.SRC_ATOP
+            );
         }
         // fill mStars when dragging across them
         mRatingsLayout.setOnTouchListener(new View.OnTouchListener()
@@ -436,10 +444,12 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     {
         if (mPrerateProInfo != null)
         {
-            mRateProTeamFragment = (RateProTeamFragment) getChildFragmentManager().findFragmentByTag(RateProTeamFragment.class.getSimpleName());
+            mRateProTeamFragment = (RateProTeamFragment) getChildFragmentManager().findFragmentByTag(
+                    RateProTeamFragment.class.getSimpleName());
             if (mRateProTeamFragment == null)
             {
-                mRateProTeamFragment = RateProTeamFragment.newInstance(mRating, mProName, mPrerateProInfo.getProviderMatchPreference());
+                mRateProTeamFragment = RateProTeamFragment
+                        .newInstance(mPrerateProInfo.getProviderMatchPreference());
                 getChildFragmentManager()
                         .beginTransaction()
                         .add(R.id.rate_pro_team_container, mRateProTeamFragment)
@@ -464,6 +474,7 @@ public class RateServiceDialogFragment extends BaseDialogFragment
     private void showProgress()
     {
         mSubmitProgress.setVisibility(View.VISIBLE);
+        mSubmitProgress.setIndeterminate(true);
     }
 
     private void hideProgress()

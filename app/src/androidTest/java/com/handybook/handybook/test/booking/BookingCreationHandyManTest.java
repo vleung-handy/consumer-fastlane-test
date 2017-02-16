@@ -122,6 +122,7 @@ public class BookingCreationHandyManTest
 
     private void clickNextButton()
     {
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.next_button)).perform(click());
     }
 }

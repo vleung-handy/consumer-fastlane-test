@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.booking.model.Booking;
@@ -23,23 +24,24 @@ import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryInfoDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
-import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.RequiredModalsEventListener;
 import com.handybook.handybook.core.RequiredModalsLauncher;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.event.ActivityLifecycleEvent;
+import com.handybook.handybook.core.manager.AppseeManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.handybook.handybook.core.manager.AppseeManager;
-import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.notifications.splash.view.fragment.SplashPromoDialogFragment;
 import com.handybook.handybook.referral.manager.ReferralsManager;
@@ -53,8 +55,8 @@ import javax.inject.Inject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public abstract class BaseActivity extends AppCompatActivity implements RequiredModalsLauncher
-{
+public abstract class BaseActivity extends AppCompatActivity implements RequiredModalsLauncher {
+
     private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
     private static final String TAG = BaseActivity.class.getName();
     protected boolean allowCallbacks;
@@ -81,32 +83,45 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     private boolean mWasOpenBefore;
 
     //Public Properties
-    public boolean getAllowCallbacks()
-    {
+    public boolean getAllowCallbacks() {
         return this.allowCallbacks;
     }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Yozio.initialize(this);
         ((BaseApplication) this.getApplication()).inject(this);
         mRequiredModalsEventListener = new RequiredModalsEventListener(this);
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)
-                && !BuildConfig.DEBUG)
-        {
+            && !BuildConfig.DEBUG) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
         }
     }
 
+    /**
+     * If the new onboarding flag is enabled, and we don't have zip or email, then
+     * user is required to go to onboarding screen.
+     *
+     * Do this only if the user is not currently logged in
+     * @return
+     */
+    protected boolean requiresOnboardingV2() {
+        return mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()
+               && !mUserManager.isUserLoggedIn() &&
+               (TextUtils.isEmpty(mDefaultPreferencesManager.getString(PrefsKey.ZIP, null))
+                || TextUtils.isEmpty(mDefaultPreferencesManager.getString(
+                       PrefsKey.EMAIL,
+                       null
+               ))
+               );
+    }
+
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        if (mWasOpenBefore)
-        {
+        if (mWasOpenBefore) {
             mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(false, false)));
         }
         /*
@@ -127,15 +142,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
         allowCallbacks = false;
     }
 
     @Override
-    protected void onResumeFragments()
-    {
+    protected void onResumeFragments() {
         super.onResumeFragments();
         mBus.register(mRequiredModalsEventListener);
         mBus.post(new ActivityLifecycleEvent.FragmentsResumed(this));
@@ -144,23 +157,20 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         mWasOpenBefore = true;
         mBus.unregister(mRequiredModalsEventListener);
         super.onPause();
     }
 
     @Override
-    protected void onPostResume()
-    {
+    protected void onPostResume() {
         super.onPostResume();
         showRequiredUserModals();
     }
 
     @Override
-    public void showBlockingScreen()
-    {
+    public void showBlockingScreen() {
         Intent launchBlockingActivity = new Intent(this, BlockingActivity.class);
         launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         launchBlockingActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -169,10 +179,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     @Override
-    public void showSplashPromo(@NonNull SplashPromo splashPromo)
-    {
-        if (splashPromo.shouldDisplay())
-        {
+    public void showSplashPromo(@NonNull SplashPromo splashPromo) {
+        if (splashPromo.shouldDisplay()) {
             SplashPromoDialogFragment splashPromoDialogFragment =
                     SplashPromoDialogFragment.newInstance(splashPromo);
             FragmentUtils.safeLaunchDialogFragment(
@@ -187,10 +195,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     public void showReferralDialog(
             final ReferralResponse referralResponse,
             final ReferralsManager.Source source
-    )
-    {
-        if (getSupportFragmentManager().findFragmentByTag(ReferralDialogFragment.TAG) == null)
-        {
+    ) {
+        if (getSupportFragmentManager().findFragmentByTag(ReferralDialogFragment.TAG) == null) {
             final ReferralDialogFragment dialogFragment =
                     ReferralDialogFragment.newInstance(
                             referralResponse.getReferralDescriptor(),
@@ -202,63 +208,55 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         }
     }
 
-    private void showRequiredUserModals()
-    {
+    private void showRequiredUserModals() {
         final FragmentManager fm = getSupportFragmentManager();
         final User user = mUserManager.getCurrentUser();
         if (user == null
-                || fm.findFragmentByTag(RateServiceDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) != null
-                || fm.findFragmentByTag(ReferralDialogFragment.TAG) != null
-                || !(
-                BaseActivity.this instanceof ServiceCategoriesActivity
-                        || BaseActivity.this instanceof BookingDetailActivity
-                        || BaseActivity.this instanceof BookingsActivity
-        )
-                )
-        {
+            || fm.findFragmentByTag(RateServiceDialogFragment.class.getSimpleName()) != null
+            || fm.findFragmentByTag(LaundryDropOffDialogFragment.class.getSimpleName()) != null
+            || fm.findFragmentByTag(LaundryInfoDialogFragment.class.getSimpleName()) != null
+            || fm.findFragmentByTag(RateImprovementDialogFragment.class.getSimpleName()) != null
+            ||
+            fm.findFragmentByTag(RateImprovementConfirmationDialogFragment.class.getSimpleName()) !=
+            null
+            || fm.findFragmentByTag(ReferralDialogFragment.TAG) != null
+            || !(BaseActivity.this instanceof ServiceCategoriesActivity
+                 || BaseActivity.this instanceof BookingDetailActivity
+                 || BaseActivity.this instanceof BookingsActivity
+                 || BaseActivity.this instanceof BottomNavActivity)
+                ) {
             return;
         }
         final String proName = getIntent().getStringExtra(BundleKeys.BOOKING_RATE_PRO_NAME);
         final String bookingId = getIntent().getStringExtra(BundleKeys.BOOKING_ID);
-        if (proName != null && bookingId != null)
-        {
+        if (proName != null && bookingId != null) {
             showProRateDialog(user, proName, Integer.parseInt(bookingId));
             getIntent().removeExtra(BundleKeys.BOOKING_RATE_PRO_NAME);
             getIntent().removeExtra(BundleKeys.BOOKING_ID);
             return;
         }
-        mDataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>()
-        {
+        mDataManager.getUser(user.getId(), user.getAuthToken(), new DataManager.Callback<User>() {
             @Override
-            public void onSuccess(final User user)
-            {
-                if (!allowCallbacks)
-                {
+            public void onSuccess(final User user) {
+                if (!allowCallbacks) {
                     return;
                 }
                 final int laundryBookingId = user.getLaundryBookingId();
                 final int addLaundryBookingId = user.getAddLaundryBookingId();
                 final String proName = user.getBookingRatePro();
                 if (addLaundryBookingId > 0 &&
-                        !mDefaultPreferencesManager.getBoolean(
-                                PrefsKey.APP_LAUNDRY_INFO_SHOWN,
-                                false
-                        ))
-                {
+                    !mDefaultPreferencesManager.getBoolean(
+                            PrefsKey.APP_LAUNDRY_INFO_SHOWN,
+                            false
+                    )) {
                     showLaundryInfoModal(addLaundryBookingId);
                 }
-                else if (laundryBookingId > 0)
-                {
+                else if (laundryBookingId > 0) {
                     showLaundryDropOffModal(
                             laundryBookingId
                     );
                 }
-                else if (proName != null)
-                {
+                else if (proName != null) {
                     showProRateDialog(user, proName, user.getBookingRateId());
                 }
             }
@@ -268,8 +266,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         });
     }
 
-    private void showProRateDialog(final User user, final String proName, final int bookingId)
-    {
+    private void showProRateDialog(final User user, final String proName, final int bookingId) {
         final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
                 user.getDefaultTipAmounts();
 
@@ -289,15 +286,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         );
     }
 
-    private void showLaundryInfoModal(final int bookingId)
-    {
-        mDataManager.getAddLaundryInfo(bookingId, new DataManager.Callback<Booking>()
-        {
+    private void showLaundryInfoModal(final int bookingId) {
+        mDataManager.getAddLaundryInfo(bookingId, new DataManager.Callback<Booking>() {
             @Override
-            public void onSuccess(final Booking booking)
-            {
-                if (!allowCallbacks)
-                {
+            public void onSuccess(final Booking booking) {
+                if (!allowCallbacks) {
                     return;
                 }
 
@@ -310,23 +303,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
+            public void onError(final DataManager.DataManagerError error) {
             }
         });
     }
 
-    private void showLaundryDropOffModal(final int bookingId)
-    {
+    private void showLaundryDropOffModal(final int bookingId) {
         mDataManager.getLaundryScheduleInfo(
                 bookingId,
-                new DataManager.Callback<LaundryDropInfo>()
-                {
+                new DataManager.Callback<LaundryDropInfo>() {
                     @Override
-                    public void onSuccess(final LaundryDropInfo info)
-                    {
-                        if (!allowCallbacks)
-                        {
+                    public void onSuccess(final LaundryDropInfo info) {
+                        if (!allowCallbacks) {
                             return;
                         }
 
@@ -338,59 +326,50 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
+                    public void onError(final DataManager.DataManagerError error) {
                     }
                 }
         );
     }
 
     @Override
-    protected final void attachBaseContext(final Context newBase)
-    {
+    protected final void attachBaseContext(final Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
-    public void onBackPressed()
-    {
-        if (mOnBackPressedListener != null)
-        {
+    public void onBackPressed() {
+        if (mOnBackPressedListener != null) {
             mOnBackPressedListener.onBack();
         }
-        else
-        {
+        else {
             super.onBackPressed();
         }
     }
 
     //Lifecycle
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
         allowCallbacks = true;
     }
 
-    public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener)
-    {
+    public void setOnBackPressedListener(final OnBackPressedListener onBackPressedListener) {
         mOnBackPressedListener = onBackPressedListener;
     }
 
-    public interface OnBackPressedListener
-    {
+    public interface OnBackPressedListener {
+
         void onBack();
     }
 
     @Nullable
-    public static BaseActivity getInstance(Context context)
-    {
-        if (context == null)
-        { return null; }
-        else if (context instanceof BaseActivity)
-        { return (BaseActivity) context; }
-        else if (context instanceof ContextWrapper)
-        { return getInstance(((ContextWrapper) context).getBaseContext()); }
+    public static BaseActivity getInstance(Context context) {
+        if (context == null) { return null; }
+        else if (context instanceof BaseActivity) { return (BaseActivity) context; }
+        else if (context instanceof ContextWrapper) {
+            return getInstance(((ContextWrapper) context).getBaseContext());
+        }
         return null;
     }
 }

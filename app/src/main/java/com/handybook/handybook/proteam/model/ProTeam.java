@@ -303,6 +303,19 @@ public class ProTeam implements Parcelable
             return !(mPreferred != null && !mPreferred.isEmpty());
         }
 
+        @Nullable
+        public ProTeamPro getFavoritePro()
+        {
+            for (final ProTeamPro proTeamPro : mPreferred)
+            {
+                if (proTeamPro.isFavorite())
+                {
+                    return proTeamPro;
+                }
+            }
+            return null;
+        }
+
         public static class Builder
         {
             private final ProTeamCategory mProTeamCategory;

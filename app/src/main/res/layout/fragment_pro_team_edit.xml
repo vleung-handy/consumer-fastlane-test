@@ -36,6 +36,19 @@
                 />
         </android.support.v7.widget.Toolbar>
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/pro_team_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:tabBackground="@color/handy_blue"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorHeight="2dp"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/TextAppearance.TabText"
+            app:tabTextColor="@color/white_trans"
+            />
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -45,9 +58,24 @@
         >
 
         <FrameLayout
-            android:id="@+id/pro_team_list_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            >
+
+            <FrameLayout
+                android:id="@+id/pro_team_pro_list_holder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pro_team_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
+
+        </FrameLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

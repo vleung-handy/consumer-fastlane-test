@@ -286,46 +286,6 @@ public class BookingFunnelLog extends EventLog
     }
 
 
-    public static class ProTeamShownLog extends BookingFunnelLog
-    {
-        private static final String EVENT_TYPE = "pro_team_shown";
-
-        public ProTeamShownLog()
-        {
-            super(EVENT_TYPE);
-        }
-    }
-
-
-    public static class ProTeamSubmittedLog extends BookingFunnelLog
-    {
-        private static final String EVENT_TYPE = "pro_team_submitted";
-
-        private static final String CLEANERS_ADDED_COUNT = "preferred_cleaning_provider_added_count";
-        private static final String CLEANERS_REMOVED_COUNT = "preferred_cleaning_provider_removed_count";
-        private static final String HANDYMEN_ADDED_COUNT = "preferred_handymen_provider_added_count";
-        private static final String HANDYMEN_REMOVED_COUNT = "preferred_handymen_provider_removed_count";
-
-        @SerializedName("pro_team_edit")
-        HashMap<String, Integer> mProTeamEdit;
-
-        public ProTeamSubmittedLog(
-                final int cleanersToAdd, final int cleanersToRemove,
-                final int handymenToAdd, final int handymenToRemove
-        )
-        {
-            super(EVENT_TYPE);
-            HashMap<String, Integer> map = new HashMap<>();
-            map.put(CLEANERS_ADDED_COUNT, cleanersToAdd);
-            map.put(CLEANERS_REMOVED_COUNT, cleanersToRemove);
-            map.put(HANDYMEN_ADDED_COUNT, handymenToAdd);
-            map.put(HANDYMEN_REMOVED_COUNT, handymenToRemove);
-
-            mProTeamEdit = map;
-        }
-    }
-
-
     public static class BookingQuoteRequestSubmitted extends BookingFunnelLog
     {
         private static final String EVENT_TYPE = "quote_request_submitted";
@@ -855,6 +815,21 @@ public class BookingFunnelLog extends EventLog
         public UserContactShownLog()
         {
             super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class EmailCollectedLog extends BookingFunnelLog
+    {
+        private static final String EVENT_TYPE = "email_collected";
+
+        @SerializedName("email_address")
+        private final String mEmailAddress;
+
+        public EmailCollectedLog(final String emailAddress)
+        {
+            super(EVENT_TYPE);
+            mEmailAddress = emailAddress;
         }
     }
 }

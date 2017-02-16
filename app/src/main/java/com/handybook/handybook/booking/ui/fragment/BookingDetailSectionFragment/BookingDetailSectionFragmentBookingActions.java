@@ -66,7 +66,14 @@ public class BookingDetailSectionFragmentBookingActions
             {
                 actionButtonTypes.add(BookingAction.ACTION_EDIT_HOURS);
             }
-            actionButtonTypes.add(BookingAction.ACTION_CANCEL);
+            if (booking.isRecurring())
+            {
+                actionButtonTypes.add(BookingAction.ACTION_SKIP);
+            }
+            else
+            {
+                actionButtonTypes.add(BookingAction.ACTION_CANCEL);
+            }
         }
         return actionButtonTypes;
     }
@@ -76,6 +83,8 @@ public class BookingDetailSectionFragmentBookingActions
     {
         switch (actionButtonType)
         {
+            case BookingAction.ACTION_SKIP:
+                return cancelClicked; // This is not a typo, had to change the label to skip :|
             case BookingAction.ACTION_CANCEL:
                 return cancelClicked;
             case BookingAction.ACTION_RESCHEDULE:

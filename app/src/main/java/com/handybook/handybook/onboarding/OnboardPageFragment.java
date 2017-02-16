@@ -1,4 +1,4 @@
-package com.handybook.handybook.core.ui.fragment;
+package com.handybook.handybook.onboarding;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

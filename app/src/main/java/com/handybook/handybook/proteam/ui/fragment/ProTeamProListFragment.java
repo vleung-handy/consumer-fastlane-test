@@ -1,6 +1,5 @@
 package com.handybook.handybook.proteam.ui.fragment;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -29,6 +29,7 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.handybook.handybook.proteam.model.ProTeamCategoryType.CLEANING;
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
@@ -41,9 +42,12 @@ public class ProTeamProListFragment extends InjectedFragment
 {
     private static final String KEY_PROTEAM = "ProTeamProList:ProTeam";
     private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeamProList:CategoryType";
+    private static final String KEY_SAVE_BUTTON_ENABLED = "ProTeamProList:SaveButtonEnabled";
 
     @Bind(R.id.pro_team_pro_list_recycler_view)
     EmptiableRecyclerView mRecyclerView;
+    @Bind(R.id.pro_team_pro_list_save_button)
+    Button mSaveButton;
     @Bind(R.id.pro_team_empty_view)
     View mEmptyView;
     @Bind(R.id.pro_team_empty_view_title)
@@ -58,6 +62,7 @@ public class ProTeamProListFragment extends InjectedFragment
     private CallbackManager mFacebookCallbackManager;
 
     private static boolean sXButtonPressed = false;
+    private boolean mSaveButtonEnabled;
 
     {
         mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
@@ -82,34 +87,43 @@ public class ProTeamProListFragment extends InjectedFragment
                 {
                     return;
                 }
+                if (mSaveButtonEnabled)
+                {
+                    mSaveButton.setVisibility(View.VISIBLE);
+                }
                 mOnProInteraction.onProCheckboxStateChanged(proTeamPro, checked);
             }
         };
     }
 
     public static ProTeamProListFragment newInstance(
-            @NonNull ProTeam proTeam,
-            @Nullable ProTeamCategoryType proTeamCategoryType
+            @NonNull final ProTeam proTeam,
+            @Nullable final ProTeamCategoryType proTeamCategoryType,
+            final boolean saveButtonEnabled
     )
     {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_PROTEAM, proTeam);
         bundle.putParcelable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
+        bundle.putBoolean(KEY_SAVE_BUTTON_ENABLED, saveButtonEnabled);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @OnClick(R.id.pro_team_pro_list_save_button)
+    public void onSaveClicked()
+    {
+        if (mOnProInteraction != null)
+        {
+            mOnProInteraction.onSave();
+        }
     }
 
     @Override
     public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        final Bundle arguments = getArguments();
-        if (arguments != null)
-        {
-            mProTeam = arguments.getParcelable(KEY_PROTEAM);
-            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
-        }
         mFacebookCallbackManager = CallbackManager.Factory.create();
     }
 
@@ -120,6 +134,14 @@ public class ProTeamProListFragment extends InjectedFragment
             Bundle savedInstanceState
     )
     {
+        final Bundle arguments = getArguments();
+        if (arguments != null)
+        {
+            mProTeam = arguments.getParcelable(KEY_PROTEAM);
+            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+            mSaveButtonEnabled = arguments.getBoolean(KEY_SAVE_BUTTON_ENABLED);
+        }
+
         final View view = inflater.inflate(R.layout.fragment_pro_team_pro_list, container, false);
         ButterKnife.bind(this, view);
 
@@ -136,6 +158,10 @@ public class ProTeamProListFragment extends InjectedFragment
 
     private void initialize()
     {
+        if (mSaveButton != null)
+        {
+            mSaveButton.setVisibility(View.GONE);
+        }
         initEmptyView();
         initRecyclerView();
     }
@@ -259,5 +285,7 @@ public class ProTeamProListFragment extends InjectedFragment
                 ProTeamPro proTeamPro,
                 boolean state
         );
+
+        void onSave();
     }
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_white"
+    android:orientation="vertical"
+    tools:context="com.handybook.handybook.onboarding.ServiceNotSupportedActivity"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/handy_white"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:id="@+id/not_supported_image_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_city"
+            />
+
+        <TextView
+            android:id="@+id/not_supported_zip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="ZIP Code: 10022"
+            android:layout_marginTop="@dimen/default_margin_half"
+            android:textColor="@color/handy_tertiary_gray"
+            />
+
+        <TextView
+            android:id="@+id/not_supported_title"
+            style="@style/TextView.XLarge.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_double"
+            android:gravity="center"
+            android:text="@string/service_not_supported_title"
+            />
+
+        <TextView
+            android:id="@+id/not_supported_sub_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:gravity="center"
+            android:text="@string/service_not_supported_sub_title"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/not_supported_try_another_zip"
+        android:layout_alignParentBottom="true"
+        style="@style/Button.Green"
+        android:text="@string/onboard_try_another_zip"
+        />
+</RelativeLayout>

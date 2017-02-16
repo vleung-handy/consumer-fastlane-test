@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
@@ -15,8 +16,8 @@ import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.onboarding.OnboardActivity;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralResponse;
 import com.squareup.otto.Subscribe;
@@ -74,7 +75,14 @@ public class SplashActivity extends BaseActivity
         });
 
         final User user = userManager.getCurrentUser();
-        if (!mDefaultPreferencesManager.getBoolean(
+
+        //if onboarding is enabled, and we haven't collected email and zip yet, then show the onboarding page
+        if (requiresOnboardingV2())
+        {
+            startActivity(new Intent(this, OnboardActivity.class));
+            finish();
+        }
+        else if (!mDefaultPreferencesManager.getBoolean(
                 PrefsKey.APP_ONBOARD_SHOWN,
                 false
         ) && user == null)

@@ -77,6 +77,9 @@ public interface HandyRetrofitService
     @GET("/services")
     void getServices(HandyRetrofitCallback cb);
 
+    @GET("/services")
+    void getServices(@Query("zipcode") String zip, HandyRetrofitCallback cb);
+
     @GET("/bookings/{id}/edit_extras")
     void getEditExtrasInfo(@Path("id") int bookingId, HandyRetrofitCallback cb);
 
@@ -368,6 +371,14 @@ public interface HandyRetrofitService
 
     @POST("/users")
     void createUser(@Body CreateUserRequest createUserRequest, HandyRetrofitCallback cb);
+
+    @FormUrlEncoded
+    @POST("/users/create_lead")
+    void createLead(
+            @Field("email") String email,
+            @Field("zipcode") String zipcode,
+            HandyRetrofitCallback cb
+    );
 
     @GET("/users/{user}")
     void getUserInfo(
