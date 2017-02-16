@@ -22,6 +22,11 @@
         style="@style/TextView.Large.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingEnd="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:paddingStart="@dimen/default_padding"
         tools:text="Set Sandra as your favorite?"
         />
 
@@ -31,8 +36,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin_quarter"
+        android:gravity="center"
+        android:paddingEnd="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:paddingStart="@dimen/default_padding"
         android:visibility="gone"
-        tools:text="This will move Jessica to your backup pros."
+        tools:text="This will move Jessica to your Pro Team."
         tools:visibility="visible"
         />
 

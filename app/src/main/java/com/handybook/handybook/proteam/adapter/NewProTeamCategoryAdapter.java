@@ -51,7 +51,7 @@ public class NewProTeamCategoryAdapter
             final ProTeamPro favoritePro = proTeamCategory.getFavoritePro();
             mItems.add(mContext.getString(R.string.favorite_pro));
             mItems.add(favoritePro);
-            mItems.add(mContext.getString(R.string.backup_pros));
+            mItems.add(mContext.getString(R.string.pro_team));
 
             final List<ProTeamPro> preferredPros = new ArrayList<>();
             if (proTeamCategory.getPreferred() != null)
@@ -161,8 +161,8 @@ public class NewProTeamCategoryAdapter
                     }
                     else
                     {
-                        title = context.getString(R.string.backup_pros);
-                        message = context.getString(R.string.backup_pro_help_message);
+                        title = context.getString(R.string.pro_team);
+                        message = context.getString(R.string.pro_team_help_message);
                     }
                     new AlertDialog.Builder(context)
                             .setTitle(title)
@@ -264,7 +264,7 @@ public class NewProTeamCategoryAdapter
             }
             else
             {
-                mEmptyStateTitle.setText(R.string.backup_pros);
+                mEmptyStateTitle.setText(R.string.pro_team);
                 mEmptyStateSubtitle.setText(R.string.no_pro_team_subtitle);
             }
         }
