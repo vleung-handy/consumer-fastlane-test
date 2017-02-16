@@ -107,7 +107,7 @@ public class ProTeamProListFragment extends InjectedFragment
         ProTeamProListFragment fragment = new ProTeamProListFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_PROTEAM, proTeam);
-        bundle.putParcelable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
+        bundle.putSerializable(KEY_PROTEAM_CATEGORY_TYPE, proTeamCategoryType);
         bundle.putBoolean(KEY_SAVE_BUTTON_ENABLED, saveButtonEnabled);
         fragment.setArguments(bundle);
         return fragment;
@@ -140,7 +140,8 @@ public class ProTeamProListFragment extends InjectedFragment
         if (arguments != null)
         {
             mProTeam = arguments.getParcelable(KEY_PROTEAM);
-            mProTeamCategoryType = arguments.getParcelable(KEY_PROTEAM_CATEGORY_TYPE);
+            mProTeamCategoryType = (ProTeamCategoryType)
+                    arguments.getSerializable(KEY_PROTEAM_CATEGORY_TYPE);
             mSaveButtonEnabled = arguments.getBoolean(KEY_SAVE_BUTTON_ENABLED);
         }
 

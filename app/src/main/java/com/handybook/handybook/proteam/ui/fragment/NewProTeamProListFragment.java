@@ -97,7 +97,7 @@ public class NewProTeamProListFragment extends InjectedFragment
 
                     launchProTeamActionPicker(new ProTeamActionPickerViewModel(
                             proTeamPro.getId(),
-                            proTeamPro.getImageUrl(),
+                            proTeamPro.getCategoryType(), proTeamPro.getImageUrl(),
                             title,
                             subtitle,
                             actionTypes
@@ -109,7 +109,7 @@ public class NewProTeamProListFragment extends InjectedFragment
                 {
                     launchProTeamActionPicker(new ProTeamActionPickerViewModel(
                             proTeamPro.getId(),
-                            proTeamPro.getImageUrl(),
+                            proTeamPro.getCategoryType(), proTeamPro.getImageUrl(),
                             getString(R.string.block_formatted, proTeamPro.getName()),
                             null,
                             Lists.newArrayList(ActionType.BLOCK)

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.io.Serializable;
@@ -45,6 +46,7 @@ public class ProTeamActionPickerViewModel implements Serializable
 
 
     private int mProId;
+    private ProTeamCategoryType mCategoryType;
     private String mProImageUrl;
     private String mTitle;
     private String mSubtitle;
@@ -52,6 +54,7 @@ public class ProTeamActionPickerViewModel implements Serializable
 
     public ProTeamActionPickerViewModel(
             final int proId,
+            final ProTeamCategoryType categoryType,
             @Nullable final String proImageUrl,
             @NonNull final String title,
             @Nullable final String subtitle,
@@ -59,6 +62,7 @@ public class ProTeamActionPickerViewModel implements Serializable
     )
     {
         mProId = proId;
+        mCategoryType = categoryType;
         mProImageUrl = proImageUrl;
         mTitle = title;
         mSubtitle = subtitle;
@@ -68,6 +72,11 @@ public class ProTeamActionPickerViewModel implements Serializable
     public int getProId()
     {
         return mProId;
+    }
+
+    public ProTeamCategoryType getCategoryType()
+    {
+        return mCategoryType;
     }
 
     public String getProImageUrl()

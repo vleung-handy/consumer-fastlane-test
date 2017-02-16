@@ -18,10 +18,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
@@ -30,9 +32,10 @@ import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
+import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
 import com.squareup.otto.Subscribe;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,13 +45,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
+import static com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType.BLOCK;
+
 /**
  * A simple {@link Fragment} subclass. Use the {@link ProTeamEditFragment#newInstance} factory
  * method to create an instance of this fragment.
  */
 public class ProTeamEditFragment extends InjectedFragment implements
-        ProTeamProListFragment.OnProInteraction,
-        RemoveProDialogFragment.RemoveProListener
+        ProTeamProListFragment.OnProInteraction
 {
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
@@ -283,65 +287,6 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     /**
-     * Implementation of RemoveProDialogFragment listener
-     */
-    @Override
-    public void onYesPermanent(
-            @Nullable ProTeamCategoryType proTeamCategoryType,
-            @Nullable ProTeamPro proTeamPro,
-            @Nullable ProviderMatchPreference providerMatchPreference
-    )
-    {
-        if (proTeamCategoryType == null || proTeamPro == null)
-        {
-            Crashlytics.logException(new InvalidParameterException("PTF.onYesPermanent invalid"));
-            return;
-        }
-        bus.post(new ProTeamEvent.RequestProTeamEdit(
-                proTeamPro,
-                proTeamCategoryType,
-                ProviderMatchPreference.NEVER,
-                ProTeamEvent.Source.PRO_MANAGEMENT
-        ));
-        bus.post(new ProTeamPageLog.BlockProvider.Submitted(
-                String.valueOf(proTeamPro.getId()),
-                providerMatchPreference,
-                ProTeamPageLog.Context.MAIN_MANAGEMENT
-        ));
-        showUiBlockers();
-    }
-
-    /**
-     * Implementation of RemoveProDialogFragment listener
-     */
-    @Override
-    public void onCancel(
-            @Nullable ProTeamCategoryType proTeamCategoryType,
-            @Nullable ProTeamPro proTeamPro,
-            @Nullable ProviderMatchPreference providerMatchPreference
-    )
-    {
-        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Cancelled(
-                proTeamPro == null ? null : String.valueOf(proTeamPro.getId()),
-                providerMatchPreference,
-                ProTeamPageLog.Context.MAIN_MANAGEMENT
-        )));
-    }
-
-    @Override
-    public void onDialogDisplayed(
-            @Nullable ProTeamPro proTeamPro,
-            @Nullable ProviderMatchPreference providerMatchPreference
-    )
-    {
-        bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.WarningDisplayed(
-                proTeamPro == null ? null : String.valueOf(proTeamPro.getId()),
-                providerMatchPreference,
-                ProTeamPageLog.Context.MAIN_MANAGEMENT
-        )));
-    }
-
-    /**
      * Implementation of ProTeamProListFragment.OnProInteraction listener
      */
     @Override
@@ -350,21 +295,55 @@ public class ProTeamEditFragment extends InjectedFragment implements
             final ProviderMatchPreference providerMatchPreference
     )
     {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        RemoveProDialogFragment fragment = new RemoveProDialogFragment();
-        final String title = getString(R.string.pro_team_remove_dialog_title, proTeamPro.getName());
-        fragment.setTitle(title);
-        fragment.setProTeamPro(proTeamPro);
-        fragment.setProviderMatchPreference(providerMatchPreference);
-        fragment.setProTeamCategoryType(proTeamPro.getCategoryType());
-        fragment.setListener(this);
-        fragment.show(fm, RemoveProDialogFragment.TAG);
+        final ProTeamActionPickerViewModel viewModel = new ProTeamActionPickerViewModel(
+                proTeamPro.getId(),
+                proTeamPro.getCategoryType(),
+                proTeamPro.getImageUrl(),
+                getString(R.string.block_formatted, proTeamPro.getName()),
+                null,
+                Lists.newArrayList(BLOCK)
+        );
+        final ProTeamActionPickerDialogFragment dialogFragment =
+                ProTeamActionPickerDialogFragment.newInstance(viewModel);
+        dialogFragment.setTargetFragment(this, RequestCode.EDIT_PRO_TEAM_PREFERENCE);
+        FragmentUtils.safeLaunchDialogFragment(dialogFragment, getActivity(), null);
 
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Tapped(
                 String.valueOf(proTeamPro.getId()),
                 providerMatchPreference,
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK
+                && requestCode == RequestCode.EDIT_PRO_TEAM_PREFERENCE
+                && data != null)
+        {
+            final int proId = data.getIntExtra(BundleKeys.PRO_TEAM_PRO_ID, -1);
+            final ProTeamCategoryType categoryType = (ProTeamCategoryType)
+                    data.getSerializableExtra(BundleKeys.PRO_TEAM_CATEGORY_TYPE);
+            final ActionType actionType = (ActionType) data.getSerializableExtra(
+                    BundleKeys.EDIT_PRO_TEAM_PREFERENCE_ACTION_TYPE);
+            if (proId != -1 && actionType != null && categoryType != null && actionType == BLOCK)
+            {
+                bus.post(new ProTeamEvent.RequestProTeamEdit(
+                        proId,
+                        categoryType,
+                        ProviderMatchPreference.NEVER,
+                        ProTeamEvent.Source.PRO_MANAGEMENT
+                ));
+                bus.post(new ProTeamPageLog.BlockProvider.Submitted(
+                        String.valueOf(proId),
+                        ProviderMatchPreference.NEVER,
+                        ProTeamPageLog.Context.MAIN_MANAGEMENT
+                ));
+                showUiBlockers();
+            }
+        }
     }
 
     @Override
