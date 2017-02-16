@@ -21,8 +21,6 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-//FIXME clean up!!!
-
 /**
  * layout for the full/expanded persistent promo view
  */
@@ -227,8 +225,10 @@ public class PersistentPromoExpandedLayout extends FrameLayout
         private void onDependentViewPercentExpandedChanged(final PersistentPromoExpandedLayout childView,
                                                            float dependentViewPercentExpanded)
         {
+            //fade in/out the expanded layout view
             childView.setAlpha(dependentViewPercentExpanded);
 
+            //fade in/out the dismiss button
             float percentExpandedThresholdForDismissButtonVisible = 0.5f;
             float dismissButtonMaxAlpha = 0.7f;
             float dismissButtonAlpha =
@@ -236,11 +236,13 @@ public class PersistentPromoExpandedLayout extends FrameLayout
                             - percentExpandedThresholdForDismissButtonVisible);
             childView.mDismissButton.setAlpha(dismissButtonAlpha);
 
+            //shrink/expand the header image
             float percentExpandedThresholdForNormalScale = 0.5f;
             float imageScale = Math.max(1, 1 + percentExpandedThresholdForNormalScale - dependentViewPercentExpanded);
             childView.mHeaderImage.setScaleX(imageScale);
             childView.mHeaderImage.setScaleY(imageScale);
 
+            //push the text content up/down
             float percentExpandedThresholdForNormalTextPosition = 0.8f;
             int maxTextMarginPx = childView.mTextContentLayout.getHeight() / 2;
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) childView.mTextContentLayout.getLayoutParams();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -21,8 +22,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-//FIXME clean up! what are alternatives to this for grouping the promo logic?
 
 /**
  * groups and manages the promo views
@@ -44,9 +43,10 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
     PersistentPromoAppBarLayout mPersistentPromoAppBarLayout;
 
     /**
+     * this is needed for logging only
      * really don't like injecting this inside a view,
      * but also don't want to create a bunch of custom callbacks
-     * just to be able to put this in the fragment
+     * just to be able to move this to a fragment
      *
      * TODO what are better alternatives?
      */
@@ -88,12 +88,44 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
             }
         });
 
-        //handle the expanded layout's action button. putting it here because we may want to collapse the sibling view
+        //log when user swipes down to reveal promo
+        mPersistentPromoAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            private boolean mWasPromoFullyCollapsed = false;
+            @Override
+            public void onOffsetChanged(final AppBarLayout appBarLayout, final int verticalOffset)
+            {
+                if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange())
+                {
+                    //fully collapsed
+                    mWasPromoFullyCollapsed = true;
+                }
+                else
+                {
+                    if(mWasPromoFullyCollapsed && mPersistentPromo != null)
+                    {
+                        //user swiped down to reveal promo
+                        mBus.post(new LogEvent.AddLogEvent(new AppLog.PromoLog.Previewed(
+                                mPersistentPromo.getId(), AppLog.PromoLog.Type.PERSISTENT
+                        )));
+                    }
+                    mWasPromoFullyCollapsed = false;
+                }
+            }
+        });
+
+        //handle the expanded layout's action button. putting it here
+        //because we may want to collapse the sibling view
         mPersistentPromoExpandedLayout.setOnActionButtonClickedListener(new PersistentPromoExpandedLayout.OnActionButtonClickedListener() {
             @Override
             public void onActionButtonClicked(final String deeplinkUrl)
             {
-                mBus.post(new LogEvent.AddLogEvent(new AppLog.PersistentPromoLog.ExpandedViewActionClicked(mPersistentPromo.getId())));
+                if(mPersistentPromo != null)
+                {
+                    mBus.post(new LogEvent.AddLogEvent(
+                            new AppLog.PromoLog.Accepted(
+                                    mPersistentPromo.getId(), AppLog.PromoLog.Type.PERSISTENT)));
+                }
+
                 if(!TextUtils.isEmpty(deeplinkUrl))
                 {
                     Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
@@ -107,11 +139,18 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
             }
         });
 
-        mPersistentPromoAppBarLayout.setOnPersistentPromoFullyExpandedListener(new PersistentPromoAppBarLayout.OnPersistentPromoFullyExpandedListener() {
+        //for logging only
+        mPersistentPromoAppBarLayout.setOnPersistentPromoFullyExpandedListener(
+                new PersistentPromoAppBarLayout.OnPersistentPromoFullyExpandedListener() {
             @Override
             public void onPersistentPromoFullyExpanded()
             {
-                mBus.post(new LogEvent.AddLogEvent(new AppLog.PersistentPromoLog.ExpandedViewShown(mPersistentPromo.getId())));
+                if(mPersistentPromo != null)
+                {
+                    mBus.post(new LogEvent.AddLogEvent(
+                            new AppLog.PromoLog.FullyExpanded(
+                                    mPersistentPromo.getId(), AppLog.PromoLog.Type.PERSISTENT)));
+                }
             }
         });
     }
@@ -122,8 +161,16 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
      */
     private void setPersistentPromoVisible(boolean visible)
     {
-        mPersistentPromoExpandedLayout.setVisibility(visible ? VISIBLE : GONE);
-        mPersistentPromoAppBarLayout.setVisibility(visible ? VISIBLE : GONE);
+        /*
+        note: can't just use setVisibility(GONE) because that doesn't properly hide the view
+        if called after setVisibility(VISIBLE) in this CoordinatorLayout.
+        it causes an empty space to be left behind, so doing this as a workaround
+         */
+        mPersistentPromoAppBarLayout.setExpanded(false, false);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)
+                mPersistentPromoAppBarLayout.getLayoutParams();
+        params.height = visible ? LayoutParams.MATCH_PARENT : 0;
+        mPersistentPromoAppBarLayout.setLayoutParams(params);
     }
 
     /**
@@ -139,7 +186,12 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
             return;
         }
         setPersistentPromoVisible(true);
-        mBus.post(new LogEvent.AddLogEvent(new AppLog.PersistentPromoLog.PreviewShown(mPersistentPromo.getId())));
+        if(mPersistentPromo != null)
+        {
+            mBus.post(new LogEvent.AddLogEvent(
+                    new AppLog.PromoLog.Shown(mPersistentPromo.getId(),
+                                              AppLog.PromoLog.Type.PERSISTENT)));
+        }
 
         mPersistentPromoExpandedLayout.updateWithModel(persistentPromo);
         mPersistentPromoAppBarLayout.updateWithModel(persistentPromo);

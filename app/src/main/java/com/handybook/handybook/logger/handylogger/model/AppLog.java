@@ -1,7 +1,13 @@
 package com.handybook.handybook.logger.handylogger.model;
 
 
+import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public abstract class AppLog extends EventLog
 {
@@ -45,56 +51,84 @@ public abstract class AppLog extends EventLog
         }
     }
 
-    //TODO log in right place
-    public abstract static class PersistentPromoLog extends AppLog
+    public abstract static class PromoLog extends AppLog
     {
-        //TODO verify these with PM
-        private static final String EVENT_TYPE = "persistent_promo";
+        public static class Type
+        {
+            public static final String PERSISTENT = "persistent";
+            public static final String SPLASH = "splash";
+        }
+        @Retention(RetentionPolicy.SOURCE)
+        @StringDef({
+                Type.PERSISTENT,
+                Type.SPLASH
+        })
+        @interface PromoType
+        {
+        }
+
+        private static final String EVENT_TYPE = "promotion";
 
         @SerializedName("promo_id")
         private final String mPromoId;
 
-        PersistentPromoLog(String eventSubType, String promoId)
+        @SerializedName("type")
+        private final String mPromoType;
+
+        PromoLog(String eventSubType, String promoId, @PromoType String promoType)
         {
             super(EVENT_TYPE + "_" + eventSubType);
             mPromoId = promoId;
+            mPromoType = promoType;
         }
 
         /**
          * persistent promo preview is shown
          */
-        public static class PreviewShown extends PersistentPromoLog
+        public static class Shown extends PromoLog
         {
-            private static final String EVENT_TYPE = "preview_shown";
-            public PreviewShown(String promoId)
+            private static final String EVENT_TYPE = "shown";
+            public Shown(@NonNull String promoId, @NonNull @PromoType String promoType)
             {
-                super(EVENT_TYPE, promoId);
+                super(EVENT_TYPE, promoId, promoType);
             }
         }
 
 
         /**
-         * persistent promo is fully expanded
+         * promo is fully expanded
          */
-        public static class ExpandedViewShown extends PersistentPromoLog
+        public static class FullyExpanded extends PromoLog
         {
-            private static final String EVENT_TYPE = "expanded_view_shown";
-            public ExpandedViewShown(String promoId)
+            private static final String EVENT_TYPE = "expanded";
+            public FullyExpanded(@NonNull String promoId, @NonNull @PromoType String promoType)
             {
-                super(EVENT_TYPE, promoId);
+                super(EVENT_TYPE, promoId, promoType);
             }
         }
 
 
         /**
-         * persistent promo expanded view action button is clicked
+         * promo action button is clicked
          */
-        public static class ExpandedViewActionClicked extends PersistentPromoLog
+        public static class Accepted extends PromoLog
         {
-            private static final String EVENT_TYPE = "expanded_view_action_clicked";
-            public ExpandedViewActionClicked(String promoId)
+            private static final String EVENT_TYPE = "accepted";
+            public Accepted(@NonNull String promoId, @NonNull @PromoType String promoType)
             {
-                super(EVENT_TYPE, promoId);
+                super(EVENT_TYPE, promoId, promoType);
+            }
+        }
+
+        /**
+         * persistent promo is slid down via user interaction
+         */
+        public static class Previewed extends PromoLog
+        {
+            private static final String EVENT_TYPE = "previewed";
+            public Previewed(@NonNull String promoId, @NonNull @PromoType String promoType)
+            {
+                super(EVENT_TYPE, promoId, promoType);
             }
         }
     }

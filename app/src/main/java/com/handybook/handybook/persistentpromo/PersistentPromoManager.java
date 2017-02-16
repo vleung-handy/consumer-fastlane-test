@@ -31,8 +31,8 @@ public class PersistentPromoManager
     public void getPersistentPromo(@Nullable String postalCode,
                                    @NonNull DataManager.Callback<PersistentPromo> persistentPromoCallback)
     {
-        //FIXME revert, test only
-        mDataManager.getAvailablePersistentPromo("99500", persistentPromoCallback);
+        //TODO revert when we actually use this feature
+        mDataManager.getAvailablePersistentPromo(postalCode, persistentPromoCallback);
 //        persistentPromoCallback.onSuccess(getTestPersistentPromo(mContext));
     }
 

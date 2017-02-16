@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.notifications.splash.SplashNotificationEvent;
-import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.AppLog;
+import com.handybook.handybook.notifications.splash.SplashNotificationEvent;
+import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -116,6 +118,8 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
 
         //TODO: will consolidate
         mBus.post(new SplashNotificationEvent.RequestMarkSplashPromoAsDisplayed(mSplashPromo));
+        mBus.post(new LogEvent.AddLogEvent(new AppLog.PromoLog.Shown(mSplashPromo.getId(),
+                                                                     AppLog.PromoLog.Type.SPLASH)));
     }
 
     @OnClick(R.id.splash_promo_action_button)
@@ -123,6 +127,8 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     {
         //TODO: will consolidate
         mBus.post(new SplashNotificationEvent.RequestMarkSplashPromoAsAccepted(mSplashPromo));
+        mBus.post(new LogEvent.AddLogEvent(new AppLog.PromoLog.Accepted(mSplashPromo.getId(),
+                                                                     AppLog.PromoLog.Type.SPLASH)));
         String deepLink = mSplashPromo.getDeepLinkUrl();
         if(deepLink != null)
         {
