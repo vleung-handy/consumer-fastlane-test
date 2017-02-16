@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -13,7 +14,7 @@ public class Service implements Parcelable {
     @SerializedName("name") private String name;
     @SerializedName("order") private int order;
     @SerializedName("parent") private int parentId;
-    @SerializedName("machine_name") private String machineName;
+    @SerializedName("machine_name") private String mMachineName;
     @SerializedName("no_show") private boolean isNoShow;
     @SerializedName("ignore") private boolean isIgnore;
 
@@ -41,17 +42,13 @@ public class Service implements Parcelable {
         this.name = name;
     }
 
-    public String getMachineName()
-    {
-        return machineName;
-    }
-
     /**
      * Will return machine name if uniq was null
      * @return
      */
+    @NonNull
     public String getUniq() {
-        return mUniq == null ? machineName : mUniq;
+        return mUniq == null ? mMachineName : mUniq;
     }
 
     public final void setUniq(final String uniq) {
@@ -97,9 +94,9 @@ public class Service implements Parcelable {
 
     public boolean isCleaning()
     {
-        if (machineName != null)
+        if (mMachineName != null)
         {
-            return machineName.toLowerCase().contains(PREFIX_CLEAN_CONSTANT);
+            return mMachineName.toLowerCase().contains(PREFIX_CLEAN_CONSTANT);
         }
 
         if (name != null)
@@ -119,7 +116,7 @@ public class Service implements Parcelable {
         in.readStringArray(stringData);
         name = stringData[0];
         mUniq = stringData[1];
-        machineName = stringData[2];
+        mMachineName = stringData[2];
 
         final int[] intData = new int[3];
         in.readIntArray(intData);
@@ -138,7 +135,7 @@ public class Service implements Parcelable {
 
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
-        out.writeStringArray(new String[]{ name, mUniq, machineName });
+        out.writeStringArray(new String[]{name, mUniq, mMachineName});
         out.writeIntArray(new int[]{ order, parentId, id });
         out.writeBooleanArray(new boolean[]{ isNoShow, isIgnore});
         out.writeTypedList(services);

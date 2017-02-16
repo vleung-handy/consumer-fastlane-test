@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
@@ -387,7 +388,7 @@ public abstract class BookingEvent
         private List<Service> mServices;
         private String mZip;
 
-        public ReceiveServicesSuccess(final List<Service> services, final String zip)
+        public ReceiveServicesSuccess(final List<Service> services, @Nullable final String zip)
         {
             this(services);
             mZip = zip;
@@ -403,6 +404,7 @@ public abstract class BookingEvent
             return mServices;
         }
 
+        @Nullable
         public String getZip()
         {
             return mZip;
