@@ -373,6 +373,7 @@ public abstract class BookingEvent
             mZip = zip;
         };
 
+        @Nullable
         public String getZip()
         {
             return mZip;
