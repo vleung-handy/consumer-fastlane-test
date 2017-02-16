@@ -11,9 +11,9 @@
         app:showAsAction="ifRoom"
         />
     <item
-        android:id="@+id/pro_team"
+        android:id="@+id/messages"
         android:enabled="true"
-        android:icon="@drawable/ic_menu_heart_inactive"
+        android:icon="@drawable/ic_menu_messages_inactive"
         android:title=""
         app:showAsAction="ifRoom"
         />

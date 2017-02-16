@@ -38,6 +38,7 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
+import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 
 import java.util.ArrayList;
 
@@ -65,6 +66,8 @@ public class AccountFragment extends InjectedFragment
     TextView mActivePlansText;
     @Bind(R.id.account_active_plans_layout)
     ViewGroup mActivePlansLayout;
+    @Bind(R.id.account_pro_team_subtext)
+    TextView mProTeamSubtext;
     @Bind(R.id.account_history_help_layout)
     ViewGroup mHistoryHelpLayout;
     @Bind(R.id.horizontal_progress_bar)
@@ -112,9 +115,18 @@ public class AccountFragment extends InjectedFragment
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
+
+        if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled())
+        {
+            mProTeamSubtext.setText(R.string.account_choose_favorite_pro);
+        }
+        else
+        {
+            mProTeamSubtext.setText(R.string.account_work_with_pros_you_love);
+        }
+
         return view;
     }
-
 
     @Override
     public void onViewCreated(
@@ -253,6 +265,12 @@ public class AccountFragment extends InjectedFragment
         }
     }
 
+    @OnClick(R.id.account_pro_team_layout)
+    public void editProTeamClicked()
+    {
+        FragmentUtils.switchToFragment(this, ProTeamEditFragment.newInstance(), true);
+    }
+
     @OnClick(R.id.account_promo_code_layout)
     public void promoClicked()
     {
@@ -328,7 +346,8 @@ public class AccountFragment extends InjectedFragment
         alertDialog.show();
     }
 
-    private void showHorizontalProgressBar() {
+    private void showHorizontalProgressBar()
+    {
         mHorizontalProgressRequestCounter++;
         mHorizontalProgressBar.setVisibility(View.VISIBLE);
     }
@@ -337,13 +356,15 @@ public class AccountFragment extends InjectedFragment
      * This method will hide the horizontal progress bar if api call backs are completed.
      * If not, it will decrement the counter
      */
-    private void hideHorizontalProgressBarIfReady() {
+    private void hideHorizontalProgressBarIfReady()
+    {
         //only decrement if greater then 0
-        if(mHorizontalProgressRequestCounter > 0)
-            --mHorizontalProgressRequestCounter;
+        if (mHorizontalProgressRequestCounter > 0)
+        { --mHorizontalProgressRequestCounter; }
 
-        if(mHorizontalProgressRequestCounter == 0) {
-           mHorizontalProgressBar.setVisibility(View.GONE);
+        if (mHorizontalProgressRequestCounter == 0)
+        {
+            mHorizontalProgressBar.setVisibility(View.GONE);
         }
     }
 }

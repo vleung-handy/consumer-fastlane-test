@@ -7,7 +7,7 @@ package com.handybook.handybook.core;
 public enum MainNavTab
 {
     BOOKINGS,
-    PRO_TEAM,
+    MESSAGES,
     SERVICES,
     SHARE,
     ACCOUNT,

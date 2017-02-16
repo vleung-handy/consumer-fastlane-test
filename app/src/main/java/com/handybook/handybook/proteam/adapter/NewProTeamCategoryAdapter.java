@@ -1,5 +1,6 @@
 package com.handybook.handybook.proteam.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,13 +33,16 @@ public class NewProTeamCategoryAdapter
 
     private final Context mContext;
     private List<Object> mItems;
+    private ActionCallbacks mActionCallbacks;
 
     public NewProTeamCategoryAdapter(
             @NonNull final Context context,
-            @Nullable final ProTeam.ProTeamCategory proTeamCategory
+            @Nullable final ProTeam.ProTeamCategory proTeamCategory,
+            @NonNull final ActionCallbacks actionCallbacks
     )
     {
         mContext = context;
+        mActionCallbacks = actionCallbacks;
         mItems = new ArrayList<>();
 
         if (proTeamCategory != null
@@ -50,12 +54,16 @@ public class NewProTeamCategoryAdapter
             mItems.add(favoritePro);
             mItems.add(mContext.getString(R.string.backup_pros));
 
-            final List<ProTeamPro> preferredPros = proTeamCategory.getPreferred();
-            if (favoritePro != null && preferredPros != null && !preferredPros.isEmpty())
+            final List<ProTeamPro> preferredPros = new ArrayList<>();
+            if (proTeamCategory.getPreferred() != null)
+            {
+                preferredPros.addAll(proTeamCategory.getPreferred());
+            }
+            if (favoritePro != null && !preferredPros.isEmpty())
             {
                 preferredPros.remove(favoritePro);
             }
-            if (preferredPros != null && !preferredPros.isEmpty())
+            if (!preferredPros.isEmpty())
             {
                 mItems.addAll(preferredPros);
             }
@@ -96,7 +104,7 @@ public class NewProTeamCategoryAdapter
                         .inflate(R.layout.layout_pro_team_pro_card_with_empty_state,
                                  parent, false
                         );
-                return new ProViewHolder(itemView);
+                return new ProViewHolder(itemView, mActionCallbacks);
         }
         return null;
     }
@@ -113,7 +121,7 @@ public class NewProTeamCategoryAdapter
         return mItems.size();
     }
 
-    private abstract class BaseViewHolder extends RecyclerView.ViewHolder
+    private static abstract class BaseViewHolder extends RecyclerView.ViewHolder
     {
         public BaseViewHolder(final View itemView)
         {
@@ -124,7 +132,7 @@ public class NewProTeamCategoryAdapter
     }
 
 
-    private class HeaderViewHolder extends BaseViewHolder
+    private static class HeaderViewHolder extends BaseViewHolder
     {
         public HeaderViewHolder(final View itemView)
         {
@@ -134,26 +142,48 @@ public class NewProTeamCategoryAdapter
         @Override
         void bind(final Object item)
         {
-            final ProTeamSectionListHeaderView itemView = (ProTeamSectionListHeaderView) this.itemView;
-            itemView.setTitle((String) item);
+            final ProTeamSectionListHeaderView itemView =
+                    (ProTeamSectionListHeaderView) this.itemView;
+            final String text = (String) item;
+            itemView.setTitle(text);
             itemView.setHelpIconClickListener(new View.OnClickListener()
             {
                 @Override
-                public void onClick(final View v)
+                public void onClick(final View view)
                 {
-                    // TODO: Implement
+                    final Context context = view.getContext();
+                    String title;
+                    String message;
+                    final String favoriteProTitle = context.getString(R.string.favorite_pro);
+                    if (text.equals(favoriteProTitle))
+                    {
+                        title = favoriteProTitle;
+                        message = context.getString(R.string.favorite_pro_help_message);
+                    }
+                    else
+                    {
+                        title = context.getString(R.string.backup_pros);
+                        message = context.getString(R.string.backup_pro_help_message);
+                    }
+                    new AlertDialog.Builder(context)
+                            .setTitle(title)
+                            .setMessage(message)
+                            .setCancelable(true)
+                            .setPositiveButton(R.string.ok, null)
+                            .show();
                 }
             });
         }
     }
 
 
-    class ProViewHolder extends BaseViewHolder
+    static class ProViewHolder extends BaseViewHolder
     {
+        private final ActionCallbacks mActionCallbacks;
         @Bind(R.id.pro_team_pro_card_holder)
         ViewGroup mProTeamProCardHolder;
         @Bind(R.id.pro_team_pro_card_checkbox)
-        CheckBox mCheckbox;
+        CheckBox mHeartIcon;
         @Bind(R.id.pro_team_pro_card_profile)
         MiniProProfile mProProfile;
         @Bind(R.id.empty_state_holder)
@@ -163,44 +193,57 @@ public class NewProTeamCategoryAdapter
         @Bind(R.id.empty_state_subtitle)
         TextView mEmptyStateSubtitle;
 
-        ProViewHolder(final View itemView)
+        ProViewHolder(final View itemView, @NonNull final ActionCallbacks actionCallbacks)
         {
             super(itemView);
+            mActionCallbacks = actionCallbacks;
         }
 
         @Override
         void bind(final Object item)
         {
             ButterKnife.bind(this, itemView);
-            final boolean isFavoritePro = getAdapterPosition() == FAVORITE_PRO_POSITION;
             if (item != null)
             {
-                showProProfile((ProTeamPro) item, isFavoritePro);
+                showActiveState((ProTeamPro) item);
+                mProTeamProCardHolder.setOnLongClickListener(new View.OnLongClickListener()
+                {
+                    @Override
+                    public boolean onLongClick(final View view)
+                    {
+                        mActionCallbacks.onLongClick((ProTeamPro) item);
+                        return true;
+                    }
+                });
             }
             else
             {
-                showEmptyState(isFavoritePro);
+                showEmptyState();
             }
         }
 
-        private void showProProfile(final ProTeamPro item, final boolean isFavoritePro)
+        private void showActiveState(final ProTeamPro pro)
         {
             mEmptyStateHolder.setVisibility(View.GONE);
             mProTeamProCardHolder.setVisibility(View.VISIBLE);
+            initHeartIcon(pro);
+            initProProfile(pro);
+        }
 
-            final ProTeamPro pro = item;
-            mCheckbox.setChecked(isFavoritePro);
-            mCheckbox.setOnClickListener(new View.OnClickListener()
+        private void initHeartIcon(final ProTeamPro pro)
+        {
+            mHeartIcon.setChecked(pro.isFavorite());
+            mHeartIcon.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(final View v)
                 {
-                    // TODO: Implement
+                    mActionCallbacks.onHeartClick(pro);
                 }
             });
             // This listener will give the illusion that the checkbox doesn't change state which is
             // exactly what we want.
-            mCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            mHeartIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
             {
                 @Override
                 public void onCheckedChanged(
@@ -208,11 +251,15 @@ public class NewProTeamCategoryAdapter
                         final boolean isChecked
                 )
                 {
-                    mCheckbox.setOnCheckedChangeListener(null);
-                    mCheckbox.setChecked(!isChecked);
-                    mCheckbox.setOnCheckedChangeListener(this);
+                    mHeartIcon.setOnCheckedChangeListener(null);
+                    mHeartIcon.setChecked(!isChecked);
+                    mHeartIcon.setOnCheckedChangeListener(this);
                 }
             });
+        }
+
+        private void initProProfile(final ProTeamPro pro)
+        {
             mProProfile.setTitle(pro.getName());
             mProProfile.setRatingAndJobsCount(pro.getAverageRating(), pro.getBookingCount());
             mProProfile.setProTeamIndicatorEnabled(false);
@@ -220,21 +267,28 @@ public class NewProTeamCategoryAdapter
             mProProfile.setImage(pro.getImageUrl());
         }
 
-        private void showEmptyState(final boolean isFavoritePro)
+        private void showEmptyState()
         {
             mProTeamProCardHolder.setVisibility(View.GONE);
             mEmptyStateHolder.setVisibility(View.VISIBLE);
-            if (isFavoritePro)
+            if (getAdapterPosition() == FAVORITE_PRO_POSITION)
             {
                 mEmptyStateTitle.setText(R.string.no_favorite_pro_title);
                 mEmptyStateSubtitle.setText(R.string.no_favorite_pro_subtitle);
             }
             else
             {
-                mEmptyStateTitle.setText(R.string.no_pro_team_title);
+                mEmptyStateTitle.setText(R.string.backup_pros);
                 mEmptyStateSubtitle.setText(R.string.no_pro_team_subtitle);
             }
         }
+    }
 
+
+    public interface ActionCallbacks
+    {
+        void onHeartClick(final ProTeamPro proTeamPro);
+
+        void onLongClick(final ProTeamPro proTeamPro);
     }
 }

@@ -45,7 +45,6 @@ public class BookingManager implements Observer
     private BookingTransaction mBookingTransaction;
     private BookingPostInfo mBookingPostInfo;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
-    private ProTeam mCurrentProTeam;
 
     @Inject
     public BookingManager(
@@ -533,27 +532,6 @@ public class BookingManager implements Observer
         return mSecurePreferencesManager.getString(PrefsKey.BOOKING_PROMO_TAB_COUPON);
     }
 
-    @Nullable
-    public ProTeam getCurrentProTeam()
-    {
-        if (mCurrentProTeam == null)
-        {
-            mCurrentProTeam = ProTeam.fromJson(mSecurePreferencesManager.getString(PrefsKey.BOOKING_PRO_TEAM));
-        }
-        return mCurrentProTeam;
-    }
-
-    public void setCurrentProTeam(@Nullable final ProTeam proTeam)
-    {
-        if (proTeam == null)
-        {
-            mCurrentProTeam = null;
-            mSecurePreferencesManager.removeValue(PrefsKey.BOOKING_PRO_TEAM);
-            return;
-        }
-        mSecurePreferencesManager.setString(PrefsKey.BOOKING_PRO_TEAM, ProTeam.toJson(proTeam));
-    }
-
     @Override
     public void update(final Observable observable, final Object data)
     {
@@ -591,7 +569,6 @@ public class BookingManager implements Observer
         setCurrentTransaction(null);
         setCurrentPostInfo(null);
         setCurrentFinalizeBookingRequestPayload(null);
-        setCurrentProTeam(null);
         mSecurePreferencesManager.removeValue(PrefsKey.STATE_BOOKING_CLEANING_EXTRAS_SELECTION);
         mBus.post(new BookingFlowClearedEvent());
     }

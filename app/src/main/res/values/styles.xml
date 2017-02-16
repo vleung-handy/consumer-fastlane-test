@@ -12,7 +12,8 @@
         <item name="android:textViewStyle">@style/TextView</item>
         <item name="android:listDivider">@color/handy_divider_line</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="android:actionMenuTextAppearance">@style/TextView.NavbarAction</item>
+        <item name="actionMenuTextAppearance">@style/TextView.NavbarAction</item>
+        <item name="actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="HandyTheme"
@@ -540,7 +541,7 @@
     <style name="TextView.NavbarAction">
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textAppearance">@style/TextView.Small.Bold</item>
+        <item name="fontPath">fonts/CircularStd-Bold.otf</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:padding">@dimen/default_padding</item>
@@ -591,7 +592,6 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_xsmall</item>
         <item name="android:textAllCaps">true</item>
-
     </style>
 
     <style name="BookingsCell">
