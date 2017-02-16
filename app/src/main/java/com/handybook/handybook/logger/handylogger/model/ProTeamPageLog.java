@@ -4,10 +4,12 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage.HandyLoggerSourcePage;
+import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 
 public abstract class ProTeamPageLog extends EventLog
 {
@@ -221,4 +223,48 @@ public abstract class ProTeamPageLog extends EventLog
         }
     }
 
+
+    public static class EditProTeamSubmitted extends ProTeamPageLog
+    {
+        @SerializedName("pro_team_edits")
+        private ArrayList<ProTeamEdit> mProTeamEdits;
+
+        private static final String EVENT_TYPE = "edit_pro_team_submitted";
+
+        public EditProTeamSubmitted(final ArrayList<ProTeamEdit> proTeamEdits)
+        {
+            super(EVENT_TYPE);
+            mProTeamEdits = proTeamEdits;
+        }
+    }
+
+
+    public static class EditProTeamSuccess extends ProTeamPageLog
+    {
+        @SerializedName("pro_team_edits")
+        private ArrayList<ProTeamEdit> mProTeamEdits;
+
+        private static final String EVENT_TYPE = "edit_pro_team_success";
+
+        public EditProTeamSuccess(final ArrayList<ProTeamEdit> proTeamEdits)
+        {
+            super(EVENT_TYPE);
+            mProTeamEdits = proTeamEdits;
+        }
+    }
+
+
+    public static class EditProTeamFailure extends ProTeamPageLog
+    {
+        @SerializedName("pro_team_edits")
+        private ArrayList<ProTeamEdit> mProTeamEdits;
+
+        private static final String EVENT_TYPE = "edit_pro_team_failure";
+
+        public EditProTeamFailure(final ArrayList<ProTeamEdit> proTeamEdits)
+        {
+            super(EVENT_TYPE);
+            mProTeamEdits = proTeamEdits;
+        }
+    }
 }
