@@ -189,12 +189,12 @@ public final class LoginFragment extends BookingFlowFragment {
             mFbLayout.setVisibility(View.GONE);
             mOrText.setVisibility(View.GONE);
             mEmailText.setText(mBookingUserEmail);
+            mWelcomeText.setVisibility(View.VISIBLE);
             if (ValidationUtils.isNullOrEmpty(mBookingUserName)) {
-                mWelcomeText.setVisibility(View.GONE);
+                mWelcomeText.setText(getString(R.string.welcome_back));
             }
             else {
-                mWelcomeText.setText(getString(R.string.welcome_back, mBookingUserName));
-                mWelcomeText.setVisibility(View.VISIBLE);
+                mWelcomeText.setText(getString(R.string.welcome_back_formatted, mBookingUserName));
             }
             //NOTE: mBookingRequest could be null if this is a login coming from the onboarding process
             if (mBookingRequest != null) {
@@ -489,7 +489,12 @@ public final class LoginFragment extends BookingFlowFragment {
         mConfigurationManager.invalidateCache();
 
         if (!mIsFromOnboarding &&
-            (mBookingUserName != null ||
+            (mIsFromBookingFunnel ||
+             mBookingUserName != null ||
+             /*
+             why were we determining whether to continue flow based on username rather
+             than if we come from booking funnel? do we still need this?
+              */
              authType == UserDataManager.AuthType.FACEBOOK && mFindUser)) {
             continueBookingFlow();
             return;

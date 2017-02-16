@@ -19,6 +19,7 @@ import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
+import com.handybook.handybook.booking.ui.activity.BookingGetQuoteActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
@@ -32,9 +33,11 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
@@ -46,6 +49,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_OPTIONS;
+import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_PAGE;
 
 public class BookingFlowFragment extends InjectedFragment {
 
@@ -100,17 +106,70 @@ public class BookingFlowFragment extends InjectedFragment {
         bookingManager.clear();
         bookingManager.setCurrentRequest(request);
 
-        Configuration config = mConfigurationManager.getLastKnowConfiguration();
+        Configuration config = mConfigurationManager.getPersistentConfiguration();
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
-        if (config != null && config.isOnboardingV2Enabled() && !TextUtils.isBlank(zip)) {
+        if (config.isConsolidateBookingGetQuoteFlowExperimentEnabled()) {
+            startConsolidatedGetQuoteFlow();
+        }
+        else if (config.isOnboardingV2Enabled() && !TextUtils.isBlank(zip))
+        {
             validateZipAndProceed(zip);
         }
-        else {
+        else
+        {
             final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
             startActivity(intent);
         }
     }
 
+    private void startConsolidatedGetQuoteFlow() {
+        showUiBlockers();
+        final BookingRequest request = bookingManager.getCurrentRequest();
+        final User user = userManager.getCurrentUser();
+        final String userId = user != null ? user.getId() : null;
+        dataManager.getQuoteOptions(
+                request.getServiceId(), userId,
+                new FragmentSafeCallback<BookingOptionsWrapper>(BookingFlowFragment.this) {
+                    @Override
+                    public void onCallbackSuccess(final BookingOptionsWrapper options) {
+                        removeUiBlockers();
+
+                        List<BookingOption> bookingOptions = options.getBookingOptions();
+                        final Intent intent = new Intent(
+                                getActivity(),
+                                BookingGetQuoteActivity.class
+                        );
+                        intent.putParcelableArrayListExtra(
+                                EXTRA_OPTIONS,
+                                new ArrayList<>(bookingOptions)
+                        );
+                        intent.putExtra(EXTRA_PAGE, 0);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        if (!allowCallbacks) { return; }
+                        removeUiBlockers();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                }
+        );
+
+    }
+
+    /**
+     * updates the current booking request with the given ZipValidationResponse
+     * @param response
+     */
+    private void updateCurrentBookingRequest(@Nullable ZipValidationResponse response)
+    {
+        if(response == null) return; //if the response is not present, don't override these with null
+        bookingManager.getCurrentRequest().setZipCode(response.getZipArea() == null ?
+                                                      null : response.getZipArea().getZip());
+        bookingManager.getCurrentRequest().setZipArea(response.getZipArea());
+        bookingManager.getCurrentRequest().setTimeZone(response.getTimeZone());
+    }
     /**
      * Even though we're not showing the "zip" page to the user we still have to call this
      * "zip validation" step, so we can have the proper time zone setup
@@ -131,10 +190,7 @@ public class BookingFlowFragment extends InjectedFragment {
                     public void onCallbackSuccess(ZipValidationResponse response) {
                         //if we are in "onboarding" mode, and we have a zip, then skip the BookingLocationActivity
                         //and go directly to the Booking options (beds, bath)
-                        bookingManager.getCurrentRequest().setZipCode(zipCode);
-                        bookingManager.getCurrentRequest().setZipArea(response.getZipArea());
-                        bookingManager.getCurrentRequest().setTimeZone(response.getTimeZone());
-
+                        updateCurrentBookingRequest(response);
                         if (TextUtils.isBlank(request.getPromoCode())) {
                             //we're not in a promotional flow, so we can display booking options
                             displayBookingOptions();
@@ -230,9 +286,14 @@ public class BookingFlowFragment extends InjectedFragment {
         final User user = userManager.getCurrentUser();
         if (user != null) {
             request.setUserId(user.getId());
-            request.setEmail(user.getEmail());
+            if(TextUtils.isBlank(request.getEmail()))
+            {
+                //don't override booking request object's email field if present
+                request.setEmail(user.getEmail());
+            }
         }
-        else if (!hasStoredEmailAndZip() && !(this instanceof LoginFragment)) {
+        else if (!mConfigurationManager.getPersistentConfiguration().isConsolidateBookingGetQuoteFlowExperimentEnabled()
+                && !hasStoredEmailAndZip() && !(this instanceof LoginFragment)) {
             //if we are not in the new onboarding flow (i.e., we don't have zip & email stored),
             //then we should prompt the user to login.
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -276,7 +337,11 @@ public class BookingFlowFragment extends InjectedFragment {
             final BookingDetailFragment.RescheduleType rescheduleType,
             @Nullable final String recurringId
     ) {
-        final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");
+        final String newDate = DateTimeUtils.formatDate(
+                date,
+                DateTimeUtils.SCHEDULE_DATE_TIME_FORMAT_NO_TIMEZONE,
+                booking.getBookingTimezone()
+        );
         final User user = userManager.getCurrentUser();
         disableInputs();
         progressDialog.show();
@@ -343,6 +408,7 @@ public class BookingFlowFragment extends InjectedFragment {
                             toast.show();
                         }
                         final BookingQuote quote = response.second;
+
                         final ArrayList<ArrayList<PeakPriceInfo>> peakTable
                                 = quote != null ? quote.getPeakPriceTable() : null;
                         if (peakTable != null && !peakTable.isEmpty()) {
@@ -439,6 +505,13 @@ public class BookingFlowFragment extends InjectedFragment {
             transaction.setEmail(request.getEmail());
         }
         bookingManager.setCurrentTransaction(transaction);
+        UserExistsResponse emailResponse = quote.getUserExistsResponse();
+        if (emailResponse != null && emailResponse.exists()) {
+            //user exists, go to login
+            startLoginActivity(transaction.getEmail(), emailResponse.getFirstName());
+        }
+        //otherwise, ignore
+
         final ArrayList<ArrayList<PeakPriceInfo>> peakTable
                 = quote.getPeakPriceTable();
         boolean isVoucherFlow = request.getPromoType() == PromoCode.Type.VOUCHER;
@@ -542,12 +615,49 @@ public class BookingFlowFragment extends InjectedFragment {
                        || (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)));
     }
 
+    private void startLoginActivity(@Nullable String email, @Nullable String bookingUserName)
+    {
+        final Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, email);
+        intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, bookingUserName);
+        intent.putExtra(LoginActivity.EXTRA_FROM_BOOKING_FUNNEL, true);
+        startActivity(intent);
+    }
     private void handleBookingQuoteError(final DataManager.DataManagerError error) {
         if (!allowCallbacks) {
             return;
         }
         enableInputs();
         progressDialog.dismiss();
+
+        /*
+        even though this log is already in BookingLocationFragment,
+        logging it here to cover the consolidated booking flow experiment.
+        note this will be double-logged but logging department says that is OK,
+        so not bothering to only log this if consolidated quote flow config is on
+        because that would make this more confusing
+        */
+        if (isErrorCausedByInvalidZip(error)) {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipErrorLog(
+                    bookingManager.getCurrentRequest() == null
+                    ? null
+                    : bookingManager.getCurrentRequest().getZipCode(),
+                    error.getMessage()
+            )));
+        }
+        /**
+         * this is gross, but
+         * see documentation for DataManagerError.getErrorCode for explanation
+         */
+        if(error.getErrorCode() != null
+        && error.getErrorCode() == 401 && !(this instanceof LoginFragment))
+        {
+            String email = bookingManager.getCurrentRequest() == null ?
+                           null : bookingManager.getCurrentRequest().getEmail();
+            startLoginActivity(email, null);
+            //prompt user to log in
+            return;
+        }
         if (isErrorCausedByInvalidCoupon(error)) {
             informUserWeWillProceedWithoutCoupon(error);
             return;
@@ -557,6 +667,25 @@ public class BookingFlowFragment extends InjectedFragment {
             getActivity().setResult(ActivityResult.LOGIN_FINISH);
             getActivity().finish();
         }
+    }
+
+    /**
+     * this is gross, but we need it for logging purposes for the consolidated quote flow experiment
+     * @param error
+     * @return
+     */
+    private boolean isErrorCausedByInvalidZip(final DataManager.DataManagerError error)
+    {
+        if(error == null || error.getInvalidInputs() == null) return false;
+        for(int i = 0; i<error.getInvalidInputs().length; i++)
+        {
+            String invalidInput = error.getInvalidInputs()[i];
+            if("zipcode".equalsIgnoreCase(invalidInput))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isErrorCausedByInvalidCoupon(final DataManager.DataManagerError error) {
@@ -574,6 +703,25 @@ public class BookingFlowFragment extends InjectedFragment {
         if (!allowCallbacks) {
             return;
         }
+
+        //note that this response is currently only being used by the consolidated quote flow
+        ZipValidationResponse zipValidationResponse = quote.getZipValidationResponse();
+        if(zipValidationResponse != null && zipValidationResponse.getZipArea() != null)
+        {
+            /*
+            note that this is logged in BookingLocationFragment
+            but logging this here to cover the consolidated quote flow experiment.
+            this will be double-logged in the case that
+            consolidated quote flow is off but logging department says that is OK,
+            so not bothering to only log this if consolidated quote flow config is on
+            because that would make this more confusing
+            */
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(
+                    zipValidationResponse.getZipArea().getZip())));
+        }
+        updateCurrentBookingRequest(zipValidationResponse);
+
+
         // persist extras since api doesn't return them on quote update calls
         final BookingQuote oldQuote = bookingManager.getCurrentQuote();
         if (isUpdate && oldQuote != null) {
@@ -588,6 +736,27 @@ public class BookingFlowFragment extends InjectedFragment {
             transaction.setPromoCode(null, false);
         }
         bookingManager.setCurrentQuote(quote);
+
+        /*
+        if user currently not logged in, but entered an email for an existing user,
+        prompt them to log in.
+
+        in the case that the email was not for an existing user, they will be prompted to create
+        their account (enter their password) later
+
+        note that we currently do not support allowing the user to modify their email in the booking flow
+         */
+        if(!userManager.isUserLoggedIn()
+           && quote.getUserExistsResponse() != null
+                && quote.getUserExistsResponse().exists())
+        {
+            final Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.putExtra(LoginActivity.EXTRA_FIND_USER, true);
+            intent.putExtra(LoginActivity.EXTRA_FROM_BOOKING_FUNNEL, true);
+            startActivity(intent);
+            return;
+        }
+
         continueFlow();
     }
 

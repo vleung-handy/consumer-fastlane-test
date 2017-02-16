@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.handybook.handybook.library.util.DateTimeUtils.UNIVERSAL_DATE_FORMAT;
+
 public class BookingRequest extends Observable {
 
     public static final String KEY_UNIQ = "uniq";
@@ -188,19 +190,23 @@ public class BookingRequest extends Observable {
         notifyObservers();
     }
 
+    /**
+     * this is only used to put this object in local storage
+     * @return
+     */
     public final String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                                            .setExclusionStrategies(getExclusionStrategy())
                                            .registerTypeAdapter(
                                                    BookingRequest.class,
-                                                   new BookingRequestSerializer()
+                                                   new BookingRequestLocalStorageSerializer()
                                            ).create();
 
         return gson.toJson(this);
     }
 
     public static BookingRequest fromJson(final String json) {
-        return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
+        return new GsonBuilder().setDateFormat(UNIVERSAL_DATE_FORMAT).create()
                                 .fromJson(json, BookingRequest.class);
     }
 
@@ -217,8 +223,7 @@ public class BookingRequest extends Observable {
             }
         };
     }
-
-    public static final class BookingRequestSerializer implements JsonSerializer<BookingRequest> {
+    private static final class BookingRequestLocalStorageSerializer implements JsonSerializer<BookingRequest> {
 
         @Override
         public JsonElement serialize(
@@ -240,6 +245,56 @@ public class BookingRequest extends Observable {
                             DateTimeUtils.UNIVERSAL_DATE_FORMAT
                     )
             ));
+            jsonObj.add(KEY_ENTERED_CODE, context.serialize(value.getPromoCode()));
+            jsonObj.add(KEY_ANDROID_PROMO_TYPE, context.serialize(value.getPromoType()));
+            jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));
+            // jsonObj.add("mobile", context.serialize(1)); //If this doesn't break things delete it.
+            // Doesn't seem to be used fo anything useful on the backend and it is defaulted to true
+            return jsonObj;
+        }
+    }
+
+    /**
+     * to be used for sending to api only, which expects the date to be formatted without timezone in certain cases
+     */
+    public static final class BookingRequestApiSerializer implements JsonSerializer<BookingRequest> {
+
+        /**
+         * this method was created and exposed because we need this value for logging purposes
+         * in the consolidated quote flow
+         * @param bookingRequest
+         * @return
+         */
+        public static String getFormattedBookingStartDate(final BookingRequest bookingRequest)
+        {
+            String dateFormat;
+            if(!TextUtils.isBlank(bookingRequest.getZipCode()))
+            {
+                //server will use the given zip code to resolve the timezone
+                dateFormat = DateTimeUtils.SCHEDULE_DATE_TIME_FORMAT_NO_TIMEZONE;
+            }
+            else
+            {
+                dateFormat = DateTimeUtils.UNIVERSAL_DATE_FORMAT;
+            }
+            return DateTimeUtils.formatDate(bookingRequest.getStartDate(), dateFormat, bookingRequest.getTimeZone());
+        }
+
+        @Override
+        public JsonElement serialize(
+                final BookingRequest value, final Type type,
+                final JsonSerializationContext context
+        ) {
+            final JsonObject jsonObj = new JsonObject();
+            jsonObj.add(KEY_SERVICE_ID, context.serialize(value.getServiceId()));
+            jsonObj.add(KEY_PROVIDER_ID, context.serialize(value.getProviderId()));
+            jsonObj.add(KEY_UNIQ, context.serialize(value.getUniq()));
+            jsonObj.add(KEY_ZIPCODE, context.serialize(value.getZipCode()));
+            jsonObj.add(KEY_ZIP_AREA, context.serialize(value.getZipArea()));
+            jsonObj.add(KEY_EMAIL, context.serialize(value.getEmail()));
+            jsonObj.add(KEY_USER_ID, context.serialize(value.getUserId()));
+            jsonObj.add(KEY_SERVICE_ATTRIBUTES, context.serialize(value.getOptions()));
+            jsonObj.add(KEY_DATE_START, context.serialize(getFormattedBookingStartDate(value)));
             jsonObj.add(KEY_ENTERED_CODE, context.serialize(value.getPromoCode()));
             jsonObj.add(KEY_ANDROID_PROMO_TYPE, context.serialize(value.getPromoType()));
             jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));

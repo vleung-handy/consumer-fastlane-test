@@ -39,6 +39,7 @@ import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
 import com.handybook.handybook.booking.ui.activity.BookingExtrasActivity;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
+import com.handybook.handybook.booking.ui.activity.BookingGetQuoteActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
@@ -72,9 +73,11 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.booking.ui.fragment.BookingEntryInfoFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingGetQuoteFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingLocationFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPasswordPromptFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
@@ -265,5 +268,8 @@ import dagger.Module;
                 ZipFragment.class,
                 BookingTimeInputDialogFragment.class,
                 BookingDateTimeInputFragment.class,
+                BookingGetQuoteActivity.class,
+                BookingGetQuoteFragment.class,
+                BookingOptionsInputFragment.class,
         })
 public final class InjectionModule {}

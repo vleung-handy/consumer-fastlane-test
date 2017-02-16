@@ -72,12 +72,19 @@ public class Configuration implements Serializable {
     @SerializedName("new_rating_flow_enabled")
     private boolean mNewRatingFlowEnabled;
 
-    // Getters
+    @SerializedName("consolidated_quote_flow_enabled")
+    private boolean mConsolidateBookingGetQuoteFlowExperimentEnabled;
+
     public boolean isBookingDateTimeInputScreenV2Enabled() {
         return mBookingDateTimeInputScreenV2Enabled;
     }
 
-    public boolean isBookingHoursClarificationExperimentEnabled() {
+    public boolean isConsolidateBookingGetQuoteFlowExperimentEnabled() {
+        return mConsolidateBookingGetQuoteFlowExperimentEnabled;
+    }
+
+    public boolean isBookingHoursClarificationExperimentEnabled()
+    {
         return mBookingHoursClarificationExperimentEnabled;
     }
 

@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -16,8 +17,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class BookingTransaction extends Observable {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     @SerializedName("booking_id")
     private int mBookingId;
@@ -297,7 +296,7 @@ public class BookingTransaction extends Observable {
     }
 
     public final String toJson() {
-        final Gson gson = new GsonBuilder().setDateFormat(DATE_FORMAT)
+        final Gson gson = new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
                                            .setExclusionStrategies(getExclusionStrategy())
                                            .registerTypeAdapter(
                                                    BookingTransaction.class,
@@ -308,7 +307,7 @@ public class BookingTransaction extends Observable {
     }
 
     public static BookingTransaction fromJson(final String json) {
-        return new GsonBuilder().setDateFormat(DATE_FORMAT).create()
+        return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
                                 .fromJson(json, BookingTransaction.class);
     }
 

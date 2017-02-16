@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/handy_bg"
+    >
+
+    <Button
+        android:id="@+id/next_button"
+        style="@style/Button.Green"
+        android:layout_alignParentBottom="true"
+        android:text="@string/next"
+        />
+
+    <include
+        layout="@layout/toolbar"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/next_button"
+        android:layout_below="@id/toolbar"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/default_margin"
+            >
+
+            <!--zip code input-->
+            <TextView
+                style="@style/TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/default_padding"
+                android:text="@string/where_located"
+                />
+
+            <com.handybook.handybook.core.ui.widget.ZipCodeInputTextView
+                android:id="@+id/booking_zipcode_input_text"
+                style="@style/EditText.Last.ZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <!--options input-->
+            <FrameLayout
+                android:id="@+id/booking_options_input_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <!--date time input-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/default_margin"
+                android:gravity="center"
+                android:text="@string/booking_date_time_input_prompt"
+                />
+
+            <FrameLayout
+                android:id="@+id/booking_date_time_input_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <!--email input. in container for easy hiding/showing-->
+            <LinearLayout
+                android:id="@+id/booking_email_input_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/default_margin"
+                    android:gravity="center"
+                    android:text="@string/email_input_prompt"
+                    />
+
+                <com.handybook.handybook.core.ui.widget.EmailInputTextView
+                    android:id="@+id/booking_email_input"
+                    style="@style/EditText.Email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

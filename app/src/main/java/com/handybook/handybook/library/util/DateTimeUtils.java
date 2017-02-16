@@ -50,6 +50,7 @@ public class DateTimeUtils {
     public final static int HOURS_IN_DAY = 24;
 
     public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+    public final static String SCHEDULE_DATE_TIME_FORMAT_NO_TIMEZONE = "yyyy-MM-dd'T'HH:mm";
 
     /**
      * Takes in a date, format, and time zone. It will convert the given date into a string in the

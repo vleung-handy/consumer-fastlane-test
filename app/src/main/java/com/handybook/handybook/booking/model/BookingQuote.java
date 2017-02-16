@@ -15,6 +15,7 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.subscription.CommitmentType;
 import com.handybook.handybook.booking.model.subscription.Price;
 import com.handybook.handybook.core.model.bill.Bill;
+import com.handybook.handybook.core.model.response.UserExistsResponse;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -121,6 +122,18 @@ public class BookingQuote extends Observable {
     private QuoteConfig mQuoteConfig;
     @SerializedName(KEY_BILL)
     private Bill mBill;
+    @SerializedName("zipcode_info")
+    private ZipValidationResponse mZipValidationResponse;
+    @SerializedName("user_info")
+    private UserExistsResponse mUserExistsResponse;
+
+    public UserExistsResponse getUserExistsResponse() {
+        return mUserExistsResponse;
+    }
+
+    public ZipValidationResponse getZipValidationResponse() {
+        return mZipValidationResponse;
+    }
 
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
