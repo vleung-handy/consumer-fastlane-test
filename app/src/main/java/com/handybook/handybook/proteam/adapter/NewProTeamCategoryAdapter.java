@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -205,14 +204,23 @@ public class NewProTeamCategoryAdapter
             ButterKnife.bind(this, itemView);
             if (item != null)
             {
-                showActiveState((ProTeamPro) item);
+                final ProTeamPro pro = (ProTeamPro) item;
+                showActiveState(pro);
                 mProTeamProCardHolder.setOnLongClickListener(new View.OnLongClickListener()
                 {
                     @Override
                     public boolean onLongClick(final View view)
                     {
-                        mActionCallbacks.onLongClick((ProTeamPro) item);
+                        mActionCallbacks.onLongClick(pro);
                         return true;
+                    }
+                });
+                mProTeamProCardHolder.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final View v)
+                    {
+                        mActionCallbacks.onHeartClick(pro);
                     }
                 });
             }
@@ -233,31 +241,7 @@ public class NewProTeamCategoryAdapter
         private void initHeartIcon(final ProTeamPro pro)
         {
             mHeartIcon.setChecked(pro.isFavorite());
-            final View.OnClickListener onHeartClickListener = new View.OnClickListener()
-            {
-                @Override
-                public void onClick(final View v)
-                {
-                    mActionCallbacks.onHeartClick(pro);
-                }
-            };
-            mHeartIcon.setOnClickListener(onHeartClickListener);
-            mProTeamProCardHolder.setOnClickListener(onHeartClickListener);
-            // This listener will give the illusion that the checkbox doesn't change state which is
-            // exactly what we want.
-            mHeartIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-            {
-                @Override
-                public void onCheckedChanged(
-                        final CompoundButton buttonView,
-                        final boolean isChecked
-                )
-                {
-                    mHeartIcon.setOnCheckedChangeListener(null);
-                    mHeartIcon.setChecked(!isChecked);
-                    mHeartIcon.setOnCheckedChangeListener(this);
-                }
-            });
+            mHeartIcon.setClickable(false);
         }
 
         private void initProProfile(final ProTeamPro pro)
