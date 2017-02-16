@@ -216,18 +216,27 @@ public class ProTeamEditFragment extends InjectedFragment implements
         {
             mProTeamListFragment.setProTeam(mProTeam);
         }
-        if (mTabAdapter != null)
-        {
-            mTabAdapter.notifyProTeamUpdate();
-        }
         clearEditHolders();
         removeUiBlockers();
         showToast(R.string.pro_team_update_successful);
+        setActivityResult();
+        bus.post(new ProTeamEvent.ProTeamUpdated(mProTeam));
+    }
 
-        final Intent data = new Intent();
-        data.putExtra(BundleKeys.PRO_TEAM, mProTeam);
-        getActivity().setResult(Activity.RESULT_OK, data);
-        getActivity().onBackPressed();
+    // This is triggered by NewProTeamProListFragment
+    @Subscribe
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
+    {
+        mProTeam = event.getUpdatedProTeam();
+        setActivityResult();
+    }
+
+    private void setActivityResult()
+    {
+        getActivity().setResult(
+                Activity.RESULT_OK,
+                new Intent().putExtra(BundleKeys.PRO_TEAM, mProTeam)
+        );
     }
 
     private void clearEditHolders()
@@ -461,18 +470,6 @@ public class ProTeamEditFragment extends InjectedFragment implements
         public InjectedFragment getItem(int position)
         {
             return mFragments.get(position);
-        }
-
-        void notifyProTeamUpdate()
-        {
-            for (final InjectedFragment fragment : mFragments)
-            {
-                if (fragment instanceof ProTeamProListFragment)
-                {
-                    ((ProTeamProListFragment) fragment).setProTeam(mProTeam);
-                }
-            }
-
         }
     }
 }

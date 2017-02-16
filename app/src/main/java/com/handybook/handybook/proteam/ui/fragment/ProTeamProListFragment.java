@@ -20,12 +20,14 @@ import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.proteam.adapter.ProTeamCategoryAdapter;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.holder.ProTeamFacebookHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -258,6 +260,13 @@ public class ProTeamProListFragment extends InjectedFragment
     public void setProTeam(final ProTeam proTeam)
     {
         mProTeam = proTeam;
+        initialize();
+    }
+
+    @Subscribe
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
+    {
+        mProTeam = event.getUpdatedProTeam();
         initialize();
     }
 
