@@ -266,11 +266,6 @@ public class ProTeamProListFragment extends InjectedFragment
         mOnProInteraction = onProInteraction;
     }
 
-    public ProTeamCategoryType getProTeamCategoryType()
-    {
-        return mProTeamCategoryType;
-    }
-
     /**
      * Implement this interface to be notified when user clicks on one of the pro cards.
      */
