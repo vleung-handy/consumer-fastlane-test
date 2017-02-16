@@ -1,5 +1,7 @@
 package com.handybook.handybook.account.ui;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -15,12 +17,12 @@ import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.ui.widget.StreetAddressInputTextView;
+import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditAddressLog;
-import com.handybook.handybook.core.ui.widget.StreetAddressInputTextView;
-import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -138,7 +140,11 @@ public final class EditPlanAddressFragment extends InjectedFragment
         removeUiBlockers();
         mPlan.setAddress(planWrapper.getRecurringBooking().getAddress());
         showToast(getString(R.string.account_update_plan_address_success));
-        getFragmentManager().popBackStack();
+
+        Intent data = new Intent();
+        data.putExtra(BundleKeys.RECURRING_PLAN, mPlan);
+        getActivity().setResult(Activity.RESULT_OK, data);
+        getActivity().onBackPressed();
     }
 
     private void onReceiveEditBookingAddressError(DataManager.DataManagerError error)

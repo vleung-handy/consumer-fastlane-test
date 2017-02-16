@@ -42,7 +42,6 @@ import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
-import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.squareup.otto.Bus;
@@ -400,14 +399,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @OnClick(R.id.coupon_layout)
     public void onCouponClick()
     {
-        if (getActivity() instanceof MenuDrawerActivity)
-        {
-            ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
-        }
-        else
-        {
-            FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
-        }
+        startActivity(new Intent(getContext(), PromosActivity.class));
     }
 
     /**

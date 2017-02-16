@@ -134,7 +134,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onResume()
     {
         super.onResume();
-        setupToolbar(mToolbar, getString(R.string.pro_team));
+        setupToolbar(mToolbar, getString(R.string.edit_pro_team));
         if (mProTeam == null)
         {
             mSwipeRefreshLayout.setRefreshing(true);
@@ -222,26 +222,11 @@ public class ProTeamEditFragment extends InjectedFragment implements
         clearEditHolders();
         removeUiBlockers();
         showToast(R.string.pro_team_update_successful);
-        updateTargetFragment();
-    }
 
-    // This is triggered by NewProTeamProListFragment
-    @Subscribe
-    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
-    {
-        mProTeam = event.getUpdatedProTeam();
-        updateTargetFragment();
-    }
-
-    private void updateTargetFragment()
-    {
-        final Fragment targetFragment = getTargetFragment();
-        if (targetFragment != null)
-        {
-            final Intent data = new Intent();
-            data.putExtra(BundleKeys.PRO_TEAM, mProTeam);
-            targetFragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, data);
-        }
+        final Intent data = new Intent();
+        data.putExtra(BundleKeys.PRO_TEAM, mProTeam);
+        getActivity().setResult(Activity.RESULT_OK, data);
+        getActivity().onBackPressed();
     }
 
     private void clearEditHolders()

@@ -36,6 +36,7 @@ import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
@@ -353,13 +354,10 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @OnClick(R.id.pro_team_toolbar_edit_pro_team_button)
     public void onEditListClicked()
     {
-        final ProTeamEditFragment proTeamEditFragment = ProTeamEditFragment.newInstance(mProTeam);
-        proTeamEditFragment.setTargetFragment(this, RequestCode.EDIT_PRO_TEAM);
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, proTeamEditFragment)
-                .addToBackStack(null)
-                .commit();
+        startActivityForResult(
+                new Intent(getContext(), ProTeamEditActivity.class),
+                RequestCode.EDIT_PRO_TEAM
+        );
     }
 
     @Override
