@@ -125,6 +125,7 @@ import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.FileManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.manager.ServicesManager;
+import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.core.manager.StripeManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.receiver.LayerPushReceiver;
@@ -320,7 +321,8 @@ import retrofit.converter.GsonConverter;
         ProTeamPerBookingActivity.class,
         BookingProTeamConversationsFragment.class,
         RescheduleDialogFragment.class,
-        ServiceCategoriesHomeFragment.class
+        ServiceCategoriesHomeFragment.class,
+        SessionManager.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
@@ -514,6 +516,13 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
+    final SessionManager provideSessionCacheManager()
+    {
+        return new SessionManager();
+    }
+
+    @Provides
+    @Singleton
     final HandyRetrofitService provideHandyService(
             final RestAdapter restAdapter
     )
@@ -636,10 +645,13 @@ public final class ApplicationModule
             final DataManager dataManager,
             final Bus bus,
             final SecurePreferencesManager securePreferencesManager,
-            final ConfigurationManager configurationManager
+            final ConfigurationManager configurationManager,
+            final SessionManager sessionManager
             )
     {
-        return new ServicesManager(dataManager, bus, securePreferencesManager, configurationManager);
+        return new ServicesManager(dataManager, bus, securePreferencesManager, configurationManager,
+                                   sessionManager
+        );
     }
 
     @Provides

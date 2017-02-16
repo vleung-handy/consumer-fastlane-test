@@ -103,7 +103,6 @@ public class Configuration implements Serializable
         }
 
         return mIsBottomNavEnabledForSession;
->>>>>>> release_candidate_v1.38.x
     }
 
     public boolean isHomeScreenV2Enabled() {

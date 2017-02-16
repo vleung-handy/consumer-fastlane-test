@@ -38,6 +38,7 @@ import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.event.ActivityLifecycleEvent;
 import com.handybook.handybook.core.manager.AppseeManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
@@ -68,6 +69,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     protected DataManager mDataManager;
     @Inject
     protected ConfigurationManager mConfigurationManager;
+    @Inject
+    protected SessionManager mSessionManager;
     @Inject
     DataManagerErrorHandler mDataManagerErrorHandler;
     @Inject
@@ -125,6 +128,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     protected void onResume()
     {
         super.onResume();
+        mSessionManager.markActivity();
+
         if (mWasOpenBefore)
         {
             mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(false, false)));

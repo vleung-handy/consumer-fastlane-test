@@ -28,23 +28,27 @@ import javax.inject.Inject;
 public class ServicesManager
 {
     private static final String TAG = ServicesManager.class.getSimpleName();
+    private static final String CACHE_KEY = "servicesJson";
 
     private DataManager mDataManager;
     private Bus mBus;
     private final SecurePreferencesManager mSecurePreferencesManager;
     private final ConfigurationManager mConfigurationManager;
+    private final SessionManager mSessionManager;
 
     @Inject
     public ServicesManager(
             final DataManager dataManager,
             final Bus bus,
             final SecurePreferencesManager securePreferencesManager,
-            final ConfigurationManager configurationManager
+            final ConfigurationManager configurationManager,
+            final SessionManager sessionManager
     )
     {
         mDataManager = dataManager;
         mSecurePreferencesManager = securePreferencesManager;
         mConfigurationManager = configurationManager;
+        mSessionManager = sessionManager;
         mBus = bus;
         mBus.register(this);
     }
@@ -76,9 +80,13 @@ public class ServicesManager
     @Subscribe
     public void onRequestServices(final BookingEvent.RequestServices event)
     {
-        //todo figure out cache for session.
+        requestServices(event.getZip(), true);
+    }
+
+    public void requestServices(final String zip, boolean useCacheIfExist)
+    {
         //If this is old onboarding then handle old way
-        if (!mConfigurationManager.getPersistentConfiguration().isOnboardingEnabled())
+        if (useCacheIfExist)
         {
             //If old way, check if cache is null
             final List<Service> cachedServices = getCachedServices();
@@ -112,7 +120,7 @@ public class ServicesManager
                 handleServicesMenuResponse(servicesMenu, menuMap, menuStructure);
 
                 //Request the services subcategory list after we get the service menu
-                requestServices(servicesMenu, menuMap, event.getZip());
+                requestServices(servicesMenu, menuMap, zip);
             }
 
             @Override
@@ -146,11 +154,11 @@ public class ServicesManager
                     return;
                 }
 
-                List<Service> serviceListAll;
+                List<Service> serviceListWithSubcategories;
 
                 if (servicesListJson == null)
                 {
-                    serviceListAll = new ArrayList<>();
+                    serviceListWithSubcategories = new ArrayList<>();
                 }
                 else
                 {
@@ -158,10 +166,14 @@ public class ServicesManager
                                 servicesListJson.toString(),
                                 new TypeToken<List<Service>>() {}.getType()
                         );
-                    serviceListAll = handleServicesResponse(servicesMenu, menuMap, serviceList);
+                    serviceListWithSubcategories = handleServicesResponse(servicesMenu, menuMap, serviceList);
+
+                    //updates the cache with fresh version of services
+                    mSessionManager.putToSessionCache(CACHE_KEY, new Gson()
+                            .toJsonTree(servicesMenu).getAsJsonArray().toString());
                 }
 
-                mBus.post(new BookingEvent.ReceiveServicesSuccess(serviceListAll));
+                mBus.post(new BookingEvent.ReceiveServicesSuccess(serviceListWithSubcategories));
 
             }
 
@@ -288,7 +300,17 @@ public class ServicesManager
     @Nullable
     public List<Service> getCachedServices()
     {
-        String cachedServicesJson = mSecurePreferencesManager.getString(PrefsKey.CACHED_SERVICES);
+        String cachedServicesJson;
+        //If this is the old way, then we use the cached services, otherwise we use the session cache
+        if(mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled())
+        {
+            cachedServicesJson = (String) mSessionManager.getFromSessionCache(CACHE_KEY);
+        }
+         else
+        {
+            cachedServicesJson = mSecurePreferencesManager.getString(PrefsKey.CACHED_SERVICES);
+        }
+
         List<Service> cachedServices = null;
         if (cachedServicesJson != null)
         {

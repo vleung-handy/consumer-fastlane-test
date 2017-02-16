@@ -26,6 +26,7 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
 import com.handybook.handybook.core.manager.ServicesManager;
+import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -68,6 +69,8 @@ public class ProMessagesActivity extends MessagesListActivity
     DataManager mDataManager;
     @Inject
     ServicesManager mServiceManager;
+    @Inject
+    protected SessionManager mSessionManager;
     @Inject
     BookingManager mBookingManager;
     @Inject
@@ -130,6 +133,13 @@ public class ProMessagesActivity extends MessagesListActivity
 
         refreshAttachmentMenu();
         initCleaningService();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mSessionManager.markActivity();
     }
 
     @Override
