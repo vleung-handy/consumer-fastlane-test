@@ -104,7 +104,7 @@ public class ServicesManager
             public void onSuccess(final JSONArray menuStructure)
             {
                 //If this is old onboarding then handle old way
-                if (!mConfigurationManager.getPersistentConfiguration().isOnboardingEnabled()
+                if (!mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()
                         && menuStructure == null
                         && getCachedServices() == null)
                 {
@@ -146,7 +146,7 @@ public class ServicesManager
             public void onSuccess(final JSONArray servicesListJson)
             {
                 //If this is old onboarding then handle old way
-                if (!mConfigurationManager.getPersistentConfiguration().isOnboardingEnabled()
+                if (!mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()
                         && servicesListJson == null)
                 {
                     //we only notify of error if there is not already a cached version returned.
