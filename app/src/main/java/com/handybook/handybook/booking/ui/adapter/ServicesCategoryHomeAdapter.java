@@ -38,15 +38,15 @@ public class ServicesCategoryHomeAdapter extends BaseAdapter
     }
 
     @Override
-    public Service getItem(final int i)
+    public Service getItem(final int index)
     {
-        return mServices == null ? null : mServices.get(i);
+        return mServices == null ? null : mServices.get(index);
     }
 
     @Override
-    public long getItemId(final int i)
+    public long getItemId(final int index)
     {
-        return mServices == null ? 0 : mServices.get(i).getId();
+        return mServices == null ? 0 : mServices.get(index).getId();
     }
 
     @Override
