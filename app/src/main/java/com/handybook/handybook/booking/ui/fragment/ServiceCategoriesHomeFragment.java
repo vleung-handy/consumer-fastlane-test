@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -340,7 +341,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
      *
      * @param service
      */
-    private void launchServiceActivity(@NonNull Service service, View view)
+    private void launchServiceActivity(@NonNull Service service, @Nullable View view)
     {
         if (service.getChildServices().size() > 0)
         {
