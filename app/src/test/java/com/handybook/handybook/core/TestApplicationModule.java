@@ -69,6 +69,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragmentTest
 import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
+import com.handybook.handybook.booking.ui.fragment.OnboardingTest;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
@@ -98,6 +99,7 @@ import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.logger.handylogger.EventLogManagerTest;
+import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.referral.ui.RedemptionActivity;
@@ -205,6 +207,8 @@ import static org.mockito.Mockito.when;
         EditPlanAddressFragment.class,
         EventLogManagerTest.class,
         TestActivity.class,
+        OnboardingTest.class,
+        OnboardV2Fragment.class,
         DefaultPreferencesManagerTest.class,
         SplashActivity.class,
         SplashActivityTest.class,
