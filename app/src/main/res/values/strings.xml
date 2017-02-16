@@ -65,6 +65,7 @@
     <string name="error_payment_info_invalid">The credit card information you provided is invalid. Please make sure all the fields are correct.</string>
     <string name="update_successful">Update successful</string>
     <string name="change">Change</string>
+    <string name="not_in_zip">Not in %s?</string>
     <string name="mm_yy">MM/YY</string>
     <string name="credit_card">Credit Card</string>
     <string name="cvc">CVC</string>

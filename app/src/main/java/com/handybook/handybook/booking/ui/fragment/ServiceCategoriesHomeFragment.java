@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +26,15 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.adapter.ServicesCategoryHomeAdapter;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.squareup.otto.Subscribe;
@@ -63,9 +69,13 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     ImageView mPromoImage;
     @Bind(R.id.promo_text)
     TextView mPromoText;
+    @Bind(R.id.not_in_zip)
+    TextView mNotInZip;
 
     @Inject
     UserManager mUserManager;
+    @Inject
+    SecurePreferencesManager mSecurePreferencesManager;
 
     private ServicesCategoryHomeAdapter mAdapter;
 
@@ -79,9 +89,9 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
         return fragment;
     }
 
-    public static ServiceCategoriesFragment newInstance()
+    public static ServiceCategoriesHomeFragment newInstance()
     {
-        return new ServiceCategoriesFragment();
+        return new ServiceCategoriesHomeFragment();
     }
 
     @Override
@@ -115,7 +125,16 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
 
         mPromoImage.setColorFilter(
                 ContextCompat.getColor(getContext(), R.color.handy_blue),
-                PorterDuff.Mode.SRC_ATOP);
+                PorterDuff.Mode.SRC_ATOP
+        );
+
+        String zip = mSecurePreferencesManager.getString(PrefsKey.ZIP);
+        if (!TextUtils.isEmpty(zip))
+        {
+            mNotInZip.setText(getString(R.string.not_in_zip, zip));
+            mChangeZipLayout.setVisibility(View.VISIBLE);
+        }
+
         return view;
     }
 
@@ -125,6 +144,12 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
         getActivity().startActivity(intent);
+    }
+
+    @OnClick(R.id.change_button)
+    public void onChangeButtonClicked()
+    {
+        //todo jia
     }
 
     @Override
@@ -264,13 +289,12 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
 
     private void showCouponAppliedNotificationIfNecessary()
     {
+        //TODO currently not showing anything for hidden coupons; confirm with PM this behavior is OK
         final String coupon = bookingManager.getPromoTabCoupon();
         if (coupon != null)
         {
-            final Spannable text = new SpannableString(String.format(
-                    getString(R.string.using_promo),
-                    coupon
-            ));
+            final Spannable text =
+                    new SpannableString(String.format(getString(R.string.using_promo), coupon));
 
             final int index = text.toString().indexOf(coupon);
             text.setSpan(
@@ -296,6 +320,19 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     {
         super.onStart();
         showCouponAppliedNotificationIfNecessary();
+    }
+
+    @OnClick(R.id.coupon_layout)
+    public void onCouponClick()
+    {
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
+        }
+        else
+        {
+            FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
+        }
     }
 
     /**

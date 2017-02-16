@@ -3,7 +3,6 @@ package com.handybook.handybook.onboarding;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -29,12 +28,13 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
@@ -42,6 +42,7 @@ import com.handybook.handybook.library.util.TextWatcherAdapter;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.OnboardingLog;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 import java.util.Locale;
@@ -101,6 +102,9 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
 
     @Bind(R.id.onboard_zip)
     View mZipView;
+
+    @Inject
+    protected ServicesManager mServicesManager;
 
     @Inject
     DefaultPreferencesManager mDefaultPreferencesManager;
@@ -240,31 +244,31 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         showNext();
     }
 
+    @Subscribe
+    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
+    {
+        mServices = event.getServices();
+
+        bus.post(new LogEvent.AddLogEvent(new OnboardingLog.ZipSubmittedLog(
+                mZip, Locale.getDefault().toString()
+        )));
+
+        //it could be possible that this zip response comes after the user enters email.
+        //if that is the case, we need to call userCreateLead();
+        userCreateLead();
+    }
+
+    @Subscribe
+    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError error)
+    {
+        dataManagerErrorHandler.handleError(getActivity(), error.error);
+    }
+
     private void requestForServices(final String zip)
     {
         mServices = null;
-        dataManager.getServices(zip, new FragmentSafeCallback<List<Service>>(this)
-        {
-            @Override
-            public void onCallbackSuccess(@NonNull final List<Service> services)
-            {
-                mServices = services;
 
-                bus.post(new LogEvent.AddLogEvent(new OnboardingLog.ZipSubmittedLog(
-                        zip, Locale.getDefault().toString()
-                )));
-
-                //it could be possible that this zip response comes after the user enters email.
-                //if that is the case, we need to call userCreateLead();
-                userCreateLead();
-            }
-
-            @Override
-            public void onCallbackError(final DataManager.DataManagerError error)
-            {
-                dataManagerErrorHandler.handleError(getActivity(), error);
-            }
-        });
+        mServicesManager.requestServices(zip, false);
     }
 
     @Override
