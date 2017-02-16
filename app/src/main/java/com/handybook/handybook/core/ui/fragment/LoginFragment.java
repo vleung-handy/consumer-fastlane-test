@@ -40,7 +40,6 @@ import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.widget.EmailInputTextView;
 import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.library.util.ValidationUtils;
@@ -126,7 +125,6 @@ public final class LoginFragment extends BookingFlowFragment
     {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
         callbackManager = CallbackManager.Factory.create();
 
         mBookingRequest = bookingManager.getCurrentRequest();
@@ -183,14 +181,12 @@ public final class LoginFragment extends BookingFlowFragment
                                        .inflate(R.layout.fragment_login, container, false);
 
         ButterKnife.bind(this, view);
-        setupToolbar(mToolbar, getString(R.string.sign_in));
+        setupToolbar(mToolbar, getString(R.string.sign_in), true, R.drawable.ic_back);
 
         mEmailText.clearFocus();
-        final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
 
         if (mFindUser)
         {
-            activity.setDrawerDisabled(true);
             mToolbar.setTitle(getString(R.string.contact));
             mPasswordText.setVisibility(View.GONE);
             mForgotButton.setVisibility(View.GONE);
@@ -199,7 +195,6 @@ public final class LoginFragment extends BookingFlowFragment
         }
         else if (mBookingUserEmail != null)
         {
-            activity.setDrawerDisabled(true);
             mFbLayout.setVisibility(View.GONE);
             mOrText.setVisibility(View.GONE);
             mEmailText.setText(mBookingUserEmail);
@@ -217,14 +212,6 @@ public final class LoginFragment extends BookingFlowFragment
             {
                 mBookingRequest.setEmail(mBookingUserEmail);
             }
-        }
-        else if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
-                && getActivity() instanceof MenuDrawerActivity)
-        {
-            //by default, the toolbar has a back button which goes back when pressed
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-
         }
 
         mFbLoginButton.setFragment(this);
@@ -555,13 +542,11 @@ public final class LoginFragment extends BookingFlowFragment
         enableInputs();
 
         //TODO refactor
-        if(mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
-                || !(getActivity() instanceof MenuDrawerActivity)
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
             //in case bottom nav config flag gets set to true after LoginFragment
             // already instantiated by LoginActivity
             // (which is currently a MenuDrawerActivity)
-                )
-        {
             //TODO consolidate this logic
             Intent intent;
             if(mDestinationClass != null)
@@ -580,33 +565,27 @@ public final class LoginFragment extends BookingFlowFragment
         }
         else if (hasStoredZip())
         {
+            //This is a case of login from Onboarding v2 -- whether it's a successful login from
+            //onboarding, or from the booking process, we direct the user to the home page for a
+            //clean start.
+            bookingManager.clear();
             goToHomePage();
         }
         else
         {
-            final MenuDrawerActivity activity = (MenuDrawerActivity) getActivity();
-
-            //TODO want to consolidate with above, but keeping this here for now until we dig into what MenuDrawerActivity.navigateToActivity does
-            if (mDestinationClass != null)
-            {
-                activity.navigateToActivity(mDestinationClass, getActivity().getIntent().getExtras(),
-                                            null
-                );
-            }
-            else
-            {
-                activity.navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
-            }
+            //go to the legacy homepage
+            goToHomePage();
         }
+
+        //finish, so use cannot hit back and get to login again.
+        getActivity().finish();
     }
 
     private void goToHomePage()
     {
-        //This is a case of login from Onboarding v2 -- whether it's a successful login from
-        //onboarding, or from the booking process, we direct the user to the home page
         getActivity().setResult(ActivityResult.LOGIN_FINISH);
         Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getActivity().startActivity(intent);
     }
 

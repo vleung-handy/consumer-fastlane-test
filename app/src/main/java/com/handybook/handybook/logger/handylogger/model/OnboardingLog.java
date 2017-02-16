@@ -43,4 +43,19 @@ public abstract class OnboardingLog extends EventLog
             mEmailAddress = emailAddress;
         }
     }
+
+
+    public static class ZipNotSupportedLog extends OnboardingLog
+    {
+        private static final String EVENT_TYPE = "zip_not_supported";
+
+        @SerializedName("zip")
+        private final String mZip;
+
+        public ZipNotSupportedLog(final String zip)
+        {
+            super(EVENT_TYPE);
+            mZip = zip;
+        }
+    }
 }

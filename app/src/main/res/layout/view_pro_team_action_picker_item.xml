@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/default_padding"
-        android:textColor="@color/handy_blue"
+        android:textColor="@color/handy_text_black"
         tools:text="@string/favorite"
         />
 

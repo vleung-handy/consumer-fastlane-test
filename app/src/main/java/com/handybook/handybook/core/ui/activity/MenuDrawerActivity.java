@@ -399,7 +399,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 navigateToActivity(HelpActivity.class, menuItem.getItemId());
                 return true;
             case R.id.nav_menu_log_in:
-                navigateToActivity(LoginActivity.class, R.id.nav_menu_log_in);
+                startActivity(new Intent(this, LoginActivity.class));
                 return false;
         }
         return true;

@@ -2,6 +2,7 @@ package com.handybook.handybook.library.ui.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -83,13 +84,37 @@ public class InjectedFragment extends android.support.v4.app.Fragment
 
     public void setupToolbar(Toolbar toolbar, String title, boolean setDisplayHomeAsUp)
     {
+        setupToolbar(toolbar, title, setDisplayHomeAsUp, Integer.MIN_VALUE);
+    }
+
+    /**
+     *
+     * @param toolbar
+     * @param title
+     * @param setDisplayHomeAsUp
+     * @param navigationIcon use Integer.MIN_VALUE to use the default ic_x_white icon
+     */
+    public void setupToolbar(
+            final Toolbar toolbar,
+            final String title,
+            final boolean setDisplayHomeAsUp,
+            final @DrawableRes int navigationIcon
+    )
+    {
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         setToolbarTitle(title);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         if (setDisplayHomeAsUp)
         {
-            activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_x_white);
+            if (navigationIcon == Integer.MIN_VALUE)
+            {
+                activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_x_white);
+            }
+            else
+            {
+                activity.getSupportActionBar().setHomeAsUpIndicator(navigationIcon);
+            }
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener()

@@ -1,20 +1,24 @@
 package com.handybook.handybook.account.ui;
 
-
 import android.app.Dialog;
+import android.content.Intent;
 import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.booking.ui.fragment.PromosFragment;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+import static org.robolectric.Shadows.shadowOf;
 
 public class AccountFragmentTest extends RobolectricGradleTestWrapper
 {
@@ -37,9 +41,9 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
         View view = mFragment.getView().findViewById(R.id.account_contact_info_layout);
         assertNotNull(view);
         view.performClick();
-        assertTrue(mFragment.getFragmentManager()
-                            .findFragmentById(R.id.fragment_container) instanceof
-                           ContactFragment);
+        ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
+        Intent intent = shadowActivity.getNextStartedActivity();
+        assertEquals(intent.getComponent().getClassName(), EditContactInfoActivity.class.getName());
     }
 
     @Test
@@ -49,8 +53,9 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
         View view = mFragment.getView().findViewById(R.id.account_password_layout);
         assertNotNull(view);
         view.performClick();
-        assertTrue(mFragment.getFragmentManager().findFragmentById(R.id.fragment_container)
-                           instanceof ProfilePasswordFragment);
+        ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
+        Intent intent = shadowActivity.getNextStartedActivity();
+        assertEquals(intent.getComponent().getClassName(), EditPasswordActivity.class.getName());
     }
 
     @Test
@@ -60,8 +65,9 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
         View view = mFragment.getView().findViewById(R.id.account_payment_method_layout);
         assertNotNull(view);
         view.performClick();
-        assertTrue(mFragment.getFragmentManager().findFragmentById(R.id.fragment_container)
-                           instanceof UpdatePaymentFragment);
+        ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
+        Intent intent = shadowActivity.getNextStartedActivity();
+        assertEquals(intent.getComponent().getClassName(), UpdatePaymentActivity.class.getName());
     }
 
     @Test
@@ -82,8 +88,9 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
         View view = mFragment.getView().findViewById(R.id.account_promo_code_layout);
         assertNotNull(view);
         view.performClick();
-        assertTrue(mFragment.getFragmentManager().findFragmentById(R.id.fragment_container)
-                           instanceof PromosFragment);
+        ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
+        Intent intent = shadowActivity.getNextStartedActivity();
+        assertEquals(intent.getComponent().getClassName(), PromosActivity.class.getName());
     }
 
     @Test

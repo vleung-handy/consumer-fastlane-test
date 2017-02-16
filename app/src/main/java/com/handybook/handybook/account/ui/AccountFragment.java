@@ -17,10 +17,10 @@ import com.crashlytics.android.Crashlytics;
 import com.facebook.login.LoginManager;
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.history.HistoryFragment;
+import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
-import com.handybook.handybook.booking.ui.fragment.PromosFragment;
+import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -31,6 +31,7 @@ import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
+import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.core.ui.view.PriceView;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
@@ -38,6 +39,7 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
+import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 
 import java.util.ArrayList;
 
@@ -65,6 +67,8 @@ public class AccountFragment extends InjectedFragment
     TextView mActivePlansText;
     @Bind(R.id.account_active_plans_layout)
     ViewGroup mActivePlansLayout;
+    @Bind(R.id.account_pro_team_subtext)
+    TextView mProTeamSubtext;
     @Bind(R.id.account_history_help_layout)
     ViewGroup mHistoryHelpLayout;
     @Bind(R.id.horizontal_progress_bar)
@@ -112,9 +116,18 @@ public class AccountFragment extends InjectedFragment
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
+
+        if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled())
+        {
+            mProTeamSubtext.setText(R.string.account_choose_favorite_pro);
+        }
+        else
+        {
+            mProTeamSubtext.setText(R.string.account_work_with_pros_you_love);
+        }
+
         return view;
     }
-
 
     @Override
     public void onViewCreated(
@@ -221,7 +234,8 @@ public class AccountFragment extends InjectedFragment
     public void contactClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditProfileTapped()));
-        FragmentUtils.switchToFragment(this, new ContactFragment(), true);
+        Intent intent = new Intent(getContext(), EditContactInfoActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_password_layout)
@@ -229,14 +243,16 @@ public class AccountFragment extends InjectedFragment
     {
 
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPasswordTapped()));
-        FragmentUtils.switchToFragment(this, ProfilePasswordFragment.newInstance(), true);
+        Intent intent = new Intent(getContext(), EditPasswordActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_payment_method_layout)
     public void paymentClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPaymentTapped()));
-        FragmentUtils.switchToFragment(this, UpdatePaymentFragment.newInstance(), true);
+        Intent intent = new Intent(getContext(), UpdatePaymentActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_active_plans_layout)
@@ -253,11 +269,18 @@ public class AccountFragment extends InjectedFragment
         }
     }
 
+    @OnClick(R.id.account_pro_team_layout)
+    public void editProTeamClicked()
+    {
+        FragmentUtils.switchToFragment(this, ProTeamEditFragment.newInstance(), true);
+    }
+
     @OnClick(R.id.account_promo_code_layout)
     public void promoClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.ApplyPromoTapped()));
-        FragmentUtils.switchToFragment(this, PromosFragment.newInstance(), true);
+        Intent intent = new Intent(getContext(), PromosActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_help_layout)
@@ -293,7 +316,8 @@ public class AccountFragment extends InjectedFragment
     public void bookingHistoryClicked()
     {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.BookingHistoryTapped()));
-        FragmentUtils.switchToFragment(this, new HistoryFragment(), true);
+        Intent intent = new Intent(getContext(), HistoryActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.account_sign_out_button)
@@ -309,8 +333,6 @@ public class AccountFragment extends InjectedFragment
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
                         mConfigurationManager.invalidateCache();
                         mUserManager.setCurrentUser(null);
-
-
                         //log out of Facebook also
                         LoginManager.getInstance().logOut();
                         Intent intent = new Intent(getContext(), SplashActivity.class);
@@ -330,7 +352,8 @@ public class AccountFragment extends InjectedFragment
         alertDialog.show();
     }
 
-    private void showHorizontalProgressBar() {
+    private void showHorizontalProgressBar()
+    {
         mHorizontalProgressRequestCounter++;
         mHorizontalProgressBar.setVisibility(View.VISIBLE);
     }
@@ -339,13 +362,15 @@ public class AccountFragment extends InjectedFragment
      * This method will hide the horizontal progress bar if api call backs are completed.
      * If not, it will decrement the counter
      */
-    private void hideHorizontalProgressBarIfReady() {
+    private void hideHorizontalProgressBarIfReady()
+    {
         //only decrement if greater then 0
-        if(mHorizontalProgressRequestCounter > 0)
-            --mHorizontalProgressRequestCounter;
+        if (mHorizontalProgressRequestCounter > 0)
+        { --mHorizontalProgressRequestCounter; }
 
-        if(mHorizontalProgressRequestCounter == 0) {
-           mHorizontalProgressBar.setVisibility(View.GONE);
+        if (mHorizontalProgressRequestCounter == 0)
+        {
+            mHorizontalProgressBar.setVisibility(View.GONE);
         }
     }
 }

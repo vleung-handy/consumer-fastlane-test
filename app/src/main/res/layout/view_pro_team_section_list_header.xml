@@ -31,7 +31,6 @@
         android:paddingRight="@dimen/default_padding_quarter"
         android:paddingStart="@dimen/default_padding_quarter"
         android:src="@drawable/ic_question_mark_grey_outline"
-        android:visibility="gone"
         />
 
 </LinearLayout>

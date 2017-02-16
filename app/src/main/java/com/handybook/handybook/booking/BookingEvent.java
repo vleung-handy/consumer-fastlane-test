@@ -385,6 +385,13 @@ public abstract class BookingEvent
     public static class ReceiveServicesSuccess extends HandyEvent.ReceiveSuccessEvent
     {
         private List<Service> mServices;
+        private String mZip;
+
+        public ReceiveServicesSuccess(final List<Service> services, final String zip)
+        {
+            this(services);
+            mZip = zip;
+        }
 
         public ReceiveServicesSuccess(final List<Service> services)
         {
@@ -394,6 +401,11 @@ public abstract class BookingEvent
         public List<Service> getServices()
         {
             return mServices;
+        }
+
+        public String getZip()
+        {
+            return mZip;
         }
     }
 

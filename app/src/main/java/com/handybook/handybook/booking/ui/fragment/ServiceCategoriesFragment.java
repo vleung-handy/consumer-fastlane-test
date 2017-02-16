@@ -35,13 +35,13 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
-import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 import com.squareup.otto.Bus;
@@ -204,8 +204,8 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         if (envMenuItem != null)
         {
-            // We will only enable environment modifier if we are in debug mode
-            if (BuildConfig.DEBUG)
+            // We will only enable environment modifier if this is a stage build
+            if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
             {
                 envMenuItem.setTitle(mEnvironmentModifier.getEnvironment());
             }
@@ -399,14 +399,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @OnClick(R.id.coupon_layout)
     public void onCouponClick()
     {
-        if (getActivity() instanceof MenuDrawerActivity)
-        {
-            ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
-        }
-        else
-        {
-            FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
-        }
+        startActivity(new Intent(getContext(), PromosActivity.class));
     }
 
     /**

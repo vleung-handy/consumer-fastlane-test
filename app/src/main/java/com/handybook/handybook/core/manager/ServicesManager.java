@@ -173,7 +173,7 @@ public class ServicesManager
                             .toJsonTree(servicesMenu).getAsJsonArray().toString());
                 }
 
-                mBus.post(new BookingEvent.ReceiveServicesSuccess(serviceListWithSubcategories));
+                mBus.post(new BookingEvent.ReceiveServicesSuccess(serviceListWithSubcategories, zip));
 
             }
 

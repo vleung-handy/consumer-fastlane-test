@@ -1,12 +1,12 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,10 +23,10 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
+import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
 
@@ -206,27 +206,22 @@ public final class PromosFragment extends BookingFlowFragment
                                 promoCode, null));
 
                         bookingManager.setPromoTabCoupon(code.getCode());
-                        if (getActivity() instanceof MenuDrawerActivity)
+
+                        Intent intent;
+                        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
                         {
-                            ((MenuDrawerActivity) getActivity()).navigateToActivity(
-                                    ServiceCategoriesActivity.class, R.id.nav_menu_home);
+                            //launch bottom nav activity and select services tab
+                            intent = new Intent(getActivity(), BottomNavActivity.class);
+                            intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
                         }
                         else
                         {
-                            Fragment fragment;
-                            if(mConfigurationManager.getPersistentConfiguration().isHomeScreenV2Enabled())
-                            {
-                                fragment = ServiceCategoriesHomeFragment.newInstance();
-                            } else
-                            {
-                                fragment = ServiceCategoriesFragment.newInstance();
-                            }
-                            FragmentUtils.switchToFragment(
-                                    PromosFragment.this,
-                                    fragment,
-                                    false
-                            );
+                            //launch service categories activity which extends menu drawer activity
+                            intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
                         }
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startActivity(intent);
                     }
                 }
 

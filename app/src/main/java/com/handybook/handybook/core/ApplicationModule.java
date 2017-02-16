@@ -10,8 +10,12 @@ import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.account.ui.ContactFragment;
+import com.handybook.handybook.account.ui.EditContactInfoActivity;
+import com.handybook.handybook.account.ui.EditPasswordActivity;
+import com.handybook.handybook.account.ui.EditPlanAddressActivity;
 import com.handybook.handybook.account.ui.EditPlanAddressFragment;
 import com.handybook.handybook.account.ui.EditPlanFragment;
+import com.handybook.handybook.account.ui.EditPlanFrequencyActivity;
 import com.handybook.handybook.account.ui.EditPlanFrequencyFragment;
 import com.handybook.handybook.account.ui.PlansFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
@@ -54,7 +58,6 @@ import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
-import com.handybook.handybook.booking.ui.activity.BookingProTeamActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
@@ -88,7 +91,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPasswordPromptFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
-import com.handybook.handybook.booking.ui.fragment.BookingProTeamFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragment;
@@ -153,6 +155,7 @@ import com.handybook.handybook.onboarding.ServiceNotSupportedActivity;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
+import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.NewProTeamProListFragment;
@@ -299,8 +302,6 @@ import retrofit.converter.GsonConverter;
         ProTeamEditFragment.class,
         ProTeamProListFragment.class,
         NewProTeamProListFragment.class,
-        BookingProTeamActivity.class,
-        BookingProTeamFragment.class,
         RemoveProDialogFragment.class,
         ReportIssueActivity.class,
         ReportIssueFragment.class,
@@ -321,6 +322,11 @@ import retrofit.converter.GsonConverter;
         ProTeamPerBookingActivity.class,
         BookingProTeamConversationsFragment.class,
         RescheduleDialogFragment.class,
+        EditContactInfoActivity.class,
+        EditPasswordActivity.class,
+        EditPlanFrequencyActivity.class,
+        EditPlanAddressActivity.class,
+        ProTeamEditActivity.class,
         ServiceCategoriesHomeFragment.class,
         SessionManager.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES

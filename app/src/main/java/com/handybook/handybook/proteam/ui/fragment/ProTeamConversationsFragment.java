@@ -15,8 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
@@ -38,6 +36,7 @@ import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
@@ -66,17 +65,8 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Bind(R.id.pro_team_recycler_view)
     EmptiableRecyclerView mRecyclerView;
 
-    @Bind(R.id.pro_team_empty_view)
+    @Bind(R.id.messages_empty_view)
     View mEmptyView;
-
-    @Bind(R.id.pro_team_empty_view_title)
-    TextView mEmptyViewTitle;
-
-    @Bind(R.id.pro_team_empty_view_cta)
-    Button mEmptyViewCta;
-
-    @Bind(R.id.pro_team_empty_view_text)
-    TextView mEmptyViewText;
 
     ProConversationAdapter mAdapter;
 
@@ -132,44 +122,12 @@ public class ProTeamConversationsFragment extends InjectedFragment
                 R.color.handy_service_plumber
         );
 
-        mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
-        mEmptyViewText.setText(R.string.conversation_no_preferred_pros);
         mEmptyView.setVisibility(View.GONE);
         initRecyclerView();
 
         bus.post(new LogEvent.AddLogEvent(new AppLog.AppNavigationLog(PRO_TEAM_CONVERSATIONS)));
 
         return view;
-    }
-
-    private void updateEmptyViews()
-    {
-        if (mProTeam != null && mProTeam.getAllCategories() != null)
-        {
-            if (!hasPreferred() && hasIndifferent())
-            {
-                //user currently doesn't have any pro, but has option to add pros
-                mEmptyViewText.setText(R.string.conversation_no_preferred_pros);
-
-                //enable the CTA to edit pro team
-                mEmptyViewCta.setVisibility(View.VISIBLE);
-                mEmptyViewCta.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final View v)
-                    {
-                        onEditListClicked();
-                    }
-                });
-
-            }
-            else if (!hasPreferred() && !hasIndifferent())
-            {
-                //user has no pros, and no pros to add.
-                mEmptyViewText.setText(R.string.conversation_no_pros);
-                mEmptyViewCta.setVisibility(View.GONE);
-            }
-        }
     }
 
     private boolean hasPreferred()
@@ -197,7 +155,6 @@ public class ProTeamConversationsFragment extends InjectedFragment
             return;
         }
 
-        updateEmptyViews();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setEmptyView(mEmptyView);
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
@@ -336,7 +293,14 @@ public class ProTeamConversationsFragment extends InjectedFragment
     public void onResume()
     {
         super.onResume();
-        setupToolbar(mToolbar, getString(R.string.my_pro_team));
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        {
+            setupToolbar(mToolbar, getString(R.string.messages));
+        }
+        else
+        {
+            setupToolbar(mToolbar, getString(R.string.pro_team));
+        }
         if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
             mToolbar.setNavigationIcon(null);
@@ -387,16 +351,13 @@ public class ProTeamConversationsFragment extends InjectedFragment
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    @OnClick(R.id.pro_team_toolbar_edit_list_button)
+    @OnClick(R.id.pro_team_toolbar_edit_pro_team_button)
     public void onEditListClicked()
     {
-        final ProTeamEditFragment proTeamEditFragment = ProTeamEditFragment.newInstance(mProTeam);
-        proTeamEditFragment.setTargetFragment(this, RequestCode.EDIT_PRO_TEAM);
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, proTeamEditFragment)
-                .addToBackStack(null)
-                .commit();
+        startActivityForResult(
+                new Intent(getContext(), ProTeamEditActivity.class),
+                RequestCode.EDIT_PRO_TEAM
+        );
     }
 
     @Override

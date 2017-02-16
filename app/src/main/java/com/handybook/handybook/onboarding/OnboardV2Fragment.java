@@ -3,20 +3,23 @@ package com.handybook.handybook.onboarding;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -24,6 +27,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -65,9 +69,8 @@ import static com.handybook.handybook.core.constant.RequestCode.LOGIN_FROM_ONBOA
  * The ZIP will always be stored locally in shared prefs. The email will only be stored if it's a
  * new user to Handy.
  */
-public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.OnOffsetChangedListener
+public class OnboardV2Fragment extends InjectedFragment
 {
-    private static final String TAG = "OnboardV2Fragment";
     private static final int ZIP_MIN_LENGTH = 5;
 
     // Threshold for minimal keyboard height.
@@ -82,6 +85,9 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @Bind(R.id.onboard_collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
 
+    @Bind(R.id.onboard_already_have_account)
+    TextView mAlreadyHaveAccount;
+
     @Bind(R.id.onboard_edit_zip)
     TextInputEditText mEditZip;
 
@@ -90,6 +96,12 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
 
     @Bind(R.id.onboard_view_switcher)
     ViewSwitcher mViewSwitcher;
+
+    @Bind(R.id.pinned_layout)
+    LinearLayout mPinnedLayout;
+
+    @Bind(R.id.onboard_signin)
+    Button mButtonSignIn;
 
     @Bind(R.id.onboard_button_next)
     Button mNextButton;
@@ -119,18 +131,12 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     private String mEmail;
     private String mZipCodeString;
     private String mEmailString;
+    private int mSignInOriginalLeft;
+    private int mPadding;
 
     public static OnboardV2Fragment newInstance()
     {
         return new OnboardV2Fragment();
-    }
-
-    @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -142,12 +148,12 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     {
         View view = inflater.inflate(R.layout.fragment_onboard_v2, container, false);
         ButterKnife.bind(this, view);
-
         mEditZip.clearFocus();
-        mAppBar.addOnOffsetChangedListener(this);
         registerKeyboardListener();
 
         mCollapsingToolbar.setTitleEnabled(false);
+        disableAppBarDragging();
+        mPadding = getResources().getDimensionPixelSize(R.dimen.default_padding);
 
         mSlideInFromRight = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
         mSlideOutToLeft = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_left);
@@ -226,12 +232,87 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             }
         });
 
+        /*
+        Needs the toolbar to intercept the touch event
+         */
+        mToolbar.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event)
+            {
+                if (event.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    if (isWithinButtonBounds(event.getX(), event.getY()))
+                    {
+                        mButtonSignIn.performClick();
+                    }
+                }
+                return false;
+            }
+        });
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().onBackPressed();
+            }
+        });
 
         //try to prepopulate the zip fields with any data we already have.
         mEditZip.setText(mDefaultPreferencesManager.getString(PrefsKey.ZIP));
         mEditEmail.setText(mDefaultPreferencesManager.getString(PrefsKey.EMAIL));
 
         return view;
+    }
+
+    /**
+     * Disables the app bar from letting the user drag to expand/collapse the toolbar
+     */
+    private void disableAppBarDragging()
+    {
+        // Disable "Drag" for AppBarLayout (i.e. User can't scroll appBarLayout by directly touching appBarLayout - User can only scroll appBarLayout by only using scrollContent)
+        if (mAppBar.getLayoutParams() != null)
+        {
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams();
+            AppBarLayout.Behavior appBarLayoutBehaviour = new AppBarLayout.Behavior();
+            appBarLayoutBehaviour.setDragCallback(new AppBarLayout.Behavior.DragCallback()
+            {
+                @Override
+                public boolean canDrag(AppBarLayout appBarLayout)
+                {
+                    return false;
+                }
+            });
+            layoutParams.setBehavior(appBarLayoutBehaviour);
+        }
+
+    }
+
+    /**
+     * Checks whether the x, y coordinates passed in are within the bounds of the "sign in" button.
+     * The button moves to different locations depending on whether or not the keyboard is showing.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    private boolean isWithinButtonBounds(float x, float y)
+    {
+        int[] location = new int[2];
+        mButtonSignIn.getLocationOnScreen(location);
+
+        if (x > location[0]
+                && x < location[0] + mButtonSignIn.getWidth()
+                && y > Math.max(location[1] - mPadding, 0)
+                && y < location[1] + mButtonSignIn.getHeight()
+                )
+        {
+            return true;
+        }
+
+        return false;
     }
 
     @OnClick(R.id.onboard_button_next)
@@ -247,10 +328,16 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     @Subscribe
     public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
     {
-        mServices = event.getServices();
+        onServicesReceived(event.getServices(), event.getZip());
+    }
+
+    @VisibleForTesting
+    public void onServicesReceived(@NonNull final List<Service> services, final String zip)
+    {
+        mServices = services;
 
         bus.post(new LogEvent.AddLogEvent(new OnboardingLog.ZipSubmittedLog(
-                mZip, Locale.getDefault().toString()
+                zip, Locale.getDefault().toString()
         )));
 
         //it could be possible that this zip response comes after the user enters email.
@@ -331,7 +418,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
         }
     }
 
-    @OnClick(R.id.onboard_signin_1)
+    @OnClick(R.id.onboard_signin)
     public void signinClicked()
     {
         redirectToLogin();
@@ -340,13 +427,17 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     private void redirectToLogin()
     {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.putExtra(LoginActivity.EXTRA_FROM_ONBOARDING, true);
         startActivityForResult(intent, LOGIN_FROM_ONBOARDING);
     }
 
     @OnClick(R.id.onboard_button_submit)
     public void emailSubmitClicked()
     {
+        //mark onboarding shown, so we don't show the old one, even if the config eventually gets turned off.
+        mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
         mEmail = mEditEmail.getText().toString();
+        mDefaultPreferencesManager.setString(PrefsKey.EMAIL, mEmail);
         userCreateLead();
     }
 
@@ -399,7 +490,8 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
      *
      * @param emailResponse
      */
-    private void handleEmailResponse(UserExistsResponse emailResponse)
+    @VisibleForTesting
+    public void handleEmailResponse(UserExistsResponse emailResponse)
     {
         if (emailResponse.exists())
         {
@@ -417,7 +509,7 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
             mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
             mDefaultPreferencesManager.setString(PrefsKey.EMAIL, mEmail);
 
-            if (mServices.isEmpty())
+            if (mServices == null || mServices.isEmpty())
             {
                 //we don't support this zip
                 Intent intent = new Intent(getActivity(), ServiceNotSupportedActivity.class);
@@ -480,8 +572,18 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     {
         if (!mExpanded)
         {
-            mAppBar.setExpanded(true);
             mExpanded = true;
+            mAppBar.setExpanded(true);
+
+            mToolbar.setVisibility(View.INVISIBLE);
+            mToolbar.setAlpha(0);
+
+            mAlreadyHaveAccount.setVisibility(View.VISIBLE);
+
+            mButtonSignIn.animate()
+                         .translationX(mSignInOriginalLeft - mButtonSignIn.getLeft())
+                         .start();
+
         }
     }
 
@@ -489,33 +591,23 @@ public class OnboardV2Fragment extends InjectedFragment implements AppBarLayout.
     {
         if (mExpanded)
         {
-            mAppBar.setExpanded(false);
             mExpanded = false;
-        }
-    }
 
-    /**
-     * Determines when the toolbar is fully expanded and fully collapsed.
-     * @param appBarLayout
-     * @param verticalOffset
-     */
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset)
-    {
-        Log.d(TAG, "onOffsetChanged: " + verticalOffset);
-        if (verticalOffset == 0)
-        {
-            //fully expanded
-            mToolbar.setVisibility(View.INVISIBLE);
-            mToolbar.setAlpha(0);
-        }
-        else if (mToolbar.getHeight() - mCollapsingToolbar.getHeight() == verticalOffset)
-        {
-            //fully collapsed
             mToolbar.setVisibility(View.VISIBLE);
             mToolbar.animate()
-                          .alpha(1)
-                          .start();
+                    .alpha(1)
+                    .start();
+
+            mAlreadyHaveAccount.setVisibility(View.INVISIBLE);
+
+            mAppBar.setExpanded(false);
+
+            int newLeft = mPinnedLayout.getRight() - mButtonSignIn.getWidth();
+            mSignInOriginalLeft = mButtonSignIn.getLeft();
+            mButtonSignIn.animate()
+                         .translationX(newLeft - mSignInOriginalLeft)
+                         .start();
+
         }
     }
 }

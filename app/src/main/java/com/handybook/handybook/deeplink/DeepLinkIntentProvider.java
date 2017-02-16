@@ -163,7 +163,7 @@ public class DeepLinkIntentProvider
         if (isUserLoggedIn() &&
                 sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
         {
-            return createBottomNavActivityIntent(context, MainNavTab.PRO_TEAM);
+            return createBottomNavActivityIntent(context, MainNavTab.MESSAGES);
         }
         else
         {
