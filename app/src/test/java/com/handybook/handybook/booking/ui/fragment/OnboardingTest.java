@@ -12,11 +12,10 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.onboarding.NotSupportedActivity;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
+import com.handybook.handybook.onboarding.ServiceNotSupportedActivity;
 
 import junit.framework.Assert;
 
@@ -31,8 +30,6 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
@@ -45,12 +42,6 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
 
     @Mock
     UserExistsResponse mUserExistsResponse;
-
-    @Inject
-    DefaultPreferencesManager mDefaultPreferencesManager;
-
-    @Inject
-    DataManager mDataManager;
 
     @Captor
     private ArgumentCaptor<DataManager.Callback> mCallbackCaptor;
@@ -72,8 +63,8 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
     public void testShowZip()
     {
         ViewSwitcher viewSwitcher = (ViewSwitcher) mFragment.getView()
-                                                            .findViewById(R.id.view_switcher);
-        View zipView = mFragment.getView().findViewById(R.id.view_zip);
+                                                            .findViewById(R.id.onboard_view_switcher);
+        View zipView = mFragment.getView().findViewById(R.id.onboard_zip);
 
         Assert.assertEquals(
                 "The current view should be the zip view",
@@ -90,11 +81,11 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
     public void testZipNextButton()
     {
         ViewSwitcher viewSwitcher = (ViewSwitcher) mFragment.getView()
-                                                            .findViewById(R.id.view_switcher);
-        View emailView = mFragment.getView().findViewById(R.id.view_email);
-        View nextButton = mFragment.getView().findViewById(R.id.button_next);
+                                                            .findViewById(R.id.onboard_view_switcher);
+        View emailView = mFragment.getView().findViewById(R.id.onboard_email);
+        View nextButton = mFragment.getView().findViewById(R.id.onboard_button_next);
         TextInputEditText editText = (TextInputEditText) mFragment.getView()
-                                                                  .findViewById(R.id.edit_zip);
+                                                                  .findViewById(R.id.onboard_edit_zip);
 
         Assert.assertEquals("The next button should be disabled", false, nextButton.isEnabled());
 
@@ -117,8 +108,8 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
     public void testBackPressed()
     {
         ViewSwitcher viewSwitcher = (ViewSwitcher) mFragment.getView()
-                                                            .findViewById(R.id.view_switcher);
-        View zipView = mFragment.getView().findViewById(R.id.view_zip);
+                                                            .findViewById(R.id.onboard_view_switcher);
+        View zipView = mFragment.getView().findViewById(R.id.onboard_zip);
 
         Assert.assertEquals(
                 "The current view should be the zip view",
@@ -144,8 +135,8 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
     public void testEmailSubmitButton()
     {
         TextInputEditText editText = (TextInputEditText) mFragment.getView()
-                                                                  .findViewById(R.id.edit_email);
-        View submitButton = mFragment.getView().findViewById(R.id.button_submit);
+                                                                  .findViewById(R.id.onboard_edit_email);
+        View submitButton = mFragment.getView().findViewById(R.id.onboard_button_submit);
 
         Assert.assertEquals(
                 "The submit button should be disabled",
@@ -215,7 +206,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
         assertThat(
                 nextStartedActivity.getComponent().getClassName(),
-                equalTo(NotSupportedActivity.class.getName())
+                equalTo(ServiceNotSupportedActivity.class.getName())
         );
     }
 
