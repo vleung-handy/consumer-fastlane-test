@@ -3,7 +3,6 @@ package com.handybook.handybook.test.booking;
 import android.support.test.espresso.PerformException;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.test.LauncherActivityTestRule;
 import com.handybook.handybook.test.util.AppInteractionUtil;
