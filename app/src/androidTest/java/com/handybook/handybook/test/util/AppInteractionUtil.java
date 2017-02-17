@@ -15,8 +15,8 @@ import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class AppInteractionUtil
-{
+public class AppInteractionUtil {
+
     /**
      * logs out if necessary and passes the onboarding screen if necessary
      * <p>
@@ -24,8 +24,7 @@ public class AppInteractionUtil
      * <p>
      * TODO: bypass login for non-login tests like in portal
      */
-    public static void logOutAndPassOnboarding()
-    {
+    public static void logOutAndPassOnboarding() {
         //log out if necessary
         //open nav drawer to log out if necessary
 
@@ -40,14 +39,12 @@ public class AppInteractionUtil
          (this does not happen on an Android 6.0 device)
 
          TODO see if this happens on the actual cloud test devices
-         */
-        {
+         */ {
             openDrawer();
 
             //log out
             onView(withId(android.R.id.content)).perform(swipeUp());
-            if (!ViewUtil.isViewDisplayed(withText(R.string.sign_in)))
-            {
+            if (!ViewUtil.isViewDisplayed(withText(R.string.sign_in))) {
                 //press the my account button in the nav drawer
                 onView(withText(R.string.account)).perform(click());
 
@@ -62,15 +59,13 @@ public class AppInteractionUtil
                 ViewUtil.waitForTextNotVisible(R.string.log_out, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
                 //drawer will be closed
             }
-            else
-            {
+            else {
                 //close the drawer
                 closeDrawer();
             }
         }
 
-        if (ViewUtil.isViewDisplayed(R.id.start_button))
-        {
+        if (ViewUtil.isViewDisplayed(R.id.start_button)) {
             onView(withId(R.id.start_button)).perform(click());
         }
     }
@@ -80,8 +75,7 @@ public class AppInteractionUtil
      *
      * @param testUser
      */
-    public static void logIn(TestUser testUser)
-    {
+    public static void logIn(TestUser testUser) {
         openDrawer();
         //the side menu items are loaded async and sometimes take a little longer to show
         ViewUtil.waitForTextVisible(R.string.sign_in, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
@@ -92,35 +86,28 @@ public class AppInteractionUtil
         onView(withId(R.id.login_button)).perform(click());
     }
 
-    public static void waitForServiceCategoriesPage()
-    {
+    public static void waitForServiceCategoriesPage() {
         //would rather wait for service recyclerview but it's flaky
         ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    public static void waitForOnboardZipPage()
-    {
+    public static void waitForOnboardZipPage() {
         ViewUtil.waitForViewVisible(R.id.onboard_edit_zip, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    public static void waitForOnboardEmailPage()
-    {
+    public static void waitForOnboardEmailPage() {
         ViewUtil.waitForViewVisible(R.id.onboard_edit_email, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    public static void waitForBottomNavPage()
-    {
+    public static void waitForBottomNavPage() {
         ViewUtil.waitForViewVisible(R.id.activity_bottom_nav, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    public static void pauseTestFor(long milliseconds)
-    {
-        try
-        {
+    public static void pauseTestFor(long milliseconds) {
+        try {
             Thread.sleep(milliseconds);
         }
-        catch (InterruptedException e)
-        {
+        catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -128,8 +115,7 @@ public class AppInteractionUtil
     /**
      * Open drawer
      */
-    public static void openDrawer()
-    {
+    public static void openDrawer() {
         ViewUtil.waitForViewVisible(R.id.drawer_layout, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         dismissShareTheLoveIfNeeded();
@@ -139,8 +125,7 @@ public class AppInteractionUtil
      * NOTE: make sure to do commit instead of apply, we need these to be 100% committed for the
      * tests to pass.
      */
-    public static void clearSharedPrefs()
-    {
+    public static void clearSharedPrefs() {
         PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext())
                          .edit().clear().commit();
     }
@@ -148,17 +133,14 @@ public class AppInteractionUtil
     /**
      * Close drawer
      */
-    public static void closeDrawer()
-    {
+    public static void closeDrawer() {
         ViewUtil.waitForViewVisible(R.id.drawer_layout, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.close());
         dismissShareTheLoveIfNeeded();
     }
 
-    private static void dismissShareTheLoveIfNeeded()
-    {
-        if (ViewUtil.isViewDisplayed(withText(R.string.referral_dialog_title)))
-        {
+    private static void dismissShareTheLoveIfNeeded() {
+        if (ViewUtil.isViewDisplayed(withText(R.string.referral_dialog_title))) {
             onView(withId(R.id.dialog_referral_close_button)).perform(click());
         }
     }

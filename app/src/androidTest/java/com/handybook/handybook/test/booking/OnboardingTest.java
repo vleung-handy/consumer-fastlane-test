@@ -18,8 +18,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-public class OnboardingTest
-{
+public class OnboardingTest {
 
     /**
      * Declaring this with launchActivity = false. Need to manually launch during the actual test
@@ -35,8 +34,7 @@ public class OnboardingTest
      */
     @Ignore
     @Test
-    public void testOnboardingV2()
-    {
+    public void testOnboardingV2() {
         //This needs to be done for the test, as to simulate a user that has never used the app
         //before, thus the need to onboard
         AppInteractionUtil.clearSharedPrefs();
@@ -57,20 +55,17 @@ public class OnboardingTest
         TextViewUtil.updateEditTextView(R.id.onboard_edit_email, getRandomEmail());
         onView(withId(R.id.onboard_button_submit)).perform(click());
 
-        try
-        {
+        try {
             //checks for the home page
             AppInteractionUtil.waitForServiceCategoriesPage();
         }
-        catch (PerformException e)
-        {
+        catch (PerformException e) {
             //if it's not there, check for the new bottom nav
             AppInteractionUtil.waitForBottomNavPage();
         }
     }
 
-    private String getRandomEmail()
-    {
+    private String getRandomEmail() {
         return UUID.randomUUID().toString() + "@handy.com";
     }
 }
