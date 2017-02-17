@@ -65,3 +65,10 @@ crashlytics-build.properties
 
 #### Pycharm .idea folder
 scripts/.idea
+
+# Fastlane
+
+fastlane/report.xml
+fastlane/test_output
+fastlane/.env
+fastlane/screenshots

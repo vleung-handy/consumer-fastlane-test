@@ -1,0 +1,25 @@
+# More documentation about how to customize your build
+# can be found here:
+# https://docs.fastlane.tools
+fastlane_version "1.111.0"
+
+default_platform :android
+
+before_all do
+  ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+end
+
+lane :beta do
+  gradle(task: "assembleStageDebug")
+
+  crashlytics(
+    api_token: ENV["CRASHLYTICS_API_TOKEN"],
+    build_secret: ENV["CRASHLYTICS_BUILD_SECRET"],
+    groups: ["android-devs"]
+  )
+
+  slack(
+    message: "New Android build uploaded to Crashlytics!",
+    channel: "android-fastlane"
+  )
+end
