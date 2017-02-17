@@ -438,7 +438,7 @@ public class BookingDetailSectionFragmentProInformation extends
     @Override
     public void onCreateConversationSuccess(final String conversationId)
     {
-        progressDialog.hide();
+        progressDialog.dismiss();
         startActivity(new Intent(getActivity(), ProMessagesActivity.class).putExtra(
                 LayerConstants.LAYER_CONVERSATION_KEY,
                 Uri.parse(conversationId)
@@ -448,7 +448,7 @@ public class BookingDetailSectionFragmentProInformation extends
     @Override
     public void onCreateConversationError()
     {
-        progressDialog.hide();
+        progressDialog.dismiss();
         showToast(R.string.an_error_has_occurred);
     }
 }
