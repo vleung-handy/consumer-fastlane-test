@@ -9,6 +9,7 @@ import com.handybook.handybook.test.LauncherActivityTestRule;
 import com.handybook.handybook.test.util.AppInteractionUtil;
 import com.handybook.handybook.test.util.TextViewUtil;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,8 +21,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public class OnboardingTest
 {
-
-    ConfigurationManager mConfigurationManager;
 
     /**
      * Declaring this with launchActivity = false. Need to manually launch during the actual test
@@ -35,6 +34,7 @@ public class OnboardingTest
      * fills out zip and email, then advances to the home page. The email used is random, to
      * simulate a new user.
      */
+    @Ignore
     @Test
     public void testOnboardingV2()
     {
