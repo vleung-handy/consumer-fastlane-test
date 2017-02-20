@@ -4,6 +4,7 @@ import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;
+import android.support.test.espresso.contrib.NavigationViewActions;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.test.model.TestUser;
@@ -77,9 +78,11 @@ public class AppInteractionUtil {
      */
     public static void logIn(TestUser testUser) {
         openDrawer();
-        //the side menu items are loaded async and sometimes take a little longer to show
-        ViewUtil.waitForTextVisible(R.string.sign_in, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        onView(withText(R.string.sign_in)).perform(click());
+
+        //can no longer navigate the menu drawer by looking for "Sign In" text, as there are
+        //multiple views with that string. Need to use NavigationViewActions instead.
+        onView(withId(R.id.navigation)).perform(NavigationViewActions.navigateTo(R.id.nav_menu_log_in));
+
         TextViewUtil.updateEditTextView(R.id.email_text, testUser.getEmail());
         TextViewUtil.updateEditTextView(R.id.password_text, testUser.getPassword());
         Espresso.closeSoftKeyboard();
