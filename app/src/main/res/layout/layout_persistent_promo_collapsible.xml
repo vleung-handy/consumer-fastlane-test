@@ -6,20 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:titleEnabled="false"
-    app:toolbarId="@+id/persistent_promo_preview_view"
     app:contentScrim="@color/handy_blue"
     app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
     app:scrimVisibleHeightTrigger="0dp"
+    app:titleEnabled="false"
+    app:toolbarId="@+id/persistent_promo_preview_view"
     >
 
     <com.handybook.handybook.persistentpromo.PersistentPromoPreviewToolbar
-        app:layout_behavior="com.handybook.handybook.persistentpromo.PersistentPromoAppBarLayout$FadingViewBehavior"
         android:id="@+id/persistent_promo_preview_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_collapseMode="pin"
         app:contentInsetStart="0dp"
+        app:layout_behavior="com.handybook.handybook.persistentpromo.PersistentPromoAppBarLayout$FadingViewBehavior"
+        app:layout_collapseMode="pin"
         />
 
 </android.support.design.widget.CollapsingToolbarLayout>

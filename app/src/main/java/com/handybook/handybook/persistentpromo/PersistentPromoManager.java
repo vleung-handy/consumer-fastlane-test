@@ -13,38 +13,31 @@ import javax.inject.Inject;
 /**
  * note that this may acquire more responsibility later
  */
-public class PersistentPromoManager
-{
+public class PersistentPromoManager {
+
     private final DataManager mDataManager;
-    private final Context mContext;
 
     @Inject
-    public PersistentPromoManager(
-            final Context context,
-            final DataManager dataManager
-    )
-    {
-        mContext = context;
+    public PersistentPromoManager(final DataManager dataManager) {
         mDataManager = dataManager;
     }
 
-    public void getPersistentPromo(@Nullable String postalCode,
-                                   @NonNull DataManager.Callback<PersistentPromo> persistentPromoCallback)
-    {
+    public void getPersistentPromo(
+            @Nullable String postalCode,
+            @NonNull DataManager.Callback<PersistentPromo> persistentPromoCallback
+    ) {
         //TODO revert when we actually use this feature
         mDataManager.getAvailablePersistentPromo(postalCode, persistentPromoCallback);
-//        persistentPromoCallback.onSuccess(getTestPersistentPromo(mContext));
+        //        persistentPromoCallback.onSuccess(getTestPersistentPromo(mContext));
     }
 
-    private PersistentPromo getTestPersistentPromo(Context context)
-    {
+    //TODO remove once we actually integrate this feature
+    private PersistentPromo getTestPersistentPromo(Context context) {
         String json = null;
-        try
-        {
+        try {
             json = IOUtils.loadJSONFromAsset(context, "test_persistent_promo.json");
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return new GsonBuilder().create().fromJson(json, PersistentPromo.class);

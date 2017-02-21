@@ -21,69 +21,60 @@ import butterknife.OnClick;
  * "This view depends heavily on being used as a direct child within a CoordinatorLayout.
  * If you use AppBarLayout within a different ViewGroup, most of it's functionality will not work."
  */
-public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarLayout.OnOffsetChangedListener
-{
+public class PersistentPromoAppBarLayout extends AppBarLayout
+        implements AppBarLayout.OnOffsetChangedListener {
+
     @Bind(R.id.persistent_promo_preview_view)
     PersistentPromoPreviewToolbar mPersistentPromoPreviewToolbar;
 
     private OnPersistentPromoFullyExpandedListener mOnPersistentPromoFullyExpandedListener;
 
-    public PersistentPromoAppBarLayout(final Context context)
-    {
+    public PersistentPromoAppBarLayout(final Context context) {
         super(context);
         init(context);
     }
 
-    public PersistentPromoAppBarLayout(final Context context, final AttributeSet attrs)
-    {
+    public PersistentPromoAppBarLayout(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    private void init(@NonNull Context context)
-    {
+    private void init(@NonNull Context context) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         layoutInflater.inflate(R.layout.layout_persistent_promo_collapsible, this);
         ButterKnife.bind(this);
         addOnOffsetChangedListener(this);
     }
 
-    public void setOnPersistentPromoFullyExpandedListener(final OnPersistentPromoFullyExpandedListener onPersistentPromoFullyExpandedListener)
-    {
+    public void setOnPersistentPromoFullyExpandedListener(final OnPersistentPromoFullyExpandedListener onPersistentPromoFullyExpandedListener) {
         mOnPersistentPromoFullyExpandedListener = onPersistentPromoFullyExpandedListener;
     }
 
-    public void updateWithModel(@NonNull PersistentPromo persistentPromo)
-    {
+    public void updateWithModel(@NonNull PersistentPromo persistentPromo) {
         mPersistentPromoPreviewToolbar.updateWithModel(persistentPromo);
     }
 
     @OnClick(R.id.persistent_promo_preview_view)
-    public void onPersistentPromoPreviewViewClicked()
-    {
+    public void onPersistentPromoPreviewViewClicked() {
         setExpanded(true, true);
     }
 
     @Override
-    public void onOffsetChanged(final AppBarLayout appBarLayout, final int verticalOffset)
-    {
+    public void onOffsetChanged(final AppBarLayout appBarLayout, final int verticalOffset) {
         /*
         TODO
         intercepting touch listener and setting clickable, focusable=false
         doesn't seem to allow click events to be propagated to views underneath the toolbar
         would prefer to do that instead of this
          */
-        if(verticalOffset == 0)
-        {
+        if (verticalOffset == 0) {
             //offer fully expanded. don't want this toolbar interfering with clicks meant for view below it
             mPersistentPromoPreviewToolbar.setVisibility(GONE);
-            if(mOnPersistentPromoFullyExpandedListener != null)
-            {
+            if (mOnPersistentPromoFullyExpandedListener != null) {
                 mOnPersistentPromoFullyExpandedListener.onPersistentPromoFullyExpanded();
             }
         }
-        else
-        {
+        else {
             //offer not fully expanded
             mPersistentPromoPreviewToolbar.setVisibility(VISIBLE);
         }
@@ -91,23 +82,23 @@ public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarL
         setAlpha(1 - persistentPromoExpandedPercent);
     }
 
-    public float getExpandedPercent()
-    {
+    public float getExpandedPercent() {
         //getY() is always negative here
-        return 1 + getY()/getTotalScrollRange();
+        return 1 + getY() / getTotalScrollRange();
     }
 
-    public interface OnPersistentPromoFullyExpandedListener
-    {
+    public interface OnPersistentPromoFullyExpandedListener {
+
         void onPersistentPromoFullyExpanded();
     }
+
+
     /**
      * defines a scrolling and alpha transition behavior for a view, that is dependent on this view
      */
-    public static class ScrollingFadingViewBehavior extends ScrollingViewBehavior
-    {
-        public ScrollingFadingViewBehavior(@NonNull Context context, @Nullable AttributeSet attrs)
-        {
+    public static class ScrollingFadingViewBehavior extends ScrollingViewBehavior {
+
+        public ScrollingFadingViewBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
             super(context, attrs);
         }
 
@@ -116,16 +107,14 @@ public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarL
                 final CoordinatorLayout parent,
                 final View child,
                 final View dependency
-        )
-        {
+        ) {
             return dependency instanceof PersistentPromoAppBarLayout;
         }
 
         @Override
         public boolean onDependentViewChanged(
                 final CoordinatorLayout parent, final View child, final View dependency
-        )
-        {
+        ) {
             super.onDependentViewChanged(parent, child, dependency);
 
             //also set alpha depending on how much the dependent view is scrolled
@@ -139,10 +128,9 @@ public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarL
     /**
      * defines an alpha transition behavior for a view, that is dependent on this view
      */
-    public static class FadingViewBehavior extends CoordinatorLayout.Behavior<View>
-    {
-        public FadingViewBehavior(@NonNull Context context, @Nullable AttributeSet attrs)
-        {
+    public static class FadingViewBehavior extends CoordinatorLayout.Behavior<View> {
+
+        public FadingViewBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
             super(context, attrs);
         }
 
@@ -151,16 +139,14 @@ public class PersistentPromoAppBarLayout extends AppBarLayout implements AppBarL
                 final CoordinatorLayout parent,
                 final View child,
                 final View dependency
-        )
-        {
+        ) {
             return dependency instanceof PersistentPromoAppBarLayout;
         }
 
         @Override
         public boolean onDependentViewChanged(
                 final CoordinatorLayout parent, final View child, final View dependency
-        )
-        {
+        ) {
             super.onDependentViewChanged(parent, child, dependency);
 
             //also set alpha depending on how much the dependent view is scrolled

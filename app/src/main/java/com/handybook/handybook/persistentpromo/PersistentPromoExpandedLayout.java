@@ -24,8 +24,8 @@ import butterknife.ButterKnife;
 /**
  * layout for the full/expanded persistent promo view
  */
-public class PersistentPromoExpandedLayout extends FrameLayout
-{
+public class PersistentPromoExpandedLayout extends FrameLayout {
+
     @Bind(R.id.persistent_promo_expanded_title)
     TextView mTitleText;
     @Bind(R.id.persistent_promo_expanded_subtitle)
@@ -41,112 +41,89 @@ public class PersistentPromoExpandedLayout extends FrameLayout
 
     private OnActionButtonClickedListener mOnActionButtonClickedListener;
 
-    public PersistentPromoExpandedLayout(Context context)
-    {
+    public PersistentPromoExpandedLayout(Context context) {
         super(context);
         init();
     }
 
-    private void init()
-    {
+    private void init() {
         inflate(getContext(), R.layout.layout_persistent_promo_expanded, this);
         ButterKnife.bind(this);
     }
 
-    public PersistentPromoExpandedLayout(Context context, AttributeSet attrs)
-    {
+    public PersistentPromoExpandedLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public PersistentPromoExpandedLayout(Context context, AttributeSet attrs, int defStyle)
-    {
+    public PersistentPromoExpandedLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public void setOnActionButtonClickedListener(final OnActionButtonClickedListener onActionButtonClickedListener)
-    {
+    public void setOnActionButtonClickedListener(final OnActionButtonClickedListener onActionButtonClickedListener) {
         mOnActionButtonClickedListener = onActionButtonClickedListener;
     }
 
-    public void setDismissButtonClickListener(@NonNull OnClickListener onClickListener)
-    {
+    public void setDismissButtonClickListener(@NonNull OnClickListener onClickListener) {
         mDismissButton.setOnClickListener(onClickListener);
     }
 
-    private void updateAndShowTextIfNecessary(TextView textView, String text)
-    {
-        if (text != null)
-        {
+    private void updateAndShowTextIfNecessary(TextView textView, String text) {
+        if (text != null) {
             textView.setText(text);
             textView.setVisibility(VISIBLE);
         }
-        else
-        {
+        else {
             textView.setVisibility(GONE);
         }
     }
 
-    public void updateWithModel(@NonNull final PersistentPromo persistentPromo)
-    {
+    public void updateWithModel(@NonNull final PersistentPromo persistentPromo) {
         updateAndShowTextIfNecessary(mTitleText, persistentPromo.getTitleText());
         updateAndShowTextIfNecessary(mSubtitleText, persistentPromo.getSubtitleText());
-        if (persistentPromo.getActionText() != null)
-        {
+        if (persistentPromo.getActionText() != null) {
             mActionButton.setText(persistentPromo.getActionText());
             mActionButton.setVisibility(VISIBLE);
-            mActionButton.setOnClickListener(new OnClickListener()
-            {
+            mActionButton.setOnClickListener(new OnClickListener() {
                 @Override
-                public void onClick(final View v)
-                {
-                    if (mOnActionButtonClickedListener != null)
-                    {
+                public void onClick(final View v) {
+                    if (mOnActionButtonClickedListener != null) {
                         mOnActionButtonClickedListener.onActionButtonClicked(persistentPromo.getDeepLinkUrl());
                     }
                 }
             });
         }
-        else
-        {
+        else {
             mActionButton.setVisibility(GONE);
         }
 
-        if (persistentPromo.getImageUrl() != null)
-        {
+        if (persistentPromo.getImageUrl() != null) {
             //load image
             loadHeaderImage(persistentPromo.getImageUrl());
             mHeaderImage.setVisibility(VISIBLE);
         }
-        else
-        {
+        else {
             mHeaderImage.setVisibility(GONE);
         }
     }
 
-    private void loadHeaderImage(@NonNull final String imageUrl)
-    {
+    private void loadHeaderImage(@NonNull final String imageUrl) {
         mHeaderImage.getViewTreeObserver()
-                    .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
-                    {
+                    .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                         @Override
-                        public void onGlobalLayout()
-                        {
+                        public void onGlobalLayout() {
                             try //picasso doesn't catch all errors like empty URL!
                             {
-                                if (mHeaderImage.getWidth() <= 0)
-                                {
+                                if (mHeaderImage.getWidth() <= 0) {
                                     //may have to make more than one layout pass before this gets measured
                                     return;
                                 }
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                                {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     mHeaderImage.getViewTreeObserver()
                                                 .removeOnGlobalLayoutListener(this);
                                 }
-                                else
-                                {
+                                else {
                                     mHeaderImage.getViewTreeObserver()
                                                 .removeGlobalOnLayoutListener(this);
                                 }
@@ -164,8 +141,7 @@ public class PersistentPromoExpandedLayout extends FrameLayout
                             using the view params
                              */
                             }
-                            catch (Exception e)
-                            {
+                            catch (Exception e) {
                                 Crashlytics.logException(e);
                             }
                         }
@@ -173,8 +149,8 @@ public class PersistentPromoExpandedLayout extends FrameLayout
 
     }
 
-    public interface OnActionButtonClickedListener
-    {
+    public interface OnActionButtonClickedListener {
+
         void onActionButtonClicked(String actionUrl);
     }
 
@@ -182,10 +158,10 @@ public class PersistentPromoExpandedLayout extends FrameLayout
     /**
      * defines a behavior for this view, that is dependent on a PersistentAppBarLayout
      */
-    public static class DefaultBehavior extends CoordinatorLayout.Behavior<PersistentPromoExpandedLayout>
-    {
-        public DefaultBehavior(@NonNull Context context, @Nullable AttributeSet attrs)
-        {
+    public static class DefaultBehavior
+            extends CoordinatorLayout.Behavior<PersistentPromoExpandedLayout> {
+
+        public DefaultBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
             super(context, attrs);
         }
 
@@ -202,16 +178,16 @@ public class PersistentPromoExpandedLayout extends FrameLayout
                 final CoordinatorLayout parent,
                 final PersistentPromoExpandedLayout child,
                 final View dependency
-        )
-        {
+        ) {
             return dependency instanceof PersistentPromoAppBarLayout;
         }
 
         @Override
         public boolean onDependentViewChanged(
-                final CoordinatorLayout parent, final PersistentPromoExpandedLayout child, final View dependency
-        )
-        {
+                final CoordinatorLayout parent,
+                final PersistentPromoExpandedLayout child,
+                final View dependency
+        ) {
             super.onDependentViewChanged(parent, child, dependency);
 
             //also set alpha depending on how much the dependent view is scrolled
@@ -222,9 +198,10 @@ public class PersistentPromoExpandedLayout extends FrameLayout
             return false;
         }
 
-        private void onDependentViewPercentExpandedChanged(final PersistentPromoExpandedLayout childView,
-                                                           float dependentViewPercentExpanded)
-        {
+        private void onDependentViewPercentExpandedChanged(
+                final PersistentPromoExpandedLayout childView,
+                float dependentViewPercentExpanded
+        ) {
             //fade in/out the expanded layout view
             childView.setAlpha(dependentViewPercentExpanded);
 
@@ -232,22 +209,33 @@ public class PersistentPromoExpandedLayout extends FrameLayout
             float percentExpandedThresholdForDismissButtonVisible = 0.5f;
             float dismissButtonMaxAlpha = 0.7f;
             float dismissButtonAlpha =
-                    Math.max(0, dependentViewPercentExpanded * (dismissButtonMaxAlpha + percentExpandedThresholdForDismissButtonVisible)
-                            - percentExpandedThresholdForDismissButtonVisible);
+                    Math.max(0,
+                             dependentViewPercentExpanded * (dismissButtonMaxAlpha +
+                                                             percentExpandedThresholdForDismissButtonVisible)
+                             - percentExpandedThresholdForDismissButtonVisible
+                    );
             childView.mDismissButton.setAlpha(dismissButtonAlpha);
 
             //shrink/expand the header image
             float percentExpandedThresholdForNormalScale = 0.5f;
-            float imageScale = Math.max(1, 1 + percentExpandedThresholdForNormalScale - dependentViewPercentExpanded);
+            float imageScale = Math.max(1,
+                                        1 + percentExpandedThresholdForNormalScale -
+                                        dependentViewPercentExpanded
+            );
             childView.mHeaderImage.setScaleX(imageScale);
             childView.mHeaderImage.setScaleY(imageScale);
 
             //push the text content up/down
             float percentExpandedThresholdForNormalTextPosition = 0.8f;
             int maxTextMarginPx = childView.mTextContentLayout.getHeight() / 2;
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) childView.mTextContentLayout.getLayoutParams();
+            LinearLayout.LayoutParams layoutParams
+                    = (LinearLayout.LayoutParams) childView.mTextContentLayout.getLayoutParams();
             layoutParams.topMargin =
-                    (int) (Math.max(0, maxTextMarginPx * (percentExpandedThresholdForNormalTextPosition - dependentViewPercentExpanded)));
+                    (int) (Math.max(0,
+                                    maxTextMarginPx *
+                                    (percentExpandedThresholdForNormalTextPosition -
+                                     dependentViewPercentExpanded)
+                    ));
             childView.mTextContentLayout.setLayoutParams(layoutParams);
         }
     }

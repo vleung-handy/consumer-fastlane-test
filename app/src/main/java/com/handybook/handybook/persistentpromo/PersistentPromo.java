@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 /**
  * model for the persistent promo view
  */
-public class PersistentPromo
-{
+public class PersistentPromo {
+
     @SerializedName("id")
     private String mId;
     @SerializedName("image")
@@ -22,38 +22,31 @@ public class PersistentPromo
     @SerializedName("preview_text")
     private String mPreviewText;
 
-    String getId()
-    {
+    String getId() {
         return mId;
     }
 
-    String getImageUrl()
-    {
+    String getImageUrl() {
         return mImageUrl;
     }
 
-    String getTitleText()
-    {
+    String getTitleText() {
         return mTitleText;
     }
 
-    String getSubtitleText()
-    {
+    String getSubtitleText() {
         return mSubtitleText;
     }
 
-    String getDeepLinkUrl()
-    {
+    String getDeepLinkUrl() {
         return mDeepLinkUrl;
     }
 
-    String getActionText()
-    {
+    String getActionText() {
         return mActionText;
     }
 
-    String getPreviewText()
-    {
+    String getPreviewText() {
         return mPreviewText;
     }
 

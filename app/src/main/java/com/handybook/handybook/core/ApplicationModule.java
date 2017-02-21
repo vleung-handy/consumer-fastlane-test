@@ -346,13 +346,6 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final Context provideContext()
-    {
-        return mContext;
-    }
-
-    @Provides
-    @Singleton
     Properties provideProperties()
     {
         return mConfigs;

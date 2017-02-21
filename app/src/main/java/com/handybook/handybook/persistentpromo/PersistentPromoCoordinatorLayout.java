@@ -28,8 +28,8 @@ import butterknife.ButterKnife;
  * note that the AppBarLayout is expected to be a direct child of the CoordinatorLayout
  * so we cannot wrap it in another view group
  */
-public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
-{
+public class PersistentPromoCoordinatorLayout extends CoordinatorLayout {
+
     /**
      * the expanded persistent promo view that is behind the app bar layout
      * and is gradually revealed as the app bar layout is dragged down
@@ -59,20 +59,17 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
      */
     private PersistentPromo mPersistentPromo;
 
-    public PersistentPromoCoordinatorLayout(final Context context)
-    {
+    public PersistentPromoCoordinatorLayout(final Context context) {
         super(context);
         init(context);
     }
 
-    public PersistentPromoCoordinatorLayout(final Context context, final AttributeSet attrs)
-    {
+    public PersistentPromoCoordinatorLayout(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    private void init(@NonNull final Context context)
-    {
+    private void init(@NonNull final Context context) {
         Utils.inject(getContext(), this);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         layoutInflater.inflate(R.layout.layout_persistent_promo_composite, this);
@@ -82,8 +79,7 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
         //cover the expanded layout when the dismiss button is pressed
         mPersistentPromoExpandedLayout.setDismissButtonClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 mPersistentPromoAppBarLayout.setExpanded(false, true);
             }
         });
@@ -91,18 +87,15 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
         //log when user swipes down to reveal promo
         mPersistentPromoAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             private boolean mWasPromoFullyCollapsed = false;
+
             @Override
-            public void onOffsetChanged(final AppBarLayout appBarLayout, final int verticalOffset)
-            {
-                if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange())
-                {
+            public void onOffsetChanged(final AppBarLayout appBarLayout, final int verticalOffset) {
+                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
                     //fully collapsed
                     mWasPromoFullyCollapsed = true;
                 }
-                else
-                {
-                    if(mWasPromoFullyCollapsed && mPersistentPromo != null)
-                    {
+                else {
+                    if (mWasPromoFullyCollapsed && mPersistentPromo != null) {
                         //user swiped down to reveal promo
                         mBus.post(new LogEvent.AddLogEvent(new AppLog.PromoLog.Previewed(
                                 mPersistentPromo.getId(), AppLog.PromoLog.Type.PERSISTENT
@@ -117,22 +110,18 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
         //because we may want to collapse the sibling view
         mPersistentPromoExpandedLayout.setOnActionButtonClickedListener(new PersistentPromoExpandedLayout.OnActionButtonClickedListener() {
             @Override
-            public void onActionButtonClicked(final String deeplinkUrl)
-            {
-                if(mPersistentPromo != null)
-                {
+            public void onActionButtonClicked(final String deeplinkUrl) {
+                if (mPersistentPromo != null) {
                     mBus.post(new LogEvent.AddLogEvent(
                             new AppLog.PromoLog.Accepted(
                                     mPersistentPromo.getId(), AppLog.PromoLog.Type.PERSISTENT)));
                 }
 
-                if(!TextUtils.isEmpty(deeplinkUrl))
-                {
+                if (!TextUtils.isEmpty(deeplinkUrl)) {
                     Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(deeplinkUrl));
                     Utils.safeLaunchIntent(deepLinkIntent, getContext());
                 }
-                else
-                {
+                else {
                     //just collapse the offer view if no deep link
                     mPersistentPromoAppBarLayout.setExpanded(false, true);
                 }
@@ -142,25 +131,24 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
         //for logging only
         mPersistentPromoAppBarLayout.setOnPersistentPromoFullyExpandedListener(
                 new PersistentPromoAppBarLayout.OnPersistentPromoFullyExpandedListener() {
-            @Override
-            public void onPersistentPromoFullyExpanded()
-            {
-                if(mPersistentPromo != null)
-                {
-                    mBus.post(new LogEvent.AddLogEvent(
-                            new AppLog.PromoLog.FullyExpanded(
-                                    mPersistentPromo.getId(), AppLog.PromoLog.Type.PERSISTENT)));
-                }
-            }
-        });
+                    @Override
+                    public void onPersistentPromoFullyExpanded() {
+                        if (mPersistentPromo != null) {
+                            mBus.post(new LogEvent.AddLogEvent(
+                                    new AppLog.PromoLog.FullyExpanded(
+                                            mPersistentPromo.getId(),
+                                            AppLog.PromoLog.Type.PERSISTENT
+                                    )));
+                        }
+                    }
+                });
     }
 
     /**
      * sets the visibility of the persistent promo views
      * @param visible
      */
-    private void setPersistentPromoVisible(boolean visible)
-    {
+    private void setPersistentPromoVisible(boolean visible) {
         /*
         note: can't just use setVisibility(GONE) because that doesn't properly hide the view
         if called after setVisibility(VISIBLE) in this CoordinatorLayout.
@@ -177,20 +165,19 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
      * updates the UI for the given model
      * @param persistentPromo
      */
-    public void updateWithModel(@Nullable PersistentPromo persistentPromo)
-    {
+    public void updateWithModel(@Nullable PersistentPromo persistentPromo) {
         mPersistentPromo = persistentPromo;
-        if(!canDisplayPersistentPromo(persistentPromo))
-        {
+        if (!canDisplayPersistentPromo(persistentPromo)) {
             setPersistentPromoVisible(false);
             return;
         }
         setPersistentPromoVisible(true);
-        if(mPersistentPromo != null)
-        {
+        if (mPersistentPromo != null) {
             mBus.post(new LogEvent.AddLogEvent(
-                    new AppLog.PromoLog.Shown(mPersistentPromo.getId(),
-                                              AppLog.PromoLog.Type.PERSISTENT)));
+                    new AppLog.PromoLog.Shown(
+                            mPersistentPromo.getId(),
+                            AppLog.PromoLog.Type.PERSISTENT
+                    )));
         }
 
         mPersistentPromoExpandedLayout.updateWithModel(persistentPromo);
@@ -202,9 +189,8 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout
      * @param persistentPromo
      * @return
      */
-    private boolean canDisplayPersistentPromo(@Nullable PersistentPromo persistentPromo)
-    {
+    private boolean canDisplayPersistentPromo(@Nullable PersistentPromo persistentPromo) {
         return persistentPromo != null && !TextUtils.isEmpty(persistentPromo.getPreviewText())
-                && !TextUtils.isEmpty(persistentPromo.getActionText());
+               && !TextUtils.isEmpty(persistentPromo.getActionText());
     }
 }
