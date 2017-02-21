@@ -72,3 +72,4 @@ fastlane/report.xml
 fastlane/test_output
 fastlane/.env
 fastlane/screenshots
+fastlane/README.md

@@ -43,4 +43,4 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-
+apply from: 'app_version.gradle'
