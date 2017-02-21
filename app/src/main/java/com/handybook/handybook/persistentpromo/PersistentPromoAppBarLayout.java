@@ -15,7 +15,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-//FIXME clean up
 /**
  * note that the AppBarLayout is expected to be a direct child of the CoordinatorLayout
  * See https://developer.android.com/reference/android/support/design/widget/AppBarLayout.html
