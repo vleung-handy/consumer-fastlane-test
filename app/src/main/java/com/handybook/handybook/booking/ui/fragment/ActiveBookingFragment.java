@@ -771,14 +771,8 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     }
 
     @OnClick(R.id.active_booking_text)
-    public void textClicked()
-    {
-        final Booking.ProviderAssignmentInfo providerAssignmentInfo =
-                mBooking.getProviderAssignmentInfo();
-        if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
-                && providerAssignmentInfo != null
-                && providerAssignmentInfo.isProTeamMatch())
-        {
+    public void textClicked() {
+        if (mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
             progressDialog.show();
             bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
                     mBooking.getId(), ActiveBookingLog.BookingProContactedLog.CHAT)));
@@ -791,8 +785,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                                 new ConversationCallbackWrapper(ActiveBookingFragment.this)
                         );
         }
-        else
-        {
+        else {
             bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
                     mBooking.getId(), ActiveBookingLog.BookingProContactedLog.SMS)));
             BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());

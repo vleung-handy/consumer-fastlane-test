@@ -75,17 +75,10 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
             Utils.safeLaunchIntent(intent, getContext());
         }
     };
-    private View.OnClickListener mTextButtonOnClickListener = new View.OnClickListener()
-    {
+    private View.OnClickListener mTextButtonOnClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
-            final Booking.ProviderAssignmentInfo providerAssignmentInfo =
-                    mBooking.getProviderAssignmentInfo();
-            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
-                    && providerAssignmentInfo != null
-                    && providerAssignmentInfo.isProTeamMatch())
-            {
+        public void onClick(final View v) {
+            if (mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
                 progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
                         mBooking.getId(), IssueResolutionLog.ProContacted.CHAT)));
@@ -98,8 +91,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                                     new ConversationCallbackWrapper(ReportIssueFragment.this)
                             );
             }
-            else
-            {
+            else {
                 bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
                         mBooking.getId(),
                         IssueResolutionLog.ProContacted.SMS
