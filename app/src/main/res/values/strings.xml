@@ -208,7 +208,7 @@
     <string name="booking_subscription_titlebar">Your Plan</string>
     <string name="booking_subscription_title">Choose a plan that\'s right for you.</string>
     <string name="booking_subscription_frequency_title">Select a Frequency</string>
-    <string name="booking_subscription_term_title">Select a Plan Term</string>
+    <string name="booking_subscription_term_title">Select a Minimum Plan Term</string>
     <string name="booking_subscription_term_cleaning">/cleaning</string>
     <string name="booking_subscription_titlebar_faq">FAQs</string>
     <string name="how_often_should_come">How often would you like us to come?</string>
@@ -335,6 +335,8 @@
     <string name="android_pay_obfuscated_promo_code">ANDROIDPAY\u2022\u2022\u2022\u2022</string>
     <string name="booking_payment_terms_of_use_agreement">By tapping the button below, I accept &lt;br>Handy\'s
         &lt;a href="">Terms of Use&lt;/a></string>
+    <string name="booking_payment_recurring_plan_terms_of_use_agreement">By clicking Complete Booking I understand that I am purchasing a recurring cleaning plan subject to Handy\'s Cancellation Policy and
+    &lt;a href="">Terms of Use&lt;/a></string>
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
     <string name="scan_credit_card_button">Scan credit card</string>
