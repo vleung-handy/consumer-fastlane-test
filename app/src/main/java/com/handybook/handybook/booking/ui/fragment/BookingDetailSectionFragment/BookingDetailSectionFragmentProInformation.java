@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
@@ -31,6 +32,7 @@ import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
+import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
 import com.squareup.otto.Subscribe;
@@ -384,18 +386,11 @@ public class BookingDetailSectionFragmentProInformation extends
         }
     };
 
-    private View.OnClickListener contactTextClicked = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(final View v)
-        {
+    private View.OnClickListener contactTextClicked = new View.OnClickListener() {
 
-            final Booking.ProviderAssignmentInfo providerAssignmentInfo =
-                    booking.getProviderAssignmentInfo();
-            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
-                    && providerAssignmentInfo != null
-                    && providerAssignmentInfo.isProTeamMatch())
-            {
+        @Override
+        public void onClick(final View v) {
+            if (booking.getProvider() != null && booking.getProvider().isChatEnabled()) {
                 progressDialog.show();
                 HandyLibrary.getInstance()
                             .getHandyService()
@@ -407,15 +402,13 @@ public class BookingDetailSectionFragmentProInformation extends
                                             BookingDetailSectionFragmentProInformation.this)
                             );
             }
-            else if (validateProPhoneInformation(booking))
-            {
+            else if (validateProPhoneInformation(booking)) {
                 BookingUtil.textPhoneNumber(
                         booking.getProvider().getPhone(),
                         BookingDetailSectionFragmentProInformation.this.getActivity()
                 );
             }
-            else
-            {
+            else {
                 showToast(R.string.invalid_pro_phone_number);
             }
         }
@@ -436,13 +429,15 @@ public class BookingDetailSectionFragmentProInformation extends
     }
 
     @Override
-    public void onCreateConversationSuccess(final String conversationId)
-    {
+    public void onCreateConversationSuccess(final String conversationId) {
         progressDialog.dismiss();
-        startActivity(new Intent(getActivity(), ProMessagesActivity.class).putExtra(
-                LayerConstants.LAYER_CONVERSATION_KEY,
-                Uri.parse(conversationId)
-        ));
+        Intent intent = new Intent(getContext(), ProMessagesActivity.class);
+        intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
+        intent.putExtra(
+                BundleKeys.PRO_MESSAGES_VIEW_MODEL,
+                new ProMessagesViewModel(booking.getProvider())
+        );
+        startActivity(intent);
     }
 
     @Override

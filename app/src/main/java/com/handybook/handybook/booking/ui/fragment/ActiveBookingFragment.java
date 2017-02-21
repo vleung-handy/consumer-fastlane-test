@@ -52,6 +52,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
 
@@ -799,13 +800,15 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     }
 
     @Override
-    public void onCreateConversationSuccess(final String conversationId)
-    {
+    public void onCreateConversationSuccess(final String conversationId) {
         progressDialog.hide();
-        startActivity(new Intent(getActivity(), ProMessagesActivity.class).putExtra(
-                LayerConstants.LAYER_CONVERSATION_KEY,
-                Uri.parse(conversationId)
-        ));
+        Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
+        intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
+        intent.putExtra(
+                BundleKeys.PRO_MESSAGES_VIEW_MODEL,
+                new ProMessagesViewModel(mBooking.getProvider())
+        );
+        startActivity(intent);
     }
 
     @Override
