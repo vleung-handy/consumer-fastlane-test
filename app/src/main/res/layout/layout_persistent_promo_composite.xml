@@ -11,7 +11,7 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent"
     >
-    <!--TODO make work with scrollview-->
+    <!--would be nice to make this work with scrollview, but not in business requirements-->
     <com.handybook.handybook.persistentpromo.PersistentPromoExpandedLayout
         app:layout_behavior="com.handybook.handybook.persistentpromo.PersistentPromoExpandedLayout$DefaultBehavior"
         android:id="@+id/persistent_promo_expanded_view"

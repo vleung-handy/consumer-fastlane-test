@@ -38,18 +38,12 @@ import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.core.constant.PrefsKey;
-import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
-import com.handybook.handybook.persistentpromo.PersistentPromo;
-import com.handybook.handybook.persistentpromo.PersistentPromoCoordinatorLayout;
-import com.handybook.handybook.persistentpromo.PersistentPromoManager;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -97,8 +91,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     RecyclerView mRecyclerView;
     @Bind(R.id.fragment_services_category_snowview)
     SnowView mSnowView;
-    @Bind(R.id.persistent_promo_coordinator)
-    PersistentPromoCoordinatorLayout mPersistentPromoCoordinatorLayout;
+
     RecyclerViewAdapter mAdapter;
 
     @Inject
@@ -109,8 +102,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     UserManager mUserManager;
     @Inject
     EnvironmentModifier mEnvironmentModifier;
-    @Inject
-    PersistentPromoManager mPersistentPromoManager;
 
     public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
     {
@@ -187,30 +178,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
 
         mRecyclerView.setAdapter(mAdapter);
         return view;
-    }
-
-    /**
-     * gets the most updated persistent offer
-     */
-    private void updatePersistentPromo()
-    {
-        mPersistentPromoCoordinatorLayout.updateWithModel(null);
-
-        final String postalCode = mDefaultPreferencesManager.getString(PrefsKey.ZIP);
-        mPersistentPromoManager.getPersistentPromo(postalCode, new FragmentSafeCallback<PersistentPromo>(this) {
-            @Override
-            public void onCallbackSuccess(final PersistentPromo response)
-            {
-                mPersistentPromoCoordinatorLayout.updateWithModel(response);
-            }
-
-            @Override
-            public void onCallbackError(final DataManager.DataManagerError error)
-            {
-                Crashlytics.logException(new Exception(error.getMessage()));
-                mPersistentPromoCoordinatorLayout.updateWithModel(null);
-            }
-        });
     }
 
     @Override
@@ -295,7 +262,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onResume();
         loadServices();
-        updatePersistentPromo();
     }
 
     /**

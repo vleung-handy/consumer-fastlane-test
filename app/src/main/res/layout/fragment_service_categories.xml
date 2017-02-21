@@ -7,97 +7,83 @@
     android:background="@color/handy_bg"
     >
 
-    <com.handybook.handybook.persistentpromo.PersistentPromoCoordinatorLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:id="@+id/persistent_promo_coordinator"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/med_elevation"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingRight="@dimen/default_padding"
+        android:theme="@style/HandyTheme.AppBarOverlay"
+        app:navigationIcon="@drawable/ic_menu"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:padding="@dimen/default_logo_padding"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_home_logo"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <com.handybook.handybook.library.ui.view.snowflake.SnowView
+        android:id="@+id/fragment_services_category_snowview"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:visibility="gone"
+        />
 
-        <!--FIXME use the new services layout when that is merged-->
-        <RelativeLayout
-            android:id="@+id/fragment_services_categories_main_content"
-            app:layout_behavior="com.handybook.handybook.persistentpromo.PersistentPromoAppBarLayout$ScrollingFadingViewBehavior"
-            android:background="@color/handy_bg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="@dimen/med_elevation"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="@style/HandyTheme.AppBarOverlay"
-                app:navigationIcon="@drawable/ic_menu"
-                >
+    <com.handybook.handybook.library.ui.view.AnimatedRecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:animationCache="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layoutAnimation="@anim/list_animation"
+        android:paddingBottom="@dimen/default_margin"
+        android:paddingTop="@dimen/default_margin_half"
+        android:persistentDrawingCache="animation"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/app_name"
-                    android:padding="@dimen/default_logo_padding"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_home_logo"
-                    />
-            </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:id="@+id/coupon_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_padding"
+        android:visibility="visible"
+        >
 
-            <com.handybook.handybook.library.ui.view.snowflake.SnowView
-                android:id="@+id/fragment_services_category_snowview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                />
+        <ImageView
+            android:id="@+id/promo_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="promotion"
+            android:src="@drawable/ic_price_tag"
+            />
 
-            <com.handybook.handybook.library.ui.view.AnimatedRecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/toolbar"
-                android:animationCache="true"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:layoutAnimation="@anim/list_animation"
-                android:paddingBottom="@dimen/default_margin"
-                android:paddingTop="@dimen/default_margin_half"
-                android:persistentDrawingCache="animation"
-                />
+        <TextView
+            android:id="@+id/promo_text"
+            style="@style/TextView.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/using_promo"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            />
 
-            <LinearLayout
-                android:id="@+id/coupon_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@android:color/black"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/default_padding"
-                android:visibility="visible"
-                >
-
-                <ImageView
-                    android:id="@+id/promo_img"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="promotion"
-                    android:src="@drawable/ic_price_tag"
-                    />
-
-                <TextView
-                    android:id="@+id/promo_text"
-                    style="@style/TextView.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="@string/using_promo"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    />
-
-                    </LinearLayout>
-                </RelativeLayout>
-    </com.handybook.handybook.persistentpromo.PersistentPromoCoordinatorLayout>
+    </LinearLayout>
 </RelativeLayout>
