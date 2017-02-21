@@ -793,7 +793,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     }
 
     @Override
-    public void onCreateConversationSuccess(final String conversationId) {
+    public void onCreateConversationSuccess(@Nullable final String conversationId) {
         progressDialog.hide();
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));

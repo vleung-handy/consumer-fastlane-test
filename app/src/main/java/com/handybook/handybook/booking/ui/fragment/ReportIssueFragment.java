@@ -108,7 +108,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     };
 
     @Override
-    public void onCreateConversationSuccess(final String conversationId) {
+    public void onCreateConversationSuccess(@Nullable final String conversationId) {
         progressDialog.dismiss();
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));

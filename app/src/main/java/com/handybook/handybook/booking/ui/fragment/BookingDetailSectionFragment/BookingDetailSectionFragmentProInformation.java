@@ -429,7 +429,7 @@ public class BookingDetailSectionFragmentProInformation extends
     }
 
     @Override
-    public void onCreateConversationSuccess(final String conversationId) {
+    public void onCreateConversationSuccess(@Nullable final String conversationId) {
         progressDialog.dismiss();
         Intent intent = new Intent(getContext(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
