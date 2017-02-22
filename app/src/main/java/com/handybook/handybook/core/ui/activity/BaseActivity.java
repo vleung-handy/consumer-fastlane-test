@@ -273,23 +273,26 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     private void showProRateDialog(final User user, final String proName, final int bookingId) {
-        final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
-                user.getDefaultTipAmounts();
-
-        RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
-                .newInstance(
-                        bookingId,
-                        proName,
-                        -1,
-                        localizedMonetaryAmounts,
-                        user.getCurrencyChar()
-                );
-
-        FragmentUtils.safeLaunchDialogFragment(
-                rateServiceDialogFragment,
-                BaseActivity.this,
-                RateServiceDialogFragment.class.getSimpleName()
-        );
+        if (mConfigurationManager.getPersistentConfiguration().isNewRatingFlowEnabled()) {
+            // FIXME: Implement
+        }
+        else {
+            final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
+                    user.getDefaultTipAmounts();
+            RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
+                    .newInstance(
+                            bookingId,
+                            proName,
+                            -1,
+                            localizedMonetaryAmounts,
+                            user.getCurrencyChar()
+                    );
+            FragmentUtils.safeLaunchDialogFragment(
+                    rateServiceDialogFragment,
+                    BaseActivity.this,
+                    RateServiceDialogFragment.class.getSimpleName()
+            );
+        }
     }
 
     private void showLaundryInfoModal(final int bookingId) {
