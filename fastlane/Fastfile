@@ -101,15 +101,15 @@ private_lane :bump_version do |options|
     raise_error(error_message: "Unrecognized version_bump_type: " + version_bump_type)
   end
   new_version = "#{major}.#{minor}.#{patch}"
-  sh("sed -i '' -E 's/#{old_version}/#{new_version}/g' ../app_version.gradle")
+  sh("sed -i '' -E 's/#{old_version}/#{new_version}/g' ../app/build.gradle")
   version_bump_message = "Bumped up version to #{new_version}"
-  git_commit(path: './app_version.gradle', message: version_bump_message)
+  git_commit(path: './app/build.gradle', message: version_bump_message)
   UI.success(version_bump_message)
   new_version
 end
 
 private_lane :current_version do
-  sh('cat ../app_version.gradle | sed -n -E "s/^.*\appVersion[[:space:]]*=[[:space:]]*\'(.*)\'.*$/\1/p"').strip
+  sh('cat ../app/build.gradle | sed -n -E "s/^.*\versionName[[:space:]]*=[[:space:]]*\'(.*)\'.*$/\1/p"').strip
 end
 
 private_lane :ensure_git_branch_release_candidate do
