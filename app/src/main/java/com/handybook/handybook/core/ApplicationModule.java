@@ -67,6 +67,7 @@ import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
+import com.handybook.handybook.booking.ui.activity.ZipActivity;
 import com.handybook.handybook.booking.ui.fragment.ActiveBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
@@ -113,6 +114,7 @@ import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
+import com.handybook.handybook.booking.ui.fragment.ZipFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
@@ -327,7 +329,9 @@ import retrofit.converter.GsonConverter;
         EditPlanAddressActivity.class,
         ProTeamEditActivity.class,
         ServiceCategoriesHomeFragment.class,
-        SessionManager.class
+        SessionManager.class,
+        ZipActivity.class,
+        ZipFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {

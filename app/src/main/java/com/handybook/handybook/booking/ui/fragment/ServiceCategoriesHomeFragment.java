@@ -29,6 +29,7 @@ import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
+import com.handybook.handybook.booking.ui.activity.ZipActivity;
 import com.handybook.handybook.booking.ui.adapter.ServicesCategoryHomeAdapter;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.PrefsKey;
@@ -49,11 +50,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
 {
     private static final String EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID";
     private static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
+    public static final int REQUEST_CODE_ZIP = 1001;
 
     private List<Service> mServices;
     private boolean mUsedCache;
@@ -72,6 +76,8 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     TextView mPromoText;
     @Bind(R.id.not_in_zip)
     TextView mNotInZip;
+    @Bind(R.id.fragment_service_categories_sign_in_text)
+    TextView mSigninButton;
 
     @Inject
     UserManager mUserManager;
@@ -129,14 +135,24 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
                 PorterDuff.Mode.SRC_ATOP
         );
 
-        String zip = mSecurePreferencesManager.getString(PrefsKey.ZIP);
-        if (!TextUtils.isEmpty(zip))
-        {
+        refreshZipLabel();
+        updateSigninButtonDisplay();
+        return view;
+    }
+
+    /**
+     * If the user is already logged in, don't show the sign in button
+     */
+    private void updateSigninButtonDisplay() {
+        mSigninButton.setVisibility(mUserManager.isUserLoggedIn() ? View.GONE : View.VISIBLE);
+    }
+
+    private void refreshZipLabel() {
+        String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP);
+        if (!TextUtils.isEmpty(zip)) {
             mNotInZip.setText(getString(R.string.not_in_zip, zip));
             mChangeZipLayout.setVisibility(View.VISIBLE);
         }
-
-        return view;
     }
 
     //only enabled when bottom nav enabled
@@ -150,7 +166,10 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     @OnClick(R.id.change_button)
     public void onChangeButtonClicked()
     {
-        //todo jia
+        startActivityForResult(
+                new Intent(getActivity(), ZipActivity.class),
+                REQUEST_CODE_ZIP
+        );
     }
 
     @Override
@@ -165,6 +184,20 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     {
         super.onResume();
         loadServices();
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_ZIP && resultCode == RESULT_OK) {
+            //this is guaranteed to have at least one
+            List<Service> services
+                    = (List<Service>) data.getSerializableExtra(ZipActivity.EXTRA_SERVICES);
+
+            handleLoadServicesResponse(services, mUsedCache);
+
+            refreshZipLabel();
+        }
     }
 
     /**

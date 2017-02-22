@@ -316,7 +316,6 @@ public class OnboardV2Fragment extends InjectedFragment
     public void nextClicked()
     {
         mZip = mEditZip.getText().toString();
-        mDefaultPreferencesManager.setString(PrefsKey.ZIP, mZip);
         mEmail = null;
         requestForServices(mZip);
         showNext();
@@ -332,6 +331,11 @@ public class OnboardV2Fragment extends InjectedFragment
     public void onServicesReceived(@NonNull final List<Service> services, final String zip)
     {
         mServices = services;
+
+        if (!mServices.isEmpty()) {
+            //only commit this to shared prefs when we know there are services available for this zip
+            mDefaultPreferencesManager.setString(PrefsKey.ZIP, mZip);
+        }
 
         bus.post(new LogEvent.AddLogEvent(new OnboardingLog.ZipSubmittedLog(
                 zip, Locale.getDefault().toString()

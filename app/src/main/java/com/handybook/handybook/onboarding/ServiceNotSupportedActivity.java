@@ -24,11 +24,15 @@ import butterknife.OnClick;
 public class ServiceNotSupportedActivity extends BaseActivity
 {
 
+    public static final String EXTRA_FROM_ZIP = "extra-from-zip";
+
     @Bind(R.id.not_supported_zip)
     TextView mTextZip;
 
     @Inject
     public Bus bus;
+
+    boolean mFromZipFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,6 +40,8 @@ public class ServiceNotSupportedActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_not_supported);
         ButterKnife.bind(this);
+
+        mFromZipFragment = getIntent().getBooleanExtra(EXTRA_FROM_ZIP, false);
 
         String zip = getIntent().getStringExtra(BundleKeys.ZIP);
 
@@ -51,9 +57,16 @@ public class ServiceNotSupportedActivity extends BaseActivity
     @OnClick(R.id.not_supported_try_another_zip)
     public void submitClicked()
     {
-        Intent intent = new Intent(this, OnboardActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        if (mFromZipFragment) {
+            //if we're coming from the ZipFragment, then this button is essentially the same as
+            //a backpress
+            onBackPressed();
+        }
+        else {
+            Intent intent = new Intent(this, OnboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 }
