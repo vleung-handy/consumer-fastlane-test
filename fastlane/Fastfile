@@ -39,7 +39,7 @@ end
 lane :release_candidate do |options|
   ensure_git_branch(branch: 'develop')
   ensure_git_branch_clean_and_latest
-  _, major, minor, _ = current_version.split(/([0-9]+)\.([0-9]+)\.([0-9]+)/)
+  _, major, minor, _ = get_current_version.split(/([0-9]+)\.([0-9]+)\.([0-9]+)/)
   version_suffix = "#{major}.#{minor}.x"
   sh('git checkout -b release_candidate_v' + version_suffix)
 end
@@ -88,7 +88,7 @@ end
 
 private_lane :bump_version do |options|
   version_bump_type = options[:version_bump_type]
-  old_version = current_version
+  old_version = get_current_version
   _, major, minor, patch = old_version.split(/([0-9]+)\.([0-9]+)\.([0-9]+)/)
   case version_bump_type
   when 'major'
@@ -108,8 +108,8 @@ private_lane :bump_version do |options|
   new_version
 end
 
-private_lane :current_version do
-  sh('cat ../app/build.gradle | sed -n -E "s/^.*\versionName[[:space:]]*=[[:space:]]*\'(.*)\'.*$/\1/p"').strip
+private_lane :get_current_version do
+  sh('cat ../app/build.gradle | sed -n -E "s/^.*\versionName[[:space:]]+\'(.*)\'.*$/\1/p"').strip
 end
 
 private_lane :ensure_git_branch_release_candidate do
