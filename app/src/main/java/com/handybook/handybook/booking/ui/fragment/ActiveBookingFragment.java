@@ -52,6 +52,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
 
@@ -770,14 +771,8 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     }
 
     @OnClick(R.id.active_booking_text)
-    public void textClicked()
-    {
-        final Booking.ProviderAssignmentInfo providerAssignmentInfo =
-                mBooking.getProviderAssignmentInfo();
-        if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
-                && providerAssignmentInfo != null
-                && providerAssignmentInfo.isProTeamMatch())
-        {
+    public void textClicked() {
+        if (mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
             progressDialog.show();
             bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
                     mBooking.getId(), ActiveBookingLog.BookingProContactedLog.CHAT)));
@@ -790,8 +785,7 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
                                 new ConversationCallbackWrapper(ActiveBookingFragment.this)
                         );
         }
-        else
-        {
+        else {
             bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
                     mBooking.getId(), ActiveBookingLog.BookingProContactedLog.SMS)));
             BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
@@ -799,13 +793,15 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
     }
 
     @Override
-    public void onCreateConversationSuccess(final String conversationId)
-    {
+    public void onCreateConversationSuccess(@Nullable final String conversationId) {
         progressDialog.hide();
-        startActivity(new Intent(getActivity(), ProMessagesActivity.class).putExtra(
-                LayerConstants.LAYER_CONVERSATION_KEY,
-                Uri.parse(conversationId)
-        ));
+        Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
+        intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
+        intent.putExtra(
+                BundleKeys.PRO_MESSAGES_VIEW_MODEL,
+                new ProMessagesViewModel(mBooking.getProvider())
+        );
+        startActivity(intent);
     }
 
     @Override

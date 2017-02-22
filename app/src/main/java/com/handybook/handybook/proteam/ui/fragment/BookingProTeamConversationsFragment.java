@@ -28,8 +28,8 @@ import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamPro;
-import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
@@ -173,8 +173,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
                             startMessagesActivity(
                                     conversation.getId(),
                                     mSelectedProTeamMember.getTitle(),
-                                    mSelectedProTeamMember.getProTeamPro(),
-                                    mSelectedProTeamMember.getProviderMatchPreference()
+                                    mSelectedProTeamMember.getProTeamPro()
                             );
                         }
                         else
@@ -216,15 +215,13 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
     private void startMessagesActivity(
             final Uri conversationId,
             final String title,
-            final ProTeamPro mPro,
-            final ProviderMatchPreference preference
+            final ProTeamPro mPro
     )
     {
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);
         intent.putExtra(LayerConstants.LAYER_MESSAGE_TITLE, title);
-        intent.putExtra(BundleKeys.PRO_TEAM_PRO, mPro);
-        intent.putExtra(BundleKeys.PRO_TEAM_PRO_PREFERENCE, preference);
+        intent.putExtra(BundleKeys.PRO_MESSAGES_VIEW_MODEL, new ProMessagesViewModel(mPro));
         intent.putExtra(BundleKeys.SHOW_TIPS, true);
         intent.putExtra(BundleKeys.BOOKING, mBooking);
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
@@ -262,8 +259,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
         startMessagesActivity(
                 Uri.parse(conversationId),
                 mSelectedProTeamMember.getTitle(),
-                mSelectedProTeamMember.getProTeamPro(),
-                mSelectedProTeamMember.getProviderMatchPreference()
+                mSelectedProTeamMember.getProTeamPro()
         );
 
         progressDialog.dismiss();

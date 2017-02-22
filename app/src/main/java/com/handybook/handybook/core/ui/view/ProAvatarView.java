@@ -2,6 +2,8 @@ package com.handybook.handybook.core.ui.view;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -58,16 +60,21 @@ public class ProAvatarView extends RelativeLayout
      *
      * @param pro
      */
-    public void bindPro(ProTeamProViewModel pro)
-    {
-        mHeartContainer.setVisibility(pro.isFavorite() ? VISIBLE : GONE);
+    public void bindPro(ProTeamProViewModel pro) {
+        bindPro(pro.isFavorite(), pro.getImageUrl());
+    }
 
-        Picasso.with(mCircleImageView.getContext())
-               .load(pro.getImageUrl())
-               .placeholder(R.drawable.img_pro_placeholder)
-               .noFade()
-               .transform(new CircleTransform(pro.getImageUrl()))
-               .into(mCircleImageView);
+    public void bindPro(boolean isFavorite, @Nullable String imageUrl) {
+        mHeartContainer.setVisibility(isFavorite ? VISIBLE : GONE);
+
+        if (!TextUtils.isEmpty(imageUrl)) {
+            Picasso.with(mCircleImageView.getContext())
+                   .load(imageUrl)
+                   .placeholder(R.drawable.img_pro_placeholder)
+                   .noFade()
+                   .transform(new CircleTransform(imageUrl))
+                   .into(mCircleImageView);
+        }
     }
 
     public void setHeartContainerBackground(@DrawableRes final int drawableResId)
