@@ -76,6 +76,8 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     TextView mPromoText;
     @Bind(R.id.not_in_zip)
     TextView mNotInZip;
+    @Bind(R.id.fragment_service_categories_sign_in_text)
+    TextView mSigninButton;
 
     @Inject
     UserManager mUserManager;
@@ -134,8 +136,15 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
         );
 
         refreshZipLabel();
-
+        updateSigninButtonDisplay();
         return view;
+    }
+
+    /**
+     * If the user is already logged in, don't show the sign in button
+     */
+    private void updateSigninButtonDisplay() {
+        mSigninButton.setVisibility(mUserManager.isUserLoggedIn() ? View.GONE : View.VISIBLE);
     }
 
     private void refreshZipLabel() {

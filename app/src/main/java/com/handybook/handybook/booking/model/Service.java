@@ -19,6 +19,7 @@ public class Service implements Parcelable {
     @SerializedName("ignore") private boolean isIgnore;
 
     //This is used only for the service/common endpoint response
+    @SerializedName("uniq")
     private String mUniq;
 
     private List<Service> services;
