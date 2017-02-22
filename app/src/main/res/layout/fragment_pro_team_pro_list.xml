@@ -13,6 +13,7 @@
         android:layout_above="@+id/pro_team_pro_list_save_button"
         android:layout_alignWithParentIfMissing="true"
         android:clipToPadding="false"
+        android:paddingBottom="@dimen/default_padding"
         tools:listitem="@layout/layout_pro_team_pro_card"
         />
 

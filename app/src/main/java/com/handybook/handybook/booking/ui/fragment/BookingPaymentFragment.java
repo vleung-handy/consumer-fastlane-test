@@ -41,6 +41,7 @@ import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
@@ -391,8 +392,15 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      */
     private void initializeTermsOfUseText()
     {
-        mTermsOfUseText.setText(Html.fromHtml(
-                getString(R.string.booking_payment_terms_of_use_agreement)));
+        if (mCurrentTransaction != null && mCurrentTransaction.getRecurringFrequency() !=
+                                           BookingRecurrence.ONE_TIME) {
+            mTermsOfUseText.setText(Html.fromHtml(
+                    getString(R.string.booking_payment_recurring_plan_terms_of_use_agreement)));
+        }
+        else {
+            mTermsOfUseText.setText(Html.fromHtml(
+                    getString(R.string.booking_payment_terms_of_use_agreement)));
+        }
         TextUtils.stripUnderlines(mTermsOfUseText);
 
         //need to override the click event for the link.

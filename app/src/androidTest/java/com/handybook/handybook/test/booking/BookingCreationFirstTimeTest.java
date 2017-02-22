@@ -37,7 +37,7 @@ public class BookingCreationFirstTimeTest
     @Test
     public void testFirstTimeUserCanCreateCleaningBooking()
     {
-        TestUser testUser = TestUsers.FIRST_TIME_USER_BOOKING_CREATION;
+        TestUser testUser = TestUsers.getUserRandomEmail();
         AppInteractionUtil.logOutAndPassOnboarding();
 
         //wait for network call to return with service list

@@ -1,0 +1,9 @@
+{
+  "id": "1",
+  "image": "https://s3.amazonaws.com/mobile-ios-assets/persistent_promo_sample_image.png",
+  "title": "Your home deserves a detox too",
+  "subtitle": "Get 30% off when you add a one-time cleaning to your plan. Only until May 31. Get it now!",
+  "action": "handy://bookings",
+  "action_text": "Book Now",
+  "preview_text": "Get a head start on spring cleaning now!"
+}

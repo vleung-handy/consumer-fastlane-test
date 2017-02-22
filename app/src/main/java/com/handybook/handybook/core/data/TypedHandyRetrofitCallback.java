@@ -26,6 +26,7 @@ import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.persistentpromo.PersistentPromo;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
 
@@ -194,6 +195,15 @@ class UserExistsHandyRetrofitCallback extends TypedHandyRetrofitCallback<UserExi
 class AvailableSplashPromoRetrofitCallback extends TypedHandyRetrofitCallback<SplashPromo>
 {
     AvailableSplashPromoRetrofitCallback(final DataManager.Callback callback)
+    {
+        super(callback);
+    }
+}
+
+
+class AvailablePersistentPromoRetrofitCallback extends TypedHandyRetrofitCallback<PersistentPromo>
+{
+    AvailablePersistentPromoRetrofitCallback(final DataManager.Callback callback)
     {
         super(callback);
     }

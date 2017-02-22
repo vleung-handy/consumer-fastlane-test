@@ -60,9 +60,6 @@ public abstract class ProTeamEvent
         private ArrayList<ProTeamEdit> mProTeamEdits;
         private Source mSource;
 
-        private RequestProTeamEdit()
-        {
-        }
 
         public RequestProTeamEdit(
                 @NonNull final ProTeamPro proTeamPro,
@@ -71,10 +68,20 @@ public abstract class ProTeamEvent
                 @NonNull final Source source
         )
         {
+            this(proTeamPro.getId(), proTeamCategoryType, providerMatchPreference, source);
+        }
+
+        public RequestProTeamEdit(
+                final int proTeamProId,
+                @NonNull final ProTeamCategoryType proTeamCategoryType,
+                @NonNull final ProviderMatchPreference providerMatchPreference,
+                @NonNull final Source source
+        )
+        {
             mProTeamEdits = new ArrayList<>();
             mSource = source;
             final ProTeamEdit proTeamEdit = new ProTeamEdit(providerMatchPreference);
-            proTeamEdit.addId(proTeamPro.getId(), proTeamCategoryType);
+            proTeamEdit.addId(proTeamProId, proTeamCategoryType);
             mProTeamEdits.add(proTeamEdit);
         }
 

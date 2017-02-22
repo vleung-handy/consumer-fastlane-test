@@ -101,6 +101,9 @@ public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
                                 BundleKeys.PRO_TEAM_PRO_ID,
                                 mViewModel.getProId()
                         ).putExtra(
+                                BundleKeys.PRO_TEAM_CATEGORY_TYPE,
+                                mViewModel.getCategoryType()
+                        ).putExtra(
                                 BundleKeys.EDIT_PRO_TEAM_PREFERENCE_ACTION_TYPE,
                                 actionType
                         );

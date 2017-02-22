@@ -42,6 +42,12 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
+    @GET("/promos/persistent")
+    void getAvailablePersistentPromo(
+            @Query("postal_code") String postalCode,
+            HandyRetrofitCallback cb
+    );
+
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(
             @Path("id") int bookingId,
