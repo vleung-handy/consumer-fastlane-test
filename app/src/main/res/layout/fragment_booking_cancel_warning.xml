@@ -24,16 +24,24 @@
             <TextView
                 android:id="@+id/fragment_booking_cancel_warning_warning"
                 style="@style/TextView"
-                android:padding="12dp"
-                android:textSize="@dimen/text_size_small"
-                android:textColor="@color/handy_white"
-                android:background="@color/error_red_pressed"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/error_red_pressed"
                 android:gravity="center"
+                android:padding="12dp"
+                android:textColor="@color/handy_white"
+                android:textSize="@dimen/text_size_small"
                 tools:text="A $15 fee will be charged when skipping less than 24 hours in advance."
                 />
+
+            <com.handybook.handybook.library.ui.view.HandyWebView
+                android:id="@+id/fragment_booking_cancel_warning_webview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
 
             <TextView
                 android:id="@+id/fragment_booking_cancel_warning_title"
