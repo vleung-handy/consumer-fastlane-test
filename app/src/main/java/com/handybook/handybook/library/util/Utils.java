@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.constant.BookingActionButtonType;
+import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.proteam.model.ProTeamPro;
 
 import java.util.Calendar;
@@ -27,6 +28,11 @@ public final class Utils
 {
     private static final int CENTS_TO_DOLLAR_CONVERSION_VALUE = 100;
     public static final String EMAIL_VALIDATION_REGEX = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+
+    public static void inject(Context context, Object object)
+    {
+        ((BaseApplication) context.getApplicationContext()).inject(object);
+    }
 
     public static int toDP(final float px, final Context context)
     {

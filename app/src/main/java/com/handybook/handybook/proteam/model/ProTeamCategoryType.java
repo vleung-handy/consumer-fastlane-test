@@ -1,7 +1,5 @@
 package com.handybook.handybook.proteam.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -10,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Holds all the available ProTeam types, currently CLEANING or HANDYMEN
  */
-public enum ProTeamCategoryType implements Parcelable
+public enum ProTeamCategoryType
 {
     @SerializedName(Constants.CLEANING)
     CLEANING(Constants.CLEANING),
@@ -23,47 +21,6 @@ public enum ProTeamCategoryType implements Parcelable
     {
         mValue = value;
     }
-
-    ProTeamCategoryType(Parcel in)
-    {
-        mValue = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        dest.writeString(mValue);
-    }
-
-    @Override
-    public int describeContents()
-    {
-        return 0;
-    }
-
-    public static final Creator<ProTeamCategoryType> CREATOR = new Creator<ProTeamCategoryType>()
-    {
-        @Nullable
-        @Override
-        public ProTeamCategoryType createFromParcel(Parcel in)
-        {
-            final String value = in.readString();
-            switch (value)
-            {
-                case Constants.HANDYMEN:
-                    return HANDYMEN;
-                case Constants.CLEANING:
-                    return CLEANING;
-            }
-            return null;
-        }
-
-        @Override
-        public ProTeamCategoryType[] newArray(int size)
-        {
-            return new ProTeamCategoryType[size];
-        }
-    };
 
     @NonNull
     @Override
@@ -81,7 +38,6 @@ public enum ProTeamCategoryType implements Parcelable
     {
         return categoryType == null ? null : categoryType.toString();
     }
-
 
     /**
      * Holds the String constants that represent/can be converted to/from the ProTeamCategory enum

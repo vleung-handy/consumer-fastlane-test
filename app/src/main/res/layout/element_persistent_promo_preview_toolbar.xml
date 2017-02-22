@@ -1,0 +1,61 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/handy_blue"
+    >
+
+    <TextView
+        android:id="@+id/persistent_promo_preview_text"
+        style="@style/TextView.Medium.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/default_margin_quarter"
+        android:layout_marginTop="@dimen/default_margin"
+        android:gravity="center"
+        android:textColor="@color/white"
+        tools:text="Some preview text"
+        />
+
+    <ImageView
+        android:id="@+id/persistent_promo_preview_reveal_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_icon_size_half"
+        android:layout_below="@id/persistent_promo_preview_text"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_down_arrow"
+        android:tint="@color/white_trans_80"
+        />
+
+    <!--TODO this is only here for proof of concept. move out of here before full integration-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/persistent_promo_preview_reveal_indicator"
+        android:background="@color/transparent"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:scaleX="1"
+            android:src="@drawable/persistent_promo_preview_collar_left"
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:scaleX="-1"
+            android:src="@drawable/persistent_promo_preview_collar_left"
+            />
+    </LinearLayout>
+</RelativeLayout>

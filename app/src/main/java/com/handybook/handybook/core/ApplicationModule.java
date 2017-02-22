@@ -152,6 +152,7 @@ import com.handybook.handybook.onboarding.OnboardFragment;
 import com.handybook.handybook.onboarding.OnboardPageFragment;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.onboarding.ServiceNotSupportedActivity;
+import com.handybook.handybook.persistentpromo.PersistentPromoModule;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
@@ -162,7 +163,6 @@ import com.handybook.handybook.proteam.ui.fragment.NewProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
-import com.handybook.handybook.proteam.ui.fragment.RemoveProDialogFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.push.receiver.PushReceiver;
 import com.handybook.handybook.referral.manager.ReferralsManager;
@@ -302,7 +302,6 @@ import retrofit.converter.GsonConverter;
         ProTeamEditFragment.class,
         ProTeamProListFragment.class,
         NewProTeamProListFragment.class,
-        RemoveProDialogFragment.class,
         ReportIssueActivity.class,
         ReportIssueFragment.class,
         WebViewActivity.class,
@@ -334,6 +333,7 @@ import retrofit.converter.GsonConverter;
         includes = {
                 HelpModule.class,
                 NotificationsModule.class,
+                PersistentPromoModule.class,
                 //FIXME add more
         }
 )

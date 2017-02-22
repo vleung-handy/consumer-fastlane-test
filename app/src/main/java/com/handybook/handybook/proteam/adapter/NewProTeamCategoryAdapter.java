@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -52,7 +51,7 @@ public class NewProTeamCategoryAdapter
             final ProTeamPro favoritePro = proTeamCategory.getFavoritePro();
             mItems.add(mContext.getString(R.string.favorite_pro));
             mItems.add(favoritePro);
-            mItems.add(mContext.getString(R.string.backup_pros));
+            mItems.add(mContext.getString(R.string.pro_team));
 
             final List<ProTeamPro> preferredPros = new ArrayList<>();
             if (proTeamCategory.getPreferred() != null)
@@ -162,8 +161,8 @@ public class NewProTeamCategoryAdapter
                     }
                     else
                     {
-                        title = context.getString(R.string.backup_pros);
-                        message = context.getString(R.string.backup_pro_help_message);
+                        title = context.getString(R.string.pro_team);
+                        message = context.getString(R.string.pro_team_help_message);
                     }
                     new AlertDialog.Builder(context)
                             .setTitle(title)
@@ -205,14 +204,23 @@ public class NewProTeamCategoryAdapter
             ButterKnife.bind(this, itemView);
             if (item != null)
             {
-                showActiveState((ProTeamPro) item);
+                final ProTeamPro pro = (ProTeamPro) item;
+                showActiveState(pro);
                 mProTeamProCardHolder.setOnLongClickListener(new View.OnLongClickListener()
                 {
                     @Override
                     public boolean onLongClick(final View view)
                     {
-                        mActionCallbacks.onLongClick((ProTeamPro) item);
+                        mActionCallbacks.onLongClick(pro);
                         return true;
+                    }
+                });
+                mProTeamProCardHolder.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(final View v)
+                    {
+                        mActionCallbacks.onHeartClick(pro);
                     }
                 });
             }
@@ -233,29 +241,7 @@ public class NewProTeamCategoryAdapter
         private void initHeartIcon(final ProTeamPro pro)
         {
             mHeartIcon.setChecked(pro.isFavorite());
-            mHeartIcon.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(final View v)
-                {
-                    mActionCallbacks.onHeartClick(pro);
-                }
-            });
-            // This listener will give the illusion that the checkbox doesn't change state which is
-            // exactly what we want.
-            mHeartIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-            {
-                @Override
-                public void onCheckedChanged(
-                        final CompoundButton buttonView,
-                        final boolean isChecked
-                )
-                {
-                    mHeartIcon.setOnCheckedChangeListener(null);
-                    mHeartIcon.setChecked(!isChecked);
-                    mHeartIcon.setOnCheckedChangeListener(this);
-                }
-            });
+            mHeartIcon.setClickable(false);
         }
 
         private void initProProfile(final ProTeamPro pro)
@@ -278,7 +264,7 @@ public class NewProTeamCategoryAdapter
             }
             else
             {
-                mEmptyStateTitle.setText(R.string.backup_pros);
+                mEmptyStateTitle.setText(R.string.pro_team);
                 mEmptyStateSubtitle.setText(R.string.no_pro_team_subtitle);
             }
         }

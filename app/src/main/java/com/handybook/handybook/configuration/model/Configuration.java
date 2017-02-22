@@ -144,7 +144,7 @@ public class Configuration implements Serializable
 
     public boolean isSettingFavoriteProEnabled()
     {
-        return mSettingFavoriteProEnabled && false;
+        return mSettingFavoriteProEnabled;
     }
 
     public boolean isOnboardingV2Enabled()

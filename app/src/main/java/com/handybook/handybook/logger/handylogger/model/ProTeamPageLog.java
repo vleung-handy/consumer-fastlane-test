@@ -4,11 +4,12 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage.HandyLoggerSourcePage;
-import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 
 public abstract class ProTeamPageLog extends EventLog
 {
@@ -84,37 +85,6 @@ public abstract class ProTeamPageLog extends EventLog
             mIndifferentCleaningProviderCount = indifferentCleaningProviderCount;
             mPreferredHandymenProviderCount = preferredHandymenProviderCount;
             mIndifferentHandymenProviderCount = indifferentHandymenProviderCount;
-        }
-    }
-
-    public static class DisplayedServiceChanged extends ProTeamPageLog
-    {
-        private static final String EVENT_TYPE = "displayed_service_changed";
-
-        /**
-         * corresponds to the selected home service tab
-         */
-        @SerializedName("selected_service")
-        private String mSelectedService;
-
-        public DisplayedServiceChanged(ProTeamCategoryType proTeamCategoryType)
-        {
-            super(EVENT_TYPE);
-            mSelectedService = ProTeamCategoryType.asString(proTeamCategoryType);
-        }
-    }
-
-
-    /**
-     * The help icon is tapped
-     */
-    public static class HelpOpenTapped extends ProTeamPageLog
-    {
-        private static final String EVENT_TYPE = "help_open_tapped";
-
-        public HelpOpenTapped()
-        {
-            super(EVENT_TYPE);
         }
     }
 
@@ -238,37 +208,6 @@ public abstract class ProTeamPageLog extends EventLog
 
 
         /**
-         * the warning/options (slide up dialog) is displayed
-         * after the block provider button is tapped
-         */
-        public static class WarningDisplayed extends BlockProvider
-        {
-            private static final String EVENT_TYPE = "block_provider_warning_displayed";
-            public WarningDisplayed(final String providerId,
-                                    final ProviderMatchPreference providerMatchPreference,
-                                    @ProviderTeamContext final String providerTeamContext)
-            {
-                super(EVENT_TYPE, providerId, providerMatchPreference, providerTeamContext);
-            }
-        }
-
-
-        /**
-         * block provider warning/options dialog is cancelled
-         */
-        public static class Cancelled extends BlockProvider
-        {
-            private static final String EVENT_TYPE = "block_provider_cancelled";
-            public Cancelled(final String providerId,
-                             final ProviderMatchPreference providerMatchPreference,
-                             @ProviderTeamContext final String providerTeamContext)
-            {
-                super(EVENT_TYPE, providerId, providerMatchPreference, providerTeamContext);
-            }
-        }
-
-
-        /**
          * the "block" option in the warning/options dialog is pressed
          * so the block option is submitted
          */
@@ -284,4 +223,48 @@ public abstract class ProTeamPageLog extends EventLog
         }
     }
 
+
+    public static class EditProTeamSubmitted extends ProTeamPageLog
+    {
+        @SerializedName("pro_team_edits")
+        private ArrayList<ProTeamEdit> mProTeamEdits;
+
+        private static final String EVENT_TYPE = "edit_pro_team_submitted";
+
+        public EditProTeamSubmitted(final ArrayList<ProTeamEdit> proTeamEdits)
+        {
+            super(EVENT_TYPE);
+            mProTeamEdits = proTeamEdits;
+        }
+    }
+
+
+    public static class EditProTeamSuccess extends ProTeamPageLog
+    {
+        @SerializedName("pro_team_edits")
+        private ArrayList<ProTeamEdit> mProTeamEdits;
+
+        private static final String EVENT_TYPE = "edit_pro_team_success";
+
+        public EditProTeamSuccess(final ArrayList<ProTeamEdit> proTeamEdits)
+        {
+            super(EVENT_TYPE);
+            mProTeamEdits = proTeamEdits;
+        }
+    }
+
+
+    public static class EditProTeamFailure extends ProTeamPageLog
+    {
+        @SerializedName("pro_team_edits")
+        private ArrayList<ProTeamEdit> mProTeamEdits;
+
+        private static final String EVENT_TYPE = "edit_pro_team_failure";
+
+        public EditProTeamFailure(final ArrayList<ProTeamEdit> proTeamEdits)
+        {
+            super(EVENT_TYPE);
+            mProTeamEdits = proTeamEdits;
+        }
+    }
 }

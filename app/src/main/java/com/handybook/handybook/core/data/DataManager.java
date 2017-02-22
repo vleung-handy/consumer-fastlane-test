@@ -51,6 +51,7 @@ import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
 import com.handybook.handybook.notifications.feed.model.HandyNotification;
 import com.handybook.handybook.notifications.splash.model.SplashPromo;
+import com.handybook.handybook.persistentpromo.PersistentPromo;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
@@ -152,6 +153,14 @@ public class DataManager
         mService.getAvailableSplashPromo(userId, displayedPromos, acceptedPromos,
                                          new AvailableSplashPromoRetrofitCallback(cb)
         );
+    }
+
+    public void getAvailablePersistentPromo(
+            @Nullable String postalCode,
+            final Callback<PersistentPromo> cb
+    )
+    {
+        mService.getAvailablePersistentPromo(postalCode, new AvailablePersistentPromoRetrofitCallback(cb));
     }
 
     public void editBookingAddress(
