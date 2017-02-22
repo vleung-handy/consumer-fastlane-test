@@ -546,6 +546,10 @@
             android:screenOrientation="portrait"
             >
         </activity>
+        <activity
+            android:name=".booking.ui.activity.ZipActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
     </application>
 
 </manifest>
