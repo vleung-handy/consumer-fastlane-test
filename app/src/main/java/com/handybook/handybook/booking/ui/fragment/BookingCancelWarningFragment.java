@@ -6,18 +6,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
+import com.handybook.handybook.core.HandyWebViewClient;
+import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public final class BookingCancelWarningFragment extends BookingFlowFragment {
 
@@ -27,18 +31,22 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment {
 
     private Booking mBooking;
     private BookingCancellationData mBookingCancellationData;
+    private BookingCancellationData.PreCancellationInfo mPreCancellationInfo;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.fragment_booking_cancel_warning_warning)
-    TextView mWarningMessage;
+    TextView mWarning;
     @Bind(R.id.fragment_booking_cancel_warning_title)
     TextView mTitle;
     @Bind(R.id.fragment_booking_cancel_warning_message)
     TextView mMessage;
     @Bind(R.id.fragment_booking_cancel_warning_button)
     Button mButton;
+    @Bind(R.id.fragment_booking_cancel_warning_webview)
+    HandyWebView mWebView;
 
+    @NonNull
     public static BookingCancelWarningFragment newInstance(
             @NonNull final Booking booking,
             @NonNull final BookingCancellationData bookingCancellationData
@@ -57,10 +65,13 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment {
         mBookingCancellationData = (BookingCancellationData) getArguments()
                 .getSerializable(EXTRA_BOOKING_CANCELLATION_DATA);
         mBooking = getArguments().getParcelable(EXTRA_BOOKING);
+        if (mBooking == null) { onNextClicked(); }
+        if (mBookingCancellationData == null) { onNextClicked(); }
+        if (!mBookingCancellationData.hasPrecancellationInfo()) { onNextClicked(); }
+        mPreCancellationInfo = mBookingCancellationData.getPreCancellationInfo();
         bus.post(new LogEvent.AddLogEvent(
-                         new BookingLog.BookingCancelWarningShown(mBooking.getId())
-                 )
-        );
+                new BookingLog.BookingCancelWarningShown(mBooking.getId())
+        ));
     }
 
     @Override
@@ -73,34 +84,67 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment {
                 .getLayoutInflater()
                 .inflate(R.layout.fragment_booking_cancel_warning, container, false);
         ButterKnife.bind(this, view);
-        initUI();
+        if (mPreCancellationInfo.hasUrl()) { initWebUi(); }
+        else { initUi(); }
         return view;
     }
 
-    private void initUI() {
-        setupToolbar(
-                mToolbar,
-                mBookingCancellationData.getPreCancellationInfo().getNavigationTitle(),
-                true
-        );
-        mWarningMessage.setText(mBookingCancellationData.getWarningMessage());
-        mWarningMessage.setVisibility(
-                mBookingCancellationData.hasWarning() ? View.VISIBLE : View.GONE
-        );
-        mTitle.setText(mBookingCancellationData.getPreCancellationInfo().getTitle());
-        mMessage.setText(mBookingCancellationData.getPreCancellationInfo().getMessage());
-        mButton.setText(mBookingCancellationData.getPreCancellationInfo().getButtonLabel());
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                FragmentUtils.switchToFragment(
-                        BookingCancelWarningFragment.this,
-                        BookingCancelReasonFragment.newInstance(mBooking, mBookingCancellationData),
-                        false
-                );
-            }
-        });
+    private void initUi() {
+        setupToolbar(mToolbar, mPreCancellationInfo.getNavigationTitle(), true);
+        mWebView.setVisibility(View.GONE);
+        mWarning.setText(mBookingCancellationData.getWarningMessage());
+        mWarning.setVisibility(mBookingCancellationData.hasWarning() ? View.VISIBLE : View.GONE);
+        mTitle.setText(mPreCancellationInfo.getTitle());
+        mMessage.setText(mPreCancellationInfo.getMessage());
+        mButton.setText(mPreCancellationInfo.getButtonLabel());
 
     }
 
+    private void initWebUi() {
+        setupToolbar(mToolbar, mPreCancellationInfo.getNavigationTitle(), true);
+        mWebView.setVisibility(View.VISIBLE);
+        mWebView.setWebViewClient(new HandyWebViewClient(getActivity()) {
+            @Override
+            public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
+                showUiBlockers();
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+                showUiBlockers();
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onPageFinished(final WebView view, final String url) {
+                removeUiBlockers();
+                super.onPageFinished(view, url);
+            }
+        });
+        mWebView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(final View v) {
+                return true;
+            }
+        });
+        mWebView.setLongClickable(false);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.loadUrl(mPreCancellationInfo.getUrl());
+        mWarning.setText(mBookingCancellationData.getWarningMessage());
+        mWarning.setVisibility(mBookingCancellationData.hasWarning() ? View.VISIBLE : View.GONE);
+        mTitle.setVisibility(View.GONE);
+        mMessage.setVisibility(View.GONE);
+        mButton.setText(mPreCancellationInfo.getButtonLabel());
+
+    }
+
+    @OnClick(R.id.fragment_booking_cancel_warning_button)
+    public void onNextClicked() {
+        FragmentUtils.switchToFragment(
+                BookingCancelWarningFragment.this,
+                BookingCancelReasonFragment.newInstance(mBooking, mBookingCancellationData),
+                false
+        );
+    }
 }
