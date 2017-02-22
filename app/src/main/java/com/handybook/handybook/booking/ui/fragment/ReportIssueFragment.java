@@ -34,6 +34,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionL
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
+import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
 import com.squareup.otto.Subscribe;
@@ -74,17 +75,10 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
             Utils.safeLaunchIntent(intent, getContext());
         }
     };
-    private View.OnClickListener mTextButtonOnClickListener = new View.OnClickListener()
-    {
+    private View.OnClickListener mTextButtonOnClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
-            final Booking.ProviderAssignmentInfo providerAssignmentInfo =
-                    mBooking.getProviderAssignmentInfo();
-            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled()
-                    && providerAssignmentInfo != null
-                    && providerAssignmentInfo.isProTeamMatch())
-            {
+        public void onClick(final View v) {
+            if (mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
                 progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
                         mBooking.getId(), IssueResolutionLog.ProContacted.CHAT)));
@@ -97,8 +91,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                                     new ConversationCallbackWrapper(ReportIssueFragment.this)
                             );
             }
-            else
-            {
+            else {
                 bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
                         mBooking.getId(),
                         IssueResolutionLog.ProContacted.SMS
@@ -115,19 +108,21 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     };
 
     @Override
-    public void onCreateConversationSuccess(final String conversationId)
-    {
-        progressDialog.hide();
-        startActivity(new Intent(getActivity(), ProMessagesActivity.class).putExtra(
-                LayerConstants.LAYER_CONVERSATION_KEY,
-                Uri.parse(conversationId)
-        ));
+    public void onCreateConversationSuccess(@Nullable final String conversationId) {
+        progressDialog.dismiss();
+        Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
+        intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
+        intent.putExtra(
+                BundleKeys.PRO_MESSAGES_VIEW_MODEL,
+                new ProMessagesViewModel(mBooking.getProvider())
+        );
+        startActivity(intent);
     }
 
     @Override
     public void onCreateConversationError()
     {
-        progressDialog.hide();
+        progressDialog.dismiss();
         showToast(R.string.an_error_has_occurred);
     }
 

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 
 import java.io.Serializable;
 
@@ -15,6 +16,8 @@ public class Provider implements Serializable
     private int mStatus;
     @SerializedName("id")
     private String mId;
+    @SerializedName("name")
+    private String mName;
     @SerializedName("first_name")
     private String mFirstName;
     @SerializedName("last_name")
@@ -27,6 +30,14 @@ public class Provider implements Serializable
     private Integer mBookingCount;
     @SerializedName("profile_photo_url")
     private String mImageUrl;
+    @SerializedName("chat_enabled")
+    private boolean mChatEnabled;
+    @SerializedName("is_favorite")
+    private boolean mIsFavorite;
+    @SerializedName("team_type")
+    private ProTeamCategoryType mCategoryType;
+    @SerializedName("layer_user_id")
+    private String mLayerUserId;
 
     public Provider(final int status, final String firstName, final String lastName, final String phone)
     {
@@ -50,6 +61,8 @@ public class Provider implements Serializable
     {
         this.mStatus = status;
     }
+
+    public String getName() { return mName; }
 
     public final String getFirstName()
     {
@@ -80,6 +93,14 @@ public class Provider implements Serializable
     {
         this.mPhone = phone;
     }
+
+    public boolean isChatEnabled() { return mChatEnabled; }
+
+    public boolean isFavorite() { return mIsFavorite; }
+
+    public ProTeamCategoryType getCategoryType() { return mCategoryType; }
+
+    public String getLayerUserId() { return mLayerUserId; }
 
     /**
      * TODO temporary logic. eventually make the server return this

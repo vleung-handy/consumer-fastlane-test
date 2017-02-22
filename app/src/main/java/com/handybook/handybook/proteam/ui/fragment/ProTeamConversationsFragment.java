@@ -37,6 +37,7 @@ import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
+import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
@@ -232,8 +233,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);
         intent.putExtra(LayerConstants.LAYER_MESSAGE_TITLE, title);
-        intent.putExtra(BundleKeys.PRO_TEAM_PRO, mPro);
-        intent.putExtra(BundleKeys.PRO_TEAM_PRO_PREFERENCE, preference);
+        intent.putExtra(BundleKeys.PRO_MESSAGES_VIEW_MODEL, new ProMessagesViewModel(mPro));
         startActivity(intent);
     }
 
