@@ -1,0 +1,134 @@
+# More documentation about how to customize your build
+# can be found here:
+# https://docs.fastlane.tools
+fastlane_version "1.111.0"
+
+default_platform :android
+
+before_all do
+  ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+end
+
+lane :beta do
+  ensure_git_branch_release_candidate
+
+  gradle(task: "assembleProdRelease")
+
+  crashlytics(
+    api_token: ENV["CRASHLYTICS_API_TOKEN"],
+    build_secret: ENV["CRASHLYTICS_BUILD_SECRET"],
+    groups: ["android-devs", "android-internal-testers"]
+  )
+
+  slack(
+    message: "New Android build uploaded to Crashlytics!",
+    channel: "consumer-app-releases"
+  )
+end
+
+lane :playstore do
+  ensure_git_branch_release_candidate
+
+  gradle(task: "assembleProdRelease")
+
+  # TODO: Implement Play Store upload
+
+  # TODO; Implement Slack ping
+end
+
+lane :release_candidate do |options|
+  ensure_git_branch(branch: 'develop')
+  ensure_git_branch_clean_and_latest
+  _, major, minor, _ = get_current_version.split(/([0-9]+)\.([0-9]+)\.([0-9]+)/)
+  version_suffix = "#{major}.#{minor}.x"
+  sh('git checkout -b release_candidate_v' + version_suffix)
+end
+
+lane :version_bump do |options|
+  ensure_git_branch_clean_and_latest
+  version_bump_type = options[:version_bump_type]
+
+  valid_bump_types = ["major", "minor", "patch", "skip"]
+
+  valid = false
+  valid_bump_types.each do |type|
+    valid = type == version_bump_type
+    break if valid
+  end
+
+  error_message = "Must pass a version_bump_type value (e.g. fastlane [lane] version_bump_type:minor)"
+  if !valid
+    UI.error(error_message)
+    raise error_message
+  end
+
+  if version_bump_type == "patch"
+    ensure_git_branch_release_candidate
+  end
+
+  requires_git_push = false
+
+  version_number = nil
+  if version_bump_type != "skip"
+    version_number = bump_version(version_bump_type: version_bump_type)
+    requires_git_push = true
+  end
+
+  # Remove all tags not on remote
+  sh("git tag -l | xargs git tag -d")
+  sh("git fetch --tags")
+
+  if !version_number.nil? && !git_tag_exists(tag: version_number)
+    add_git_tag(tag: "v#{version_number}")
+    requires_git_push = true
+  end
+
+  push_to_git_remote if requires_git_push
+end
+
+private_lane :bump_version do |options|
+  version_bump_type = options[:version_bump_type]
+  old_version = get_current_version
+  _, major, minor, patch = old_version.split(/([0-9]+)\.([0-9]+)\.([0-9]+)/)
+  case version_bump_type
+  when 'major'
+    major = major.to_i + 1
+  when 'minor'
+    minor = minor.to_i + 1
+  when 'patch'
+    patch = patch.to_i + 1
+  else
+    raise_error(error_message: "Unrecognized version_bump_type: " + version_bump_type)
+  end
+  new_version = "#{major}.#{minor}.#{patch}"
+  sh("sed -i '' -E 's/#{old_version}/#{new_version}/g' ../app/build.gradle")
+  version_bump_message = "Bumped up version to #{new_version}"
+  git_commit(path: './app/build.gradle', message: version_bump_message)
+  UI.success(version_bump_message)
+  new_version
+end
+
+private_lane :get_current_version do
+  sh('cat ../app/build.gradle | sed -n -E "s/^.*\versionName[[:space:]]+\'(.*)\'.*$/\1/p"').strip
+end
+
+private_lane :ensure_git_branch_release_candidate do
+  release_candidate_branch_pattern = /release_candidate_v[0-9]+\.[0-9]+\.x/
+  if release_candidate_branch_pattern.match(branch_name).nil?
+    raise_error(error_message: "Current branch must be a release candidate branch (e.g. release_candidate_v1.29.x)")
+  end
+end
+
+private_lane :ensure_git_branch_clean_and_latest do |options|
+  ensure_git_status_clean
+  git_pull
+end
+
+private_lane :branch_name do
+  sh('git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3')
+end
+
+private_lane :raise_error do |options|
+  UI.error(options[:error_message])
+  raise(options[:error_message])
+end
