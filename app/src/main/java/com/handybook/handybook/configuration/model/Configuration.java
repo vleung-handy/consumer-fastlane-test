@@ -33,6 +33,11 @@ public class Configuration implements Serializable
     private boolean isProTeamProfilePicturesEnabled;
     @SerializedName("tab_bar_navigation_enabled")
     private boolean mBottomNavEnabled;
+    @SerializedName("new_services_home_page_enabled")
+    private boolean mHomeScreenV2Enabled;
+    @SerializedName("onboarding_zip_email_collection_enabled")
+    private boolean mOnboardingV2Enabled;
+
     // We want to keep the navigation type for the session.
     // Would be weird experience if user switches between zip codes where it's enabled/disabled
     private static Boolean mIsBottomNavEnabledForSession;
@@ -103,6 +108,10 @@ public class Configuration implements Serializable
         return mIsBottomNavEnabledForSession;
     }
 
+    public boolean isHomeScreenV2Enabled() {
+        return mHomeScreenV2Enabled;
+    }
+
     public String toJson()
     {
         return new GsonBuilder().setDateFormat(DATE_FORMAT).create().toJson(this);
@@ -142,7 +151,6 @@ public class Configuration implements Serializable
 
     public boolean isOnboardingV2Enabled()
     {
-        //TODO: JIA: make this read from config
-        return false;
+        return mOnboardingV2Enabled;
     }
 }

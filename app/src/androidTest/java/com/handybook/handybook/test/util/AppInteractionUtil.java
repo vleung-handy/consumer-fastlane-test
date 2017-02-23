@@ -3,11 +3,16 @@ package com.handybook.handybook.test.util;
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
+import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.test.model.TestUser;
+
+import org.hamcrest.Matcher;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -15,8 +20,34 @@ import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.any;
 
 public class AppInteractionUtil {
+
+    /**
+     * For our services home page, even though the animations are turned off, for some reason sometimes
+     * they still animate. So this will click the first item
+     * @return
+     */
+    public static ViewAction recyclerClick() {
+        return new ViewAction() {
+
+            @Override
+            public Matcher<View> getConstraints() {
+                return any(View.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "performing click() on recycler view item";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                view.performClick();
+            }
+        };
+    }
 
     /**
      * logs out if necessary and passes the onboarding screen if necessary

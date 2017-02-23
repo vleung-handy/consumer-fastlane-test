@@ -130,7 +130,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     @Ignore
     public void shouldStartBookingFlowIfServiceHasNoNestedCategories() throws Exception
     {
-        when(mMockService.getServices()).thenReturn(Collections.<Service>emptyList());
+        when(mMockService.getChildServices()).thenReturn(Collections.<Service>emptyList());
 
         mFragment.onReceiveServicesSuccess(
                 new BookingEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
@@ -144,7 +144,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     @Ignore
     public void shouldLaunchServiceActivityFlowIfServiceHasNestedCategories() throws Exception
     {
-        when(mMockService.getServices()).thenReturn(Lists.newArrayList(mMockService));
+        when(mMockService.getChildServices()).thenReturn(Lists.newArrayList(mMockService));
 
         mFragment.onReceiveServicesSuccess(
                 new BookingEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));

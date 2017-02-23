@@ -25,6 +25,8 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
+import com.handybook.handybook.core.manager.ServicesManager;
+import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -61,6 +63,10 @@ public class ProMessagesActivity extends MessagesListActivity
     ProTeamManager mProTeamManager;
     @Inject
     DataManager mDataManager;
+    @Inject
+    ServicesManager mServiceManager;
+    @Inject
+    protected SessionManager mSessionManager;
     @Inject
     BookingManager mBookingManager;
     @Inject
@@ -120,6 +126,13 @@ public class ProMessagesActivity extends MessagesListActivity
     }
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mSessionManager.markActivity();
+    }
+
+    @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
     {
         if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
@@ -150,7 +163,7 @@ public class ProMessagesActivity extends MessagesListActivity
     private void initCleaningService()
     {
         //we can safely assume that by this point, there is a valid cached services
-        List<Service> cachedServices = mDataManager.getCachedServices();
+        List<Service> cachedServices = mServiceManager.getCachedServices();
         if (cachedServices != null)
         {
             for (final Service service : cachedServices)

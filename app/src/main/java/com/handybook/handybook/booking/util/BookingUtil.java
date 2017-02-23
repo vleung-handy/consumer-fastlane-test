@@ -95,9 +95,9 @@ public class BookingUtil
             }
             else
             {
-                if (service.getServices() != null)
+                if (service.getChildServices() != null)
                 {
-                    for (Service s : service.getServices())
+                    for (Service s : service.getChildServices())
                     {
                         Service match = findMatchingService(s, booking.getServiceMachineName());
                         if (match != null)
@@ -135,9 +135,9 @@ public class BookingUtil
         }
         else
         {
-            if (service.getServices() != null)
+            if (service.getChildServices() != null)
             {
-                for (Service s : service.getServices())
+                for (Service s : service.getChildServices())
                 {
                     Service match = findMatchingService(s, nameToMatch);
                     if (match != null)

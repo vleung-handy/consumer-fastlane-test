@@ -117,9 +117,12 @@ public class EventLogManager
             String logString = log.getEventName() + ": " + eventLogJson.toString();
             Crashlytics.log(logString);
 
-            //Mixpanel tracking info in NOR-1016
-            addMixPanelProperties(eventLogJson, eventLog);
-            mMixpanel.track(eventLog.getEventType(), eventLogJson);
+            if(BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
+            {
+                //Mixpanel tracking info in NOR-1016
+                addMixPanelProperties(eventLogJson, eventLog);
+                mMixpanel.track(eventLog.getEventType(), eventLogJson);
+            }
         }
         catch (JsonParseException | JSONException e)
         {
@@ -434,6 +437,8 @@ public class EventLogManager
     // This should be called from BaseApplication after
     public void initMixPanel()
     {
+        if(BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) return;
+
         //Set up mix panel
         String mixPanelProperty = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                 ? "mixpanel_api_key"

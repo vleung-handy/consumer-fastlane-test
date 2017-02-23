@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -515,6 +516,11 @@ public final class LoginFragment extends BookingFlowFragment
         final UserDataManager.AuthType authType = event.getAuthType();
         String authTypeForLogger = getAuthTypeForLogger(authType);
 
+        if (mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()) {
+            //the fact that the user is logged in guarantees at least zip information
+            mDefaultPreferencesManager.setString(PrefsKey.ZIP, getUserZip(event.getUser()));
+        }
+
         if (mIsFromBookingFunnel)
         {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginSuccessLog(
@@ -579,6 +585,16 @@ public final class LoginFragment extends BookingFlowFragment
 
         //finish, so use cannot hit back and get to login again.
         getActivity().finish();
+    }
+
+    @Nullable
+    private String getUserZip(User user) {
+
+        if (user != null && user.getAddress() != null) {
+            return user.getAddress().getZip();
+        }
+
+        return null;
     }
 
     private void goToHomePage()

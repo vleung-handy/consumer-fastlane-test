@@ -1,56 +1,48 @@
 package com.handybook.handybook.booking.ui.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
-import com.handybook.handybook.booking.ui.view.ServiceCategoryView;
-import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.EnvironmentModifier;
+import com.handybook.handybook.booking.ui.activity.ZipActivity;
+import com.handybook.handybook.booking.ui.adapter.ServicesCategoryHomeAdapter;
 import com.handybook.handybook.core.UserManager;
-import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.view.snowflake.SnowView;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -58,54 +50,45 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class ServiceCategoriesFragment extends BookingFlowFragment
+import static android.app.Activity.RESULT_OK;
+
+public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
 {
     private static final String EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID";
     private static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
-    private static final String TAG = ServiceCategoriesFragment.class.getName();
+    public static final int REQUEST_CODE_ZIP = 1001;
 
-    private List<Service> mServices = new ArrayList<>();
+    private List<Service> mServices;
     private boolean mUsedCache;
-    /**
-     * maps the service id to its icon image view as rendered.
-     * using service id rather than service object as key in case the object references differ
-     * <p/>
-     * used for the cool icon transition to ServicesActivity
-     * <p/>
-     * we need this because the transition requires a
-     * reference to the EXACT image view of the service icon
-     * rendered in the service category views
-     */
-    private Map<Integer, ImageView> mServiceIconMap = new HashMap<>();
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.services_home_list)
+    GridView mGridView;
+    @Bind(R.id.change_zip_layout)
+    View mChangeZipLayout;
     @Bind(R.id.coupon_layout)
     View mCouponLayout;
     @Bind(R.id.promo_img)
     ImageView mPromoImage;
     @Bind(R.id.promo_text)
     TextView mPromoText;
-    @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.fragment_services_category_snowview)
-    SnowView mSnowView;
+    @Bind(R.id.not_in_zip)
+    TextView mNotInZip;
+    @Bind(R.id.fragment_service_categories_sign_in_text)
+    TextView mSigninButton;
 
-    RecyclerViewAdapter mAdapter;
-
-    @Inject
-    public Bus bus;
-    @Inject
-    DefaultPreferencesManager mDefaultPreferencesManager;
     @Inject
     UserManager mUserManager;
     @Inject
-    EnvironmentModifier mEnvironmentModifier;
+    SecurePreferencesManager mSecurePreferencesManager;
 
-    public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
+    private ServicesCategoryHomeAdapter mAdapter;
+
+    public static ServiceCategoriesHomeFragment newInstance(String serviceId, String promoCode)
     {
-        ServiceCategoriesFragment fragment = new ServiceCategoriesFragment();
+        ServiceCategoriesHomeFragment fragment = new ServiceCategoriesHomeFragment();
         final Bundle bundle = new Bundle();
         bundle.putString(EXTRA_SERVICE_ID, serviceId);
         bundle.putString(EXTRA_PROMO_CODE, promoCode);
@@ -113,17 +96,19 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         return fragment;
     }
 
-    public static ServiceCategoriesFragment newInstance()
+    public static ServiceCategoriesHomeFragment newInstance()
     {
-        return new ServiceCategoriesFragment();
+        return new ServiceCategoriesHomeFragment();
     }
 
     @Override
     public final void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        mServices = new ArrayList<>();
+
         bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageShownLog()));
+
     }
 
     @Override
@@ -133,121 +118,58 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             final Bundle savedInstanceState
     )
     {
-        final View view = getActivity().getLayoutInflater().inflate(
-                R.layout.fragment_service_categories, container, false);
+        final View view = getActivity().getLayoutInflater()
+                                       .inflate(
+                                               R.layout.fragment_service_categories_home,
+                                               container,
+                                               false
+                                       );
         ButterKnife.bind(this, view);
-        mSnowView.setVisibility(mConfigurationManager.getPersistentConfiguration()
-                                                     .isSnowEnabled() ? View.VISIBLE : View.GONE);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled() &&
-                activity instanceof MenuDrawerActivity)
-        {
-            ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
-        }
-        else
-        {
-            mToolbar.setNavigationIcon(null);
-        }
-
         mPromoImage.setColorFilter(
-                ContextCompat.getColor(getContext(), R.color.handy_blue), PorterDuff.Mode.SRC_ATOP);
+                ContextCompat.getColor(getContext(), R.color.handy_blue),
+                PorterDuff.Mode.SRC_ATOP
+        );
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
-
-        mAdapter = new RecyclerViewAdapter(mServices, new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                int itemPosition = mRecyclerView.getChildLayoutPosition(view);
-                Service service = mServices.get(itemPosition);
-
-                bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageSubmittedLog(
-                        service.getId())));
-
-                mServiceIconMap.put(service.getId(), ((ServiceCategoryView) view).getIcon());
-                launchServiceActivity(service);
-            }
-        });
-
-        mRecyclerView.setAdapter(mAdapter);
+        refreshZipLabel();
+        updateSigninButtonDisplay();
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
-            inflater.inflate(R.menu.menu_service_categories, menu);
+    /**
+     * If the user is already logged in, don't show the sign in button
+     */
+    private void updateSigninButtonDisplay() {
+        mSigninButton.setVisibility(mUserManager.isUserLoggedIn() ? View.GONE : View.VISIBLE);
+    }
+
+    private void refreshZipLabel() {
+        String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP);
+        if (!TextUtils.isEmpty(zip)) {
+            mNotInZip.setText(getString(R.string.not_in_zip, zip));
+            mChangeZipLayout.setVisibility(View.VISIBLE);
         }
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu)
+    //only enabled when bottom nav enabled
+    @OnClick(R.id.fragment_service_categories_sign_in_text)
+    public void onSignInTextClicked()
     {
-        super.onPrepareOptionsMenu(menu);
-
-        final MenuItem signInMenuItem = menu.findItem(R.id.menu_sign_in);
-        final MenuItem envMenuItem = menu.findItem(R.id.menu_environment);
-
-        if (signInMenuItem != null)
-        {
-            signInMenuItem.setVisible(!mUserManager.isUserLoggedIn());
-        }
-
-        if (envMenuItem != null)
-        {
-            // We will only enable environment modifier if this is a stage build
-            if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
-            {
-                envMenuItem.setTitle(mEnvironmentModifier.getEnvironment());
-            }
-            else
-            {
-                envMenuItem.setVisible(false);
-            }
-        }
+        final Intent intent = new Intent(getActivity(), LoginActivity.class);
+        getActivity().startActivity(intent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item)
+    @OnClick(R.id.change_button)
+    public void onChangeButtonClicked()
     {
-        switch (item.getItemId())
-        {
-            case R.id.menu_sign_in:
-                final Intent intent = new Intent(getActivity(), LoginActivity.class);
-                getActivity().startActivity(intent);
-                return true;
-            case R.id.menu_environment:
-                final EditText input = new EditText(getContext());
-                input.setText(mEnvironmentModifier.getEnvironment());
-                new AlertDialog.Builder(getContext())
-                        .setTitle(R.string.set_environment)
-                        .setView(input)
-                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i)
-                            {
-                                // change the environment and update the menu text
-                                mEnvironmentModifier.setEnvironment(input.getText().toString());
-                                item.setTitle(input.getText().toString());
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, null)
-                        .create()
-                        .show();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
+        startActivityForResult(
+                new Intent(getActivity(), ZipActivity.class),
+                REQUEST_CODE_ZIP
+        );
     }
 
     @Override
@@ -262,6 +184,20 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     {
         super.onResume();
         loadServices();
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_ZIP && resultCode == RESULT_OK) {
+            //this is guaranteed to have at least one
+            List<Service> services
+                    = (List<Service>) data.getSerializableExtra(ZipActivity.EXTRA_SERVICES);
+
+            handleLoadServicesResponse(services, mUsedCache);
+
+            refreshZipLabel();
+        }
     }
 
     /**
@@ -294,7 +230,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                         {
                             if (service.getId() == extraServiceId)
                             {
-                                launchServiceActivity(service);
+                                launchServiceActivity(service, null);
                                 break;
                             }
                         }
@@ -342,11 +278,35 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         {
             return;
         }
+
         mUsedCache = usedCache;
         mServices = services;
         handleBundleArguments();
 
-        mAdapter.clearAndAdd(mServices);
+        if (mAdapter == null)
+        {
+            mAdapter = new ServicesCategoryHomeAdapter(getContext(), mServices);
+            mGridView.setAdapter(mAdapter);
+            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(
+                        final AdapterView<?> parent,
+                        final View view,
+                        final int position,
+                        final long id
+                )
+                {
+                    //Get the service and launch it
+                    launchServiceActivity(mAdapter.getItem(position), view);
+                }
+            });
+        }
+        else
+        {
+            mAdapter.refreshData(mServices);
+        }
+
         progressDialog.dismiss();
     }
 
@@ -399,7 +359,14 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @OnClick(R.id.coupon_layout)
     public void onCouponClick()
     {
-        startActivity(new Intent(getContext(), PromosActivity.class));
+        if (getActivity() instanceof MenuDrawerActivity)
+        {
+            ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
+        }
+        else
+        {
+            FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
+        }
     }
 
     /**
@@ -407,7 +374,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
      *
      * @param service
      */
-    private void launchServiceActivity(@NonNull Service service)
+    private void launchServiceActivity(@NonNull Service service, @Nullable View view)
     {
         if (service.getChildServices().size() > 0)
         {
@@ -416,9 +383,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             {
                 Bundle bundle = null;
-                ImageView transitionImageView = mServiceIconMap.get(service.getId());
-                if (transitionImageView != null)
+                //This is just for animating the icon from home screen to sub-categories screen
+                if (view != null)
                 {
+                    ImageView transitionImageView = ((ServicesCategoryHomeAdapter.CategoryViewHolder) view
+                            .getTag()).getIcon();
+
                     ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                             getActivity(), transitionImageView, SHARED_ICON_ELEMENT_NAME
                     );
@@ -434,60 +404,6 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         else
         {
             startBookingFlow(service.getId(), service.getUniq());
-        }
-    }
-
-    static class RecyclerViewHolder extends RecyclerView.ViewHolder
-    {
-        public RecyclerViewHolder(View itemView)
-        {
-            super(itemView);
-        }
-    }
-
-
-    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder>
-    {
-        private final String TAG = RecyclerViewAdapter.class.getName();
-
-        private List<Service> services;
-        private View.OnClickListener mListener;
-
-        public RecyclerViewAdapter(List<Service> itemList, View.OnClickListener listener)
-        {
-            services = itemList;
-            mListener = listener;
-        }
-
-        @Override
-        public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            ServiceCategoryView v = new ServiceCategoryView(getContext());
-            v.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
-            v.setOnClickListener(mListener);
-            return new RecyclerViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerViewHolder holder, int position)
-        {
-            ((ServiceCategoryView) holder.itemView).init(services.get(position));
-        }
-
-        @Override
-        public int getItemCount()
-        {
-            return services.size();
-        }
-
-        public void clearAndAdd(List<Service> s)
-        {
-            services.clear();
-            services.addAll(s);
-            notifyDataSetChanged();
         }
     }
 }

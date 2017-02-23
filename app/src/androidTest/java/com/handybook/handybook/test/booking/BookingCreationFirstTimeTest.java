@@ -46,7 +46,7 @@ public class BookingCreationFirstTimeTest
         //create a home cleaning - assuming that is at position 0
         //(don't know how to cleanly query nested item)
         onView(withId(R.id.recycler_view)).perform(
-                RecyclerViewActions.actionOnItemAtPosition(0, click()));
+                RecyclerViewActions.actionOnItemAtPosition(0, AppInteractionUtil.recyclerClick()));
 
         //enter zip code
         ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);

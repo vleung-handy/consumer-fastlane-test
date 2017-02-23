@@ -67,6 +67,7 @@ import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
+import com.handybook.handybook.booking.ui.activity.ZipActivity;
 import com.handybook.handybook.booking.ui.fragment.ActiveBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.AddLaundryDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
@@ -109,9 +110,11 @@ import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
+import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
+import com.handybook.handybook.booking.ui.fragment.ZipFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
@@ -126,6 +129,7 @@ import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.FileManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.manager.ServicesManager;
+import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.core.manager.StripeManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.core.receiver.LayerPushReceiver;
@@ -324,6 +328,10 @@ import retrofit.converter.GsonConverter;
         EditPlanFrequencyActivity.class,
         EditPlanAddressActivity.class,
         ProTeamEditActivity.class,
+        ServiceCategoriesHomeFragment.class,
+        SessionManager.class,
+        ZipActivity.class,
+        ZipFragment.class
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
@@ -518,6 +526,13 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
+    final SessionManager provideSessionCacheManager()
+    {
+        return new SessionManager();
+    }
+
+    @Provides
+    @Singleton
     final HandyRetrofitService provideHandyService(
             final RestAdapter restAdapter
     )
@@ -529,11 +544,10 @@ public final class ApplicationModule
     @Singleton
     final DataManager provideDataManager(
             final HandyRetrofitService service,
-            final HandyRetrofitEndpoint endpoint,
-            final SecurePreferencesManager securePreferencesManager
+            final HandyRetrofitEndpoint endpoint
     )
     {
-        return new DataManager(service, endpoint, securePreferencesManager);
+        return new DataManager(service, endpoint);
     }
 
     @Provides
@@ -639,10 +653,15 @@ public final class ApplicationModule
     @Singleton
     final ServicesManager provideServicesManager(
             final DataManager dataManager,
-            final Bus bus
-    )
+            final Bus bus,
+            final SecurePreferencesManager securePreferencesManager,
+            final ConfigurationManager configurationManager,
+            final SessionManager sessionManager
+            )
     {
-        return new ServicesManager(dataManager, bus);
+        return new ServicesManager(dataManager, bus, securePreferencesManager, configurationManager,
+                                   sessionManager
+        );
     }
 
     @Provides

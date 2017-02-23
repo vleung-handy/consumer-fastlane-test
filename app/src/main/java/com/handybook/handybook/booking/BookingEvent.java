@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
@@ -363,7 +364,21 @@ public abstract class BookingEvent
         }
     }
 
-    public static class RequestServices {}
+    public static class RequestServices {
+        private String mZip;
+
+        public RequestServices() {};
+
+        public RequestServices(@NonNull final String zip) {
+            mZip = zip;
+        };
+
+        @Nullable
+        public String getZip()
+        {
+            return mZip;
+        }
+    }
 
 
     public static class RequestCachedServices {}
@@ -372,6 +387,13 @@ public abstract class BookingEvent
     public static class ReceiveServicesSuccess extends HandyEvent.ReceiveSuccessEvent
     {
         private List<Service> mServices;
+        private String mZip;
+
+        public ReceiveServicesSuccess(final List<Service> services, @Nullable final String zip)
+        {
+            this(services);
+            mZip = zip;
+        }
 
         public ReceiveServicesSuccess(final List<Service> services)
         {
@@ -381,6 +403,12 @@ public abstract class BookingEvent
         public List<Service> getServices()
         {
             return mServices;
+        }
+
+        @Nullable
+        public String getZip()
+        {
+            return mZip;
         }
     }
 

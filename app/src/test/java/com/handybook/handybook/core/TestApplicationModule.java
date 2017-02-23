@@ -296,11 +296,10 @@ public class TestApplicationModule
     @Singleton
     final DataManager provideDataManager(
             final HandyRetrofitService service,
-            final HandyRetrofitEndpoint endpoint,
-            final SecurePreferencesManager securePreferencesManager
+            final HandyRetrofitEndpoint endpoint
     )
     {
-        return spy(new TestDataManager(service, endpoint, securePreferencesManager));
+        return spy(new TestDataManager(service, endpoint));
     }
 
     @Provides
