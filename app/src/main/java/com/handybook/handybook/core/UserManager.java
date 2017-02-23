@@ -88,12 +88,6 @@ public class UserManager implements Observer
         if (mUser != null)
         {
             mUser.deleteObserver(this);
-
-            //the fact that the user is logged in guarantees at least email and zip information
-            mDefaultPreferencesManager.setString(PrefsKey.ZIP, getUserZip(newUser));
-
-            //storing of EMAIl in shared prefs is only used for users that are not logged in. Now that
-            //the user is logged in, it' safe to remove this.
         }
 
         if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
