@@ -772,7 +772,8 @@ public class ActiveBookingFragment extends InjectedFragment implements OnMapRead
 
     @OnClick(R.id.active_booking_text)
     public void textClicked() {
-        if (mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
+        if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
+            mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
             progressDialog.show();
             bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
                     mBooking.getId(), ActiveBookingLog.BookingProContactedLog.CHAT)));

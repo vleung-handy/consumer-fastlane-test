@@ -390,7 +390,8 @@ public class BookingDetailSectionFragmentProInformation extends
 
         @Override
         public void onClick(final View v) {
-            if (booking.getProvider() != null && booking.getProvider().isChatEnabled()) {
+            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
+                booking.getProvider() != null && booking.getProvider().isChatEnabled()) {
                 progressDialog.show();
                 HandyLibrary.getInstance()
                             .getHandyService()
