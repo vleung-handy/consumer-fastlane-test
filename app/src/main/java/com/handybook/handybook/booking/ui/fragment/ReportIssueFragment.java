@@ -78,7 +78,8 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     private View.OnClickListener mTextButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            if (mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
+            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
+                mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
                 progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
                         mBooking.getId(), IssueResolutionLog.ProContacted.CHAT)));
