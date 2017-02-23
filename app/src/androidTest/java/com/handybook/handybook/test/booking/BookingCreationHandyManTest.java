@@ -53,7 +53,7 @@ public class BookingCreationHandyManTest
         Matcher<View> handymanRecyclerViewItemMatcher =
                 withChild(withChild(withChild(withChild(withText("Handyman")))));
         onView(withId(R.id.recycler_view)).perform(
-                RecyclerViewActions.actionOnItem(handymanRecyclerViewItemMatcher, click()));
+                RecyclerViewActions.actionOnItem(handymanRecyclerViewItemMatcher, AppInteractionUtil.recyclerClick()));
 
         //select the hanging items service
         Matcher<View> matchingItemsMatcher = withText("Hanging items");
