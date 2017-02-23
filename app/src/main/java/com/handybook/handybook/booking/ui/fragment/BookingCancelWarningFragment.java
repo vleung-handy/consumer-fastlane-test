@@ -1,12 +1,17 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -101,6 +106,7 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment {
 
     }
 
+    @SuppressWarnings("SetJavaScriptEnabled")
     private void initWebUi() {
         setupToolbar(mToolbar, mPreCancellationInfo.getNavigationTitle(), true);
         mWebView.setVisibility(View.VISIBLE);
@@ -121,6 +127,46 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment {
             public void onPageFinished(final WebView view, final String url) {
                 removeUiBlockers();
                 super.onPageFinished(view, url);
+            }
+
+            /**
+             * API23 and higher
+             */
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onReceivedError(
+                    final WebView view,
+                    final WebResourceRequest request,
+                    final WebResourceError error
+            ) {
+                super.onReceivedError(view, request, error);
+                // Page failed to load (>400 AFAIK)
+                //This check is more involved to try to fix issues with auto-http->https redirects..
+                if (request.getUrl().getEncodedSchemeSpecificPart().equals(
+                        Uri.parse(view.getUrl()).getEncodedSchemeSpecificPart()
+                )) {
+                    removeUiBlockers();
+                    onNextClicked();
+                }
+            }
+
+            /**
+             *  API22 and below
+             */
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onReceivedError(
+                    final WebView view,
+                    final int errorCode,
+                    final String description,
+                    final String failingUrl
+            ) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                // Page failed to load (>400 AFAIK)
+                if (failingUrl.equals(view.getUrl())) {
+                    removeUiBlockers();
+                    onNextClicked();
+                }
             }
         });
         mWebView.setOnLongClickListener(new View.OnLongClickListener() {
