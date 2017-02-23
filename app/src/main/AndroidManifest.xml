@@ -397,7 +397,7 @@
         </receiver>
 
         <activity
-            android:name=".notifications.feed.ui.activity.NotificationsActivity"
+            android:name=".notifications.ui.activity.NotificationsActivity"
             android:label="@string/title_activity_notification_feed"
             android:parentActivityName=".booking.ui.activity.ServicesActivity"
             android:theme="@style/BaseTheme"

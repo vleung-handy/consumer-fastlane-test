@@ -154,7 +154,7 @@ import com.handybook.handybook.onboarding.OnboardFragment;
 import com.handybook.handybook.onboarding.OnboardPageFragment;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.onboarding.ServiceNotSupportedActivity;
-import com.handybook.handybook.persistentpromo.PersistentPromoModule;
+import com.handybook.handybook.promos.PromosModule;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
@@ -337,7 +337,7 @@ import retrofit.converter.GsonConverter;
         includes = {
                 HelpModule.class,
                 NotificationsModule.class,
-                PersistentPromoModule.class,
+                PromosModule.class,
                 //FIXME add more
         }
 )

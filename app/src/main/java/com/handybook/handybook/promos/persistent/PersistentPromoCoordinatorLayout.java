@@ -1,4 +1,4 @@
-package com.handybook.handybook.persistentpromo;
+package com.handybook.handybook.promos.persistent;
 
 import android.content.Context;
 import android.content.Intent;

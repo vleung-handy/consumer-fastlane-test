@@ -1,4 +1,4 @@
-package com.handybook.handybook.notifications.feed.model;
+package com.handybook.handybook.notifications.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,4 +1,4 @@
-package com.handybook.handybook.notifications.splash.model;
+package com.handybook.handybook.promos.splash;
 
 import android.os.Parcel;
 import android.os.Parcelable;

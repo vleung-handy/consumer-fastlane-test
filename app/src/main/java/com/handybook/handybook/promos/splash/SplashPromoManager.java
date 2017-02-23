@@ -1,16 +1,14 @@
-package com.handybook.handybook.notifications.splash.manager;
+package com.handybook.handybook.promos.splash;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
-import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.ActivityLifecycleEvent;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
-import com.handybook.handybook.notifications.splash.SplashNotificationEvent;
-import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.handybook.handybook.core.structures.SerializableHashSet;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.squareup.otto.Bus;
@@ -18,7 +16,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-public class SplashNotificationManager
+public class SplashPromoManager
 {
     /*
         manages the display and requests for splash promos and notifications
@@ -36,7 +34,7 @@ public class SplashNotificationManager
     private long mAvailablePromoLastCheckMs = 0;
 
     @Inject
-    public SplashNotificationManager(
+    public SplashPromoManager(
             final UserManager userManager,
             final DataManager dataManager,
             final SecurePreferencesManager securePreferencesManager,
@@ -80,13 +78,13 @@ public class SplashNotificationManager
                 @Override
                 public void onSuccess(final SplashPromo splashPromo)
                 {
-                    mBus.post(new SplashNotificationEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
+                    mBus.post(new SplashPromoEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
                 }
 
                 @Override
                 public void onError(final DataManager.DataManagerError error)
                 {
-                    mBus.post(new SplashNotificationEvent.ReceiveAvailableSplashPromoError(error));
+                    mBus.post(new SplashPromoEvent.ReceiveAvailableSplashPromoError(error));
                 }
             });
         }
@@ -115,14 +113,14 @@ public class SplashNotificationManager
 
     //making these handled as events in case we make this a network call
     @Subscribe
-    public void onRequestMarkSplashPromoAsDisplayed(SplashNotificationEvent.RequestMarkSplashPromoAsDisplayed event)
+    public void onRequestMarkSplashPromoAsDisplayed(SplashPromoEvent.RequestMarkSplashPromoAsDisplayed event)
     {
         SplashPromo splashPromo = event.splashPromo;
         rememberSplashPromoInPreferences(splashPromo, PrefsKey.DISPLAYED_SPLASH_PROMOS);
     }
 
     @Subscribe
-    public void onRequestMarkSplashPromoAsAccepted(SplashNotificationEvent.RequestMarkSplashPromoAsAccepted event)
+    public void onRequestMarkSplashPromoAsAccepted(SplashPromoEvent.RequestMarkSplashPromoAsAccepted event)
     {
         SplashPromo splashPromo = event.splashPromo;
         rememberSplashPromoInPreferences(splashPromo, PrefsKey.ACCEPTED_SPLASH_PROMOS);

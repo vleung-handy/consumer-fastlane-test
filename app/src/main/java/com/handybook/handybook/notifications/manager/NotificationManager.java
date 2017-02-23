@@ -1,10 +1,10 @@
-package com.handybook.handybook.notifications.feed.manager;
+package com.handybook.handybook.notifications.manager;
 
 import android.support.annotation.NonNull;
 
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.notifications.model.HandyNotification;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

@@ -13,12 +13,12 @@
     app:toolbarId="@+id/persistent_promo_preview_view"
     >
 
-    <com.handybook.handybook.persistentpromo.PersistentPromoPreviewToolbar
+    <com.handybook.handybook.promos.persistent.PersistentPromoPreviewToolbar
         android:id="@+id/persistent_promo_preview_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:contentInsetStart="0dp"
-        app:layout_behavior="com.handybook.handybook.persistentpromo.PersistentPromoAppBarLayout$FadingViewBehavior"
+        app:layout_behavior="com.handybook.handybook.promos.persistent.PersistentPromoAppBarLayout$FadingViewBehavior"
         app:layout_collapseMode="pin"
         />
 
