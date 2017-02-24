@@ -149,11 +149,7 @@ import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
-import com.handybook.handybook.onboarding.OnboardActivity;
-import com.handybook.handybook.onboarding.OnboardFragment;
-import com.handybook.handybook.onboarding.OnboardPageFragment;
-import com.handybook.handybook.onboarding.OnboardV2Fragment;
-import com.handybook.handybook.onboarding.ServiceNotSupportedActivity;
+import com.handybook.handybook.onboarding.OnboardingModule;
 import com.handybook.handybook.promos.PromosModule;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
@@ -167,13 +163,7 @@ import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.push.receiver.PushReceiver;
-import com.handybook.handybook.referral.manager.ReferralsManager;
-import com.handybook.handybook.referral.ui.RedemptionActivity;
-import com.handybook.handybook.referral.ui.RedemptionEmailSignUpFragment;
-import com.handybook.handybook.referral.ui.RedemptionFragment;
-import com.handybook.handybook.referral.ui.RedemptionSignUpFragment;
-import com.handybook.handybook.referral.ui.ReferralActivity;
-import com.handybook.handybook.referral.ui.ReferralFragment;
+import com.handybook.handybook.referral.ReferralModule;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerHelper;
@@ -243,10 +233,6 @@ import retrofit.converter.GsonConverter;
         BookingCancelReasonFragment.class,
         BookingCancelWarningFragment.class,
         YozioMetaDataCallback.class,
-        OnboardActivity.class,
-        OnboardFragment.class,
-        OnboardV2Fragment.class,
-        OnboardPageFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class,
@@ -286,13 +272,7 @@ import retrofit.converter.GsonConverter;
         NavbarWebViewDialogFragment.class,
         ServiceCategoriesOverlayFragment.class,
         PushReceiver.class,
-        ReferralActivity.class,
-        ReferralFragment.class,
         ReferralDialogFragment.class,
-        RedemptionActivity.class,
-        RedemptionFragment.class,
-        RedemptionSignUpFragment.class,
-        RedemptionEmailSignUpFragment.class,
         RateImprovementDialogFragment.class,
         RatingsGridFragment.class,
         RateProTeamFragment.class,
@@ -310,7 +290,6 @@ import retrofit.converter.GsonConverter;
         WebViewFragment.class,
         AccountFragment.class,
         ContactFragment.class,
-        ServiceNotSupportedActivity.class,
         ProfilePasswordFragment.class,
         PlansFragment.class,
         EditPlanFragment.class,
@@ -337,6 +316,8 @@ import retrofit.converter.GsonConverter;
         includes = {
                 HelpModule.class,
                 NotificationsModule.class,
+                OnboardingModule.class,
+                ReferralModule.class,
                 PromosModule.class,
                 //FIXME add more
         }
@@ -730,17 +711,6 @@ public final class ApplicationModule
     )
     {
         return new UrbanAirshipManager(mContext, bus, userManager);
-    }
-
-    @Provides
-    @Singleton
-    final ReferralsManager provideReferralsManager(
-            final Bus bus,
-            final DataManager dataManager,
-            final DefaultPreferencesManager defaultPreferencesManager
-    )
-    {
-        return new ReferralsManager(bus, dataManager, defaultPreferencesManager);
     }
 
     @Provides
