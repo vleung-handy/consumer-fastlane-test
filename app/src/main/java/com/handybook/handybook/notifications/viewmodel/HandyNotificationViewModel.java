@@ -1,9 +1,9 @@
-package com.handybook.handybook.notifications.feed.viewmodel;
+package com.handybook.handybook.notifications.viewmodel;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
 
-import com.handybook.handybook.notifications.feed.model.HandyNotification;
+import com.handybook.handybook.notifications.model.HandyNotification;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

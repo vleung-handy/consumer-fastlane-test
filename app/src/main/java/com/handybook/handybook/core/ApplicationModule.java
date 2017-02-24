@@ -150,7 +150,7 @@ import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
 import com.handybook.handybook.onboarding.OnboardingModule;
-import com.handybook.handybook.persistentpromo.PersistentPromoModule;
+import com.handybook.handybook.promos.PromosModule;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
@@ -316,9 +316,9 @@ import retrofit.converter.GsonConverter;
         includes = {
                 HelpModule.class,
                 NotificationsModule.class,
-                PersistentPromoModule.class,
                 OnboardingModule.class,
                 ReferralModule.class,
+                PromosModule.class,
                 //FIXME add more
         }
 )

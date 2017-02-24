@@ -32,8 +32,8 @@ import com.handybook.handybook.core.manager.StripeManager;
 import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.notifications.feed.manager.NotificationManager;
-import com.handybook.handybook.notifications.splash.manager.SplashNotificationManager;
+import com.handybook.handybook.notifications.manager.NotificationManager;
+import com.handybook.handybook.promos.splash.SplashPromoManager;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.referral.manager.ReferralsManager;
@@ -103,7 +103,7 @@ public class BaseApplication extends MultiDexApplication
     @Inject
     DeepLinkIntentProvider mDeepLinkIntentProvider;
     @Inject
-    SplashNotificationManager mSplashNotificationManager;
+    SplashPromoManager mSplashPromoManager;
     @Inject
     BookingEditManager bookingEditManager;
     @Inject

@@ -12,19 +12,19 @@
        android:layout_height="match_parent"
     >
     <!--would be nice to make this work with scrollview, but not in business requirements-->
-    <com.handybook.handybook.persistentpromo.PersistentPromoExpandedLayout
+    <com.handybook.handybook.promos.persistent.PersistentPromoExpandedLayout
         android:id="@+id/persistent_promo_expanded_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animationCache="true"
         android:fitsSystemWindows="true"
-        app:layout_behavior="com.handybook.handybook.persistentpromo.PersistentPromoExpandedLayout$DefaultBehavior"
+        app:layout_behavior="com.handybook.handybook.promos.persistent.PersistentPromoExpandedLayout$DefaultBehavior"
         app:layout_collapseMode="parallax"
         app:layout_collapseParallaxMultiplier="1"
         tools:visibility="gone"
         />
 
-    <com.handybook.handybook.persistentpromo.PersistentPromoAppBarLayout
+    <com.handybook.handybook.promos.persistent.PersistentPromoAppBarLayout
         android:id="@+id/persistent_promo_appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
