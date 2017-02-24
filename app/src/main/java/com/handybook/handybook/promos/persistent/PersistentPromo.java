@@ -1,4 +1,4 @@
-package com.handybook.handybook.persistentpromo;
+package com.handybook.handybook.promos.persistent;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,4 @@
-package com.handybook.handybook.notifications.splash.view.fragment;
+package com.handybook.handybook.promos.splash;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,8 +19,6 @@ import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.handybook.handybook.notifications.splash.SplashNotificationEvent;
-import com.handybook.handybook.notifications.splash.model.SplashPromo;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -117,7 +115,7 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
         mActionButton.setText(mSplashPromo.getActionText());
 
         //TODO: will consolidate
-        mBus.post(new SplashNotificationEvent.RequestMarkSplashPromoAsDisplayed(mSplashPromo));
+        mBus.post(new SplashPromoEvent.RequestMarkSplashPromoAsDisplayed(mSplashPromo));
         mBus.post(new LogEvent.AddLogEvent(new AppLog.PromoLog.Shown(mSplashPromo.getId(),
                                                                      AppLog.PromoLog.Type.SPLASH)));
     }
@@ -126,7 +124,7 @@ public class SplashPromoDialogFragment extends BaseDialogFragment
     public void onActionButtonClicked(View view)
     {
         //TODO: will consolidate
-        mBus.post(new SplashNotificationEvent.RequestMarkSplashPromoAsAccepted(mSplashPromo));
+        mBus.post(new SplashPromoEvent.RequestMarkSplashPromoAsAccepted(mSplashPromo));
         mBus.post(new LogEvent.AddLogEvent(new AppLog.PromoLog.Accepted(mSplashPromo.getId(),
                                                                      AppLog.PromoLog.Type.SPLASH)));
         String deepLink = mSplashPromo.getDeepLinkUrl();

@@ -1,12 +1,11 @@
-package com.handybook.handybook.notifications.splash;
+package com.handybook.handybook.promos.splash;
 
 import android.support.annotation.NonNull;
 
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.notifications.splash.model.SplashPromo;
 
-public abstract class SplashNotificationEvent
+public abstract class SplashPromoEvent
 {
     public static class ReceiveAvailableSplashPromoSuccess extends HandyEvent.ReceiveSuccessEvent
     {
