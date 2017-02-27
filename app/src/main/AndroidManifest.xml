@@ -161,10 +161,6 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".booking.ui.activity.BookingProTeamActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity
             android:name=".booking.ui.activity.BookingAddressActivity"
             android:screenOrientation="portrait"
             />
@@ -270,6 +266,11 @@
         <activity
             android:name=".proteam.ui.activity.ProTeamPerBookingActivity"
             android:label="@string/title_activity_pro_team"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".ratingflow.ui.RatingFlowActivity"
+            android:label="@string/rate_your_pro"
             android:screenOrientation="portrait"
             />
         <activity

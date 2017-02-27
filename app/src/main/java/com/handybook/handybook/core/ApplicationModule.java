@@ -163,6 +163,7 @@ import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.push.receiver.PushReceiver;
+import com.handybook.handybook.ratingflow.RatingFlowModule;
 import com.handybook.handybook.referral.ReferralModule;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.handybook.shared.core.HandyLibrary;
@@ -310,8 +311,7 @@ import retrofit.converter.GsonConverter;
         ServiceCategoriesHomeFragment.class,
         SessionManager.class,
         ZipActivity.class,
-        ZipFragment.class
-        //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
+        ZipFragment.class,
 },
         includes = {
                 HelpModule.class,
@@ -319,7 +319,7 @@ import retrofit.converter.GsonConverter;
                 OnboardingModule.class,
                 ReferralModule.class,
                 PromosModule.class,
-                //FIXME add more
+                RatingFlowModule.class,
         }
 )
 public final class ApplicationModule
