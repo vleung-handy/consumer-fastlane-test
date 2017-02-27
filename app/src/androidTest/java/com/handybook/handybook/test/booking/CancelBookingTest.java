@@ -20,8 +20,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class CancelBookingTest
-{
+public class CancelBookingTest {
+
     @Rule
     public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
@@ -32,8 +32,7 @@ public class CancelBookingTest
     private static final TestUser TEST_USER = TestUsers.CANCEL_SINGLE_BOOKING_USER;
 
     @Test
-    public void testCancelBooking()
-    {
+    public void testCancelBooking() {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();

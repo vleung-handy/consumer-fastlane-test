@@ -11,14 +11,14 @@ import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.handybook.handybook.referral.model.ReferralInfo;
-import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.library.util.ValidationUtils;
+import com.handybook.handybook.referral.model.ReferralChannels;
+import com.handybook.handybook.referral.model.ReferralInfo;
 
 import java.util.List;
 
-public class ReferralIntentUtil
-{
+public class ReferralIntentUtil {
+
     public static final String PACKAGE_IDENTIFIER_GMAIL = "android.gm";
     public static final String PACKAGE_IDENTIFIER_GPLUS = "android.apps.plus";
     public static final String PACKAGE_IDENTIFIER_FACEBOOK = "facebook";
@@ -31,17 +31,13 @@ public class ReferralIntentUtil
 
     private ReferralIntentUtil() {}
 
-    public static String getReferralGuidFromIntent(final Intent intent)
-    {
+    public static String getReferralGuidFromIntent(final Intent intent) {
         final Uri data = intent.getData();
-        if (data != null)
-        {
+        if (data != null) {
             final List<String> pathSegments = data.getPathSegments();
-            if (pathSegments.size() > 0)
-            {
+            if (pathSegments.size() > 0) {
                 final String referralGuid = pathSegments.get(pathSegments.size() - 1);
-                if (!ValidationUtils.isNullOrEmpty(referralGuid))
-                {
+                if (!ValidationUtils.isNullOrEmpty(referralGuid)) {
                     return referralGuid;
                 }
             }
@@ -49,42 +45,35 @@ public class ReferralIntentUtil
         return intent.getStringExtra(KEY_REFERRAL_GUID);
     }
 
-    public static String getApplicationNameFromIntent(final Context context, final Intent intent)
-    {
-        try
-        {
+    public static String getApplicationNameFromIntent(final Context context, final Intent intent) {
+        try {
             final String packageName = intent.getComponent().getPackageName();
             final PackageManager packageManager = context.getPackageManager();
             final ApplicationInfo applicationInfo =
                     packageManager.getApplicationInfo(packageName, 0);
             return packageManager.getApplicationLabel(applicationInfo).toString();
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             return null;
         }
     }
 
     public static Intent getSmsReferralIntent(
             final Context context, final ReferralInfo smsReferralInfo
-    )
-    {
+    ) {
         final String smsText = smsReferralInfo.getMessage();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             final String defaultSmsPackageName =
                     Telephony.Sms.getDefaultSmsPackage(context);
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType(MIME_TYPE_PLAIN_TEXT);
             intent.putExtra(Intent.EXTRA_TEXT, smsText);
-            if (defaultSmsPackageName != null)
-            {
+            if (defaultSmsPackageName != null) {
                 intent.setPackage(defaultSmsPackageName);
             }
             return intent;
         }
-        else
-        {
+        else {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(SCHEME_SMS));
             intent.putExtra(EXTRA_SMS_BODY, smsText);
@@ -106,42 +95,40 @@ public class ReferralIntentUtil
     @ReferralChannels.Channel
     public static String addReferralIntentExtras(
             final Context context, final Intent intent, final ReferralChannels referralChannels
-    )
-    {
+    ) {
         final String targetPackage = intent.getComponent().getPackageName();
-        if (targetPackage.contains(PACKAGE_IDENTIFIER_GMAIL))
-        {
+        if (targetPackage.contains(PACKAGE_IDENTIFIER_GMAIL)) {
             addReferralIntentExtrasForMail(intent, referralChannels,
-                    ReferralChannels.CHANNEL_GMAIL);
+                                           ReferralChannels.CHANNEL_GMAIL
+            );
             return ReferralChannels.CHANNEL_GMAIL;
         }
-        else if (targetPackage.contains(PACKAGE_IDENTIFIER_GPLUS))
-        {
+        else if (targetPackage.contains(PACKAGE_IDENTIFIER_GPLUS)) {
             addReferralIntentExtrasForSocialMedia(intent, referralChannels,
-                    ReferralChannels.CHANNEL_GPLUS);
+                                                  ReferralChannels.CHANNEL_GPLUS
+            );
             return ReferralChannels.CHANNEL_GPLUS;
         }
-        else if (targetPackage.contains(PACKAGE_IDENTIFIER_FACEBOOK))
-        {
+        else if (targetPackage.contains(PACKAGE_IDENTIFIER_FACEBOOK)) {
             addReferralIntentExtrasForSocialMedia(intent, referralChannels,
-                    ReferralChannels.CHANNEL_FACEBOOK);
+                                                  ReferralChannels.CHANNEL_FACEBOOK
+            );
             return ReferralChannels.CHANNEL_FACEBOOK;
         }
-        else if (targetPackage.contains(PACKAGE_IDENTIFIER_TWITTER))
-        {
+        else if (targetPackage.contains(PACKAGE_IDENTIFIER_TWITTER)) {
             addReferralIntentExtrasForSocialMedia(intent, referralChannels,
-                    ReferralChannels.CHANNEL_TWITTER);
+                                                  ReferralChannels.CHANNEL_TWITTER
+            );
             return ReferralChannels.CHANNEL_TWITTER;
         }
-        else if (canPackageHandleScheme(context, targetPackage, SCHEME_SMS))
-        {
+        else if (canPackageHandleScheme(context, targetPackage, SCHEME_SMS)) {
             addReferralIntentExtrasForSms(intent, referralChannels);
             return ReferralChannels.CHANNEL_SMS;
         }
-        else if (canPackageHandleScheme(context, targetPackage, SCHEME_MAIL))
-        {
+        else if (canPackageHandleScheme(context, targetPackage, SCHEME_MAIL)) {
             addReferralIntentExtrasForMail(intent, referralChannels,
-                    ReferralChannels.CHANNEL_EMAIL);
+                                           ReferralChannels.CHANNEL_EMAIL
+            );
             return ReferralChannels.CHANNEL_EMAIL;
         }
         return null;
@@ -151,11 +138,9 @@ public class ReferralIntentUtil
             final Intent intent,
             final ReferralChannels referralChannels,
             @NonNull @ReferralChannels.Channel final String channel
-    )
-    {
+    ) {
         final ReferralInfo referralInfo = referralChannels.getReferralInfoForChannel(channel);
-        if (referralInfo != null)
-        {
+        if (referralInfo != null) {
             intent.putExtra(Intent.EXTRA_SUBJECT, referralInfo.getMessage());
             intent.putExtra(Intent.EXTRA_TEXT, referralInfo.getUrl());
         }
@@ -165,11 +150,9 @@ public class ReferralIntentUtil
             final Intent intent,
             final ReferralChannels referralChannels,
             @NonNull @ReferralChannels.Channel final String channel
-    )
-    {
+    ) {
         final ReferralInfo referralInfo = referralChannels.getReferralInfoForChannel(channel);
-        if (referralInfo != null)
-        {
+        if (referralInfo != null) {
             intent.putExtra(Intent.EXTRA_SUBJECT, referralInfo.getSubject());
             intent.putExtra(Intent.EXTRA_TEXT, referralInfo.getMessage());
         }
@@ -178,12 +161,10 @@ public class ReferralIntentUtil
     private static void addReferralIntentExtrasForSms(
             @NonNull final Intent intent,
             @NonNull final ReferralChannels referralChannels
-    )
-    {
+    ) {
         final ReferralInfo referralInfo =
                 referralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
-        if (referralInfo != null)
-        {
+        if (referralInfo != null) {
             intent.putExtra(Intent.EXTRA_TEXT, referralInfo.getMessage());
         }
     }
@@ -192,19 +173,16 @@ public class ReferralIntentUtil
             @NonNull final Context context,
             @NonNull final String targetPackage,
             @NonNull final String scheme
-    )
-    {
+    ) {
         final Intent dummyIntent = new Intent();
         dummyIntent.setAction(Intent.ACTION_SEND);
         dummyIntent.setData(Uri.parse(scheme));
         dummyIntent.setType(MIME_TYPE_PLAIN_TEXT);
         List<ResolveInfo> resolveInfos =
                 context.getPackageManager().queryIntentActivities(dummyIntent, 0);
-        for (final ResolveInfo resolveInfo : resolveInfos)
-        {
+        for (final ResolveInfo resolveInfo : resolveInfos) {
             final String potentialHandlerPackage = resolveInfo.activityInfo.packageName;
-            if (potentialHandlerPackage.equalsIgnoreCase(targetPackage))
-            {
+            if (potentialHandlerPackage.equalsIgnoreCase(targetPackage)) {
                 return true;
             }
         }

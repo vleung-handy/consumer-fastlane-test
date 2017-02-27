@@ -17,40 +17,34 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+public class ProAvatarView extends RelativeLayout {
 
-public class ProAvatarView extends RelativeLayout
-{
     @Bind(R.id.avatar_image_profile)
     CircleImageView mCircleImageView;
 
     @Bind(R.id.avatar_heart_container)
     FrameLayout mHeartContainer;
 
-    public ProAvatarView(final Context context, final int mImageSize)
-    {
+    public ProAvatarView(final Context context, final int mImageSize) {
         super(context);
         init();
 
-        if (mImageSize > 0)
-        {
+        if (mImageSize > 0) {
             mCircleImageView.setLayoutParams(new LayoutParams(mImageSize, mImageSize));
         }
     }
 
-    public ProAvatarView(final Context context, final AttributeSet attrs)
-    {
+    public ProAvatarView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ProAvatarView(final Context context, final AttributeSet attrs, final int defStyleAttr)
-    {
+    public ProAvatarView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    private void init()
-    {
+    private void init() {
         inflate(getContext(), R.layout.layout_pro_avatar, this);
         ButterKnife.bind(this);
     }
@@ -77,8 +71,7 @@ public class ProAvatarView extends RelativeLayout
         }
     }
 
-    public void setHeartContainerBackground(@DrawableRes final int drawableResId)
-    {
+    public void setHeartContainerBackground(@DrawableRes final int drawableResId) {
         mHeartContainer.setBackgroundResource(drawableResId);
     }
 }

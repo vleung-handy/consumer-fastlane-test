@@ -25,8 +25,7 @@ import java.util.Observer;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingHeaderFragment extends BookingFlowFragment implements Observer
-{
+public final class BookingHeaderFragment extends BookingFlowFragment implements Observer {
 
     private static final SimpleDateFormat TIME_FORMAT = DateTimeUtils.CLOCK_FORMATTER_12HR;
     private static final String DATE_FORMAT = "EEEE',' MMMM d";
@@ -43,15 +42,12 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     @Bind(R.id.discount_text)
     TextView discountText;
 
-
-    static BookingHeaderFragment newInstance()
-    {
+    static BookingHeaderFragment newInstance() {
         return new BookingHeaderFragment();
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         transaction = bookingManager.getCurrentTransaction();
         quote = bookingManager.getCurrentQuote();
@@ -61,8 +57,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
                                        .inflate(R.layout.fragment_booking_header, container, false);
 
@@ -73,8 +68,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     }
 
     @Override
-    final public void onStart()
-    {
+    final public void onStart() {
         super.onStart();
         transaction.addObserver(this);
         quote.addObserver(this);
@@ -82,32 +76,28 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
     }
 
     @Override
-    final public void onStop()
-    {
+    final public void onStop() {
         super.onStop();
         transaction.deleteObserver(this);
         quote.deleteObserver(this);
     }
 
     @Override
-    public void update(final Observable observable, final Object data)
-    {
-        if (observable instanceof BookingQuote || observable instanceof BookingTransaction)
-        { refreshInfo(); }
+    public void update(final Observable observable, final Object data) {
+        if (observable instanceof BookingQuote || observable instanceof BookingTransaction) {
+            refreshInfo();
+        }
     }
 
-    private void refreshInfo()
-    {
+    private void refreshInfo() {
         final float hours = transaction.getHours() + transaction.getExtraHours();
         final Date startDate = transaction.getStartDate();
 
         String timeZone = null;
-        if (bookingManager.getCurrentRequest() != null)
-        {
+        if (bookingManager.getCurrentRequest() != null) {
             timeZone = bookingManager.getCurrentRequest().getTimeZone();
         }
-        else
-        {
+        else {
             Crashlytics.logException(new RuntimeException(
                     "refreshInfo: bookingManager.getCurrentRequest() IS NULL!!!!"));
         }
@@ -121,17 +111,15 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
                 timeZone
         ));
         if (mConfigurationManager.getPersistentConfiguration()
-                                 .isBookingHoursClarificationExperimentEnabled())
-        {
+                                 .isBookingHoursClarificationExperimentEnabled()) {
             //don't display the booking hours
             timeText.setText(startTimeDisplayString);
         }
-        else
-        {
+        else {
             //display the booking hours
             timeText.setText(startTimeDisplayString
-                                     + " - "
-                                     + BookingUtil.getNumHoursDisplayString(hours, getContext())
+                             + " - "
+                             + BookingUtil.getNumHoursDisplayString(hours, getContext())
             );
         }
 
@@ -145,33 +133,27 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         priceView.setCurrencySymbol(currChar);
 
         //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-        if (quote.getCommitmentType() != null)
-        {
+        if (quote.getCommitmentType() != null) {
             priceView.setPriceCents(Math.round(pricing[1]));
         }
-        else
-        {
+        else {
             priceView.setPriceDollars(pricing[1]);
         }
 
-        if (pricing[1] < pricing[0])
-        {
+        if (pricing[1] < pricing[0]) {
             String priceText = "";
             //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-            if (quote.getCommitmentType() != null)
-            {
+            if (quote.getCommitmentType() != null) {
                 priceText = TextUtils.formatPriceCents(Math.round(pricing[0]), currChar);
             }
-            else
-            {
+            else {
                 priceText = TextUtils.formatPrice(pricing[0], currChar, quote.getCurrencySuffix());
             }
 
             discountText.setText(priceText);
             discountText.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             discountText.setVisibility(View.GONE);
         }
     }

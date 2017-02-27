@@ -7,8 +7,8 @@ import com.handybook.handybook.booking.model.PriceInfo;
 
 import java.util.Map;
 
-public class BookingEditExtrasInfoResponse
-{
+public class BookingEditExtrasInfoResponse {
+
     @SerializedName("base_hours")
     private float mBaseHours;
     @SerializedName("extras_hours")
@@ -34,63 +34,51 @@ public class BookingEditExtrasInfoResponse
     @SerializedName("recurring")
     private boolean mIsRecurring;
 
-    public float getBaseHours()
-    {
+    public float getBaseHours() {
         return mBaseHours;
     }
 
-    public float getExtrasHours()
-    {
+    public float getExtrasHours() {
         return mExtrasHours;
     }
 
-    public float[] getHourInfo()
-    {
+    public float[] getHourInfo() {
         return mHourInfo;
     }
 
-    public String[] getOptionsDisplayNames()
-    {
+    public String[] getOptionsDisplayNames() {
         return mOptionsDisplayNames;
     }
 
-    public String[] getOptionsMachineNames()
-    {
+    public String[] getOptionsMachineNames() {
         return mOptionsMachineNames;
     }
 
-    public String[][] getOptionsImages()
-    {
+    public String[][] getOptionsImages() {
         return mOptionsImages;
     }
 
-    public String[] getOptionsSubText()
-    {
+    public String[] getOptionsSubText() {
         return mOptionsSubText;
     }
 
-    public OptionPrice[] getOptionPrices()
-    {
+    public OptionPrice[] getOptionPrices() {
         return mOptionsPrices;
     }
 
-    public String getTotalFormatted()
-    {
+    public String getTotalFormatted() {
         return mTotalFormatted;
     }
 
-    public PaidStatus getPaidStatus()
-    {
+    public PaidStatus getPaidStatus() {
         return mPaidStatus;
     }
 
-    public Map<String, PriceInfo> getPriceTable()
-    {
+    public Map<String, PriceInfo> getPriceTable() {
         return mPriceTable;
     }
 
-    public boolean isRecurring()
-    {
+    public boolean isRecurring() {
         return mIsRecurring;
     }
 }

@@ -30,17 +30,17 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.view.ServiceView;
+import com.handybook.handybook.core.ui.descriptor.ServiceCategoryDescriptor;
+import com.handybook.handybook.core.ui.descriptor.ServiceDescriptor;
 import com.handybook.handybook.library.util.AnimationUtil;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
-import com.handybook.handybook.core.ui.descriptor.ServiceCategoryDescriptor;
-import com.handybook.handybook.core.ui.descriptor.ServiceDescriptor;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class ServicesFragment extends BookingFlowFragment
-{
+public final class ServicesFragment extends BookingFlowFragment {
+
     private static final String EXTRA_SERVICE = "com.handy.handy.EXTRA_SERVICE";
     private static final int ANIMATION_DELAY_MS = 100;
 
@@ -67,8 +67,7 @@ public final class ServicesFragment extends BookingFlowFragment
 
     Interpolator mInterpolator;
 
-    public static ServicesFragment newInstance(final Service service)
-    {
+    public static ServicesFragment newInstance(final Service service) {
         final ServicesFragment fragment = new ServicesFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(EXTRA_SERVICE, service);
@@ -77,19 +76,16 @@ public final class ServicesFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null && !getArguments().isEmpty())
-        {
+        if (getArguments() != null && !getArguments().isEmpty()) {
             mService = getArguments().getParcelable(EXTRA_SERVICE);
         }
-        if (mService != null)
-        {
-            bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageShownLog(mService.getId())));
+        if (mService != null) {
+            bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageShownLog(
+                    mService.getId())));
         }
-        else
-        {
+        else {
             bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageShownLog(-1)));
         }
 
@@ -100,21 +96,18 @@ public final class ServicesFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_services, container, false);
+                                       .inflate(R.layout.fragment_services, container, false);
 
         ButterKnife.bind(this, view);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 getActivity().onBackPressed();
             }
         });
@@ -123,44 +116,40 @@ public final class ServicesFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        try
-        {
+        try {
             String serviceCategoryMachineName = mService.getUniq().toUpperCase();
-            final ServiceCategoryDescriptor descriptor = ServiceCategoryDescriptor.valueOf(serviceCategoryMachineName);
+            final ServiceCategoryDescriptor descriptor = ServiceCategoryDescriptor.valueOf(
+                    serviceCategoryMachineName);
             initStatusBar(descriptor);
             initHeader(descriptor);
             initServiceIcon(descriptor);
             initToolbar(descriptor);
             initHeaderAdjustmentsOnScroll(descriptor);
         }
-        catch (IllegalArgumentException e)
-        {
-            Crashlytics.logException(new RuntimeException("Cannot display service: " + mService.getUniq()));
+        catch (IllegalArgumentException e) {
+            Crashlytics.logException(new RuntimeException(
+                    "Cannot display service: " + mService.getUniq()));
         }
     }
 
-    private void initStatusBar(ServiceCategoryDescriptor descriptor)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getContext(),
-                    descriptor.getColorDark()));
+    private void initStatusBar(ServiceCategoryDescriptor descriptor) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(
+                    getContext(),
+                    descriptor.getColorDark()
+            ));
         }
     }
 
-    private void initHeader(ServiceCategoryDescriptor descriptor)
-    {
+    private void initHeader(ServiceCategoryDescriptor descriptor) {
         mTitle.setText(descriptor.getTitle());
         mSubtitle.setText(descriptor.getSlogan());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mHeader.setBackgroundResource(descriptor.getBackground());
         }
-        else
-        {
+        else {
             mHeader.setBackgroundColor(ContextCompat.getColor(getContext(), descriptor.getColor()));
 
             //just show everything, since there is no shared element transition on the activity level
@@ -168,144 +157,124 @@ public final class ServicesFragment extends BookingFlowFragment
         }
     }
 
-    public void revealHeader()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+    public void revealHeader() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AnimationUtil.revealView(
                     mHeader,
                     mIcon,
                     new AccelerateInterpolator(),
                     getResources().getInteger(R.integer.anim_duration_short),
-                    new AnimatorListenerAdapter()
-                    {
+                    new AnimatorListenerAdapter() {
                         @Override
-                        public void onAnimationEnd(final Animator animation)
-                        {
+                        public void onAnimationEnd(final Animator animation) {
                             animateListItems();
                         }
                     }
             );
         }
-        else
-        {
+        else {
             mHeader.setVisibility(View.VISIBLE);
         }
     }
 
-    private void initToolbar(ServiceCategoryDescriptor descriptor)
-    {
+    private void initToolbar(ServiceCategoryDescriptor descriptor) {
         mToolbar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.transparent));
         mToolbarIcon.setImageResource(descriptor.getIcon());
     }
 
-    private void initServiceIcon(ServiceCategoryDescriptor descriptor)
-    {
+    private void initServiceIcon(ServiceCategoryDescriptor descriptor) {
         mIcon.setImageResource(descriptor.getIcon());
-        mIcon.setOnClickListener(new View.OnClickListener()
-        {
+        mIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 forceRippleAnimation();
             }
         });
     }
 
-    private void initHeaderAdjustmentsOnScroll(final ServiceCategoryDescriptor descriptor)
-    {
-        mContent.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener()
-        {
-            @Override
-            public void onScrollChanged()
-            {
-                int[] toolbarCoordinates = new int[2];
-                int[] titleCoordinates = new int[2];
-                mToolbar.getLocationOnScreen(toolbarCoordinates);
-                mTitle.getLocationOnScreen(titleCoordinates);
-                int toolbarY = toolbarCoordinates[1];
-                int titleY = titleCoordinates[1];
+    private void initHeaderAdjustmentsOnScroll(final ServiceCategoryDescriptor descriptor) {
+        mContent.getViewTreeObserver()
+                .addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                    @Override
+                    public void onScrollChanged() {
+                        int[] toolbarCoordinates = new int[2];
+                        int[] titleCoordinates = new int[2];
+                        mToolbar.getLocationOnScreen(toolbarCoordinates);
+                        mTitle.getLocationOnScreen(titleCoordinates);
+                        int toolbarY = toolbarCoordinates[1];
+                        int titleY = titleCoordinates[1];
 
-                if (toolbarY > titleY)
-                {
-                    adjustForSmallerHeader(descriptor.getColor());
-                }
+                        if (toolbarY > titleY) {
+                            adjustForSmallerHeader(descriptor.getColor());
+                        }
 
-                if (toolbarY < titleY)
-                {
-                    adjustForLargerHeader();
-                }
-            }
-        });
+                        if (toolbarY < titleY) {
+                            adjustForLargerHeader();
+                        }
+                    }
+                });
     }
 
-    private void adjustForLargerHeader()
-    {
+    private void adjustForLargerHeader() {
         mTitle.setVisibility(View.VISIBLE);
         mSubtitle.setVisibility(View.VISIBLE);
-        showView(mToolbarIcon, new Animation.AnimationListener()
-        {
+        showView(mToolbarIcon, new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation)
-            {
+            public void onAnimationStart(Animation animation) {
             }
 
             @Override
-            public void onAnimationEnd(Animation animation)
-            {
+            public void onAnimationEnd(Animation animation) {
                 hideView(mIcon, null);
-                mToolbar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.transparent));
+                mToolbar.setBackgroundColor(ContextCompat.getColor(
+                        getContext(),
+                        R.color.transparent
+                ));
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation)
-            {
+            public void onAnimationRepeat(Animation animation) {
             }
         });
     }
 
-    private void adjustForSmallerHeader(final int color)
-    {
+    private void adjustForSmallerHeader(final int color) {
         mTitle.setVisibility(View.INVISIBLE);
         mSubtitle.setVisibility(View.INVISIBLE);
-        showView(mIcon, new Animation.AnimationListener()
-        {
+        showView(mIcon, new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation)
-            {
+            public void onAnimationStart(Animation animation) {
             }
 
             @Override
-            public void onAnimationEnd(Animation animation)
-            {
+            public void onAnimationEnd(Animation animation) {
                 hideView(mToolbarIcon, null);
                 mToolbar.setBackgroundColor(ContextCompat.getColor(getContext(), color));
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation)
-            {
+            public void onAnimationRepeat(Animation animation) {
             }
         });
     }
 
-    private void hideView(View view, @Nullable Animation.AnimationListener listener)
-    {
+    private void hideView(View view, @Nullable Animation.AnimationListener listener) {
         animateVisibility(view, View.VISIBLE, android.R.anim.fade_in, listener);
     }
 
-    private void showView(View view, @Nullable Animation.AnimationListener listener)
-    {
+    private void showView(View view, @Nullable Animation.AnimationListener listener) {
         animateVisibility(view, View.INVISIBLE, android.R.anim.fade_out, listener);
     }
 
-    private void animateVisibility(final View view, final int visibility, final int animId, @Nullable Animation.AnimationListener listener)
-    {
-        if (view.getVisibility() != visibility)
-        {
+    private void animateVisibility(
+            final View view,
+            final int visibility,
+            final int animId,
+            @Nullable Animation.AnimationListener listener
+    ) {
+        if (view.getVisibility() != visibility) {
             final Animation animation = AnimationUtils.loadAnimation(getActivity(), animId);
-            if (listener != null)
-            {
+            if (listener != null) {
                 animation.setAnimationListener(listener);
             }
             view.startAnimation(animation);
@@ -313,27 +282,23 @@ public final class ServicesFragment extends BookingFlowFragment
         }
     }
 
-    private void forceRippleAnimation()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+    private void forceRippleAnimation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Drawable background = mHeader.getBackground();
-            if (background instanceof RippleDrawable)
-            {
+            if (background instanceof RippleDrawable) {
                 int[] iconCoordinates = new int[2];
                 mIcon.getLocationOnScreen(iconCoordinates);
                 float hotspotX = mHeader.getWidth() / 2;
-                float hotspotY = iconCoordinates[1] - getStatusBarHeight() + (mIcon.getHeight() / 2);
+                float hotspotY = iconCoordinates[1] - getStatusBarHeight() +
+                                 (mIcon.getHeight() / 2);
 
                 final RippleDrawable ripple = (RippleDrawable) background;
                 int[] state = new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled};
                 ripple.setState(state);
                 ripple.setHotspot(hotspotX, hotspotY);
-                new Handler().postDelayed(new Runnable()
-                {
+                new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         ripple.setState(new int[]{});
                     }
                 }, 400);
@@ -341,50 +306,42 @@ public final class ServicesFragment extends BookingFlowFragment
         }
     }
 
-    private int getStatusBarHeight()
-    {
+    private int getStatusBarHeight() {
         int result = 0;
         final Resources resources = getResources();
         int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0)
-        {
+        if (resourceId > 0) {
             result = resources.getDimensionPixelSize(resourceId);
         }
         return result;
     }
 
     @Override
-    public final void onActivityCreated(final Bundle savedInstanceState)
-    {
+    public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ServiceView lastViewAdded = null;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mListWrapper.setAlpha(0);
         }
-        for (final Service service : mService.getChildServices())
-        {
+        for (final Service service : mService.getChildServices()) {
             ServiceView serviceView = new ServiceView(getActivity());
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //if this is lollipop or higher, we'll set it up for some fancy animations
                 serviceView.setAlpha(0);
                 serviceView.setScaleX(0);
                 serviceView.setScaleY(0);
             }
             String serviceMachineName = service.getUniq().toUpperCase();
-            if (ServiceDescriptor.hasValueOf(serviceMachineName))
-            {
+            if (ServiceDescriptor.hasValueOf(serviceMachineName)) {
                 ServiceDescriptor serviceDescriptor = ServiceDescriptor.valueOf(serviceMachineName);
                 serviceView.init(serviceDescriptor);
-                serviceView.setOnClickListener(new View.OnClickListener()
-                {
+                serviceView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
-                        bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageSubmittedLog(service.getId())));
+                    public void onClick(View v) {
+                        bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.SubServicePageSubmittedLog(
+                                service.getId())));
                         startBookingFlow(service.getId(), service.getUniq());
                     }
                 });
@@ -393,26 +350,22 @@ public final class ServicesFragment extends BookingFlowFragment
             }
         }
 
-        if (lastViewAdded != null)
-        {
+        if (lastViewAdded != null) {
             // remove bottom border of last element
             final View container = lastViewAdded.findViewById(R.id.container);
-            if (container != null)
-            {
+            if (container != null) {
                 container.setBackgroundResource(0);
             }
         }
     }
 
-    private void animateListItems()
-    {
+    private void animateListItems() {
         mListWrapper
                 .animate()
                 .alpha(1)
                 .start();
 
-        for (int i = 0; i < mList.getChildCount(); i++)
-        {
+        for (int i = 0; i < mList.getChildCount(); i++) {
             View view = mList.getChildAt(i);
             view.animate()
                 .setStartDelay(i * ANIMATION_DELAY_MS)

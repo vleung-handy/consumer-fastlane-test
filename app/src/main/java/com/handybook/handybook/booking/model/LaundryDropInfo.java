@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 public final class LaundryDropInfo implements Parcelable {
+
     @SerializedName("type") private String type;
     @SerializedName("title") private String title;
     @SerializedName("subtitle") private String subtitle;
@@ -43,7 +44,7 @@ public final class LaundryDropInfo implements Parcelable {
             final Calendar end = Calendar.getInstance();
             end.setTime(maxDate);
 
-            while(!start.after(end)){
+            while (!start.after(end)) {
                 final List<DropTime> times = getDropTimes(start.getTime());
                 if (times != null && times.size() > 0) {
                     dates.add(start.getTime());
@@ -107,7 +108,7 @@ public final class LaundryDropInfo implements Parcelable {
     }
 
     @Override
-    public final int describeContents(){
+    public final int describeContents() {
         return 0;
     }
 
@@ -115,6 +116,7 @@ public final class LaundryDropInfo implements Parcelable {
         public LaundryDropInfo createFromParcel(final Parcel in) {
             return new LaundryDropInfo(in);
         }
+
         public LaundryDropInfo[] newArray(final int size) {
             return new LaundryDropInfo[size];
         }
@@ -122,10 +124,11 @@ public final class LaundryDropInfo implements Parcelable {
 
     public static LaundryDropInfo fromJson(final String json) {
         return new GsonBuilder().setDateFormat("MM/dd/yyyy").create()
-                .fromJson(json, LaundryDropInfo.class);
+                                .fromJson(json, LaundryDropInfo.class);
     }
 
     public static final class DropTimes implements Parcelable {
+
         @SerializedName("monday") private ArrayList<DropTime> monday;
         @SerializedName("tuesday") private ArrayList<DropTime> tuesday;
         @SerializedName("wednesday") private ArrayList<DropTime> wednesday;
@@ -192,7 +195,7 @@ public final class LaundryDropInfo implements Parcelable {
         }
 
         @Override
-        public final int describeContents(){
+        public final int describeContents() {
             return 0;
         }
 
@@ -200,13 +203,16 @@ public final class LaundryDropInfo implements Parcelable {
             public DropTimes createFromParcel(final Parcel in) {
                 return new DropTimes(in);
             }
+
             public DropTimes[] newArray(final int size) {
                 return new DropTimes[size];
             }
         };
     }
 
+
     public static final class DropTime implements Parcelable {
+
         @SerializedName("hour") private int hour;
         @SerializedName("minute") private int minute;
         @SerializedName("display_string") private String displayTime;
@@ -241,7 +247,7 @@ public final class LaundryDropInfo implements Parcelable {
         }
 
         @Override
-        public final int describeContents(){
+        public final int describeContents() {
             return 0;
         }
 
@@ -249,6 +255,7 @@ public final class LaundryDropInfo implements Parcelable {
             public DropTime createFromParcel(final Parcel in) {
                 return new DropTime(in);
             }
+
             public DropTime[] newArray(final int size) {
                 return new DropTime[size];
             }

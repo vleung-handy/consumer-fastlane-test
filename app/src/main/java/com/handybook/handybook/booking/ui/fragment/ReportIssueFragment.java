@@ -42,8 +42,8 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class ReportIssueFragment extends InjectedFragment implements ConversationCallback
-{
+public final class ReportIssueFragment extends InjectedFragment implements ConversationCallback {
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.report_issue_date)
@@ -59,11 +59,9 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
 
     private Booking mBooking;
     private JobStatus mJobStatus;
-    private View.OnClickListener mCallButtonOnClickListener = new View.OnClickListener()
-    {
+    private View.OnClickListener mCallButtonOnClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
+        public void onClick(final View v) {
             bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
                     mBooking.getId(), IssueResolutionLog.ProContacted.PHONE)));
             final String phone = mBooking.getProvider().getPhone();
@@ -121,8 +119,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     }
 
     @Override
-    public void onCreateConversationError()
-    {
+    public void onCreateConversationError() {
         progressDialog.dismiss();
         showToast(R.string.an_error_has_occurred);
     }
@@ -130,8 +127,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     public static ReportIssueFragment newInstance(
             final Booking booking,
             final JobStatus proStatuses
-    )
-    {
+    ) {
         final ReportIssueFragment fragment = new ReportIssueFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
@@ -142,8 +138,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
@@ -161,8 +156,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(R.layout.fragment_report_issue, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.help));
@@ -176,31 +170,24 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         //sometimes, the job status may not be passed in. If not, then fetch it.
-        if (mJobStatus == null)
-        {
+        if (mJobStatus == null) {
             dataManager.getBookingMilestones(
                     mBooking.getId(),
-                    new FragmentSafeCallback<JobStatus>(ReportIssueFragment.this)
-                    {
+                    new FragmentSafeCallback<JobStatus>(ReportIssueFragment.this) {
                         @Override
-                        public void onCallbackSuccess(JobStatus status)
-                        {
+                        public void onCallbackSuccess(JobStatus status) {
                             mJobStatus = status;
                             initialize();
                         }
 
                         @Override
-                        public void onCallbackError(final DataManager.DataManagerError error)
-                        {
-                            if (!Strings.isNullOrEmpty(error.getMessage()))
-                            {
+                        public void onCallbackError(final DataManager.DataManagerError error) {
+                            if (!Strings.isNullOrEmpty(error.getMessage())) {
                                 showToast(error.getMessage());
                             }
-                            else
-                            {
+                            else {
                                 showToast(R.string.an_error_has_occurred);
                             }
                             //still try to initialize, we'll do our best without the job statuses
@@ -209,21 +196,18 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                     }
             );
         }
-        else
-        {
+        else {
             initialize();
         }
     }
 
-    private void initialize()
-    {
+    private void initialize() {
         setHeader();
         setProMilestones();
         setDeepLinks();
     }
 
-    private void setHeader()
-    {
+    private void setHeader() {
         mDateText.setText(DateTimeUtils.formatDate(mBooking.getStartDate(), "EEEE',' MMM d',' yyyy",
                                                    mBooking.getBookingTimezone()
         ));
@@ -239,34 +223,27 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
         mProviderText.setText(mBooking.getProvider().getFirstNameAndLastInitial());
     }
 
-    private void setProMilestones()
-    {
-        if (mJobStatus == null)
-        {
+    private void setProMilestones() {
+        if (mJobStatus == null) {
             return;
         }
         JobStatus.Milestone[] milestones = mJobStatus.getMilestones();
-        if (milestones != null)
-        {
-            for (int i = 0; i < milestones.length; ++i)
-            {
+        if (milestones != null) {
+            for (int i = 0; i < milestones.length; ++i) {
                 JobStatus.Milestone milestone = milestones[i];
                 ProMilestoneView milestoneView = new ProMilestoneView(getContext());
                 milestoneView.setDotColor(mJobStatus.getStatusDrawableId(i));
                 milestoneView.setTitleText(milestone.getTitle());
                 milestoneView.setIsCurrentMilestone(i == milestones.length - 1);
                 milestoneView.setBodyText(milestone.getBody());
-                if (milestone.getTimestamp() != null)
-                {
+                if (milestone.getTimestamp() != null) {
                     milestoneView.setTimeText(DateTimeUtils.getTimeWithoutDate(milestone.getTimestamp()));
                 }
-                if (milestone.getAction() != null)
-                {
+                if (milestone.getAction() != null) {
                     JobStatus.Action action = milestone.getAction();
 
                     if (JobStatus.Action.CALL_OR_TEXT.equals(action.getType())
-                            && !Strings.isNullOrEmpty(mBooking.getProvider().getPhone()))
-                    {
+                        && !Strings.isNullOrEmpty(mBooking.getProvider().getPhone())) {
                         milestoneView.setCallAndTextButtonVisibility(View.VISIBLE);
                         milestoneView.setCallButtonOnClickListener(mCallButtonOnClickListener);
                         milestoneView.setTextButtonOnClickListener(mTextButtonOnClickListener);
@@ -275,46 +252,40 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                 mMilestonesLayout.addView(milestoneView);
             }
 
-            if (!mJobStatus.isComplete())
-            {
+            if (!mJobStatus.isComplete()) {
                 ProMilestoneView milestoneView = new ProMilestoneView(getContext());
                 mMilestonesLayout.addView(milestoneView);
             }
 
             // Remove the link from last milestone
             ProMilestoneView lastMilestoneView =
-                    (ProMilestoneView) mMilestonesLayout.getChildAt(mMilestonesLayout.getChildCount() - 1);
+                    (ProMilestoneView) mMilestonesLayout.getChildAt(
+                            mMilestonesLayout.getChildCount() - 1);
             lastMilestoneView.setLineVisibility(View.INVISIBLE);
         }
     }
 
-    private void setDeepLinks()
-    {
-        if (mJobStatus == null)
-        {
+    private void setDeepLinks() {
+        if (mJobStatus == null) {
             return;
         }
         JobStatus.DeepLinkWrapper[] deepLinkWrappers = mJobStatus.getDeepLinkWrappers();
         if (deepLinkWrappers == null) { return; }
 
-        for (final JobStatus.DeepLinkWrapper deepLinkWrapper : deepLinkWrappers)
-        {
+        for (final JobStatus.DeepLinkWrapper deepLinkWrapper : deepLinkWrappers) {
             TextView view = (TextView) LayoutInflater.from(
                     getContext()).inflate(R.layout.text_list_element, mDeepLinksLayout, false);
             view.setText(deepLinkWrapper.getText());
-            view.setOnClickListener(new View.OnClickListener()
-            {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(final View v)
-                {
+                public void onClick(final View v) {
                     bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.HelpLinkTapped(
                             mBooking.getId(),
                             deepLinkWrapper.getText(),
                             deepLinkWrapper.getDeeplink()
                     )));
 
-                    if (JobStatus.DeepLinkWrapper.TYPE_CANCEL.equals(deepLinkWrapper.getType()))
-                    {
+                    if (JobStatus.DeepLinkWrapper.TYPE_CANCEL.equals(deepLinkWrapper.getType())) {
                         // show cancel page
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                                 BookingDetailsLog.EventType.SELECTED,
@@ -324,8 +295,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
 
                         bus.post(new BookingEvent.RequestBookingCancellationData(mBooking.getId()));
                     }
-                    else if (JobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType()))
-                    {
+                    else if (JobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType())) {
                         // show reschedule page
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                                          BookingDetailsLog.EventType.SELECTED,
@@ -337,8 +307,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
 
                         bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
                     }
-                    else if (!Strings.isNullOrEmpty(deepLinkWrapper.getDeeplink()))
-                    {
+                    else if (!Strings.isNullOrEmpty(deepLinkWrapper.getDeeplink())) {
                         Uri uri = Uri.parse(deepLinkWrapper.getDeeplink());
                         Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW, uri);
                         Utils.safeLaunchIntent(deepLinkIntent, getContext());
@@ -349,17 +318,13 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
         }
     }
 
-    private String getLastMilestoneTitle()
-    {
+    private String getLastMilestoneTitle() {
         String lastMilestoneTitle = "";
-        if (mJobStatus != null)
-        {
+        if (mJobStatus != null) {
             JobStatus.Milestone[] milestones = mJobStatus.getMilestones();
-            if (milestones != null && milestones.length > 0)
-            {
+            if (milestones != null && milestones.length > 0) {
                 JobStatus.Milestone milestone = milestones[milestones.length - 1];
-                if (!Strings.isNullOrEmpty(milestone.getTitle()))
-                {
+                if (!Strings.isNullOrEmpty(milestone.getTitle())) {
                     lastMilestoneTitle = milestone.getTitle();
                 }
             }
@@ -371,8 +336,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     @Subscribe
     public void onReceiveBookingCancellationDataSuccess(
             final BookingEvent.ReceiveBookingCancellationDataSuccess event
-    )
-    {
+    ) {
         removeUiBlockers();
         BookingCancellationData bookingCancellationData = event.result;
         final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
@@ -384,15 +348,13 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     @Subscribe
     public void onReceiveBookingCancellationDataError(
             final BookingEvent.ReceiveBookingCancellationDataError event
-    )
-    {
+    ) {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @Subscribe
-    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event)
-    {
+    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event) {
         removeUiBlockers();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
@@ -404,8 +366,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     }
 
     @Subscribe
-    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event)
-    {
+    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event) {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }

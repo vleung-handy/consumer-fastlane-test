@@ -19,13 +19,12 @@ import javax.inject.Inject;
  * <p>
  * (SharedPreferences is currently a SecurePreferences instance.)
  */
-public class SecurePreferencesManager
-{
+public class SecurePreferencesManager {
+
     private final SecurePreferences mSecurePreferences;
 
     @Inject
-    public SecurePreferencesManager(final SecurePreferences prefs)
-    {
+    public SecurePreferencesManager(final SecurePreferences prefs) {
         mSecurePreferences = prefs;
     }
 
@@ -35,10 +34,8 @@ public class SecurePreferencesManager
      * @param prefsKey the key used to store the value
      * @param value    the String value to be stored at the prefsKey location
      */
-    public void setString(@NonNull final PrefsKey prefsKey, @Nullable final String value)
-    {
-        if (value == null)
-        {
+    public void setString(@NonNull final PrefsKey prefsKey, @Nullable final String value) {
+        if (value == null) {
             Crashlytics.log("PrefsManager.setString() asked to store a null value!");
         }
         mSecurePreferences.put(prefsKey.getKey(), value);
@@ -53,8 +50,7 @@ public class SecurePreferencesManager
      * @return Requested value or <b>null</b> if the key doesn't exist
      */
     @Nullable
-    public String getString(@NonNull final PrefsKey prefsKey)
-    {
+    public String getString(@NonNull final PrefsKey prefsKey) {
         return getString(prefsKey, null);
     }
 
@@ -66,16 +62,12 @@ public class SecurePreferencesManager
      * @return Requested value or the defaultValue if the key doesn't exist
      */
     @Nullable
-    public String getString(@NonNull final PrefsKey prefsKey, @Nullable final String defaultValue)
-    {
-        if (mSecurePreferences.containsKey(prefsKey.getKey()))
-        {
-            try
-            {
+    public String getString(@NonNull final PrefsKey prefsKey, @Nullable final String defaultValue) {
+        if (mSecurePreferences.containsKey(prefsKey.getKey())) {
+            try {
                 return mSecurePreferences.getString(prefsKey.getKey());
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Crashlytics.logException(e);
                 e.printStackTrace();
             }
@@ -89,8 +81,7 @@ public class SecurePreferencesManager
      * @param prefsKey {@link com.handybook.handybook.core.constant.PrefsKey} to store the value at.
      * @param value    the <b>int</b> value to be stored.
      */
-    public void setBoolean(@NonNull final PrefsKey prefsKey, final boolean value)
-    {
+    public void setBoolean(@NonNull final PrefsKey prefsKey, final boolean value) {
         mSecurePreferences.put(prefsKey.getKey(), Boolean.toString(value));
     }
 
@@ -101,16 +92,12 @@ public class SecurePreferencesManager
      * @param defaultValue value to be returned if key doesn't exist
      * @return Requested value or defaultValue
      */
-    public boolean getBoolean(@NonNull final PrefsKey prefsKey, final boolean defaultValue)
-    {
-        if (mSecurePreferences.containsKey(prefsKey.getKey()))
-        {
-            try
-            {
+    public boolean getBoolean(@NonNull final PrefsKey prefsKey, final boolean defaultValue) {
+        if (mSecurePreferences.containsKey(prefsKey.getKey())) {
+            try {
                 return Boolean.valueOf(mSecurePreferences.getString(prefsKey.getKey()));
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Crashlytics.logException(e);
                 e.printStackTrace();
             }
@@ -124,8 +111,7 @@ public class SecurePreferencesManager
      * @param prefsKey {@link com.handybook.handybook.core.constant.PrefsKey} to store the value at.
      * @param value    the value to be stored in SharedPreferences
      */
-    public void setInt(@NonNull final PrefsKey prefsKey, final int value)
-    {
+    public void setInt(@NonNull final PrefsKey prefsKey, final int value) {
         mSecurePreferences.put(prefsKey.getKey(), Integer.toString(value));
     }
 
@@ -136,16 +122,12 @@ public class SecurePreferencesManager
      * @param defaultValue the value that that will be returned in case key doesn't exist
      * @return int value from SharedPreferences or defaultValue
      */
-    public int getInt(@NonNull final PrefsKey prefsKey, final int defaultValue)
-    {
-        if (mSecurePreferences.containsKey(prefsKey.getKey()))
-        {
-            try
-            {
+    public int getInt(@NonNull final PrefsKey prefsKey, final int defaultValue) {
+        if (mSecurePreferences.containsKey(prefsKey.getKey())) {
+            try {
                 return Integer.valueOf(mSecurePreferences.getString(prefsKey.getKey()));
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Crashlytics.logException(e);
                 e.printStackTrace();
             }
@@ -159,8 +141,7 @@ public class SecurePreferencesManager
      * @param prefsKey {@link com.handybook.handybook.core.constant.PrefsKey} to store the value at.
      * @param value    the <b>long</b> value to be stored in SharedPreferences
      */
-    public void setLong(@NonNull final PrefsKey prefsKey, final long value)
-    {
+    public void setLong(@NonNull final PrefsKey prefsKey, final long value) {
         mSecurePreferences.put(prefsKey.getKey(), Long.toString(value));
     }
 
@@ -171,16 +152,12 @@ public class SecurePreferencesManager
      * @param defaultValue value to be stored in SharedPreferences
      * @return the <b>long</b> value from SharedPreferences or defaultValue if key doesn't exist
      */
-    public long getLong(@NonNull final PrefsKey prefsKey, long defaultValue)
-    {
-        if (mSecurePreferences.containsKey(prefsKey.getKey()))
-        {
-            try
-            {
+    public long getLong(@NonNull final PrefsKey prefsKey, long defaultValue) {
+        if (mSecurePreferences.containsKey(prefsKey.getKey())) {
+            try {
                 return Long.valueOf(mSecurePreferences.getString(prefsKey.getKey()));
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Crashlytics.logException(e);
                 e.printStackTrace();
             }
@@ -188,17 +165,14 @@ public class SecurePreferencesManager
         return defaultValue;
     }
 
-
     /**
      * Remove the key and it's value if it exists.
      *
      * @param prefsKey {@link com.handybook.handybook.core.constant.PrefsKey} of the value to be removed
      */
-    public void removeValue(@NonNull final PrefsKey prefsKey)
-    {
+    public void removeValue(@NonNull final PrefsKey prefsKey) {
         final String key = prefsKey.getKey();
-        if (mSecurePreferences.containsKey(key))
-        {
+        if (mSecurePreferences.containsKey(key)) {
             mSecurePreferences.removeValue(key);
         }
     }
@@ -212,8 +186,7 @@ public class SecurePreferencesManager
         return mSecurePreferences.containsKey(prefsKey.getKey());
     }
 
-    public void clearAll()
-    {
+    public void clearAll() {
         mSecurePreferences.clear();
     }
 }

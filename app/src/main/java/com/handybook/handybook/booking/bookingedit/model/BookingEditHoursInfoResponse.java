@@ -7,8 +7,8 @@ import com.handybook.handybook.booking.model.PriceInfo;
 
 import java.util.Map;
 
-public class BookingEditHoursInfoResponse
-{
+public class BookingEditHoursInfoResponse {
+
     @SerializedName("hours")
     private float mBaseHours;
     @SerializedName("paid_status")
@@ -26,28 +26,23 @@ public class BookingEditHoursInfoResponse
     @SerializedName("total_formatted")
     private String mTotalPriceFormattedDollars;
 
-    public float getBaseHours()
-    {
+    public float getBaseHours() {
         return mBaseHours;
     }
 
-    public float getExtrasHours()
-    {
+    public float getExtrasHours() {
         return mExtrasHours;
     }
 
-    public OptionPrice getExtrasPrice()
-    {
+    public OptionPrice getExtrasPrice() {
         return mExtrasPrice;
     }
 
-    public float getTotalHours()
-    {
+    public float getTotalHours() {
         return mTotalHours;
     }
 
-    public String getTotalPriceFormattedDollars()
-    {
+    public String getTotalPriceFormattedDollars() {
         return mTotalPriceFormattedDollars;
     }
 
@@ -56,13 +51,11 @@ public class BookingEditHoursInfoResponse
         return mPaidStatus;
     }
 
-    public Map<String, PriceInfo> getTotalPriceMap()
-    {
+    public Map<String, PriceInfo> getTotalPriceMap() {
         return mTotalPriceMap;
     }
 
-    public Map<String, PriceInfo> getPriceMap()
-    {
+    public Map<String, PriceInfo> getPriceMap() {
         return mPriceMap;
     }
 

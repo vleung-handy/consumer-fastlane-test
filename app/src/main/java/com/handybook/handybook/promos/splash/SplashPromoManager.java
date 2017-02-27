@@ -16,8 +16,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-public class SplashPromoManager
-{
+public class SplashPromoManager {
     /*
         manages the display and requests for splash promos and notifications
         since we don't have push messages for these, we must essentially poll
@@ -39,8 +38,7 @@ public class SplashPromoManager
             final DataManager dataManager,
             final SecurePreferencesManager securePreferencesManager,
             final Bus bus
-    )
-    {
+    ) {
         mUserManager = userManager;
         mDataManager = dataManager;
         mSecurePreferencesManager = securePreferencesManager;
@@ -49,11 +47,9 @@ public class SplashPromoManager
     }
 
     @Subscribe
-    public void onEachActivityFragmentsResumed(final ActivityLifecycleEvent.FragmentsResumed e)
-    {
+    public void onEachActivityFragmentsResumed(final ActivityLifecycleEvent.FragmentsResumed e) {
         String userId = null;
-        if(mUserManager.getCurrentUser() != null)
-        {
+        if (mUserManager.getCurrentUser() != null) {
             userId = mUserManager.getCurrentUser().getId();
         }
         //can request for users who are not logged in
@@ -61,32 +57,33 @@ public class SplashPromoManager
 
     }
 
-    private boolean shouldRequestAvailablePromo()
-    {
-        return System.currentTimeMillis() - mAvailablePromoLastCheckMs > REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS;
+    private boolean shouldRequestAvailablePromo() {
+        return System.currentTimeMillis() - mAvailablePromoLastCheckMs >
+               REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS;
     }
 
-    private void requestAvailableSplashPromo(@Nullable final String userId)
-    {
-        if(shouldRequestAvailablePromo())
-        {
+    private void requestAvailableSplashPromo(@Nullable final String userId) {
+        if (shouldRequestAvailablePromo()) {
             mAvailablePromoLastCheckMs = System.currentTimeMillis();
             String[] displayedPromos = getDisplayedSplashPromosArray();
             String[] acceptedPromos = getAcceptedSplashPromosArray();
-            mDataManager.getAvailableSplashPromo(userId, displayedPromos, acceptedPromos, new DataManager.Callback<SplashPromo>()
-            {
-                @Override
-                public void onSuccess(final SplashPromo splashPromo)
-                {
-                    mBus.post(new SplashPromoEvent.ReceiveAvailableSplashPromoSuccess(splashPromo));
-                }
+            mDataManager.getAvailableSplashPromo(
+                    userId,
+                    displayedPromos,
+                    acceptedPromos,
+                    new DataManager.Callback<SplashPromo>() {
+                        @Override
+                        public void onSuccess(final SplashPromo splashPromo) {
+                            mBus.post(new SplashPromoEvent.ReceiveAvailableSplashPromoSuccess(
+                                    splashPromo));
+                        }
 
-                @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
-                    mBus.post(new SplashPromoEvent.ReceiveAvailableSplashPromoError(error));
-                }
-            });
+                        @Override
+                        public void onError(final DataManager.DataManagerError error) {
+                            mBus.post(new SplashPromoEvent.ReceiveAvailableSplashPromoError(error));
+                        }
+                    }
+            );
         }
     }
 
@@ -96,10 +93,11 @@ public class SplashPromoManager
      * @param splashPromo
      * @param prefsKey
      */
-    private void rememberSplashPromoInPreferences(@NonNull SplashPromo splashPromo, @NonNull PrefsKey prefsKey)
-    {
-        if(splashPromo.getId() == null)
-        {
+    private void rememberSplashPromoInPreferences(
+            @NonNull SplashPromo splashPromo,
+            @NonNull PrefsKey prefsKey
+    ) {
+        if (splashPromo.getId() == null) {
             //this should never happen, but just in case
             Crashlytics.logException(new Exception("Splash promo id is null!"));
             return;
@@ -113,15 +111,13 @@ public class SplashPromoManager
 
     //making these handled as events in case we make this a network call
     @Subscribe
-    public void onRequestMarkSplashPromoAsDisplayed(SplashPromoEvent.RequestMarkSplashPromoAsDisplayed event)
-    {
+    public void onRequestMarkSplashPromoAsDisplayed(SplashPromoEvent.RequestMarkSplashPromoAsDisplayed event) {
         SplashPromo splashPromo = event.splashPromo;
         rememberSplashPromoInPreferences(splashPromo, PrefsKey.DISPLAYED_SPLASH_PROMOS);
     }
 
     @Subscribe
-    public void onRequestMarkSplashPromoAsAccepted(SplashPromoEvent.RequestMarkSplashPromoAsAccepted event)
-    {
+    public void onRequestMarkSplashPromoAsAccepted(SplashPromoEvent.RequestMarkSplashPromoAsAccepted event) {
         SplashPromo splashPromo = event.splashPromo;
         rememberSplashPromoInPreferences(splashPromo, PrefsKey.ACCEPTED_SPLASH_PROMOS);
     }
@@ -131,8 +127,9 @@ public class SplashPromoManager
      * into an array to send to the server
      * @return
      */
-    private @NonNull String[] getDisplayedSplashPromosArray()
-    {
+    private
+    @NonNull
+    String[] getDisplayedSplashPromosArray() {
         return SerializableHashSet
                 .fromJson(mSecurePreferencesManager.getString(PrefsKey.DISPLAYED_SPLASH_PROMOS))
                 .toArray();
@@ -143,8 +140,9 @@ public class SplashPromoManager
      * into an array to send to the server
      * @return
      */
-    private @NonNull String[] getAcceptedSplashPromosArray()
-    {
+    private
+    @NonNull
+    String[] getAcceptedSplashPromosArray() {
         return SerializableHashSet
                 .fromJson(mSecurePreferencesManager.getString(PrefsKey.ACCEPTED_SPLASH_PROMOS))
                 .toArray();

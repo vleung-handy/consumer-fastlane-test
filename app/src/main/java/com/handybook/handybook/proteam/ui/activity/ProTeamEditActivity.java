@@ -6,24 +6,21 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 
-public class ProTeamEditActivity extends MenuDrawerActivity
-{
+public class ProTeamEditActivity extends MenuDrawerActivity {
+
     @Override
-    protected Fragment createFragment()
-    {
+    protected Fragment createFragment() {
         return ProTeamEditFragment.newInstance();
     }
 
     @Override
-    protected String getNavItemTitle()
-    {
+    protected String getNavItemTitle() {
         // This doesn't do anything, might as well be null
         return getString(R.string.edit_pro_team);
     }
 
     @Override
-    protected boolean requiresUser()
-    {
+    protected boolean requiresUser() {
         return true;
     }
 }

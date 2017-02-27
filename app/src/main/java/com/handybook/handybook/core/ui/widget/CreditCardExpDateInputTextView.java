@@ -11,8 +11,7 @@ import com.handybook.handybook.library.ui.view.InputTextField;
 import com.handybook.handybook.library.util.TextUtils;
 import com.stripe.android.model.Card;
 
-public final class CreditCardExpDateInputTextView extends InputTextField
-{
+public final class CreditCardExpDateInputTextView extends InputTextField {
 
     public CreditCardExpDateInputTextView(final Context context) {
         super(context);
@@ -24,8 +23,10 @@ public final class CreditCardExpDateInputTextView extends InputTextField
         init();
     }
 
-    public CreditCardExpDateInputTextView(final Context context, final AttributeSet attrs,
-                                          final int defStyle) {
+    public CreditCardExpDateInputTextView(
+            final Context context, final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
         init();
     }
@@ -35,8 +36,7 @@ public final class CreditCardExpDateInputTextView extends InputTextField
      * @param expMonth expected range: 1-12
      * @param expYear the full year (ex. expects 2016, not 16)
      */
-    public void setTextFromMonthYear(int expMonth, int expYear)
-    {
+    public void setTextFromMonthYear(int expMonth, int expYear) {
         //the text for the month is expected to be in XX format
         String expMonthString = (expMonth >= 10) ? String.valueOf(expMonth) : ("0" + expMonth);
 
@@ -44,8 +44,7 @@ public final class CreditCardExpDateInputTextView extends InputTextField
         String expYearString = String.valueOf(expYear);
 
         int lastNDigits = 2; //must be > 0
-        if(expYearString.length() > lastNDigits)
-        {
+        if (expYearString.length() > lastNDigits) {
             expYearString = expYearString.substring(expYearString.length() - lastNDigits);
         }
 
@@ -56,18 +55,22 @@ public final class CreditCardExpDateInputTextView extends InputTextField
     protected void init() {
         super.init();
 
-        InputFilter[] filterArray = new InputFilter[]{ new InputFilter.LengthFilter(5)};
+        InputFilter[] filterArray = new InputFilter[]{new InputFilter.LengthFilter(5)};
         this.setFilters(filterArray);
 
         this.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                          final int count, final int after) {
+            public void beforeTextChanged(
+                    final CharSequence charSequence, final int start,
+                    final int count, final int after
+            ) {
             }
 
             @Override
-            public void onTextChanged(final CharSequence charSequence, final int start,
-                                      final int before, final int count) {
+            public void onTextChanged(
+                    final CharSequence charSequence, final int start,
+                    final int before, final int count
+            ) {
             }
 
             @Override
@@ -75,7 +78,8 @@ public final class CreditCardExpDateInputTextView extends InputTextField
                 CreditCardExpDateInputTextView.this.removeTextChangedListener(this);
 
                 CreditCardExpDateInputTextView.this.setText(TextUtils
-                        .formatCreditCardExpDate(editable.toString()));
+                                                                    .formatCreditCardExpDate(
+                                                                            editable.toString()));
 
                 CreditCardExpDateInputTextView.this
                         .setSelection(CreditCardExpDateInputTextView.this.getText().length());
@@ -119,8 +123,7 @@ public final class CreditCardExpDateInputTextView extends InputTextField
                 expYear = Integer.parseInt(date[1]);
             }
         }
-        catch (NumberFormatException e)
-        {
+        catch (NumberFormatException e) {
             Crashlytics.logException(e);
         }
 

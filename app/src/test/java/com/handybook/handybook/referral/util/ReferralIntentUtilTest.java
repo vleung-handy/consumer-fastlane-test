@@ -11,11 +11,10 @@ import static junit.framework.Assert.assertNull;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class ReferralIntentUtilTest extends RobolectricGradleTestWrapper
-{
+public class ReferralIntentUtilTest extends RobolectricGradleTestWrapper {
+
     @Test
-    public void returnsReferralGuidFromIntentData() throws Exception
-    {
+    public void returnsReferralGuidFromIntentData() throws Exception {
         final Intent intent = new Intent();
         intent.setData(Uri.parse("http://a.b.c/abc123/some_guid"));
 
@@ -25,8 +24,7 @@ public class ReferralIntentUtilTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void returnsReferralGuidFromIntentExtra() throws Exception
-    {
+    public void returnsReferralGuidFromIntentExtra() throws Exception {
         final Intent intent = new Intent();
         intent.putExtra("h", "some_guid");
 
@@ -36,8 +34,7 @@ public class ReferralIntentUtilTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void returnsNullIfIntentDataDoesNotContainReferralGuid() throws Exception
-    {
+    public void returnsNullIfIntentDataDoesNotContainReferralGuid() throws Exception {
         final Intent intent = new Intent();
         intent.setData(Uri.parse("http://a.b.c?other=123"));
 
@@ -47,8 +44,7 @@ public class ReferralIntentUtilTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void returnsNullIfIntentDoesNotContainReferralGuid() throws Exception
-    {
+    public void returnsNullIfIntentDoesNotContainReferralGuid() throws Exception {
         final Intent intent = new Intent();
 
         final String referralGuid = ReferralIntentUtil.getReferralGuidFromIntent(intent);

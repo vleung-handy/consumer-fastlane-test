@@ -3,8 +3,8 @@ package com.handybook.handybook.autocomplete;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
-public interface PlacesService
-{
+public interface PlacesService {
+
     /**
      * Synchronous API call (should not be called from the UI thread)
      *

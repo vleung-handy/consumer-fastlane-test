@@ -32,8 +32,8 @@ import static com.handybook.handybook.booking.model.subscription.SubscriptionFre
 import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.MONTHLY_PRICE;
 import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.WEEKLY_PRICE;
 
-public class BookingQuote extends Observable
-{
+public class BookingQuote extends Observable {
+
     public static final String KEY_ID = "id";
     public static final String KEY_SERVICE_ID = "service_id";
     public static final String KEY_USER_ID = "user_id";
@@ -50,7 +50,8 @@ public class BookingQuote extends Observable
     public static final String KEY_SPECIAL_EXTRAS_OPTIONS = "special_extras_options";
     public static final String KEY_IS_ANDROID_PAY_ENABLED = "is_android_pay_enabled";
     public static final String KEY_ANDROID_PAY_COUPON = "android_pay_coupon";
-    public static final String KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED = "android_pay_coupon_value_formatted";
+    public static final String KEY_ANDROID_PAY_COUPON_VALUE_FORMATTED
+            = "android_pay_coupon_value_formatted";
     public static final String KEY_COUPON = "coupon";
     public static final String KEY_RECURRENCE_OPTIONS = "recurrence_options";
     public static final String KEY_QUOTE_CONFIG = "quote_config";
@@ -124,8 +125,7 @@ public class BookingQuote extends Observable
     private HashMap<Float, BookingPriceInfo> mPriceTableMap;
     private ArrayList<ArrayList<PeakPriceInfo>> mPeakPriceTable;
 
-    public static void updateQuote(final BookingQuote currentQuote, final BookingQuote newQuote)
-    {
+    public static void updateQuote(final BookingQuote currentQuote, final BookingQuote newQuote) {
         currentQuote.setBookingId(newQuote.getBookingId());
         currentQuote.setBill(newQuote.getBill());
         currentQuote.setPriceTable(newQuote.getPriceTable());
@@ -138,21 +138,18 @@ public class BookingQuote extends Observable
 
     }
 
-    public static class QuoteConfig implements Serializable
-    {
+    public static class QuoteConfig implements Serializable {
 
         @SerializedName("disclaimer_text")
         private String mDisclaimerText;
         @SerializedName("recurrence_options")
         private List<RecurrenceOption> mRecurrenceOptions;
 
-        public String getDisclaimerText()
-        {
+        public String getDisclaimerText() {
             return mDisclaimerText;
         }
 
-        public List<RecurrenceOption> getRecurrenceOptions()
-        {
+        public List<RecurrenceOption> getRecurrenceOptions() {
             return mRecurrenceOptions;
         }
 
@@ -162,8 +159,7 @@ public class BookingQuote extends Observable
      * Now replaced by using the price in {@link CommitmentType}
      */
     @Deprecated()
-    public QuoteConfig getQuoteConfig()
-    {
+    public QuoteConfig getQuoteConfig() {
         return mQuoteConfig;
     }
 
@@ -172,136 +168,111 @@ public class BookingQuote extends Observable
      *
      * @return
      */
-    public int[] getRecurrenceOptions()
-    {
+    public int[] getRecurrenceOptions() {
         return mRecurrenceOptions;
     }
 
-    public String getAndroidPayCouponValueFormatted()
-    {
+    public String getAndroidPayCouponValueFormatted() {
         return mAndroidPayCouponValueFormatted;
     }
 
-    public boolean isAndroidPayEnabled()
-    {
+    public boolean isAndroidPayEnabled() {
         return mIsAndroidPayEnabled;
     }
 
-    public String getAndroidPayCouponCode()
-    {
+    public String getAndroidPayCouponCode() {
         return mAndroidPayCouponCode;
     }
 
-    public void setCoupon(final QuoteCoupon coupon)
-    {
+    public void setCoupon(final QuoteCoupon coupon) {
         mCoupon = coupon;
     }
 
-    public QuoteCoupon getCoupon()
-    {
+    public QuoteCoupon getCoupon() {
         return mCoupon;
     }
 
-    public int getBookingId()
-    {
+    public int getBookingId() {
         return mBookingId;
     }
 
-    void setBookingId(final int bookingId)
-    {
+    void setBookingId(final int bookingId) {
         mBookingId = bookingId;
         triggerObservers();
     }
 
-    public int getServiceId()
-    {
+    public int getServiceId() {
         return mServiceId;
     }
 
-    void setServiceId(final int serviceId)
-    {
+    void setServiceId(final int serviceId) {
         mServiceId = serviceId;
         triggerObservers();
     }
 
-    public String getCommitmentFaqUrl()
-    {
+    public String getCommitmentFaqUrl() {
         return mCommitmentFaqUrl;
     }
 
-    public String getUserId()
-    {
+    public String getUserId() {
         return mUserId;
     }
 
-    void setUserId(final String userId)
-    {
+    void setUserId(final String userId) {
         mUserId = userId;
         triggerObservers();
     }
 
-    public float getHours()
-    {
+    public float getHours() {
         return mHours;
     }
 
-    public void setHours(float hours)
-    {
+    public void setHours(float hours) {
         mHours = hours;
         triggerObservers();
     }
 
-    public Date getStartDate()
-    {
+    public Date getStartDate() {
         return mStartDate;
     }
 
-    public void setStartDate(final Date startDate)
-    {
+    public void setStartDate(final Date startDate) {
         mStartDate = startDate;
         triggerObservers();
     }
 
-    public Address getAddress()
-    {
+    public Address getAddress() {
         return mAddress;
     }
 
-    void setAddress(final Address address)
-    {
+    void setAddress(final Address address) {
         mAddress = address;
         triggerObservers();
     }
 
-    public String getCurrencyChar()
-    {
+    public String getCurrencyChar() {
         return mCurrencyChar;
     }
 
-    void setCurrencyChar(final String currencyChar)
-    {
+    void setCurrencyChar(final String currencyChar) {
         mCurrencyChar = currencyChar;
         triggerObservers();
     }
 
-    public String getCurrencySuffix()
-    {
+    public String getCurrencySuffix() {
         return mCurrencySuffix;
     }
 
-    void setCurrencySuffix(final String currencySuffix)
-    {
+    void setCurrencySuffix(final String currencySuffix) {
         mCurrencySuffix = currencySuffix;
         triggerObservers();
     }
 
-    public float getHourlyAmount()
-    {
+    public float getHourlyAmount() {
         return mHourlyAmount;
     }
 
-    void setHourlyAmount(final float hourlyAmount)
-    {
+    void setHourlyAmount(final float hourlyAmount) {
         mHourlyAmount = hourlyAmount;
         triggerObservers();
     }
@@ -310,50 +281,42 @@ public class BookingQuote extends Observable
      * Now replaced by the prices in {@link CommitmentType}
      */
     @Deprecated
-    public ArrayList<BookingPriceInfo> getPriceTable()
-    {
+    public ArrayList<BookingPriceInfo> getPriceTable() {
         return mPriceTable;
     }
 
-    public void setPriceTable(final ArrayList<BookingPriceInfo> priceTable)
-    {
+    public void setPriceTable(final ArrayList<BookingPriceInfo> priceTable) {
         mPriceTable = priceTable;
         buildPriceMap();
         triggerObservers();
     }
 
-    HashMap<Float, BookingPriceInfo> getPriceTableMap()
-    {
+    HashMap<Float, BookingPriceInfo> getPriceTableMap() {
         if (mPriceTableMap == null || mPriceTable.isEmpty()) { buildPriceMap(); }
         return mPriceTableMap;
     }
 
-    public ArrayList<PeakPriceInfo> getSurgePriceTable()
-    {
+    public ArrayList<PeakPriceInfo> getSurgePriceTable() {
         return mSurgePriceTable;
     }
 
-    public void setSurgePriceTable(final ArrayList<PeakPriceInfo> surgePriceTable)
-    {
+    public void setSurgePriceTable(final ArrayList<PeakPriceInfo> surgePriceTable) {
         mSurgePriceTable = surgePriceTable;
         buildPeakPriceTable();
         triggerObservers();
     }
 
-    public ArrayList<ArrayList<PeakPriceInfo>> getPeakPriceTable()
-    {
-        if (mPeakPriceTable == null || mPeakPriceTable.isEmpty())
-        {
+    public ArrayList<ArrayList<PeakPriceInfo>> getPeakPriceTable() {
+        if (mPeakPriceTable == null || mPeakPriceTable.isEmpty()) {
             buildPeakPriceTable();
         }
         return mPeakPriceTable;
     }
 
-    boolean hasRecurring()
-    {
+    boolean hasRecurring() {
         final BookingPriceInfo info = mPriceTable.get(0);
         return !(info.getBiMonthlyprice() <= 0 && info.getMonthlyPrice() <= 0
-                && info.getWeeklyPrice() <= 0);
+                 && info.getWeeklyPrice() <= 0);
     }
 
     /**
@@ -365,10 +328,8 @@ public class BookingQuote extends Observable
      * @return
      */
     @Nullable
-    public float[] getPricing(final float hours, final int freq, final int length)
-    {
-        if (getCommitmentType() != null)
-        {
+    public float[] getPricing(final float hours, final int freq, final int length) {
+        if (getCommitmentType() != null) {
             //this means to use the new commitment model
             Price price = getCommitmentType()
                     .getPrice(
@@ -379,36 +340,29 @@ public class BookingQuote extends Observable
 
             return new float[]{price.getFullPrice(), price.getAmountDue()};
         }
-        else
-        {
+        else {
             return getPricing(hours, freq);
         }
     }
 
     @Nullable
-    public float[] getPricing(final float hours, final int freq)
-    {
+    public float[] getPricing(final float hours, final int freq) {
         final BookingPriceInfo info = getPriceTableMap().get(hours);
-        if (info == null)
-        {
-            try
-            {
+        if (info == null) {
+            try {
                 Crashlytics.log(toJson());
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Crashlytics.log("BookingQuote toJSON failed.");
             }
             Crashlytics.logException(new NullPointerException("BookingPriceInfo is null"));
             return new float[]{};
         }
 
-        if (info == null)
-        {
+        if (info == null) {
             return null;
         }
-        switch (freq)
-        {
+        switch (freq) {
             case WEEKLY_PRICE:
                 return new float[]{info.getWeeklyPrice(), info.getDiscountWeeklyPrice()};
             case BI_MONTHLY_PRICE:
@@ -420,89 +374,75 @@ public class BookingQuote extends Observable
         }
     }
 
-    public String getPhonePrefix()
-    {
+    public String getPhonePrefix() {
         return mPhonePrefix;
     }
 
-    void setPhonePrefix(final String phonePrefix)
-    {
+    void setPhonePrefix(final String phonePrefix) {
         mPhonePrefix = phonePrefix;
         triggerObservers();
     }
 
-    public String getStripeKey()
-    {
+    public String getStripeKey() {
         return mStripeKey;
     }
 
-    void setStripeKey(final String stripeKey)
-    {
+    void setStripeKey(final String stripeKey) {
         mStripeKey = stripeKey;
         triggerObservers();
     }
 
-    public BookingOption getBookingOption()
-    {
+    public BookingOption getBookingOption() {
         return mBookingOption;
     }
 
-    public void setBookingOption(final BookingOption bookingOption)
-    {
+    public void setBookingOption(final BookingOption bookingOption) {
         mBookingOption = bookingOption;
         triggerObservers();
     }
 
     @Nullable
-    public Bill getBill()
-    {
+    public Bill getBill() {
         return mBill;
     }
 
-    public void setBill(@Nullable final Bill bill)
-    {
+    public void setBill(@Nullable final Bill bill) {
         mBill = bill;
     }
 
-    public CommitmentType getCommitmentType()
-    {
+    public CommitmentType getCommitmentType() {
         return mCommitmentType;
     }
 
-    public List<CommitmentType.CommitmentTypeName> getActiveCommitmentTypes()
-    {
+    public List<CommitmentType.CommitmentTypeName> getActiveCommitmentTypes() {
         return mActiveCommitmentTypes;
     }
 
-    public CommitmentPricesMap getCommitmentPricesMap()
-    {
+    public CommitmentPricesMap getCommitmentPricesMap() {
         return mCommitmentPricesMap;
     }
 
-    private void triggerObservers()
-    {
+    private void triggerObservers() {
         setChanged();
         notifyObservers();
     }
 
-    private void buildPriceMap()
-    {
+    private void buildPriceMap() {
         mPriceTableMap = new HashMap<>();
 
         if (mPriceTable == null) { return; }
 
-        for (final BookingPriceInfo info : mPriceTable)
-        { mPriceTableMap.put(info.getHours(), info); }
+        for (final BookingPriceInfo info : mPriceTable) {
+            mPriceTableMap.put(info.getHours(), info);
+        }
     }
 
-    private void buildPeakPriceTable()
-    {
+    private void buildPeakPriceTable() {
         if (mSurgePriceTable == null) { return; }
 
         final HashMap<Date, ArrayList<PeakPriceInfo>> peakPriceMap = new HashMap<>();
 
-        for (final PeakPriceInfo info : mSurgePriceTable)
-        {
+        for (final PeakPriceInfo info : mSurgePriceTable) {
             final Calendar dateCal = Calendar.getInstance();
             dateCal.setTime(info.getDate());
 
@@ -518,12 +458,10 @@ public class BookingQuote extends Observable
             final Date date = cal.getTime();
             ArrayList<PeakPriceInfo> priceList;
 
-            if ((priceList = peakPriceMap.get(date)) != null)
-            {
+            if ((priceList = peakPriceMap.get(date)) != null) {
                 priceList.add(info);
             }
-            else
-            {
+            else {
                 priceList = new ArrayList<>();
                 priceList.add(info);
                 peakPriceMap.put(date, priceList);
@@ -533,25 +471,21 @@ public class BookingQuote extends Observable
         final ArrayList<ArrayList<PeakPriceInfo>> table = new ArrayList<>();
         final ArrayList<Date> keys = new ArrayList<>(peakPriceMap.keySet());
 
-        Collections.sort(keys, new Comparator<Date>()
-        {
+        Collections.sort(keys, new Comparator<Date>() {
             @Override
-            public int compare(final Date lhs, final Date rhs)
-            {
+            public int compare(final Date lhs, final Date rhs) {
                 return (int) (lhs.getTime() - rhs.getTime());
             }
         });
 
-        for (final Date d : keys)
-        {
+        for (final Date d : keys) {
             final ArrayList<PeakPriceInfo> list = peakPriceMap.get(d);
             table.add(list);
         }
         mPeakPriceTable = table;
     }
 
-    public String toJson()
-    {
+    public String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                                            .setExclusionStrategies(getExclusionStrategy())
                                            .registerTypeAdapter(
@@ -562,26 +496,21 @@ public class BookingQuote extends Observable
         return gson.toJson(this);
     }
 
-    public JsonObject getCommitmentPrices()
-    {
+    public JsonObject getCommitmentPrices() {
         return mCommitmentPrices;
     }
 
-    public static BookingQuote fromJson(final String json)
-    {
+    public static BookingQuote fromJson(final String json) {
         final BookingQuote bookingQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                                                            .create()
                                                            .fromJson(json, BookingQuote.class);
 
-        if (bookingQuote != null && bookingQuote.getCommitmentPrices() != null)
-        {
+        if (bookingQuote != null && bookingQuote.getCommitmentPrices() != null) {
             //if there is a specified active commitment to use
-            if (bookingQuote.isCommitmentMonthsActive())
-            {
+            if (bookingQuote.isCommitmentMonthsActive()) {
                 bookingQuote.setupCommitmentPricingStructure();
             }
-            else
-            {
+            else {
                 //this uses no commitments by default
                 bookingQuote.setCommitmentPricesMap(new Gson().fromJson(
                         bookingQuote.getCommitmentPrices(),
@@ -594,10 +523,8 @@ public class BookingQuote extends Observable
         return bookingQuote;
     }
 
-    public void setupCommitmentPricingStructure()
-    {
-        if (getCommitmentPrices() != null)
-        {
+    public void setupCommitmentPricingStructure() {
+        if (getCommitmentPrices() != null) {
             setCommitmentType(new Gson().fromJson(getCommitmentPrices(), CommitmentType.class));
             getCommitmentType().transform(CommitmentType.CommitmentTypeName.MONTHS);
             triggerObservers();
@@ -608,14 +535,11 @@ public class BookingQuote extends Observable
      * Returns true if the active commitments are "months"
      * @return
      */
-    public boolean isCommitmentMonthsActive()
-    {
-        if (getActiveCommitmentTypes() != null && !getActiveCommitmentTypes().isEmpty())
-        {
+    public boolean isCommitmentMonthsActive() {
+        if (getActiveCommitmentTypes() != null && !getActiveCommitmentTypes().isEmpty()) {
             CommitmentType.CommitmentTypeName type = getActiveCommitmentTypes().get(0);
 
-            if (type != null && type == CommitmentType.CommitmentTypeName.MONTHS)
-            {
+            if (type != null && type == CommitmentType.CommitmentTypeName.MONTHS) {
                 return true;
             }
         }
@@ -623,26 +547,21 @@ public class BookingQuote extends Observable
         return false;
     }
 
-    public static ExclusionStrategy getExclusionStrategy()
-    {
-        return new ExclusionStrategy()
-        {
+    public static ExclusionStrategy getExclusionStrategy() {
+        return new ExclusionStrategy() {
             @Override
-            public boolean shouldSkipField(final FieldAttributes f)
-            {
+            public boolean shouldSkipField(final FieldAttributes f) {
                 return false;
             }
 
             @Override
-            public boolean shouldSkipClass(final Class<?> clazz)
-            {
+            public boolean shouldSkipClass(final Class<?> clazz) {
                 return clazz.equals(Observer.class);
             }
         };
     }
 
-    public void setCommitmentPricesMap(final CommitmentPricesMap commitmentPricesMap)
-    {
+    public void setCommitmentPricesMap(final CommitmentPricesMap commitmentPricesMap) {
         mCommitmentPricesMap = commitmentPricesMap;
         triggerObservers();
     }
@@ -652,36 +571,31 @@ public class BookingQuote extends Observable
      * before it can be used. If you must set this, use setupCommitmentPricingStructure() instead.
      * @param commitmentType
      */
-    private void setCommitmentType(final CommitmentType commitmentType)
-    {
+    private void setCommitmentType(final CommitmentType commitmentType) {
         mCommitmentType = commitmentType;
     }
 
-    public void setCommitmentPrices(final JsonObject commitmentPrices)
-    {
+    public void setCommitmentPrices(final JsonObject commitmentPrices) {
         mCommitmentPrices = commitmentPrices;
         triggerObservers();
     }
 
-    public void setActiveCommitmentTypes(final List<CommitmentType.CommitmentTypeName> activeCommitmentTypes)
-    {
+    public void setActiveCommitmentTypes(final List<CommitmentType.CommitmentTypeName> activeCommitmentTypes) {
         mActiveCommitmentTypes = activeCommitmentTypes;
         triggerObservers();
     }
 
-    public boolean hasCouponWarning()
-    {
+    public boolean hasCouponWarning() {
         return getCoupon() != null && getCoupon().getWarning() != null;
     }
 
-    public static class BookingQuoteSerializer implements JsonSerializer<BookingQuote>
-    {
+    public static class BookingQuoteSerializer implements JsonSerializer<BookingQuote> {
+
         @Override
         public JsonElement serialize(
                 final BookingQuote value, final Type type,
                 final JsonSerializationContext context
-        )
-        {
+        ) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add(KEY_ID, context.serialize(value.getBookingId()));
             jsonObj.add(KEY_SERVICE_ID, context.serialize(value.getServiceId()));
@@ -718,33 +632,29 @@ public class BookingQuote extends Observable
     }
 
 
-    public static class Address implements Serializable
-    {
+    public static class Address implements Serializable {
+
         @SerializedName("zipcode")
         private String zip;
 
-        public String getZip()
-        {
+        public String getZip() {
             return zip;
         }
     }
 
 
-    public static class QuoteCoupon implements Serializable
-    {
+    public static class QuoteCoupon implements Serializable {
 
         @SerializedName("code")
         private String mCode;
         @SerializedName("warning")
         private String mWarning;
 
-        public String getCode()
-        {
+        public String getCode() {
             return mCode;
         }
 
-        public String getWarning()
-        {
+        public String getWarning() {
             return mWarning;
         }
     }

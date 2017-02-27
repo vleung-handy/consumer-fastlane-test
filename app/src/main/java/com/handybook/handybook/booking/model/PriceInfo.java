@@ -2,8 +2,8 @@ package com.handybook.handybook.booking.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PriceInfo
-{
+public class PriceInfo {
+
     @SerializedName("label")
     private String mLabel;
     @SerializedName("price_diff")
@@ -11,18 +11,15 @@ public class PriceInfo
     @SerializedName("total_due")
     private String mTotalDueFormatted;
 
-    public String getLabel()
-    {
+    public String getLabel() {
         return mLabel;
     }
 
-    public String getTotalDueFormatted()
-    {
+    public String getTotalDueFormatted() {
         return mTotalDueFormatted;
     }
 
-    public String getPriceDifferenceFormatted()
-    {
+    public String getPriceDifferenceFormatted() {
         return mPriceDifferenceFormatted;
     }
 }

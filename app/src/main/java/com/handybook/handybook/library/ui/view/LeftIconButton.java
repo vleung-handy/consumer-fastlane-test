@@ -15,25 +15,22 @@ import com.handybook.handybook.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LeftIconButton extends FrameLayout
-{
+public class LeftIconButton extends FrameLayout {
+
     @Bind(R.id.label)
     TextView mLabel;
     @Bind(R.id.icon)
     ImageView mIcon;
 
-    public LeftIconButton(final Context context)
-    {
+    public LeftIconButton(final Context context) {
         super(context);
     }
 
-    public LeftIconButton(final Context context, final AttributeSet attrs)
-    {
+    public LeftIconButton(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public LeftIconButton(final Context context, final AttributeSet attrs, final int defStyleAttr)
-    {
+    public LeftIconButton(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -41,13 +38,11 @@ public class LeftIconButton extends FrameLayout
     public LeftIconButton(
             final Context context, final AttributeSet attrs,
             final int defStyleAttr, final int defStyleRes
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void init(final int textId, final int iconId, final int iconBackgroundId)
-    {
+    public void init(final int textId, final int iconId, final int iconBackgroundId) {
         removeAllViews();
         LayoutInflater.from(getContext()).inflate(R.layout.element_left_icon_button, this);
         ButterKnife.bind(this);

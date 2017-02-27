@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 //TODO this desperately needs to be refactored
-public final class BookingOptionsSelectView extends BookingOptionsIndexView
-{
+public final class BookingOptionsSelectView extends BookingOptionsIndexView {
+
     protected String[] optionsSubtitles;
     protected String[] optionsSuperText;//todo rename
     protected String[] optionsRightSubText;
@@ -34,7 +34,8 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     protected boolean[] optionsHidden;
     protected int[] optionImagesResourceIds;
     private HashMap<Integer, CheckBox> checkMap;
-    private View optionViews[]; //need a reference to the option views so we can easily modify them later
+    private View optionViews[];
+    //need a reference to the option views so we can easily modify them later
     private int checkedIndex;
     private HashSet<Integer> checkedIndexes;
     private boolean isMulti;
@@ -46,8 +47,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
             int optionEntryLayoutResourceId,
             final BookingOption option,
             final OnUpdatedListener updateListener
-    )
-    {
+    ) {
         super(context, R.layout.view_booking_options_select, option, updateListener);
         mOptionEntryLayoutResourceId = optionEntryLayoutResourceId;
         init(context);
@@ -56,78 +56,72 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     public BookingOptionsSelectView(
             final Context context, final BookingOption option,
             final OnUpdatedListener updateListener
-    )
-    {
+    ) {
         super(context, R.layout.view_booking_options_select, option, updateListener);
         init(context);
     }
 
-    public BookingOptionsSelectView(final Context context, final AttributeSet attrs)
-    {
+    public BookingOptionsSelectView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BookingOptionsSelectView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
+    public BookingOptionsSelectView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
     }
 
     //TODO: put these in a util
-    private boolean isArrayIndexValid(int[] array, int index)
-    {
+    private boolean isArrayIndexValid(int[] array, int index) {
         return array != null &&
-                index < array.length;
+               index < array.length;
     }
 
     //TODO: is it possible to make this use isArrayIndexValid
-    private boolean shouldDisplayOptionString(String[] optionsStrings, int optionIndex)
-    {
+    private boolean shouldDisplayOptionString(String[] optionsStrings, int optionIndex) {
         return optionsStrings != null &&
-                optionIndex < optionsStrings.length &&
-                !TextUtils.isEmpty(optionsStrings[optionIndex]);
+               optionIndex < optionsStrings.length &&
+               !TextUtils.isEmpty(optionsStrings[optionIndex]);
     }
 
-    private boolean isBooleanOptionValid(boolean[] options, int optionIndex)
-    {
+    private boolean isBooleanOptionValid(boolean[] options, int optionIndex) {
         return options != null && optionIndex < options.length;
     }
 
-    private boolean shouldShowLeftStripIndicator(boolean[] shouldShowLeftStripIndicator, int optionIndex)
-    {
+    private boolean shouldShowLeftStripIndicator(
+            boolean[] shouldShowLeftStripIndicator,
+            int optionIndex
+    ) {
         return isBooleanOptionValid(shouldShowLeftStripIndicator, optionIndex)
-                && shouldShowLeftStripIndicator[optionIndex];
+               && shouldShowLeftStripIndicator[optionIndex];
     }
 
-    private boolean shouldHideOption(boolean[] optionsHidden, int optionIndex)
-    {
+    private boolean shouldHideOption(boolean[] optionsHidden, int optionIndex) {
         return isBooleanOptionValid(optionsHidden, optionIndex)
-                && optionsHidden[optionIndex];
+               && optionsHidden[optionIndex];
     }
 
-    private boolean shouldDisableOption(boolean[] optionsDisabled, int optionIndex)
-    {
+    private boolean shouldDisableOption(boolean[] optionsDisabled, int optionIndex) {
         return isBooleanOptionValid(optionsDisabled, optionIndex)
-                && optionsDisabled[optionIndex];
+               && optionsDisabled[optionIndex];
     }
 
-    private void showTextView(TextView textView, String textString)
-    {
+    private void showTextView(TextView textView, String textString) {
         textView.setText(textString);
         textView.setVisibility(VISIBLE);
     }
 
     @SuppressWarnings("deprecation")
-    private void init(final Context context)
-    {
+    private void init(final Context context) {
         final String type = option.getType();
 
-        if (!type.equals("option") && !type.equals("checklist"))
-        {
+        if (!type.equals("option") && !type.equals("checklist")) {
             return;
         }
 
-        if (type.equals("checklist"))
-        {
+        if (type.equals("checklist")) {
             isMulti = true;
         }
 
@@ -146,14 +140,11 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
 
         int optionDefaultValue = 0;
 
-        if (option.getDefaultValue() != null)
-        {
-            try
-            {
+        if (option.getDefaultValue() != null) {
+            try {
                 optionDefaultValue = Integer.parseInt(option.getDefaultValue());
             }
-            catch (NumberFormatException e)
-            {
+            catch (NumberFormatException e) {
                 optionDefaultValue = 0;
             }
         }
@@ -162,43 +153,53 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         checkedIndexes = new HashSet<>();
 
         optionViews = new View[optionsList.length];
-        for (int i = 0; i < optionsList.length; i++)
-        {
+        for (int i = 0; i < optionsList.length; i++) {
             final String optionText = optionsList[i];
             final ViewGroup optionView = (ViewGroup) LayoutInflater.from(context)
-                    .inflate(mOptionEntryLayoutResourceId, this, false);
+                                                                   .inflate(
+                                                                           mOptionEntryLayoutResourceId,
+                                                                           this,
+                                                                           false
+                                                                   );
 
             final TextView title = (TextView) optionView.findViewById(R.id.title_text);
             title.setText(optionText);
 
-            if (shouldDisplayOptionString(optionsSubtitles, i))
-            {
-                showTextView((TextView) optionView.findViewById(R.id.sub_text), optionsSubtitles[i]);
+            if (shouldDisplayOptionString(optionsSubtitles, i)) {
+                showTextView(
+                        (TextView) optionView.findViewById(R.id.sub_text),
+                        optionsSubtitles[i]
+                );
             }
 
-            if (shouldDisplayOptionString(optionsRightSubText, i))
-            {
-                showTextView((TextView) optionView.findViewById(R.id.right_subtitle_text), optionsRightSubText[i]);
+            if (shouldDisplayOptionString(optionsRightSubText, i)) {
+                showTextView(
+                        (TextView) optionView.findViewById(R.id.right_subtitle_text),
+                        optionsRightSubText[i]
+                );
             }
 
-            if (shouldDisplayOptionString(optionsRightTitleText, i))
-            {
-                showTextView((TextView) optionView.findViewById(R.id.right_title_text), optionsRightTitleText[i]);
+            if (shouldDisplayOptionString(optionsRightTitleText, i)) {
+                showTextView(
+                        (TextView) optionView.findViewById(R.id.right_title_text),
+                        optionsRightTitleText[i]
+                );
             }
 
-            if (shouldDisplayOptionString(optionsSuperText, i))
-            {
-                showTextView((TextView) optionView.findViewById(R.id.booking_select_option_super_text), optionsSuperText[i]);
+            if (shouldDisplayOptionString(optionsSuperText, i)) {
+                showTextView(
+                        (TextView) optionView.findViewById(R.id.booking_select_option_super_text),
+                        optionsSuperText[i]
+                );
             }
 
-            if (shouldShowLeftStripIndicator(optionsLeftStripIndicatorVisible, i))
-            {
-                optionView.findViewById(R.id.booking_select_option_left_strip_indicator).setVisibility(VISIBLE);
+            if (shouldShowLeftStripIndicator(optionsLeftStripIndicatorVisible, i)) {
+                optionView.findViewById(R.id.booking_select_option_left_strip_indicator)
+                          .setVisibility(VISIBLE);
             }
 
             final CheckBox checkBox = (CheckBox) optionView.findViewById(R.id.check_box);
-            if (isArrayIndexValid(optionImagesResourceIds, i) && optionImagesResourceIds[i] != 0)
-            {
+            if (isArrayIndexValid(optionImagesResourceIds, i) && optionImagesResourceIds[i] != 0) {
                 int inset = (int) context.getResources().getDimension(R.dimen.framed_icon_inset);
                 FramedIconDrawable framedIconDrawable = new FramedIconDrawable(
                         getContext(),
@@ -207,45 +208,36 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
                         inset
                 );
 
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     checkBox.setBackground(framedIconDrawable);
                 }
-                else
-                {
+                else {
                     checkBox.setBackgroundDrawable(framedIconDrawable);
                 }
             }
-            if (!isMulti && i == checkedIndex)
-            {
+            if (!isMulti && i == checkedIndex) {
                 selectOption(checkBox, true);
             }
             checkBox.setOnCheckedChangeListener(checkedChanged);
             checkMap.put(i, checkBox);
 
-            optionView.setOnClickListener(new OnClickListener()
-            {
+            optionView.setOnClickListener(new OnClickListener() {
                 @Override
-                public void onClick(final View v)
-                {
+                public void onClick(final View v) {
                     final CheckBox box = ((CheckBox) optionView.findViewById(R.id.check_box));
                     //If the box is disabled, then do nothing
-                    if(!box.isEnabled())
-                        return;
+                    if (!box.isEnabled()) { return; }
 
-                    if (isMulti)
-                    {
+                    if (isMulti) {
                         box.setChecked(!box.isChecked());
                     }
-                    else
-                    {
+                    else {
                         box.setChecked(true);
                     }
                 }
             });
 
-            if (shouldHideOption(optionsHidden, i))
-            {
+            if (shouldHideOption(optionsHidden, i)) {
                 optionView.setVisibility(GONE);
             }
 
@@ -257,53 +249,43 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         handleChildren(getCurrentIndex());
     }
 
-    public final int getOptionViewsCount()
-    {
+    public final int getOptionViewsCount() {
         return optionViews.length;
     }
-    public final void showAllOptions()
-    {
-        if (optionViews == null)
-        {
+
+    public final void showAllOptions() {
+        if (optionViews == null) {
             //this shouldn't happen
             Crashlytics.logException(new Exception("Option view is null"));
             return;
         }
-        for (int i = 0; i < optionViews.length; i++)
-        {
-            if (optionViews[i] == null)
-            {
+        for (int i = 0; i < optionViews.length; i++) {
+            if (optionViews[i] == null) {
                 //this shouldn't happen
                 Crashlytics.logException(new Exception("Option view is null at index " + i));
             }
-            else
-            {
+            else {
                 optionViews[i].setVisibility(VISIBLE);
             }
         }
     }
 
-    public final String getCurrentValue()
-    {
+    public final String getCurrentValue() {
         final CheckBox box = checkMap.get(checkedIndex);
-        if(box == null)
-            return null;
+        if (box == null) { return null; }
 
         final ViewGroup layout = (ViewGroup) box.getParent();
         final TextView title = (TextView) layout.findViewById(R.id.title_text);
         return title.getText().toString();
     }
 
-    public final void setIsOptionEnabled(boolean isEnabled, int position)
-    {
+    public final void setIsOptionEnabled(boolean isEnabled, int position) {
         CheckBox checkBox = checkMap.get(position);
         checkBox.setEnabled(isEnabled);
 
         //Mark as unchecked if disabled
-        if(!isEnabled)
-        {
-            if(checkBox.isChecked())
-            {
+        if (!isEnabled) {
+            if (checkBox.isChecked()) {
                 checkedIndex = -1;
                 checkBox.setOnCheckedChangeListener(null);
             }
@@ -312,34 +294,28 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         }
     }
 
-    public final boolean isOptionEnabled(int position)
-    {
+    public final boolean isOptionEnabled(int position) {
         return checkMap.get(position).isEnabled();
     }
 
-    public final void updateRightOptionsTitleText(String text, int position)
-    {
+    public final void updateRightOptionsTitleText(String text, int position) {
         showTextView((TextView) optionViews[position].findViewById(R.id.right_title_text), text);
     }
 
-    public final void setCurrentIndex(final int index)
-    {
-        if (index < 0 || !checkMap.containsKey(index))
-        {
+    public final void setCurrentIndex(final int index) {
+        if (index < 0 || !checkMap.containsKey(index)) {
             Crashlytics.log("BookingOptionsSelectView::setCurrentIndex invalid index : " + index);
             return;
         }
 
-        for (final CheckBox checkBox : checkMap.values())
-        {
+        for (final CheckBox checkBox : checkMap.values()) {
             checkBox.setChecked(false);
         }
 
         checkMap.get(index).setChecked(true);
         checkedIndex = index;
 
-        if (updateListener != null)
-        {
+        if (updateListener != null) {
             updateListener.onUpdate(BookingOptionsSelectView.this);
         }
 
@@ -347,26 +323,21 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         requestLayout();
     }
 
-    public final void setCheckedIndexes(final Integer[] indexes)
-    {
-        for (final CheckBox checkBox : checkMap.values())
-        {
+    public final void setCheckedIndexes(final Integer[] indexes) {
+        for (final CheckBox checkBox : checkMap.values()) {
             checkBox.setChecked(false);
         }
         checkedIndexes.clear();
 
-        for (final Integer i : indexes)
-        {
-            if (i == null)
-            {
+        for (final Integer i : indexes) {
+            if (i == null) {
                 continue;
             }
             checkMap.get(i).setChecked(true);
             checkedIndexes.add(i);
         }
 
-        if (updateListener != null)
-        {
+        if (updateListener != null) {
             updateListener.onUpdate(BookingOptionsSelectView.this);
         }
 
@@ -374,56 +345,54 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
         requestLayout();
     }
 
-    public final int getCurrentIndex()
-    {
+    public final int getCurrentIndex() {
         return checkedIndex;
     }
 
-    public final Integer[] getCheckedIndexes()
-    {
+    public final Integer[] getCheckedIndexes() {
         final Integer[] indexes = checkedIndexes.toArray(new Integer[checkedIndexes.size()]);
         Arrays.sort(indexes);
         return indexes;
     }
 
     @Override
-    public void hideTitle()
-    {
+    public void hideTitle() {
         super.hideTitle();
 
-        if (mainLayout != null)
-        {
-            mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, mainLayout.getPaddingRight(), mainLayout.getPaddingBottom());
+        if (mainLayout != null) {
+            mainLayout.setPadding(
+                    mainLayout.getPaddingLeft(),
+                    0,
+                    mainLayout.getPaddingRight(),
+                    mainLayout.getPaddingBottom()
+            );
         }
 
         invalidate();
         requestLayout();
     }
 
-    private void updateCheckbox(final CheckBox box, final boolean isChecked)
-    {
+    private void updateCheckbox(final CheckBox box, final boolean isChecked) {
         //don't want filter applied to drawables that aren't mutable
         //because the filter will be retained throughout the app
         //TODO: need a better to determine and ensure checkbox drawable is mutable so we can apply filters to it
         //TODO: should we always use Drawable.mutate() on the checkbox drawables?
-        if (box.getBackground() instanceof FramedIconDrawable)
-        {
-            if (isChecked)
-            {
+        if (box.getBackground() instanceof FramedIconDrawable) {
+            if (isChecked) {
                 ((FramedIconDrawable) box.getBackground()).setColor(
-                        ContextCompat.getColor(getContext(),
-                                R.color.handy_blue));
+                        ContextCompat.getColor(
+                                getContext(),
+                                R.color.handy_blue
+                        ));
             }
-            else
-            {
+            else {
                 ((FramedIconDrawable) box.getBackground()).clearColor();
             }
         }
         box.setChecked(isChecked);
     }
 
-    private void selectOption(final CheckBox box, final boolean isChecked)
-    {
+    private void selectOption(final CheckBox box, final boolean isChecked) {
         final ViewGroup layout = (ViewGroup) box.getParent();
         layout.dispatchSetSelected(isChecked);
 
@@ -432,55 +401,43 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView
     }
 
     private final CompoundButton.OnCheckedChangeListener checkedChanged
-            = new CompoundButton.OnCheckedChangeListener()
-    {
+            = new CompoundButton.OnCheckedChangeListener() {
         @Override
-        public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked)
-        {
-            for (final Integer index : checkMap.keySet())
-            {
+        public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+            for (final Integer index : checkMap.keySet()) {
                 final CheckBox box = checkMap.get(index);
 
                 box.setOnCheckedChangeListener(null);
 
-                if (box == buttonView)
-                {
+                if (box == buttonView) {
                     checkedIndex = index;
-                    if (!isMulti)
-                    {
+                    if (!isMulti) {
                         selectOption(box, true);
                     }
-                    else
-                    {
+                    else {
                         selectOption(box, isChecked);
-                        if (isChecked)
-                        {
+                        if (isChecked) {
                             checkedIndexes.add(index);
                         }
-                        else
-                        {
+                        else {
                             checkedIndexes.remove(index);
                         }
                     }
                 }
-                else if (!isMulti)
-                {
+                else if (!isMulti) {
                     selectOption(box, false);
                 }
 
                 box.setOnCheckedChangeListener(this);
             }
 
-            if (!warningsMap.isEmpty())
-            {
+            if (!warningsMap.isEmpty()) {
                 handleWarnings(getCurrentIndex());
             }
-            if (!childMap.isEmpty())
-            {
+            if (!childMap.isEmpty()) {
                 handleChildren(getCurrentIndex());
             }
-            if (updateListener != null)
-            {
+            if (updateListener != null) {
                 updateListener
                         .onUpdate(BookingOptionsSelectView.this);
             }

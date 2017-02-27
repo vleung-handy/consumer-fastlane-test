@@ -2,8 +2,8 @@ package com.handybook.handybook.logger.handylogger.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class EventSuperPropertiesBase
-{
+public class EventSuperPropertiesBase {
+
     private static final String ANDROID = "android";
     private static final String CONSUMER = "consumer";
 
@@ -25,8 +25,7 @@ public class EventSuperPropertiesBase
     public EventSuperPropertiesBase(
             String osVersion, String appVersion, String deviceId,
             String deviceModel, String installationId
-    )
-    {
+    ) {
         mProduct = CONSUMER;
         mPlatform = ANDROID;
         mOsVersion = osVersion;

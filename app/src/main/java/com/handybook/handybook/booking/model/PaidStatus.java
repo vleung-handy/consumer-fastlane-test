@@ -2,15 +2,13 @@ package com.handybook.handybook.booking.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PaidStatus
-{
-    public boolean isBilled()
-    {
+public class PaidStatus {
+
+    public boolean isBilled() {
         return mBilled;
     }
 
-    public String getFutureBillDateFormatted()
-    {
+    public String getFutureBillDateFormatted() {
         return mFutureBillDateFormatted;
     }
 

@@ -11,18 +11,17 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.notifications.model.HandyNotification;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.core.ui.fragment.NotificationRecyclerViewAdapter;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
+import com.handybook.handybook.notifications.model.HandyNotification;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class NotificationFeedFragment extends InjectedFragment
-        implements SwipeRefreshLayout.OnRefreshListener
-{
+        implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String ARG_NOTIFICATIONS = "NOTIFICATIONS";
     private HandyNotification.List mNotifications;
@@ -39,17 +38,14 @@ public class NotificationFeedFragment extends InjectedFragment
     TextView mNoBookingsText;
     private NotificationRecyclerViewAdapter mNotificationRecyclerViewAdapter;
 
-    public NotificationFeedFragment()
-    {
+    public NotificationFeedFragment() {
     }
 
-    public static NotificationFeedFragment newInstance()
-    {
+    public static NotificationFeedFragment newInstance() {
         return new NotificationFeedFragment();
     }
 
-    public static NotificationFeedFragment newInstance(final HandyNotification.List notifications)
-    {
+    public static NotificationFeedFragment newInstance(final HandyNotification.List notifications) {
         NotificationFeedFragment fragment = new NotificationFeedFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_NOTIFICATIONS, notifications);
@@ -58,20 +54,21 @@ public class NotificationFeedFragment extends InjectedFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         View root = inflater.inflate(R.layout.fragment_notification_feed, container, false);
         ButterKnife.bind(this, root);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mEmptiableRecyclerView.setAdapter(mNotificationRecyclerViewAdapter);
         mEmptiableRecyclerView.setEmptyView(mEmptyView);
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             mNotificationRecyclerViewAdapter.mergeNotifications(
-                    (HandyNotification.List)getArguments().getSerializable(ARG_NOTIFICATIONS)
+                    (HandyNotification.List) getArguments().getSerializable(ARG_NOTIFICATIONS)
             );
-        } else {
+        }
+        else {
             requestNotifications();
         }
 
@@ -79,25 +76,21 @@ public class NotificationFeedFragment extends InjectedFragment
     }
 
     @Override
-    public void onRefresh()
-    {
+    public void onRefresh() {
         requestNotifications();
     }
 
     @Subscribe
-    public void onNotificationResponseReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e)
-    {
+    public void onNotificationResponseReceived(final HandyEvent.ResponseEvent.HandyNotificationsSuccess e) {
         mNotificationRecyclerViewAdapter.mergeNotifications(e.getPayload().getHandyNotifications());
     }
 
     @Subscribe
-    public void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e){
+    public void onNotificationResponseError(final HandyEvent.ResponseEvent.HandyNotificationsError e) {
         showToast(e.getPayload().getMessage());
     }
 
-
-    private void requestNotifications()
-    {
+    private void requestNotifications() {
         mSwipeRefreshLayout.setRefreshing(true);
         bus.post(
                 new HandyEvent.RequestEvent.HandyNotificationsEvent(

@@ -49,8 +49,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class NewProTeamProListFragment extends InjectedFragment
-{
+public class NewProTeamProListFragment extends InjectedFragment {
+
     @Inject
     HandyRetrofitService mService;
 
@@ -66,16 +66,13 @@ public class NewProTeamProListFragment extends InjectedFragment
     private ProTeam.ProTeamCategory mProTeamCategory;
     private ProTeamCategoryType mProTeamCategoryType;
     private NewProTeamCategoryAdapter.ActionCallbacks mProTeamActionCallbacks =
-            new NewProTeamCategoryAdapter.ActionCallbacks()
-            {
+            new NewProTeamCategoryAdapter.ActionCallbacks() {
                 @Override
-                public void onHeartClick(final ProTeamPro proTeamPro)
-                {
+                public void onHeartClick(final ProTeamPro proTeamPro) {
                     String title;
                     String subtitle = null;
                     List<ActionType> actionTypes = new ArrayList<>();
-                    if (proTeamPro.isFavorite())
-                    {
+                    if (proTeamPro.isFavorite()) {
                         title = getString(
                                 R.string.remove_as_favorite_formatted,
                                 proTeamPro.getName()
@@ -83,12 +80,10 @@ public class NewProTeamProListFragment extends InjectedFragment
                         actionTypes.add(ActionType.UNFAVORITE);
                         actionTypes.add(ActionType.BLOCK);
                     }
-                    else
-                    {
+                    else {
                         title = getString(R.string.set_as_favorite_formatted, proTeamPro.getName());
                         final ProTeamPro favoritePro = mProTeamCategory.getFavoritePro();
-                        if (favoritePro != null)
-                        {
+                        if (favoritePro != null) {
                             subtitle = getString(
                                     R.string.auto_remove_as_favorite_warning_formatted,
                                     favoritePro.getName()
@@ -107,8 +102,7 @@ public class NewProTeamProListFragment extends InjectedFragment
                 }
 
                 @Override
-                public void onLongClick(final ProTeamPro proTeamPro)
-                {
+                public void onLongClick(final ProTeamPro proTeamPro) {
                     launchProTeamActionPicker(new ProTeamActionPickerViewModel(
                             proTeamPro.getId(),
                             proTeamPro.getCategoryType(), proTeamPro.getImageUrl(),
@@ -119,8 +113,7 @@ public class NewProTeamProListFragment extends InjectedFragment
                 }
             };
 
-    private void launchProTeamActionPicker(final ProTeamActionPickerViewModel viewModel)
-    {
+    private void launchProTeamActionPicker(final ProTeamActionPickerViewModel viewModel) {
         final ProTeamActionPickerDialogFragment dialogFragment =
                 ProTeamActionPickerDialogFragment.newInstance(viewModel);
         dialogFragment.setTargetFragment(this, RequestCode.EDIT_PRO_TEAM_PREFERENCE);
@@ -128,18 +121,15 @@ public class NewProTeamProListFragment extends InjectedFragment
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK
-                && requestCode == RequestCode.EDIT_PRO_TEAM_PREFERENCE
-                && data != null)
-        {
+            && requestCode == RequestCode.EDIT_PRO_TEAM_PREFERENCE
+            && data != null) {
             final int proId = data.getIntExtra(BundleKeys.PRO_TEAM_PRO_ID, -1);
             final ActionType actionType = (ActionType)
                     data.getSerializableExtra(BundleKeys.EDIT_PRO_TEAM_PREFERENCE_ACTION_TYPE);
-            if (proId != -1 && actionType != null)
-            {
+            if (proId != -1 && actionType != null) {
                 applyPreference(proId, actionType.getMatchPreference());
             }
         }
@@ -148,11 +138,9 @@ public class NewProTeamProListFragment extends InjectedFragment
     private void applyPreference(
             final int proId,
             @NonNull final ProviderMatchPreference matchPreference
-    )
-    {
+    ) {
         final User currentUser = userManager.getCurrentUser();
-        if (currentUser == null)
-        {
+        if (currentUser == null) {
             return;
         }
 
@@ -161,16 +149,13 @@ public class NewProTeamProListFragment extends InjectedFragment
         final ArrayList<ProTeamEdit> proTeamEdits = Lists.newArrayList(proTeamEdit);
 
         final DataManager.Callback<ProTeamWrapper> cb =
-                new FragmentSafeCallback<ProTeamWrapper>(this)
-                {
+                new FragmentSafeCallback<ProTeamWrapper>(this) {
                     @Override
-                    public void onCallbackSuccess(final ProTeamWrapper proTeamWrapper)
-                    {
+                    public void onCallbackSuccess(final ProTeamWrapper proTeamWrapper) {
                         progressDialog.dismiss();
                         showToast(R.string.pro_team_update_successful);
                         final ProTeam proTeam = proTeamWrapper.getProTeam();
-                        if (proTeam != null)
-                        {
+                        if (proTeam != null) {
                             mProTeamCategory = proTeam.getCategory(mProTeamCategoryType);
                             initRecyclerView();
                             bus.post(new ProTeamEvent.ProTeamUpdated(proTeam));
@@ -180,11 +165,10 @@ public class NewProTeamProListFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         progressDialog.dismiss();
                         showToast(!TextUtils.isEmpty(error.getMessage()) ? error.getMessage() :
-                                          getString(R.string.default_error_string));
+                                  getString(R.string.default_error_string));
                         bus.post(new LogEvent.AddLogEvent(
                                 new ProTeamPageLog.EditProTeamFailure(proTeamEdits)));
                     }
@@ -195,11 +179,9 @@ public class NewProTeamProListFragment extends InjectedFragment
         mService.editProTeam(currentUser.getId(), new ProTeamEditWrapper(
                 proTeamEdits,
                 source
-        ), new HandyRetrofitCallback(cb)
-        {
+        ), new HandyRetrofitCallback(cb) {
             @Override
-            protected void success(final JSONObject response)
-            {
+            protected void success(final JSONObject response) {
                 cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
             }
         });
@@ -211,8 +193,7 @@ public class NewProTeamProListFragment extends InjectedFragment
     public static NewProTeamProListFragment newInstance(
             @NonNull final ProTeam.ProTeamCategory proTeamCategory,
             @NonNull final ProTeamCategoryType proTeamCategoryType
-    )
-    {
+    ) {
         final NewProTeamProListFragment fragment = new NewProTeamProListFragment();
         final Bundle arguments = new Bundle();
         arguments.putParcelable(BundleKeys.PRO_TEAM_CATEGORY, proTeamCategory);
@@ -227,8 +208,7 @@ public class NewProTeamProListFragment extends InjectedFragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
         mProTeamCategoryType = (ProTeamCategoryType) getArguments().getSerializable(
                 BundleKeys.PRO_TEAM_CATEGORY_TYPE);
@@ -243,8 +223,7 @@ public class NewProTeamProListFragment extends InjectedFragment
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -255,14 +234,12 @@ public class NewProTeamProListFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
-    {
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event) {
         mProTeamCategory = event.getUpdatedProTeam().getCategory(mProTeamCategoryType);
         initRecyclerView();
     }
 
-    private void initRecyclerView()
-    {
+    private void initRecyclerView() {
         mRecyclerView.setAdapter(new NewProTeamCategoryAdapter(
                 getActivity(),
                 mProTeamCategory,

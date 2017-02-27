@@ -11,22 +11,19 @@ import java.util.List;
 
 import static com.handybook.handybook.booking.constant.BookingRecurrence.BookingRecurrenceCode;
 
-public class FrequencySelectionsView extends LinearLayout
-{
+public class FrequencySelectionsView extends LinearLayout {
+
     private List<FrequencyOptionView> mFrequencyOptionViews = new LinkedList<>();
 
-    public FrequencySelectionsView(final Context context)
-    {
+    public FrequencySelectionsView(final Context context) {
         super(context);
     }
 
-    public FrequencySelectionsView(final Context context, final AttributeSet attrs)
-    {
+    public FrequencySelectionsView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void addOption(@BookingRecurrenceCode int frequency, String price, boolean isCurrent)
-    {
+    public void addOption(@BookingRecurrenceCode int frequency, String price, boolean isCurrent) {
         FrequencyOptionView view = new FrequencyOptionView(getContext());
         String frequencyText = StringUtils.getFrequencyText(getContext(), frequency);
         view.setProperty(mFrequencyOptionViews, frequency, frequencyText, price, isCurrent);
@@ -34,12 +31,9 @@ public class FrequencySelectionsView extends LinearLayout
         addView(view);
     }
 
-    public int getCurrentlySelectedFrequency()
-    {
-        for (FrequencyOptionView view : mFrequencyOptionViews)
-        {
-            if (view.isChecked())
-            {
+    public int getCurrentlySelectedFrequency() {
+        for (FrequencyOptionView view : mFrequencyOptionViews) {
+            if (view.isChecked()) {
                 return view.getFrequency();
             }
         }

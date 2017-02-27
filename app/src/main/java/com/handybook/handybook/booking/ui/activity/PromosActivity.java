@@ -5,21 +5,19 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
-import com.handybook.handybook.deeplink.DeepLinkParams;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.deeplink.DeepLinkParams;
 
-public final class PromosActivity extends MenuDrawerActivity
-{
+public final class PromosActivity extends MenuDrawerActivity {
+
     @Override
     protected final Fragment createFragment() {
 
         //handle deep link params
         Bundle parameters = getIntent().getExtras();
-        if(parameters != null)
-        {
+        if (parameters != null) {
             String promoCode = parameters.getString(DeepLinkParams.PROMO_CODE);
-            if(promoCode != null)
-            {
+            if (promoCode != null) {
                 return PromosFragment.newInstance(promoCode);
             }
         }

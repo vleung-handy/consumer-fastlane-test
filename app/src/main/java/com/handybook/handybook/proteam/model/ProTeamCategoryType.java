@@ -8,8 +8,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Holds all the available ProTeam types, currently CLEANING or HANDYMEN
  */
-public enum ProTeamCategoryType
-{
+public enum ProTeamCategoryType {
     @SerializedName(Constants.CLEANING)
     CLEANING(Constants.CLEANING),
     @SerializedName(Constants.HANDYMEN)
@@ -17,15 +16,13 @@ public enum ProTeamCategoryType
 
     private final String mValue;
 
-    ProTeamCategoryType(String value)
-    {
+    ProTeamCategoryType(String value) {
         mValue = value;
     }
 
     @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return mValue;
     }
 
@@ -34,16 +31,15 @@ public enum ProTeamCategoryType
      * @return String representation of provided ProTeamCategoryType or null
      */
     @Nullable
-    public static String asString(@Nullable ProTeamCategoryType categoryType)
-    {
+    public static String asString(@Nullable ProTeamCategoryType categoryType) {
         return categoryType == null ? null : categoryType.toString();
     }
 
     /**
      * Holds the String constants that represent/can be converted to/from the ProTeamCategory enum
      */
-    public static class Constants
-    {
+    public static class Constants {
+
         /**
          * "cleaning"
          */

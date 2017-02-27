@@ -27,16 +27,15 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class DeeplinkHandlerTest extends RobolectricGradleTestWrapper
-{
+public class DeeplinkHandlerTest extends RobolectricGradleTestWrapper {
+
     @Mock
     private PackageManager mMockPackageManager;
     private Context mSpyContext;
     private ShadowApplication mShadowApplication;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         when(mMockPackageManager.resolveActivity(any(Intent.class), eq(0)))
                 .thenReturn(mock(ResolveInfo.class));
@@ -46,37 +45,37 @@ public class DeeplinkHandlerTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void handleDeeplinkReturnsFalseForNullDeeplink() throws Exception
-    {
+    public void handleDeeplinkReturnsFalseForNullDeeplink() throws Exception {
         Bundle arguments = new Bundle();
         assertFalse(DeeplinkHandler.handleDeeplink(null, arguments));
     }
 
     @Test
-    public void handleDeeplinkReturnsFalseForUnknownDeeplink() throws Exception
-    {
+    public void handleDeeplinkReturnsFalseForUnknownDeeplink() throws Exception {
         Bundle arguments = new Bundle();
         arguments.putString(BundleKeys.DEEPLINK, "weird_deeplink");
         assertFalse(DeeplinkHandler.handleDeeplink(null, arguments));
     }
 
     @Test
-    public void handleDeeplinkLaunchesBookingDetailActivityForBookingDetailDeeplink() throws Exception
-    {
+    public void handleDeeplinkLaunchesBookingDetailActivityForBookingDetailDeeplink() throws
+            Exception {
         Bundle arguments = new Bundle();
         arguments.putString(BundleKeys.DEEPLINK, DeeplinkConstants.DEEPLINK_DETAIL_BOOKING_MODAL);
         arguments.putString(BundleKeys.BOOKING_ID, "1234");
         assertTrue(DeeplinkHandler.handleDeeplink(mSpyContext, arguments));
 
         final Intent launchedIntent = mShadowApplication.getNextStartedActivity();
-        assertThat(launchedIntent.getComponent().getClassName(),
-                equalTo(BookingDetailActivity.class.getName()));
+        assertThat(
+                launchedIntent.getComponent().getClassName(),
+                equalTo(BookingDetailActivity.class.getName())
+        );
         assertThat(launchedIntent.getStringExtra(BundleKeys.BOOKING_ID), equalTo("1234"));
     }
 
     @Test
-    public void handleDeeplinkLaunchesServiceCategoriesActivityForProRateModalDeeplink() throws Exception
-    {
+    public void handleDeeplinkLaunchesServiceCategoriesActivityForProRateModalDeeplink() throws
+            Exception {
         Bundle arguments = new Bundle();
         arguments.putString(BundleKeys.DEEPLINK, DeeplinkConstants.DEEPLINK_PRO_RATE_MODAL);
         arguments.putString(BundleKeys.BOOKING_ID, "1234");
@@ -84,10 +83,14 @@ public class DeeplinkHandlerTest extends RobolectricGradleTestWrapper
         assertTrue(DeeplinkHandler.handleDeeplink(mSpyContext, arguments));
 
         final Intent launchedIntent = mShadowApplication.getNextStartedActivity();
-        assertThat(launchedIntent.getComponent().getClassName(),
-                equalTo(SplashActivity.class.getName()));
+        assertThat(
+                launchedIntent.getComponent().getClassName(),
+                equalTo(SplashActivity.class.getName())
+        );
         assertThat(launchedIntent.getStringExtra(BundleKeys.BOOKING_ID), equalTo("1234"));
-        assertThat(launchedIntent.getStringExtra(BundleKeys.BOOKING_RATE_PRO_NAME),
-                equalTo("John"));
+        assertThat(
+                launchedIntent.getStringExtra(BundleKeys.BOOKING_RATE_PRO_NAME),
+                equalTo("John")
+        );
     }
 }

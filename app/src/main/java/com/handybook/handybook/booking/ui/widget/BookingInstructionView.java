@@ -16,8 +16,8 @@ import com.handybook.handybook.booking.model.BookingInstruction;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BookingInstructionView extends FrameLayout
-{
+public class BookingInstructionView extends FrameLayout {
+
     BookingInstruction mBookingInstruction;
 
     private State mState;
@@ -32,125 +32,109 @@ public class BookingInstructionView extends FrameLayout
     TextView mTextView;
 
     {
-        mCheckboxCheckedChangeListener = new CompoundButton.OnCheckedChangeListener()
-        {
+        mCheckboxCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked)
-            {
+            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
                 setState(isChecked ? State.REQUESTED : State.DECLINED);
             }
         };
     }
 
-    public BookingInstructionView(final Context context)
-    {
+    public BookingInstructionView(final Context context) {
         super(context);
         init();
     }
 
-    public BookingInstructionView(final Context context, final AttributeSet attrs)
-    {
+    public BookingInstructionView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public BookingInstructionView(final Context context, final AttributeSet attrs, final int defStyleAttr)
-    {
+    public BookingInstructionView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr
+    ) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
 
-    public State getState()
-    {
+    public State getState() {
         return mState;
     }
 
-    public void setState(final State state)
-    {
+    public void setState(final State state) {
         mState = state;
-        if (mBookingInstruction != null)
-        {
+        if (mBookingInstruction != null) {
             mBookingInstruction.setIsRequested(state == State.REQUESTED);
         }
         mCheckBox.setChecked(state == State.REQUESTED);
         notifyObserver();
     }
 
-    private void notifyObserver()
-    {
-        if (mOnStateChangedListener != null)
-        {
+    private void notifyObserver() {
+        if (mOnStateChangedListener != null) {
             mOnStateChangedListener.onStateChanged(mBookingInstruction);
         }
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public void setTitle(final String title)
-    {
+    public void setTitle(final String title) {
         mTitle = title;
         updateText();
     }
 
-    public String getText()
-    {
+    public String getText() {
         return mText;
     }
 
-    public void setText(final String text)
-    {
+    public void setText(final String text) {
         mText = text;
     }
 
-    private void init()
-    {
+    private void init() {
         inflateAndBind();
     }
 
-    private void init(AttributeSet attrs)
-    {
+    private void init(AttributeSet attrs) {
         inflateAndBind();
         TypedArray typedArray = getContext().obtainStyledAttributes(
                 attrs,
                 R.styleable.BookingInstructionView
         );
-        try
-        {
-            mState = State.fromId(typedArray.getInt(R.styleable.BookingInstructionView_prefsState, 0));
+        try {
+            mState = State.fromId(typedArray.getInt(
+                    R.styleable.BookingInstructionView_prefsState,
+                    0
+            ));
             mTitle = typedArray.getString(R.styleable.BookingInstructionView_prefsTitle);
             mText = typedArray.getString(R.styleable.BookingInstructionView_prefsText);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
-        finally
-        {
+        finally {
             typedArray.recycle();
         }
         updateStateImage();
         updateText();
     }
 
-    public void setOnStateChangedListener(OnStateChangedListener listener)
-    {
+    public void setOnStateChangedListener(OnStateChangedListener listener) {
         mOnStateChangedListener = listener;
     }
 
-    private void inflateAndBind()
-    {
+    private void inflateAndBind() {
         LayoutInflater.from(getContext()).inflate(R.layout.view_booking_instruction, this, true);
         ButterKnife.bind(this);
         mCheckBox.setOnCheckedChangeListener(mCheckboxCheckedChangeListener);
     }
 
-    private void updateStateImage()
-    {
-        switch (mState)
-        {
+    private void updateStateImage() {
+        switch (mState) {
             case REQUESTED:
                 mCheckBox.setChecked(true);
                 return;
@@ -164,44 +148,36 @@ public class BookingInstructionView extends FrameLayout
 
     }
 
-    private void updateText()
-    {
+    private void updateText() {
         mTextView.setText(Html.fromHtml("<b>" + mTitle + ":</b> " + mText));
         invalidate();
         requestLayout();
     }
 
-    public void reflect(BookingInstruction bookingInstruction)
-    {
+    public void reflect(BookingInstruction bookingInstruction) {
         mBookingInstruction = bookingInstruction;
         setText(bookingInstruction.getDescription());
         setTitle(bookingInstruction.getTitle());
         setState(bookingInstruction.getIsRequested() ? State.REQUESTED : State.DECLINED);
     }
 
-    public BookingInstruction getBookingInstruction()
-    {
+    public BookingInstruction getBookingInstruction() {
         return mBookingInstruction;
     }
 
-    public enum State
-    {
+    public enum State {
         REQUESTED(0),
         DECLINED(1);
 
         int mId;
 
-        State(final int id)
-        {
+        State(final int id) {
             mId = id;
         }
 
-        static State fromId(final int id)
-        {
-            for (State eachState : values())
-            {
-                if (eachState.mId == id)
-                {
+        static State fromId(final int id) {
+            for (State eachState : values()) {
+                if (eachState.mId == id) {
                     return eachState;
                 }
             }
@@ -210,8 +186,8 @@ public class BookingInstructionView extends FrameLayout
     }
 
 
-    public interface OnStateChangedListener
-    {
+    public interface OnStateChangedListener {
+
         void onStateChanged(BookingInstruction bookingInstruction);
     }
 }

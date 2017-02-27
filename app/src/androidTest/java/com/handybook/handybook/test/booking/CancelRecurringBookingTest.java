@@ -16,9 +16,8 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+public class CancelRecurringBookingTest {
 
-public class CancelRecurringBookingTest
-{
     @Rule
     public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
@@ -29,8 +28,7 @@ public class CancelRecurringBookingTest
      * test that we can access the cancel recurring webview from the upcoming bookings page
      */
     @Test
-    public void testCancelRecurringBooking()
-    {
+    public void testCancelRecurringBooking() {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();

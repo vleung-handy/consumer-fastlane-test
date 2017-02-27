@@ -10,20 +10,18 @@ import java.util.List;
  * <p/>
  * see {@link EntryMethodOption}
  */
-public class InputFormDefinition implements Serializable
-{
+public class InputFormDefinition implements Serializable {
     //more fields may be added at this level, like title
 
     @SerializedName("input_form_fields")
     private List<InputFormField> mFieldDefinitions;
 
-    public List<InputFormField> getFieldDefinitions()
-    {
+    public List<InputFormField> getFieldDefinitions() {
         return mFieldDefinitions;
     }
 
-    public static class InputFormField implements Serializable
-    {
+    public static class InputFormField implements Serializable {
+
         @SerializedName("title")
         private String mTitle;
 
@@ -61,33 +59,27 @@ public class InputFormDefinition implements Serializable
         @SerializedName("required")
         private boolean mRequired;
 
-        public String getTitle()
-        {
+        public String getTitle() {
             return mTitle;
         }
 
-        public boolean isRequired()
-        {
+        public boolean isRequired() {
             return mRequired;
         }
 
-        public String getMachineName()
-        {
+        public String getMachineName() {
             return mMachineName;
         }
 
-        public String getHintText()
-        {
+        public String getHintText() {
             return mHintText;
         }
 
-        public int getNumLines()
-        {
+        public int getNumLines() {
             return mNumLines == null ? 1 : mNumLines;
         }
 
-        public String getValue()
-        {
+        public String getValue() {
             return mValue;
         }
     }

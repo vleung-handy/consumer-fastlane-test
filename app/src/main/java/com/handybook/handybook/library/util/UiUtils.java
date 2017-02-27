@@ -12,54 +12,45 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-public final class UiUtils
-{
+public final class UiUtils {
+
     /**
      * The amount of padding to extend the touch area of a view
      */
     public static final int SERVICE_ICON_TOUCH_PADDING = 200;
 
-    public static void toggleKeyboard(Activity activity)
-    {
+    public static void toggleKeyboard(Activity activity) {
         View currentFocus = activity.getCurrentFocus();
-        if (currentFocus != null)
-        {
+        if (currentFocus != null) {
             final InputMethodManager inputMethodManager =
                     (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
         }
     }
 
-    public static void dismissKeyboard(Activity activity)
-    {
+    public static void dismissKeyboard(Activity activity) {
         View currentFocus = activity.getCurrentFocus();
-        if (currentFocus != null)
-        {
+        if (currentFocus != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         }
     }
 
-    public static ViewGroup getParent(View view)
-    {
+    public static ViewGroup getParent(View view) {
         return (ViewGroup) view.getParent();
     }
 
-    public static void removeView(View view)
-    {
+    public static void removeView(View view) {
         ViewGroup parent = getParent(view);
-        if (parent != null)
-        {
+        if (parent != null) {
             parent.removeView(view);
         }
     }
 
-    public static void replaceView(View currentView, View newView)
-    {
+    public static void replaceView(View currentView, View newView) {
         ViewGroup parent = getParent(currentView);
-        if (parent == null)
-        {
+        if (parent == null) {
             return;
         }
         final int index = parent.indexOfChild(currentView);
@@ -74,10 +65,8 @@ public final class UiUtils
      * @param view
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void revealView(final View view)
-    {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-        {
+    public static void revealView(final View view) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             view.setVisibility(View.VISIBLE);
             return;
         }
@@ -96,15 +85,12 @@ public final class UiUtils
             final View parentContainer,
             final View viewToExtend,
             final int padArea
-    )
-    {
-        parentContainer.post(new Runnable()
-        {
+    ) {
+        parentContainer.post(new Runnable() {
             // Post in the parent's message queue to make sure the parent
             // lays out its children before you call getHitRect()
             @Override
-            public void run()
-            {
+            public void run() {
                 // The bounds for the delegate view (an ImageButton
                 // in this example)
                 Rect delegateArea = new Rect();
@@ -128,8 +114,7 @@ public final class UiUtils
 
                 // Sets the TouchDelegate on the parent view, such that touches
                 // within the touch delegate bounds are routed to the child.
-                if (View.class.isInstance(viewToExtend.getParent()))
-                {
+                if (View.class.isInstance(viewToExtend.getParent())) {
                     ((View) viewToExtend.getParent()).setTouchDelegate(touchDelegate);
                 }
             }

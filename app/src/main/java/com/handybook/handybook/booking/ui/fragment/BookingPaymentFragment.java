@@ -82,8 +82,8 @@ import io.card.payment.CardIOActivity;
 
 public class BookingPaymentFragment extends BookingFlowFragment implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
-{
+        GoogleApiClient.OnConnectionFailedListener {
+
     private static final String STATE_CARD_NUMBER_HIGHLIGHT = "CARD_NUMBER_HIGHLIGHT";
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
     private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
@@ -143,13 +143,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     private BookingTransaction mCurrentTransaction;
 
     @OnClick(R.id.scan_card_button)
-    public void onScanCardButtonPressed()
-    {
+    public void onScanCardButtonPressed() {
         startCardScanActivity();
     }
 
-    private void startCardScanActivity()
-    {
+    private void startCardScanActivity() {
         Intent scanIntent = new Intent(getContext(), CardIOActivity.class);
 
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
@@ -160,13 +158,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ActivityResult.SCAN_CREDIT_CARD)
-        {
-            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT))
-            {
+        if (requestCode == ActivityResult.SCAN_CREDIT_CARD) {
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                 io.card.payment.CreditCard scannedCardResult = data.getParcelableExtra(
                         CardIOActivity.EXTRA_SCAN_RESULT);
                 onScannedCardResult(scannedCardResult);
@@ -174,11 +169,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         }
     }
 
-    public void onScannedCardResult(@NonNull final io.card.payment.CreditCard scannedCardResult)
-    {
+    public void onScannedCardResult(@NonNull final io.card.payment.CreditCard scannedCardResult) {
         mCreditCardText.setText(scannedCardResult.cardNumber);
-        if (scannedCardResult.isExpiryValid())
-        {
+        if (scannedCardResult.isExpiryValid()) {
             mExpText.setTextFromMonthYear(
                     scannedCardResult.expiryMonth,
                     scannedCardResult.expiryYear
@@ -188,16 +181,13 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @OnClick(R.id.enter_credit_card_button)
-    public void onEnterCreditCardButtonClicked()
-    {
+    public void onEnterCreditCardButtonClicked() {
         allowCardInput();
     }
 
     @OnClick(R.id.android_pay_button)
-    public void onBookWithAndroidPayClicked()
-    {
-        if (mMaskedWallet != null)
-        {
+    public void onBookWithAndroidPayClicked() {
+        if (mMaskedWallet != null) {
             Wallet.Payments.changeMaskedWallet(
                     mGoogleApiClient,
                     mMaskedWallet.getGoogleTransactionId(),
@@ -205,8 +195,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                     ActivityResult.LOAD_MASKED_WALLET
             );
         }
-        else
-        {
+        else {
             final MaskedWalletRequest maskedWalletRequest = WalletUtils.createMaskedWalletRequest(
                     mCurrentQuote,
                     mCurrentTransaction
@@ -220,30 +209,25 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @OnClick(R.id.change_button)
-    public void onChangeButtonClicked()
-    {
+    public void onChangeButtonClicked() {
         mUseExistingCard = false;
         checkAndShowPaymentMethodSelection();
     }
 
     @OnClick(R.id.payment_fragment_apply_promo_cta)
-    public void onApplyPromoButtonClicked()
-    {
+    public void onApplyPromoButtonClicked() {
         showAndUpdatePromoCodeInput();
     }
 
-    public static BookingPaymentFragment newInstance()
-    {
+    public static BookingPaymentFragment newInstance() {
         return new BookingPaymentFragment();
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getActivity().getApplication()).inject(this);
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             mUseExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
         }
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -262,20 +246,17 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @Override
-    public void onConnected(Bundle bundle)
-    {
+    public void onConnected(Bundle bundle) {
         checkAndShowPaymentMethodSelection();
     }
 
     @Override
-    public void onConnectionSuspended(int i)
-    {
+    public void onConnectionSuspended(int i) {
 
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-    {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         checkAndShowPaymentMethodSelection();
     }
 
@@ -284,49 +265,41 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(R.layout.fragment_booking_payment, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.payment));
         showBookingWarningIfApplicable(mCurrentQuote);
-        if (mCurrentQuote.hasCouponWarning())
-        {
+        if (mCurrentQuote.hasCouponWarning()) {
             showToast(mCurrentQuote.getCoupon().getWarning());
         }
         final User user = userManager.getCurrentUser();
         final User.CreditCard card = user != null ? user.getCreditCard() : null;
         if ((card != null && card.getLast4() != null)
-                && (savedInstanceState == null || mUseExistingCard)
-                && !user.isUsingAndroidPay())
-        {
+            && (savedInstanceState == null || mUseExistingCard)
+            && !user.isUsingAndroidPay()) {
             mUseExistingCard = true;
             mCreditCardText.setDisabled(true, getString(R.string.formatted_last4, card.getLast4()));
             mInfoPaymentLayout.setVisibility(View.VISIBLE);
             mCreditCardIcon.setCardIcon(card.getBrand());
         }
 
-        mCreditCardText.addTextChangedListener(new TextWatcher()
-        {
+        mCreditCardText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
                     final CharSequence charSequence, final int start,
                     final int count, final int after
-            )
-            { }
+            ) { }
 
             @Override
             public void onTextChanged(
                     final CharSequence charSequence, final int start,
                     final int before, final int count
-            )
-            { }
+            ) { }
 
             @Override
-            public void afterTextChanged(final Editable editable)
-            {
-                if (!mUseExistingCard)
-                {
+            public void afterTextChanged(final Editable editable) {
+                if (!mUseExistingCard) {
                     mCreditCardIcon.setCardIcon(mCreditCardText.getCardType());
                 }
             }
@@ -347,12 +320,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * Show either "apply promo code" button or the promo code input field
      * based on the applied promo code
      */
-    private void initializePromoCodeView()
-    {
+    private void initializePromoCodeView() {
         String appliedPromoCode = mCurrentTransaction.getPromoCode();
 
-        if (ValidationUtils.isNullOrEmpty(appliedPromoCode))
-        {
+        if (ValidationUtils.isNullOrEmpty(appliedPromoCode)) {
             //no promo code. show the "Apply Promo Code" button
             showApplyPromoCodeButton();
         }
@@ -362,24 +333,20 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         }
     }
 
-    private void initializeBill()
-    {
-        if (mCurrentQuote.getBill() == null)
-        {
+    private void initializeBill() {
+        if (mCurrentQuote.getBill() == null) {
             mBillView.setVisibility(View.GONE);
             mHeaderContainer.setVisibility(View.VISIBLE);
             initializeBookingHeader();
         }
-        else
-        {
+        else {
             mHeaderContainer.setVisibility(View.GONE);
             mBillView.setVisibility(View.VISIBLE);
             mBillView.setBill(mCurrentQuote.getBill());
         }
     }
 
-    private void initializeBookingHeader()
-    {
+    private void initializeBookingHeader() {
         final BookingHeaderFragment headerFragment = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.payment_fragment_price_header_container, headerFragment).commit();
@@ -390,8 +357,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * must do this in code because cannot specify textview to render text as html
      * from the layout xml
      */
-    private void initializeTermsOfUseText()
-    {
+    private void initializeTermsOfUseText() {
         if (mCurrentTransaction != null && mCurrentTransaction.getRecurringFrequency() !=
                                            BookingRecurrence.ONE_TIME) {
             mTermsOfUseText.setText(Html.fromHtml(
@@ -407,19 +373,18 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         // TODO: is there a cleaner way to override click events for links?
         //splitting out link into a new text view seems too cumbersome
         //due to additional layout xml complexity
-        mTermsOfUseText.setMovementMethod(new LinkMovementMethod()
-        {
+        mTermsOfUseText.setMovementMethod(new LinkMovementMethod() {
             @Override
             public boolean onTouchEvent(
                     final TextView widget,
                     final Spannable buffer, final MotionEvent event
-            )
-            {
+            ) {
                 final int action = event.getAction();
-                if (action == MotionEvent.ACTION_DOWN)
-                {
-                    final int x = (int) event.getX() - widget.getTotalPaddingLeft() + widget.getScrollX();
-                    final int y = (int) event.getY() - widget.getTotalPaddingTop() + widget.getScrollY();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    final int x = (int) event.getX() - widget.getTotalPaddingLeft() +
+                                  widget.getScrollX();
+                    final int y = (int) event.getY() - widget.getTotalPaddingTop() +
+                                  widget.getScrollY();
                     final Layout layout = widget.getLayout();
                     final int line = layout.getLineForVertical(y);
                     //get the tap position
@@ -427,8 +392,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
 
                     //get the link at the tap position
                     final ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
-                    if (link.length != 0)
-                    {
+                    if (link.length != 0) {
                         showTermsWebViewModal();
                         return true;
                     }
@@ -438,8 +402,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         });
     }
 
-    private void showTermsWebViewModal()
-    {
+    private void showTermsWebViewModal() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         if (fragmentManager.findFragmentByTag(NavbarWebViewDialogFragment.FRAGMENT_TAG) == null)
         //only show if there isn't an instance of the fragment showing already
@@ -457,54 +420,48 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * shows and updates the promo code input layout
      * also hides the "apply promo code" button
      */
-    private void showAndUpdatePromoCodeInput()
-    {
+    private void showAndUpdatePromoCodeInput() {
         mApplyPromoButton.setVisibility(View.GONE);
         mPromoLayout.setVisibility(View.VISIBLE);
-        updatePromoUI(mCurrentTransaction.getPromoCode(), mCurrentTransaction.shouldPromoCodeBeHidden());
+        updatePromoUI(
+                mCurrentTransaction.getPromoCode(),
+                mCurrentTransaction.shouldPromoCodeBeHidden()
+        );
     }
 
     /**
      * shows the "apply promo code" button
      * also hides the promo code input layout
      */
-    private void showApplyPromoCodeButton()
-    {
+    private void showApplyPromoCodeButton() {
         mPromoLayout.setVisibility(View.GONE);
         mApplyPromoButton.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         mGoogleApiClient.disconnect();
         super.onDestroyView();
     }
 
     @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null)
-        {
-            if (savedInstanceState.getBoolean(STATE_CARD_NUMBER_HIGHLIGHT))
-            {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(STATE_CARD_NUMBER_HIGHLIGHT)) {
                 mCreditCardText.highlight();
             }
-            if (savedInstanceState.getBoolean(STATE_CARD_EXP_HIGHLIGHT))
-            {
+            if (savedInstanceState.getBoolean(STATE_CARD_EXP_HIGHLIGHT)) {
                 mExpText.highlight();
             }
-            if (savedInstanceState.getBoolean(STATE_CARD_CVC_HIGHLIGHT))
-            {
+            if (savedInstanceState.getBoolean(STATE_CARD_CVC_HIGHLIGHT)) {
                 mCvcText.highlight();
             }
         }
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
+    public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_CARD_NUMBER_HIGHLIGHT, mCreditCardText.isHighlighted());
         outState.putBoolean(STATE_CARD_EXP_HIGHLIGHT, mExpText.isHighlighted());
@@ -516,18 +473,15 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final int resultCode,
             final Intent data,
             final int errorCode
-    )
-    {
-        switch (resultCode)
-        {
+    ) {
+        switch (resultCode) {
             case Activity.RESULT_OK:
-                if (data != null && data.hasExtra(WalletConstants.EXTRA_FULL_WALLET))
-                {
-                    FullWallet fullWallet = data.getParcelableExtra(WalletConstants.EXTRA_FULL_WALLET);
+                if (data != null && data.hasExtra(WalletConstants.EXTRA_FULL_WALLET)) {
+                    FullWallet fullWallet
+                            = data.getParcelableExtra(WalletConstants.EXTRA_FULL_WALLET);
                     finishAndroidPayTransaction(fullWallet);
                 }
-                else
-                {
+                else {
                     handleWalletError(errorCode);
                 }
                 break;
@@ -543,18 +497,15 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final int resultCode,
             final Intent data,
             final int errorCode
-    )
-    {
-        switch (resultCode)
-        {
+    ) {
+        switch (resultCode) {
             case Activity.RESULT_OK:
-                if (data != null && data.hasExtra(WalletConstants.EXTRA_MASKED_WALLET))
-                {
-                    MaskedWallet maskedWallet = data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
+                if (data != null && data.hasExtra(WalletConstants.EXTRA_MASKED_WALLET)) {
+                    MaskedWallet maskedWallet
+                            = data.getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
                     showMaskedWalletInfo(maskedWallet);
                 }
-                else
-                {
+                else {
                     handleWalletError(errorCode);
                 }
                 break;
@@ -566,10 +517,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         }
     }
 
-    private void handleWalletError(int errorCode)
-    {
-        switch (errorCode)
-        {
+    private void handleWalletError(int errorCode) {
+        switch (errorCode) {
             case WalletConstants.ERROR_CODE_SPENDING_LIMIT_EXCEEDED:
                 showToast(R.string.spending_limit_exceeded);
                 break;
@@ -590,8 +539,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @Override
-    protected final void disableInputs()
-    {
+    protected final void disableInputs() {
         super.disableInputs();
         mNextButton.setClickable(false);
         final InputMethodManager imm = (InputMethodManager) getActivity()
@@ -600,18 +548,15 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mNextButton.setClickable(true);
     }
 
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         boolean validate = true;
 
-        if (!mUseExistingCard && !mUseAndroidPay)
-        {
+        if (!mUseExistingCard && !mUseAndroidPay) {
             if (!mCreditCardText.validate()) { validate = false; }
             if (!mExpText.validate()) { validate = false; }
             if (!mCvcText.validate()) { validate = false; }
@@ -623,8 +568,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     /**
      * User is using a credit card. Show the relevant display
      */
-    private void allowCardInput()
-    {
+    private void allowCardInput() {
         showInfoPaymentLayout();
         showAndUpdatePromoCodeInput(); //show the promo code input field
         mCreditCardIcon.setCardIcon(CreditCard.Type.OTHER);
@@ -636,8 +580,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         mUseExistingCard = false;
     }
 
-    private void showInfoPaymentLayout()
-    {
+    private void showInfoPaymentLayout() {
         mSelectPaymentLayout.setVisibility(View.GONE);
         mInfoPaymentLayout.setVisibility(View.VISIBLE);
     }
@@ -646,15 +589,13 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * shows the layout that allows the user to select between Android Pay and credit card
      */
     @VisibleForTesting
-    protected void showSelectPaymentLayout()
-    {
+    protected void showSelectPaymentLayout() {
         updateSelectPaymentPromoText();
 
         mSelectPaymentLayout.setVisibility(View.VISIBLE);
         mInfoPaymentLayout.setVisibility(View.GONE);
 
-        if (isAndroidPayPromoApplied())
-        {
+        if (isAndroidPayPromoApplied()) {
             //Remove the applied promo if it is an Android pay one
             //because we don't want credit card users to be able to use it
             removePromo();
@@ -663,16 +604,14 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         initializePromoCodeView();
     }
 
-    private boolean isAndroidPayPromoApplied()
-    {
+    private boolean isAndroidPayPromoApplied() {
         String androidPayPromoCode = mCurrentQuote.getAndroidPayCouponCode();
         String promoApplied = mCurrentTransaction.getPromoCode();
         return (!ValidationUtils.isNullOrEmpty(androidPayPromoCode)
                 && androidPayPromoCode.equalsIgnoreCase(promoApplied));
     }
 
-    private boolean hasAndroidPayPromoSavings()
-    {
+    private boolean hasAndroidPayPromoSavings() {
         BookingQuote bookingQuote = mCurrentQuote;
         String androidPayCoupon = bookingQuote.getAndroidPayCouponCode();
         String androidPayCouponValueFormatted = bookingQuote.getAndroidPayCouponValueFormatted();
@@ -686,17 +625,15 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
          */
 
         return !ValidationUtils.isNullOrEmpty(androidPayCoupon)
-                && !ValidationUtils.isNullOrEmpty(androidPayCouponValueFormatted);
+               && !ValidationUtils.isNullOrEmpty(androidPayCouponValueFormatted);
     }
 
     /**
      * updates the select payment promo text visibility and value,
      * currently based on whether or not the user has Android Pay promo savings
      */
-    private void updateSelectPaymentPromoText()
-    {
-        if (hasAndroidPayPromoSavings())
-        {
+    private void updateSelectPaymentPromoText() {
+        if (hasAndroidPayPromoSavings()) {
             String androidPayCouponValueFormatted =
                     mCurrentQuote.getAndroidPayCouponValueFormatted();
 
@@ -706,69 +643,55 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             ));
             mSelectPaymentPromoText.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mSelectPaymentPromoText.setVisibility(View.GONE);
         }
     }
 
-    private void checkAndShowPaymentMethodSelection()
-    {
+    private void checkAndShowPaymentMethodSelection() {
         progressDialog.show();
-        if (mGoogleApiClient.isConnected())
-        {
+        if (mGoogleApiClient.isConnected()) {
             Wallet.Payments.isReadyToPay(mGoogleApiClient).setResultCallback(
-                    new ResultCallback<BooleanResult>()
-                    {
-                        public void onResult(@NonNull BooleanResult result)
-                        {
+                    new ResultCallback<BooleanResult>() {
+                        public void onResult(@NonNull BooleanResult result) {
                             showPaymentMethodSelection(result);
                             progressDialog.dismiss();
                         }
                     });
         }
-        else
-        {
+        else {
             showPaymentMethodSelection(null);
             progressDialog.dismiss();
         }
     }
 
     @VisibleForTesting
-    protected void showPaymentMethodSelection(final @Nullable BooleanResult result)
-    {
-        if (!mUseExistingCard)
-        {
-            if (shouldShowAndroidPay(result))
-            {
+    protected void showPaymentMethodSelection(final @Nullable BooleanResult result) {
+        if (!mUseExistingCard) {
+            if (shouldShowAndroidPay(result)) {
                 showSelectPaymentLayout();
             }
-            else
-            {
+            else {
                 // since Android Pay cannot be used, go ahead and display credit card input fields
                 showUnchangeableCardInputFields();
             }
         }
     }
 
-    private void showUnchangeableCardInputFields()
-    {
+    private void showUnchangeableCardInputFields() {
         mChangeButton.setVisibility(View.GONE);
         allowCardInput();
     }
 
     // Only show Android Pay for new customers and for customers who already used Android Pay
-    private boolean shouldShowAndroidPay(final @Nullable BooleanResult result)
-    {
+    private boolean shouldShowAndroidPay(final @Nullable BooleanResult result) {
         /* TODO: Add condition US only */
         if (result != null && result.getStatus().isSuccess() && result.getValue()
-                && mCurrentQuote.isAndroidPayEnabled())
-        {
+            && mCurrentQuote.isAndroidPayEnabled()) {
             final User currentUser = userManager.getCurrentUser();
             return currentUser == null || currentUser.isUsingAndroidPay();
         }
-        else
-        {
+        else {
             return false;
         }
     }
@@ -779,8 +702,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * @param maskedWallet masked wallet
      */
     @VisibleForTesting
-    protected void showMaskedWalletInfo(MaskedWallet maskedWallet)
-    {
+    protected void showMaskedWalletInfo(MaskedWallet maskedWallet) {
         showInfoPaymentLayout();
         showAndUpdatePromoCodeInput(); //show the promo code input field
         mCreditCardText.setText(null);
@@ -794,8 +716,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         applyPromo(mCurrentQuote.getAndroidPayCouponCode());
     }
 
-    private void finishAndroidPayTransaction(FullWallet fullWallet)
-    {
+    private void finishAndroidPayTransaction(FullWallet fullWallet) {
         if (!allowCallbacks) { return; }
         String tokenJSON = fullWallet.getPaymentMethodToken().getToken();
         com.stripe.model.Token token = com.stripe.model.Token.GSON.fromJson(
@@ -808,14 +729,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @OnClick(R.id.next_button)
-    public void onCompleteBookingClicked()
-    {
-        if (validateFields())
-        {
+    public void onCompleteBookingClicked() {
+        if (validateFields()) {
             disableInputs();
             progressDialog.show();
-            if (mUseAndroidPay)
-            {
+            if (mUseAndroidPay) {
                 final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
                         mCurrentQuote,
                         mCurrentTransaction,
@@ -825,8 +743,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                                                ActivityResult.LOAD_FULL_WALLET
                 );
             }
-            else if (!mUseExistingCard)
-            {
+            else if (!mUseExistingCard) {
                 final Card card = new Card(
                         mCreditCardText.getCardNumber(),
                         mExpText.getExpMonth(),
@@ -841,20 +758,17 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @Subscribe
-    public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event)
-    {
+    public void onReceiveCreateTokenSuccess(StripeEvent.ReceiveCreateTokenSuccess event) {
         mCurrentTransaction.setStripeToken(event.getToken().getId());
         completeBooking();
     }
 
     @Subscribe
-    public void onReceiveCreateTokenError(StripeEvent.ReceiveCreateTokenError event)
-    {
+    public void onReceiveCreateTokenError(StripeEvent.ReceiveCreateTokenError event) {
         enableInputs();
         progressDialog.dismiss();
 
-        if (event.getError() instanceof CardException)
-        {
+        if (event.getError() instanceof CardException) {
             toast.setText(event.getError().getMessage());
         }
         else { toast.setText(getString(R.string.default_error_string)); }
@@ -862,55 +776,46 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     @OnClick(R.id.payment_fragment_promo_button)
-    public void onPromobButtonClicked()
-    {
+    public void onPromobButtonClicked() {
         final String promoCode = mPromoText.getText().toString();
 
         //TODO related to ugly promo code hotfix
         final boolean hasVisibleAppliedPromo = mCurrentTransaction.getPromoCode() != null
-                && !mCurrentTransaction.shouldPromoCodeBeHidden();
+                                               && !mCurrentTransaction.shouldPromoCodeBeHidden();
 
-        if (hasVisibleAppliedPromo || promoCode.length() > 0)
-        {
+        if (hasVisibleAppliedPromo || promoCode.length() > 0) {
             mPromoProgress.setVisibility(View.VISIBLE);
             mPromoButton.setText(null);
             mPromoButton.setVisibility(View.GONE);
 
-            if (hasVisibleAppliedPromo)
-            {
+            if (hasVisibleAppliedPromo) {
                 removePromo();
             }
-            else
-            {
+            else {
                 applyPromo(promoCode);
             }
         }
     }
 
     //TODO: this was stripped out of promoClicked and may need to be refactored
-    private void removePromo()
-    {
+    private void removePromo() {
         final int bookingId = mCurrentTransaction.getBookingId();
-        dataManager.removePromo(bookingId, new FragmentSafeCallback<BookingQuote>(this)
-        {
+        dataManager.removePromo(bookingId, new FragmentSafeCallback<BookingQuote>(this) {
             @Override
-            public void onCallbackSuccess(final BookingQuote newQuote)
-            {
+            public void onCallbackSuccess(final BookingQuote newQuote) {
                 removePromoSuccess(newQuote, mCurrentTransaction, null);
                 bookingManager.setPromoTabCoupon(null);
             }
 
             @Override
-            public void onCallbackError(final DataManager.DataManagerError error)
-            {
+            public void onCallbackError(final DataManager.DataManagerError error) {
                 handlePromoFailure(error);
             }
         });
     }
 
     //TODO: this was stripped out of promoClicked and may need to be refactored
-    private void applyPromo(final String promoCode)
-    {
+    private void applyPromo(final String promoCode) {
         if (ValidationUtils.isNullOrEmpty(promoCode)) { return; }
 
         bus.post(new LogEvent.AddLogEvent(
@@ -926,11 +831,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                 bookingId,
                 userId,
                 email,
-                new FragmentSafeCallback<BookingQuote>(this)
-                {
+                new FragmentSafeCallback<BookingQuote>(this) {
                     @Override
-                    public void onCallbackSuccess(final BookingQuote bookingQuote)
-                    {
+                    public void onCallbackSuccess(final BookingQuote bookingQuote) {
                         bus.post(new LogEvent.AddLogEvent(
                                 new BookingFunnelLog.ReferralBookingFunnelCodeEnteredLog(promoCode)
                         ));
@@ -938,16 +841,14 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         handlePromoFailure(error);
                     }
                 }
         );
     }
 
-    private void completeBooking()
-    {
+    private void completeBooking() {
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRequestSubmittedLog()));
         final Context applicationContext = getActivity().getApplicationContext();
         // The variable referrerToken may be null but that's ok! It just means that the booking
@@ -958,11 +859,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         mCurrentTransaction.setReferrerToken(referrerToken);
         dataManager.createBooking(
                 mCurrentTransaction,
-                new FragmentSafeCallback<BookingCompleteTransaction>(this)
-                {
+                new FragmentSafeCallback<BookingCompleteTransaction>(this) {
                     @Override
-                    public void onCallbackSuccess(final BookingCompleteTransaction trans)
-                    {
+                    public void onCallbackSuccess(final BookingCompleteTransaction trans) {
                         bus.post(new LogEvent.AddLogEvent(
                                 new BookingFunnelLog.BookingRequestSuccessLog(trans.getId())
                         ));
@@ -978,8 +877,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                         if (!allowCallbacks) { return; }
                         mCurrentTransaction.setBookingId(trans.getId());
                         boolean isNewUser = false;
-                        if (userManager.getCurrentUser() == null)
-                        {
+                        if (userManager.getCurrentUser() == null) {
                             isNewUser = true;
                             final BookingCompleteTransaction.User transUser = trans.getUser();
                             final User user = new User();
@@ -988,8 +886,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                             userManager.setCurrentUser(user);
                         }
                         final User user = userManager.getCurrentUser();
-                        if (user != null)
-                        {
+                        if (user != null) {
                             bus.post(new HandyEvent.RequestUser(
                                              user.getId(),
                                              user.getAuthToken(),
@@ -1020,8 +917,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         bus.post(new LogEvent.AddLogEvent(
                                 new BookingFunnelLog.BookingRequestErrorLog(error.getMessage())
                         ));
@@ -1043,13 +939,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final BookingQuote newQuote,
             final BookingTransaction transaction,
             final String promo
-    )
-    {
+    ) {
         if (!allowCallbacks) { return; }
         //stores this promo on disk (similar to how a user applies a coupon through the promo screen)
         bookingManager.setPromoTabCoupon(promo);
-        if (bookingManager.getCurrentRequest() != null)
-        {
+        if (bookingManager.getCurrentRequest() != null) {
             //this is so that in the case we make a request to create a new quote,
             //we'll be making the request with this coupon applied. Also saving i
             bookingManager.getCurrentRequest().setCoupon(promo);
@@ -1067,8 +961,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final BookingQuote newQuote,
             final BookingTransaction transaction,
             final String promo
-    )
-    {
+    ) {
         if (!allowCallbacks) { return; }
         updateQuote(newQuote, transaction, null);
     }
@@ -1077,8 +970,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final BookingQuote newQuote,
             final BookingTransaction transaction,
             final String promo
-    )
-    {
+    ) {
         /*
         TODO for ugly promo code hotfix
         note in the booking transaction object that the promo code should no longer be hidden
@@ -1089,35 +981,38 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         BookingQuote.updateQuote(mCurrentQuote, newQuote);
         initializeBill();
         showBookingWarningIfApplicable(mCurrentQuote);
-        updatePromoUI(mCurrentTransaction.getPromoCode(), mCurrentTransaction.shouldPromoCodeBeHidden());
+        updatePromoUI(
+                mCurrentTransaction.getPromoCode(),
+                mCurrentTransaction.shouldPromoCodeBeHidden()
+        );
         mPromoText.setText(null);
     }
 
-    private void showBookingWarningIfApplicable(BookingQuote quote)
-    {
-        if (quote.hasCouponWarning())
-        {
+    private void showBookingWarningIfApplicable(BookingQuote quote) {
+        if (quote.hasCouponWarning()) {
             showToast(quote.getCoupon().getWarning());
         }
     }
 
-    private void handlePromoFailure(final DataManager.DataManagerError error)
-    {
+    private void handlePromoFailure(final DataManager.DataManagerError error) {
         if (!allowCallbacks) { return; }
-        updatePromoUI(mCurrentTransaction.getPromoCode(), mCurrentTransaction.shouldPromoCodeBeHidden());
+        updatePromoUI(
+                mCurrentTransaction.getPromoCode(),
+                mCurrentTransaction.shouldPromoCodeBeHidden()
+        );
         mPromoText.setText(null);
         dataManagerErrorHandler.handleError(getActivity(), error);
     }
 
-    private void updatePromoUI(final String promoCode, final boolean shouldPromoCodeBeHidden)
-    {
+    private void updatePromoUI(final String promoCode, final boolean shouldPromoCodeBeHidden) {
         final boolean shouldShowPromoCode = promoCode != null && !shouldPromoCodeBeHidden;
         mPromoProgress.setVisibility(View.INVISIBLE);
-        mPromoButton.setText(shouldShowPromoCode ? getString(R.string.remove) : getString(R.string.apply));
+        mPromoButton.setText(shouldShowPromoCode
+                             ? getString(R.string.remove)
+                             : getString(R.string.apply));
         mPromoButton.setVisibility(View.VISIBLE);
         String promoCodeDisplayString;
-        if (shouldShowPromoCode)
-        {
+        if (shouldShowPromoCode) {
             if (isAndroidPayPromoApplied()) //show the obfuscated Android pay promo code
             {
                 promoCodeDisplayString = getString(R.string.android_pay_obfuscated_promo_code);

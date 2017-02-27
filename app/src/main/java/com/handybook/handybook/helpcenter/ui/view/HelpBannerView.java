@@ -9,16 +9,15 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.core.ui.widget.MenuButton;
+import com.handybook.handybook.helpcenter.model.HelpNode;
+import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 
 import butterknife.Bind;
 
+public final class HelpBannerView extends InjectedRelativeLayout {
 
-public final class HelpBannerView extends InjectedRelativeLayout
-{
     @Bind(R.id.menu_button_layout)
     ViewGroup menuButtonLayout;
     @Bind(R.id.back_img)
@@ -28,26 +27,20 @@ public final class HelpBannerView extends InjectedRelativeLayout
     @Bind(R.id.nav_text)
     public TextView navText;
 
-
-    public HelpBannerView(final Context context)
-    {
+    public HelpBannerView(final Context context) {
         super(context);
     }
 
-    public HelpBannerView(final Context context, final AttributeSet attrs)
-    {
+    public HelpBannerView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public HelpBannerView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
+    public HelpBannerView(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public void updateDisplay(HelpNode helpNode)
-    {
-        if (helpNode == null)
-        {
+    public void updateDisplay(HelpNode helpNode) {
+        if (helpNode == null) {
             Crashlytics.log("Tried to construct a help banner view for a null node");
             return;
         }
@@ -59,10 +52,8 @@ public final class HelpBannerView extends InjectedRelativeLayout
         backImage.setVisibility(View.VISIBLE);
         navText.setText(R.string.contact_us);
 
-        switch (helpNode.getType())
-        {
-            case HelpNode.HelpNodeType.ROOT:
-            {
+        switch (helpNode.getType()) {
+            case HelpNode.HelpNodeType.ROOT: {
                 layoutForRoot();
                 backImage.setVisibility(View.GONE);
                 menuButtonLayout.setVisibility(View.VISIBLE);
@@ -72,8 +63,7 @@ public final class HelpBannerView extends InjectedRelativeLayout
 
             case HelpNode.HelpNodeType.NAVIGATION:
             case HelpNode.HelpNodeType.BOOKINGS_NAV:
-            case HelpNode.HelpNodeType.BOOKING:
-            {
+            case HelpNode.HelpNodeType.BOOKING: {
                 layoutForNavigation(helpNode);
                 backImage.setVisibility(View.VISIBLE);
 
@@ -83,8 +73,7 @@ public final class HelpBannerView extends InjectedRelativeLayout
             }
             break;
 
-            case HelpNode.HelpNodeType.ARTICLE:
-            {
+            case HelpNode.HelpNodeType.ARTICLE: {
                 layoutForArticle(helpNode);
                 backImage.setVisibility(View.VISIBLE);
 
@@ -93,8 +82,7 @@ public final class HelpBannerView extends InjectedRelativeLayout
             }
             break;
 
-            default:
-            {
+            default: {
                 Crashlytics.log("Unrecognized node type : " + helpNode.getType());
                 backImage.setVisibility(View.VISIBLE);
 
@@ -105,25 +93,20 @@ public final class HelpBannerView extends InjectedRelativeLayout
         }
     }
 
-    private void layoutForNavigation(final HelpNode node)
-    {
-        if (node.getType().equals(HelpNode.HelpNodeType.BOOKING))
-        {
-           navText.setText(getContext().getString(R.string.help));
+    private void layoutForNavigation(final HelpNode node) {
+        if (node.getType().equals(HelpNode.HelpNodeType.BOOKING)) {
+            navText.setText(getContext().getString(R.string.help));
         }
-        else
-        {
-           navText.setText(node.getLabel());
+        else {
+            navText.setText(node.getLabel());
         }
     }
 
-    private void layoutForArticle(final HelpNode node)
-    {
+    private void layoutForArticle(final HelpNode node) {
         navText.setText(R.string.help);
     }
 
-    private void layoutForRoot()
-    {
+    private void layoutForRoot() {
         navText.setText(R.string.help);
     }
 

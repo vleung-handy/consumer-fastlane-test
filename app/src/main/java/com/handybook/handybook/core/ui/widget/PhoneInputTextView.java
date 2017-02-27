@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import com.handybook.handybook.library.ui.view.InputTextField;
 import com.handybook.handybook.library.util.TextUtils;
 
-public final class PhoneInputTextView extends InputTextField
-{
+public final class PhoneInputTextView extends InputTextField {
+
     private String countryCode;
 
     public PhoneInputTextView(final Context context) {
@@ -31,20 +31,26 @@ public final class PhoneInputTextView extends InputTextField
         super.init();
         this.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                          final int count, final int after) {
+            public void beforeTextChanged(
+                    final CharSequence charSequence, final int start,
+                    final int count, final int after
+            ) {
             }
 
             @Override
-            public void onTextChanged(final CharSequence charSequence, final int start,
-                                      final int before, final int count) {
+            public void onTextChanged(
+                    final CharSequence charSequence, final int start,
+                    final int before, final int count
+            ) {
             }
 
             @Override
             public void afterTextChanged(final Editable editable) {
                 PhoneInputTextView.this.removeTextChangedListener(this);
-                PhoneInputTextView.this.setText(TextUtils.formatPhone(editable.toString(),
-                        getCountryCode()));
+                PhoneInputTextView.this.setText(TextUtils.formatPhone(
+                        editable.toString(),
+                        getCountryCode()
+                ));
 
                 PhoneInputTextView.this.setSelection(PhoneInputTextView.this.getText().length());
                 PhoneInputTextView.this.addTextChangedListener(this);
@@ -62,7 +68,7 @@ public final class PhoneInputTextView extends InputTextField
 
     public final boolean validate() {
         final String phone = this.getText().toString();
-        if (phone.replaceAll("\\D+","").length() != 10) {
+        if (phone.replaceAll("\\D+", "").length() != 10) {
             highlight();
             return false;
         }
@@ -73,6 +79,6 @@ public final class PhoneInputTextView extends InputTextField
     }
 
     public final String getPhoneNumber() {
-        return this.countryCode + this.getText().toString().replaceAll("\\D+","");
+        return this.countryCode + this.getText().toString().replaceAll("\\D+", "");
     }
 }

@@ -44,20 +44,28 @@ import java.util.HashMap;
 /**
  * ScreenName will map app locations to their names analytics purposes
  */
-public class ScreenName
-{
+public class ScreenName {
+
     private static final HashMap<String, String> sScreenNames = new HashMap<>();
 
-    static
-    {
+    static {
         sScreenNames.put(BookingEditAddressActivity.class.getCanonicalName(), "Edit: Address");
-        sScreenNames.put(BookingEditEntryInformationActivity.class.getCanonicalName(), "Edit: EntryInformation");
+        sScreenNames.put(
+                BookingEditEntryInformationActivity.class.getCanonicalName(),
+                "Edit: EntryInformation"
+        );
         sScreenNames.put(BookingEditExtrasActivity.class.getCanonicalName(), "Edit: Extras");
         sScreenNames.put(BookingEditFrequencyActivity.class.getCanonicalName(), "Edit: Frequency");
         sScreenNames.put(BookingEditHoursActivity.class.getCanonicalName(), "Edit: Hours");
-        sScreenNames.put(BookingEditPreferencesActivity.class.getCanonicalName(), "Edit: Preferences");
+        sScreenNames.put(
+                BookingEditPreferencesActivity.class.getCanonicalName(),
+                "Edit: Preferences"
+        );
         sScreenNames.put(BookingAddressActivity.class.getCanonicalName(), "Booking: Address");
-        sScreenNames.put(BookingCancelOptionsActivity.class.getCanonicalName(), "Booking: CancelOptions");
+        sScreenNames.put(
+                BookingCancelOptionsActivity.class.getCanonicalName(),
+                "Booking: CancelOptions"
+        );
         sScreenNames.put(BookingDateActivity.class.getCanonicalName(), "Booking: Date");
         sScreenNames.put(BookingDetailActivity.class.getCanonicalName(), "Booking: Detail");
         sScreenNames.put(BookingExtrasActivity.class.getCanonicalName(), "Booking: Extras");
@@ -66,9 +74,15 @@ public class ScreenName
         sScreenNames.put(BookingOptionsActivity.class.getCanonicalName(), "Booking: Options");
         sScreenNames.put(BookingPaymentActivity.class.getCanonicalName(), "Booking: Payment");
         sScreenNames.put(BookingRecurrenceActivity.class.getCanonicalName(), "Booking: Recurrence");
-        sScreenNames.put(BookingRescheduleOptionsActivity.class.getCanonicalName(), "Booking: RescheduleOptions");
+        sScreenNames.put(
+                BookingRescheduleOptionsActivity.class.getCanonicalName(),
+                "Booking: RescheduleOptions"
+        );
         sScreenNames.put(BookingsActivity.class.getCanonicalName(), "Bookings");
-        sScreenNames.put(CancelRecurringBookingActivity.class.getCanonicalName(), "Cancel Recurring");
+        sScreenNames.put(
+                CancelRecurringBookingActivity.class.getCanonicalName(),
+                "Cancel Recurring"
+        );
         sScreenNames.put(PeakPricingActivity.class.getCanonicalName(), "Booking: Peak Pricing");
         sScreenNames.put(PromosActivity.class.getCanonicalName(), "Promos");
         sScreenNames.put(ServiceCategoriesActivity.class.getCanonicalName(), "Service Categories");
@@ -97,12 +111,10 @@ public class ScreenName
      * @param activity The activity whose name we will provide
      * @return the name defined for activity or it's canonical name
      */
-    public static String from(final Activity activity)
-    {
+    public static String from(final Activity activity) {
         final String canonicalName = activity.getClass().getCanonicalName();
         final String screenName = sScreenNames.get(canonicalName);
-        if (screenName == null)
-        {
+        if (screenName == null) {
             return canonicalName;
         }
         return screenName;

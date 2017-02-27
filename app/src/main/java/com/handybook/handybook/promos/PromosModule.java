@@ -5,8 +5,8 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.promos.persistent.PersistentPromoCoordinatorLayout;
 import com.handybook.handybook.promos.persistent.PersistentPromoManager;
-import com.handybook.handybook.promos.splash.SplashPromoManager;
 import com.handybook.handybook.promos.splash.SplashPromoDialogFragment;
+import com.handybook.handybook.promos.splash.SplashPromoManager;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;

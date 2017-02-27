@@ -21,7 +21,10 @@ public class ViewPager extends android.support.v4.view.ViewPager {
         int height = 0;
         for (int i = 0; i < getChildCount(); i++) {
             final View child = getChildAt(i);
-            child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+            child.measure(
+                    widthMeasureSpec,
+                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+            );
             height = Math.max(child.getMeasuredHeight(), height);
         }
 

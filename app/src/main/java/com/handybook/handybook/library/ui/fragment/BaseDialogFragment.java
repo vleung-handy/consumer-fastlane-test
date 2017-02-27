@@ -18,8 +18,8 @@ import com.handybook.handybook.core.event.HandyEvent;
 
 import javax.inject.Inject;
 
-public class BaseDialogFragment extends InjectedDialogFragment
-{
+public class BaseDialogFragment extends InjectedDialogFragment {
+
     //TODO: use getters and setters
     public boolean canDismiss;
 
@@ -27,8 +27,7 @@ public class BaseDialogFragment extends InjectedDialogFragment
     public DataManager dataManager;
 
     @Override
-    public Dialog onCreateDialog(final Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         this.setStyle(android.support.v4.app.DialogFragment.STYLE_NO_FRAME, 0);
         return dialog;
@@ -38,12 +37,10 @@ public class BaseDialogFragment extends InjectedDialogFragment
     public View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        if (getDialog().getWindow() != null)
-        {
+        if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(
                     new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
@@ -53,14 +50,12 @@ public class BaseDialogFragment extends InjectedDialogFragment
         return view;
     }
 
-    protected void allowDialogDismissable()
-    {
+    protected void allowDialogDismissable() {
         canDismiss = true;
         updateDialogState();
     }
 
-    private void updateDialogState()
-    {
+    private void updateDialogState() {
         getDialog().setCancelable(canDismiss);
         getDialog().setCanceledOnTouchOutside(canDismiss);
         applyDefaultKeyListener();
@@ -69,19 +64,15 @@ public class BaseDialogFragment extends InjectedDialogFragment
     /**
      * Handles keypresses depending on whether this dialog is dismissable or not
      */
-    protected void applyDefaultKeyListener()
-    {
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
+    protected void applyDefaultKeyListener() {
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(
                     final DialogInterface dialog, final int keyCode,
                     final KeyEvent event
-            )
-            {
+            ) {
                 // Disable the back key when cannot dismiss
-                if (keyCode == KeyEvent.KEYCODE_BACK)
-                {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
                     return !canDismiss;
                 }
 
@@ -92,38 +83,31 @@ public class BaseDialogFragment extends InjectedDialogFragment
     }
 
     //Helpers
-    protected void showToast(int stringId)
-    {
+    protected void showToast(int stringId) {
         showToast(getString(stringId));
     }
 
-    protected void showToast(String message)
-    {
+    protected void showToast(String message) {
         showToast(message, Toast.LENGTH_SHORT);
     }
 
-    protected void showToast(int stringId, int length)
-    {
+    protected void showToast(int stringId, int length) {
         showToast(getString(stringId), length);
     }
 
-    protected void showToast(String message, int length)
-    {
+    protected void showToast(String message, int length) {
         Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, length);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
-    protected void handleRequestError(HandyEvent.ReceiveErrorEvent error)
-    {
+    protected void handleRequestError(HandyEvent.ReceiveErrorEvent error) {
         Crashlytics.logException(new RuntimeException(error.getClass().getName() + ":" + error.error
                 .getMessage()));
-        if (error.error.getType() == DataManager.Type.NETWORK)
-        {
+        if (error.error.getType() == DataManager.Type.NETWORK) {
             showToast(R.string.error_fetching_connectivity_issue);
         }
-        else
-        {
+        else {
             showToast(R.string.default_error_string);
         }
     }

@@ -26,9 +26,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+public class ServiceCategoriesOverlayFragment extends BookingFlowFragment {
 
-public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
-{
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
     private static final int SERVICE_CATEGORY_MOVEMENT_DURATION_MILLIS = 200;
     private static final int SERVICE_CATEGORIES_ANIMATION_DELAY_MILLIS = 200;
@@ -42,8 +41,7 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
     ViewGroup mServicesWrapper;
     List<ServiceCategorySimpleView> mServiceCategorySimpleViews;
 
-    public static ServiceCategoriesOverlayFragment newInstance(@NonNull List<Service> services)
-    {
+    public static ServiceCategoriesOverlayFragment newInstance(@NonNull List<Service> services) {
         ServiceCategoriesOverlayFragment fragment = new ServiceCategoriesOverlayFragment();
         Bundle arguments = new Bundle();
         arguments.putParcelableArrayList(BundleKeys.SERVICES, new ArrayList<>(services));
@@ -52,22 +50,18 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
     }
 
     @OnClick(R.id.close_button)
-    public void onCloseButtonClicked()
-    {
+    public void onCloseButtonClicked() {
         getActivity().onBackPressed();
     }
 
-    public void animateAndDismissFragment()
-    {
-        if (isRemoving())
-        {
+    public void animateAndDismissFragment() {
+        if (isRemoving()) {
             //this fragment is already being removed, exit and do nothing. This typically
             //happens if someone is frantically tapping the back button to remove this fragment
             return;
         }
         mCloseButton.setClickable(false);
-        for (ServiceCategorySimpleView view : mServiceCategorySimpleViews)
-        {
+        for (ServiceCategorySimpleView view : mServiceCategorySimpleViews) {
             float toYDelta = mCloseButtonWrapper.getY() - view.getY();
             TranslateAnimation animation =
                     new TranslateAnimation(0, 0, 0, toYDelta);
@@ -76,11 +70,9 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
             view.setVisibility(View.INVISIBLE);
         }
 
-        mServicesWrapper.postDelayed(new Runnable()
-        {
+        mServicesWrapper.postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         }, FRAGMENT_DISMISSAL_DELAY_MILLIS);
@@ -92,39 +84,35 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
     public View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         View view = inflater.inflate(R.layout.fragment_service_categories_overlay,
-                container, false);
+                                     container, false
+        );
         ButterKnife.bind(this, view);
         initServices();
         return view;
     }
 
-    private void initServices()
-    {
+    private void initServices() {
         mCloseButton.setClickable(false);
         ArrayList<Service> services = getArguments().getParcelableArrayList(BundleKeys.SERVICES);
         mServiceCategorySimpleViews = new ArrayList<>();
-        for (final Service service : services)
-        {
+        for (final Service service : services) {
             final ServiceCategorySimpleView serviceCategorySimpleView =
                     new ServiceCategorySimpleView(getContext());
-            serviceCategorySimpleView.setOnClickListener(new View.OnClickListener()
-            {
+            serviceCategorySimpleView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(final android.view.View v)
-                {
+                public void onClick(final android.view.View v) {
                     handleServiceCategoryClicked(serviceCategorySimpleView, service);
                 }
             });
-            mServicesWrapper.addView(serviceCategorySimpleView,
-                    mServicesWrapper.getChildCount() - 1);
-            serviceCategorySimpleView.postDelayed(new Runnable()
-            {
+            mServicesWrapper.addView(
+                    serviceCategorySimpleView,
+                    mServicesWrapper.getChildCount() - 1
+            );
+            serviceCategorySimpleView.postDelayed(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     serviceCategorySimpleView.init(service);
                     float fromYDelta =
                             mCloseButtonWrapper.getY() - serviceCategorySimpleView.getY();
@@ -141,49 +129,39 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment
     }
 
     private final Animation.AnimationListener mServiceIconAnimationListener =
-            new Animation.AnimationListener()
-            {
+            new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(final Animation animation)
-                {
+                public void onAnimationStart(final Animation animation) {
                 }
 
                 @Override
-                public void onAnimationEnd(final Animation animation)
-                {
+                public void onAnimationEnd(final Animation animation) {
                     mCloseButton.setClickable(true);
                 }
 
                 @Override
-                public void onAnimationRepeat(final Animation animation)
-                {
+                public void onAnimationRepeat(final Animation animation) {
                 }
             };
-
 
     private void handleServiceCategoryClicked(
             final ServiceCategorySimpleView serviceCategorySimpleView,
             final Service service
-    )
-    {
-        if (service.getChildServices().size() > 0)
-        {
+    ) {
+        if (service.getChildServices().size() > 0) {
             final Intent intent = new Intent(getActivity(), ServicesActivity.class);
             intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         getActivity(), serviceCategorySimpleView.getIcon(), SHARED_ICON_ELEMENT_NAME
                 );
                 getActivity().startActivity(intent, options.toBundle());
             }
-            else
-            {
+            else {
                 startActivity(intent);
             }
         }
-        else
-        {
+        else {
             startBookingFlow(service.getId(), service.getUniq());
         }
     }

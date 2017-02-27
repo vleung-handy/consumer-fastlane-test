@@ -6,18 +6,15 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.notifications.ui.fragment.NotificationFeedFragment;
 
+public final class NotificationsActivity extends MenuDrawerActivity {
 
-public final class NotificationsActivity extends MenuDrawerActivity
-{
     @Override
-    protected final Fragment createFragment()
-    {
+    protected final Fragment createFragment() {
         return NotificationFeedFragment.newInstance();
     }
 
     @Override
-    protected final String getNavItemTitle()
-    {
+    protected final String getNavItemTitle() {
         return getString(R.string.home);
     }
 }

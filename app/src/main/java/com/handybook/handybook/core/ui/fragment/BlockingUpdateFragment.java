@@ -1,6 +1,5 @@
 package com.handybook.handybook.core.ui.fragment;
 
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,33 +17,31 @@ import butterknife.OnClick;
 /**
  * Tells user that his app is too old to be used displaying a button leading to play store.
  */
-public class BlockingUpdateFragment extends InjectedFragment
-{
-    public static final String URL_FORMAT_MARKET = "market://details?id=%1s";
-    public static final String URL_FORMAT_PLAY_WEB = "https://play.google.com/store/apps/details?id=%1s";
+public class BlockingUpdateFragment extends InjectedFragment {
 
-    public BlockingUpdateFragment()
-    {
+    public static final String URL_FORMAT_MARKET = "market://details?id=%1s";
+    public static final String URL_FORMAT_PLAY_WEB
+            = "https://play.google.com/store/apps/details?id=%1s";
+
+    public BlockingUpdateFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         final View root = inflater.inflate(R.layout.fragment_blocking_update, container, false);
         ButterKnife.bind(this, root);
         return root;
     }
 
-
     @OnClick(R.id.b_modal_blocking_button)
-    public void launchPlayStore(final Button submitButton)
-    {
+    public void launchPlayStore(final Button submitButton) {
         final String appPackageName = getActivity().getPackageName();
         Uri playUri;
-        try
-        {
+        try {
             playUri = Uri.parse(String.format(URL_FORMAT_MARKET, appPackageName));
             startActivity(
                     new Intent(Intent.ACTION_VIEW, playUri)
@@ -52,8 +49,8 @@ public class BlockingUpdateFragment extends InjectedFragment
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             );
             //This will fail if user doesn't have play store app, hence the link to web below
-        } catch (android.content.ActivityNotFoundException anfe)
-        {
+        }
+        catch (android.content.ActivityNotFoundException anfe) {
             playUri = Uri.parse(String.format(URL_FORMAT_PLAY_WEB, appPackageName));
             startActivity(
                     new Intent(Intent.ACTION_VIEW, playUri)

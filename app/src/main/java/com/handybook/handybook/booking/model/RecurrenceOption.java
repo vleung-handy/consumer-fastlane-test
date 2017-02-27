@@ -7,8 +7,8 @@ import java.io.Serializable;
 /**
  * model from server that determines how to display a recurrence option to the user
  */
-public class RecurrenceOption implements Serializable, Option
-{
+public class RecurrenceOption implements Serializable, Option {
+
     /**
      * true if this option should be initially hidden
      */
@@ -45,35 +45,29 @@ public class RecurrenceOption implements Serializable, Option
     @SerializedName("price_info_text")
     private String mPriceInfoText;
 
-    public Integer getFrequencyValue()
-    {
+    public Integer getFrequencyValue() {
         return mFrequencyValue;
     }
 
     @Override
-    public String getTitleText()
-    {
+    public String getTitleText() {
         return mText;
     }
 
     @Override
-    public String getSubtitleText()
-    {
+    public String getSubtitleText() {
         return mSubText;
     }
 
-    public String getPriceInfoText()
-    {
+    public String getPriceInfoText() {
         return mPriceInfoText;
     }
 
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return mHidden;
     }
 
-    public boolean isDefault()
-    {
+    public boolean isDefault() {
         return mDefault;
     }
 }

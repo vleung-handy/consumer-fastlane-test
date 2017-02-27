@@ -64,16 +64,18 @@ public final class BookingPostInfo extends Observable {
 
     public final String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .setExclusionStrategies(getExclusionStrategy())
-                .registerTypeAdapter(BookingPostInfo.class,
-                        new BookingPostInfoSerializer()).create();
+                                           .setExclusionStrategies(getExclusionStrategy())
+                                           .registerTypeAdapter(
+                                                   BookingPostInfo.class,
+                                                   new BookingPostInfoSerializer()
+                                           ).create();
 
         return gson.toJson(this);
     }
 
     public static BookingPostInfo fromJson(final String json) {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, BookingPostInfo.class);
+                                .fromJson(json, BookingPostInfo.class);
     }
 
     public static ExclusionStrategy getExclusionStrategy() {
@@ -91,9 +93,12 @@ public final class BookingPostInfo extends Observable {
     }
 
     public static final class BookingPostInfoSerializer implements JsonSerializer<BookingPostInfo> {
+
         @Override
-        public final JsonElement serialize(final BookingPostInfo value, final Type type,
-                                           final JsonSerializationContext context) {
+        public final JsonElement serialize(
+                final BookingPostInfo value, final Type type,
+                final JsonSerializationContext context
+        ) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("get_in", context.serialize(value.getGetInId()));
             jsonObj.add("get_in_text", context.serialize(value.getGetInText()));

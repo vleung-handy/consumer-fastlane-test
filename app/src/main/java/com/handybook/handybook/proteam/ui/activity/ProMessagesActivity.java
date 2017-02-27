@@ -55,8 +55,8 @@ import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTAN
 /**
  * This is a derivation of the MessagesListActivity that allows for a reschedule flow
  */
-public class ProMessagesActivity extends MessagesListActivity
-{
+public class ProMessagesActivity extends MessagesListActivity {
+
     @Inject
     UserManager mUserManager;
     @Inject
@@ -83,8 +83,7 @@ public class ProMessagesActivity extends MessagesListActivity
     private int mAttachmentViewItemHeight;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ((BaseApplication) getApplication()).inject(this);
@@ -94,13 +93,13 @@ public class ProMessagesActivity extends MessagesListActivity
         mProViewModel = (ProMessagesViewModel)
                 getIntent().getSerializableExtra(BundleKeys.PRO_MESSAGES_VIEW_MODEL);
 
-        if (getIntent().getBooleanExtra(BundleKeys.SHOW_TIPS, false))
-        {
+        if (getIntent().getBooleanExtra(BundleKeys.SHOW_TIPS, false)) {
             mTipsContainer.addView(new ConversationTipsView(this));
         }
 
         updateProAvatar();
-        mAttachmentViewItemHeight = getResources().getDimensionPixelSize(R.dimen.attachment_item_height);
+        mAttachmentViewItemHeight
+                = getResources().getDimensionPixelSize(R.dimen.attachment_item_height);
 
         setupCustomAttachmentMenus();
 
@@ -110,8 +109,7 @@ public class ProMessagesActivity extends MessagesListActivity
         mProgressDialog.setMessage(getString(R.string.rescheduling));
 
         mUser = mUserManager.getCurrentUser();
-        if (mUser == null)
-        {
+        if (mUser == null) {
             //we're in an invalid state, redirect to login.
             Toast.makeText(this, R.string.prompt_login, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, ServiceCategoriesActivity.class));
@@ -126,17 +124,18 @@ public class ProMessagesActivity extends MessagesListActivity
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         mSessionManager.markActivity();
     }
 
     @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
-        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
-        {
+    protected void onActivityResult(
+            final int requestCode,
+            final int resultCode,
+            final Intent data
+    ) {
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
             final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
@@ -144,10 +143,8 @@ public class ProMessagesActivity extends MessagesListActivity
         }
     }
 
-    private void updateProAvatar()
-    {
-        if (mProViewModel != null)
-        {
+    private void updateProAvatar() {
+        if (mProViewModel != null) {
             int size = getResources().getDimensionPixelSize(R.dimen.chat_toolbar_icon_size);
             ProAvatarView avatar = new ProAvatarView(this, size);
             avatar.bindPro(mProViewModel.isFavorite(), mProViewModel.getImageUrl());
@@ -160,16 +157,12 @@ public class ProMessagesActivity extends MessagesListActivity
     /**
      * Figures out, from cache, what service represents the "home_cleaning" service
      */
-    private void initCleaningService()
-    {
+    private void initCleaningService() {
         //we can safely assume that by this point, there is a valid cached services
         List<Service> cachedServices = mServiceManager.getCachedServices();
-        if (cachedServices != null)
-        {
-            for (final Service service : cachedServices)
-            {
-                if (service.getUniq().equalsIgnoreCase("home_cleaning"))
-                {
+        if (cachedServices != null) {
+            for (final Service service : cachedServices) {
+                if (service.getUniq().equalsIgnoreCase("home_cleaning")) {
                     mCleaningService = service;
                     return;
                 }
@@ -178,8 +171,7 @@ public class ProMessagesActivity extends MessagesListActivity
     }
 
     @Override
-    protected void setConversation(final Conversation conversation)
-    {
+    protected void setConversation(final Conversation conversation) {
         super.setConversation(conversation);
         refreshAttachmentMenu();
     }
@@ -188,8 +180,7 @@ public class ProMessagesActivity extends MessagesListActivity
      * Syncs up the attachment menu buttons. This should only be called after conversation has been
      * set
      */
-    private void refreshAttachmentMenu()
-    {
+    private void refreshAttachmentMenu() {
         boolean hasProModel = mProViewModel != null;
         if (mRescheduleButton != null) {
             mRescheduleButton.setVisibility(hasProModel ? View.VISIBLE : View.GONE);
@@ -204,20 +195,15 @@ public class ProMessagesActivity extends MessagesListActivity
         }
     }
 
-    public void onProTeamReceived(ProTeam proTeam)
-    {
-        if (proTeam != null && proTeam.getAllCategories() != null)
-        {
-            if (proTeam.getAllCategories().getPreferred() != null)
-            {
-                for (final ProTeamPro preferred : proTeam.getAllCategories().getPreferred())
-                {
+    public void onProTeamReceived(ProTeam proTeam) {
+        if (proTeam != null && proTeam.getAllCategories() != null) {
+            if (proTeam.getAllCategories().getPreferred() != null) {
+                for (final ProTeamPro preferred : proTeam.getAllCategories().getPreferred()) {
                     if (preferred.isChatEnabled()
-                            && containsId(
+                        && containsId(
                             mConversation.getParticipants(),
                             preferred.getLayerUserId()
-                    ))
-                    {
+                    )) {
 
                         mProViewModel = new ProMessagesViewModel(preferred);
                         updateProAvatar();
@@ -227,16 +213,13 @@ public class ProMessagesActivity extends MessagesListActivity
                 }
             }
 
-            if (proTeam.getAllCategories().getIndifferent() != null)
-            {
-                for (final ProTeamPro indifferent : proTeam.getAllCategories().getIndifferent())
-                {
+            if (proTeam.getAllCategories().getIndifferent() != null) {
+                for (final ProTeamPro indifferent : proTeam.getAllCategories().getIndifferent()) {
                     if (indifferent.isChatEnabled()
-                            && containsId(
+                        && containsId(
                             mConversation.getParticipants(),
                             indifferent.getLayerUserId()
-                    ))
-                    {
+                    )) {
                         mProViewModel = new ProMessagesViewModel(indifferent);
                         updateProAvatar();
                         refreshAttachmentMenu();
@@ -248,8 +231,7 @@ public class ProMessagesActivity extends MessagesListActivity
 
         //by the time we get here, if we didn't find any matching pro, that means we're not supposed
         //to be in this conversation to begin with. Exit. Most of the time this should not happen.
-        if (mProViewModel == null)
-        {
+        if (mProViewModel == null) {
             Toast.makeText(this, R.string.conversation_cannot_load, Toast.LENGTH_SHORT);
             startActivity(new Intent(this, ProTeamActivity.class));
             finish();
@@ -257,12 +239,9 @@ public class ProMessagesActivity extends MessagesListActivity
 
     }
 
-    private boolean containsId(Set<Identity> participants, String id)
-    {
-        for (final Identity participant : participants)
-        {
-            if (participant.getUserId().equals(id))
-            {
+    private boolean containsId(Set<Identity> participants, String id) {
+        for (final Identity participant : participants) {
+            if (participant.getUserId().equals(id)) {
                 return true;
             }
         }
@@ -270,8 +249,7 @@ public class ProMessagesActivity extends MessagesListActivity
         return false;
     }
 
-    private void setupCustomAttachmentMenus()
-    {
+    private void setupCustomAttachmentMenus() {
         getAttachmentButton().setImageResource(R.drawable.ic_calendar_plus);
 
         mRescheduleButton = getRescheduleView();
@@ -281,8 +259,7 @@ public class ProMessagesActivity extends MessagesListActivity
         addAttachmentMenuItem(mNewBookingButton);
     }
 
-    private AttachmentItemView getNewBookingView()
-    {
+    private AttachmentItemView getNewBookingView() {
         AttachmentItemView attachmentItemView = new AttachmentItemView(this);
         attachmentItemView.setLayoutParams(new RecyclerView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -291,11 +268,9 @@ public class ProMessagesActivity extends MessagesListActivity
         attachmentItemView.getAttachmentImage().setImageResource(R.drawable.ic_make_booking);
         attachmentItemView.getAttachmentText()
                           .setText(getResources().getString(R.string.make_a_booking));
-        attachmentItemView.setOnClickListener(new View.OnClickListener()
-        {
+        attachmentItemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 getAttachmentMenu().dismiss();
                 if (mCleaningService != null
                     && mProViewModel != null
@@ -303,8 +278,7 @@ public class ProMessagesActivity extends MessagesListActivity
                                     .toString()
                                     .toLowerCase()
                                     .contains(PREFIX_CLEAN_CONSTANT)
-                        )
-                {
+                        ) {
 
                     //for cleaning, we want to start the booking flow right away.
                     mBus.post(new LogEvent.AddLogEvent(
@@ -315,8 +289,7 @@ public class ProMessagesActivity extends MessagesListActivity
                             )));
                     startBookingFlow();
                 }
-                else
-                {
+                else {
                     mBus.post(new LogEvent.AddLogEvent(new ChatLog.MakeBookingSelectedLog(
                             mProViewModel.getProviderId(),
                             mConversation.getId().toString(),
@@ -337,15 +310,13 @@ public class ProMessagesActivity extends MessagesListActivity
      * The logic here is borrowed from BookingFlowFragment.startBookingFlow(); -- basically, it does
      * all the things needed to prepare for the booking flow
      */
-    private void startBookingFlow()
-    {
+    private void startBookingFlow() {
         final BookingRequest request = new BookingRequest();
         request.setServiceId(mCleaningService.getId());
         request.setUniq(mCleaningService.getUniq());
         request.setCoupon(mBookingManager.getPromoTabCoupon());
         request.setProviderId(mProViewModel.getProviderId());
-        if (mUser != null)
-        {
+        if (mUser != null) {
             request.setEmail(mUser.getEmail());
         }
         mBookingManager.clear();
@@ -354,8 +325,7 @@ public class ProMessagesActivity extends MessagesListActivity
         startActivity(intent);
     }
 
-    private AttachmentItemView getRescheduleView()
-    {
+    private AttachmentItemView getRescheduleView() {
         AttachmentItemView attachmentItemView = new AttachmentItemView(this);
         attachmentItemView.getAttachmentImage().setImageResource(R.drawable.ic_reschedule);
         attachmentItemView.setLayoutParams(new RecyclerView.LayoutParams(
@@ -364,11 +334,9 @@ public class ProMessagesActivity extends MessagesListActivity
         ));
         attachmentItemView.getAttachmentText()
                           .setText(getResources().getString(R.string.reschedule));
-        attachmentItemView.setOnClickListener(new View.OnClickListener()
-        {
+        attachmentItemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 getAttachmentMenu().dismiss();
                 mBus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleSelectedLog(
                         String.valueOf(
@@ -381,15 +349,13 @@ public class ProMessagesActivity extends MessagesListActivity
                 //there are upcoming bookings to reschedule
 
                 mProgressDialog.show();
-                if (mBooking == null)
-                {
+                if (mBooking == null) {
                     mDataManager.getBookingsForReschedule(
                             mProViewModel.getProviderId(),
                             new BookingsCallback(ProMessagesActivity.this)
                     );
                 }
-                else
-                {
+                else {
                     mDataManager.getPreRescheduleInfo(
                             mBooking.getId(), new PreRescheduleCallback(ProMessagesActivity.this));
                 }
@@ -399,12 +365,10 @@ public class ProMessagesActivity extends MessagesListActivity
         return attachmentItemView;
     }
 
-    public void onBookingReceived(final List<Booking> bookings)
-    {
+    public void onBookingReceived(final List<Booking> bookings) {
         mProgressDialog.dismiss();
 
-        if (bookings == null || bookings.isEmpty())
-        {
+        if (bookings == null || bookings.isEmpty()) {
             mBus.post(new LogEvent.AddLogEvent(new ChatLog.NoUpcomingBookingsLog()));
             Toast.makeText(
                     this,
@@ -415,8 +379,7 @@ public class ProMessagesActivity extends MessagesListActivity
                     Toast.LENGTH_LONG
             ).show();
         }
-        else
-        {
+        else {
             Intent intent = new Intent(this, RescheduleUpcomingActivity.class);
 
             intent.putExtra(BundleKeys.PROVIDER_ID, mProViewModel.getProviderId());
@@ -425,14 +388,12 @@ public class ProMessagesActivity extends MessagesListActivity
         }
     }
 
-    public void onBookingsRequestError()
-    {
+    public void onBookingsRequestError() {
         mProgressDialog.dismiss();
         Toast.makeText(this, R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
     }
 
-    public void onReceivePreRescheduleInfoSuccess(String notice)
-    {
+    public void onReceivePreRescheduleInfoSuccess(String notice) {
         mProgressDialog.dismiss();
 
         mBus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleBookingSelectedLog(
@@ -449,75 +410,66 @@ public class ProMessagesActivity extends MessagesListActivity
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }
 
-    public void onRescheduleRequestError()
-    {
+    public void onRescheduleRequestError() {
         mProgressDialog.dismiss();
         Toast.makeText(this, R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
     }
 
-    public static class ProTeamCallback implements DataManager.Callback<ProTeamWrapper>
-    {
+    public static class ProTeamCallback implements DataManager.Callback<ProTeamWrapper> {
+
         private WeakReference<ProMessagesActivity> mActivityRef;
 
-        public ProTeamCallback(ProMessagesActivity activity)
-        {
+        public ProTeamCallback(ProMessagesActivity activity) {
             mActivityRef = new WeakReference<>(activity);
         }
 
         @Override
-        public void onSuccess(final ProTeamWrapper response)
-        {
-            if (mActivityRef.get() != null)
-            {
+        public void onSuccess(final ProTeamWrapper response) {
+            if (mActivityRef.get() != null) {
                 mActivityRef.get().onProTeamReceived(response.getProTeam());
             }
         }
 
         @Override
-        public void onError(final DataManager.DataManagerError error)
-        {
+        public void onError(final DataManager.DataManagerError error) {
             //we don't need to do anything here, by default the reschedule stuff doesn't show
         }
     }
 
 
-    private static class BookingsCallback extends ActivitySafeCallback<UserBookingsWrapper, ProMessagesActivity>
-    {
-        public BookingsCallback(ProMessagesActivity activity)
-        {
+    private static class BookingsCallback
+            extends ActivitySafeCallback<UserBookingsWrapper, ProMessagesActivity> {
+
+        public BookingsCallback(ProMessagesActivity activity) {
             super(activity);
         }
 
         @Override
-        public void onCallbackSuccess(final UserBookingsWrapper response)
-        {
+        public void onCallbackSuccess(final UserBookingsWrapper response) {
             mActivityWeakReference.get().onBookingReceived(response.getBookings());
         }
 
         @Override
-        public void onCallbackError(final DataManager.DataManagerError error)
-        {
+        public void onCallbackError(final DataManager.DataManagerError error) {
             mActivityWeakReference.get().onBookingsRequestError();
         }
     }
 
 
-    private static class PreRescheduleCallback extends ActivitySafeCallback<String, ProMessagesActivity>
-    {
-        public PreRescheduleCallback(ProMessagesActivity activity)
-        {
+    private static class PreRescheduleCallback
+            extends ActivitySafeCallback<String, ProMessagesActivity> {
+
+        public PreRescheduleCallback(ProMessagesActivity activity) {
             super(activity);
         }
 
         @Override
-        public void onCallbackSuccess(final String response)
-        {
+        public void onCallbackSuccess(final String response) {
             mActivityWeakReference.get().onReceivePreRescheduleInfoSuccess(response);
         }
 
         @Override
-        public void onCallbackError(final DataManager.DataManagerError error)
-        {
+        public void onCallbackError(final DataManager.DataManagerError error) {
             mActivityWeakReference.get().onRescheduleRequestError();
         }
     }

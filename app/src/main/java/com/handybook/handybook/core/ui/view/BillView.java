@@ -17,8 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BillView extends FrameLayout
-{
+public class BillView extends FrameLayout {
 
     private static final String TAG = "BillView";
     private boolean mIsExpanded;
@@ -37,52 +36,44 @@ public class BillView extends FrameLayout
     @Bind(R.id.bill_view_expand_target_label)
     TextView mExpandTargetViewLabel;
 
-    public BillView(final Context context)
-    {
+    public BillView(final Context context) {
         super(context);
         init(null, 0);
     }
 
-    public BillView(final Context context, final AttributeSet attrs)
-    {
+    public BillView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public BillView(final Context context, final AttributeSet attrs, final int defStyleAttr)
-    {
+    public BillView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs, defStyleAttr);
     }
 
-    private void init(AttributeSet attrs, int defStyle)
-    {
+    private void init(AttributeSet attrs, int defStyle) {
         setSaveEnabled(true);
         inflate(getContext(), R.layout.layout_bill_view, this);
         ButterKnife.bind(this);
         collapse();
-        if (isInEditMode())
-        {
+        if (isInEditMode()) {
             setBill(Bill.fromJson(Bill.MOCK_PAYLOAD_JSON));
             expand();
         }
     }
 
-    public void setBill(@NonNull final Bill bill)
-    {
+    public void setBill(@NonNull final Bill bill) {
         mBill = bill;
         update();
     }
 
-    private void update()
-    {
+    private void update() {
         getRootView().setVisibility(VISIBLE);
         updateHeaderTitle();
         updateHeaderText();
         updateHeaderPrice();
         mSectionContainer.removeAllViews();
-        for (Bill.BillSection eBillSection : mBill.getSections())
-        {
+        for (Bill.BillSection eBillSection : mBill.getSections()) {
             BillSectionView billSectionView = new BillSectionView(getContext());
             billSectionView.setData(eBillSection, mBill.getCurrencySymbol());
             mSectionContainer.addView(billSectionView);
@@ -90,64 +81,52 @@ public class BillView extends FrameLayout
 
     }
 
-    private void updateHeaderTitle()
-    {
+    private void updateHeaderTitle() {
         mHeaderTitle.setText(mBill.getHeaderTitle());
     }
 
-    private void updateHeaderText()
-    {
+    private void updateHeaderText() {
         mHeaderText.setText(mBill.getHeaderText());
     }
 
-    private void updateHeaderPrice()
-    {
+    private void updateHeaderPrice() {
         final String currencySymbol = mBill.getCurrencySymbol();
         mHeaderPrice.setCurrencySymbol(currencySymbol);
         final Integer finalPriceValueCents = mBill.getFinalPriceValueCents();
         mHeaderPrice.setPriceCents(finalPriceValueCents);
     }
 
-    public boolean isExpanded()
-    {
+    public boolean isExpanded() {
         return mIsExpanded;
     }
 
     @OnClick(R.id.bill_view_root)
-    void toggleExpand()
-    {
-        if (isExpanded())
-        {
+    void toggleExpand() {
+        if (isExpanded()) {
             collapse();
         }
-        else
-        {
+        else {
             expand();
         }
     }
 
-    public void setExpanded(final boolean shouldExpand)
-    {
-        if (shouldExpand)
-        {
+    public void setExpanded(final boolean shouldExpand) {
+        if (shouldExpand) {
             expand();
         }
-        else
-        {
+        else {
             collapse();
         }
     }
 
-    public void expand()
-    {
+    public void expand() {
         mExpandTargetContainer.setVisibility(GONE);
         mHeaderPrice.setVisibility(GONE);
         mSectionContainer.setVisibility(VISIBLE);
         mIsExpanded = true;
     }
 
-    public void collapse()
-    {
+    public void collapse() {
         mExpandTargetContainer.setVisibility(VISIBLE);
         mHeaderPrice.setVisibility(VISIBLE);
         mSectionContainer.setVisibility(GONE);
@@ -155,8 +134,7 @@ public class BillView extends FrameLayout
     }
 
     @Override
-    protected Parcelable onSaveInstanceState()
-    {
+    protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
         savedState.setBill(mBill);
@@ -165,72 +143,61 @@ public class BillView extends FrameLayout
     }
 
     @Override
-    protected void onRestoreInstanceState(final Parcelable state)
-    {
+    protected void onRestoreInstanceState(final Parcelable state) {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         setBill(savedState.getBill());
         setExpanded(savedState.isExpanded());
     }
 
-    private static class SavedState extends BaseSavedState
-    {
+    private static class SavedState extends BaseSavedState {
+
         private Bill mBill;
         private boolean mIsExpanded;
 
-        SavedState(final Parcelable superState)
-        {
+        SavedState(final Parcelable superState) {
             super(superState);
         }
 
-        SavedState(final Parcel source)
-        {
+        SavedState(final Parcel source) {
             super(source);
             mBill = (Bill) source.readSerializable();
             mIsExpanded = source.readByte() != 0;
         }
 
         @Override
-        public void writeToParcel(final Parcel out, final int flags)
-        {
+        public void writeToParcel(final Parcel out, final int flags) {
             super.writeToParcel(out, flags);
             out.writeSerializable(mBill);
             out.writeByte((byte) (mIsExpanded ? 1 : 0));
         }
 
-        void setBill(@NonNull final Bill bill)
-        {
+        void setBill(@NonNull final Bill bill) {
             mBill = bill;
         }
 
         @NonNull
-        Bill getBill()
-        {
+        Bill getBill() {
             return mBill;
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>()
-        {
+        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>() {
             @Override
-            public SavedState createFromParcel(final Parcel source)
-            {
+            public SavedState createFromParcel(final Parcel source) {
                 return new SavedState(source);
             }
 
             @Override
-            public SavedState[] newArray(final int size)
-            {
+            public SavedState[] newArray(final int size) {
                 return new SavedState[size];
             }
         };
 
-        public void setExpanded(final boolean expanded)
-        {
+        public void setExpanded(final boolean expanded) {
             mIsExpanded = expanded;
         }
 
-        public boolean isExpanded()
-        {
+        public boolean isExpanded() {
             return mIsExpanded;
         }
     }

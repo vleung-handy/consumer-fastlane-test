@@ -38,8 +38,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingDateFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingDateFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingDateFragment mFragment;
     @Mock
     private BookingRequest mMockRequest;
@@ -55,8 +55,7 @@ public class BookingDateFragmentTest extends RobolectricGradleTestWrapper
     private ArgumentCaptor<DataManager.Callback> mCallbackCaptor;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -71,35 +70,38 @@ public class BookingDateFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldSetStartDate() throws Exception
-    {
+    public void shouldSetStartDate() throws Exception {
         mFragment.mNextButton.performClick();
         verify(mMockRequest, atLeastOnce()).setStartDate(any(Date.class));
     }
 
     @Test
-    public void shouldLaunchLoginActivityIfUserIsNotLoggedIn() throws Exception
-    {
+    public void shouldLaunchLoginActivityIfUserIsNotLoggedIn() throws Exception {
         when(mUserManager.getCurrentUser()).thenReturn(null);
         mFragment.mNextButton.performClick();
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(LoginActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(LoginActivity.class.getName())
+        );
     }
 
     @Test
-    public void shouldLaunchBookingRecurrenceActivityIfUserIsLoggedIn() throws Exception
-    {
+    public void shouldLaunchBookingRecurrenceActivityIfUserIsLoggedIn() throws Exception {
         when(mUserManager.getCurrentUser()).thenReturn(mock(User.class));
         mFragment.mNextButton.performClick();
 
-        verify(mDataManager).createQuote(any(BookingRequest.class),
-                mCallbackCaptor.capture());
+        verify(mDataManager).createQuote(
+                any(BookingRequest.class),
+                mCallbackCaptor.capture()
+        );
 
         mCallbackCaptor.getValue().onSuccess(mMockBookingQuote);
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingRecurrenceActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingRecurrenceActivity.class.getName())
+        );
     }
 }

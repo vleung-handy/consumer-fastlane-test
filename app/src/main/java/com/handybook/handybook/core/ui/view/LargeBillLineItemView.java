@@ -15,8 +15,8 @@ import butterknife.Bind;
 /**
  * Large line item usees bigger fonts and PriceView widget to show price
  */
-public class LargeBillLineItemView extends AbstractBillLineItemView
-{
+public class LargeBillLineItemView extends AbstractBillLineItemView {
+
     private static final String TAG = "LargeBillLineItemView";
 
     @Bind(R.id.bill_view_large_line_item_label)
@@ -28,20 +28,16 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
     @Bind(R.id.bill_view_large_line_item_amount_override)
     TextView mPriceOverride;
 
-    public LargeBillLineItemView(final Context context)
-    {
+    public LargeBillLineItemView(final Context context) {
         super(context);
     }
 
-    protected int getLayout()
-    {
+    protected int getLayout() {
         return R.layout.layout_bill_view_line_item_large;
     }
 
-    protected void update()
-    {
-        if (getBillLineItem() == null)
-        {
+    protected void update() {
+        if (getBillLineItem() == null) {
             getRootView().setVisibility(GONE);
             return;
         }
@@ -54,21 +50,17 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
         mPriceOverride.setId(hashCode());
     }
 
-    private void updateLabel()
-    {
+    private void updateLabel() {
         mLabel.setText(getBillLineItem().getLabel());
     }
 
-    private void updatePrice()
-    {
-        if (getBillLineItem().hasAmountText() || getBillLineItem().getAmountCents() == null)
-        {
+    private void updatePrice() {
+        if (getBillLineItem().hasAmountText() || getBillLineItem().getAmountCents() == null) {
             mPrice.setVisibility(GONE);
             mPriceOverride.setVisibility(VISIBLE);
             mPriceOverride.setText(getBillLineItem().getAmountText());
         }
-        else
-        {
+        else {
             mPrice.setVisibility(VISIBLE);
             mPriceOverride.setVisibility(GONE);
             mPrice.setCurrencySymbol(getCurrencySymbol());
@@ -77,22 +69,17 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
         }
     }
 
-    private void updateHelpText()
-    {
-        if (getBillLineItem().hasHelpText())
-        {
+    private void updateHelpText() {
+        if (getBillLineItem().hasHelpText()) {
             mQuestionMark.setVisibility(VISIBLE);
-            getRootView().setOnClickListener(new OnClickListener()
-            {
+            getRootView().setOnClickListener(new OnClickListener() {
                 @Override
-                public void onClick(final View v)
-                {
+                public void onClick(final View v) {
                     final FragmentManager fm = ((AppCompatActivity) getContext())
                             .getSupportFragmentManager();
                     if (fm.findFragmentByTag(
                             BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
-                    ) == null)
-                    {
+                    ) == null) {
                         BookingDetailSectionPaymentView.PriceLineHelpTextDialog
                                 .newInstance(getBillLineItem().getHelpText())
                                 .show(
@@ -104,8 +91,7 @@ public class LargeBillLineItemView extends AbstractBillLineItemView
             });
 
         }
-        else
-        {
+        else {
             mQuestionMark.setVisibility(GONE);
             getRootView().setOnClickListener(null);
         }

@@ -17,8 +17,8 @@ import com.handybook.handybook.library.util.TextUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProMilestoneView extends FrameLayout
-{
+public class ProMilestoneView extends FrameLayout {
+
     @Bind(R.id.pro_milestone_dot)
     View mDot;
     @Bind(R.id.pro_milestone_line)
@@ -34,33 +34,37 @@ public class ProMilestoneView extends FrameLayout
     @Bind(R.id.pro_milestone_text)
     Button mTextButton;
 
-    public ProMilestoneView(final Context context)
-    {
+    public ProMilestoneView(final Context context) {
         super(context);
         init();
     }
 
-    public ProMilestoneView(final Context context, final AttributeSet attrs)
-    {
+    public ProMilestoneView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ProMilestoneView(final Context context, final AttributeSet attrs, final int defStyleAttr)
-    {
+    public ProMilestoneView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr
+    ) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ProMilestoneView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes)
-    {
+    public ProMilestoneView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr,
+            final int defStyleRes
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
-    private void init()
-    {
+    private void init() {
         inflate(getContext(), R.layout.view_pro_milestone, this);
         ButterKnife.bind(this);
     }
@@ -71,43 +75,35 @@ public class ProMilestoneView extends FrameLayout
 
     public void setTitleText(CharSequence text) { mTitleText.setText(text); }
 
-    public void setBodyText(String text)
-    {
+    public void setBodyText(String text) {
         mBodyText.setText(text);
         mBodyText.setVisibility(Strings.isNullOrEmpty(text) ? GONE : VISIBLE);
     }
 
-    public void setTimeText(CharSequence text)
-    {
+    public void setTimeText(CharSequence text) {
         mTimeText.setVisibility(VISIBLE);
         mTimeText.setText(text);
     }
 
-    public void setCallAndTextButtonVisibility(int visibility)
-    {
+    public void setCallAndTextButtonVisibility(int visibility) {
         mCallButton.setVisibility(visibility);
         mTextButton.setVisibility(visibility);
     }
 
-    public void setCallButtonOnClickListener(OnClickListener onClickListener)
-    {
+    public void setCallButtonOnClickListener(OnClickListener onClickListener) {
         mCallButton.setOnClickListener(onClickListener);
     }
 
-    public void setTextButtonOnClickListener(OnClickListener onClickListener)
-    {
+    public void setTextButtonOnClickListener(OnClickListener onClickListener) {
         mTextButton.setOnClickListener(onClickListener);
     }
 
-    public void setIsCurrentMilestone(boolean isCurrent)
-    {
-        if (isCurrent)
-        {
+    public void setIsCurrentMilestone(boolean isCurrent) {
+        if (isCurrent) {
             mTitleText.setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOLD));
             mTitleText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
         }
-        else
-        {
+        else {
             mTitleText.setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));
             mTitleText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
         }

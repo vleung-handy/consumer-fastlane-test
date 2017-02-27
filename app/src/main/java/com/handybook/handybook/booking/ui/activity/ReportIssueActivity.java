@@ -9,11 +9,10 @@ import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public class ReportIssueActivity extends MenuDrawerActivity
-{
+public class ReportIssueActivity extends MenuDrawerActivity {
+
     @Override
-    protected final Fragment createFragment()
-    {
+    protected final Fragment createFragment() {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
         final JobStatus proStatuses =
                 (JobStatus) getIntent().getSerializableExtra(BundleKeys.PRO_JOB_STATUS);
@@ -24,8 +23,7 @@ public class ReportIssueActivity extends MenuDrawerActivity
     protected String getNavItemTitle() { return null; }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         disableDrawer = true;
     }

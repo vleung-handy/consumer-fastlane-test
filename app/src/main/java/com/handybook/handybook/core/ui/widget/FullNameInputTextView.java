@@ -5,8 +5,7 @@ import android.util.AttributeSet;
 
 import com.handybook.handybook.library.ui.view.InputTextField;
 
-public final class FullNameInputTextView extends InputTextField
-{
+public final class FullNameInputTextView extends InputTextField {
 
     public FullNameInputTextView(final Context context) {
         super(context);
@@ -16,7 +15,11 @@ public final class FullNameInputTextView extends InputTextField
         super(context, attrs);
     }
 
-    public FullNameInputTextView(final Context context, final AttributeSet attrs, final int defStyle) {
+    public FullNameInputTextView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
     }
 
@@ -34,13 +37,13 @@ public final class FullNameInputTextView extends InputTextField
 
     public final String getFirstName() {
         final String[] parts = this.getText().toString().trim().split(" ");
-        if (parts.length > 0) return parts[0];
-        else return "";
+        if (parts.length > 0) { return parts[0]; }
+        else { return ""; }
     }
 
     public final String getLastName() {
         final String[] parts = this.getText().toString().trim().split(" ");
-        if (parts.length > 1) return parts[1];
-        else return "";
+        if (parts.length > 1) { return parts[1]; }
+        else { return ""; }
     }
 }

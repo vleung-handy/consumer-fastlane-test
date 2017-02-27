@@ -49,8 +49,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AccountFragment extends InjectedFragment
-{
+public class AccountFragment extends InjectedFragment {
+
     @Inject
     UserManager mUserManager;
     @Inject
@@ -81,14 +81,12 @@ public class AccountFragment extends InjectedFragment
     private User mUser;
     private ArrayList<RecurringBooking> mPlans;
 
-    public static AccountFragment newInstance()
-    {
+    public static AccountFragment newInstance() {
         return new AccountFragment();
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = userManager.getCurrentUser();
     }
@@ -97,32 +95,27 @@ public class AccountFragment extends InjectedFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
                                        .inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.account));
 
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             mToolbar.setNavigationIcon(null);
             //if bottom nav is enabled, show
             mHistoryHelpLayout.setVisibility(View.VISIBLE);
         }
-        else if (getActivity() instanceof MenuDrawerActivity)
-        {
+        else if (getActivity() instanceof MenuDrawerActivity) {
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
 
-        if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled()) {
             mProTeamSubtext.setText(R.string.account_choose_favorite_pro);
         }
-        else
-        {
+        else {
             mProTeamSubtext.setText(R.string.account_work_with_pros_you_love);
         }
 
@@ -132,8 +125,7 @@ public class AccountFragment extends InjectedFragment
     @Override
     public void onViewCreated(
             final View view, @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         super.onViewCreated(view, savedInstanceState);
         /*
         display the credits based on mUser data
@@ -144,17 +136,14 @@ public class AccountFragment extends InjectedFragment
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         showHorizontalProgressBar();
 
         dataManager.getRecurringBookings(new FragmentSafeCallback<RecurringBookingsResponse>(
-                this)
-        {
+                this) {
             @Override
-            public void onCallbackSuccess(final RecurringBookingsResponse response)
-            {
+            public void onCallbackSuccess(final RecurringBookingsResponse response) {
                 hideHorizontalProgressBarIfReady();
                 mPlans = new ArrayList<>(response.getRecurringBookings());
                 mActivePlansText.setText(getString(
@@ -163,8 +152,7 @@ public class AccountFragment extends InjectedFragment
             }
 
             @Override
-            public void onCallbackError(final DataManager.DataManagerError error)
-            {
+            public void onCallbackError(final DataManager.DataManagerError error) {
                 hideHorizontalProgressBarIfReady();
                 mActivePlansLayout.setEnabled(false);
                 dataManagerErrorHandler.handleError(getActivity(), error);
@@ -172,23 +160,20 @@ public class AccountFragment extends InjectedFragment
         });
     }
 
-    private void updateCreditsView(@NonNull User user)
-    {
+    private void updateCreditsView(@NonNull User user) {
         mCreditsView.setCurrencySymbol(user.getCurrencyChar());
         mCreditsView.setPriceCents(user.getCreditsCents());
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         mHorizontalProgressRequestCounter = 0;
         hideHorizontalProgressBarIfReady();
         super.onStop();
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         //Always log when this page is shown.
         // 1. When you come back from background
@@ -205,19 +190,16 @@ public class AccountFragment extends InjectedFragment
         mUserDataManager.requestAndSetCurrentUser(
                 mUser.getId(),
                 mUser.getAuthToken(),
-                new FragmentSafeCallback<User>(AccountFragment.this)
-                {
+                new FragmentSafeCallback<User>(AccountFragment.this) {
                     @Override
-                    public void onCallbackSuccess(final User response)
-                    {
+                    public void onCallbackSuccess(final User response) {
                         mUser = response;
                         updateCreditsView(mUser);
                         hideHorizontalProgressBarIfReady();
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         //this will trigger an error toast
                         dataManagerErrorHandler.handleError(
                                 AccountFragment.this.getContext(),
@@ -231,16 +213,14 @@ public class AccountFragment extends InjectedFragment
     }
 
     @OnClick(R.id.account_contact_info_layout)
-    public void contactClicked()
-    {
+    public void contactClicked() {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditProfileTapped()));
         Intent intent = new Intent(getContext(), EditContactInfoActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.account_password_layout)
-    public void passwordClicked()
-    {
+    public void passwordClicked() {
 
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPasswordTapped()));
         Intent intent = new Intent(getContext(), EditPasswordActivity.class);
@@ -248,63 +228,53 @@ public class AccountFragment extends InjectedFragment
     }
 
     @OnClick(R.id.account_payment_method_layout)
-    public void paymentClicked()
-    {
+    public void paymentClicked() {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.EditPaymentTapped()));
         Intent intent = new Intent(getContext(), UpdatePaymentActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.account_active_plans_layout)
-    public void activePlansClicked()
-    {
+    public void activePlansClicked() {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.PlanManagementTapped(mPlans.size())));
-        if (mPlans.size() == 1)
-        {
+        if (mPlans.size() == 1) {
             FragmentUtils.switchToFragment(this, EditPlanFragment.newInstance(mPlans.get(0)), true);
         }
-        else
-        {
+        else {
             FragmentUtils.switchToFragment(this, PlansFragment.newInstance(mPlans), true);
         }
     }
 
     @OnClick(R.id.account_pro_team_layout)
-    public void editProTeamClicked()
-    {
+    public void editProTeamClicked() {
         FragmentUtils.switchToFragment(this, ProTeamEditFragment.newInstance(), true);
     }
 
     @OnClick(R.id.account_promo_code_layout)
-    public void promoClicked()
-    {
+    public void promoClicked() {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.ApplyPromoTapped()));
         Intent intent = new Intent(getContext(), PromosActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.account_help_layout)
-    public void helpClicked()
-    {
+    public void helpClicked() {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.HelpTapped()));
 
         InjectedFragment fragment = null;
         Bundle args = null;
         Configuration config = mConfigurationManager.getPersistentConfiguration();
         String helpCenterUrl = config.getHelpCenterUrl();
-        if (config.isNativeHelpCenterEnabled())
-        {
+        if (config.isNativeHelpCenterEnabled()) {
             fragment = HelpFragment.newInstance(helpCenterUrl);
         }
-        else if (!Strings.isNullOrEmpty(helpCenterUrl))
-        {
+        else if (!Strings.isNullOrEmpty(helpCenterUrl)) {
             args = new Bundle();
             args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
         }
 
         //If fragment is not set, then default to HelpWebViewFragment
-        if (fragment == null)
-        {
+        if (fragment == null) {
             //args can be set or null
             fragment = HelpWebViewFragment.newInstance(args);
         }
@@ -313,37 +283,38 @@ public class AccountFragment extends InjectedFragment
     }
 
     @OnClick(R.id.account_booking_history_layout)
-    public void bookingHistoryClicked()
-    {
+    public void bookingHistoryClicked() {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.BookingHistoryTapped()));
         Intent intent = new Intent(getContext(), HistoryActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.account_sign_out_button)
-    public void signOutClicked()
-    {
+    public void signOutClicked() {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutTapped()));
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext())
                 .setMessage(R.string.want_to_log_out)
-                .setPositiveButton(R.string.account_sign_out, new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
-                        mConfigurationManager.invalidateCache();
-                        mUserManager.setCurrentUser(null);
-                        //log out of Facebook also
-                        LoginManager.getInstance().logOut();
-                        Intent intent = new Intent(getContext(), SplashActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                .setPositiveButton(
+                        R.string.account_sign_out,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutSuccess()));
+                                mConfigurationManager.invalidateCache();
+                                mUserManager.setCurrentUser(null);
+                                //log out of Facebook also
+                                LoginManager.getInstance().logOut();
+                                Intent intent = new Intent(
+                                        getContext(),
+                                        SplashActivity.class
+                                );
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        }
+                )
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         bus.post(new LogEvent.AddLogEvent(new AccountLog.LogoutCancelled()));
                         //do nothing if it's canceled
                     }
@@ -352,8 +323,7 @@ public class AccountFragment extends InjectedFragment
         alertDialog.show();
     }
 
-    private void showHorizontalProgressBar()
-    {
+    private void showHorizontalProgressBar() {
         mHorizontalProgressRequestCounter++;
         mHorizontalProgressBar.setVisibility(View.VISIBLE);
     }
@@ -362,14 +332,11 @@ public class AccountFragment extends InjectedFragment
      * This method will hide the horizontal progress bar if api call backs are completed.
      * If not, it will decrement the counter
      */
-    private void hideHorizontalProgressBarIfReady()
-    {
+    private void hideHorizontalProgressBarIfReady() {
         //only decrement if greater then 0
-        if (mHorizontalProgressRequestCounter > 0)
-        { --mHorizontalProgressRequestCounter; }
+        if (mHorizontalProgressRequestCounter > 0) { --mHorizontalProgressRequestCounter; }
 
-        if (mHorizontalProgressRequestCounter == 0)
-        {
+        if (mHorizontalProgressRequestCounter == 0) {
             mHorizontalProgressBar.setVisibility(View.GONE);
         }
     }

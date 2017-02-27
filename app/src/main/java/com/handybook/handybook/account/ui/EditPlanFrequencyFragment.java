@@ -25,8 +25,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class EditPlanFrequencyFragment extends InjectedFragment
-{
+public final class EditPlanFrequencyFragment extends InjectedFragment {
+
     @Bind(R.id.plan_frequency_options_layout)
     FrequencySelectionsView mFrequencySelectionsView;
     @Bind(R.id.toolbar)
@@ -35,8 +35,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
     private RecurringBooking mPlan;
     private BookingEditFrequencyInfoResponse mFrequencyInfo;
 
-    public static EditPlanFrequencyFragment newInstance(RecurringBooking plan)
-    {
+    public static EditPlanFrequencyFragment newInstance(RecurringBooking plan) {
         final EditPlanFrequencyFragment fragment = new EditPlanFrequencyFragment();
         final Bundle args = new Bundle();
         args.putSerializable(BundleKeys.RECURRING_PLAN, plan);
@@ -45,8 +44,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPlan = (RecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_PLAN);
     }
@@ -55,8 +53,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater
                 .inflate(R.layout.fragment_plan_edit_frequency, container, false);
         ButterKnife.bind(this, view);
@@ -66,8 +63,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog
@@ -77,19 +73,16 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
 
         dataManager.getRecurringFrequency(
                 Integer.toString(mPlan.getId()),
-                new FragmentSafeCallback<BookingEditFrequencyInfoResponse>(this)
-                {
+                new FragmentSafeCallback<BookingEditFrequencyInfoResponse>(this) {
                     @Override
-                    public void onCallbackSuccess(final BookingEditFrequencyInfoResponse response)
-                    {
+                    public void onCallbackSuccess(final BookingEditFrequencyInfoResponse response) {
                         mFrequencyInfo = response;
                         removeUiBlockers();
                         setupDisplay();
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         removeUiBlockers();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
@@ -97,8 +90,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         );
     }
 
-    private void setupDisplay()
-    {
+    private void setupDisplay() {
         mFrequencySelectionsView.addOption(
                 BookingRecurrence.WEEKLY,
                 mFrequencyInfo.getWeeklyPriceFormatted(),
@@ -117,8 +109,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
     }
 
     @OnClick(R.id.plan_frequency_update_button)
-    public void updateFrequency()
-    {
+    public void updateFrequency() {
         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Submitted(
                 mPlan.getId(),
                 mFrequencyInfo.getCurrentFrequency(),
@@ -130,11 +121,9 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         dataManager.updateRecurringFrequency(
                 Integer.toString(mPlan.getId()),
                 editFrequencyRequest,
-                new FragmentSafeCallback<Void>(this)
-                {
+                new FragmentSafeCallback<Void>(this) {
                     @Override
-                    public void onCallbackSuccess(final Void response)
-                    {
+                    public void onCallbackSuccess(final Void response) {
                         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Success(
                                 mPlan.getId(),
                                 mFrequencyInfo.getCurrentFrequency(),
@@ -144,8 +133,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog.Error(
                                 mPlan.getId(),
                                 mFrequencyInfo.getCurrentFrequency(),
@@ -157,8 +145,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         );
     }
 
-    private void updateSuccess()
-    {
+    private void updateSuccess() {
         removeUiBlockers();
         showToast(R.string.updated_booking_frequency);
         mPlan.setFrequency(StringUtils.getFrequencyText(
@@ -171,8 +158,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment
         getActivity().onBackPressed();
     }
 
-    private void updateError(DataManager.DataManagerError error)
-    {
+    private void updateError(DataManager.DataManagerError error) {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), error);
     }

@@ -15,49 +15,48 @@ import com.handybook.handybook.R;
  *
  * Created by jtse on 3/30/16.
  */
-public class SwipeableViewPager extends ViewPager
-{
+public class SwipeableViewPager extends ViewPager {
+
     private boolean mSwipeable;
     private boolean mWrapContentEnabled;
 
-    public SwipeableViewPager(Context context)
-    {
+    public SwipeableViewPager(Context context) {
         super(context);
     }
 
-    public SwipeableViewPager(Context context, AttributeSet attrs)
-    {
+    public SwipeableViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.SwipeableViewPager,
-                0, 0);
+                0, 0
+        );
 
-        try
-        {
+        try {
             mSwipeable = a.getBoolean(R.styleable.SwipeableViewPager_swipeable, true);
-            mWrapContentEnabled = a.getBoolean(R.styleable.SwipeableViewPager_wrap_content_enabled, false);
+            mWrapContentEnabled = a.getBoolean(
+                    R.styleable.SwipeableViewPager_wrap_content_enabled,
+                    false
+            );
         }
-        finally
-        {
+        finally {
             a.recycle();
         }
     }
 
-
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
         //if we want the view pager to work with wrapped content, then we need to do this.
-        if (mWrapContentEnabled)
-        {
+        if (mWrapContentEnabled) {
             int height = 0;
-            for (int i = 0; i < getChildCount(); i++)
-            {
+            for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                child.measure(
+                        widthMeasureSpec,
+                        MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+                );
                 int h = child.getMeasuredHeight();
                 if (h > height) { height = h; }
             }
@@ -69,16 +68,14 @@ public class SwipeableViewPager extends ViewPager
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent event)
-    {
+    public boolean onInterceptTouchEvent(MotionEvent event) {
         // Never allow swiping to switch between pages
         return mSwipeable && super.onInterceptTouchEvent(event);
 
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
+    public boolean onTouchEvent(MotionEvent event) {
         // Never allow swiping to switch between pages
         return mSwipeable && super.onTouchEvent(event);
     }

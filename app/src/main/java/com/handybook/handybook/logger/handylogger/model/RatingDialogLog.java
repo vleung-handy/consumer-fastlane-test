@@ -5,20 +5,19 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
-public abstract class RatingDialogLog extends EventLog
-{
+public abstract class RatingDialogLog extends EventLog {
+
     private static final String EVENT_CONTEXT = "rating_dialog";
 
-    public RatingDialogLog(final String eventType)
-    {
+    public RatingDialogLog(final String eventType) {
         super(eventType, EVENT_CONTEXT);
     }
 
     /**
      * rating is submitted
      */
-    public static class Submitted extends RatingDialogLog
-    {
+    public static class Submitted extends RatingDialogLog {
+
         private static final String EVENT_TYPE = "submitted";
 
         @SerializedName("rating")
@@ -34,10 +33,11 @@ public abstract class RatingDialogLog extends EventLog
         @SerializedName("tip_amount")
         private final Integer mTipAmountCents;
 
-        public Submitted(Integer rating,
-                         ProviderMatchPreference providerMatchPreference,
-                         Integer tipAmountCents)
-        {
+        public Submitted(
+                Integer rating,
+                ProviderMatchPreference providerMatchPreference,
+                Integer tipAmountCents
+        ) {
             super(EVENT_TYPE);
             mRating = rating;
             mProviderMatchPreference = ProviderMatchPreference.asString(providerMatchPreference);
@@ -45,8 +45,9 @@ public abstract class RatingDialogLog extends EventLog
         }
     }
 
-    public static abstract class ProTeam extends RatingDialogLog
-    {
+
+    public static abstract class ProTeam extends RatingDialogLog {
+
         @SerializedName("enabled")
         private final boolean mOptionEnabled;
 
@@ -54,22 +55,19 @@ public abstract class RatingDialogLog extends EventLog
         private final String mOptionType;
 
 
-        public enum OptionType
-        {
+        public enum OptionType {
             ADD("add"),
             REMOVE("remove"),
             BLOCK("block");
 
             private final String mStringValue;
 
-            OptionType(String stringValue)
-            {
+            OptionType(String stringValue) {
                 mStringValue = stringValue;
             }
 
             @Override
-            public String toString()
-            {
+            public String toString() {
                 return mStringValue;
             }
         }
@@ -77,8 +75,8 @@ public abstract class RatingDialogLog extends EventLog
         protected ProTeam(
                 @NonNull String eventType,
                 boolean optionEnabled,
-                OptionType optionType)
-        {
+                OptionType optionType
+        ) {
             super(eventType);
             mOptionEnabled = optionEnabled;
             mOptionType = optionType == null ? null : optionType.toString();
@@ -87,13 +85,14 @@ public abstract class RatingDialogLog extends EventLog
         /**
          * a pro team option is presented
          */
-        public static class OptionPresented extends ProTeam
-        {
+        public static class OptionPresented extends ProTeam {
+
             private static final String EVENT_TYPE = "pro_team_option_presented";
 
-            public OptionPresented(final boolean optionEnabled,
-                                   ProTeam.OptionType optionType)
-            {
+            public OptionPresented(
+                    final boolean optionEnabled,
+                    ProTeam.OptionType optionType
+            ) {
                 super(EVENT_TYPE, optionEnabled, optionType);
             }
         }
@@ -102,13 +101,14 @@ public abstract class RatingDialogLog extends EventLog
         /**
          * a pro team option is tapped
          */
-        public static class OptionTapped extends ProTeam
-        {
+        public static class OptionTapped extends ProTeam {
+
             private static final String EVENT_TYPE = "pro_team_option_tapped";
 
-            public OptionTapped(final boolean optionEnabled,
-                                ProTeam.OptionType optionType)
-            {
+            public OptionTapped(
+                    final boolean optionEnabled,
+                    ProTeam.OptionType optionType
+            ) {
                 super(EVENT_TYPE, optionEnabled, optionType);
             }
         }

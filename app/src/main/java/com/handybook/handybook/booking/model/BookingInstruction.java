@@ -14,8 +14,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BookingInstruction implements Parcelable
-{
+public class BookingInstruction implements Parcelable {
+
     @SerializedName("id")
     private Long mId;
     @SerializedName("machine_name")
@@ -31,11 +31,9 @@ public class BookingInstruction implements Parcelable
     @SerializedName("lockbox_code")
     private String mLockboxCode;
 
-
     private static final Map<String, Integer> ICONS;
 
-    static
-    {
+    static {
         ICONS = new HashMap<>();
         ICONS.put(InstructionType.KITCHEN, R.drawable.ic_instruction_kitchen);
         ICONS.put(InstructionType.BEDROOM, R.drawable.ic_instruction_bedroom);
@@ -51,8 +49,7 @@ public class BookingInstruction implements Parcelable
             final String instructionType,
             final String description,
             final Boolean isRequested
-    )
-    {
+    ) {
         mId = id;
         mMachineName = machineName;
         mTitle = title;
@@ -61,8 +58,7 @@ public class BookingInstruction implements Parcelable
         mIsRequested = isRequested;
     }
 
-    protected BookingInstruction(Parcel in)
-    {
+    protected BookingInstruction(Parcel in) {
         mId = (Long) in.readValue(Long.class.getClassLoader());
         mMachineName = in.readString();
         mTitle = in.readString();
@@ -72,86 +68,69 @@ public class BookingInstruction implements Parcelable
         mIsRequested = in.readInt() != 0;
     }
 
-    public static final Creator<BookingInstruction> CREATOR = new Creator<BookingInstruction>()
-    {
+    public static final Creator<BookingInstruction> CREATOR = new Creator<BookingInstruction>() {
         @Override
-        public BookingInstruction createFromParcel(Parcel in)
-        {
+        public BookingInstruction createFromParcel(Parcel in) {
             return new BookingInstruction(in);
         }
 
         @Override
-        public BookingInstruction[] newArray(int size)
-        {
+        public BookingInstruction[] newArray(int size) {
             return new BookingInstruction[size];
         }
     };
 
-    public Long getId()
-    {
+    public Long getId() {
         return mId;
     }
 
-    public String getMachineName()
-    {
+    public String getMachineName() {
         return mMachineName;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return mDescription;
     }
 
-    public String getInstructionType()
-    {
+    public String getInstructionType() {
         return mInstructionType;
     }
 
-    public boolean getIsRequested()
-    {
+    public boolean getIsRequested() {
         return mIsRequested != null && mIsRequested;
     }
 
-    public void setId(final Long id)
-    {
+    public void setId(final Long id) {
         mId = id;
     }
 
-    public void setMachineName(final String machineName)
-    {
+    public void setMachineName(final String machineName) {
         mMachineName = machineName;
     }
 
-    public void setTitle(final String title)
-    {
+    public void setTitle(final String title) {
         mTitle = title;
     }
 
-    public void setInstructionType(final String instructionType)
-    {
+    public void setInstructionType(final String instructionType) {
         mInstructionType = instructionType;
     }
 
-    public void setDescription(final String description)
-    {
+    public void setDescription(final String description) {
         mDescription = description;
     }
 
-    public void setIsRequested(final Boolean isRequested)
-    {
+    public void setIsRequested(final Boolean isRequested) {
         mIsRequested = isRequested;
     }
 
     @DrawableRes
-    public final int getImageResource()
-    {
-        if (ICONS.get(getInstructionType()) != null)
-        {
+    public final int getImageResource() {
+        if (ICONS.get(getInstructionType()) != null) {
             return ICONS.get(getInstructionType());
         }
 
@@ -159,14 +138,12 @@ public class BookingInstruction implements Parcelable
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(final Parcel dest, final int flags)
-    {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeValue(mId);
         dest.writeString(mMachineName);
         dest.writeString(mTitle);
@@ -176,14 +153,12 @@ public class BookingInstruction implements Parcelable
         dest.writeInt((mIsRequested != null && mIsRequested) ? 1 : 0);
     }
 
-    public boolean isOfMachineName(final String machineName)
-    {
+    public boolean isOfMachineName(final String machineName) {
         return mMachineName != null && mMachineName.equals(machineName);
     }
 
+    public static final class MachineName {
 
-    public static final class MachineName
-    {
         public static final String PREFERENCE = "preference";
         public static final String NOTE_TO_PRO = "note_to_pro";
         public static final String ENTRY_METHOD = "entry_method";
@@ -194,19 +169,18 @@ public class BookingInstruction implements Parcelable
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            MachineName.PREFERENCE,
-            MachineName.NOTE_TO_PRO,
-            MachineName.ENTRY_METHOD,
-            MachineName.KEY_LOCATION,
-            MachineName.LOCKBOX_CODE
-    })
-    public @interface BookingInstructionMachineName
-    {
+                       MachineName.PREFERENCE,
+                       MachineName.NOTE_TO_PRO,
+                       MachineName.ENTRY_METHOD,
+                       MachineName.KEY_LOCATION,
+                       MachineName.LOCKBOX_CODE
+               })
+    public @interface BookingInstructionMachineName {
     }
 
 
-    public static final class InstructionType
-    {
+    public static final class InstructionType {
+
         public static final String KITCHEN = "kitchen";
         public static final String BEDROOM = "bedroom";
         public static final String BATHROOM = "bathroom";

@@ -7,18 +7,16 @@ import android.view.View;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.ui.view.BookingListItem;
 
-public class BookingItemHolder extends RecyclerView.ViewHolder
-{
+public class BookingItemHolder extends RecyclerView.ViewHolder {
+
     BookingListItem mBookingListItem;
 
-    public BookingItemHolder(final View itemView)
-    {
+    public BookingItemHolder(final View itemView) {
         super(itemView);
         mBookingListItem = (BookingListItem) itemView;
     }
 
-    public void bindToBooking(@NonNull final Booking booking)
-    {
+    public void bindToBooking(@NonNull final Booking booking) {
         mBookingListItem.bindToBooking(booking);
     }
 }

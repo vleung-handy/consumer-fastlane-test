@@ -24,8 +24,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class NewProTeamCategoryAdapter
-        extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-{
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private static final int VIEW_TYPE_HEADER = 1;
     private static final int VIEW_TYPE_PRO = 2;
     private static final int FAVORITE_PRO_POSITION = 1;
@@ -38,51 +38,42 @@ public class NewProTeamCategoryAdapter
             @NonNull final Context context,
             @Nullable final ProTeam.ProTeamCategory proTeamCategory,
             @NonNull final ActionCallbacks actionCallbacks
-    )
-    {
+    ) {
         mContext = context;
         mActionCallbacks = actionCallbacks;
         mItems = new ArrayList<>();
 
         if (proTeamCategory != null
-                && proTeamCategory.getPreferred() != null
-                && !proTeamCategory.getPreferred().isEmpty())
-        {
+            && proTeamCategory.getPreferred() != null
+            && !proTeamCategory.getPreferred().isEmpty()) {
             final ProTeamPro favoritePro = proTeamCategory.getFavoritePro();
             mItems.add(mContext.getString(R.string.favorite_pro));
             mItems.add(favoritePro);
             mItems.add(mContext.getString(R.string.pro_team));
 
             final List<ProTeamPro> preferredPros = new ArrayList<>();
-            if (proTeamCategory.getPreferred() != null)
-            {
+            if (proTeamCategory.getPreferred() != null) {
                 preferredPros.addAll(proTeamCategory.getPreferred());
             }
-            if (favoritePro != null && !preferredPros.isEmpty())
-            {
+            if (favoritePro != null && !preferredPros.isEmpty()) {
                 preferredPros.remove(favoritePro);
             }
-            if (!preferredPros.isEmpty())
-            {
+            if (!preferredPros.isEmpty()) {
                 mItems.addAll(preferredPros);
             }
-            else
-            {
+            else {
                 mItems.add(null);
             }
         }
     }
 
     @Override
-    public int getItemViewType(final int position)
-    {
+    public int getItemViewType(final int position) {
         final Object item = mItems.get(position);
-        if (item != null && item instanceof String)
-        {
+        if (item != null && item instanceof String) {
             return VIEW_TYPE_HEADER;
         }
-        else
-        {
+        else {
             return VIEW_TYPE_PRO;
         }
     }
@@ -91,10 +82,8 @@ public class NewProTeamCategoryAdapter
     public RecyclerView.ViewHolder onCreateViewHolder(
             final ViewGroup parent,
             final int viewType
-    )
-    {
-        switch (viewType)
-        {
+    ) {
+        switch (viewType) {
             case VIEW_TYPE_HEADER:
                 return new HeaderViewHolder(new ProTeamSectionListHeaderView(mContext));
             case VIEW_TYPE_PRO:
@@ -109,21 +98,18 @@ public class NewProTeamCategoryAdapter
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
-    {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         ((BaseViewHolder) holder).bind(mItems.get(position));
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return mItems.size();
     }
 
-    private static abstract class BaseViewHolder extends RecyclerView.ViewHolder
-    {
-        public BaseViewHolder(final View itemView)
-        {
+    private static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
+
+        public BaseViewHolder(final View itemView) {
             super(itemView);
         }
 
@@ -131,36 +117,30 @@ public class NewProTeamCategoryAdapter
     }
 
 
-    private static class HeaderViewHolder extends BaseViewHolder
-    {
-        public HeaderViewHolder(final View itemView)
-        {
+    private static class HeaderViewHolder extends BaseViewHolder {
+
+        public HeaderViewHolder(final View itemView) {
             super(itemView);
         }
 
         @Override
-        void bind(final Object item)
-        {
+        void bind(final Object item) {
             final ProTeamSectionListHeaderView itemView =
                     (ProTeamSectionListHeaderView) this.itemView;
             final String text = (String) item;
             itemView.setTitle(text);
-            itemView.setHelpIconClickListener(new View.OnClickListener()
-            {
+            itemView.setHelpIconClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(final View view)
-                {
+                public void onClick(final View view) {
                     final Context context = view.getContext();
                     String title;
                     String message;
                     final String favoriteProTitle = context.getString(R.string.favorite_pro);
-                    if (text.equals(favoriteProTitle))
-                    {
+                    if (text.equals(favoriteProTitle)) {
                         title = favoriteProTitle;
                         message = context.getString(R.string.favorite_pro_help_message);
                     }
-                    else
-                    {
+                    else {
                         title = context.getString(R.string.pro_team);
                         message = context.getString(R.string.pro_team_help_message);
                     }
@@ -176,8 +156,8 @@ public class NewProTeamCategoryAdapter
     }
 
 
-    static class ProViewHolder extends BaseViewHolder
-    {
+    static class ProViewHolder extends BaseViewHolder {
+
         private final ActionCallbacks mActionCallbacks;
         @Bind(R.id.pro_team_pro_card_holder)
         ViewGroup mProTeamProCardHolder;
@@ -192,60 +172,49 @@ public class NewProTeamCategoryAdapter
         @Bind(R.id.empty_state_subtitle)
         TextView mEmptyStateSubtitle;
 
-        ProViewHolder(final View itemView, @NonNull final ActionCallbacks actionCallbacks)
-        {
+        ProViewHolder(final View itemView, @NonNull final ActionCallbacks actionCallbacks) {
             super(itemView);
             mActionCallbacks = actionCallbacks;
         }
 
         @Override
-        void bind(final Object item)
-        {
+        void bind(final Object item) {
             ButterKnife.bind(this, itemView);
-            if (item != null)
-            {
+            if (item != null) {
                 final ProTeamPro pro = (ProTeamPro) item;
                 showActiveState(pro);
-                mProTeamProCardHolder.setOnLongClickListener(new View.OnLongClickListener()
-                {
+                mProTeamProCardHolder.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public boolean onLongClick(final View view)
-                    {
+                    public boolean onLongClick(final View view) {
                         mActionCallbacks.onLongClick(pro);
                         return true;
                     }
                 });
-                mProTeamProCardHolder.setOnClickListener(new View.OnClickListener()
-                {
+                mProTeamProCardHolder.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(final View v)
-                    {
+                    public void onClick(final View v) {
                         mActionCallbacks.onHeartClick(pro);
                     }
                 });
             }
-            else
-            {
+            else {
                 showEmptyState();
             }
         }
 
-        private void showActiveState(final ProTeamPro pro)
-        {
+        private void showActiveState(final ProTeamPro pro) {
             mEmptyStateHolder.setVisibility(View.GONE);
             mProTeamProCardHolder.setVisibility(View.VISIBLE);
             initHeartIcon(pro);
             initProProfile(pro);
         }
 
-        private void initHeartIcon(final ProTeamPro pro)
-        {
+        private void initHeartIcon(final ProTeamPro pro) {
             mHeartIcon.setChecked(pro.isFavorite());
             mHeartIcon.setClickable(false);
         }
 
-        private void initProProfile(final ProTeamPro pro)
-        {
+        private void initProProfile(final ProTeamPro pro) {
             mProProfile.setTitle(pro.getName());
             mProProfile.setRatingAndJobsCount(pro.getAverageRating(), pro.getBookingCount());
             mProProfile.setProTeamIndicatorEnabled(false);
@@ -253,17 +222,14 @@ public class NewProTeamCategoryAdapter
             mProProfile.setImage(pro.getImageUrl());
         }
 
-        private void showEmptyState()
-        {
+        private void showEmptyState() {
             mProTeamProCardHolder.setVisibility(View.GONE);
             mEmptyStateHolder.setVisibility(View.VISIBLE);
-            if (getAdapterPosition() == FAVORITE_PRO_POSITION)
-            {
+            if (getAdapterPosition() == FAVORITE_PRO_POSITION) {
                 mEmptyStateTitle.setText(R.string.no_favorite_pro_title);
                 mEmptyStateSubtitle.setText(R.string.no_favorite_pro_subtitle);
             }
-            else
-            {
+            else {
                 mEmptyStateTitle.setText(R.string.pro_team);
                 mEmptyStateSubtitle.setText(R.string.no_pro_team_subtitle);
             }
@@ -271,8 +237,8 @@ public class NewProTeamCategoryAdapter
     }
 
 
-    public interface ActionCallbacks
-    {
+    public interface ActionCallbacks {
+
         void onHeartClick(final ProTeamPro proTeamPro);
 
         void onLongClick(final ProTeamPro proTeamPro);

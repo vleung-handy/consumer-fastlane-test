@@ -16,8 +16,8 @@ import java.lang.annotation.RetentionPolicy;
  * referral which are not specific to the source (e.g. sender credit, receiver credit and coupon
  * code).
  */
-public class ReferralDescriptor implements Serializable
-{
+public class ReferralDescriptor implements Serializable {
+
     public static final String SOURCE_REFERRAL_PAGE = "referral_page";
     public static final String SOURCE_PROFILE_PAGE = "profile_page";
     public static final String SOURCE_CONFIRMATION_PAGE = "confirmation_page";
@@ -38,30 +38,26 @@ public class ReferralDescriptor implements Serializable
     @SerializedName(SOURCE_HIGH_RATING_MODAL)
     private ReferralChannels mHighRatingModalChannels;
 
-    public int getSenderCreditAmount()
-    {
+    public int getSenderCreditAmount() {
         return mSenderCreditAmount;
     }
 
-    public int getReceiverCouponAmount()
-    {
+    public int getReceiverCouponAmount() {
         return mReceiverCouponAmount;
     }
 
-    public String getCouponCode()
-    {
+    public String getCouponCode() {
         return mCouponCode;
     }
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            SOURCE_REFERRAL_PAGE,
-            SOURCE_PROFILE_PAGE,
-            SOURCE_CONFIRMATION_PAGE,
-            SOURCE_HIGH_RATING_MODAL
-    })
-    public @interface Source
-    {
+                       SOURCE_REFERRAL_PAGE,
+                       SOURCE_PROFILE_PAGE,
+                       SOURCE_CONFIRMATION_PAGE,
+                       SOURCE_HIGH_RATING_MODAL
+               })
+    public @interface Source {
     }
 
     /**
@@ -73,10 +69,8 @@ public class ReferralDescriptor implements Serializable
      * @see com.handybook.handybook.referral.model.ReferralDescriptor.Source
      */
     @Nullable
-    public ReferralChannels getReferralChannelsForSource(@NonNull @Source final String source)
-    {
-        switch (source)
-        {
+    public ReferralChannels getReferralChannelsForSource(@NonNull @Source final String source) {
+        switch (source) {
             case SOURCE_REFERRAL_PAGE:
                 return mReferralPageChannels;
             case SOURCE_PROFILE_PAGE:

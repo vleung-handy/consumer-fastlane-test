@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * model from server that determines how to display the entry info page to the user
  */
-public class EntryMethodsInfo implements Serializable
-{
+public class EntryMethodsInfo implements Serializable {
+
     /**
      * The instructions text for the entry methods
      *
@@ -32,19 +32,16 @@ public class EntryMethodsInfo implements Serializable
      * @param instructionText
      * @param entryMethodOptions
      */
-    public EntryMethodsInfo(String instructionText, List<EntryMethodOption> entryMethodOptions)
-    {
+    public EntryMethodsInfo(String instructionText, List<EntryMethodOption> entryMethodOptions) {
         mInstructionText = instructionText;
         mEntryMethodOptions = entryMethodOptions;
     }
 
-    public List<EntryMethodOption> getEntryMethodOptions()
-    {
+    public List<EntryMethodOption> getEntryMethodOptions() {
         return mEntryMethodOptions;
     }
 
-    public String getInstructionText()
-    {
+    public String getInstructionText() {
         return mInstructionText;
     }
 
@@ -54,8 +51,7 @@ public class EntryMethodsInfo implements Serializable
      * should be one of BookingInstruction.InstructionType.EntryMethod
      * @return
      */
-    public String getSelectedOptionMachineName()
-    {
+    public String getSelectedOptionMachineName() {
         return mSelectedOptionMachineName;
     }
 }

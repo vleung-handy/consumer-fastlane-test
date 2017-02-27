@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -44,8 +44,8 @@ import java.util.Map;
  * <p>
  * Created by jtse on 3/17/16.
  */
-public class PrerateProInfo implements Serializable
-{
+public class PrerateProInfo implements Serializable {
+
     @SerializedName("placeholder_text")
     private String mPlaceHolderText;
 
@@ -63,17 +63,14 @@ public class PrerateProInfo implements Serializable
 
     private Reasons mReasons;
 
-    public static PrerateProInfo fromJson(final String json)
-    {
+    public static PrerateProInfo fromJson(final String json) {
         return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
-                .fromJson(json, PrerateProInfo.class);
+                                .fromJson(json, PrerateProInfo.class);
     }
 
     @NonNull
-    public Reasons getReasons()
-    {
-        if (mReasons == null)
-        {
+    public Reasons getReasons() {
+        if (mReasons == null) {
             //build it.
             mReasons = new Reasons(mRawReasons, mIsCleaning, null);
         }
@@ -81,14 +78,12 @@ public class PrerateProInfo implements Serializable
         return mReasons;
     }
 
-    public boolean isCleaning()
-    {
+    public boolean isCleaning() {
         return mIsCleaning;
     }
 
     @Nullable
-    public ProviderMatchPreference getProviderMatchPreference()
-    {
+    public ProviderMatchPreference getProviderMatchPreference() {
         return mProviderMatchPreference;
     }
 }

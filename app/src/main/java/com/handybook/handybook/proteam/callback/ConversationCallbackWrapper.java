@@ -8,39 +8,32 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ConversationCallbackWrapper implements Callback<CreateConversationResponse>
-{
+public class ConversationCallbackWrapper implements Callback<CreateConversationResponse> {
+
     private WeakReference<ConversationCallback> mCallback;
 
-    public ConversationCallbackWrapper(ConversationCallback callback)
-    {
+    public ConversationCallbackWrapper(ConversationCallback callback) {
         mCallback = new WeakReference<>(callback);
     }
 
     @Override
     public void success(
             final CreateConversationResponse createConversationResponse, final Response response
-    )
-    {
-        if (mCallback.get() != null)
-        {
-            if (createConversationResponse.isSuccess())
-            {
+    ) {
+        if (mCallback.get() != null) {
+            if (createConversationResponse.isSuccess()) {
                 mCallback.get().onCreateConversationSuccess(
                         createConversationResponse.getConversationId());
             }
-            else
-            {
+            else {
                 mCallback.get().onCreateConversationError();
             }
         }
     }
 
     @Override
-    public void failure(final RetrofitError error)
-    {
-        if (mCallback.get() != null)
-        {
+    public void failure(final RetrofitError error) {
+        if (mCallback.get() != null) {
             mCallback.get().onCreateConversationError();
         }
     }

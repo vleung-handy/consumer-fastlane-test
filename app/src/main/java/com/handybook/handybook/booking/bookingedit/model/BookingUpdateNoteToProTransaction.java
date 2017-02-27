@@ -7,40 +7,35 @@ import com.handybook.handybook.booking.model.Instructions;
 
 import java.util.Observable;
 
-public final class BookingUpdateNoteToProTransaction extends Observable
-{
+public final class BookingUpdateNoteToProTransaction extends Observable {
+
     @SerializedName("msg_to_pro")
     private String mMessageToPro;  //Separate message to pro containing misc information
     @SerializedName("instructions")
     private Instructions mCustomerPreferences;  //Instructions for the pro
 
-    public String getMessageToPro()
-    {
+    public String getMessageToPro() {
         return mMessageToPro;
     }
 
-    public void setMessageToPro(String messageToPro)
-    {
+    public void setMessageToPro(String messageToPro) {
         mMessageToPro = messageToPro;
         triggerObservers();
     }
 
-    private void triggerObservers()
-    {
+    private void triggerObservers() {
         setChanged();
         notifyObservers();
     }
 
-    public void setInstructions(final Instructions customerPreferences)
-    {
+    public void setInstructions(final Instructions customerPreferences) {
         mCustomerPreferences = customerPreferences;
         setChanged();
         notifyObservers();
     }
 
     @Nullable
-    public Instructions getInstructions()
-    {
+    public Instructions getInstructions() {
         return mCustomerPreferences;
     }
 }

@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.booking.util.BookingUtil;
+import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,8 +24,8 @@ import butterknife.ButterKnife;
  * Just a dumb little view that shows static information to the user when there are
  * active plans, but no generated bookings.
  */
-public class NoBookingsView extends FrameLayout
-{
+public class NoBookingsView extends FrameLayout {
+
     @Bind(R.id.text_date)
     TextView mTextDate;
 
@@ -41,8 +41,7 @@ public class NoBookingsView extends FrameLayout
     @Bind(R.id.image_main)
     ImageView mImageMain;
 
-    public NoBookingsView(final Context context, final AttributeSet attrs)
-    {
+    public NoBookingsView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         inflate(getContext(), R.layout.no_bookings_view, this);
         ButterKnife.bind(this);
@@ -53,21 +52,17 @@ public class NoBookingsView extends FrameLayout
      *
      * @param bookings
      */
-    public void bindForNoRecurringBookings(@NonNull List<RecurringBooking> bookings)
-    {
+    public void bindForNoRecurringBookings(@NonNull List<RecurringBooking> bookings) {
 
-        if (bookings.isEmpty())
-        {
+        if (bookings.isEmpty()) {
             bindForNoBookingsAtAll();
             return;
         }
 
         //sort the bookings according to next start date
-        Collections.sort(bookings, new Comparator<RecurringBooking>()
-        {
+        Collections.sort(bookings, new Comparator<RecurringBooking>() {
             @Override
-            public int compare(final RecurringBooking lhs, final RecurringBooking rhs)
-            {
+            public int compare(final RecurringBooking lhs, final RecurringBooking rhs) {
                 return lhs.getDateStart().compareTo(rhs.getDateStart());
             }
         });
@@ -82,8 +77,7 @@ public class NoBookingsView extends FrameLayout
         mImageMain.setImageResource(R.drawable.img_clean_home);
     }
 
-    public void bindForNoBookingsAtAll()
-    {
+    public void bindForNoBookingsAtAll() {
         mContainerRecurrenceBooking.setVisibility(GONE);
         mContainerRegularBooking.setVisibility(VISIBLE);
         mImageMain.setImageResource(R.drawable.img_dirty_home);

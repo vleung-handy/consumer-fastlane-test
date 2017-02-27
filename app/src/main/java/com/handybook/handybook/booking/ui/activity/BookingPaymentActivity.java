@@ -6,48 +6,45 @@ import android.support.v4.app.Fragment;
 
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public final class BookingPaymentActivity extends MenuDrawerActivity
-{
+public final class BookingPaymentActivity extends MenuDrawerActivity {
+
     @Override
-    protected final Fragment createFragment()
-    {
+    protected final Fragment createFragment() {
         return BookingPaymentFragment.newInstance();
     }
 
     @Override
-    protected final String getNavItemTitle()
-    {
+    protected final String getNavItemTitle() {
         return null;
     }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         disableDrawer = true;
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         BookingPaymentFragment bookingPaymentFragment =
                 (BookingPaymentFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (bookingPaymentFragment != null)
-        {
+        if (bookingPaymentFragment != null) {
             int errorCode = -1;
-            if (data != null)
-            {
+            if (data != null) {
                 errorCode = data.getIntExtra(WalletConstants.EXTRA_ERROR_CODE, -1);
             }
-            switch (requestCode)
-            {
+            switch (requestCode) {
                 case ActivityResult.LOAD_MASKED_WALLET:
-                    bookingPaymentFragment.handleLoadMaskedWalletResult(resultCode, data, errorCode);
+                    bookingPaymentFragment.handleLoadMaskedWalletResult(
+                            resultCode,
+                            data,
+                            errorCode
+                    );
                     break;
                 case ActivityResult.LOAD_FULL_WALLET:
                     bookingPaymentFragment.handleLoadFullWalletResult(resultCode, data, errorCode);

@@ -6,8 +6,8 @@ import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.squareup.otto.Bus;
 
-public class TestUserManager extends UserManager
-{
+public class TestUserManager extends UserManager {
+
     private User mUser;
 
     TestUserManager(
@@ -15,8 +15,7 @@ public class TestUserManager extends UserManager
             final Bus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DefaultPreferencesManager defaultPreferencesManager
-            )
-    {
+    ) {
         super(context, bus, securePreferencesManager, defaultPreferencesManager);
         mUser = new User();
         mUser.setFirstName("Test");

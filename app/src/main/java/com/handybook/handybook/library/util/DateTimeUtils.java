@@ -11,8 +11,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class DateTimeUtils
-{
+public class DateTimeUtils {
+
     public final static int MILLISECONDS_IN_SECOND = 1000;
     public final static int SECONDS_IN_MINUTE = 60;
     public final static int MINUTES_IN_HOUR = 60;
@@ -64,16 +64,13 @@ public class DateTimeUtils
      * @param timeZone
      * @return
      */
-    public static String formatDate(Date date, String format, String timeZone)
-    {
-        if (date == null || android.text.TextUtils.isEmpty(format))
-        {
+    public static String formatDate(Date date, String format, String timeZone) {
+        if (date == null || android.text.TextUtils.isEmpty(format)) {
             return null;
         }
 
         DateFormat customFormatter = new SimpleDateFormat(format, Locale.getDefault());
-        if (!android.text.TextUtils.isEmpty(timeZone))
-        {
+        if (!android.text.TextUtils.isEmpty(timeZone)) {
             customFormatter.setTimeZone(TimeZone.getTimeZone(timeZone));
         }
 
@@ -93,8 +90,7 @@ public class DateTimeUtils
      * @param timeZone
      * @return
      */
-    public static String formatDate(Date date, @NonNull SimpleDateFormat format, String timeZone)
-    {
+    public static String formatDate(Date date, @NonNull SimpleDateFormat format, String timeZone) {
         return formatDate(date, format.toPattern(), timeZone);
     }
 
@@ -105,8 +101,7 @@ public class DateTimeUtils
      * @param date2
      * @return
      */
-    public static long getDiffInSeconds(Date date1, Date date2)
-    {
+    public static long getDiffInSeconds(Date date1, Date date2) {
         long diff = Math.abs(date2.getTime() - date1.getTime());
         return diff / 1000 % 60;
     }
@@ -117,13 +112,11 @@ public class DateTimeUtils
      * @param date
      * @return
      */
-    public static String getDayOfWeek(Date date)
-    {
+    public static String getDayOfWeek(Date date) {
         return DAY_OF_WEEK_FORMATTER.format(date);
     }
 
-    public static String getTime(@NonNull Date date)
-    {
+    public static String getTime(@NonNull Date date) {
         return LOCAL_TIME_12_HOURS.format(date).toLowerCase();
     }
 
@@ -133,8 +126,7 @@ public class DateTimeUtils
      * @param date
      * @return
      */
-    public static String getDayMonthDay(Date date)
-    {
+    public static String getDayMonthDay(Date date) {
         return DAY_OF_WEEK_MONTH_DAY_FORMATTER.format(date);
     }
 
@@ -144,26 +136,22 @@ public class DateTimeUtils
      * @param date
      * @return
      */
-    public static String getDayShortMonthDay(Date date)
-    {
+    public static String getDayShortMonthDay(Date date) {
         return DAY_OF_WEEK_SHORT_MONTH_DAY_FORMATTER.format(date);
     }
 
-    public static String getTimeWithoutDate(final Date date)
-    {
+    public static String getTimeWithoutDate(final Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return getLocalTime12HoursFormatter().format(cal.getTime()).toLowerCase();
     }
 
-    private static SimpleDateFormat getLocalTime12HoursFormatter()
-    {
+    private static SimpleDateFormat getLocalTime12HoursFormatter() {
         LOCAL_TIME_12_HOURS_FORMATTER.setTimeZone(TimeZone.getDefault());
         return LOCAL_TIME_12_HOURS_FORMATTER;
     }
 
-    public static Date getBeginningOfDay(Date date)
-    {
+    public static Date getBeginningOfDay(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -177,64 +165,54 @@ public class DateTimeUtils
         return date1.before(dateToMatch) && date2.after(dateToMatch);
     }
 
-    public static int daysBetween(Date d1, Date d2)
-    {
-        return Math.round((d2.getTime() - d1.getTime()) / (float) (DateUtils.HOUR_IN_MILLIS * HOURS_IN_DAY));
+    public static int daysBetween(Date d1, Date d2) {
+        return Math.round(
+                (d2.getTime() - d1.getTime()) / (float) (DateUtils.HOUR_IN_MILLIS * HOURS_IN_DAY));
     }
 
-    public static String formatDateToRelativeAccuracy(final Date date)
-    {
+    public static String formatDateToRelativeAccuracy(final Date date) {
         final Calendar today = Calendar.getInstance();
         today.setTime(getBeginningOfDay(new Date()));
         final Calendar dayToCompare = Calendar.getInstance();
         dayToCompare.setTime(getBeginningOfDay(date));
         final int daysBetween = daysBetween(today.getTime(), dayToCompare.getTime());
-        if (daysBetween == 0)
-        {
+        if (daysBetween == 0) {
             return formatDateTo12HourClock(date);
         }
-        else if (daysBetween == -1)
-        {
+        else if (daysBetween == -1) {
             return "Yesterday";
         }
-        else if (daysBetween > -7)
-        {
+        else if (daysBetween > -7) {
             return getDayOfWeek(date);
         }
-        else
-        {
+        else {
             return formatMonthDate(date);
         }
     }
 
-
     @Nullable
-    public static String formatMonthDate(Date date)
-    {
+    public static String formatMonthDate(Date date) {
         if (date == null) { return null; }
         return getMonthDateFormatter().format(date);
     }
 
-    private static SimpleDateFormat getMonthDateFormatter()
-    {
+    private static SimpleDateFormat getMonthDateFormatter() {
         MONTH_DATE_FORMATTER.setTimeZone(TimeZone.getDefault());
         return MONTH_DATE_FORMATTER;
     }
 
     @Nullable
-    public static String formatDateTo12HourClock(Date date)
-    {
+    public static String formatDateTo12HourClock(Date date) {
         if (date == null) { return null; }
         return getClockFormatter12hr().format(date);
     }
 
-    public static int minutesBetween(final Date date1, final Date date2)
-    {
-        return Math.round((date1.getTime() - date2.getTime()) / (float) (DateUtils.MINUTE_IN_MILLIS));
+    public static int minutesBetween(final Date date1, final Date date2) {
+        return Math.round(
+                (date1.getTime() - date2.getTime()) / (float) (DateUtils.MINUTE_IN_MILLIS));
     }
 
-    private static SimpleDateFormat getClockFormatter12hr()
-    {
+    private static SimpleDateFormat getClockFormatter12hr() {
         CLOCK_FORMATTER_12HR.setTimeZone(TimeZone.getDefault());
         return CLOCK_FORMATTER_12HR;
     }

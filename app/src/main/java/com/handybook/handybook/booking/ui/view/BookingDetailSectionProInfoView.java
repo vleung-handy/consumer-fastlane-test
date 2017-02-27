@@ -17,8 +17,8 @@ import com.handybook.handybook.core.ui.view.MiniProProfile;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BookingDetailSectionProInfoView extends BookingDetailSectionView
-{
+public class BookingDetailSectionProInfoView extends BookingDetailSectionView {
+
     /**
      * fallback that is shown when there is no pro assigned AND no provider assignment state object
      * AND pro teams enabled
@@ -49,13 +49,11 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView
     @Bind(R.id.element_booking_detail_section_pro_info_pro_profile)
     MiniProProfile mProProfile;
 
-    public BookingDetailSectionProInfoView(final Context context)
-    {
+    public BookingDetailSectionProInfoView(final Context context) {
         super(context);
     }
 
-    public BookingDetailSectionProInfoView(final Context context, final AttributeSet attrs)
-    {
+    public BookingDetailSectionProInfoView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -63,59 +61,49 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView
             final Context context,
             final AttributeSet attrs,
             final int defStyle
-    )
-    {
+    ) {
         super(context, attrs, defStyle);
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         inflate(getContext(), R.layout.view_booking_detail_section_pro_info, this);
         ButterKnife.bind(this);
     }
 
-    public void setAssignedProTeamMatchIndicatorVisible(boolean visible)
-    {
+    public void setAssignedProTeamMatchIndicatorVisible(boolean visible) {
         mProProfile.setProTeamIndicatorEnabled(visible);
     }
 
-    public void setProProfileVisible(boolean visible)
-    {
+    public void setProProfileVisible(boolean visible) {
         mProProfile.setVisibility(visible ? VISIBLE : GONE);
     }
 
     public void setAssignedProInfo(
             final Provider provider,
             final Booking.ProviderAssignmentInfo providerAssignmentInfo
-    )
-    {
+    ) {
         mProProfile.setTitle(provider.getFirstNameAndLastInitial());
         mProProfile.setIsProTeam(providerAssignmentInfo.isProTeamMatch());
         mProProfile.setRatingAndJobsCount(provider.getAverageRating(), provider.getBookingCount());
-        if (providerAssignmentInfo.shouldShowProfileImage())
-        {
+        if (providerAssignmentInfo.shouldShowProfileImage()) {
             mProProfile.setImage(provider.getImageUrl());
         }
     }
 
-    public void setLegacyNoProViewProTeamButtonClickListener(@NonNull OnClickListener onClickListener)
-    {
+    public void setLegacyNoProViewProTeamButtonClickListener(@NonNull OnClickListener onClickListener) {
         mLegacyNoProViewProTeamButton.setOnClickListener(onClickListener);
     }
 
-    public void setLegacyNoProViewVisible(boolean visible)
-    {
+    public void setLegacyNoProViewVisible(boolean visible) {
         mLegacyNoProView.setVisibility(visible ? VISIBLE : GONE);
     }
 
-    public void showPreferDifferentProLayout(boolean show)
-    {
+    public void showPreferDifferentProLayout(boolean show) {
         mPreferDifferentProLayout.setVisibility(show ? VISIBLE : GONE);
     }
 
-    public void setPreferDifferentProOnClickListener(OnClickListener onClickListener)
-    {
+    public void setPreferDifferentProOnClickListener(OnClickListener onClickListener) {
         mPreferDifferentProText.setOnClickListener(onClickListener);
     }
 }

@@ -3,20 +3,18 @@ package com.handybook.handybook.account.model;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.RecurringBooking;
 
-public class RecurringPlanWrapper
-{
+public class RecurringPlanWrapper {
+
     @SerializedName("success")
     private boolean mSuccess;
     @SerializedName("recurring_booking")
     private RecurringBooking mRecurringBooking;
 
-    public RecurringPlanWrapper(final RecurringBooking recurringBooking)
-    {
+    public RecurringPlanWrapper(final RecurringBooking recurringBooking) {
         mRecurringBooking = recurringBooking;
     }
 
-    public RecurringBooking getRecurringBooking()
-    {
+    public RecurringBooking getRecurringBooking() {
         return mRecurringBooking;
     }
 }

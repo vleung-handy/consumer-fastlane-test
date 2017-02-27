@@ -10,24 +10,21 @@ import com.handybook.handybook.R;
 
 /**
  */
-public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration
-{
+public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
+
     private Drawable mDivider;
 
-    public SimpleDividerItemDecoration(Context context)
-    {
+    public SimpleDividerItemDecoration(Context context) {
         mDivider = context.getResources().getDrawable(R.drawable.recycler_item_divider);
     }
 
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state)
-    {
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
 
         int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++)
-        {
+        for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
 
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();

@@ -9,19 +9,18 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamConversationsFragment;
 
-public class ProTeamPerBookingActivity extends MenuDrawerActivity
-{
+public class ProTeamPerBookingActivity extends MenuDrawerActivity {
+
     @Override
-    protected Fragment createFragment()
-    {
-        ProTeam.ProTeamCategory category = getIntent().getParcelableExtra(BundleKeys.PRO_TEAM_CATEGORY);
+    protected Fragment createFragment() {
+        ProTeam.ProTeamCategory category
+                = getIntent().getParcelableExtra(BundleKeys.PRO_TEAM_CATEGORY);
         Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
         return BookingProTeamConversationsFragment.newInstance(category, booking);
     }
 
     @Override
-    protected String getNavItemTitle()
-    {
+    protected String getNavItemTitle() {
         return getString(R.string.title_activity_pro_team);
     }
 }

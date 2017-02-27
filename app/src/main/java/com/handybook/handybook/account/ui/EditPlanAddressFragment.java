@@ -28,8 +28,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class EditPlanAddressFragment extends InjectedFragment
-{
+public final class EditPlanAddressFragment extends InjectedFragment {
+
     @Bind(R.id.plan_address_street_addr_text)
     StreetAddressInputTextView mStreetAddressText;
     @Bind(R.id.plan_address_apt_addr_text)
@@ -42,8 +42,7 @@ public final class EditPlanAddressFragment extends InjectedFragment
 
     private RecurringBooking mPlan;
 
-    public static EditPlanAddressFragment newInstance(RecurringBooking plan)
-    {
+    public static EditPlanAddressFragment newInstance(RecurringBooking plan) {
         final EditPlanAddressFragment fragment = new EditPlanAddressFragment();
         final Bundle args = new Bundle();
         args.putSerializable(BundleKeys.RECURRING_PLAN, plan);
@@ -52,8 +51,7 @@ public final class EditPlanAddressFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPlan = (RecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_PLAN);
     }
@@ -62,15 +60,13 @@ public final class EditPlanAddressFragment extends InjectedFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater
                 .inflate(R.layout.fragment_plan_edit_address, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_edit_address_title));
 
-        if (mPlan.getAddress() != null)
-        {
+        if (mPlan.getAddress() != null) {
             //initialize with the booking's current address
             mStreetAddressText.setText(mPlan.getAddress().getAddress1());
             mAptAddressText.setText(mPlan.getAddress().getAddress2());
@@ -81,25 +77,21 @@ public final class EditPlanAddressFragment extends InjectedFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Shown()));
 
     }
 
     @OnClick(R.id.plan_address_update_button)
-    public void updateAddress()
-    {
-        if (validateFields())
-        {
+    public void updateAddress() {
+        if (validateFields()) {
             bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Submitted()));
             sendEditAddressRequest();
         }
     }
 
-    private void sendEditAddressRequest()
-    {
+    private void sendEditAddressRequest() {
         final EditAddressRequest request = new EditAddressRequest(
                 mStreetAddressText.getAddress(),
                 mAptAddressText.getText().toString(),
@@ -110,18 +102,15 @@ public final class EditPlanAddressFragment extends InjectedFragment
         dataManager.editBookingPlanAddress(
                 mPlan.getId(),
                 request,
-                new FragmentSafeCallback<RecurringPlanWrapper>(this)
-                {
+                new FragmentSafeCallback<RecurringPlanWrapper>(this) {
                     @Override
-                    public void onCallbackSuccess(final RecurringPlanWrapper response)
-                    {
+                    public void onCallbackSuccess(final RecurringPlanWrapper response) {
                         bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Success()));
                         onReceiveEditBookingAddressSuccess(response);
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         bus.post(new LogEvent.AddLogEvent(new EditAddressLog.Error()));
                         onReceiveEditBookingAddressError(error);
                     }
@@ -130,13 +119,11 @@ public final class EditPlanAddressFragment extends InjectedFragment
         bus.post(new BookingEditEvent.RequestEditBookingAddress(mPlan.getId(), request));
     }
 
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         return (mStreetAddressText.validate() && mZipCodeText.validate());
     }
 
-    private void onReceiveEditBookingAddressSuccess(RecurringPlanWrapper planWrapper)
-    {
+    private void onReceiveEditBookingAddressSuccess(RecurringPlanWrapper planWrapper) {
         removeUiBlockers();
         mPlan.setAddress(planWrapper.getRecurringBooking().getAddress());
         showToast(getString(R.string.account_update_plan_address_success));
@@ -147,8 +134,7 @@ public final class EditPlanAddressFragment extends InjectedFragment
         getActivity().onBackPressed();
     }
 
-    private void onReceiveEditBookingAddressError(DataManager.DataManagerError error)
-    {
+    private void onReceiveEditBookingAddressError(DataManager.DataManagerError error) {
         removeUiBlockers();
         showToast(getString(R.string.account_update_plan_address_error));
     }

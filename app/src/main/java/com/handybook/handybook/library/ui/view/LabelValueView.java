@@ -15,28 +15,29 @@ import butterknife.Bind;
  */
 public class LabelValueView extends InjectedLinearLayout //TODO: rename this to something better
 {
+
     @Bind(R.id.label_value_view_label_text)
     TextView mLabelText;
     @Bind(R.id.label_value_view_value_text)
     TextView mValueText;
 
-    public LabelValueView(final Context context)
-    {
+    public LabelValueView(final Context context) {
         super(context);
     }
 
-    public LabelValueView(final Context context, final AttributeSet attrs)
-    {
+    public LabelValueView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public LabelValueView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
+    public LabelValueView(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public static LabelValueView newInstance(Activity activity, final String label, final String value)
-    {
+    public static LabelValueView newInstance(
+            Activity activity,
+            final String label,
+            final String value
+    ) {
         LabelValueView labelValueView =
                 (LabelValueView) activity.getLayoutInflater().inflate(
                         R.layout.element_label_value_view, null);
@@ -44,18 +45,15 @@ public class LabelValueView extends InjectedLinearLayout //TODO: rename this to 
         return labelValueView;
     }
 
-    public void setLabelText(final String labelString)
-    {
+    public void setLabelText(final String labelString) {
         mLabelText.setText(labelString);
     }
 
-    public void setValueText(final String valueString)
-    {
+    public void setValueText(final String valueString) {
         mValueText.setText(valueString);
     }
 
-    public void setLabelAndValueText(final String labelString, final String valueString)
-    {
+    public void setLabelAndValueText(final String labelString, final String valueString) {
         setLabelText(labelString);
         setValueText(valueString);
     }

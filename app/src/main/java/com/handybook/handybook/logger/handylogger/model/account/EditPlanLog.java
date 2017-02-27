@@ -7,24 +7,22 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
  * Created by sng on 9/22/16.
  */
 
-public class EditPlanLog extends EventLog
-{
+public class EditPlanLog extends EventLog {
+
     private static final String EVENT_CONTEXT = "plan_management";
 
-    private EditPlanLog(final String eventType)
-    {
+    private EditPlanLog(final String eventType) {
         super(eventType, EVENT_CONTEXT);
     }
 
-    public static class Shown extends EditPlanLog
-    {
+    public static class Shown extends EditPlanLog {
+
         private static final String EVENT_TYPE = "edit_plan_shown";
 
         @SerializedName("recurring_booking_id")
         private final int mRecurringBookingId;
 
-        public Shown(int recurringBookingId)
-        {
+        public Shown(int recurringBookingId) {
             super(EVENT_TYPE);
 
             mRecurringBookingId = recurringBookingId;
@@ -32,8 +30,8 @@ public class EditPlanLog extends EventLog
     }
 
 
-    public static class EditFrequencyTapped extends EditPlanLog
-    {
+    public static class EditFrequencyTapped extends EditPlanLog {
+
         private static final String EVENT_TYPE = "edit_frequency_tapped";
 
         @SerializedName("recurring_booking_id")
@@ -41,8 +39,7 @@ public class EditPlanLog extends EventLog
         @SerializedName("frequency")
         private final int mFrequency;
 
-        public EditFrequencyTapped(int recurringBookingId, int frequency)
-        {
+        public EditFrequencyTapped(int recurringBookingId, int frequency) {
             super(EVENT_TYPE);
 
             mRecurringBookingId = recurringBookingId;
@@ -51,15 +48,14 @@ public class EditPlanLog extends EventLog
     }
 
 
-    public static class EditAddressTapped extends EditPlanLog
-    {
+    public static class EditAddressTapped extends EditPlanLog {
+
         private static final String EVENT_TYPE = "edit_address_tapped";
 
         @SerializedName("recurring_booking_id")
         private final int mRecurringBookingId;
 
-        public EditAddressTapped(int recurringBookingId)
-        {
+        public EditAddressTapped(int recurringBookingId) {
             super(EVENT_TYPE);
 
             mRecurringBookingId = recurringBookingId;
@@ -67,15 +63,14 @@ public class EditPlanLog extends EventLog
     }
 
 
-    public static class CancelPlanTapped extends EditPlanLog
-    {
+    public static class CancelPlanTapped extends EditPlanLog {
+
         private static final String EVENT_TYPE = "cancel_plan_tapped";
 
         @SerializedName("recurring_booking_id")
         private final int mRecurringBookingId;
 
-        public CancelPlanTapped(int recurringBookingId)
-        {
+        public CancelPlanTapped(int recurringBookingId) {
             super(EVENT_TYPE);
 
             mRecurringBookingId = recurringBookingId;

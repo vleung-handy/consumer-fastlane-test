@@ -21,8 +21,7 @@ import butterknife.OnClick;
  * This is an activity that displays verbage to the user telling them the zip they entered
  * is not supported at the moment.
  */
-public class ServiceNotSupportedActivity extends BaseActivity
-{
+public class ServiceNotSupportedActivity extends BaseActivity {
 
     public static final String EXTRA_FROM_ZIP = "extra-from-zip";
 
@@ -35,8 +34,7 @@ public class ServiceNotSupportedActivity extends BaseActivity
     boolean mFromZipFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_not_supported);
         ButterKnife.bind(this);
@@ -55,8 +53,7 @@ public class ServiceNotSupportedActivity extends BaseActivity
     }
 
     @OnClick(R.id.not_supported_try_another_zip)
-    public void submitClicked()
-    {
+    public void submitClicked() {
         if (mFromZipFragment) {
             //if we're coming from the ZipFragment, then this button is essentially the same as
             //a backpress

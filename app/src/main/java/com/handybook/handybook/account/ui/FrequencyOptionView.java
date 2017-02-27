@@ -17,8 +17,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class FrequencyOptionView extends FrameLayout
-{
+public class FrequencyOptionView extends FrameLayout {
+
     @Bind(R.id.frequency_option_radio)
     RadioButton mRadioButton;
     @Bind(R.id.frequency_option_title_text)
@@ -31,22 +31,19 @@ public class FrequencyOptionView extends FrameLayout
     private List<FrequencyOptionView> mAllFrequencyOptions;
     private int mFrequency;
 
-    public FrequencyOptionView(final Context context)
-    {
+    public FrequencyOptionView(final Context context) {
         super(context);
         init();
     }
 
-    public FrequencyOptionView(final Context context, final AttributeSet attrs)
-    {
+    public FrequencyOptionView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
     public FrequencyOptionView(
             final Context context, final AttributeSet attrs, final int defStyleAttr
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -55,21 +52,17 @@ public class FrequencyOptionView extends FrameLayout
     public FrequencyOptionView(
             final Context context, final AttributeSet attrs,
             final int defStyleAttr, final int defStyleRes
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
-    private void init()
-    {
+    private void init() {
         inflate(getContext(), R.layout.view_frequency_select_option, this);
         ButterKnife.bind(this);
-        mRadioButton.setOnClickListener(new OnClickListener()
-        {
+        mRadioButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 setChecked(true);
                 unckeckOtherViews();
             }
@@ -82,8 +75,7 @@ public class FrequencyOptionView extends FrameLayout
             String frequencyText,
             String price,
             boolean isCurrent
-    )
-    {
+    ) {
         mAllFrequencyOptions = radioButtonGroup;
         mFrequency = frequency;
         mTitleText.setText(frequencyText);
@@ -93,20 +85,16 @@ public class FrequencyOptionView extends FrameLayout
 
     }
 
-    public void unckeckOtherViews()
-    {
+    public void unckeckOtherViews() {
         if (mAllFrequencyOptions == null) { return; }
-        for (FrequencyOptionView frequencyOptionView : mAllFrequencyOptions)
-        {
-            if (frequencyOptionView != this)
-            {
+        for (FrequencyOptionView frequencyOptionView : mAllFrequencyOptions) {
+            if (frequencyOptionView != this) {
                 frequencyOptionView.setChecked(false);
             }
         }
     }
 
-    public void setChecked(boolean checked)
-    {
+    public void setChecked(boolean checked) {
         mRadioButton.setChecked(checked);
         int black = ContextCompat.getColor(getContext(), R.color.black);
         int gray = ContextCompat.getColor(getContext(), R.color.black_pressed);

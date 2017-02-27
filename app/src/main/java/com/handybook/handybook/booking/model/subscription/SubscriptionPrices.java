@@ -10,8 +10,8 @@ import java.util.Map;
  *
  *
  */
-public class SubscriptionPrices implements Serializable
-{
+public class SubscriptionPrices implements Serializable {
+
     private String mSubscriptionLengthKey;
     private String mSubscriptionFrequencyKey;
     private boolean mIsDefault;
@@ -28,8 +28,7 @@ public class SubscriptionPrices implements Serializable
             final boolean isDefault,
             final boolean isEnabled,
             final Map<String, Price> prices
-    )
-    {
+    ) {
         mSubscriptionLengthKey = subscriptionLengthKey;
         mSubscriptionFrequencyKey = subscriptionFrequencyKey;
         mIsDefault = isDefault;
@@ -37,18 +36,15 @@ public class SubscriptionPrices implements Serializable
         mPrices = prices;
     }
 
-    public Map<String, Price> getPrices()
-    {
+    public Map<String, Price> getPrices() {
         return mPrices;
     }
 
-    public boolean isDefault()
-    {
+    public boolean isDefault() {
         return mIsDefault;
     }
 
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return mEnabled;
     }
 }

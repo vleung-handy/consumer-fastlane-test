@@ -22,8 +22,8 @@ import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class BookingDetailFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingDetailFragmentTest extends RobolectricGradleTestWrapper {
+
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Booking mBooking;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
@@ -32,8 +32,7 @@ public class BookingDetailFragmentTest extends RobolectricGradleTestWrapper
     UserManager mUserManager;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance()
                                                 .getApplicationContext()).inject(this);
@@ -41,8 +40,7 @@ public class BookingDetailFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldPostPrepareReferralsIfFromBookingFlow() throws Exception
-    {
+    public void shouldPostPrepareReferralsIfFromBookingFlow() throws Exception {
         final BookingDetailFragment fragment = BookingDetailFragment.newInstance(
                 mBooking,
                 true
@@ -59,8 +57,7 @@ public class BookingDetailFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldNotPostPrepareReferralsIfNotFromBookingFlow() throws Exception
-    {
+    public void shouldNotPostPrepareReferralsIfNotFromBookingFlow() throws Exception {
         final BookingDetailFragment fragment = BookingDetailFragment.newInstance(
                 mBooking,
                 false

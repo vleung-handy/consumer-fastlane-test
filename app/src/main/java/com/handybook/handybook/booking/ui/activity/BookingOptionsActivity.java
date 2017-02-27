@@ -10,8 +10,8 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public final class BookingOptionsActivity extends MenuDrawerActivity
-{
+public final class BookingOptionsActivity extends MenuDrawerActivity {
+
     public static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
     public static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     public static final String EXTRA_CHILD_DISPLAY_MAP = "com.handy.handy.EXTRA_CHILD_DISPLAY_MAP";
@@ -21,17 +21,24 @@ public final class BookingOptionsActivity extends MenuDrawerActivity
     @Override
     protected final Fragment createFragment() {
         final int page = getIntent().getIntExtra(EXTRA_PAGE, 0);
-        final ArrayList<BookingOption> options = getIntent().getParcelableArrayListExtra(EXTRA_OPTIONS);
+        final ArrayList<BookingOption> options = getIntent().getParcelableArrayListExtra(
+                EXTRA_OPTIONS);
 
         final ArrayList<BookingOption> postOptions
                 = getIntent().getParcelableArrayListExtra(EXTRA_POST_OPTIONS);
 
         final HashMap<String, Boolean> childDisplayMap
-                = (HashMap)getIntent().getSerializableExtra(EXTRA_CHILD_DISPLAY_MAP);
+                = (HashMap) getIntent().getSerializableExtra(EXTRA_CHILD_DISPLAY_MAP);
 
         final boolean isPost = getIntent().getBooleanExtra(EXTRA_IS_POST, false);
 
-        return BookingOptionsFragment.newInstance(options, page, childDisplayMap, postOptions, isPost);
+        return BookingOptionsFragment.newInstance(
+                options,
+                page,
+                childDisplayMap,
+                postOptions,
+                isPost
+        );
     }
 
     @Override

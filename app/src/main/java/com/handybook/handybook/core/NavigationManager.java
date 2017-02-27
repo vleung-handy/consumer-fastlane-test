@@ -32,8 +32,7 @@ import javax.inject.Inject;
  * Created by cdavis on 4/20/15.
  */
 
-public final class NavigationManager
-{
+public final class NavigationManager {
 
     //String consts
     private static final String WEB_AUTH_TOKEN = "slt=";
@@ -78,8 +77,7 @@ public final class NavigationManager
     //Action Id to Deeplink Id Mapping
     public static final Map<String, String> ACTION_ID_TO_DEEP_LINK_ID;
 
-    static
-    {
+    static {
         Map<String, String> map = new HashMap<>();
         map.put(ACTION_ID_SERVICES, DEEP_LINK_ID_SERVICES);
         map.put(ACTION_ID_GO_TO_MY_PROFILE, DEEP_LINK_ID_PROFILE);
@@ -111,8 +109,7 @@ public final class NavigationManager
             UserManager userManager,
             DataManager dataManager,
             DataManagerErrorHandler dataManagerErrorHandler
-    )
-    {
+    ) {
         this.config = PropertiesReader.getProperties(context, "config.properties");
         this.context = context;
         this.userManager = userManager;
@@ -122,13 +119,11 @@ public final class NavigationManager
 
     //Want to remove this once and make this functionality generic
     //Handle splash screen deep links, these may require additional callback functionality
-    public void handleSplashScreenLaunch(Intent splashScreenIntent, BaseActivity callingActivity)
-    {
+    public void handleSplashScreenLaunch(Intent splashScreenIntent, BaseActivity callingActivity) {
         final String action = splashScreenIntent.getAction();
         final Uri data = splashScreenIntent.getData();
 
-        if (!action.equals("android.intent.action.VIEW") || !data.getScheme().equals("handy"))
-        {
+        if (!action.equals("android.intent.action.VIEW") || !data.getScheme().equals("handy")) {
             openServiceCategoriesActivity();
             return;
         }
@@ -137,8 +132,7 @@ public final class NavigationManager
 
         HashMap<String, String> params = new HashMap<>();
         if (deepLinkId.equals(DEEP_LINK_ID_BOOKINGS_RESCHEDULE) || deepLinkId.equals(
-                DEEP_LINK_ID_BOOKINGS_CANCEL))
-        {
+                DEEP_LINK_ID_BOOKINGS_CANCEL)) {
             String bookingId = data.getQueryParameter("booking_id");
             params.put(PARAM_BOOKING_ID, (bookingId != null ? bookingId : ""));
         }
@@ -154,43 +148,40 @@ public final class NavigationManager
     //Web
     ///////
 
-    private String constructWebUrlFromNavData(CTANavigationData data)
-    {
+    private String constructWebUrlFromNavData(CTANavigationData data) {
         String baseUrl = this.dataManager.getBaseUrl();
-        String separatorCharacter = (data.nodeContentWebUrl.contains(WEB_PARAM_TOKEN) ? WEB_ADDITIONAL_PARAM_TOKEN : WEB_PARAM_TOKEN);
+        String separatorCharacter = (data.nodeContentWebUrl.contains(WEB_PARAM_TOKEN)
+                                     ? WEB_ADDITIONAL_PARAM_TOKEN
+                                     : WEB_PARAM_TOKEN);
 
         String[] tokens = data.nodeContentWebUrl.split("#");
         String fullUrl;
         //user/booking targeted URLs need to be split at # to insert params like auth token
-        if (tokens.length == 2)
-        {
-            fullUrl = (baseUrl + tokens[0] + separatorCharacter + getAuthToken(data) + WEB_PARAM_DISABLE_MOBILE_SPLASH + "#" + tokens[1]);
+        if (tokens.length == 2) {
+            fullUrl = (baseUrl + tokens[0] + separatorCharacter + getAuthToken(data) +
+                       WEB_PARAM_DISABLE_MOBILE_SPLASH + "#" + tokens[1]);
         }
-        else
-        {
-            fullUrl = (baseUrl + data.nodeContentWebUrl + separatorCharacter + getAuthToken(data) + WEB_PARAM_DISABLE_MOBILE_SPLASH);
+        else {
+            fullUrl = (baseUrl + data.nodeContentWebUrl + separatorCharacter + getAuthToken(data) +
+                       WEB_PARAM_DISABLE_MOBILE_SPLASH);
         }
 
         return fullUrl;
     }
 
-    private String getAuthToken(CTANavigationData data)
-    {
+    private String getAuthToken(CTANavigationData data) {
         String authToken = "";
-        if (data.loginToken != null && !data.loginToken.isEmpty())
-        {
+        if (data.loginToken != null && !data.loginToken.isEmpty()) {
             authToken = WEB_AUTH_TOKEN + data.loginToken;
         }
-        else if (userManager.getCurrentUser() != null)
-        {
+        else if (userManager.getCurrentUser() != null) {
             authToken = WEB_AUTH_TOKEN + userManager.getCurrentUser().getAuthToken();
         }
         return authToken;
     }
 
     //Open external web page
-    private void navigateToWeb(String webUrl)
-    {
+    private void navigateToWeb(String webUrl) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl));
         browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(browserIntent);
@@ -200,70 +191,57 @@ public final class NavigationManager
     //Deeplinks
     ///////
 
-    private String actionIdToDeepLinkId(String actionId)
-    {
-        if (ACTION_ID_TO_DEEP_LINK_ID.containsKey(actionId))
-        {
+    private String actionIdToDeepLinkId(String actionId) {
+        if (ACTION_ID_TO_DEEP_LINK_ID.containsKey(actionId)) {
             return ACTION_ID_TO_DEEP_LINK_ID.get(actionId);
         }
         return "";
     }
 
-    private Boolean validateDeepLink(String deepLinkId)
-    {
+    private Boolean validateDeepLink(String deepLinkId) {
         return deepLinkId != null && !deepLinkId.isEmpty();
     }
 
-    private void navigateToDeepLink(String deepLinkId, Map<String, String> params)
-    {
+    private void navigateToDeepLink(String deepLinkId, Map<String, String> params) {
         //this log may be useful for debugging
         Crashlytics.log("NavigationManager::navigateToDeepLink with deepLinkId=" + deepLinkId);
-        switch (deepLinkId)
-        {
-            case DEEP_LINK_ID_PROFILE:
-            {
+        switch (deepLinkId) {
+            case DEEP_LINK_ID_PROFILE: {
                 openActivity(ProfileActivity.class, true);
             }
             break;
-            case DEEP_LINK_ID_BOOKINGS:
-            {
+            case DEEP_LINK_ID_BOOKINGS: {
                 openActivity(BookingsActivity.class, true);
             }
             break;
-            case DEEP_LINK_ID_SERVICES:
-            {
+            case DEEP_LINK_ID_SERVICES: {
                 openServiceCategoriesActivity();
             }
             break;
-            case DEEP_LINK_ID_PROMOTIONS:
-            {
+            case DEEP_LINK_ID_PROMOTIONS: {
                 openActivity(PromosActivity.class, true);
             }
             break;
 
-            case DEEP_LINK_ID_BOOKINGS_RESCHEDULE:
-            {
+            case DEEP_LINK_ID_BOOKINGS_RESCHEDULE: {
                 String bookingId = params.get(PARAM_BOOKING_ID);
                 openBookingRequiredActivity(bookingId, BookingDateActivity.class);
             }
             break;
 
-            case DEEP_LINK_ID_BOOKINGS_CANCEL:
-            {
+            case DEEP_LINK_ID_BOOKINGS_CANCEL: {
                 String bookingId = params.get(PARAM_BOOKING_ID);
                 openBookingRequiredActivity(bookingId, BookingCancelOptionsActivity.class);
             }
             break;
 
-            default:
-            {
+            default: {
                 openServiceCategoriesActivity();
             }
         }
     }
 
-    private void startActivity(final Intent intent)
-    {
+    private void startActivity(final Intent intent) {
         //Don't clear the stack, currently designed to return to entry point on back
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.context.startActivity(intent);
@@ -273,14 +251,11 @@ public final class NavigationManager
     private void openActivity(
             final Class<? extends Activity> targetClass,
             final boolean requiresUser
-    )
-    {
-        if (requiresUser && userManager.getCurrentUser() == null)
-        {
+    ) {
+        if (requiresUser && userManager.getCurrentUser() == null) {
             openServiceCategoriesActivity();
         }
-        else
-        {
+        else {
             startActivity(new Intent(this.context, targetClass));
         }
     }
@@ -288,32 +263,26 @@ public final class NavigationManager
     private void openActivity(
             final Class<? extends Activity> targetClass,
             final HashMap<String, String> params
-    )
-    {
+    ) {
         startActivity(new Intent(this.context, targetClass));
     }
 
-    private void openServiceCategoriesActivity()
-    {
+    private void openServiceCategoriesActivity() {
         startActivity(new Intent(this.context, ServiceCategoriesActivity.class));
     }
 
-    private void openBookingRequiredActivity(final String bookingId, final Class targetClass)
-    {
+    private void openBookingRequiredActivity(final String bookingId, final Class targetClass) {
         final Context intentContext = this.context;
         dataManager.getBooking(
                 bookingId,
-                new DataManager.Callback<Booking>()
-                {
+                new DataManager.Callback<Booking>() {
                     @Override
-                    public void onSuccess(final Booking booking)
-                    {
+                    public void onSuccess(final Booking booking) {
                         onBookingRetrieved(booking, context, targetClass);
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
+                    public void onError(final DataManager.DataManagerError error) {
                         onBookingDataError(error, intentContext);
                     }
                 }
@@ -325,17 +294,13 @@ public final class NavigationManager
             final Booking booking,
             final Context intentContext,
             Class targetClass
-    )
-    {
-        if (targetClass == BookingCancelOptionsActivity.class)
-        {
+    ) {
+        if (targetClass == BookingCancelOptionsActivity.class) {
             dataManager.getBookingCancellationData(
                     booking.getId(),
-                    new DataManager.Callback<BookingCancellationData>()
-                    {
+                    new DataManager.Callback<BookingCancellationData>() {
                         @Override
-                        public void onSuccess(final BookingCancellationData bcd)
-                        {
+                        public void onSuccess(final BookingCancellationData bcd) {
                             final Intent intent = new Intent(
                                     context,
                                     BookingCancelOptionsActivity.class
@@ -346,22 +311,18 @@ public final class NavigationManager
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error)
-                        {
+                        public void onError(final DataManager.DataManagerError error) {
                             onBookingDataError(error, intentContext);
                         }
                     }
             );
         }
-        else if (targetClass == BookingDateActivity.class)
-        {
+        else if (targetClass == BookingDateActivity.class) {
             dataManager.getPreRescheduleInfo(
                     booking.getId(),
-                    new DataManager.Callback<String>()
-                    {
+                    new DataManager.Callback<String>() {
                         @Override
-                        public void onSuccess(final String notice)
-                        {
+                        public void onSuccess(final String notice) {
                             final Intent intent = new Intent(
                                     intentContext,
                                     BookingDateActivity.class
@@ -372,8 +333,7 @@ public final class NavigationManager
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error)
-                        {
+                        public void onError(final DataManager.DataManagerError error) {
                             onBookingDataError(error, intentContext);
                         }
                     }
@@ -384,8 +344,7 @@ public final class NavigationManager
     private void onBookingDataError(
             final DataManager.DataManagerError error,
             final Context intentContext
-    )
-    {
+    ) {
         dataManagerErrorHandler.handleError(intentContext, error);
         openServiceCategoriesActivity();
     }

@@ -28,8 +28,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingOptionsFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingOptionsFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingOptionsFragment mFragment;
     @Inject
     BookingManager mBookingManager;
@@ -41,8 +41,7 @@ public class BookingOptionsFragmentTest extends RobolectricGradleTestWrapper
     // TODO: Write tests where some options are selected before clicking next
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -61,12 +60,13 @@ public class BookingOptionsFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchBookingDateActivity() throws Exception
-    {
+    public void shouldLaunchBookingDateActivity() throws Exception {
         mFragment.nextButton.performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingDateActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingDateActivity.class.getName())
+        );
     }
 }

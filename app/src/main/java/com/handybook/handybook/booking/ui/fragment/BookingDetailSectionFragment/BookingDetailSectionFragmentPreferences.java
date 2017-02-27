@@ -14,26 +14,24 @@ import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditPrefer
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionImageItemView;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.User;
 
 import java.util.List;
 
 import butterknife.Bind;
 
-public class BookingDetailSectionFragmentPreferences extends BookingDetailSectionFragment
-{
+public class BookingDetailSectionFragmentPreferences extends BookingDetailSectionFragment {
+
     @Bind(R.id.preferences_section)
     public LinearLayout preferencesSection;
 
     @StringRes
     @Override
-    protected int getEntryTitleTextResourceId(Booking booking)
-    {
+    protected int getEntryTitleTextResourceId(Booking booking) {
 
-        if (hasInstructions())
-        {
+        if (hasInstructions()) {
             return R.string.cleaning_routine;
         }
 
@@ -42,8 +40,7 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
 
     @LayoutRes
     @Override
-    protected int getFragmentResourceId()
-    {
+    protected int getFragmentResourceId() {
         return R.layout.fragment_booking_detail_section_preferences;
     }
 
@@ -51,20 +48,16 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
     protected void updateActionTextView(
             @NonNull final Booking booking,
             @NonNull final TextView actionTextView
-    )
-    {
-        if (booking.isPast())
-        {
+    ) {
+        if (booking.isPast()) {
             actionTextView.setVisibility(View.GONE);
             return;
         }
         actionTextView.setVisibility(View.VISIBLE);
         actionTextView.setText(R.string.edit);
-        actionTextView.setOnClickListener(new View.OnClickListener()
-        {
+        actionTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 onActionClick();
             }
         });
@@ -78,30 +71,25 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
      * @param user
      */
     @Override
-    public void updateDisplay(Booking booking, User user)
-    {
+    public void updateDisplay(Booking booking, User user) {
         super.updateDisplay(booking, user);
 
         boolean showSection = false;
 
-        if (hasRequestedInstructions())
-        {
+        if (hasRequestedInstructions()) {
             showSection = true;
             populatePreferencesInSection();
         }
 
-        if (!TextUtils.isEmpty(booking.getProNote()))
-        {
+        if (!TextUtils.isEmpty(booking.getProNote())) {
             showSection = true;
             addNoteToSection(booking.getProNote());
         }
 
-        if (showSection)
-        {
+        if (showSection) {
             getSectionView().getEntryText().setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             getSectionView().getEntryText().setVisibility(View.GONE);
         }
     }
@@ -111,20 +99,20 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
      * if that preference is "requested"
      * Assumes there are instructions to be displayed.
      */
-    private void populatePreferencesInSection()
-    {
+    private void populatePreferencesInSection() {
         final List<BookingInstruction> bookingInstructions =
                 booking.getInstructions().getBookingInstructions();
         preferencesSection.removeAllViews();
-        for (int i = 0; i < bookingInstructions.size(); i++)
-        {
+        for (int i = 0; i < bookingInstructions.size(); i++) {
             final BookingInstruction preference = bookingInstructions.get(i);
 
-            if (preference.getIsRequested())
-            {
+            if (preference.getIsRequested()) {
                 BookingDetailSectionImageItemView itemView =
                         (BookingDetailSectionImageItemView) getActivity().getLayoutInflater()
-                                .inflate(R.layout.layout_section_image_item, null);
+                                                                         .inflate(
+                                                                                 R.layout.layout_section_image_item,
+                                                                                 null
+                                                                         );
 
                 itemView.updateDisplay(
                         preference.getImageResource(),
@@ -139,11 +127,10 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
         }
     }
 
-    private boolean hasInstructions()
-    {
+    private boolean hasInstructions() {
         return booking != null && booking.getInstructions() != null
-                && booking.getInstructions().getBookingInstructions() != null
-                && !booking.getInstructions().getBookingInstructions().isEmpty();
+               && booking.getInstructions().getBookingInstructions() != null
+               && !booking.getInstructions().getBookingInstructions().isEmpty();
     }
 
     /**
@@ -151,23 +138,18 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
      *
      * @return
      */
-    private boolean hasRequestedInstructions()
-    {
-        if (hasInstructions())
-        {
+    private boolean hasRequestedInstructions() {
+        if (hasInstructions()) {
 
-            for (BookingInstruction item : booking.getInstructions().getBookingInstructions())
-            {
-                if (item.getIsRequested())
-                {
+            for (BookingInstruction item : booking.getInstructions().getBookingInstructions()) {
+                if (item.getIsRequested()) {
                     return true;
                 }
             }
 
             return false;
         }
-        else
-        {
+        else {
             return false;
         }
     }
@@ -177,24 +159,27 @@ public class BookingDetailSectionFragmentPreferences extends BookingDetailSectio
      *
      * @param note
      */
-    private void addNoteToSection(String note)
-    {
+    private void addNoteToSection(String note) {
 
-        if (hasRequestedInstructions())
-        {
-            getActivity().getLayoutInflater().inflate(R.layout.layout_section_separator_view_short, preferencesSection);
+        if (hasRequestedInstructions()) {
+            getActivity().getLayoutInflater()
+                         .inflate(R.layout.layout_section_separator_view_short, preferencesSection);
         }
 
         BookingDetailSectionImageItemView itemView = (BookingDetailSectionImageItemView)
                 getActivity().getLayoutInflater().inflate(R.layout.layout_section_image_item, null);
-        itemView.updateDisplay(R.drawable.ic_instruction_note, View.INVISIBLE, getString(R.string.note_to_pro),
-                BookingDetailSectionImageItemView.TextStyle.ITALICS, note);
+        itemView.updateDisplay(
+                R.drawable.ic_instruction_note,
+                View.INVISIBLE,
+                getString(R.string.note_to_pro),
+                BookingDetailSectionImageItemView.TextStyle.ITALICS,
+                note
+        );
 
         preferencesSection.addView(itemView);
     }
 
-    protected void onActionClick()
-    {
+    protected void onActionClick() {
         final Intent intent = new Intent(getActivity(), BookingEditPreferencesActivity.class);
         intent.putExtra(BundleKeys.BOOKING, this.booking);
         getParentFragment().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);

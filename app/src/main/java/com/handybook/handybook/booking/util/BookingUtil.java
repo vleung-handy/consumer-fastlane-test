@@ -29,8 +29,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by jtse on 2/17/16.
  */
-public class BookingUtil
-{
+public class BookingUtil {
 
     private static final String TAG = BookingUtil.class.getName();
 
@@ -39,8 +38,7 @@ public class BookingUtil
     private static final Map<String, Integer> SERVICE_OUTLINE_ICONS;
     private static final Map<String, Integer> PAST_SERVICE_ICONS;
 
-    static
-    {
+    static {
         SERVICE_ICONS = new HashMap<>();
         SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_cleaner_fill);
         SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_cleaner_fill);
@@ -50,26 +48,63 @@ public class BookingUtil
         SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_electrician_fill);
 
         SERVICE_OUTLINE_ICONS = new HashMap<>();
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_service_cleaning_outline_small);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_service_cleaning_outline_small);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_service_handyman_outline_small);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_service_painting_outline_small);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_service_plumbing_outline_small);
-        SERVICE_OUTLINE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_service_electrical_outline_small);
+        SERVICE_OUTLINE_ICONS.put(
+                Booking.SERVICE_HOME_CLEANING,
+                R.drawable.ic_service_cleaning_outline_small
+        );
+        SERVICE_OUTLINE_ICONS.put(
+                Booking.SERVICE_CLEANING,
+                R.drawable.ic_service_cleaning_outline_small
+        );
+        SERVICE_OUTLINE_ICONS.put(
+                Booking.SERVICE_HANDYMAN,
+                R.drawable.ic_service_handyman_outline_small
+        );
+        SERVICE_OUTLINE_ICONS.put(
+                Booking.SERVICE_PAINTING,
+                R.drawable.ic_service_painting_outline_small
+        );
+        SERVICE_OUTLINE_ICONS.put(
+                Booking.SERVICE_PLUMBING,
+                R.drawable.ic_service_plumbing_outline_small
+        );
+        SERVICE_OUTLINE_ICONS.put(
+                Booking.SERVICE_ELECTRICIAN,
+                R.drawable.ic_service_electrical_outline_small
+        );
 
         PAST_SERVICE_ICONS = new HashMap<>();
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_HOME_CLEANING, R.drawable.ic_service_cleaning_outline_gray_small);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_CLEANING, R.drawable.ic_service_cleaning_outline_gray_small);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_HANDYMAN, R.drawable.ic_service_handyman_outline_gray_small);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_PAINTING, R.drawable.ic_service_painting_outline_gray_small);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_PLUMBING, R.drawable.ic_service_plumbing_outline_gray_small);
-        PAST_SERVICE_ICONS.put(Booking.SERVICE_ELECTRICIAN, R.drawable.ic_service_electrical_outline_gray_small);
+        PAST_SERVICE_ICONS.put(
+                Booking.SERVICE_HOME_CLEANING,
+                R.drawable.ic_service_cleaning_outline_gray_small
+        );
+        PAST_SERVICE_ICONS.put(
+                Booking.SERVICE_CLEANING,
+                R.drawable.ic_service_cleaning_outline_gray_small
+        );
+        PAST_SERVICE_ICONS.put(
+                Booking.SERVICE_HANDYMAN,
+                R.drawable.ic_service_handyman_outline_gray_small
+        );
+        PAST_SERVICE_ICONS.put(
+                Booking.SERVICE_PAINTING,
+                R.drawable.ic_service_painting_outline_gray_small
+        );
+        PAST_SERVICE_ICONS.put(
+                Booking.SERVICE_PLUMBING,
+                R.drawable.ic_service_plumbing_outline_gray_small
+        );
+        PAST_SERVICE_ICONS.put(
+                Booking.SERVICE_ELECTRICIAN,
+                R.drawable.ic_service_electrical_outline_gray_small
+        );
     }
 
     private static final Integer DEFAULT_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_cleaner_fill;
-    private static final Integer DEFAULT_SERVICE_OUTLINE_ICON_RESOURCE_ID = R.drawable.ic_service_cleaning_outline_small;
-    private static final Integer DEFAULT_PAST_SERVICE_ICON_RESOURCE_ID = R.drawable.ic_service_cleaning_outline_gray_small;
-
+    private static final Integer DEFAULT_SERVICE_OUTLINE_ICON_RESOURCE_ID
+            = R.drawable.ic_service_cleaning_outline_small;
+    private static final Integer DEFAULT_PAST_SERVICE_ICON_RESOURCE_ID
+            = R.drawable.ic_service_cleaning_outline_gray_small;
 
     /**
      * Given a booking, this returns the parent service machine name. ie., if light_fixtures is passed in,
@@ -81,27 +116,20 @@ public class BookingUtil
      *
      * @deprecated - use getIconForService directly, as a booking should already include the parent service
      */
-    public static String findParentService(Booking booking, @Nonnull List<Service> services)
-    {
+    public static String findParentService(Booking booking, @Nonnull List<Service> services) {
 
         Service rootService = null;
 
-        for (Service service : services)
-        {
-            if (service.getUniq().equalsIgnoreCase(booking.getServiceMachineName()))
-            {
+        for (Service service : services) {
+            if (service.getUniq().equalsIgnoreCase(booking.getServiceMachineName())) {
                 rootService = service;
                 break;
             }
-            else
-            {
-                if (service.getChildServices() != null)
-                {
-                    for (Service s : service.getChildServices())
-                    {
+            else {
+                if (service.getChildServices() != null) {
+                    for (Service s : service.getChildServices()) {
                         Service match = findMatchingService(s, booking.getServiceMachineName());
-                        if (match != null)
-                        {
+                        if (match != null) {
                             rootService = service;
                             break;
                         }
@@ -110,13 +138,15 @@ public class BookingUtil
             }
         }
 
-        if (rootService == null)
-        {
-            Log.e(TAG, "This shouldn't happen, no service was found that matches the incoming booking: " + booking.getServiceMachineName());
+        if (rootService == null) {
+            Log.e(
+                    TAG,
+                    "This shouldn't happen, no service was found that matches the incoming booking: " +
+                    booking.getServiceMachineName()
+            );
             return null;
         }
-        else
-        {
+        else {
             return rootService.getUniq();
         }
     }
@@ -127,21 +157,15 @@ public class BookingUtil
      * @param nameToMatch
      * @return
      */
-    public static Service findMatchingService(Service service, String nameToMatch)
-    {
-        if (service.getUniq().equalsIgnoreCase(nameToMatch))
-        {
+    public static Service findMatchingService(Service service, String nameToMatch) {
+        if (service.getUniq().equalsIgnoreCase(nameToMatch)) {
             return service;
         }
-        else
-        {
-            if (service.getChildServices() != null)
-            {
-                for (Service s : service.getChildServices())
-                {
+        else {
+            if (service.getChildServices() != null) {
+                for (Service s : service.getChildServices()) {
                     Service match = findMatchingService(s, nameToMatch);
-                    if (match != null)
-                    {
+                    if (match != null) {
                         return match;
                     }
                 }
@@ -156,8 +180,8 @@ public class BookingUtil
     public static final SimpleDateFormat SUBTITLE_DATE_FORMAT = DateTimeUtils.CLOCK_FORMATTER_12HR;
     public static final int MINUTES_PER_HOUR = 60;
 
-    public enum IconType
-    {
+
+    public enum IconType {
         FILL, OUTLINE, GRAY
     }
 
@@ -168,8 +192,7 @@ public class BookingUtil
      * @param context
      * @return
      */
-    public static String getSubtitle(Booking booking, Context context)
-    {
+    public static String getSubtitle(Booking booking, Context context) {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
         final String startDate = StringUtils.toLowerCase(DateTimeUtils.formatDate(
                 booking.getStartDate(),
@@ -179,13 +202,17 @@ public class BookingUtil
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(booking.getStartDate());
-        cal.add(Calendar.MINUTE, Math.round(booking.getHours() * MINUTES_PER_HOUR)); // adds booking duration
+        cal.add(
+                Calendar.MINUTE,
+                Math.round(booking.getHours() * MINUTES_PER_HOUR)
+        ); // adds booking duration
         final Date endDate = cal.getTime();
 
         //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String end = StringUtils.toLowerCase(DateTimeUtils.formatDate(endDate,
-                                                                            SUBTITLE_DATE_FORMAT,
-                                                                            booking.getBookingTimezone()
+        final String end = StringUtils.toLowerCase(DateTimeUtils.formatDate(
+                endDate,
+                SUBTITLE_DATE_FORMAT,
+                booking.getBookingTimezone()
         ));
 
         return context.getString(
@@ -198,10 +225,9 @@ public class BookingUtil
     /*
     formats: "3.5 hours", "1 hour"
      */
-    public static String getNumHoursDisplayString(float hours, Context context)
-    {
+    public static String getNumHoursDisplayString(float hours, Context context) {
         return TextUtils.formatDecimal(hours, "#.#") + " "
-                + context.getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
+               + context.getResources().getQuantityString(R.plurals.hour, (int) Math.ceil(hours));
 
     }
 
@@ -219,14 +245,11 @@ public class BookingUtil
             Booking booking,
             Context context,
             boolean bookingHoursClarificationExperimentEnabled
-    )
-    {
-        if (bookingHoursClarificationExperimentEnabled)
-        {
+    ) {
+        if (bookingHoursClarificationExperimentEnabled) {
             return getSubtitleForHoursClarificationExperiment(booking, context);
         }
-        else
-        {
+        else {
             return getSubtitle(booking, context);
         }
     }
@@ -241,8 +264,7 @@ public class BookingUtil
     public static String getSubtitleForHoursClarificationExperiment(
             Booking booking,
             Context context
-    )
-    {
+    ) {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
         final String startTime = StringUtils.toLowerCase(DateTimeUtils.formatDate(
                 booking.getStartDate(),
@@ -265,8 +287,7 @@ public class BookingUtil
      * @param booking
      * @return
      */
-    public static String getTitle(Booking booking)
-    {
+    public static String getTitle(Booking booking) {
         return TextUtils.formatDate(booking.getStartDate(), TITLE_DATE_FORMAT);
     }
 
@@ -276,10 +297,9 @@ public class BookingUtil
      * @param rb
      * @return
      */
-    public static String getRecurrenceSubTitle(RecurringBooking rb)
-    {
+    public static String getRecurrenceSubTitle(RecurringBooking rb) {
         return DateTimeUtils.getDayShortMonthDay(rb.getDateStart()) + " @ "
-                + DateTimeUtils.getTime(rb.getDateStart());
+               + DateTimeUtils.getTime(rb.getDateStart());
     }
 
     /**
@@ -288,49 +308,40 @@ public class BookingUtil
      * @param rb
      * @return
      */
-    public static String getRecurrenceSubTitle2(RecurringBooking rb)
-    {
+    public static String getRecurrenceSubTitle2(RecurringBooking rb) {
         return DateTimeUtils.getTime(rb.getDateStart()) + " - " + rb.getHours() + " hours";
     }
 
-    public static Integer getIconForService(Booking booking, IconType iconType)
-    {
+    public static Integer getIconForService(Booking booking, IconType iconType) {
         //if the service is a painting, then we have a special case, and we want to show the
         //painting icon. Otherwise, we'll go on and fetch the correct icon.
         String serviceMachineName = booking.getServiceMachineName();
-        if (!serviceMachineName.equalsIgnoreCase("painting"))
-        {
+        if (!serviceMachineName.equalsIgnoreCase("painting")) {
 
             BookingService service = booking.getService();
 
             //keep going deeper into the tree until there is no parent
-            while (service.getParent() != null)
-            {
+            while (service.getParent() != null) {
                 service = service.getParent();
             }
 
             serviceMachineName = service.getMachineName();
         }
 
-        if (!android.text.TextUtils.isEmpty(serviceMachineName))
-        {
-            switch (iconType)
-            {
+        if (!android.text.TextUtils.isEmpty(serviceMachineName)) {
+            switch (iconType) {
                 case FILL:
-                    if (SERVICE_ICONS.containsKey(serviceMachineName))
-                    {
+                    if (SERVICE_ICONS.containsKey(serviceMachineName)) {
                         return SERVICE_ICONS.get(serviceMachineName);
                     }
                     break;
                 case OUTLINE:
-                    if (SERVICE_OUTLINE_ICONS.containsKey(serviceMachineName))
-                    {
+                    if (SERVICE_OUTLINE_ICONS.containsKey(serviceMachineName)) {
                         return SERVICE_OUTLINE_ICONS.get(serviceMachineName);
                     }
                     break;
                 case GRAY:
-                    if (PAST_SERVICE_ICONS.containsKey(serviceMachineName))
-                    {
+                    if (PAST_SERVICE_ICONS.containsKey(serviceMachineName)) {
                         return PAST_SERVICE_ICONS.get(serviceMachineName);
                     }
                     break;
@@ -338,8 +349,7 @@ public class BookingUtil
         }
 
         //if it gets to this point, nothing was found, so return the default icons
-        switch (iconType)
-        {
+        switch (iconType) {
             case FILL:
                 return DEFAULT_SERVICE_ICON_RESOURCE_ID;
             case OUTLINE:
@@ -351,40 +361,43 @@ public class BookingUtil
         return DEFAULT_SERVICE_ICON_RESOURCE_ID;
     }
 
-    public static void callPhoneNumber(final String phoneNumber, Context context)
-    {
-        if (android.text.TextUtils.isEmpty(phoneNumber))
-        {
+    public static void callPhoneNumber(final String phoneNumber, Context context) {
+        if (android.text.TextUtils.isEmpty(phoneNumber)) {
             return;
         }
 
-        try
-        {
-            Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("tel", phoneNumber, null)), context);
+        try {
+            Utils.safeLaunchIntent(new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.fromParts("tel", phoneNumber, null)
+            ), context);
         }
-        catch (ActivityNotFoundException activityException)
-        {
-            Crashlytics.logException(new RuntimeException("Calling a Phone Number failed", activityException));
+        catch (ActivityNotFoundException activityException) {
+            Crashlytics.logException(new RuntimeException(
+                    "Calling a Phone Number failed",
+                    activityException
+            ));
         }
     }
 
-    public static void textPhoneNumber(final String phoneNumber, Context context)
-    {
-        if (phoneNumber == null || phoneNumber.isEmpty())
-        {
+    public static void textPhoneNumber(final String phoneNumber, Context context) {
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
             return;
         }
 
-        try
-        {
-            Utils.safeLaunchIntent(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null)), context);
+        try {
+            Utils.safeLaunchIntent(new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.fromParts("sms", phoneNumber, null)
+            ), context);
         }
-        catch (ActivityNotFoundException activityException)
-        {
-            Crashlytics.logException(new RuntimeException("Texting a Phone Number failed", activityException));
+        catch (ActivityNotFoundException activityException) {
+            Crashlytics.logException(new RuntimeException(
+                    "Texting a Phone Number failed",
+                    activityException
+            ));
         }
     }
-
 
 
 }

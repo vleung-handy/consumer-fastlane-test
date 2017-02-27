@@ -30,7 +30,7 @@ import android.content.Context;
  * @param <T> the element type
  */
 public class ArrayWheelAdapter<T> extends AbstractWheelTextAdapter {
-    
+
     // items
     private T items[];
 
@@ -41,11 +41,11 @@ public class ArrayWheelAdapter<T> extends AbstractWheelTextAdapter {
      */
     public ArrayWheelAdapter(Context context, T items[]) {
         super(context);
-        
+
         //setEmptyItemResource(TEXT_VIEW_ITEM_RESOURCE);
         this.items = items;
     }
-    
+
     @Override
     public CharSequence getItemText(int index) {
         if (index >= 0 && index < items.length) {

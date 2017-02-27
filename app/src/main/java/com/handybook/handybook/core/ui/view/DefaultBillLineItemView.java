@@ -16,8 +16,8 @@ import butterknife.Bind;
 /***
  * Standard issue line item in BillSectionView, small title small value
  */
-public class DefaultBillLineItemView extends AbstractBillLineItemView
-{
+public class DefaultBillLineItemView extends AbstractBillLineItemView {
+
     private static final String TAG = "DefaultBillLineItemView";
 
     @Bind(R.id.bill_view_default_line_item_label)
@@ -27,20 +27,16 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
     @Bind(R.id.bill_view_default_line_item_amount)
     TextView mAmount;
 
-    public DefaultBillLineItemView(final Context context)
-    {
+    public DefaultBillLineItemView(final Context context) {
         super(context);
     }
 
-    protected int getLayout()
-    {
+    protected int getLayout() {
         return R.layout.layout_bill_view_line_item_default;
     }
 
-    protected void update()
-    {
-        if (getBillLineItem() == null)
-        {
+    protected void update() {
+        if (getBillLineItem() == null) {
             getRootView().setVisibility(GONE);
             return;
         }
@@ -52,49 +48,40 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
         mAmount.setId(hashCode());
     }
 
-    private void updateLabel()
-    {
+    private void updateLabel() {
         mLabel.setText(getBillLineItem().getLabel());
     }
 
-    private void updatePrice()
-    {
+    private void updatePrice() {
         assert getBillLineItem() != null;
         final Integer amountCents = getBillLineItem().getAmountCents();
         final String amountText;
-        if (getBillLineItem().hasAmountText() || amountCents == null)
-        {
+        if (getBillLineItem().hasAmountText() || amountCents == null) {
             amountText = getBillLineItem().getAmountText();
         }
-        else
-        {
+        else {
             amountText = TextUtils.formatPriceCents(amountCents, getCurrencySymbol());
         }
 
         mAmount.setText(amountText);
     }
 
-    private void updateHelpText()
-    {
-        if (getBillLineItem().hasHelpText())
-        {
+    private void updateHelpText() {
+        if (getBillLineItem().hasHelpText()) {
             mQuestionMarkImage.setVisibility(VISIBLE);
             getRootView().setOnClickListener(
-                    new OnClickListener()
-                    {
+                    new OnClickListener() {
                         @Override
-                        public void onClick(final View v)
-                        {
-                            final BaseActivity baseActivity = BaseActivity.getInstance(getContext());
-                            if (baseActivity == null)
-                            {
+                        public void onClick(final View v) {
+                            final BaseActivity baseActivity
+                                    = BaseActivity.getInstance(getContext());
+                            if (baseActivity == null) {
                                 return;
                             }
                             final FragmentManager fm = baseActivity.getSupportFragmentManager();
                             if (fm.findFragmentByTag(
                                     BookingDetailSectionPaymentView.PriceLineHelpTextDialog.TAG
-                            ) == null)
-                            {
+                            ) == null) {
                                 BookingDetailSectionPaymentView.PriceLineHelpTextDialog
                                         .newInstance(getBillLineItem().getHelpText())
                                         .show(
@@ -108,8 +95,7 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView
             );
 
         }
-        else
-        {
+        else {
             mQuestionMarkImage.setVisibility(GONE);
             getRootView().setOnClickListener(null);
         }

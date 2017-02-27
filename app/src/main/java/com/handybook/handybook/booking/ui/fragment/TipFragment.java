@@ -24,8 +24,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TipFragment extends Fragment
-{
+public class TipFragment extends Fragment {
+
     static final String EXTRA_DEFAULT_TIP_AMOUNTS = "com.handy.handy.EXTRA_DEFAULT_TIP_AMOUNTS";
     static final String EXTRA_CURRENCY_CHAR = "com.handy.handy.EXTRA_CURRENCY_CHAR";
 
@@ -47,8 +47,7 @@ public class TipFragment extends Fragment
     public static TipFragment newInstance(
             final ArrayList<LocalizedMonetaryAmount> defaultTipAmounts,
             String mCurrencyChar
-    )
-    {
+    ) {
         TipFragment tipFragment = new TipFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS, defaultTipAmounts);
@@ -58,13 +57,17 @@ public class TipFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
-    {
+    public View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_tip, container, false);
         ButterKnife.bind(this, view);
 
-        ArrayList<LocalizedMonetaryAmount> defaultTipAmounts = getArguments().getParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS);
+        ArrayList<LocalizedMonetaryAmount> defaultTipAmounts
+                = getArguments().getParcelableArrayList(EXTRA_DEFAULT_TIP_AMOUNTS);
         String currencyChar = getArguments().getString(EXTRA_CURRENCY_CHAR);
         updateTipAmountDisplay(defaultTipAmounts, currencyChar);
 
@@ -73,28 +76,22 @@ public class TipFragment extends Fragment
         return view;
     }
 
-    public Integer getTipAmount()
-    {
-        if (mSendTipAmount)
-        {
+    public Integer getTipAmount() {
+        if (mSendTipAmount) {
             return mCustomTipSelected ? getCustomTipAmount() : mTipAmount;
         }
-        else
-        {
+        else {
             return null;
         }
     }
 
-    private Integer getCustomTipAmount()
-    {
+    private Integer getCustomTipAmount() {
         float customTipAmount = 0;
         String customTipAmountText = mCustomTipAmountText.getText().toString();
-        try
-        {
+        try {
             customTipAmount = Float.parseFloat(customTipAmountText);
         }
-        catch (NumberFormatException e)
-        {
+        catch (NumberFormatException e) {
             //the user entered invalid characters or empty string
             Crashlytics.logException(e);
             //TODO: display an error message to user
@@ -102,33 +99,31 @@ public class TipFragment extends Fragment
         return Utils.convertToCents(customTipAmount);
     }
 
-    private void setTipAmount(final int tipAmount)
-    {
+    private void setTipAmount(final int tipAmount) {
         mTipAmount = tipAmount;
     }
 
-    private void setSendTipAmount(final boolean sendTipAmount)
-    {
+    private void setSendTipAmount(final boolean sendTipAmount) {
         mSendTipAmount = sendTipAmount;
     }
 
-    private void setCustomTipSelected(final boolean customTipSelected)
-    {
+    private void setCustomTipSelected(final boolean customTipSelected) {
         mCustomTipSelected = customTipSelected;
     }
 
     private void updateTipAmountDisplay(
             final List<LocalizedMonetaryAmount> defaultTipAmounts,
             String currencyChar
-    )
-    {
+    ) {
         mTvTipAmount.setText(getString(R.string.tip_amount) + " " + currencyChar);
-        if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty())
-        {
-            for (LocalizedMonetaryAmount amount : defaultTipAmounts)
-            {
+        if (defaultTipAmounts != null && !defaultTipAmounts.isEmpty()) {
+            for (LocalizedMonetaryAmount amount : defaultTipAmounts) {
                 RadioButton radioButton = (RadioButton) getActivity().getLayoutInflater()
-                        .inflate(R.layout.view_tip_toggle, mTipAmountRadioGroup, false);
+                                                                     .inflate(
+                                                                             R.layout.view_tip_toggle,
+                                                                             mTipAmountRadioGroup,
+                                                                             false
+                                                                     );
                 radioButton.setText(amount.getDisplayAmount());
 
                 mTipAmountRadioGroup.addView(radioButton, mTipAmountRadioGroup.getChildCount() - 1);
@@ -138,54 +133,47 @@ public class TipFragment extends Fragment
         }
     }
 
-    private void initTipListeners()
-    {
-        mTipAmountRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(RadioGroup rGroup, int checkedId)
-            {
+    private void initTipListeners() {
+        mTipAmountRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup rGroup, int checkedId) {
                 RadioButton checkedRadioButton = (RadioButton) rGroup.findViewById(checkedId);
 
-                if (mRadioButtonToTipAmount.containsKey(checkedRadioButton))
-                {
+                if (mRadioButtonToTipAmount.containsKey(checkedRadioButton)) {
                     setTipAmount(mRadioButtonToTipAmount.get(checkedRadioButton));
                     setSendTipAmount(true);
                     setCustomTipSelected(false);
                     mCustomTipAmountWrapperLayout.setVisibility(View.GONE);
                 }
-                else if (pickedOtherAmount(checkedRadioButton, rGroup))
-                {
+                else if (pickedOtherAmount(checkedRadioButton, rGroup)) {
                     setTipAmount(0);
                     setSendTipAmount(true);
                     setCustomTipSelected(true);
                     mCustomTipAmountWrapperLayout.setVisibility(View.VISIBLE);
                     mCustomTipAmountWrapperLayout.requestFocus();
                 }
-                else
-                {
+                else {
                     setCustomTipSelected(false);
                     setSendTipAmount(false);
                     mCustomTipAmountWrapperLayout.setVisibility(View.GONE);
                 }
             }
 
-            private boolean pickedOtherAmount(final RadioButton checkedRadioButton, final RadioGroup radioGroup)
-            {
-                return checkedRadioButton.getId() == radioGroup.getChildAt(radioGroup.getChildCount() - 1).getId();
+            private boolean pickedOtherAmount(
+                    final RadioButton checkedRadioButton,
+                    final RadioGroup radioGroup
+            ) {
+                return checkedRadioButton.getId() ==
+                       radioGroup.getChildAt(radioGroup.getChildCount() - 1).getId();
             }
         });
 
-        mCustomTipAmountText.setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
+        mCustomTipAmountText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus)
-            {
-                if (hasFocus)
-                {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
                     Utils.showSoftKeyboard(getActivity(), v);
                 }
-                else
-                {
+                else {
                     Utils.hideSoftKeyboard(getActivity(), v);
                 }
             }

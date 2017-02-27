@@ -10,28 +10,23 @@ import org.robolectric.shadows.ShadowLooper;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class MainBusTest extends RobolectricGradleTestWrapper
-{
+public class MainBusTest extends RobolectricGradleTestWrapper {
+
     @Test
-    public void testForceRegistrationOnMainLooper() throws Exception
-    {
+    public void testForceRegistrationOnMainLooper() throws Exception {
         final MainBus bus = new MainBus();
         final boolean[] eventTriggered = {false};
-        final Object object = new Object()
-        {
+        final Object object = new Object() {
             @Subscribe
-            public void triggerEvent(HelpEvent.RequestHelpNode event)
-            {
+            public void triggerEvent(HelpEvent.RequestHelpNode event) {
                 eventTriggered[0] = true;
             }
         };
 
         // register on bus outside of the main looper
-        Thread newThread = new Thread(new Runnable()
-        {
+        Thread newThread = new Thread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 bus.register(object); // assumes the same bus is shared between threads
             }
         });

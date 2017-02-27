@@ -59,8 +59,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingDetailFragment extends InjectedFragment implements PopupMenu.OnMenuItemClickListener
-{
+public final class BookingDetailFragment extends InjectedFragment
+        implements PopupMenu.OnMenuItemClickListener {
+
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
     private static final String STATE_SERVICES = "STATE_SERVICES";
 
@@ -84,8 +85,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     public static BookingDetailFragment newInstance(
             final Booking booking,
             final boolean isFromBookingFlow
-    )
-    {
+    ) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
@@ -97,8 +97,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     public static BookingDetailFragment newInstance(
             final String bookingId,
             final boolean isFromBookingFlow
-    )
-    {
+    ) {
         final BookingDetailFragment fragment = new BookingDetailFragment();
         final Bundle args = new Bundle();
         args.putString(BundleKeys.BOOKING_ID, bookingId);
@@ -108,17 +107,14 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mBookingId = getArguments().getString(BundleKeys.BOOKING_ID);
         mIsFromBookingFlow = getArguments().getBoolean(BundleKeys.IS_FROM_BOOKING_FLOW, false);
 
-        if (savedInstanceState != null)
-        {
-            if (savedInstanceState.getBoolean(STATE_UPDATED_BOOKING))
-            {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(STATE_UPDATED_BOOKING)) {
                 setUpdatedBookingResult();
             }
 
@@ -131,36 +127,30 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(R.layout.fragment_booking_detail, container, false);
         ButterKnife.bind(this, view);
-        if (mBooking != null)
-        {
+        if (mBooking != null) {
             setupForBooking(mBooking);
         }
         return view;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        if (mBooking == null)
-        {
+        if (mBooking == null) {
             showUiBlockers();
             bus.post(new BookingEvent.RequestBookingDetails(mBookingId));
         }
 
-        if (mServices == null)
-        {
+        if (mServices == null) {
             bus.post(new BookingEvent.RequestCachedServices());
         }
 
         bus.post(new ConfigurationEvent.RequestConfiguration());
 
-        if (mIsFromBookingFlow)
-        {
+        if (mIsFromBookingFlow) {
             bus.post(new ReferralsEvent.RequestPrepareReferrals(
                     true,
                     ReferralsManager.Source.POST_BOOKING
@@ -169,8 +159,7 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.panic_menu, menu);
     }
 
@@ -179,22 +168,19 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
             final int requestCode,
             final int resultCode,
             final Intent data
-    )
-    {
+    ) {
         super.onActivityResult(requestCode, resultCode, data);
 
         //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
-        if (requestCode == ActivityResult.RESCHEDULE_NEW_DATE && resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
-        {
+        if (requestCode == ActivityResult.RESCHEDULE_NEW_DATE &&
+            resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
             postBlockingEvent(new BookingEvent.RequestBookingDetails(mBooking.getId()));
         }
-        else if (resultCode == ActivityResult.BOOKING_CANCELED)
-        {
+        else if (resultCode == ActivityResult.BOOKING_CANCELED) {
             setCanceledBookingResult();
             getActivity().onBackPressed();
         }
-        else if (resultCode == ActivityResult.BOOKING_UPDATED)
-        {
+        else if (resultCode == ActivityResult.BOOKING_UPDATED) {
             //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
             postBlockingEvent(new BookingEvent.RequestBookingDetails(mBooking.getId()));
             //setting the updated result with the new booking when we receive the new booking data
@@ -202,24 +188,21 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
+    public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_UPDATED_BOOKING, mBookingUpdated);
         outState.putSerializable(STATE_SERVICES, mServices);
     }
 
     @Override
-    protected void disableInputs()
-    {
+    protected void disableInputs() {
         super.disableInputs();
         mBookingDetailView.backButton.setClickable(false);
         setSectionFragmentInputsEnabled(false);
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mBookingDetailView.backButton.setClickable(true);
         setSectionFragmentInputsEnabled(true);
@@ -227,34 +210,29 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     // expose to child fragment
     @Override
-    public void showUiBlockers()
-    {
+    public void showUiBlockers() {
         super.showUiBlockers();
     }
 
     // expose to child fragment
     @Override
-    public void removeUiBlockers()
-    {
+    public void removeUiBlockers() {
         super.removeUiBlockers();
     }
 
     @OnClick(R.id.nav_help)
-    void onHelpClicked(final View view)
-    {
+    void onHelpClicked(final View view) {
         PopupMenu popup = new PopupMenu(getActivity(), view);
         popup.getMenuInflater().inflate(R.menu.panic_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         popup.show();
     }
 
-    private void setSectionFragmentInputsEnabled(boolean enabled)
-    {
+    private void setSectionFragmentInputsEnabled(boolean enabled) {
         bus.post(new BookingEvent.SetBookingDetailSectionFragmentActionControlsEnabled(enabled));
     }
 
-    private void setupForBooking(Booking booking)
-    {
+    private void setupForBooking(Booking booking) {
         mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.GONE);
         mBookingDetailView.updateDisplay(
                 booking,
@@ -262,18 +240,14 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                 mConfigurationManager.getPersistentConfiguration()
                                      .isBookingHoursClarificationExperimentEnabled()
         );
-        mBookingDetailView.updateReportIssueButton(mBooking, new View.OnClickListener()
-        {
+        mBookingDetailView.updateReportIssueButton(mBooking, new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 dataManager.getBookingMilestones(
                         mBooking.getId(),
-                        new FragmentSafeCallback<JobStatus>(BookingDetailFragment.this)
-                        {
+                        new FragmentSafeCallback<JobStatus>(BookingDetailFragment.this) {
                             @Override
-                            public void onCallbackSuccess(JobStatus status)
-                            {
+                            public void onCallbackSuccess(JobStatus status) {
                                 Intent intent = new Intent(
                                         getContext(),
                                         ReportIssueActivity.class
@@ -286,20 +260,18 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
                                         BundleKeys.PRO_JOB_STATUS,
                                         status
                                 );
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
-                                                        Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                                Intent.FLAG_ACTIVITY_NEW_TASK |
+                                                Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }
 
                             @Override
-                            public void onCallbackError(final DataManager.DataManagerError error)
-                            {
-                                if (!Strings.isNullOrEmpty(error.getMessage()))
-                                {
+                            public void onCallbackError(final DataManager.DataManagerError error) {
+                                if (!Strings.isNullOrEmpty(error.getMessage())) {
                                     showToast(error.getMessage());
                                 }
-                                else
-                                {
+                                else {
                                     showToast(R.string.an_error_has_occurred);
                                 }
                             }
@@ -311,14 +283,12 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         addSectionFragments();
     }
 
-    private void setupClickListeners()
-    {
+    private void setupClickListeners() {
         mBookingDetailView.backButton.setOnClickListener(backButtonClicked);
     }
 
     //Section fragments to display, In display order
-    protected List<BookingDetailSectionFragment> constructSectionFragments()
-    {
+    protected List<BookingDetailSectionFragment> constructSectionFragments() {
         return Lists.newArrayList(
                 new BookingDetailSectionFragmentProInformation(),
                 new BookingDetailSectionFragmentLaundry(),
@@ -331,16 +301,14 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         );
     }
 
-    private void addSectionFragments()
-    {
+    private void addSectionFragments() {
         clearSectionFragments();
 
         List<BookingDetailSectionFragment> sectionFragments = constructSectionFragments();
 
         // TODO: using fragment here is a over kill. We should be using views
         //These are fragments nested inside this fragment, must use getChildFragmentManager instead of getFragmentManager
-        for (BookingDetailSectionFragment sectionFragment : sectionFragments)
-        {
+        for (BookingDetailSectionFragment sectionFragment : sectionFragments) {
             //Normally we would bundle all of these adds into one transaction but there is a bug
             //  with the fragment manager which displays them in reverse order if fragments were just cleared
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -353,17 +321,13 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
 
     }
 
-    private void clearSectionFragments()
-    {
+    private void clearSectionFragments() {
         //Remove all of the child fragments for this fragment
         List<Fragment> childFragments = getChildFragmentManager().getFragments();
-        if (childFragments != null && childFragments.size() > 0)
-        {
+        if (childFragments != null && childFragments.size() > 0) {
             FragmentTransaction removalTransaction = getChildFragmentManager().beginTransaction();
-            for (Fragment frag : childFragments)
-            {
-                if (!(frag == null || frag.isDetached() || frag.isRemoving()))
-                {
+            for (Fragment frag : childFragments) {
+                if (!(frag == null || frag.isDetached() || frag.isRemoving())) {
                     removalTransaction.remove(frag);
                 }
             }
@@ -372,11 +336,9 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     //The on screen back button works as the softkey back button
-    private View.OnClickListener backButtonClicked = new View.OnClickListener()
-    {
+    private View.OnClickListener backButtonClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
+        public void onClick(final View v) {
             getActivity().onBackPressed();
         }
     };
@@ -387,15 +349,13 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
      * @param event
      */
     @Subscribe
-    public void onReceiveCachedServicesSuccess(BookingEvent.ReceiveCachedServicesSuccess event)
-    {
+    public void onReceiveCachedServicesSuccess(BookingEvent.ReceiveCachedServicesSuccess event) {
         mServices = (ArrayList<Service>) event.getServices();
         mBookingDetailView.updateServiceIcon(mBooking, mServices);
     }
 
     @Subscribe
-    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event)
-    {
+    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event) {
         removeUiBlockers();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
@@ -407,32 +367,26 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event)
-    {
-        if (mRescheduleType != null && mRescheduleType == RescheduleType.FROM_CANCELATION)
-        {
+    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event) {
+        if (mRescheduleType != null && mRescheduleType == RescheduleType.FROM_CANCELATION) {
             //if this reschedule event was originated from a cancelation, and it fails, then we
             //should just go forward with the cancelation
             bus.post(new BookingEvent.RequestBookingCancellationData(mBooking.getId()));
         }
-        else
-        {
+        else {
             removeUiBlockers();
             dataManagerErrorHandler.handleError(getActivity(), event.error);
         }
     }
 
-    public void onRescheduleClicked()
-    {
+    public void onRescheduleClicked() {
         if (!mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled()
-                || mCategory == null
-                || mCategory.getPreferred() == null
-                || mCategory.getPreferred().isEmpty())
-        {
+            || mCategory == null
+            || mCategory.getPreferred() == null
+            || mCategory.getPreferred().isEmpty()) {
             bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         }
-        else
-        {
+        else {
             Intent intent = new Intent(getContext(), ProTeamPerBookingActivity.class);
             intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mCategory);
             intent.putExtra(BundleKeys.BOOKING, mBooking);
@@ -441,25 +395,21 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceiveBookingProTeamSuccess(final ProTeamEvent.ReceiveBookingProTeamSuccess event)
-    {
+    public void onReceiveBookingProTeamSuccess(final ProTeamEvent.ReceiveBookingProTeamSuccess event) {
         mCategory = event.getProTeamCategory();
     }
 
     @Subscribe
     public void onReceiveConfigurationSuccess(
             final ConfigurationEvent.ReceiveConfigurationSuccess event
-    )
-    {
-        if (event != null)
-        {
+    ) {
+        if (event != null) {
             mConfiguration = event.getConfiguration();
         }
     }
 
     @Subscribe
-    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceiveBookingCancellationDataSuccess event)
-    {
+    public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceiveBookingCancellationDataSuccess event) {
         removeUiBlockers();
 
         BookingCancellationData bcd = event.result;
@@ -471,15 +421,13 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceivePreCancellationInfoError(BookingEvent.ReceiveBookingCancellationDataError event)
-    {
+    public void onReceivePreCancellationInfoError(BookingEvent.ReceiveBookingCancellationDataError event) {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @Subscribe
-    public void onReceiveBookingDetailsSuccess(BookingEvent.ReceiveBookingDetailsSuccess event)
-    {
+    public void onReceiveBookingDetailsSuccess(BookingEvent.ReceiveBookingDetailsSuccess event) {
         removeUiBlockers();
 
         mBooking = event.booking;
@@ -489,30 +437,26 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Subscribe
-    public void onReceiveBookingDetailsError(BookingEvent.ReceiveBookingDetailsError event)
-    {
+    public void onReceiveBookingDetailsError(BookingEvent.ReceiveBookingDetailsError event) {
         removeUiBlockers();
 
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private void setUpdatedBookingResult()
-    {
+    private void setUpdatedBookingResult() {
         mBookingUpdated = true;
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.UPDATED_BOOKING, mBooking);
         getActivity().setResult(ActivityResult.BOOKING_UPDATED, intent);
     }
 
-    private void setCanceledBookingResult()
-    {
+    private void setCanceledBookingResult() {
         final Intent intent = new Intent();
         intent.putExtra(BundleKeys.CANCELLED_BOOKING, mBooking);
         getActivity().setResult(ActivityResult.BOOKING_CANCELED, intent);
     }
 
-    private boolean shouldShowPanicButtons(final Booking booking)
-    {
+    private boolean shouldShowPanicButtons(final Booking booking) {
         if (booking == null) {return false;}
         final Date now = new Date();
 
@@ -527,11 +471,9 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
     }
 
     @Override
-    public boolean onMenuItemClick(final MenuItem item)
-    {
+    public boolean onMenuItemClick(final MenuItem item) {
         int id = item.getItemId();
-        switch (id)
-        {
+        switch (id) {
             case R.id.menu_panic_cancel:
                 startActivity(HelpActivity.DeepLink.CANCEL.getIntent(getActivity()));
                 break;
@@ -549,18 +491,15 @@ public final class BookingDetailFragment extends InjectedFragment implements Pop
         return true;
     }
 
-    public Configuration getConfiguration()
-    {
+    public Configuration getConfiguration() {
         return mConfiguration;
     }
 
-    public void setRescheduleType(final RescheduleType rescheduleType)
-    {
+    public void setRescheduleType(final RescheduleType rescheduleType) {
         mRescheduleType = rescheduleType;
     }
 
-    public enum RescheduleType
-    {
+    public enum RescheduleType {
         NORMAL, FROM_CANCELATION, FROM_CHAT
     }
 }

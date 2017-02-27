@@ -27,8 +27,8 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingAddressFragment extends BookingFlowFragment
-{
+public final class BookingAddressFragment extends BookingFlowFragment {
+
     @Bind(R.id.booking_address_main_container)
     View mMainContainer;
     @Bind(R.id.next_button)
@@ -44,14 +44,12 @@ public final class BookingAddressFragment extends BookingFlowFragment
 
     AutoCompleteAddressFragment mAutoCompleteFragment;
 
-    public static BookingAddressFragment newInstance()
-    {
+    public static BookingAddressFragment newInstance() {
         return new BookingAddressFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressShownLog()));
     }
@@ -60,8 +58,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity()
                 .getLayoutInflater()
                 .inflate(
@@ -75,21 +72,18 @@ public final class BookingAddressFragment extends BookingFlowFragment
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.booking_address_info_header_layout, header).commit();
         ZipValidationResponse.ZipArea filter = null;
-        if (bookingManager.getCurrentRequest() != null)
-        {
+        if (bookingManager.getCurrentRequest() != null) {
             filter = bookingManager.getCurrentRequest().getZipArea();
         }
         final User user = userManager.getCurrentUser();
-        if (user != null)
-        {
+        if (user != null) {
             mTextFullName.setText(user.getFirstName() + " " + user.getLastName());
             mTextPhone.setCountryCode(user.getPhonePrefix());
             mTextPhone.setText(user.getPhone());
             mTextPhonePrefix.setText(user.getPhonePrefix());
 
             final User.Address addr = user.getAddress();
-            if (addr != null)
-            {
+            if (addr != null) {
                 mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                         filter,
                         addr.getAddress1(),
@@ -98,15 +92,13 @@ public final class BookingAddressFragment extends BookingFlowFragment
                 );
             }
         }
-        else
-        {
+        else {
             //user is not logged in.
             final String prefix = bookingManager.getCurrentQuote().getPhonePrefix();
             mTextPhone.setCountryCode(prefix);
             mTextPhonePrefix.setText(prefix);
         }
-        if (mAutoCompleteFragment == null)
-        {
+        if (mAutoCompleteFragment == null) {
             mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                     filter,
                     null,
@@ -122,8 +114,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
         return view;
     }
 
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         boolean validate = mAutoCompleteFragment.validateFields();
 
         if (!mTextFullName.validate()) { validate = false; }
@@ -131,13 +122,10 @@ public final class BookingAddressFragment extends BookingFlowFragment
         return validate;
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
-    {
+    private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View view)
-        {
-            if (validateFields())
-            {
+        public void onClick(final View view) {
+            if (validateFields()) {
 
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressSubmittedLog()));
                 final BookingTransaction transaction = bookingManager.getCurrentTransaction();
@@ -151,23 +139,19 @@ public final class BookingAddressFragment extends BookingFlowFragment
         }
     };
 
-    private void updateQuote()
-    {
+    private void updateQuote() {
         showUiBlockers();
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         dataManager.updateQuote(
                 transaction.getBookingId(),
                 transaction,
-                new FragmentSafeCallback<BookingQuote>(this)
-                {
+                new FragmentSafeCallback<BookingQuote>(this) {
                     @Override
-                    public void onCallbackSuccess(final BookingQuote newQuote)
-                    {
+                    public void onCallbackSuccess(final BookingQuote newQuote) {
                         removeUiBlockers();
                         transaction.setBookingId(newQuote.getBookingId());
 
-                        if (newQuote.getCoupon() != null)
-                        {
+                        if (newQuote.getCoupon() != null) {
                             /*
                             TODO for ugly promo code hotfix
                             for issue in which promo code not entered by user or deeplink
@@ -181,7 +165,8 @@ public final class BookingAddressFragment extends BookingFlowFragment
                             (it's only set to false on new quote or user manually enters a coupon)
                              */
                             boolean shouldPromoCodeBeHidden = transaction.getPromoCode() == null
-                                    || transaction.shouldPromoCodeBeHidden();
+                                                              ||
+                                                              transaction.shouldPromoCodeBeHidden();
                             transaction.setPromoCode(
                                     newQuote.getCoupon().getCode(),
                                     shouldPromoCodeBeHidden
@@ -195,8 +180,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         // Fail silently and proceed to payment screen without bill - Mngmnt.
                         removeUiBlockers();
                         startPaymentActivity();
@@ -205,8 +189,7 @@ public final class BookingAddressFragment extends BookingFlowFragment
         );
     }
 
-    private void startPaymentActivity()
-    {
+    private void startPaymentActivity() {
         final Intent intent = new Intent(getActivity(), BookingPaymentActivity.class);
         startActivity(intent);
     }

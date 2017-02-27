@@ -21,11 +21,11 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.PeakPriceInfo;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingHighDemandLog;
-import com.handybook.handybook.library.util.DateTimeUtils;
-import com.handybook.handybook.library.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,9 +33,10 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class PeakPricingFragment extends BookingFlowFragment
-{
-    static final String EXTRA_RESCHEDULE_PRICE_TABLE = "com.handy.handy.EXTRA_RESCHEDULE_PRICE_TABLE";
+public final class PeakPricingFragment extends BookingFlowFragment {
+
+    static final String EXTRA_RESCHEDULE_PRICE_TABLE
+            = "com.handy.handy.EXTRA_RESCHEDULE_PRICE_TABLE";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_ALL = "com.handy.handy.EXTRA_RESCHEDULE_ALL";
     static final String EXTRA_FOR_VOUCHER = "com.handy.handy.EXTRA_FOR_VOUCHER";
@@ -64,8 +65,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
     ImageView mArrowRight;
     private BookingTransaction mTransaction;
 
-    public static PeakPricingFragment newInstance(final boolean forVoucher)
-    {
+    public static PeakPricingFragment newInstance(final boolean forVoucher) {
         return newInstance(null, null, false, forVoucher);
     }
 
@@ -73,8 +73,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
             final ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable,
             final Booking rescheduleBooking,
             final boolean rescheduleAll
-    )
-    {
+    ) {
         return newInstance(reschedulePriceTable, rescheduleBooking, rescheduleAll, false);
     }
 
@@ -82,8 +81,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
             final ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable,
             final Booking rescheduleBooking,
             final boolean rescheduleAll, final boolean forVoucher
-    )
-    {
+    ) {
         final PeakPricingFragment fragment = new PeakPricingFragment();
         final Bundle args = new Bundle();
         args.putSerializable(EXTRA_RESCHEDULE_PRICE_TABLE, reschedulePriceTable);
@@ -95,38 +93,33 @@ public final class PeakPricingFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTransaction = bookingManager.getCurrentTransaction();
         final Bundle args = getArguments();
-        if (args != null)
-        {
+        if (args != null) {
             mPeakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
                     args.getSerializable(EXTRA_RESCHEDULE_PRICE_TABLE);
             mIsForVoucher = args.getBoolean(EXTRA_FOR_VOUCHER);
         }
-        if (mPeakPriceTable != null)
-        {
+        if (mPeakPriceTable != null) {
             mIsForReschedule = true;
             mBookingToReschedule = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
             mIsForRescheduleAll = getArguments().getBoolean(EXTRA_RESCHEDULE_ALL);
         }
-        else
-        {
+        else {
             mPeakPriceTable = bookingManager.getCurrentQuote().getPeakPriceTable();
         }
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             mPeakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>)
                     savedInstanceState.getSerializable(STATE_PRICE_TABLE);
         }
 
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingWindowShownLog()));
         bus.post(new LogEvent.AddLogEvent(new BookingHighDemandLog.BookingHighDemandShownLog()));
-        if (mBookingToReschedule != null)
-        {
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackShownLog(mBookingToReschedule.getStartDate())));
+        if (mBookingToReschedule != null) {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackShownLog(
+                    mBookingToReschedule.getStartDate())));
         }
     }
 
@@ -134,10 +127,9 @@ public final class PeakPricingFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_peak_pricing, container, false);
+                                       .inflate(R.layout.fragment_peak_pricing, container, false);
 
         ButterKnife.bind(this, view);
         displayFooterWarningIfApplicable();
@@ -152,49 +144,40 @@ public final class PeakPricingFragment extends BookingFlowFragment
         return view;
     }
 
-    private boolean isSkipAllowed()
-    {
+    private boolean isSkipAllowed() {
         return !(mIsForVoucher
-                || mIsForReschedule
-                || (mTransaction != null && mTransaction.getRecurringFrequency() > 0)
+                 || mIsForReschedule
+                 || (mTransaction != null && mTransaction.getRecurringFrequency() > 0)
         );
     }
 
-    private void displaySkipButtonIfApplicable()
-    {
-        if (isSkipAllowed())
-        {
+    private void displaySkipButtonIfApplicable() {
+        if (isSkipAllowed()) {
             mHeaderText.setText(R.string.peak_price_info);
             mSkipButton.setVisibility(View.VISIBLE);
-            mSkipButton.setOnClickListener(new View.OnClickListener()
-            {
+            mSkipButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(final View v)
-                {
+                public void onClick(final View v) {
                     continueBookingFlow();
                 }
             });
         }
-        else
-        {
+        else {
             mHeaderText.setText(R.string.peak_price_info_unavailable);
             mSkipButton.setVisibility(View.GONE);
         }
 
     }
 
-    private void displayFooterWarningIfApplicable()
-    {
+    private void displayFooterWarningIfApplicable() {
         final BookingQuote currentQuote = bookingManager.getCurrentQuote();
         if (currentQuote == null
-                || currentQuote.getCoupon() == null
-                || currentQuote.getCoupon().getWarning() == null
-                )
-        {
+            || currentQuote.getCoupon() == null
+            || currentQuote.getCoupon().getWarning() == null
+                ) {
             mFooterText.setVisibility(View.GONE);
         }
-        else
-        {
+        else {
             BookingQuote.QuoteCoupon coupon = currentQuote.getCoupon();
             mFooterText.setVisibility(View.VISIBLE);
             mFooterText.setText(coupon.getWarning());
@@ -202,8 +185,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onActivityCreated(final Bundle savedInstanceState)
-    {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mDatePager.setAdapter(new PeakPriceTablePagerAdapter(getActivity().getSupportFragmentManager()));
         mDatePager.setCurrentItem(mPageIndex);
@@ -211,23 +193,19 @@ public final class PeakPricingFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
+    public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(STATE_PRICE_TABLE, mPeakPriceTable);
     }
 
-    private int getStartIndex()
-    {
+    private int getStartIndex() {
         final Date startDate = mIsForReschedule ? mBookingToReschedule.getStartDate()
-                : bookingManager.getCurrentTransaction().getStartDate();
+                                                : bookingManager.getCurrentTransaction()
+                                                                .getStartDate();
 
-        for (int i = 0; i < mPeakPriceTable.size(); i++)
-        {
-            for (final PeakPriceInfo info : mPeakPriceTable.get(i))
-            {
-                if (Utils.equalDates(startDate, info.getDate()))
-                {
+        for (int i = 0; i < mPeakPriceTable.size(); i++) {
+            for (final PeakPriceInfo info : mPeakPriceTable.get(i)) {
+                if (Utils.equalDates(startDate, info.getDate())) {
                     return i;
                 }
             }
@@ -236,8 +214,7 @@ public final class PeakPricingFragment extends BookingFlowFragment
         return 0;
     }
 
-    private void updateDateHeader()
-    {
+    private void updateDateHeader() {
         //we want to display the time using the booking location's time zone
         final BookingRequest currentRequest = bookingManager.getCurrentRequest();
         String timezone = currentRequest != null ? currentRequest.getTimeZone() : null;
@@ -252,25 +229,23 @@ public final class PeakPricingFragment extends BookingFlowFragment
         mArrowRight.setVisibility(View.VISIBLE);
         mArrowLeft.setVisibility(View.VISIBLE);
 
-        if (mPageIndex == mDatePager.getAdapter().getCount() - 1)
-        {
+        if (mPageIndex == mDatePager.getAdapter().getCount() - 1) {
             mArrowRight.setVisibility(View.INVISIBLE);
         }
         else if (mPageIndex == 0) { mArrowLeft.setVisibility(View.INVISIBLE); }
     }
 
-    private View.OnTouchListener arrowTouched = new View.OnTouchListener()
-    {
+    private View.OnTouchListener arrowTouched = new View.OnTouchListener() {
         @Override
-        public boolean onTouch(final View v, final MotionEvent event)
-        {
+        public boolean onTouch(final View v, final MotionEvent event) {
             final ImageView view = (ImageView) v;
 
-            switch (event.getAction())
-            {
+            switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    view.setColorFilter(ContextCompat.getColor(getContext(), R.color.handy_blue_pressed),
-                            PorterDuff.Mode.SRC_ATOP);
+                    view.setColorFilter(
+                            ContextCompat.getColor(getContext(), R.color.handy_blue_pressed),
+                            PorterDuff.Mode.SRC_ATOP
+                    );
 
                     view.invalidate();
                     break;
@@ -278,12 +253,10 @@ public final class PeakPricingFragment extends BookingFlowFragment
                     int currentItem = mDatePager.getCurrentItem();
                     final int count = mDatePager.getAdapter().getCount();
 
-                    if (v == mArrowLeft)
-                    {
+                    if (v == mArrowLeft) {
                         mDatePager.setCurrentItem(Math.max(--currentItem, 0), true);
                     }
-                    else if (v == mArrowRight)
-                    {
+                    else if (v == mArrowRight) {
                         mDatePager.setCurrentItem(Math.min(++currentItem, count), true);
                     }
                 case MotionEvent.ACTION_CANCEL:
@@ -297,47 +270,44 @@ public final class PeakPricingFragment extends BookingFlowFragment
     };
 
     private final ViewPager.OnPageChangeListener pageListener
-            = new ViewPager.OnPageChangeListener()
-    {
+            = new ViewPager.OnPageChangeListener() {
         @Override
-        public void onPageScrolled(final int i, final float v, final int i2)
-        {
+        public void onPageScrolled(final int i, final float v, final int i2) {
 
         }
 
         @Override
-        public void onPageSelected(final int i)
-        {
+        public void onPageSelected(final int i) {
             mPageIndex = i;
             updateDateHeader();
         }
 
         @Override
-        public void onPageScrollStateChanged(final int i)
-        {
+        public void onPageScrollStateChanged(final int i) {
 
         }
     };
 
 
-    private final class PeakPriceTablePagerAdapter extends FragmentPagerAdapter
-    {
+    private final class PeakPriceTablePagerAdapter extends FragmentPagerAdapter {
 
-        PeakPriceTablePagerAdapter(final FragmentManager fm)
-        {
+        PeakPriceTablePagerAdapter(final FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public final Fragment getItem(final int i)
-        {
-            return PeakPricingTableFragment.newInstance(i, mPeakPriceTable,
-                    mBookingToReschedule, mIsForRescheduleAll, mIsForVoucher);
+        public final Fragment getItem(final int i) {
+            return PeakPricingTableFragment.newInstance(
+                    i,
+                    mPeakPriceTable,
+                    mBookingToReschedule,
+                    mIsForRescheduleAll,
+                    mIsForVoucher
+            );
         }
 
         @Override
-        public final int getCount()
-        {
+        public final int getCount() {
             return mPeakPriceTable.size();
         }
     }

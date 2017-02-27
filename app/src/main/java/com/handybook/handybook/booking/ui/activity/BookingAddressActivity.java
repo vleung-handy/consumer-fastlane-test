@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public final class BookingAddressActivity extends MenuDrawerActivity
-{
+public final class BookingAddressActivity extends MenuDrawerActivity {
+
     @Override
     protected final Fragment createFragment() {
         return BookingAddressFragment.newInstance();

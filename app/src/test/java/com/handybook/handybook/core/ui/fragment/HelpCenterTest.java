@@ -27,8 +27,8 @@ import static junit.framework.Assert.fail;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class HelpCenterTest extends RobolectricGradleTestWrapper
-{
+public class HelpCenterTest extends RobolectricGradleTestWrapper {
+
     @Inject
     ConfigurationManager mConfigurationManager;
     @Mock
@@ -40,8 +40,7 @@ public class HelpCenterTest extends RobolectricGradleTestWrapper
     private static final String HANDY_TEST_URL = "https://www.handy.com";
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -49,8 +48,7 @@ public class HelpCenterTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldShowHelpCenterWebViewOption() throws Exception
-    {
+    public void shouldShowHelpCenterWebViewOption() throws Exception {
         mFragment = HelpFragment.newInstance(HANDY_TEST_URL);
         SupportFragmentTestUtil.startFragment(mFragment, HelpActivity.class);
 
@@ -60,22 +58,19 @@ public class HelpCenterTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchHelpWebviewWhenOptionClicked()
-    {
+    public void shouldLaunchHelpWebviewWhenOptionClicked() {
         mFragment = HelpFragment.newInstance(HANDY_TEST_URL);
         SupportFragmentTestUtil.startFragment(mFragment, HelpActivity.class);
 
         assertNotNull(mFragment.getView());
         mFragment.getView().findViewById(R.id.help_center_layout).performClick();
         Fragment currentFragment = mFragment.getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_container);
-        if (!(currentFragment instanceof HelpWebViewFragment))
-        { fail(); }
+                                            .findFragmentById(R.id.fragment_container);
+        if (!(currentFragment instanceof HelpWebViewFragment)) { fail(); }
     }
 
     @Test
-    public void shouldLaunchHelpWebviewWhenConfigParamIsOff()
-    {
+    public void shouldLaunchHelpWebviewWhenConfigParamIsOff() {
         when(mConfiguration.isNativeHelpCenterEnabled()).thenReturn(false);
 
         mActivityController = Robolectric.buildActivity(HelpActivity.class, new Intent());
@@ -83,13 +78,11 @@ public class HelpCenterTest extends RobolectricGradleTestWrapper
         HelpActivity helpActivity = mActivityController.get();
         Fragment currentFragment =
                 helpActivity.getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (!(currentFragment instanceof HelpWebViewFragment))
-        { fail(); }
+        if (!(currentFragment instanceof HelpWebViewFragment)) { fail(); }
     }
 
     @Test
-    public void shouldLaunchNativeHelpCenterWhenConfigParamIsOn()
-    {
+    public void shouldLaunchNativeHelpCenterWhenConfigParamIsOn() {
         when(mConfiguration.isNativeHelpCenterEnabled()).thenReturn(true);
 
         mActivityController = Robolectric.buildActivity(HelpActivity.class, new Intent());
@@ -97,7 +90,6 @@ public class HelpCenterTest extends RobolectricGradleTestWrapper
         HelpActivity helpActivity = mActivityController.get();
         Fragment currentFragment =
                 helpActivity.getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (!(currentFragment instanceof HelpFragment))
-        { fail(); }
+        if (!(currentFragment instanceof HelpFragment)) { fail(); }
     }
 }

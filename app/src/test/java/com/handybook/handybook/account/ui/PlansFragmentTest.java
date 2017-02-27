@@ -19,14 +19,13 @@ import java.util.ArrayList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class PlansFragmentTest extends RobolectricGradleTestWrapper
-{
+public class PlansFragmentTest extends RobolectricGradleTestWrapper {
+
     private PlansFragment mFragment;
     private ArrayList<RecurringBooking> mPlans;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         mPlans = ModelFactory.createRecurringPlans(2);
 
         mFragment = PlansFragment.newInstance(mPlans);
@@ -34,8 +33,7 @@ public class PlansFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldDisplayCorrectInfo()
-    {
+    public void shouldDisplayCorrectInfo() {
         assertEquals(
                 mFragment.getString(R.string.account_select_plan),
                 mFragment.mToolbar.getTitle()
@@ -52,8 +50,7 @@ public class PlansFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldGoToNextFragment()
-    {
+    public void shouldGoToNextFragment() {
         mFragment.mPlansLayout.getChildAt(0).performClick();
         Fragment newFragment =
                 mFragment.getFragmentManager().findFragmentById(R.id.fragment_container);

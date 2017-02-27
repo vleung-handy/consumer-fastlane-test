@@ -25,8 +25,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 //note that animations should be disabled on the device running these tests
 @RunWith(AndroidJUnit4.class)
-public class BookingCreationFirstTimeTest
-{
+public class BookingCreationFirstTimeTest {
+
     @Rule
     public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
@@ -35,8 +35,7 @@ public class BookingCreationFirstTimeTest
      * basic test for ensuring that a new user can create a cleaning booking with default values
      */
     @Test
-    public void testFirstTimeUserCanCreateCleaningBooking()
-    {
+    public void testFirstTimeUserCanCreateCleaningBooking() {
         TestUser testUser = TestUsers.getUserRandomEmail();
         AppInteractionUtil.logOutAndPassOnboarding();
 
@@ -119,8 +118,7 @@ public class BookingCreationFirstTimeTest
         ViewUtil.waitForViewVisible(R.id.booking_detail_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    private void clickNextButton()
-    {
+    private void clickNextButton() {
         onView(withId(R.id.next_button)).perform(click());
     }
 }

@@ -20,8 +20,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProTeamFacebookHolder extends RecyclerView.ViewHolder
-{
+public class ProTeamFacebookHolder extends RecyclerView.ViewHolder {
+
     @Bind(R.id.pro_team_facebook_log_in_layout)
     ViewGroup mFacebookLogInLayout;
     @Bind(R.id.pro_team_dismiss_facebook_button)
@@ -46,8 +46,7 @@ public class ProTeamFacebookHolder extends RecyclerView.ViewHolder
             CallbackManager facebookCallbackManager,
             View.OnClickListener loginButtonClickListener,
             View.OnClickListener xButtonClickListener
-    )
-    {
+    ) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         mContainerFragment = containerFragment;
@@ -58,23 +57,19 @@ public class ProTeamFacebookHolder extends RecyclerView.ViewHolder
     }
 
     @OnClick({R.id.pro_team_dismiss_facebook_button, R.id.pro_team_facebook_ok_button})
-    public void close()
-    {
+    public void close() {
         mXButtonClickListener.onClick(itemView);
     }
 
-    private void initFacebookLayout()
-    {
+    private void initFacebookLayout() {
         mFacebookLogInButton.setFragment(mContainerFragment);
         mFacebookLogInButton.setOnClickListener(mLoginButtonClickListener);
         mFacebookLogInButton.setReadPermissions("public_profile", "email", "user_friends");
         mFacebookLogInButton.registerCallback(
                 mFacebookCallbackManager,
-                new FacebookCallback<LoginResult>()
-                {
+                new FacebookCallback<LoginResult>() {
                     @Override
-                    public void onSuccess(final LoginResult loginResult)
-                    {
+                    public void onSuccess(final LoginResult loginResult) {
                         showPostFacebookLoginMessage();
                     }
 
@@ -82,8 +77,7 @@ public class ProTeamFacebookHolder extends RecyclerView.ViewHolder
                     public void onCancel() { }
 
                     @Override
-                    public void onError(final FacebookException error)
-                    {
+                    public void onError(final FacebookException error) {
                         Crashlytics.logException(error);
                         Toast.makeText(
                                 mContainerFragment.getContext(),
@@ -96,8 +90,7 @@ public class ProTeamFacebookHolder extends RecyclerView.ViewHolder
         setFacebookLayout();
     }
 
-    private void setFacebookLayout()
-    {
+    private void setFacebookLayout() {
         mFacebookLogInLayout.setVisibility(View.VISIBLE);
         mFacebookTitleText.setText(R.string.pro_team_find_pros_from_friends);
         mFacebookSubtitleText.setVisibility(View.GONE);
@@ -105,8 +98,7 @@ public class ProTeamFacebookHolder extends RecyclerView.ViewHolder
         mFacebookLogInButton.setVisibility(View.VISIBLE);
     }
 
-    private void showPostFacebookLoginMessage()
-    {
+    private void showPostFacebookLoginMessage() {
         mFacebookLogInLayout.setVisibility(View.VISIBLE);
         mFacebookTitleText.setText(R.string.pro_team_connect_to_facebook);
         mFacebookSubtitleText.setVisibility(View.VISIBLE);

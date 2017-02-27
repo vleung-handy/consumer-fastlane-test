@@ -11,11 +11,9 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import java.io.Serializable;
 import java.util.List;
 
-public class ProTeamActionPickerViewModel implements Serializable
-{
+public class ProTeamActionPickerViewModel implements Serializable {
 
-    public enum ActionType
-    {
+    public enum ActionType {
         FAVORITE(ProviderMatchPreference.FAVORITE, R.string.favorite),
         UNFAVORITE(ProviderMatchPreference.PREFERRED, R.string.remove),
         BLOCK(ProviderMatchPreference.NEVER, R.string.block);
@@ -26,20 +24,17 @@ public class ProTeamActionPickerViewModel implements Serializable
         ActionType(
                 final ProviderMatchPreference matchPreference,
                 @StringRes final int stringResId
-        )
-        {
+        ) {
             mMatchPreference = matchPreference;
 
             mStringResId = stringResId;
         }
 
-        public ProviderMatchPreference getMatchPreference()
-        {
+        public ProviderMatchPreference getMatchPreference() {
             return mMatchPreference;
         }
 
-        public int getStringResId()
-        {
+        public int getStringResId() {
             return mStringResId;
         }
     }
@@ -59,8 +54,7 @@ public class ProTeamActionPickerViewModel implements Serializable
             @NonNull final String title,
             @Nullable final String subtitle,
             @NonNull final List<ActionType> actionTypes
-    )
-    {
+    ) {
         mProId = proId;
         mCategoryType = categoryType;
         mProImageUrl = proImageUrl;
@@ -69,34 +63,28 @@ public class ProTeamActionPickerViewModel implements Serializable
         mActionTypes = actionTypes;
     }
 
-    public int getProId()
-    {
+    public int getProId() {
         return mProId;
     }
 
-    public ProTeamCategoryType getCategoryType()
-    {
+    public ProTeamCategoryType getCategoryType() {
         return mCategoryType;
     }
 
-    public String getProImageUrl()
-    {
+    public String getProImageUrl() {
         return mProImageUrl;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
     @Nullable
-    public String getSubtitle()
-    {
+    public String getSubtitle() {
         return mSubtitle;
     }
 
-    public List<ActionType> getActionTypes()
-    {
+    public List<ActionType> getActionTypes() {
         return mActionTypes;
     }
 }

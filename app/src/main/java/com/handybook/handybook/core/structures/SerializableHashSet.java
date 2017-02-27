@@ -14,8 +14,7 @@ import java.util.HashSet;
  *
  * a set that has convenience methods for converting to and from string using Gson
  */
-public class SerializableHashSet extends HashSet<String> implements Serializable
-{
+public class SerializableHashSet extends HashSet<String> implements Serializable {
     //TODO: give this a better name?
     //TODO: how to make this generic type instead of String?
 
@@ -24,32 +23,32 @@ public class SerializableHashSet extends HashSet<String> implements Serializable
 
     private static final Gson GSON = new Gson();
 
-    public @NonNull String toJson()
-    {
+    public
+    @NonNull
+    String toJson() {
         return GSON.toJson(this, TYPE);
     }
 
-    public static @NonNull SerializableHashSet fromJson(String jsonString)
-    {
+    public static
+    @NonNull
+    SerializableHashSet fromJson(String jsonString) {
         SerializableHashSet prefsHashSet = null;
-        try
-        {
+        try {
             prefsHashSet = GSON.fromJson(jsonString, TYPE);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             //do nothing
         }
-        if(prefsHashSet == null)
-        {
+        if (prefsHashSet == null) {
             prefsHashSet = new SerializableHashSet();
         }
         return prefsHashSet;
     }
 
     @Override
-    public @NonNull String[] toArray()
-    {
+    public
+    @NonNull
+    String[] toArray() {
         return this.toArray(new String[this.size()]);
     }
 }

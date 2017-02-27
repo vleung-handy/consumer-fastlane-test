@@ -14,8 +14,8 @@ import java.util.Map;
  * https://maps.googleapis.com/maps/api/place/autocomplete/json?input=1720%2077&key=AIzaSyAHF9HgE7xMYv0oPExv9mNUxKnOTtfTOAc&types=address
  *
  */
-public class PlacePrediction implements Serializable
-{
+public class PlacePrediction implements Serializable {
+
     @SerializedName("description")
     private String mDescription;
 
@@ -26,52 +26,40 @@ public class PlacePrediction implements Serializable
     private List<String> mTypes;
 
     @Nullable
-    public String getAddress()
-    {
-        try
-        {
+    public String getAddress() {
+        try {
             return mTerms.get(0).get("value") + " " + mTerms.get(1).get("value");
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             return null;
         }
     }
 
     @Nullable
-    public String getCity()
-    {
-        try
-        {
+    public String getCity() {
+        try {
             return mTerms.get(2).get("value");
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             return null;
         }
     }
-
 
     @Nullable
-    public String getState()
-    {
-        try
-        {
+    public String getState() {
+        try {
             return mTerms.get(3).get("value");
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             return null;
         }
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return mDescription;
     }
 
-    public List<String> getTypes()
-    {
+    public List<String> getTypes() {
         return mTypes;
     }
 }

@@ -16,8 +16,7 @@ import java.util.regex.Pattern;
  * Contains mappings of URL patterns to activities. Parts of the URL may also be captured using
  * the supplied pattern and mapped to the supplied keys.
  */
-public enum ActivityUrlMapper
-{
+public enum ActivityUrlMapper {
     NEW_QUOTE(ServiceCategoriesActivity.class, Pattern.compile(".*/quotes/new.*")),
     ACCOUNT(ProfileActivity.class, Pattern.compile(".*/(?:users|accounts)/(?:me|\\d+)/edit")),
     BOOKINGS(BookingsActivity.class, Pattern.compile(".*/(?:users|accounts)/(?:me|\\d+)")),
@@ -35,31 +34,25 @@ public enum ActivityUrlMapper
             final Class<? extends BaseActivity> activityClass,
             final Pattern urlPattern,
             final String... extrasKeys
-    )
-    {
+    ) {
         mActivityClass = activityClass;
         mUrlPattern = urlPattern;
         mExtrasKeys = extrasKeys;
     }
 
-    public Class<? extends BaseActivity> getActivityClass()
-    {
+    public Class<? extends BaseActivity> getActivityClass() {
         return mActivityClass;
     }
 
-    public boolean matches(final String url)
-    {
+    public boolean matches(final String url) {
         return getMatcher(url).matches();
     }
 
-    public Bundle getExtrasFromUrl(final String url)
-    {
+    public Bundle getExtrasFromUrl(final String url) {
         final Matcher matcher = getMatcher(url);
         final Bundle arguments = new Bundle();
-        if (matcher.matches())
-        {
-            for (int i = 0; i < mExtrasKeys.length; i++)
-            {
+        if (matcher.matches()) {
+            for (int i = 0; i < mExtrasKeys.length; i++) {
                 final String key = mExtrasKeys[i];
                 arguments.putString(key, matcher.group(i + 1));
             }
@@ -67,8 +60,7 @@ public enum ActivityUrlMapper
         return arguments;
     }
 
-    private Matcher getMatcher(final String url)
-    {
+    private Matcher getMatcher(final String url) {
         return mUrlPattern.matcher(url);
     }
 }

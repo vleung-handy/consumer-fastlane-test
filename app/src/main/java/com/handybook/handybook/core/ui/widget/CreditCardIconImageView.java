@@ -10,39 +10,41 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.CreditCard;
 import com.stripe.android.model.Card;
 
-public class CreditCardIconImageView extends ImageView
-{
-    public CreditCardIconImageView(final Context context)
-    {
+public class CreditCardIconImageView extends ImageView {
+
+    public CreditCardIconImageView(final Context context) {
         super(context);
     }
 
-    public CreditCardIconImageView(final Context context, final AttributeSet attrs)
-    {
+    public CreditCardIconImageView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CreditCardIconImageView(final Context context, final AttributeSet attrs, final int defStyleAttr)
-    {
+    public CreditCardIconImageView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr
+    ) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CreditCardIconImageView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes)
-    {
+    public CreditCardIconImageView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr,
+            final int defStyleRes
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void setCardIcon(final String type)
-    {
-        if (type == null)
-        {
+    public void setCardIcon(final String type) {
+        if (type == null) {
             this.setImageResource(R.drawable.ic_card_blank);
             return;
         }
 
-        switch (type)
-        {
+        switch (type) {
             case Card.AMERICAN_EXPRESS:
                 this.setImageResource(R.drawable.ic_card_amex);
                 break;
@@ -64,16 +66,13 @@ public class CreditCardIconImageView extends ImageView
         }
     }
 
-    public void setCardIcon(final CreditCard.Type type)
-    {
-        if (type == null)
-        {
+    public void setCardIcon(final CreditCard.Type type) {
+        if (type == null) {
             this.setImageResource(R.drawable.ic_card_blank);
             return;
         }
 
-        switch (type)
-        {
+        switch (type) {
             case AMEX:
                 this.setImageResource(R.drawable.ic_card_amex);
                 break;

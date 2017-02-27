@@ -25,8 +25,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 //note that animations should be disabled on the device running these tests
 @RunWith(AndroidJUnit4.class)
-public class BookingCreationForExistingUserTest
-{
+public class BookingCreationForExistingUserTest {
+
     @Rule
     public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
@@ -35,8 +35,7 @@ public class BookingCreationForExistingUserTest
      * basic test for ensuring that an existing user can create a cleaning booking with default values
      */
     @Test
-    public void testExistingUserCanCreateCleaningBooking()
-    {
+    public void testExistingUserCanCreateCleaningBooking() {
         TestUser testUser = TestUsers.EXISTING_USER_BOOKING_CREATION;
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(testUser);
@@ -66,15 +65,12 @@ public class BookingCreationForExistingUserTest
         clickNextButton();
 
         //use default extras, check for peak pricing
-        if (ViewUtil.isViewDisplayed(withText(R.string.peak_price_info)))
-        {
+        if (ViewUtil.isViewDisplayed(withText(R.string.peak_price_info))) {
             // Skip it if possible
-            if (ViewUtil.isViewDisplayed(withId(R.id.skip_button)))
-            {
+            if (ViewUtil.isViewDisplayed(withId(R.id.skip_button))) {
                 onView(withId(R.id.skip_button)).perform(click());
             }
-            else
-            {
+            else {
                 // Click on first time on the next day
                 onView(withId(R.id.arrow_right)).perform(click());
                 ViewMatchers.childAtIndex(withId(R.id.time_text), 0);
@@ -113,8 +109,7 @@ public class BookingCreationForExistingUserTest
         ViewUtil.waitForViewVisible(R.id.booking_detail_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    private void clickNextButton()
-    {
+    private void clickNextButton() {
         onView(withId(R.id.next_button)).perform(click());
     }
 }

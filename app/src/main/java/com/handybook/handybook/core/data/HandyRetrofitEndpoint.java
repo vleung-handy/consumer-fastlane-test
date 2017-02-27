@@ -11,8 +11,8 @@ import javax.inject.Inject;
 
 import retrofit.Endpoint;
 
-public class HandyRetrofitEndpoint implements Endpoint
-{
+public class HandyRetrofitEndpoint implements Endpoint {
+
     private final EnvironmentModifier mEnvironmentModifier;
     private final String mApiEndpoint;
     private final String mApiEndpointInternalStaging;
@@ -24,8 +24,7 @@ public class HandyRetrofitEndpoint implements Endpoint
     private final String mBaseUrlLocal;
 
     @Inject
-    public HandyRetrofitEndpoint(Context context, EnvironmentModifier environmentModifier)
-    {
+    public HandyRetrofitEndpoint(Context context, EnvironmentModifier environmentModifier) {
         mEnvironmentModifier = environmentModifier;
         final Properties config = PropertiesReader.getProperties(context, "config.properties");
         mApiEndpoint = config.getProperty("api_endpoint");
@@ -39,49 +38,41 @@ public class HandyRetrofitEndpoint implements Endpoint
     }
 
     @Override
-    public final String getUrl()
-    {
-        if (mEnvironmentModifier.isProduction())
-        {
+    public final String getUrl() {
+        if (mEnvironmentModifier.isProduction()) {
             return mApiEndpoint;
         }
-        else if(mEnvironmentModifier.isLocal())
-        {
+        else if (mEnvironmentModifier.isLocal()) {
             return mApiEndpointLocal;
         }
-        else if(mEnvironmentModifier.isStaging())
-        {
+        else if (mEnvironmentModifier.isStaging()) {
             return mApiEndpointInternalStaging;
         }
-        else
-        {
-            return mApiEndpointInternalNonStaging.replace("#", mEnvironmentModifier.getEnvironment());
+        else {
+            return mApiEndpointInternalNonStaging.replace(
+                    "#",
+                    mEnvironmentModifier.getEnvironment()
+            );
         }
     }
 
-    public final String getBaseUrl()
-    {
-        if (mEnvironmentModifier.isProduction())
-        {
+    public final String getBaseUrl() {
+        if (mEnvironmentModifier.isProduction()) {
             return mBaseUrl;
         }
-        else if(mEnvironmentModifier.isLocal())
-        {
+        else if (mEnvironmentModifier.isLocal()) {
             return mBaseUrlLocal;
         }
-        else if(mEnvironmentModifier.isStaging())
-        {
+        else if (mEnvironmentModifier.isStaging()) {
             return mBaseUrlInternalStaging;
         }
-        else
-        {
+        else {
             return mBaseUrlInternalNonStaging.replace("#", mEnvironmentModifier.getEnvironment());
         }
     }
 
     @Override
-    public final String getName()
-    {
+    public final String getName() {
         return mEnvironmentModifier.getEnvironment();
     }
 }

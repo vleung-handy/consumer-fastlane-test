@@ -6,9 +6,9 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.RecurringBooking;
-import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.testutil.AppAssertionUtils;
 
 import org.junit.Before;
@@ -29,8 +29,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class CancelRecurringBookingSelectionFragmentTest extends RobolectricGradleTestWrapper
-{
+public class CancelRecurringBookingSelectionFragmentTest extends RobolectricGradleTestWrapper {
+
     private CancelRecurringBookingSelectionFragment mFragment;
 
     @Mock
@@ -43,8 +43,7 @@ public class CancelRecurringBookingSelectionFragmentTest extends RobolectricGrad
     private ArgumentCaptor<Object> mCaptor;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
 
         mFragment = CancelRecurringBookingSelectionFragment.newInstance();
@@ -59,48 +58,65 @@ public class CancelRecurringBookingSelectionFragmentTest extends RobolectricGrad
     }
 
     @Test
-    public void shouldRequestRecurringBookingsOnCreateView() throws Exception
-    {
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestRecurringBookings.class));
+    public void shouldRequestRecurringBookingsOnCreateView() throws Exception {
+        AppAssertionUtils.assertBusPost(
+                mFragment.bus,
+                mCaptor,
+                instanceOf(BookingEvent.RequestRecurringBookings.class)
+        );
     }
 
     @Test
-    public void shouldRequestConfigurationOnCreateView() throws Exception
-    {
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(ConfigurationEvent.RequestConfiguration.class));
+    public void shouldRequestConfigurationOnCreateView() throws Exception {
+        AppAssertionUtils.assertBusPost(
+                mFragment.bus,
+                mCaptor,
+                instanceOf(ConfigurationEvent.RequestConfiguration.class)
+        );
     }
 
     @Test
-    public void shouldRequestSendCancelEmailWhenSubmitButtonPressed() throws Exception
-    {
+    public void shouldRequestSendCancelEmailWhenSubmitButtonPressed() throws Exception {
         List<RecurringBooking> recurringBookingList = new ArrayList<>();
         recurringBookingList.add(mRecurringBooking1);
         recurringBookingList.add(mRecurringBooking2);
 
-        mFragment.onReceiveRecurringBookingsSuccess(new BookingEvent.ReceiveRecurringBookingsSuccess(recurringBookingList));
-        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
+        mFragment.onReceiveRecurringBookingsSuccess(new BookingEvent.ReceiveRecurringBookingsSuccess(
+                recurringBookingList));
+        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(
+                mConfiguration));
         mFragment.onNextButtonClicked();
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestSendCancelRecurringBookingEmail.class));
+        AppAssertionUtils.assertBusPost(
+                mFragment.bus,
+                mCaptor,
+                instanceOf(BookingEvent.RequestSendCancelRecurringBookingEmail.class)
+        );
     }
 
     @Test
-    public void shouldRequestSendCancelEmailWhenOnlyOneRecurringBooking() throws Exception
-    {
+    public void shouldRequestSendCancelEmailWhenOnlyOneRecurringBooking() throws Exception {
         List<RecurringBooking> recurringBookingList = new ArrayList<>();
         recurringBookingList.add(mRecurringBooking1);
-        mFragment.onReceiveRecurringBookingsSuccess(new BookingEvent.ReceiveRecurringBookingsSuccess(recurringBookingList));
-        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEvent.RequestSendCancelRecurringBookingEmail.class));
+        mFragment.onReceiveRecurringBookingsSuccess(new BookingEvent.ReceiveRecurringBookingsSuccess(
+                recurringBookingList));
+        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(
+                mConfiguration));
+        AppAssertionUtils.assertBusPost(
+                mFragment.bus,
+                mCaptor,
+                instanceOf(BookingEvent.RequestSendCancelRecurringBookingEmail.class)
+        );
     }
 
     @Test
-    public void shouldShowErrorToastWhenServerError() throws Exception
-    {
+    public void shouldShowErrorToastWhenServerError() throws Exception {
         String errorMessage = mFragment.getString(R.string
-                .default_error_string);
-        mFragment.onReceiveSendCancelRecurringBookingEmailError(new BookingEvent.ReceiveSendCancelRecurringBookingEmailError(new DataManager.DataManagerError(DataManager
-                .Type.SERVER)));
-        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(mConfiguration));
+                                                          .default_error_string);
+        mFragment.onReceiveSendCancelRecurringBookingEmailError(new BookingEvent.ReceiveSendCancelRecurringBookingEmailError(
+                new DataManager.DataManagerError(DataManager
+                                                         .Type.SERVER)));
+        mFragment.onReceiveConfigurationSuccess(new ConfigurationEvent.ReceiveConfigurationSuccess(
+                mConfiguration));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }
 }

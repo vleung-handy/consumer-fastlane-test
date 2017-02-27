@@ -9,40 +9,33 @@ import com.crashlytics.android.Crashlytics;
 
 import java.lang.ref.WeakReference;
 
-public final class ProgressDialog extends android.app.ProgressDialog
-{
+public final class ProgressDialog extends android.app.ProgressDialog {
+
     private int delay;
     private boolean wasDismissedCanceled;
     private WeakReference<Activity> mContextWeakReference;
 
-    public ProgressDialog(final Activity activity)
-    {
+    public ProgressDialog(final Activity activity) {
         super(activity);
         mContextWeakReference = new WeakReference<>(activity);
     }
 
     @Override
-    public final void show()
-    {
+    public final void show() {
         wasDismissedCanceled = false;
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable()
-        {
+        handler.postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 Activity activity = mContextWeakReference.get(); // No activity => no dialog
-                if (activity == null || activity.isFinishing() || wasDismissedCanceled)
-                {
+                if (activity == null || activity.isFinishing() || wasDismissedCanceled) {
                     return;
                 }
-                try
-                {
+                try {
                     ProgressDialog.super.show();
                     ProgressDialog.this.getWindow().setGravity(Gravity.CENTER);
                 }
-                catch (WindowManager.BadTokenException e)
-                {
+                catch (WindowManager.BadTokenException e) {
                     Crashlytics.logException(e);
                 }
             }
@@ -50,21 +43,18 @@ public final class ProgressDialog extends android.app.ProgressDialog
     }
 
     @Override
-    public void dismiss()
-    {
+    public void dismiss() {
         wasDismissedCanceled = true;
         super.dismiss();
     }
 
     @Override
-    public void cancel()
-    {
+    public void cancel() {
         wasDismissedCanceled = true;
         super.cancel();
     }
 
-    public final void setDelay(final int delay)
-    {
+    public final void setDelay(final int delay) {
         this.delay = delay;
     }
 }

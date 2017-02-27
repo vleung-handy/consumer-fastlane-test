@@ -24,8 +24,7 @@ import butterknife.ButterKnife;
 
 import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
 
-public class ConversationHolder extends RecyclerView.ViewHolder
-{
+public class ConversationHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.conversation_avatar)
     ProAvatarView mProAvatarView;
@@ -70,8 +69,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder
             final View itemView,
             final boolean hideConversation,
             @Nullable final String providerId
-    )
-    {
+    ) {
         super(itemView);
         ButterKnife.bind(this, itemView);
 
@@ -90,18 +88,15 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         mProviderId = providerId;
     }
 
-    public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel)
-    {
+    public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel) {
         mProTeamProViewModel = proTeamProViewModel;
         mProAvatarView.bindPro(proTeamProViewModel);
         mTextTitle.setText(mProTeamProViewModel.getTitle());
-        if (mHideConversation)
-        {
+        if (mHideConversation) {
             mTextMessage.setVisibility(View.GONE);
             mTextTimestamp.setVisibility(View.GONE);
         }
-        else
-        {
+        else {
             mTextMessage.setText(mNewConversationMessage);
             mTextMessage.setTextColor(mHandyTertiaryGray);
             mTextMessage.setTypeface(mNormalTypeFace);
@@ -112,45 +107,37 @@ public class ConversationHolder extends RecyclerView.ViewHolder
         if (!mProTeamProViewModel.getProTeamPro().getCategoryType()
                                  .toString()
                                  .toLowerCase()
-                                 .contains(PREFIX_CLEAN_CONSTANT))
-        {
+                                 .contains(PREFIX_CLEAN_CONSTANT)) {
             mServiceTypeIndicator.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mServiceTypeIndicator.setVisibility(View.GONE);
         }
 
-        if (Integer.toString(proTeamProViewModel.getProTeamPro().getId()).equals(mProviderId))
-        {
+        if (Integer.toString(proTeamProViewModel.getProTeamPro().getId()).equals(mProviderId)) {
             mTextCurrent.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mTextCurrent.setVisibility(View.GONE);
         }
 
         bindWithLayer();
     }
 
-    private void bindWithLayer()
-    {
-        if (mProTeamProViewModel.getConversation() == null || mHideConversation)
-        {
+    private void bindWithLayer() {
+        if (mProTeamProViewModel.getConversation() == null || mHideConversation) {
             //there is no conversation to bind, just don't do anything.
             return;
         }
 
         Message lastMessage = mProTeamProViewModel.getConversation().getLastMessage();
-        if (lastMessage != null)
-        {
+        if (lastMessage != null) {
             String message = LayerUtil.getLastMessageString(mTextMessage.getContext(), lastMessage);
             mTextMessage.setText(message);
             mTextMessage.setTextColor(mHandyTextBlack);
         }
 
-        if (mProTeamProViewModel.getConversation().getLastMessage() != null)
-        {
+        if (mProTeamProViewModel.getConversation().getLastMessage() != null) {
             mTextTimestamp.setText(
                     DateTimeUtils.formatDateToRelativeAccuracy(
                             mProTeamProViewModel
@@ -162,16 +149,14 @@ public class ConversationHolder extends RecyclerView.ViewHolder
 
             mTextTimestamp.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mTextTimestamp.setVisibility(View.GONE);
         }
 
         //if there are unreads, make the entire thing bold
         Integer unreadMessages = mProTeamProViewModel.getConversation()
                                                      .getTotalUnreadMessageCount();
-        if (unreadMessages != null && unreadMessages > 0)
-        {
+        if (unreadMessages != null && unreadMessages > 0) {
             mTextMessage.setTypeface(mBoldTypeFace);
             mTextTitle.setTypeface(mBoldTypeFace);
             mUnreadIndicator.setVisibility(View.VISIBLE);

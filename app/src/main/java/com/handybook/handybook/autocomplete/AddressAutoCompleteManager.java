@@ -8,14 +8,13 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
-public class AddressAutoCompleteManager
-{
+public class AddressAutoCompleteManager {
+
     private final PlacesService mService;
     private final Bus mBus;
 
     @Inject
-    public AddressAutoCompleteManager(final Bus bus, final PlacesService service)
-    {
+    public AddressAutoCompleteManager(final Bus bus, final PlacesService service) {
         this.mBus = bus;
         this.mService = service;
     }
@@ -27,15 +26,13 @@ public class AddressAutoCompleteManager
      * @return
      */
     @NonNull
-    public PlacePredictionResponse getAddressPrediction(String word)
-    {
+    public PlacePredictionResponse getAddressPrediction(String word) {
         mBus.post(new LogEvent.AddLogEvent(
                 new AddressAutocompleteLog.AddressAutocompleteRequestLog(word)
         ));
         PlacePredictionResponse response = mService.getAddressPrediction(word);
 
-        if (response == null)
-        {
+        if (response == null) {
             response = new PlacePredictionResponse();
         }
         mBus.post(new LogEvent.AddLogEvent(
