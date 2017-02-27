@@ -123,13 +123,16 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
         dataManager.ratePro(
                 Integer.parseInt(mBooking.getId()),
                 mSelectedRating,
-                tipAmountCents,
+                tipAmountCents == 0 ? null : tipAmountCents,
                 null,
                 new FragmentSafeCallback<Void>(this) {
                     @Override
                     public void onCallbackSuccess(final Void response) {
                         removeUiBlockers();
-                        getActivity().finish();
+                        if (getActivity() instanceof RatingFlowActivity) {
+                            ((RatingFlowActivity) getActivity())
+                                    .finishStepWithProRating(mSelectedRating);
+                        }
                     }
 
                     @Override

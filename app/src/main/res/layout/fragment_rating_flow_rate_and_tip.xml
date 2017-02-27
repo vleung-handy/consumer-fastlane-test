@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/handy_bg"
+    android:background="@color/white"
     >
 
     <ScrollView
@@ -22,7 +22,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:padding="@dimen/default_padding_double"
@@ -34,6 +33,7 @@
                     android:layout_height="@dimen/rating_flow.profile_image_size"
                     android:layout_marginBottom="@dimen/default_margin_quarter"
                     android:layout_marginTop="@dimen/default_margin_double"
+                    android:transitionName="@string/transition_pro_image"
                     tools:src="@drawable/img_pro_placeholder"
                     />
 
@@ -53,13 +53,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin"
+                    android:transitionName="@string/transition_stars"
                     />
             </LinearLayout>
 
             <View
+                android:id="@+id/rating_flow_divider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/default_margin_quarter"
                 android:background="@color/handy_bg"
+                android:transitionName="@string/transition_divider"
                 />
 
             <LinearLayout
@@ -67,7 +70,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/default_padding"
                 android:paddingTop="@dimen/default_padding"
@@ -108,6 +110,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:text="@string/next"
+        android:text="@string/submit"
         />
 </RelativeLayout>
