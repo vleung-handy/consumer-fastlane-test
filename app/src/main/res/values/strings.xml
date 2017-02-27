@@ -538,6 +538,8 @@
     <string name="onboard_location_prompt">Where are you \n located?</string>
     <string name="onboard_email_prompt">What\'s your email \n address?</string>
 
+    <string name="fragment_dialog_booking_time_input_title">Select a time</string>
+
     <!-- New Rating Flow -->
     <string name="rate_your_pro">Rate Your Pro</string>
     <string name="leave_a_tip_prompt">Leave a tip?</string>

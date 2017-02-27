@@ -23,7 +23,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.contrib.PickerActions.setTime;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -87,8 +86,8 @@ public class BookingCreationHandyManTest {
         clickNextButton();
 
         //select time to be 0700
-        ViewUtil.waitForViewVisible(R.id.date_picker, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        onView(withId(R.id.time_picker)).perform(setTime(7, 0));
+        AppInteractionUtil.setBookingTime(7, 0);
+
         clickNextButton();
 
         //use previous address

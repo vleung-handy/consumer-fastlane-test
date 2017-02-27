@@ -49,6 +49,16 @@ public class AppInteractionUtil {
         };
     }
 
+    //TODO rename
+    public static void setBookingTime(int hourOfDay, int minuteOfHour)
+    {
+        ViewUtil.waitForViewVisible(R.id.booking_edit_time_button, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        onView(withId(R.id.booking_edit_time_button)).perform(click());
+        onView(withId(R.id.fragment_dialog_booking_time_input_picker)).perform(
+                BookingTimePickerActions.setTime(hourOfDay, minuteOfHour));
+        onView(withId(R.id.fragment_dialog_booking_time_input_save_button)).perform(click());
+    }
+
     /**
      * logs out if necessary and passes the onboarding screen if necessary
      * <p>

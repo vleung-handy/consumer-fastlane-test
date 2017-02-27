@@ -20,7 +20,6 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.contrib.PickerActions.setTime;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 //note that animations should be disabled on the device running these tests
@@ -58,8 +57,8 @@ public class BookingCreationFirstTimeTest {
         clickNextButton();
 
         //use default date at 9 am
-        ViewUtil.waitForViewVisible(R.id.time_picker, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        onView(withId(R.id.time_picker)).perform(setTime(9, 0));
+        AppInteractionUtil.setBookingTime(9, 0);
+
         clickNextButton();
 
         //create a new user
