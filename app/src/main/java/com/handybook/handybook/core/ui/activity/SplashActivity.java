@@ -3,6 +3,7 @@ package com.handybook.handybook.core.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
@@ -111,7 +112,8 @@ public class SplashActivity extends BaseActivity
      * for onboarding and bottom nav)
      * @param config
      */
-    private void determineStartPage(Configuration config) {
+    @VisibleForTesting
+    public void determineStartPage(Configuration config) {
         final User user = userManager.getCurrentUser();
 
         //if onboarding is enabled, and we haven't collected email and zip yet, then show the onboarding page
