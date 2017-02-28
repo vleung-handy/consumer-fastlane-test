@@ -93,6 +93,7 @@
     <dimen name="remove_pro_dialog_text_view_height">48dp</dimen>
     <dimen name="image_toggle_button_height">48dp</dimen>
     <dimen name="rating_star_margin">4dp</dimen>
+    <dimen name="rating_star_size">36dp</dimen>
     <dimen name="one_third_width">120dp</dimen>
 
     <dimen name="dot_size">16dp</dimen>
@@ -129,4 +130,9 @@
     <dimen name="chat_toolbar_icon_size">48dp</dimen>
 
     <dimen name="onboarding_logo_width">100dp</dimen>
+
+    <!-- New Rating Flow -->
+    <dimen name="rating_flow.profile_image_size">68dp</dimen>
+    <dimen name="rating_flow.star_size">24dp</dimen>
+    <dimen name="rating_flow.star_margin">9dp</dimen>
 </resources>

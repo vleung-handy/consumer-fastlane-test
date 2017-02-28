@@ -138,4 +138,8 @@ public class Configuration implements Serializable {
     public boolean isOnboardingV2Enabled() {
         return mOnboardingV2Enabled;
     }
+
+    public boolean isNewRatingFlowEnabled() {
+        return false;
+    }
 }
