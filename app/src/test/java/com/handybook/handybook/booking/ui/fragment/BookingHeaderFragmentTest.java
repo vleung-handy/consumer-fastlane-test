@@ -30,8 +30,8 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class BookingHeaderFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingHeaderFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingHeaderFragment mFragment;
 
     @Mock
@@ -46,8 +46,7 @@ public class BookingHeaderFragmentTest extends RobolectricGradleTestWrapper
     ConfigurationManager mConfigurationManager;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -72,8 +71,7 @@ public class BookingHeaderFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void whenBookingHoursClarificationExperimentOn_thenShowBookingStartDateWithoutHours()
-    {
+    public void whenBookingHoursClarificationExperimentOn_thenShowBookingStartDateWithoutHours() {
         Configuration mockConfiguration = mConfigurationManager.getPersistentConfiguration();
         when(mockConfiguration.isBookingHoursClarificationExperimentEnabled()).thenReturn(true);
 
@@ -91,8 +89,7 @@ public class BookingHeaderFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void whenBookingHoursClarificationExperimentOff_thenShowBookingStartDateWithHours()
-    {
+    public void whenBookingHoursClarificationExperimentOff_thenShowBookingStartDateWithHours() {
         Configuration mockConfiguration = mConfigurationManager.getPersistentConfiguration();
         when(mockConfiguration.isBookingHoursClarificationExperimentEnabled()).thenReturn(false);
 
@@ -107,7 +104,7 @@ public class BookingHeaderFragmentTest extends RobolectricGradleTestWrapper
         ));
         float totalBookingHours = mMockTransaction.getHours() + mMockTransaction.getExtraHours();
         String expectedTimeTextDisplayString = startTimeDisplayString +
-                " - " + BookingUtil.getNumHoursDisplayString(
+                                               " - " + BookingUtil.getNumHoursDisplayString(
                 totalBookingHours,
                 mFragment.getContext()
         );

@@ -10,20 +10,18 @@ import com.handybook.handybook.booking.ui.fragment.BookingCancelWarningFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public final class BookingCancelOptionsActivity extends MenuDrawerActivity
-{
+public final class BookingCancelOptionsActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        final BookingCancellationData bookingCancellationData = (BookingCancellationData) getIntent()
+        final BookingCancellationData bookingCancellationData
+                = (BookingCancellationData) getIntent()
                 .getSerializableExtra(BundleKeys.BOOKING_CANCELLATION_DATA);
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
-        if (bookingCancellationData.hasPrecancellationInfo())
-        {
+        if (bookingCancellationData.hasPrecancellationInfo()) {
             return BookingCancelWarningFragment.newInstance(booking, bookingCancellationData);
         }
-        else
-        {
+        else {
             return BookingCancelReasonFragment.newInstance(booking, bookingCancellationData);
         }
     }

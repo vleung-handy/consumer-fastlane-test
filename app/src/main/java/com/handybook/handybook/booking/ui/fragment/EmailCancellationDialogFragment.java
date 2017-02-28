@@ -16,15 +16,14 @@ import butterknife.OnClick;
 /**
  * Displayed as confirmation when the user selects a recurring series to cancel
  */
-public class EmailCancellationDialogFragment extends BaseDialogFragment
-{
+public class EmailCancellationDialogFragment extends BaseDialogFragment {
+
     private static final String BUNDLE_KEY_USER_EMAIL_ADDRESS = "USER_EMAIL_ADDRESS";
 
     @Bind(R.id.email_cancellation_info_text)
     TextView mInfoText;
 
-    public static EmailCancellationDialogFragment newInstance(String userEmailAddress)
-    {
+    public static EmailCancellationDialogFragment newInstance(String userEmailAddress) {
         EmailCancellationDialogFragment emailCancellationFragment =
                 new EmailCancellationDialogFragment();
         emailCancellationFragment.canDismiss = true;
@@ -37,10 +36,11 @@ public class EmailCancellationDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater,
-                             final ViewGroup container,
-                             final Bundle savedInstanceState)
-    {
+    public View onCreateView(
+            final LayoutInflater inflater,
+            final ViewGroup container,
+            final Bundle savedInstanceState
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_email_cancellation, container, true);
@@ -52,8 +52,7 @@ public class EmailCancellationDialogFragment extends BaseDialogFragment
     }
 
     @OnClick(R.id.next_button)
-    public void onSubmitButtonClicked(View view)
-    {
+    public void onSubmitButtonClicked(View view) {
         getActivity().finish();
         dismiss();
     }

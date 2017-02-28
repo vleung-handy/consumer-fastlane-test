@@ -14,8 +14,8 @@ import com.squareup.picasso.Transformation;
  * can be picked one by one.
  */
 public class RoundedTransformation implements
-        Transformation
-{
+        Transformation {
+
     private final float mRadius;
     private final float mMargin; // dp
     private final boolean mRoundTopRight;
@@ -27,8 +27,7 @@ public class RoundedTransformation implements
      * @param radius  corner radius in dp
      * @param padding padding in dp
      */
-    public RoundedTransformation(final float radius, final float padding)
-    {
+    public RoundedTransformation(final float radius, final float padding) {
         mRadius = radius;
         mMargin = padding;
         mRoundTopRight = true;
@@ -52,8 +51,7 @@ public class RoundedTransformation implements
             final boolean roundBottomRight,
             final boolean roundBottomLeft,
             final boolean roundTopLeft
-    )
-    {
+    ) {
         mRadius = radius;
         mMargin = padding;
         mRoundTopRight = roundTopRight;
@@ -63,15 +61,15 @@ public class RoundedTransformation implements
     }
 
     @Override
-    public Bitmap transform(final Bitmap source)
-    {
+    public Bitmap transform(final Bitmap source) {
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
         final int width = source.getWidth();
         final int height = source.getHeight();
         Bitmap output = Bitmap.createBitmap(width,
-                height, Bitmap.Config.ARGB_8888);
+                                            height, Bitmap.Config.ARGB_8888
+        );
         Canvas canvas = new Canvas(output);
         canvas.drawRoundRect(
                 new RectF(
@@ -82,9 +80,9 @@ public class RoundedTransformation implements
                 ),
                 mRadius,
                 mRadius,
-                paint);
-        if (!mRoundTopRight)
-        {
+                paint
+        );
+        if (!mRoundTopRight) {
             canvas.drawRect(
                     new RectF(
                             width - mMargin - mRadius,
@@ -93,10 +91,10 @@ public class RoundedTransformation implements
                             mMargin + mRadius
 
                     ),
-                    paint);
+                    paint
+            );
         }
-        if (!mRoundBottomRight)
-        {
+        if (!mRoundBottomRight) {
             canvas.drawRect(
                     new RectF(
                             width - mMargin - mRadius,
@@ -105,10 +103,10 @@ public class RoundedTransformation implements
                             height - mMargin
 
                     ),
-                    paint);
+                    paint
+            );
         }
-        if (!mRoundBottomLeft)
-        {
+        if (!mRoundBottomLeft) {
             canvas.drawRect(
                     new RectF(
                             mMargin,
@@ -117,10 +115,10 @@ public class RoundedTransformation implements
                             height - mMargin
 
                     ),
-                    paint);
+                    paint
+            );
         }
-        if (!mRoundTopLeft)
-        {
+        if (!mRoundTopLeft) {
             canvas.drawRect(
                     new RectF(
                             mMargin,
@@ -129,18 +127,17 @@ public class RoundedTransformation implements
                             mMargin + mRadius
 
                     ),
-                    paint);
+                    paint
+            );
         }
-        if (source != output)
-        {
+        if (source != output) {
             source.recycle();
         }
         return output;
     }
 
     @Override
-    public String key()
-    {
+    public String key() {
         return "rounded";
     }
 }

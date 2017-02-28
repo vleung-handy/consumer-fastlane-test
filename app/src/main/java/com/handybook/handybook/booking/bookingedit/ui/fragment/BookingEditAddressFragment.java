@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
@@ -15,7 +16,6 @@ import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 import com.squareup.otto.Subscribe;
 
@@ -23,8 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditAddressFragment extends BookingFlowFragment
-{
+public final class BookingEditAddressFragment extends BookingFlowFragment {
 
     @Bind(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
@@ -36,8 +35,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
 
     AutoCompleteAddressFragment mAutoCompleteFragment;
 
-    public static BookingEditAddressFragment newInstance(Booking booking)
-    {
+    public static BookingEditAddressFragment newInstance(Booking booking) {
         final BookingEditAddressFragment fragment = new BookingEditAddressFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
@@ -46,8 +44,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
     }
@@ -56,15 +53,13 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater
                 .inflate(R.layout.fragment_edit_booking_address, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_edit_address_title));
 
-        if (mBooking.getAddress() != null)
-        {
+        if (mBooking.getAddress() != null) {
             mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                     new ZipValidationResponse.ZipArea(
                             mBooking.getAddress().getCity(),
@@ -78,8 +73,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
 
             mZipCodeInputTextView.setText(mBooking.getAddress().getZip());
         }
-        else
-        {
+        else {
             mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                     null,
                     null,
@@ -96,8 +90,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
         return view;
     }
 
-    private void sendEditAddressRequest()
-    {
+    private void sendEditAddressRequest() {
         EditAddressRequest bookingEditAddressRequest = new EditAddressRequest(
                 mAutoCompleteFragment.mStreet.getAddress(),
                 mAutoCompleteFragment.mOther.getText().toString(),
@@ -110,23 +103,19 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
         ));
     }
 
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         return (mAutoCompleteFragment.validateFields() && mZipCodeInputTextView.validate());
     }
 
     @OnClick(R.id.next_button)
-    public void onNextButtonClick()
-    {
-        if (validateFields())
-        {
+    public void onNextButtonClick() {
+        if (validateFields()) {
             sendEditAddressRequest();
         }
     }
 
     @Subscribe
-    public final void onReceiveEditBookingAddressSuccess(BookingEditEvent.ReceiveEditBookingAddressSuccess event)
-    {
+    public final void onReceiveEditBookingAddressSuccess(BookingEditEvent.ReceiveEditBookingAddressSuccess event) {
         removeUiBlockers();
         showToast(getString(R.string.updated_booking_address));
 
@@ -135,8 +124,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditBookingAddressError(BookingEditEvent.ReceiveEditBookingAddressError event)
-    {
+    public final void onReceiveEditBookingAddressError(BookingEditEvent.ReceiveEditBookingAddressError event) {
         onReceiveErrorEvent(event);
         removeUiBlockers(); //allow user to try again
     }

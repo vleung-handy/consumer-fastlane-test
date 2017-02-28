@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-public class ConfigurationManager
-{
+public class ConfigurationManager {
+
     private final Bus mBus;
     private final DataManager mDataManager;
     private final DefaultPreferencesManager mDefaultPreferencesManager;
@@ -33,8 +33,7 @@ public class ConfigurationManager
             final Bus bus,
             final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
-    )
-    {
+    ) {
         mBus = bus;
         mDefaultPreferencesManager = defaultPreferencesManager;
         mDataManager = dataManager;
@@ -47,27 +46,21 @@ public class ConfigurationManager
     }
 
     @Subscribe
-    public void onRequestConfiguration(final ConfigurationEvent.RequestConfiguration event)
-    {
+    public void onRequestConfiguration(final ConfigurationEvent.RequestConfiguration event) {
         final Configuration cachedConfiguration = getCachedConfiguration();
-        if (cachedConfiguration != null)
-        {
+        if (cachedConfiguration != null) {
             mBus.post(new ConfigurationEvent.ReceiveConfigurationSuccess(cachedConfiguration));
         }
-        else
-        {
-            mDataManager.requestConfiguration(new DataManager.Callback<Configuration>()
-            {
+        else {
+            mDataManager.requestConfiguration(new DataManager.Callback<Configuration>() {
                 @Override
-                public void onSuccess(final Configuration configuration)
-                {
+                public void onSuccess(final Configuration configuration) {
                     setCachedConfiguration(configuration);
                     mBus.post(new ConfigurationEvent.ReceiveConfigurationSuccess(configuration));
                 }
 
                 @Override
-                public void onError(final DataManager.DataManagerError error)
-                {
+                public void onError(final DataManager.DataManagerError error) {
                     mBus.post(new ConfigurationEvent.ReceiveConfigurationError(error));
                 }
             });
@@ -75,30 +68,24 @@ public class ConfigurationManager
     }
 
     @Subscribe
-    public void onRefreshConfiguration(final ConfigurationEvent.RefreshConfiguration event)
-    {
-        mDataManager.requestConfiguration(new DataManager.Callback<Configuration>()
-        {
+    public void onRefreshConfiguration(final ConfigurationEvent.RefreshConfiguration event) {
+        mDataManager.requestConfiguration(new DataManager.Callback<Configuration>() {
             @Override
-            public void onSuccess(final Configuration configuration)
-            {
+            public void onSuccess(final Configuration configuration) {
                 setCachedConfiguration(configuration);
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
+            public void onError(final DataManager.DataManagerError error) {
             }
         });
     }
 
-    public void invalidateCache()
-    {
+    public void invalidateCache() {
         mConfigurationCache.invalidate(KEY_CONFIGURATION_CACHE);
     }
 
-    private void setCachedConfiguration(final Configuration configuration)
-    {
+    private void setCachedConfiguration(final Configuration configuration) {
         mConfigurationCache.put(KEY_CONFIGURATION_CACHE, configuration);
         mLastKnowConfiguration = configuration;
         //also put this in the prefs manager, because sometimes we might need access to this before
@@ -107,8 +94,7 @@ public class ConfigurationManager
     }
 
     @Nullable
-    public Configuration getCachedConfiguration()
-    {
+    public Configuration getCachedConfiguration() {
         return mConfigurationCache.getIfPresent(KEY_CONFIGURATION_CACHE);
     }
 
@@ -117,8 +103,7 @@ public class ConfigurationManager
      *
      * @return
      */
-    public Configuration getLastKnowConfiguration()
-    {
+    public Configuration getLastKnowConfiguration() {
         return mLastKnowConfiguration;
     }
 
@@ -128,22 +113,18 @@ public class ConfigurationManager
      * @return
      */
     @NonNull
-    public Configuration getPersistentConfiguration()
-    {
+    public Configuration getPersistentConfiguration() {
         Configuration rval = getCachedConfiguration();
 
-        if (rval == null)
-        {
+        if (rval == null) {
             String json = mDefaultPreferencesManager.getString(PrefsKey.CONFIGURATION, null);
 
-            if (!TextUtils.isEmpty(json))
-            {
+            if (!TextUtils.isEmpty(json)) {
                 rval = Configuration.fromJson(json);
             }
         }
 
-        if (rval == null)
-        {
+        if (rval == null) {
             rval = new Configuration();
         }
         return rval;

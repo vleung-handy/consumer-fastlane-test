@@ -36,8 +36,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingLocationFragment mFragment;
     @Mock
     private BookingRequest mMockRequest;
@@ -51,8 +51,7 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
     private ArgumentCaptor<DataManager.Callback> mCallbackCaptor;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -64,8 +63,8 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldUpdateBookingRequestWithZipAndLaunchBookingOptionsActivity() throws Exception
-    {
+    public void shouldUpdateBookingRequestWithZipAndLaunchBookingOptionsActivity() throws
+            Exception {
         mFragment.mZipCodeInputTextView.setText("10001");
         mFragment.mNextButton.performClick();
         verify(mDataManager).validateBookingZip(
@@ -92,7 +91,9 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper
         mCallbackCaptor.getValue().onSuccess(mBookingOptionsWrapper);
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingOptionsActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingOptionsActivity.class.getName())
+        );
     }
 }

@@ -209,18 +209,20 @@ public class PersistentPromoExpandedLayout extends FrameLayout {
             float percentExpandedThresholdForDismissButtonVisible = 0.5f;
             float dismissButtonMaxAlpha = 0.7f;
             float dismissButtonAlpha =
-                    Math.max(0,
-                             dependentViewPercentExpanded * (dismissButtonMaxAlpha +
-                                                             percentExpandedThresholdForDismissButtonVisible)
-                             - percentExpandedThresholdForDismissButtonVisible
+                    Math.max(
+                            0,
+                            dependentViewPercentExpanded * (dismissButtonMaxAlpha +
+                                                            percentExpandedThresholdForDismissButtonVisible)
+                            - percentExpandedThresholdForDismissButtonVisible
                     );
             childView.mDismissButton.setAlpha(dismissButtonAlpha);
 
             //shrink/expand the header image
             float percentExpandedThresholdForNormalScale = 0.5f;
-            float imageScale = Math.max(1,
-                                        1 + percentExpandedThresholdForNormalScale -
-                                        dependentViewPercentExpanded
+            float imageScale = Math.max(
+                    1,
+                    1 + percentExpandedThresholdForNormalScale -
+                    dependentViewPercentExpanded
             );
             childView.mHeaderImage.setScaleX(imageScale);
             childView.mHeaderImage.setScaleY(imageScale);
@@ -231,10 +233,11 @@ public class PersistentPromoExpandedLayout extends FrameLayout {
             LinearLayout.LayoutParams layoutParams
                     = (LinearLayout.LayoutParams) childView.mTextContentLayout.getLayoutParams();
             layoutParams.topMargin =
-                    (int) (Math.max(0,
-                                    maxTextMarginPx *
-                                    (percentExpandedThresholdForNormalTextPosition -
-                                     dependentViewPercentExpanded)
+                    (int) (Math.max(
+                            0,
+                            maxTextMarginPx *
+                            (percentExpandedThresholdForNormalTextPosition -
+                             dependentViewPercentExpanded)
                     ));
             childView.mTextContentLayout.setLayoutParams(layoutParams);
         }

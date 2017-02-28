@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LimitedEditText extends EditText {
+
     private int maxLines = 1;
     private int maxCharacters = 140;
     private Context context;
@@ -54,12 +55,16 @@ public class LimitedEditText extends EditText {
             private int beforeCursorPosition = 0;
 
             @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before,
-                                      final int count) {}
+            public void onTextChanged(
+                    final CharSequence s, final int start, final int before,
+                    final int count
+            ) {}
 
             @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count,
-                                          final int after) {
+            public void beforeTextChanged(
+                    final CharSequence s, final int start, final int count,
+                    final int after
+            ) {
                 text = s.toString();
                 beforeCursorPosition = start;
             }
@@ -77,7 +82,7 @@ public class LimitedEditText extends EditText {
                     LimitedEditText.this.setText(text);
                     LimitedEditText.this.setSelection(beforeCursorPosition);
                     Toast.makeText(context, "text too long", Toast.LENGTH_SHORT)
-                            .show();
+                         .show();
                 }
 
                 addTextChangedListener(this);

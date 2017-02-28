@@ -1,6 +1,5 @@
 package com.handybook.handybook.core.ui.view;
 
-
 import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -14,8 +13,8 @@ import com.handybook.handybook.booking.util.BookingUtil;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BookingListItem extends FrameLayout
-{
+public class BookingListItem extends FrameLayout {
+
     private Booking mBooking;
 
     @Bind(R.id.image_icon)
@@ -44,37 +43,36 @@ public class BookingListItem extends FrameLayout
             View.OnClickListener clickListener,
             Booking booking,
             boolean isBookingHoursClarificationExperimentEnabled
-    )
-    {
+    ) {
         super(context);
         mOnClickListener = clickListener;
         mBooking = booking;
-        mIsBookingHoursClarificationExperimentEnabled = isBookingHoursClarificationExperimentEnabled;
+        mIsBookingHoursClarificationExperimentEnabled
+                = isBookingHoursClarificationExperimentEnabled;
         init();
     }
 
-    void init()
-    {
+    void init() {
         inflate(getContext(), R.layout.layout_booking_list_item, this);
         ButterKnife.bind(this);
         bindToBooking(mBooking);
     }
 
-    public void setClickListener(final OnClickListener onClickListener)
-    {
+    public void setClickListener(final OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
     }
 
-    public void bindToBooking(Booking booking)
-    {
+    public void bindToBooking(Booking booking) {
         mBooking = booking;
-        if (mBooking == null)
-        {
+        if (mBooking == null) {
             return;
         }
 
         mImageIcon.setVisibility(View.VISIBLE);
-        mImageIcon.setImageResource(BookingUtil.getIconForService(mBooking, BookingUtil.IconType.OUTLINE));
+        mImageIcon.setImageResource(BookingUtil.getIconForService(
+                mBooking,
+                BookingUtil.IconType.OUTLINE
+        ));
 
         mTextBookingTitle.setText(BookingUtil.getTitle(mBooking));
         mTextBookingSubtitle.setText(BookingUtil.getSubtitle(
@@ -83,21 +81,17 @@ public class BookingListItem extends FrameLayout
                 mIsBookingHoursClarificationExperimentEnabled
         ));
 
-        this.setOnClickListener(new View.OnClickListener()
-        {
+        this.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
-                if (mOnClickListener != null)
-                {
+            public void onClick(final View v) {
+                if (mOnClickListener != null) {
                     mOnClickListener.onClick(v);
                 }
             }
         });
     }
 
-    public Booking getBooking()
-    {
+    public Booking getBooking() {
         return mBooking;
     }
 }

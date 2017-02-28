@@ -1,6 +1,5 @@
 package com.handybook.handybook.account.ui;
 
-
 import android.view.View;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
@@ -29,8 +28,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
-{
+public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper {
+
     private static final String TEST_CREDIT_CARD_NUMBER = "4242424242424242";
     private UpdatePaymentFragment mFragment;
     @Inject
@@ -43,8 +42,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     private User.CreditCard mMockCreditCard;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -54,8 +52,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldShowCreditCardInfoFieldsByDefaultIfNoCard() throws Exception
-    {
+    public void shouldShowCreditCardInfoFieldsByDefaultIfNoCard() throws Exception {
         when(mMockUser.getCreditCard()).thenReturn(null);
 
         //Activity is needed to be passed because the Fragment needs access to BaseActivity info
@@ -68,8 +65,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldShowCreditCardInfoFieldsOnChangeButtonClicked() throws Exception
-    {
+    public void shouldShowCreditCardInfoFieldsOnChangeButtonClicked() throws Exception {
         when(mMockUser.getCreditCard()).thenReturn(mMockCreditCard);
         when(mMockCreditCard.getLast4()).thenReturn("1234");
 
@@ -89,8 +85,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldResetAndFreezeCreditCardInfoFieldsOnCancelButtonClicked() throws Exception
-    {
+    public void shouldResetAndFreezeCreditCardInfoFieldsOnCancelButtonClicked() throws Exception {
         when(mMockUser.getCreditCard()).thenReturn(mMockCreditCard);
         when(mMockCreditCard.getLast4()).thenReturn("1234");
 
@@ -108,8 +103,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldRequestStripeTokenWithDataFromFields() throws Exception
-    {
+    public void shouldRequestStripeTokenWithDataFromFields() throws Exception {
         SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
 
         mFragment.mCreditCardText.setText(TEST_CREDIT_CARD_NUMBER);
@@ -130,8 +124,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldRequestUpdatePaymentInfoAfterObtainingStripeToken() throws Exception
-    {
+    public void shouldRequestUpdatePaymentInfoAfterObtainingStripeToken() throws Exception {
         SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
 
         StripeEvent.ReceiveCreateTokenSuccess event =
@@ -147,8 +140,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldDisplayNewPaymentInfoAfterSuccessfulUpdate() throws Exception
-    {
+    public void shouldDisplayNewPaymentInfoAfterSuccessfulUpdate() throws Exception {
         SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
         mFragment.mCreditCardText.setText(TEST_CREDIT_CARD_NUMBER);
         mFragment.mCreditCardIcon = spy(mFragment.mCreditCardIcon);

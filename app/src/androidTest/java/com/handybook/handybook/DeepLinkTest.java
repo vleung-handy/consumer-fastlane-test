@@ -15,8 +15,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class DeepLinkTest
-{
+public class DeepLinkTest {
+
     @Rule
     public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
@@ -24,8 +24,7 @@ public class DeepLinkTest
     private static final TestUser TEST_USER = TestUsers.LOGIN;
 
     @Test
-    public void testDeepLinks() throws IOException
-    {
+    public void testDeepLinks() throws IOException {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();

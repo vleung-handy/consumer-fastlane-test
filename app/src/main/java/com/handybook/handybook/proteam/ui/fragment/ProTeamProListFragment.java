@@ -40,8 +40,8 @@ import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREF
  * A simple {@link Fragment} subclass. Use the {@link ProTeamProListFragment#newInstance} factory
  * method to create an instance of this fragment.
  */
-public class ProTeamProListFragment extends InjectedFragment
-{
+public class ProTeamProListFragment extends InjectedFragment {
+
     private static final String KEY_PROTEAM = "ProTeamProList:ProTeam";
     private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeamProList:CategoryType";
     private static final String KEY_SAVE_BUTTON_ENABLED = "ProTeamProList:SaveButtonEnabled";
@@ -67,30 +67,24 @@ public class ProTeamProListFragment extends InjectedFragment
     private boolean mSaveButtonEnabled;
 
     {
-        mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener()
-        {
+        mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener() {
             @Override
             public void onLongClick(
                     final ProTeamPro proTeamPro,
                     final ProviderMatchPreference providerMatchPreference
-            )
-            {
-                if (mOnProInteraction == null)
-                {
+            ) {
+                if (mOnProInteraction == null) {
                     return;
                 }
                 mOnProInteraction.onProRemovalRequested(proTeamPro, providerMatchPreference);
             }
 
             @Override
-            public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked)
-            {
-                if (mOnProInteraction == null)
-                {
+            public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked) {
+                if (mOnProInteraction == null) {
                     return;
                 }
-                if (mSaveButtonEnabled)
-                {
+                if (mSaveButtonEnabled) {
                     mSaveButton.setVisibility(View.VISIBLE);
                 }
                 mOnProInteraction.onProCheckboxStateChanged(proTeamPro, checked);
@@ -102,8 +96,7 @@ public class ProTeamProListFragment extends InjectedFragment
             @NonNull final ProTeam proTeam,
             @Nullable final ProTeamCategoryType proTeamCategoryType,
             final boolean saveButtonEnabled
-    )
-    {
+    ) {
         ProTeamProListFragment fragment = new ProTeamProListFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_PROTEAM, proTeam);
@@ -114,17 +107,14 @@ public class ProTeamProListFragment extends InjectedFragment
     }
 
     @OnClick(R.id.pro_team_pro_list_save_button)
-    public void onSaveClicked()
-    {
-        if (mOnProInteraction != null)
-        {
+    public void onSaveClicked() {
+        if (mOnProInteraction != null) {
             mOnProInteraction.onSave();
         }
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFacebookCallbackManager = CallbackManager.Factory.create();
     }
@@ -134,11 +124,9 @@ public class ProTeamProListFragment extends InjectedFragment
             LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState
-    )
-    {
+    ) {
         final Bundle arguments = getArguments();
-        if (arguments != null)
-        {
+        if (arguments != null) {
             mProTeam = arguments.getParcelable(KEY_PROTEAM);
             mProTeamCategoryType = (ProTeamCategoryType)
                     arguments.getSerializable(KEY_PROTEAM_CATEGORY_TYPE);
@@ -153,57 +141,49 @@ public class ProTeamProListFragment extends InjectedFragment
     }
 
     @Override
-    public final void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public final void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void initialize()
-    {
-        if (mSaveButton != null)
-        {
+    private void initialize() {
+        if (mSaveButton != null) {
             mSaveButton.setVisibility(View.GONE);
         }
         initEmptyView();
         initRecyclerView();
     }
 
-    private void initEmptyView()
-    {
-        if (mEmptyViewTitle == null || mEmptyViewText == null)
-        {
+    private void initEmptyView() {
+        if (mEmptyViewTitle == null || mEmptyViewText == null) {
             return;
         }
-        if (mProTeam == null)
-        {
+        if (mProTeam == null) {
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title_loading);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text_loading);
         }
-        else
-        {
+        else {
             mEmptyViewTitle.setText(R.string.pro_team_empty_card_title);
             mEmptyViewText.setText(R.string.pro_team_empty_card_text);
         }
     }
 
-    private void initRecyclerView()
-    {
-        if (mRecyclerView == null)
-        {
+    private void initRecyclerView() {
+        if (mRecyclerView == null) {
             return;
         }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setEmptyView(mEmptyView);
-        if (mProTeam == null)
-        {
+        if (mProTeam == null) {
             return;
         }
 
         final boolean shouldShowProImage = mConfigurationManager
                 .getPersistentConfiguration().isProTeamProfilePicturesEnabled();
-        final ProTeam.ProTeamCategory proTeamCategory = mProTeamCategoryType != null ?
-                mProTeam.getCategory(mProTeamCategoryType) : mProTeam.getAllCategories();
+        final ProTeam.ProTeamCategory proTeamCategory = mProTeamCategoryType != null
+                                                        ?
+                                                        mProTeam.getCategory(mProTeamCategoryType)
+                                                        : mProTeam.getAllCategories();
         final boolean shouldShowHandymanIndicators = mProTeamCategoryType == null;
         final ProTeamCategoryAdapter proCardCardAdapter = new ProTeamCategoryAdapter(
                 proTeamCategory,
@@ -213,35 +193,29 @@ public class ProTeamProListFragment extends InjectedFragment
         );
 
         if (mConfigurationManager.getPersistentConfiguration().isProTeamFacebookLoginEnabled()
-                && !sXButtonPressed
-                && AccessToken.getCurrentAccessToken() == null)
-        {
+            && !sXButtonPressed
+            && AccessToken.getCurrentAccessToken() == null) {
             addFacebookHeader(proCardCardAdapter);
         }
         mRecyclerView.setAdapter(proCardCardAdapter);
         proCardCardAdapter.notifyDataSetChanged();
     }
 
-    private void addFacebookHeader(final ProTeamCategoryAdapter proTeamCategoryAdapter)
-    {
+    private void addFacebookHeader(final ProTeamCategoryAdapter proTeamCategoryAdapter) {
         View facebookHeaderView = LayoutInflater
                 .from(getContext())
                 .inflate(R.layout.view_pro_team_facebook, null, false);
-        View.OnClickListener logInButtonListener = new View.OnClickListener()
-        {
+        View.OnClickListener logInButtonListener = new View.OnClickListener() {
             @Override
-            public void onClick(final View view)
-            {
+            public void onClick(final View view) {
                 bus.post(new LogEvent.AddLogEvent(
                         new ProTeamPageLog.FacebookConnectTapped(
                                 mProTeam.getCount(CLEANING, PREFERRED))));
             }
         };
-        View.OnClickListener closeButtonListener = new View.OnClickListener()
-        {
+        View.OnClickListener closeButtonListener = new View.OnClickListener() {
             @Override
-            public void onClick(final View view)
-            {
+            public void onClick(final View view) {
                 sXButtonPressed = true;
                 proTeamCategoryAdapter.enableFacebookHeader(false);
                 proTeamCategoryAdapter.notifyDataSetChanged();
@@ -258,29 +232,26 @@ public class ProTeamProListFragment extends InjectedFragment
         proTeamCategoryAdapter.setFacebookHeaderHolder(proTeamFacebookHolder);
     }
 
-    public void setProTeam(final ProTeam proTeam)
-    {
+    public void setProTeam(final ProTeam proTeam) {
         mProTeam = proTeam;
         initialize();
     }
 
     @Subscribe
-    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
-    {
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event) {
         mProTeam = event.getUpdatedProTeam();
         initialize();
     }
 
-    public void setOnProInteraction(final OnProInteraction onProInteraction)
-    {
+    public void setOnProInteraction(final OnProInteraction onProInteraction) {
         mOnProInteraction = onProInteraction;
     }
 
     /**
      * Implement this interface to be notified when user clicks on one of the pro cards.
      */
-    public interface OnProInteraction
-    {
+    public interface OnProInteraction {
+
         void onProRemovalRequested(
                 ProTeamPro proTeamPro,
                 ProviderMatchPreference providerMatchPreference

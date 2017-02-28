@@ -7,9 +7,9 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.RedemptionDetails;
-import com.handybook.handybook.core.ui.activity.LoginActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +23,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class RedemptionSignUpFragmentTest extends RobolectricGradleTestWrapper
-{
+public class RedemptionSignUpFragmentTest extends RobolectricGradleTestWrapper {
+
     @Mock
     private RedemptionDetails mMockRedemptionDetails;
     @Mock
@@ -36,8 +36,7 @@ public class RedemptionSignUpFragmentTest extends RobolectricGradleTestWrapper
     private View mFragmentView;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
 
         when(mMockSender.getFirstName()).thenReturn("John");
@@ -52,34 +51,35 @@ public class RedemptionSignUpFragmentTest extends RobolectricGradleTestWrapper
                 new ReferralsEvent.ReceiveRedemptionDetailsSuccess(mMockRedemptionDetails));
 
         mFragment = (RedemptionSignUpFragment) parentFragment.getFragmentManager()
-                .findFragmentById(R.id.child_fragment_container);
+                                                             .findFragmentById(R.id.child_fragment_container);
         mFragmentView = mFragment.getView();
     }
 
     @Test
-    public void shouldDisplayRedemptionDetails() throws Exception
-    {
+    public void shouldDisplayRedemptionDetails() throws Exception {
         final TextView title = (TextView) mFragmentView.findViewById(R.id.title);
         final TextView subtitle = (TextView) mFragmentView.findViewById(R.id.subtitle);
         assertThat(title.getText().toString(), equalTo("John sent you $35!"));
-        assertThat(subtitle.getText().toString(),
-                equalTo("Sign up to claim $35 credit towards your first booking."));
+        assertThat(
+                subtitle.getText().toString(),
+                equalTo("Sign up to claim $35 credit towards your first booking.")
+        );
     }
 
     @Test
-    public void shouldLaunchLoginActivityOnLoginButtonClicked() throws Exception
-    {
+    public void shouldLaunchLoginActivityOnLoginButtonClicked() throws Exception {
         mFragmentView.findViewById(R.id.login_button).performClick();
 
         final Intent nextStartedActivity =
                 shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(LoginActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(LoginActivity.class.getName())
+        );
     }
 
     @Test
-    public void shouldDisplayEmailSignUpFragmentOnRegisterWithEmailClicked() throws Exception
-    {
+    public void shouldDisplayEmailSignUpFragmentOnRegisterWithEmailClicked() throws Exception {
         mFragmentView.findViewById(R.id.email_register_button).performClick();
 
         final Fragment fragment =

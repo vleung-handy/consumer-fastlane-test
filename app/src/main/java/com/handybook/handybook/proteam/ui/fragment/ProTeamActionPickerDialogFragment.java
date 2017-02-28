@@ -24,8 +24,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
-{
+public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment {
+
     private static final String KEY_VIEW_MODEL = "pro_team_action_picker_view_model";
 
     @Bind(R.id.pro_image)
@@ -40,8 +40,7 @@ public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
 
     public static ProTeamActionPickerDialogFragment newInstance(
             @NonNull ProTeamActionPickerViewModel viewModel
-    )
-    {
+    ) {
         final ProTeamActionPickerDialogFragment dialogFragment =
                 new ProTeamActionPickerDialogFragment();
         final Bundle arguments = new Bundle();
@@ -51,8 +50,7 @@ public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
     }
 
     @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = (ProTeamActionPickerViewModel) getArguments().getSerializable(KEY_VIEW_MODEL);
     }
@@ -60,14 +58,12 @@ public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
     @Override
     protected View inflateContentView(
             final LayoutInflater inflater, final ViewGroup container
-    )
-    {
+    ) {
         return inflater.inflate(R.layout.layout_pro_team_action_picker, container, false);
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mTitle.setText(mViewModel.getTitle());
@@ -82,21 +78,17 @@ public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
                .noFade()
                .into(mProImage);
 
-        for (final ActionType actionType : mViewModel.getActionTypes())
-        {
+        for (final ActionType actionType : mViewModel.getActionTypes()) {
             final ProTeamActionPickerItem actionPickerItem = new ProTeamActionPickerItem(
                     getActivity(),
                     actionType.getStringResId()
             );
             mOptionsHolder.addView(actionPickerItem, mOptionsHolder.getChildCount() - 1);
-            actionPickerItem.setOnClickListener(new View.OnClickListener()
-            {
+            actionPickerItem.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(final View view)
-                {
+                public void onClick(final View view) {
                     final Fragment targetFragment = getTargetFragment();
-                    if (targetFragment != null)
-                    {
+                    if (targetFragment != null) {
                         final Intent data = new Intent().putExtra(
                                 BundleKeys.PRO_TEAM_PRO_ID,
                                 mViewModel.getProId()
@@ -120,8 +112,7 @@ public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment
     }
 
     @OnClick(R.id.cancel)
-    public void onCancelClicked()
-    {
+    public void onCancelClicked() {
         dismiss();
     }
 }

@@ -29,8 +29,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingExtrasFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingExtrasFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingExtrasFragment mFragment;
 
     @Mock
@@ -45,15 +45,17 @@ public class BookingExtrasFragmentTest extends RobolectricGradleTestWrapper
     BookingManager mBookingManager;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
         when(mMockOption.getType()).thenReturn("option_type");
         when(mMockQuote.getBookingOption()).thenReturn(mMockOption);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{
+                0.0f,
+                0.0f
+        });
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
         mFragment = BookingExtrasFragment.newInstance();
@@ -61,12 +63,13 @@ public class BookingExtrasFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchBookingAddressActivity() throws Exception
-    {
+    public void shouldLaunchBookingAddressActivity() throws Exception {
         mFragment.mNextButton.performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingAddressActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingAddressActivity.class.getName())
+        );
     }
 }

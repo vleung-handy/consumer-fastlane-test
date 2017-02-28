@@ -9,10 +9,9 @@ import com.handybook.handybook.R;
 
 import butterknife.ButterKnife;
 
-public class ShareBannerView extends FrameLayout
-{
-    public ShareBannerView(final Context context)
-    {
+public class ShareBannerView extends FrameLayout {
+
+    public ShareBannerView(final Context context) {
         super(context);
         inflate(getContext(), R.layout.share_banner_view, this);
         ButterKnife.bind(this);

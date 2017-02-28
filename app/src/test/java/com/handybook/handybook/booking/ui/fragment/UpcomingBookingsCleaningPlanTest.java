@@ -16,19 +16,24 @@ import static org.junit.Assert.assertEquals;
 /**
  * This is to test the situation where there are no cleaning plans on the upcoming bookings page
  */
-public class UpcomingBookingsCleaningPlanTest extends UpcomingBookingsBaseTest
-{
+public class UpcomingBookingsCleaningPlanTest extends UpcomingBookingsBaseTest {
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         super.setup();
         String json = IOUtils.getJsonStringForTest("upcoming_bookings_no_plan.json");
-        final UserBookingsWrapper bookings = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                .create()
-                .fromJson(json, UserBookingsWrapper.class);
+        final UserBookingsWrapper bookings = new GsonBuilder().setDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ssX")
+                                                              .create()
+                                                              .fromJson(
+                                                                      json,
+                                                                      UserBookingsWrapper.class
+                                                              );
 
-        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(bookings, Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING);
+        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(
+                bookings,
+                Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING
+        );
         mUpcomingBookingsFragment.onReceiveBookingsSuccess(mBookingReceiveSuccessfulEvent);
     }
 
@@ -38,8 +43,7 @@ public class UpcomingBookingsCleaningPlanTest extends UpcomingBookingsBaseTest
      * @throws Exception
      */
     @Test
-    public void testActiveBookingSection() throws Exception
-    {
+    public void testActiveBookingSection() throws Exception {
         testActiveBookingPresent(mUpcomingBookingsFragment, "195370");
     }
 
@@ -47,24 +51,25 @@ public class UpcomingBookingsCleaningPlanTest extends UpcomingBookingsBaseTest
      * Cleaning plans should not be visible
      */
     @Test
-    public void testCleaningPlanVisibility()
-    {
-        assertEquals("Cleaning plans should not be visible", View.GONE, mUpcomingBookingsFragment.mExpandableCleaningPlan.getVisibility());
+    public void testCleaningPlanVisibility() {
+        assertEquals(
+                "Cleaning plans should not be visible",
+                View.GONE,
+                mUpcomingBookingsFragment.mExpandableCleaningPlan.getVisibility()
+        );
     }
 
     /**
      * Verify that there are upcoming bookings
      */
     @Test
-    public void testUpcomingBookingsSection()
-    {
+    public void testUpcomingBookingsSection() {
         //6 bookings + one share banner
         testUpcomingBookingsContainingBookings(mUpcomingBookingsFragment, 7);
     }
 
     @Test
-    public void testEmptyViewNotShowing()
-    {
+    public void testEmptyViewNotShowing() {
         assertEmptyViewNotShowing();
     }
 

@@ -2,17 +2,19 @@ package com.handybook.handybook.test.model;
 
 import com.stripe.android.model.Card;
 
-public class TestUser
-{
+public class TestUser {
+
     private String mFullName;
     private String mEmail;
     private String mPassword;
     private Address mAddress;
     private Card mCard;
     private String mPhoneNumber;
-    public TestUser(String fullName, String email, String password,
-                    Address address, String phoneNumber, Card card)
-    {
+
+    public TestUser(
+            String fullName, String email, String password,
+            Address address, String phoneNumber, Card card
+    ) {
         mFullName = fullName;
         mEmail = email;
         mPassword = password;
@@ -21,44 +23,36 @@ public class TestUser
         mPhoneNumber = phoneNumber;
     }
 
-    public TestUser(String email, String password)
-    {
+    public TestUser(String email, String password) {
         mEmail = email;
         mPassword = password;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return mEmail;
     }
 
-    public String getPassword()
-    {
+    public String getPassword() {
         return mPassword;
     }
 
-    public Address getAddress()
-    {
+    public Address getAddress() {
         return mAddress;
     }
 
-    public Card getCard()
-    {
+    public Card getCard() {
         return mCard;
     }
 
-    public String getPhoneNumber()
-    {
+    public String getPhoneNumber() {
         return mPhoneNumber;
     }
 
-    public String getFullName()
-    {
+    public String getFullName() {
         return mFullName;
     }
 
-    public void setPassword(final String password)
-    {
+    public void setPassword(final String password) {
         mPassword = password;
     }
 }

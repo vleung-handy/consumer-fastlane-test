@@ -20,8 +20,8 @@ import java.text.DecimalFormat;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MiniProProfile extends FrameLayout
-{
+public class MiniProProfile extends FrameLayout {
+
     @Bind(R.id.mini_pro_profile_title)
     TextView mTitleText;
     @Bind(R.id.mini_pro_profile_rating_and_jobs_count_container)
@@ -44,20 +44,17 @@ public class MiniProProfile extends FrameLayout
     private boolean mIsProTeam;
     private boolean mIsProTeamIndicatorEnabled;
 
-    public MiniProProfile(final Context context)
-    {
+    public MiniProProfile(final Context context) {
         super(context);
         init();
     }
 
-    public MiniProProfile(final Context context, final AttributeSet attrs)
-    {
+    public MiniProProfile(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public MiniProProfile(final Context context, final AttributeSet attrs, final int defStyleAttr)
-    {
+    public MiniProProfile(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -68,41 +65,34 @@ public class MiniProProfile extends FrameLayout
             final AttributeSet attrs,
             final int defStyleAttr,
             final int defStyleRes
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
-    private void init()
-    {
+    private void init() {
         inflate(getContext(), R.layout.layout_mini_pro_profile, this);
         ButterKnife.bind(this);
     }
 
-    public void setTitle(final String title)
-    {
+    public void setTitle(final String title) {
         mTitleText.setText(title);
     }
 
-    public void setProTeamIndicatorEnabled(final boolean proTeamIndicatorEnabled)
-    {
+    public void setProTeamIndicatorEnabled(final boolean proTeamIndicatorEnabled) {
         mIsProTeamIndicatorEnabled = proTeamIndicatorEnabled;
         updateProTeamIndicator();
     }
 
-    public void setHandymanIndicatorEnabled(final boolean handymanIndicatorEnabled)
-    {
+    public void setHandymanIndicatorEnabled(final boolean handymanIndicatorEnabled) {
         mHandymanIndicator.setVisibility(handymanIndicatorEnabled ? VISIBLE : GONE);
     }
 
     public void setRatingAndJobsCount(
             @Nullable final Float rating,
             @Nullable final Integer jobsCount
-    )
-    {
-        if (rating != null && rating > 0.0f && jobsCount != null && jobsCount > 0)
-        {
+    ) {
+        if (rating != null && rating > 0.0f && jobsCount != null && jobsCount > 0) {
             mRatingAndJobsCountContainer.setVisibility(VISIBLE);
 
             final DecimalFormat format = new DecimalFormat();
@@ -115,42 +105,34 @@ public class MiniProProfile extends FrameLayout
         }
     }
 
-    public void setImage(@Nullable final String imageUrl)
-    {
+    public void setImage(@Nullable final String imageUrl) {
         mProfileImageContainer.setVisibility(VISIBLE);
-        if (!TextUtils.isEmpty(imageUrl))
-        {
+        if (!TextUtils.isEmpty(imageUrl)) {
             Picasso.with(getContext())
                    .load(imageUrl)
                    .placeholder(R.drawable.img_pro_placeholder)
                    .noFade()
                    .into(mProfileImage);
         }
-        else
-        {
+        else {
             mProfileImage.setImageResource(R.drawable.img_pro_placeholder);
         }
         updateProTeamIndicator();
     }
 
-    public void setIsProTeam(final boolean isProTeam)
-    {
+    public void setIsProTeam(final boolean isProTeam) {
         mIsProTeam = isProTeam;
         updateProTeamIndicator();
     }
 
-    private void updateProTeamIndicator()
-    {
+    private void updateProTeamIndicator() {
         mProTeamIndicatorImage.setVisibility(GONE);
         mProTeamIndicatorName.setVisibility(GONE);
-        if (mIsProTeam && mIsProTeamIndicatorEnabled)
-        {
-            if (mProfileImageContainer.getVisibility() == VISIBLE)
-            {
+        if (mIsProTeam && mIsProTeamIndicatorEnabled) {
+            if (mProfileImageContainer.getVisibility() == VISIBLE) {
                 mProTeamIndicatorImage.setVisibility(VISIBLE);
             }
-            else
-            {
+            else {
                 mProTeamIndicatorName.setVisibility(VISIBLE);
             }
         }

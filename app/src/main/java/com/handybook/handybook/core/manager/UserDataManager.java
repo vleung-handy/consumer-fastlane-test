@@ -20,8 +20,8 @@ import org.json.JSONObject;
 
 import javax.inject.Inject;
 
-public class UserDataManager
-{
+public class UserDataManager {
+
     private final UserManager mUserManager;
     private final DataManager mDataManager;
     private final Bus mBus;
@@ -32,8 +32,7 @@ public class UserDataManager
     private static final String KEY_FACEBOOK_LAST_NAME = "last_name";
 
 
-    public enum AuthType
-    {
+    public enum AuthType {
         EMAIL, FACEBOOK
     }
 
@@ -41,8 +40,7 @@ public class UserDataManager
     public UserDataManager(
             final UserManager userManager, final DataManager dataManager,
             final Bus bus
-    )
-    {
+    ) {
         mUserManager = userManager;
         mDataManager = dataManager;
         mBus = bus;
@@ -50,83 +48,77 @@ public class UserDataManager
     }
 
     @Subscribe
-    public void onRequestUpdatePayment(final HandyEvent.RequestUpdatePayment event)
-    {
+    public void onRequestUpdatePayment(final HandyEvent.RequestUpdatePayment event) {
         mDataManager.updatePayment(mUserManager.getCurrentUser().getId(), event.token.getId(),
-                new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(final Void response)
-                    {
-                        mBus.post(new HandyEvent.ReceiveUpdatePaymentSuccess());
-                    }
+                                   new DataManager.Callback<Void>() {
+                                       @Override
+                                       public void onSuccess(final Void response) {
+                                           mBus.post(new HandyEvent.ReceiveUpdatePaymentSuccess());
+                                       }
 
-                    @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
-                        mBus.post(new HandyEvent.ReceiveUpdatePaymentError(error));
-                    }
-                });
+                                       @Override
+                                       public void onError(final DataManager.DataManagerError error) {
+                                           mBus.post(new HandyEvent.ReceiveUpdatePaymentError(error));
+                                       }
+                                   }
+        );
     }
 
     @Subscribe
-    public void onRequestAuthUser(final HandyEvent.RequestAuthUser event)
-    {
+    public void onRequestAuthUser(final HandyEvent.RequestAuthUser event) {
         mDataManager.authUser(event.getEmail(), event.getPassword(),
-                new DataManager.Callback<User>()
-                {
-                    @Override
-                    public void onSuccess(final User user)
-                    {
-                        mUserManager.setCurrentUser(user);
-                        mBus.post(new HandyEvent.ReceiveAuthUserSuccess(user, AuthType.EMAIL));
-                    }
+                              new DataManager.Callback<User>() {
+                                  @Override
+                                  public void onSuccess(final User user) {
+                                      mUserManager.setCurrentUser(user);
+                                      mBus.post(new HandyEvent.ReceiveAuthUserSuccess(
+                                              user,
+                                              AuthType.EMAIL
+                                      ));
+                                  }
 
-                    @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
-                        mBus.post(new HandyEvent.ReceiveAuthUserError(error, AuthType.EMAIL));
-                    }
-                });
+                                  @Override
+                                  public void onError(final DataManager.DataManagerError error) {
+                                      mBus.post(new HandyEvent.ReceiveAuthUserError(
+                                              error,
+                                              AuthType.EMAIL
+                                      ));
+                                  }
+                              }
+        );
     }
 
     @Subscribe
-    public void onRequestCreateUser(final HandyEvent.RequestCreateUser event)
-    {
+    public void onRequestCreateUser(final HandyEvent.RequestCreateUser event) {
         final CreateUserRequest createUserRequest = new CreateUserRequest();
         createUserRequest.setEmail(event.getEmail());
         createUserRequest.setPassword(event.getPassword());
         createUserRequest.setReferralPostGuid(event.getReferralGuid());
-        mDataManager.createUser(createUserRequest,
-                new DataManager.Callback<User>()
-                {
+        mDataManager.createUser(
+                createUserRequest,
+                new DataManager.Callback<User>() {
                     @Override
-                    public void onSuccess(final User user)
-                    {
+                    public void onSuccess(final User user) {
                         mUserManager.setCurrentUser(user);
                         mBus.post(new HandyEvent.ReceiveAuthUserSuccess(user, AuthType.EMAIL));
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
+                    public void onError(final DataManager.DataManagerError error) {
                         mBus.post(new HandyEvent.ReceiveAuthUserError(error, AuthType.EMAIL));
                     }
-                });
+                }
+        );
     }
 
     @Subscribe
-    public void onRequestAuthFacebookUser(final HandyEvent.RequestAuthFacebookUser event)
-    {
+    public void onRequestAuthFacebookUser(final HandyEvent.RequestAuthFacebookUser event) {
         final AccessToken accessToken = event.getAccessToken();
         // Request user info from FB through a GraphRequest
-        GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback()
-        {
+        GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
             @Override
-            public void onCompleted(JSONObject user, GraphResponse response)
-            {
-                if (response.getError() != null)
-                {
+            public void onCompleted(JSONObject user, GraphResponse response) {
+                if (response.getError() != null) {
                     Crashlytics.logException(
                             new FacebookAuthorizationException(
                                     response.getError().toString()
@@ -134,8 +126,7 @@ public class UserDataManager
                     );
                     //TODO: Handle error
                 }
-                else
-                {
+                else {
                     authFacebookUser(user, accessToken, event.getReferralGuid());
                 }
             }
@@ -146,13 +137,10 @@ public class UserDataManager
             @NonNull String userId,
             @NonNull String authToken,
             @NonNull final DataManager.Callback<User> callback
-    )
-    {
-        mDataManager.getUser(userId, authToken, new DataManager.Callback<User>()
-        {
+    ) {
+        mDataManager.getUser(userId, authToken, new DataManager.Callback<User>() {
             @Override
-            public void onSuccess(final User response)
-            {
+            public void onSuccess(final User response) {
                 /*
                 TODO investigate when we get current user and when we set it
                 to find out what pages are using the cached user and see if we need to make them
@@ -166,8 +154,7 @@ public class UserDataManager
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
+            public void onError(final DataManager.DataManagerError error) {
                 callback.onError(error);
             }
         });
@@ -180,16 +167,13 @@ public class UserDataManager
      * @param event
      */
     @Subscribe
-    public void onRequestUser(final HandyEvent.RequestUser event)
-    {
+    public void onRequestUser(final HandyEvent.RequestUser event) {
         requestAndSetCurrentUser(
                 event.getUserId(),
                 event.getAuthToken(),
-                new DataManager.Callback<User>()
-                {
+                new DataManager.Callback<User>() {
                     @Override
-                    public void onSuccess(final User user)
-                    {
+                    public void onSuccess(final User user) {
                         mBus.post(new HandyEvent.ReceiveUserSuccess(
                                 user,
                                 event.getAuthType()
@@ -197,8 +181,7 @@ public class UserDataManager
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
+                    public void onError(final DataManager.DataManagerError error) {
                         mBus.post(new HandyEvent.ReceiveUserError(
                                 error,
                                 event.getAuthType()
@@ -209,22 +192,18 @@ public class UserDataManager
     }
 
     @Subscribe
-    public void onRequestUserProfileUpdate(final UserEvent.RequestUserPasswordUpdate event)
-    {
+    public void onRequestUserProfileUpdate(final UserEvent.RequestUserPasswordUpdate event) {
         mDataManager.updateUser(
                 event.getUpdateUserRequest(),
                 event.getAuthToken(),
-                new DataManager.Callback<User>()
-                {
+                new DataManager.Callback<User>() {
                     @Override
-                    public void onSuccess(final User response)
-                    {
+                    public void onSuccess(final User response) {
                         mBus.post(new UserEvent.ReceiveUserPasswordUpdateSuccess(response));
                     }
 
                     @Override
-                    public void onError(final DataManager.DataManagerError error)
-                    {
+                    public void onError(final DataManager.DataManagerError error) {
                         mBus.post(new UserEvent.ReceiveUserPasswordUpdateError(error));
                     }
                 }
@@ -235,31 +214,26 @@ public class UserDataManager
             final JSONObject user,
             final AccessToken accessToken,
             final String referralGuid
-    )
-    {
+    ) {
         final CreateUserRequest createUserRequest = getCreateUserRequestFromFacebookUser(user);
         createUserRequest.setFacebookAccessToken(accessToken.getToken());
         createUserRequest.setReferralPostGuid(referralGuid);
-        mDataManager.authFBUser(createUserRequest, new DataManager.Callback<User>()
-        {
+        mDataManager.authFBUser(createUserRequest, new DataManager.Callback<User>() {
             @Override
-            public void onSuccess(final User user)
-            {
+            public void onSuccess(final User user) {
                 mUserManager.setCurrentUser(user);
                 mBus.post(new HandyEvent.ReceiveAuthUserSuccess(user, AuthType.FACEBOOK));
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
+            public void onError(final DataManager.DataManagerError error) {
                 mBus.post(new HandyEvent.ReceiveAuthUserError(error, AuthType.FACEBOOK));
             }
         });
     }
 
     @NonNull
-    private CreateUserRequest getCreateUserRequestFromFacebookUser(final JSONObject user)
-    {
+    private CreateUserRequest getCreateUserRequestFromFacebookUser(final JSONObject user) {
         final CreateUserRequest createUserRequest = new CreateUserRequest();
         createUserRequest.setFacebookUserId(user.optString(KEY_FACEBOOK_ID));
         createUserRequest.setEmail(user.optString(KEY_FACEBOOK_EMAIL));

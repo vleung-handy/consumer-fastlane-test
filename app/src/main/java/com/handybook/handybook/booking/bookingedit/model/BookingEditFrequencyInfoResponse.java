@@ -2,8 +2,8 @@ package com.handybook.handybook.booking.bookingedit.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class BookingEditFrequencyInfoResponse
-{
+public class BookingEditFrequencyInfoResponse {
+
     //server returns these prices as formatted dollar amounts
     @SerializedName("weekly_price_formatted")
     private String mWeeklyPriceFormatted;
@@ -21,31 +21,26 @@ public class BookingEditFrequencyInfoResponse
             final String bimonthlyPriceFormatted,
             final String monthlyPriceFormatted,
             final int currentFrequency
-    )
-    {
+    ) {
         mWeeklyPriceFormatted = weeklyPriceFormatted;
         mBimonthlyPriceFormatted = bimonthlyPriceFormatted;
         mMonthlyPriceFormatted = monthlyPriceFormatted;
         mCurrentFrequency = currentFrequency;
     }
 
-    public String getWeeklyPriceFormatted()
-    {
+    public String getWeeklyPriceFormatted() {
         return mWeeklyPriceFormatted;
     }
 
-    public String getBimonthlyPriceFormatted()
-    {
+    public String getBimonthlyPriceFormatted() {
         return mBimonthlyPriceFormatted;
     }
 
-    public String getMonthlyPriceFormatted()
-    {
+    public String getMonthlyPriceFormatted() {
         return mMonthlyPriceFormatted;
     }
 
-    public int getCurrentFrequency()
-    {
+    public int getCurrentFrequency() {
         return mCurrentFrequency;
     }
 }

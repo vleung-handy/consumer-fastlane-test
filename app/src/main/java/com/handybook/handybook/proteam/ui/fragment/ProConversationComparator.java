@@ -13,27 +13,22 @@ import java.util.Date;
  * comes before a model without a conversation model with a date always comes before a model without
  * a date smaller dates come before bigger dates
  */
-public class ProConversationComparator implements Comparator<ProTeamProViewModel>
-{
+public class ProConversationComparator implements Comparator<ProTeamProViewModel> {
+
     @Override
     public int compare(
             final ProTeamProViewModel o1, final ProTeamProViewModel o2
-    )
-    {
-        if (o2.getConversation() == null && o1.getConversation() == null)
-        {
+    ) {
+        if (o2.getConversation() == null && o1.getConversation() == null) {
             //if both have no conversations, then we don't need to sort.
             return 0;
         }
-        else
-        {
+        else {
             //a conversation is always ahead of no conversation
-            if (o1.getConversation() == null)
-            {
+            if (o1.getConversation() == null) {
                 return 1;
             }
-            else if (o2.getConversation() == null)
-            {
+            else if (o2.getConversation() == null) {
                 return -1;
             }
         }
@@ -42,18 +37,14 @@ public class ProConversationComparator implements Comparator<ProTeamProViewModel
         Date date1 = getMostRecentDate(o1.getConversation().getLastMessage());
         Date date2 = getMostRecentDate(o2.getConversation().getLastMessage());
 
-        if (date1 == null && date2 == null)
-        {
+        if (date1 == null && date2 == null) {
             return 0;
         }
-        else
-        {
-            if (date1 == null)
-            {
+        else {
+            if (date1 == null) {
                 return 1;
             }
-            else if (date2 == null)
-            {
+            else if (date2 == null) {
                 return -1;
             }
         }
@@ -72,16 +63,12 @@ public class ProConversationComparator implements Comparator<ProTeamProViewModel
      * @param message
      * @return
      */
-    private Date getMostRecentDate(@NonNull final Message message)
-    {
-        if (message != null)
-        {
-            if (message.getReceivedAt() != null)
-            {
+    private Date getMostRecentDate(@NonNull final Message message) {
+        if (message != null) {
+            if (message.getReceivedAt() != null) {
                 return message.getReceivedAt();
             }
-            else if (message.getSentAt() != null)
-            {
+            else if (message.getSentAt() != null) {
                 return message.getSentAt();
             }
         }

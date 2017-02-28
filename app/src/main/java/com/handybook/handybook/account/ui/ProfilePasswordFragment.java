@@ -1,6 +1,5 @@
 package com.handybook.handybook.account.ui;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,19 +16,19 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.event.UserEvent;
+import com.handybook.handybook.core.model.request.UpdateUserRequest;
+import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
-import com.handybook.handybook.core.model.request.UpdateUserRequest;
-import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ProfilePasswordFragment extends InjectedFragment
-        implements TextWatcher, View.OnClickListener
-{
+        implements TextWatcher, View.OnClickListener {
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.profile_old_password_text)
@@ -43,7 +42,8 @@ public class ProfilePasswordFragment extends InjectedFragment
 
     private static final String STATE_OLD_PWD_HIGHLIGHT = "OLD_PWD_HIGHLIGHT";
     private static final String STATE_NEW_PWD_HIGHLIGHT = "NEW_PWD_HIGHLIGHT";
-    private static final String STATE_NEW_PWD_CONFIRMATION_HIGHLIGHT = "NEW_PWD_CONFIRMATION_HIGHLIGHT";
+    private static final String STATE_NEW_PWD_CONFIRMATION_HIGHLIGHT
+            = "NEW_PWD_CONFIRMATION_HIGHLIGHT";
     private static final String STATE_LOADED_USER = "LOADED_USER";
 
     private User user;
@@ -52,15 +52,12 @@ public class ProfilePasswordFragment extends InjectedFragment
 
     private static final int NEW_PASSWORD_MINIMUM_CHAR_LENGTH = 8;
 
-
-    public static ProfilePasswordFragment newInstance()
-    {
+    public static ProfilePasswordFragment newInstance() {
         return new ProfilePasswordFragment();
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = userManager.getCurrentUser();
     }
@@ -69,8 +66,7 @@ public class ProfilePasswordFragment extends InjectedFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view =
                 LayoutInflater.from(getContext()).inflate(
                         R.layout.fragment_profile_password,
@@ -89,21 +85,16 @@ public class ProfilePasswordFragment extends InjectedFragment
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null)
-        {
-            if (savedInstanceState.getBoolean(STATE_OLD_PWD_HIGHLIGHT))
-            {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(STATE_OLD_PWD_HIGHLIGHT)) {
                 oldPasswordtext.highlight();
             }
-            if (savedInstanceState.getBoolean(STATE_NEW_PWD_HIGHLIGHT))
-            {
+            if (savedInstanceState.getBoolean(STATE_NEW_PWD_HIGHLIGHT)) {
                 newPasswordtext.highlight();
             }
-            if (savedInstanceState.getBoolean(STATE_NEW_PWD_CONFIRMATION_HIGHLIGHT))
-            {
+            if (savedInstanceState.getBoolean(STATE_NEW_PWD_CONFIRMATION_HIGHLIGHT)) {
                 newPasswordConfirmationText.highlight();
             }
             loadedUserInfo = savedInstanceState.getBoolean(STATE_LOADED_USER);
@@ -111,16 +102,14 @@ public class ProfilePasswordFragment extends InjectedFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordShown()));
 
     }
 
     @Override
-    public void onSaveInstanceState(final Bundle outState)
-    {
+    public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_OLD_PWD_HIGHLIGHT, oldPasswordtext.isHighlighted());
         outState.putBoolean(STATE_NEW_PWD_HIGHLIGHT, newPasswordtext.isHighlighted());
@@ -138,8 +127,7 @@ public class ProfilePasswordFragment extends InjectedFragment
             final int start,
             final int count,
             final int after
-    )
-    { }
+    ) { }
 
     @Override
     public void onTextChanged(
@@ -147,12 +135,10 @@ public class ProfilePasswordFragment extends InjectedFragment
             final int start,
             final int before,
             final int count
-    )
-    { }
+    ) { }
 
     @Override
-    public void afterTextChanged(final Editable s)
-    {
+    public void afterTextChanged(final Editable s) {
         //user changed the text, remove highlights
         oldPasswordtext.unHighlight();
         newPasswordtext.unHighlight();
@@ -162,12 +148,10 @@ public class ProfilePasswordFragment extends InjectedFragment
 
     //region View.OnClickListener
     @Override
-    public void onClick(final View v)
-    {
+    public void onClick(final View v) {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordTapped()));
 
-        if (validateFields())
-        {
+        if (validateFields()) {
             disableInputs();
             progressDialog.show();
 
@@ -184,20 +168,17 @@ public class ProfilePasswordFragment extends InjectedFragment
     }
     //endregion
 
-
     //region Bus events
     @Subscribe
     public void onReceiveUserPasswordUpdateSuccess(
             UserEvent.ReceiveUserPasswordUpdateSuccess event
-    )
-    {
+    ) {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordSuccess()));
         userSuccessCallback();
     }
 
     @Subscribe
-    public void onReceiveUserPasswordUpdateError(UserEvent.ReceiveUserPasswordUpdateError event)
-    {
+    public void onReceiveUserPasswordUpdateError(UserEvent.ReceiveUserPasswordUpdateError event) {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.UpdatePasswordError()));
         userErrorCallback(event);
     }
@@ -205,8 +186,7 @@ public class ProfilePasswordFragment extends InjectedFragment
 
     //region InjectedFragment
     @Override
-    protected void disableInputs()
-    {
+    protected void disableInputs() {
         super.disableInputs();
         mPasswordUpdateButton.setClickable(false);
 
@@ -216,23 +196,20 @@ public class ProfilePasswordFragment extends InjectedFragment
     }
 
     @Override
-    protected void enableInputs()
-    {
+    protected void enableInputs() {
         super.enableInputs();
         mPasswordUpdateButton.setClickable(true);
     }
     //endregion
 
     //region Private Fragment methods
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         final String oldPwd = oldPasswordtext.getPassword();
         final String newPwd = newPasswordtext.getPassword();
         final String newPwdConfirmation = newPasswordConfirmationText.getPassword();
 
         //if any of the password fields are empty
-        if (oldPwd.isEmpty() || newPwd.isEmpty() || newPwdConfirmation.isEmpty())
-        {
+        if (oldPwd.isEmpty() || newPwd.isEmpty() || newPwdConfirmation.isEmpty()) {
             //highlight the fields that are empty
             if (oldPwd.isEmpty()) { oldPasswordtext.highlight(); }
             if (newPwd.isEmpty()) { newPasswordtext.highlight(); }
@@ -242,20 +219,17 @@ public class ProfilePasswordFragment extends InjectedFragment
             showToast(R.string.update_pwd_missing_input_error);
         }
         //else if the new password is too short
-        else if (newPwd.length() < NEW_PASSWORD_MINIMUM_CHAR_LENGTH)
-        {
+        else if (newPwd.length() < NEW_PASSWORD_MINIMUM_CHAR_LENGTH) {
             newPasswordtext.highlight();
             showToast(R.string.pwd_length_error);
         }
         //else if the new password does not equal the confirmation
-        else if (!newPwd.equals(newPwdConfirmation))
-        {
+        else if (!newPwd.equals(newPwdConfirmation)) {
             newPasswordtext.highlight();
             newPasswordConfirmationText.highlight();
             showToast(R.string.new_password_confirmation_error);
         }
-        else
-        {
+        else {
             //no error
             return true;
 
@@ -263,8 +237,7 @@ public class ProfilePasswordFragment extends InjectedFragment
         return false;
     }
 
-    private void clearPasswordFields()
-    {
+    private void clearPasswordFields() {
         oldPasswordtext.unHighlight();
         oldPasswordtext.setText("");
         newPasswordtext.unHighlight();
@@ -273,8 +246,7 @@ public class ProfilePasswordFragment extends InjectedFragment
         newPasswordConfirmationText.setText("");
     }
 
-    private void userSuccessCallback()
-    {
+    private void userSuccessCallback() {
         if (!allowCallbacks) { return; }
 
         loadedUserInfo = true;
@@ -284,16 +256,14 @@ public class ProfilePasswordFragment extends InjectedFragment
         progressDialog.dismiss();
         enableInputs();
 
-        if (updatingInfo)
-        {
+        if (updatingInfo) {
             updatingInfo = false;
             toast.setText(getString(R.string.info_updated));
             toast.show();
         }
     }
 
-    private void userErrorCallback(HandyEvent.ReceiveErrorEvent event)
-    {
+    private void userErrorCallback(HandyEvent.ReceiveErrorEvent event) {
         if (!allowCallbacks) { return; }
 
         loadedUserInfo = true;

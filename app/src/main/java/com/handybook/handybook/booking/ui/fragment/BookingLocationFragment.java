@@ -31,8 +31,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class BookingLocationFragment extends BookingFlowFragment
-        implements BaseActivity.OnBackPressedListener
-{
+        implements BaseActivity.OnBackPressedListener {
+
     private static final String STATE_ZIP_HIGHLIGHT = "ZIP_HIGHLIGHT";
     private static final String KEY_ZIPCODE = "zipcode";
 
@@ -46,18 +46,15 @@ public final class BookingLocationFragment extends BookingFlowFragment
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    public static BookingLocationFragment newInstance()
-    {
+    public static BookingLocationFragment newInstance() {
         return new BookingLocationFragment();
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final BookingRequest request = bookingManager.getCurrentRequest();
-        if (isPromoFlow = request.getPromoCode() != null)
-        {
+        if (isPromoFlow = request.getPromoCode() != null) {
             ((BaseActivity) getActivity()).setOnBackPressedListener(this);
         }
 
@@ -68,16 +65,18 @@ public final class BookingLocationFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_location, container, false);
+                                       .inflate(
+                                               R.layout.fragment_booking_location,
+                                               container,
+                                               false
+                                       );
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.location));
         final User user = userManager.getCurrentUser();
         final User.Address address;
-        if (user != null && (address = user.getAddress()) != null)
-        {
+        if (user != null && (address = user.getAddress()) != null) {
             mZipCodeInputTextView.setText(address.getZip());
         }
         mNextButton.setOnClickListener(mOnNextClickListener);
@@ -85,33 +84,27 @@ public final class BookingLocationFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null)
-        {
-            if (savedInstanceState.getBoolean(STATE_ZIP_HIGHLIGHT))
-            {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(STATE_ZIP_HIGHLIGHT)) {
                 mZipCodeInputTextView.highlight();
             }
         }
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
+    public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_ZIP_HIGHLIGHT, mZipCodeInputTextView.isHighlighted());
     }
 
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         return mZipCodeInputTextView.validate();
     }
 
     @Override
-    protected void disableInputs()
-    {
+    protected void disableInputs() {
         super.disableInputs();
         mNextButton.setClickable(false);
         final InputMethodManager imm = (InputMethodManager) getActivity()
@@ -120,31 +113,26 @@ public final class BookingLocationFragment extends BookingFlowFragment
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mNextButton.setClickable(true);
     }
 
     @Override
-    public final void onBack()
-    {
+    public final void onBack() {
         final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
-    private final View.OnClickListener mOnNextClickListener = new View.OnClickListener()
-    {
+    private final View.OnClickListener mOnNextClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(final View view)
-        {
-            if (validateFields())
-            {
+        public void onClick(final View view) {
+            if (validateFields()) {
                 String zipCode = mZipCodeInputTextView.getZipCode();
-                if (!Strings.isNullOrEmpty(zipCode))
-                {
-                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSubmittedLog(zipCode)));
+                if (!Strings.isNullOrEmpty(zipCode)) {
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSubmittedLog(
+                            zipCode)));
                 }
 
                 disableInputs();
@@ -159,15 +147,13 @@ public final class BookingLocationFragment extends BookingFlowFragment
                         zipCode,
                         userId,
                         request.getPromoCode(),
-                        new FragmentSafeCallback<ZipValidationResponse>(BookingLocationFragment.this)
-                        {
+                        new FragmentSafeCallback<ZipValidationResponse>(BookingLocationFragment.this) {
                             @Override
-                            public void onCallbackSuccess(ZipValidationResponse response)
-                            {
+                            public void onCallbackSuccess(ZipValidationResponse response) {
                                 String zipCode = mZipCodeInputTextView.getZipCode();
-                                if (!Strings.isNullOrEmpty(zipCode))
-                                {
-                                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(zipCode)));
+                                if (!Strings.isNullOrEmpty(zipCode)) {
+                                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(
+                                            zipCode)));
                                 }
 
                                 final BookingRequest request = bookingManager.getCurrentRequest();
@@ -178,8 +164,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                                 enableInputs();
                                 progressDialog.dismiss();
                                 if (!isPromoFlow) { displayBookingOptions(); }
-                                else
-                                {
+                                else {
                                     final Intent intent = new Intent(
                                             getActivity(),
                                             BookingDateActivity.class
@@ -189,11 +174,9 @@ public final class BookingLocationFragment extends BookingFlowFragment
                             }
 
                             @Override
-                            public void onCallbackError(final DataManager.DataManagerError error)
-                            {
+                            public void onCallbackError(final DataManager.DataManagerError error) {
                                 String zipCode = mZipCodeInputTextView.getZipCode();
-                                if (!Strings.isNullOrEmpty(zipCode))
-                                {
+                                if (!Strings.isNullOrEmpty(zipCode)) {
                                     bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipErrorLog(
                                             zipCode, error.getMessage())));
                                 }

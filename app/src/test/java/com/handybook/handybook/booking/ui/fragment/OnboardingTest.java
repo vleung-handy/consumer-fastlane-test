@@ -36,8 +36,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class OnboardingTest extends RobolectricGradleTestWrapper
-{
+public class OnboardingTest extends RobolectricGradleTestWrapper {
+
     private OnboardV2Fragment mFragment;
 
     @Mock
@@ -47,8 +47,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
     private ArgumentCaptor<DataManager.Callback> mCallbackCaptor;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -60,8 +59,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
      * At launch the zip page should be visible.
      */
     @Test
-    public void testShowZip()
-    {
+    public void testShowZip() {
         ViewSwitcher viewSwitcher = (ViewSwitcher) mFragment.getView()
                                                             .findViewById(R.id.onboard_view_switcher);
         View zipView = mFragment.getView().findViewById(R.id.onboard_zip);
@@ -78,8 +76,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
      * Upon clicking on the button, the email view should be visible.
      */
     @Test
-    public void testZipNextButton()
-    {
+    public void testZipNextButton() {
         ViewSwitcher viewSwitcher = (ViewSwitcher) mFragment.getView()
                                                             .findViewById(R.id.onboard_view_switcher);
         View emailView = mFragment.getView().findViewById(R.id.onboard_email);
@@ -105,8 +102,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
      * If the email is showing, then clicking back will show zip view again.
      */
     @Test
-    public void testBackPressed()
-    {
+    public void testBackPressed() {
         ViewSwitcher viewSwitcher = (ViewSwitcher) mFragment.getView()
                                                             .findViewById(R.id.onboard_view_switcher);
         View zipView = mFragment.getView().findViewById(R.id.onboard_zip);
@@ -132,8 +128,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
      * (something that fits the regex)
      */
     @Test
-    public void testEmailSubmitButton()
-    {
+    public void testEmailSubmitButton() {
         TextInputEditText editText = (TextInputEditText) mFragment.getView()
                                                                   .findViewById(R.id.onboard_edit_email);
         View submitButton = mFragment.getView().findViewById(R.id.onboard_button_submit);
@@ -160,8 +155,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
      * Tests that the sign in button launches the login activity
      */
     @Test
-    public void testSignin()
-    {
+    public void testSignin() {
         mFragment.signinClicked();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
@@ -175,8 +169,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
      * If the user is an existing user, we want them to go to the sign in page
      */
     @Test
-    public void testExistingUserResponse()
-    {
+    public void testExistingUserResponse() {
         //mocking an existing user
         when(mUserExistsResponse.getFirstName()).thenReturn("John Doe");
         when(mUserExistsResponse.exists()).thenReturn(true);
@@ -195,8 +188,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
      * to the not-supported page
      */
     @Test
-    public void testZipNotSupported()
-    {
+    public void testZipNotSupported() {
         //mocking a new user
         when(mUserExistsResponse.getFirstName()).thenReturn("John Doe");
         when(mUserExistsResponse.exists()).thenReturn(false);
@@ -215,8 +207,7 @@ public class OnboardingTest extends RobolectricGradleTestWrapper
      * then we go to home page
      */
     @Test
-    public void testNewUserToHomePage()
-    {
+    public void testNewUserToHomePage() {
         //mocking a new user
         when(mUserExistsResponse.getFirstName()).thenReturn("John Doe");
         when(mUserExistsResponse.exists()).thenReturn(false);

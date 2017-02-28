@@ -19,8 +19,8 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingLog;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingCancelWarningFragment extends BookingFlowFragment
-{
+public final class BookingCancelWarningFragment extends BookingFlowFragment {
+
     public static final String EXTRA_BOOKING_CANCELLATION_DATA
             = "com.handy.handy.EXTRA_BOOKING_CANCELLATION_DATA";
     public static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -42,8 +42,7 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
     public static BookingCancelWarningFragment newInstance(
             @NonNull final Booking booking,
             @NonNull final BookingCancellationData bookingCancellationData
-    )
-    {
+    ) {
         final BookingCancelWarningFragment fragment = new BookingCancelWarningFragment();
         final Bundle args = new Bundle();
         args.putSerializable(EXTRA_BOOKING_CANCELLATION_DATA, bookingCancellationData);
@@ -53,8 +52,7 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBookingCancellationData = (BookingCancellationData) getArguments()
                 .getSerializable(EXTRA_BOOKING_CANCELLATION_DATA);
@@ -70,8 +68,7 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity()
                 .getLayoutInflater()
                 .inflate(R.layout.fragment_booking_cancel_warning, container, false);
@@ -80,8 +77,7 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
         return view;
     }
 
-    private void initUI()
-    {
+    private void initUI() {
         setupToolbar(
                 mToolbar,
                 mBookingCancellationData.getPreCancellationInfo().getNavigationTitle(),
@@ -94,11 +90,9 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment
         mTitle.setText(mBookingCancellationData.getPreCancellationInfo().getTitle());
         mMessage.setText(mBookingCancellationData.getPreCancellationInfo().getMessage());
         mButton.setText(mBookingCancellationData.getPreCancellationInfo().getButtonLabel());
-        mButton.setOnClickListener(new View.OnClickListener()
-        {
+        mButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 FragmentUtils.switchToFragment(
                         BookingCancelWarningFragment.this,
                         BookingCancelReasonFragment.newInstance(mBooking, mBookingCancellationData),

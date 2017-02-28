@@ -9,19 +9,17 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import java.io.Serializable;
 import java.util.List;
 
-public class BookingProTeam implements Serializable
-{
+public class BookingProTeam implements Serializable {
+
     @SerializedName("pro_team")
     private List<ProTeamPro> mProTeamPros;
 
-    public List<ProTeamPro> getProTeamPros()
-    {
+    public List<ProTeamPro> getProTeamPros() {
         return mProTeamPros;
     }
 
     @Nullable
-    public static BookingProTeam fromJson(@Nullable final String json)
-    {
+    public static BookingProTeam fromJson(@Nullable final String json) {
         if (json == null) { return null; }
 
         return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()

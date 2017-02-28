@@ -14,8 +14,7 @@ import butterknife.Bind;
 /**
  * Created by cdavis on 9/1/15.
  */
-public class BookingDetailSectionImageItemView extends InjectedRelativeLayout
-{
+public class BookingDetailSectionImageItemView extends InjectedRelativeLayout {
 
     @Bind(R.id.extra_title)
     public TextView extraTitle;
@@ -23,43 +22,44 @@ public class BookingDetailSectionImageItemView extends InjectedRelativeLayout
     public ImageView extraImage;
 
 
-    public enum TextStyle
-    {
+    public enum TextStyle {
         BOLD, ITALICS
     }
 
-    public BookingDetailSectionImageItemView(final Context context)
-    {
+    public BookingDetailSectionImageItemView(final Context context) {
         super(context);
     }
 
-    public BookingDetailSectionImageItemView(final Context context, final AttributeSet attrs)
-    {
+    public BookingDetailSectionImageItemView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BookingDetailSectionImageItemView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
+    public BookingDetailSectionImageItemView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
     }
 
-    public void updateDisplay(int imageResource, int imageVisibility, String title, TextStyle textStyle, String text)
-    {
-        if (imageResource != 0)
-        {
+    public void updateDisplay(
+            int imageResource,
+            int imageVisibility,
+            String title,
+            TextStyle textStyle,
+            String text
+    ) {
+        if (imageResource != 0) {
             extraImage.setImageResource(imageResource);
             extraImage.setVisibility(imageVisibility);
         }
-        else
-        {
+        else {
             extraImage.setVisibility(INVISIBLE);
         }
 
         //if there is a title specified, try formatting it.
-        if (!android.text.TextUtils.isEmpty(title))
-        {
-            switch (textStyle)
-            {
+        if (!android.text.TextUtils.isEmpty(title)) {
+            switch (textStyle) {
                 case BOLD:
                     extraTitle.setText(Html.fromHtml("<b>" + title + ":</b> " + text));
                     break;
@@ -70,8 +70,7 @@ public class BookingDetailSectionImageItemView extends InjectedRelativeLayout
                     extraTitle.setText(Html.fromHtml(title + ": " + text));
             }
         }
-        else
-        {
+        else {
             extraTitle.setText(Html.fromHtml(text));
         }
     }

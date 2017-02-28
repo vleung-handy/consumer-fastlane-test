@@ -37,8 +37,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditEntryInformationFragment extends BookingFlowFragment
-{
+public final class BookingEditEntryInformationFragment extends BookingFlowFragment {
+
     private Booking booking;
     @Bind(R.id.next_button)
     Button nextButton;
@@ -52,9 +52,9 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     @Inject
     BookingEditManager mBookingEditManager;
 
-    public static BookingEditEntryInformationFragment newInstance(final Booking booking)
-    {
-        final BookingEditEntryInformationFragment fragment = new BookingEditEntryInformationFragment();
+    public static BookingEditEntryInformationFragment newInstance(final Booking booking) {
+        final BookingEditEntryInformationFragment fragment
+                = new BookingEditEntryInformationFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
         fragment.setArguments(args);
@@ -62,8 +62,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         booking = getArguments().getParcelable(BundleKeys.BOOKING);
     }
@@ -72,8 +71,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
                                        .inflate(
                                                R.layout.fragment_booking_edit_entry_info,
@@ -92,25 +90,21 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
      * <p/>
      * updates the view on callback success
      */
-    private void requestAvailableEntryMethodsInfo(String bookingId)
-    {
+    private void requestAvailableEntryMethodsInfo(String bookingId) {
         showUiBlockers();
         mBookingEditManager.getEntryMethodsInfo(
                 bookingId,
-                new FragmentSafeCallback<EntryMethodsInfo>(this)
-                {
+                new FragmentSafeCallback<EntryMethodsInfo>(this) {
 
                     @Override
-                    public void onCallbackSuccess(final EntryMethodsInfo response)
-                    {
+                    public void onCallbackSuccess(final EntryMethodsInfo response) {
                         mEntryMethodsInfoView.updateViewForModel(response, getContext());
                         onEntryMethodsViewUpdated(response);
                         removeUiBlockers();
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         removeUiBlockers();
                         showToast(R.string.default_error_string);
                     }
@@ -125,19 +119,16 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
      *
      * @param entryMethodsInfo
      */
-    private void onEntryMethodsViewUpdated(@NonNull EntryMethodsInfo entryMethodsInfo)
-    {
+    private void onEntryMethodsViewUpdated(@NonNull EntryMethodsInfo entryMethodsInfo) {
         //log entry method recommendation shown
         if (entryMethodsInfo.getEntryMethodOptions() == null) { return; }
-        for (EntryMethodOption entryMethodOption : entryMethodsInfo.getEntryMethodOptions())
-        {
+        for (EntryMethodOption entryMethodOption : entryMethodsInfo.getEntryMethodOptions()) {
             /*
             in logging terms, whether an entry method is "recommended"
             is whether the entry method option subtitle is present
             ex. "Chosen by 13 of your neighbors"
              */
-            if (!TextUtils.isEmpty(entryMethodOption.getSubtitleText()))
-            {
+            if (!TextUtils.isEmpty(entryMethodOption.getSubtitleText())) {
                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.EntryMethodLog.
                         RecommendationShown(
                         booking.getId(),
@@ -149,22 +140,20 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         requestAvailableEntryMethodsInfo(booking.getId());
     }
 
     @OnClick(R.id.next_button)
-    public void onNextButtonClicked()
-    {
-        if (!mEntryMethodsInfoView.validateFields())
-        {
+    public void onNextButtonClicked() {
+        if (!mEntryMethodsInfoView.validateFields()) {
             return;
         }
 
         //create the object to send to the server based on the selected entry method + input fields
-        EntryMethodOption selectedEntryMethodOption = mEntryMethodsInfoView.getSelectedEntryMethodOption();
+        EntryMethodOption selectedEntryMethodOption
+                = mEntryMethodsInfoView.getSelectedEntryMethodOption();
 
         if (selectedEntryMethodOption == null) { return; }
 
@@ -201,17 +190,14 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     private void requestUpdateEntryMethodsInfo(
             String bookingId,
             BookingEditEntryInformationRequest editEntryInformationRequest
-    )
-    {
+    ) {
         showUiBlockers();
         mBookingEditManager.updateEntryMethodsInfo(
                 bookingId,
                 editEntryInformationRequest,
-                new FragmentSafeCallback<Void>(this)
-                {
+                new FragmentSafeCallback<Void>(this) {
                     @Override
-                    public void onCallbackSuccess(final Void response)
-                    {
+                    public void onCallbackSuccess(final Void response) {
                         removeUiBlockers();
                         showToast(R.string.updated_entry_information);
                         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
@@ -219,8 +205,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
 
                         removeUiBlockers();
                         dataManagerErrorHandler.handleError(getActivity(), error);
@@ -241,8 +226,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     private List<BookingInstruction> getBookingInstructionsListFromInput(
             String selectedEntryMethodMachineName,
             @NonNull Map<String, String> selectedEntryMethodInputFormValues
-    )
-    {
+    ) {
         BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
                 null,
                 BookingInstruction.MachineName.ENTRY_METHOD,
@@ -255,8 +239,7 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
         bookingInstructionList.add(entryInfoTypeInstruction);
 
         //create booking instructions from the selected entry method input form values
-        for (String inputFormFieldMachineName : selectedEntryMethodInputFormValues.keySet())
-        {
+        for (String inputFormFieldMachineName : selectedEntryMethodInputFormValues.keySet()) {
             BookingInstruction entryInfoInstruction = new BookingInstruction(
                     null,
                     inputFormFieldMachineName,
@@ -272,15 +255,13 @@ public final class BookingEditEntryInformationFragment extends BookingFlowFragme
     }
 
     @Override
-    protected final void disableInputs()
-    {
+    protected final void disableInputs() {
         super.disableInputs();
         nextButton.setClickable(false);
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         nextButton.setClickable(true);
     }

@@ -37,10 +37,12 @@ import android.widget.Scroller;
  * Scroller class handles scrolling events and updates the spinnerwheel
  */
 public abstract class WheelScroller {
+
     /**
      * Scrolling listener interface
      */
     public interface ScrollingListener {
+
         /**
          * Scrolling callback called when scrolling is performed.
          * @param distance the distance to scroll
@@ -61,18 +63,19 @@ public abstract class WheelScroller {
          * Starting callback called when scrolling is started
          */
         void onStarted();
-        
+
         /**
          * Finishing callback called after justifying
          */
         void onFinished();
-        
+
         /**
          * Justifying callback called to justify a view when scrolling is ended
          */
         void onJustify();
     }
-    
+
+
     /** Scrolling duration */
     private static final int SCROLLING_DURATION = 400;
 
@@ -81,10 +84,10 @@ public abstract class WheelScroller {
 
     // Listener
     private ScrollingListener listener;
-    
+
     // Context
     private Context context;
-    
+
     // Scrolling
     private GestureDetector gestureDetector;
     protected Scroller scroller;
@@ -99,13 +102,23 @@ public abstract class WheelScroller {
      */
     public WheelScroller(Context context, ScrollingListener listener) {
         gestureDetector = new GestureDetector(context, new SimpleOnGestureListener() {
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            public boolean onScroll(
+                    MotionEvent e1,
+                    MotionEvent e2,
+                    float distanceX,
+                    float distanceY
+            ) {
                 // Do scrolling in onTouchEvent() since onScroll() are not call immediately
                 //  when user touch and move the spinnerwheel
                 return true;
             }
 
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            public boolean onFling(
+                    MotionEvent e1,
+                    MotionEvent e2,
+                    float velocityX,
+                    float velocityY
+            ) {
                 lastScrollPosition = 0;
                 scrollerFling(lastScrollPosition, (int) velocityX, (int) velocityY);
                 setNextMessage(MESSAGE_SCROLL);
@@ -116,13 +129,13 @@ public abstract class WheelScroller {
 
         });
         gestureDetector.setIsLongpressEnabled(false);
-        
+
         scroller = new Scroller(context);
 
         this.listener = listener;
         this.context = context;
     }
-    
+
     /**
      * Set the the specified scrolling interpolator
      * @param interpolator the interpolator
@@ -131,7 +144,7 @@ public abstract class WheelScroller {
         scroller.forceFinished(true);
         scroller = new Scroller(context, interpolator);
     }
-    
+
     /**
      * Scroll the spinnerwheel
      * @param distance the scrolling distance
@@ -144,16 +157,16 @@ public abstract class WheelScroller {
         setNextMessage(MESSAGE_SCROLL);
         startScrolling();
     }
-   
+
     /**
      * Stops scrolling
      */
     public void stopScrolling() {
         scroller.forceFinished(true);
     }
-    
+
     /**
-     * Handles Touch event 
+     * Handles Touch event
      * @param event the motion event
      * @return
      */
@@ -168,14 +181,12 @@ public abstract class WheelScroller {
                 break;
 
             case MotionEvent.ACTION_UP:
-                if (scroller.isFinished())
-                    listener.onTouchUp();
+                if (scroller.isFinished()) { listener.onTouchUp(); }
                 break;
-
 
             case MotionEvent.ACTION_MOVE:
                 // perform scrolling
-                int distance = (int)(getMotionEventPosition(event) - lastTouchedPosition);
+                int distance = (int) (getMotionEventPosition(event) - lastTouchedPosition);
                 if (distance != 0) {
                     startScrolling();
                     listener.onScroll(distance);
@@ -191,14 +202,13 @@ public abstract class WheelScroller {
         return true;
     }
 
-
     // Messages
     private final int MESSAGE_SCROLL = 0;
     private final int MESSAGE_JUSTIFY = 1;
-    
+
     /**
      * Set next message to queue. Clears queue before.
-     * 
+     *
      * @param message the message to set
      */
     private void setNextMessage(int message) {
@@ -213,7 +223,7 @@ public abstract class WheelScroller {
         animationHandler.removeMessages(MESSAGE_SCROLL);
         animationHandler.removeMessages(MESSAGE_JUSTIFY);
     }
-    
+
     // animation handler
     private Handler animationHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -224,23 +234,25 @@ public abstract class WheelScroller {
             if (delta != 0) {
                 listener.onScroll(delta);
             }
-            
+
             // scrolling is not finished when it comes to final Y
-            // so, finish it manually 
+            // so, finish it manually
             if (Math.abs(currPosition - getFinalScrollerPosition()) < MIN_DELTA_FOR_SCROLLING) {
                 // currPosition = getFinalScrollerPosition();
                 scroller.forceFinished(true);
             }
             if (!scroller.isFinished()) {
                 animationHandler.sendEmptyMessage(msg.what);
-            } else if (msg.what == MESSAGE_SCROLL) {
+            }
+            else if (msg.what == MESSAGE_SCROLL) {
                 justify();
-            } else {
+            }
+            else {
                 finishScrolling();
             }
         }
     };
-    
+
     /**
      * Justifies spinnerwheel
      */

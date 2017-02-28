@@ -22,9 +22,10 @@ import android.widget.TextView;
  * this is mostly copied from android.support.design.internal.BottomNavigationItemView
  */
 public class BottomNavigationItemView extends FrameLayout implements MenuView.ItemView {
+
     public static final int INVALID_ITEM_POSITION = -1;
 
-    private static final int[] CHECKED_STATE_SET = { android.R.attr.state_checked };
+    private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
     private ImageView mIcon;
     private final TextView mLabel;
@@ -47,7 +48,12 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        LayoutInflater.from(context).inflate(com.handybook.handybook.R.layout.layout_bottom_navigation_item, this, true);
+        LayoutInflater.from(context)
+                      .inflate(
+                              com.handybook.handybook.R.layout.layout_bottom_navigation_item,
+                              this,
+                              true
+                      );
         setBackgroundResource(com.handybook.handybook.R.drawable.background_bottom_nav_item);
         mIcon = (ImageView) findViewById(R.id.icon);
         mLabel = (TextView) findViewById(com.handybook.handybook.R.id.bottom_nav_item_label);
@@ -154,12 +160,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     public void setItemBackground(int background) {
         Drawable backgroundDrawable = background == 0
-                ? null : ContextCompat.getDrawable(getContext(), background);
+                                      ? null : ContextCompat.getDrawable(getContext(), background);
         ViewCompat.setBackground(this, backgroundDrawable);
     }
 
-    public void showIndicator(boolean showIndicator)
-    {
+    public void showIndicator(boolean showIndicator) {
         mIndicator.setVisibility(showIndicator ? View.VISIBLE : View.GONE);
     }
 }

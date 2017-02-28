@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName;
  *
  * splash promos are displayed in the notification feed so are actually a type of notification
  */
-public class SplashPromo implements Parcelable
-{
+public class SplashPromo implements Parcelable {
+
     @SerializedName("id")
     private String mId;
     @SerializedName("image")
@@ -34,54 +34,44 @@ public class SplashPromo implements Parcelable
      *
      * @return
      */
-    public boolean shouldDisplay()
-    {
+    public boolean shouldDisplay() {
         return mShouldNotDisplay == null || mShouldNotDisplay == 0;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return mId;
     }
 
-    public String getImageUrl()
-    {
+    public String getImageUrl() {
         return mImageUrl;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getSubtitle()
-    {
+    public String getSubtitle() {
         return mSubtitle;
     }
 
-    public String getDeepLinkUrl()
-    {
+    public String getDeepLinkUrl() {
         return mDeepLinkUrl;
     }
 
-    public String getActionText()
-    {
+    public String getActionText() {
         return mActionText;
     }
 
-    public String getTemplate()
-    {
+    public String getTemplate() {
         return mTemplate;
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
-    private SplashPromo(final Parcel in)
-    {
+    private SplashPromo(final Parcel in) {
         final String[] stringData = new String[7];
         in.readStringArray(stringData);
         mId = stringData[0];
@@ -107,8 +97,7 @@ public class SplashPromo implements Parcelable
     };
 
     @Override
-    public void writeToParcel(final Parcel dest, final int flags)
-    {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeStringArray(new String[]{
                 mId,
                 mImageUrl,

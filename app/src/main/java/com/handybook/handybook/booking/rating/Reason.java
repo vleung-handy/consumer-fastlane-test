@@ -19,8 +19,7 @@ import java.util.Map;
  * For certain types (i.e. quality_of_service), there is a distinction between handyman and cleaning
  * services. Those keys needs to use the prefix to access the correct image.
  */
-public class Reason implements Serializable
-{
+public class Reason implements Serializable {
 
     private static final Map<String, Integer> ICONS;
     public static final String CLEAN_PREFIX = "clean_";
@@ -29,8 +28,7 @@ public class Reason implements Serializable
     public static final String ARRIVED_LATE = "arrived_late";
     public static final String DEFAULT = "default";
 
-    static
-    {
+    static {
         ICONS = new HashMap<>();
         ICONS.put("professionalism", R.drawable.ic_rating_professionalism);
         ICONS.put("left_early", R.drawable.ic_rating_left_early);
@@ -65,8 +63,7 @@ public class Reason implements Serializable
 
     private Reasons mSubReasons;
 
-    public Reason(final String key, final String value, Reasons subReasons, boolean isCleaning)
-    {
+    public Reason(final String key, final String value, Reasons subReasons, boolean isCleaning) {
         mKey = key;
         mValue = value;
         mIsCleaning = isCleaning;
@@ -74,54 +71,43 @@ public class Reason implements Serializable
     }
 
     @DrawableRes
-    public int getDrawableRes()
-    {
+    public int getDrawableRes() {
         String prefix;
-        if (mIsCleaning)
-        {
+        if (mIsCleaning) {
             prefix = CLEAN_PREFIX;
         }
-        else
-        {
+        else {
             prefix = HANDYMAN_PREFIX;
         }
 
         Integer temp = ICONS.get(mKey);
-        if (temp != null)
-        {
+        if (temp != null) {
             return temp;
         }
-        else
-        {
+        else {
             temp = ICONS.get(prefix + mKey);
-            if (temp == null)
-            {
+            if (temp == null) {
                 return ICONS.get(DEFAULT);
             }
-            else
-            {
+            else {
                 return temp;
             }
         }
     }
 
-    public String getKey()
-    {
+    public String getKey() {
         return mKey;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return mValue;
     }
 
-    public boolean isCleaning()
-    {
+    public boolean isCleaning() {
         return mIsCleaning;
     }
 
-    public Reasons getSubReasons()
-    {
+    public Reasons getSubReasons() {
         return mSubReasons;
     }
 }

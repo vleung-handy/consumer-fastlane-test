@@ -23,8 +23,8 @@ import butterknife.Bind;
  *
  * Created by jtse on 3/30/16.
  */
-public abstract class BaseWizardFragment extends InjectedFragment implements Serializable
-{
+public abstract class BaseWizardFragment extends InjectedFragment implements Serializable {
+
     protected WizardCallback mCallback;
 
     @Bind(R.id.tv_rating_title)
@@ -37,19 +37,16 @@ public abstract class BaseWizardFragment extends InjectedFragment implements Ser
     TextView mTvAllApply;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getActivity().getApplication()).inject(this);
     }
 
     @Override
-    public void onAttach(final Context context)
-    {
+    public void onAttach(final Context context) {
         super.onAttach(context);
         Fragment parentFragment = getParentFragment();
-        if (parentFragment instanceof WizardCallback)
-        {
+        if (parentFragment instanceof WizardCallback) {
             mCallback = (WizardCallback) parentFragment;
         }
     }

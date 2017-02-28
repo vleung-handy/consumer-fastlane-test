@@ -26,16 +26,15 @@ import dagger.Provides;
                 HelpContactActivity.class,
                 HelpFragment.class
         })
-public final class HelpModule
-{
+public final class HelpModule {
+
     @Provides
     @Singleton
     final HelpManager provideHelpManager(
             final Bus bus,
             final DataManager dataManager,
             final UserManager userManager
-    )
-    {
+    ) {
         return new HelpManager(bus, dataManager, userManager);
     }
 
@@ -44,8 +43,7 @@ public final class HelpModule
     final HelpContactManager provideHelpContactManager(
             final Bus bus,
             final DataManager dataManager
-    )
-    {
+    ) {
         return new HelpContactManager(bus, dataManager);
     }
 }

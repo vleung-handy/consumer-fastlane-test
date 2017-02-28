@@ -18,8 +18,8 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
-public class User extends Observable
-{
+public class User extends Observable {
+
     public static final String PAYMENT_METHOD_ANDROID_PAY = "android_pay";
 
     @SerializedName("auth_token")
@@ -75,34 +75,28 @@ public class User extends Observable
 
     public User() {}
 
-    public boolean isRecurringCancellationsEnabled()
-    {
+    public boolean isRecurringCancellationsEnabled() {
         return mRecurringCancellationsEnabled;
     }
 
-    public boolean isRecurringCancellationsEmailFlowEnabled()
-    {
+    public boolean isRecurringCancellationsEmailFlowEnabled() {
         return mRecurringCancellationsEmailFlowEnabled;
     }
 
-    public final String getAuthToken()
-    {
+    public final String getAuthToken() {
         return mAuthToken;
     }
 
-    public final void setAuthToken(final String authToken)
-    {
+    public final void setAuthToken(final String authToken) {
         mAuthToken = authToken;
         triggerObservers();
     }
 
-    public final String getId()
-    {
+    public final String getId() {
         return mId;
     }
 
-    public final void setId(final String id)
-    {
+    public final void setId(final String id) {
         mId = id;
         triggerObservers();
     }
@@ -111,207 +105,171 @@ public class User extends Observable
         return mCreditsCents;
     }
 
-    public final String getFirstName()
-    {
+    public final String getFirstName() {
         return mFirstName;
     }
 
-    public final void setFirstName(final String firstName)
-    {
+    public final void setFirstName(final String firstName) {
         mFirstName = firstName;
         triggerObservers();
     }
 
-    public final String getLastName()
-    {
+    public final String getLastName() {
         return mLastName;
     }
 
-    public final void setLastName(final String lastName)
-    {
+    public final void setLastName(final String lastName) {
         mLastName = lastName;
         triggerObservers();
     }
 
-    public final String getFullName()
-    {
+    public final String getFullName() {
         return mFirstName + " " + mLastName;
     }
 
-    public final String getEmail()
-    {
+    public final String getEmail() {
         return mEmail;
     }
 
-    public final void setEmail(final String email)
-    {
+    public final void setEmail(final String email) {
         mEmail = email;
         triggerObservers();
     }
 
-    public final String getPhonePrefix()
-    {
+    public final String getPhonePrefix() {
         return mPhonePrefix;
     }
 
-    final void setPhonePrefix(final String phonePrefix)
-    {
+    final void setPhonePrefix(final String phonePrefix) {
         mPhonePrefix = phonePrefix;
         triggerObservers();
     }
 
-    public final String getPhone()
-    {
+    public final String getPhone() {
         final int phoneLen = mPhone != null ? mPhone.length() : 0;
         if (mPhone != null & phoneLen > 10) { return mPhone.substring(phoneLen - 10); }
         return mPhone;
     }
 
-    public final void setPhone(final String phone)
-    {
+    public final void setPhone(final String phone) {
         mPhone = phone;
         triggerObservers();
     }
 
-    public String getCurrencyChar()
-    {
+    public String getCurrencyChar() {
         return mCurrencyChar;
     }
 
-    final void setCurrencyChar(final String currencyChar)
-    {
+    final void setCurrencyChar(final String currencyChar) {
         mCurrencyChar = currencyChar;
         triggerObservers();
     }
 
-    final String getCurrencySuffix()
-    {
+    final String getCurrencySuffix() {
         return mCurrencySuffix;
     }
 
-    final void setCurrencySuffix(final String currencySuffix)
-    {
+    final void setCurrencySuffix(final String currencySuffix) {
         mCurrencySuffix = currencySuffix;
         triggerObservers();
     }
 
-    final String getPassword()
-    {
+    final String getPassword() {
         return mPassword;
     }
 
-    public final void setPassword(final String password)
-    {
+    public final void setPassword(final String password) {
         mPassword = password;
     }
 
-    final String getCurrentPassword()
-    {
+    final String getCurrentPassword() {
         return mCurrentPassword;
     }
 
-    public final void setCurrentPassword(final String currentPassword)
-    {
+    public final void setCurrentPassword(final String currentPassword) {
         mCurrentPassword = currentPassword;
     }
 
-    final String getPasswordConfirmation()
-    {
+    final String getPasswordConfirmation() {
         return mPasswordConfirmation;
     }
 
-    public final void setPasswordConfirmation(final String passwordConfirmation)
-    {
+    public final void setPasswordConfirmation(final String passwordConfirmation) {
         mPasswordConfirmation = passwordConfirmation;
     }
 
-    public final Address getAddress()
-    {
+    public final Address getAddress() {
         return mAddress;
     }
 
-    final void setAddress(final Address address)
-    {
+    final void setAddress(final Address address) {
         mAddress = address;
         triggerObservers();
     }
 
-    public CreditCard getCreditCard()
-    {
+    public CreditCard getCreditCard() {
         return mCreditCard;
     }
 
-    public boolean isUsingAndroidPay()
-    {
-        return mPaymentMethod != null && mPaymentMethod.equalsIgnoreCase(PAYMENT_METHOD_ANDROID_PAY);
+    public boolean isUsingAndroidPay() {
+        return mPaymentMethod != null &&
+               mPaymentMethod.equalsIgnoreCase(PAYMENT_METHOD_ANDROID_PAY);
     }
 
-    final void setCreditCard(final CreditCard creditCard)
-    {
+    final void setCreditCard(final CreditCard creditCard) {
         mCreditCard = creditCard;
         triggerObservers();
     }
 
-    public Analytics getAnalytics()
-    {
+    public Analytics getAnalytics() {
         return mAnalytics;
     }
 
-    final void setAnalytics(final Analytics analytics)
-    {
+    final void setAnalytics(final Analytics analytics) {
         mAnalytics = analytics;
         triggerObservers();
     }
 
-    public final int getBookingRateId()
-    {
+    public final int getBookingRateId() {
         return mBookingRateId;
     }
 
-    public final String getBookingRatePro()
-    {
+    public final String getBookingRatePro() {
         return mBookingRatePro;
     }
 
-    public ArrayList<LocalizedMonetaryAmount> getDefaultTipAmounts()
-    {
+    public ArrayList<LocalizedMonetaryAmount> getDefaultTipAmounts() {
         return mDefaultTipAmounts;
     }
 
-    public final int getLaundryBookingId()
-    {
+    public final int getLaundryBookingId() {
         return mLaundryBookingId;
     }
 
-    public final int getAddLaundryBookingId()
-    {
+    public final int getAddLaundryBookingId() {
         return mAddLaundryBookingId;
     }
 
-    private void triggerObservers()
-    {
+    private void triggerObservers() {
         setChanged();
         notifyObservers();
     }
 
-    final String toJson()
-    {
+    final String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .setExclusionStrategies(getExclusionStrategy())
-                .registerTypeAdapter(User.class, new UserSerializer()).create();
+                                           .setExclusionStrategies(getExclusionStrategy())
+                                           .registerTypeAdapter(User.class, new UserSerializer())
+                                           .create();
 
         return gson.toJson(this);
     }
 
-    public static User fromJson(final String json)
-    {
-        try
-        {
+    public static User fromJson(final String json) {
+        try {
             return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
                                     .fromJson(json, User.class);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Crashlytics.logException(
                     new RuntimeException("Unable to deserialize:" + json + ":" + e.getMessage(), e)
             );
@@ -319,37 +277,31 @@ public class User extends Observable
         }
     }
 
-    static ExclusionStrategy getExclusionStrategy()
-    {
-        return new ExclusionStrategy()
-        {
+    static ExclusionStrategy getExclusionStrategy() {
+        return new ExclusionStrategy() {
             @Override
-            public boolean shouldSkipField(final FieldAttributes f)
-            {
+            public boolean shouldSkipField(final FieldAttributes f) {
                 return false;
             }
 
             @Override
-            public boolean shouldSkipClass(final Class<?> clazz)
-            {
+            public boolean shouldSkipClass(final Class<?> clazz) {
                 return clazz.equals(Observer.class);
             }
         };
     }
 
-    public String getStripeKey()
-    {
+    public String getStripeKey() {
         return mStripeKey;
     }
 
-    static final class UserSerializer implements JsonSerializer<User>
-    {
+    static final class UserSerializer implements JsonSerializer<User> {
+
         @Override
         public final JsonElement serialize(
                 final User value, final Type type,
                 final JsonSerializationContext context
-        )
-        {
+        ) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("id", context.serialize(value.getId()));
@@ -367,18 +319,28 @@ public class User extends Observable
             jsonObj.add("analytics", context.serialize(value.getAnalytics()));
             jsonObj.add("password", context.serialize(value.getPassword()));
             jsonObj.add("current_password", context.serialize(value.getCurrentPassword()));
-            jsonObj.add("password_confirmation", context.serialize(value.getPasswordConfirmation()));
+            jsonObj.add(
+                    "password_confirmation",
+                    context.serialize(value.getPasswordConfirmation())
+            );
             jsonObj.add("booking_to_rate_id", context.serialize(value.getBookingRateId()));
             jsonObj.add("booking_to_rate_pro_name", context.serialize(value.getBookingRatePro()));
-            jsonObj.add("schedule_laundry_booking_id", context.serialize(value.getLaundryBookingId()));
-            jsonObj.add("add_laundry_booking_id", context.serialize(value.getAddLaundryBookingId()));
+            jsonObj.add(
+                    "schedule_laundry_booking_id",
+                    context.serialize(value.getLaundryBookingId())
+            );
+            jsonObj.add(
+                    "add_laundry_booking_id",
+                    context.serialize(value.getAddLaundryBookingId())
+            );
 
             return jsonObj;
         }
     }
 
-    public static final class Address
-    {
+
+    public static final class Address {
+
         @SerializedName("zipcode")
         private String mZip;
         @SerializedName("address1")
@@ -386,37 +348,32 @@ public class User extends Observable
         @SerializedName("address2")
         private String mAddress2;
 
-        public final String getZip()
-        {
+        public final String getZip() {
             return mZip;
         }
 
-        public final String getAddress1()
-        {
+        public final String getAddress1() {
             return mAddress1;
         }
 
-        public final String getAddress2()
-        {
+        public final String getAddress2() {
             return mAddress2;
         }
     }
 
 
-    public static class CreditCard
-    {
+    public static class CreditCard {
+
         @SerializedName("last4")
         private String mLast4;
         @SerializedName("brand")
         private String mBrand;
 
-        public String getLast4()
-        {
+        public String getLast4() {
             return mLast4;
         }
 
-        public String getBrand()
-        {
+        public String getBrand() {
             return mBrand;
         }
     }
@@ -425,8 +382,8 @@ public class User extends Observable
     /**
      * If this class marks as final, then we won't be able to mock this for unit testing
      */
-    public static class Analytics
-    {
+    public static class Analytics {
+
         @SerializedName("last_booking_end")
         private Date mLastBookingEnd;
         @SerializedName("partner")
@@ -448,23 +405,19 @@ public class User extends Observable
         @SerializedName("facebook_login")
         private boolean mIsFacebookLogin;
 
-        public final Date getLastBookingEnd()
-        {
+        public final Date getLastBookingEnd() {
             return mLastBookingEnd;
         }
 
-        public final String getPartner()
-        {
+        public final String getPartner() {
             return mPartner;
         }
 
-        public final int getBookings()
-        {
+        public final int getBookings() {
             return mBookings;
         }
 
-        public final int getTotalBookings()
-        {
+        public final int getTotalBookings() {
             return mTotalBookings;
         }
 
@@ -472,33 +425,27 @@ public class User extends Observable
             mTotalBookings = totalBookings;
         }
 
-        public final int getPastBookings()
-        {
+        public final int getPastBookings() {
             return mPastBookings;
         }
 
-        public int getUpcomingBookings()
-        {
+        public int getUpcomingBookings() {
             return mUpcomingBookings;
         }
 
-        public final int getRecurringBookings()
-        {
+        public final int getRecurringBookings() {
             return mRecurringBookings;
         }
 
-        public final boolean isProvider()
-        {
+        public final boolean isProvider() {
             return mIsProvider;
         }
 
-        public final boolean isVip()
-        {
+        public final boolean isVip() {
             return mIsVip;
         }
 
-        public final boolean isFacebookLogin()
-        {
+        public final boolean isFacebookLogin() {
             return mIsFacebookLogin;
         }
     }

@@ -1,17 +1,17 @@
 package com.handybook.handybook.bottomnav;
 
-import android.support.design.internal.*;
+import android.support.design.internal.TextScale;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.ViewGroup;
 
-
 /**
  * this is copied from android.support.design.internal.BottomNavigationAnimationHelperIcs
  */
 class BottomNavigationAnimationHelperIcs extends BottomNavigationAnimationHelperBase {
+
     private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
 
     private final TransitionSet mSet;

@@ -17,8 +17,8 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public class InjectedDialogFragment extends DialogFragment
-{
+public class InjectedDialogFragment extends DialogFragment {
+
     protected boolean allowCallbacks;
     protected ProgressDialog progressDialog;
 
@@ -36,8 +36,7 @@ public class InjectedDialogFragment extends DialogFragment
     protected Bus mBus;
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getActivity().getApplication()).inject(this);
 
@@ -48,36 +47,31 @@ public class InjectedDialogFragment extends DialogFragment
     }
 
     @Override
-    public final void onDestroyView()
-    {
+    public final void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         allowCallbacks = true;
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         allowCallbacks = false;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         mBus.register(this);
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         mBus.unregister(this);
         super.onPause();
     }

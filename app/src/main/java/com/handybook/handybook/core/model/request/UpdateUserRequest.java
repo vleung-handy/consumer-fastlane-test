@@ -2,8 +2,8 @@ package com.handybook.handybook.core.model.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UpdateUserRequest
-{
+public class UpdateUserRequest {
+
     @SerializedName("id")
     private String mUserId; //this is set in the request path for logging purposes
     @SerializedName("first_name")
@@ -21,48 +21,39 @@ public class UpdateUserRequest
     @SerializedName("password_confirmation")
     private String mPasswordConfirmation;
 
-    public String getUserId()
-    {
+    public String getUserId() {
         return mUserId;
     }
 
-    public void setUserId(final String userId)
-    {
+    public void setUserId(final String userId) {
         mUserId = userId;
     }
 
-    public void setFirstName(final String firstName)
-    {
+    public void setFirstName(final String firstName) {
         mFirstName = firstName;
     }
 
-    public void setLastName(final String lastName)
-    {
+    public void setLastName(final String lastName) {
         mLastName = lastName;
     }
 
-    public void setEmail(final String email)
-    {
+    public void setEmail(final String email) {
         mEmail = email;
     }
 
-    public void setPhone(final String phone)
-    {
+    public void setPhone(final String phone) {
         mPhone = phone;
     }
 
-    public void setPassword(final String password)
-    {
+    public void setPassword(final String password) {
         mPassword = password;
     }
 
-    public void setCurrentPassword(final String currentPassword)
-    {
+    public void setCurrentPassword(final String currentPassword) {
         mCurrentPassword = currentPassword;
     }
 
-    public void setPasswordConfirmation(final String passwordConfirmation)
-    {
+    public void setPasswordConfirmation(final String passwordConfirmation) {
         mPasswordConfirmation = passwordConfirmation;
     }
 }

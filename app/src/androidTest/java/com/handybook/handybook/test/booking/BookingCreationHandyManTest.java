@@ -32,8 +32,8 @@ import static org.hamcrest.Matchers.allOf;
 
 //note that animations should be disabled on the device running these tests
 @RunWith(AndroidJUnit4.class)
-public class BookingCreationHandyManTest
-{
+public class BookingCreationHandyManTest {
+
     @Rule
     public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
@@ -42,8 +42,7 @@ public class BookingCreationHandyManTest
      * basic test for ensuring that an existing user can create a handyman booking with default values
      */
     @Test
-    public void testExistingUserCanCreateHandymanBooking()
-    {
+    public void testExistingUserCanCreateHandymanBooking() {
         TestUser testUser = TestUsers.EXISTING_USER_BOOKING_CREATION;
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(testUser);
@@ -53,7 +52,10 @@ public class BookingCreationHandyManTest
         Matcher<View> handymanRecyclerViewItemMatcher =
                 withChild(withChild(withChild(withChild(withText("Handyman")))));
         onView(withId(R.id.recycler_view)).perform(
-                RecyclerViewActions.actionOnItem(handymanRecyclerViewItemMatcher, AppInteractionUtil.recyclerClick()));
+                RecyclerViewActions.actionOnItem(
+                        handymanRecyclerViewItemMatcher,
+                        AppInteractionUtil.recyclerClick()
+                ));
 
         //select the hanging items service
         Matcher<View> matchingItemsMatcher = withText("Hanging items");
@@ -120,8 +122,7 @@ public class BookingCreationHandyManTest
         ViewUtil.waitForViewVisible(R.id.booking_detail_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    private void clickNextButton()
-    {
+    private void clickNextButton() {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.next_button)).perform(click());
     }

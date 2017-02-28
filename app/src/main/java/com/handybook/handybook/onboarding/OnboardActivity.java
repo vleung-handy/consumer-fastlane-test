@@ -7,18 +7,14 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public final class OnboardActivity extends MenuDrawerActivity
-{
-
+public final class OnboardActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        if (mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()) {
             setActiveFragment(OnboardV2Fragment.newInstance());
         }
-        else
-        {
+        else {
             setActiveFragment(OnboardFragment.newInstance());
         }
 
@@ -26,12 +22,9 @@ public final class OnboardActivity extends MenuDrawerActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
-        if (getActiveFragemnt() != null && getActiveFragemnt() instanceof OnboardV2Fragment)
-        {
-            if (((OnboardV2Fragment) getActiveFragemnt()).onBackPressed())
-            {
+    public void onBackPressed() {
+        if (getActiveFragemnt() != null && getActiveFragemnt() instanceof OnboardV2Fragment) {
+            if (((OnboardV2Fragment) getActiveFragemnt()).onBackPressed()) {
                 return;
             }
         }
@@ -51,11 +44,13 @@ public final class OnboardActivity extends MenuDrawerActivity
     }
 
     @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
+    protected void onActivityResult(
+            final int requestCode,
+            final int resultCode,
+            final Intent data
+    ) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ActivityResult.LOGIN_FINISH)
-        {
+        if (resultCode == ActivityResult.LOGIN_FINISH) {
             //Will reach here if a login request originated from this activity is completed.
             finish();
         }

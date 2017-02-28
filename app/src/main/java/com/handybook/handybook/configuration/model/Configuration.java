@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Configuration implements Serializable
-{
+public class Configuration implements Serializable {
+
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     @SerializedName("help_center_url")
@@ -63,45 +63,37 @@ public class Configuration implements Serializable
     @SerializedName("booking_hours_clarification_experiment_enabled")
     private boolean mBookingHoursClarificationExperimentEnabled;
 
-    public boolean isBookingHoursClarificationExperimentEnabled()
-    {
+    public boolean isBookingHoursClarificationExperimentEnabled() {
         return mBookingHoursClarificationExperimentEnabled;
     }
 
-    public boolean isAppseeAnalyticsEnabled()
-    {
+    public boolean isAppseeAnalyticsEnabled() {
         return mAppseeAnalyticsEnabled;
     }
 
-    public String getHelpCenterUrl()
-    {
+    public String getHelpCenterUrl() {
         return mHelpCenterUrl;
     }
 
-    public boolean shouldUseCancelRecurringWebview()
-    {
+    public boolean shouldUseCancelRecurringWebview() {
         return mShouldUseCancelRecurringWebview;
     }
 
-    public boolean isShowRescheduleFlowOnCancel()
-    {
+    public boolean isShowRescheduleFlowOnCancel() {
         return mShowRescheduleFlowOnCancel;
     }
 
-    public boolean isNativeHelpCenterEnabled()
-    {
+    public boolean isNativeHelpCenterEnabled() {
         return mNativeHelpCenterEnabled;
     }
 
-    public boolean isAddressAutoCompleteEnabled()
-    {
+    public boolean isAddressAutoCompleteEnabled() {
         return mAddressAutoCompleteEnabled;
     }
 
     public boolean isBottomNavEnabled() {
         //Do this if this is first time bottom nav is set for session
-        if (mIsBottomNavEnabledForSession == null)
-        {
+        if (mIsBottomNavEnabledForSession == null) {
             mIsBottomNavEnabledForSession = mBottomNavEnabled;
         }
 
@@ -112,26 +104,22 @@ public class Configuration implements Serializable
         return mHomeScreenV2Enabled;
     }
 
-    public String toJson()
-    {
+    public String toJson() {
         return new GsonBuilder().setDateFormat(DATE_FORMAT).create().toJson(this);
     }
 
-    public static Configuration fromJson(final String json)
-    {
+    public static Configuration fromJson(final String json) {
         return new GsonBuilder()
                 .setDateFormat(DATE_FORMAT).create().fromJson(json, Configuration.class);
     }
 
     public boolean isProTeamFacebookLoginEnabled() { return mProTeamFacebookLoginEnabled; }
 
-    public boolean isProTeamProfilePicturesEnabled()
-    {
+    public boolean isProTeamProfilePicturesEnabled() {
         return isProTeamProfilePicturesEnabled;
     }
 
-    public boolean isSnowEnabled()
-    {
+    public boolean isSnowEnabled() {
         return mSnowEnabled;
     }
 
@@ -139,18 +127,15 @@ public class Configuration implements Serializable
 
     public boolean isProTeamRescheduleCTAEnabled() { return mEnableProTeamRescheduleCTA; }
 
-    public boolean isDirectSmsToChatEnabled()
-    {
+    public boolean isDirectSmsToChatEnabled() {
         return mDirectSmsToChatEnabled;
     }
 
-    public boolean isSettingFavoriteProEnabled()
-    {
+    public boolean isSettingFavoriteProEnabled() {
         return mSettingFavoriteProEnabled;
     }
 
-    public boolean isOnboardingV2Enabled()
-    {
+    public boolean isOnboardingV2Enabled() {
         return mOnboardingV2Enabled;
     }
 }

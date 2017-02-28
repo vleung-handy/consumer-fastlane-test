@@ -40,8 +40,8 @@ import java.io.Serializable;
  *   }
  * }
  */
-public class BookingCancellationData implements Serializable
-{
+public class BookingCancellationData implements Serializable {
+
     private static final Gson GSON = new GsonBuilder()
             .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
             .create();
@@ -53,13 +53,11 @@ public class BookingCancellationData implements Serializable
     @SerializedName("precancellation_info")
     private PreCancellationInfo mPreCancellationInfo;
 
-    public static BookingCancellationData fromJson(final String json)
-    {
+    public static BookingCancellationData fromJson(final String json) {
         return GSON.fromJson(json, BookingCancellationData.class);
     }
 
-    public static String toJson(final BookingCancellationData value)
-    {
+    public static String toJson(final BookingCancellationData value) {
         return GSON.toJson(value, BookingCancellationData.class);
     }
 
@@ -73,8 +71,8 @@ public class BookingCancellationData implements Serializable
 
     public boolean hasPrecancellationInfo() { return getPreCancellationInfo() != null; }
 
-    public static class CancellationInfo implements Serializable
-    {
+    public static class CancellationInfo implements Serializable {
+
         @SerializedName("title")
         private String mTitle;
         @SerializedName("reasons")
@@ -98,8 +96,8 @@ public class BookingCancellationData implements Serializable
     }
 
 
-    public static class PreCancellationInfo implements Serializable
-    {
+    public static class PreCancellationInfo implements Serializable {
+
         @SerializedName("title")
         private String mTitle;
         @SerializedName("message")
@@ -123,8 +121,8 @@ public class BookingCancellationData implements Serializable
     }
 
 
-    public static class CancellationReason implements Serializable
-    {
+    public static class CancellationReason implements Serializable {
+
         @SerializedName("id")
         private Integer mId;
         @SerializedName("label")

@@ -25,8 +25,8 @@ import com.handybook.handybook.referral.manager.ReferralsManager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RateServiceConfirmDialogFragment extends BaseDialogFragment
-{
+public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
+
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     static final String EXTRA_RATING = "com.handy.handy.EXTRA_RATING";
 
@@ -55,8 +55,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     public static RateServiceConfirmDialogFragment newInstance(
             final int bookingId,
             final int rating
-    )
-    {
+    ) {
         final RateServiceConfirmDialogFragment rateServiceConfirmDialogFragment
                 = new RateServiceConfirmDialogFragment();
 
@@ -69,8 +68,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
@@ -82,8 +80,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     public View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
 
         super.onCreateView(inflater, container, savedInstanceState);
 
@@ -93,11 +90,9 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
         initLayout(rating);
         submitButton.setOnClickListener(submitListener);
 
-        skipButton.setOnClickListener(new View.OnClickListener()
-        {
+        skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 dismiss();
             }
         });
@@ -106,18 +101,14 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
-        if (rating == 4)
-        {
+        if (rating == 4) {
             // dismiss handler automatically if rating is a 4
             final Handler handler = new Handler();
-            handler.postDelayed(new Runnable()
-            {
+            handler.postDelayed(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     dismiss();
                 }
             }, 1000);
@@ -125,26 +116,22 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    protected void enableInputs()
-    {
+    protected void enableInputs() {
         super.enableInputs();
         submitButton.setClickable(true);
         skipButton.setClickable(true);
     }
 
     @Override
-    protected void disableInputs()
-    {
+    protected void disableInputs() {
         super.disableInputs();
         submitButton.setClickable(false);
         skipButton.setClickable(false);
     }
 
-    private void initLayout(final int rating)
-    {
+    private void initLayout(final int rating) {
         // setup different modal layouts according to rating
-        if (rating >= 4)
-        {
+        if (rating >= 4) {
             serviceIconImage.setImageDrawable(
                     ContextCompat.getDrawable(
                             getContext(),
@@ -158,18 +145,16 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
 
             titleText.setText(getResources().getString(R.string.glad_you_enjoy));
 
-            if (rating == 4)
-            {
+            if (rating == 4) {
                 titleText.setPadding(titleText.getPaddingLeft(), titleText.getPaddingTop(),
                                      titleText.getPaddingRight(), titleText.getPaddingBottom()
-                                             + Utils.toDP(32, getActivity())
+                                                                  + Utils.toDP(32, getActivity())
                 );
 
                 messageText.setVisibility(View.GONE);
                 submitButtonLayout.setVisibility(View.GONE);
             }
-            else
-            {
+            else {
                 messageText.setText(getResources().getString(R.string.good_vibes));
                 messageText.setTextColor(ContextCompat.getColor(
                         getContext(),
@@ -182,45 +167,40 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
                 skipButton.setVisibility(View.VISIBLE);
             }
         }
-        else
-        {
+        else {
             titleText.setText(getResources().getString(R.string.thanks_for_feedback));
             messageText.setText(getResources().getString(R.string.were_sorry_feedback));
             allowDialogDismissable();
         }
     }
 
-    private View.OnClickListener submitListener = new View.OnClickListener()
-    {
+    private View.OnClickListener submitListener = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
+        public void onClick(final View v) {
             final String positiveFeedback = feedbackText.getText().toString();
-            if (!Strings.isNullOrEmpty(positiveFeedback))
-            {
+            if (!Strings.isNullOrEmpty(positiveFeedback)) {
                 disableInputs();
                 submitProgress.setVisibility(View.VISIBLE);
                 submitButton.setText(null);
 
                 dataManager.submitProRatingDetails(booking, positiveFeedback,
-                                                   new FragmentSafeCallback<Void>(RateServiceConfirmDialogFragment.this)
-                                                   {
+                                                   new FragmentSafeCallback<Void>(
+                                                           RateServiceConfirmDialogFragment.this) {
                                                        @Override
-                                                       public void onCallbackSuccess(final Void response)
-                                                       {
+                                                       public void onCallbackSuccess(final Void response) {
                                                            if (!allowCallbacks) { return; }
                                                            dismiss();
                                                        }
 
                                                        @Override
-                                                       public void onCallbackError(DataManager.DataManagerError error)
-                                                       {
+                                                       public void onCallbackError(DataManager.DataManagerError error) {
                                                            if (!allowCallbacks) { return; }
                                                            submitProgress.setVisibility(View.GONE);
                                                            submitButton.setText(R.string.send);
                                                            enableInputs();
-                                                           dataManagerErrorHandler.handleError(getActivity(),
-                                                                                               error
+                                                           dataManagerErrorHandler.handleError(
+                                                                   getActivity(),
+                                                                   error
                                                            );
                                                        }
                                                    }
@@ -231,8 +211,7 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment
     };
 
     @Override
-    public void dismiss()
-    {
+    public void dismiss() {
         super.dismiss();
         mBus.post(new ReferralsEvent.RequestPrepareReferrals(
                 true,

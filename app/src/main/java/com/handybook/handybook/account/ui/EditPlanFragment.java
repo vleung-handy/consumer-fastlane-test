@@ -26,8 +26,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EditPlanFragment extends InjectedFragment
-{
+public class EditPlanFragment extends InjectedFragment {
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.edit_plan_frequency_text)
@@ -39,8 +39,7 @@ public class EditPlanFragment extends InjectedFragment
 
     private RecurringBooking mPlan;
 
-    public static EditPlanFragment newInstance(RecurringBooking plan)
-    {
+    public static EditPlanFragment newInstance(RecurringBooking plan) {
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.RECURRING_PLAN, plan);
         EditPlanFragment fragment = new EditPlanFragment();
@@ -49,8 +48,7 @@ public class EditPlanFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPlan = (RecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_PLAN);
     }
@@ -60,8 +58,7 @@ public class EditPlanFragment extends InjectedFragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         View view = LayoutInflater.from(getContext())
                                   .inflate(R.layout.fragment_plan_edit, container, false);
         ButterKnife.bind(this, view);
@@ -70,16 +67,14 @@ public class EditPlanFragment extends InjectedFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         setupDisplay();
         bus.post(new LogEvent.AddLogEvent(new EditPlanLog.Shown(mPlan.getId())));
     }
 
     @OnClick(R.id.edit_plan_frequency)
-    public void editFrequency()
-    {
+    public void editFrequency() {
         bus.post(new LogEvent.AddLogEvent(
                 new EditPlanLog.EditFrequencyTapped(mPlan.getId(), mPlan.getFrequencyValue())));
 
@@ -89,8 +84,7 @@ public class EditPlanFragment extends InjectedFragment
     }
 
     @OnClick(R.id.edit_plan_address)
-    public void editAddress()
-    {
+    public void editAddress() {
         bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditAddressTapped(mPlan.getId())));
 
         Intent intent = new Intent(getContext(), EditPlanAddressActivity.class);
@@ -99,12 +93,9 @@ public class EditPlanFragment extends InjectedFragment
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
-        if (resultCode == Activity.RESULT_OK)
-        {
-            switch (requestCode)
-            {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
                 case RequestCode.EDIT_PLAN_ADDRESS:
                 case RequestCode.EDIT_PLAN_FREQUENCY:
                     mPlan = (RecurringBooking) data.getSerializableExtra(BundleKeys.RECURRING_PLAN);
@@ -114,24 +105,20 @@ public class EditPlanFragment extends InjectedFragment
     }
 
     @OnClick(R.id.edit_plan_cancel)
-    public void cancelPlan()
-    {
+    public void cancelPlan() {
         bus.post(new LogEvent.AddLogEvent(new EditPlanLog.CancelPlanTapped(mPlan.getId())));
         WebViewFragment fragment = WebViewFragment
                 .newInstance(mPlan.getCancelUrl(), getString(R.string.account_cancel_plan));
         FragmentUtils.switchToFragment(this, fragment, true);
     }
 
-    private void setupDisplay()
-    {
+    private void setupDisplay() {
         mFrequencyText.setText(mPlan.getFrequency());
         Booking.Address address = mPlan.getAddress();
-        if (address != null)
-        {
+        if (address != null) {
             mAddressText.setText(address.toString());
         }
-        else
-        {
+        else {
             mAddressText.setText(mPlan.getFullAddress());
         }
         mNextCleaningTimeText.setText(DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(

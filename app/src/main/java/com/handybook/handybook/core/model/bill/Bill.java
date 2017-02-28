@@ -54,8 +54,7 @@ import java.util.ArrayList;
  *   ]
  * }
  */
-public class Bill implements Serializable
-{
+public class Bill implements Serializable {
 
     @SerializedName("header_title")
     private String mHeaderTitle;
@@ -68,44 +67,37 @@ public class Bill implements Serializable
     @SerializedName("sections")
     private ArrayList<BillSection> mSections;
 
-    public static Bill fromJson(@NonNull CharSequence input)
-    {
+    public static Bill fromJson(@NonNull CharSequence input) {
         return new Gson().fromJson(input.toString(), Bill.class);
     }
 
     @NonNull
-    public String getHeaderTitle()
-    {
+    public String getHeaderTitle() {
         return mHeaderTitle;
     }
 
     @NonNull
-    public String getHeaderText()
-    {
+    public String getHeaderText() {
         return mHeaderText;
     }
 
     @NonNull
-    public Integer getFinalPriceValueCents()
-    {
+    public Integer getFinalPriceValueCents() {
         return mFinalPriceValueCents;
     }
 
     @NonNull
-    public String getCurrencySymbol()
-    {
+    public String getCurrencySymbol() {
         return mCurrencySymbol;
     }
 
     @NonNull
-    public ArrayList<BillSection> getSections()
-    {
+    public ArrayList<BillSection> getSections() {
         return mSections == null ? new ArrayList<BillSection>() : mSections;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return new Gson().toJson(this);
     }
 
@@ -139,10 +131,9 @@ public class Bill implements Serializable
      *   ]
      * }
      */
-    public static class BillSection implements Serializable
-    {
-        public enum BillSectionType
-        {
+    public static class BillSection implements Serializable {
+
+        public enum BillSectionType {
             @SerializedName("DEFAULT")
             DEFAULT,
             @SerializedName("ITEMIZED_BILL")
@@ -156,25 +147,21 @@ public class Bill implements Serializable
         private ArrayList<BillLineItem> mLineItems;
 
         @Nullable
-        public BillSectionType getType()
-        {
+        public BillSectionType getType() {
             return mType != null ? mType : BillSectionType.DEFAULT;
         }
 
         @NonNull
-        public ArrayList<BillLineItem> getLineItems()
-        {
+        public ArrayList<BillLineItem> getLineItems() {
             return mLineItems == null ? new ArrayList<BillLineItem>() : mLineItems;
         }
 
-        public boolean isEmpty()
-        {
+        public boolean isEmpty() {
             return mLineItems == null || mLineItems.isEmpty();
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return new Gson().toJson(this);
         }
 
@@ -191,14 +178,13 @@ public class Bill implements Serializable
      *   "help_text":"It has to be done..."
      * }
      */
-    public static class BillLineItem implements Serializable
-    {
-        public enum ItemType
-        {
+    public static class BillLineItem implements Serializable {
+
+        public enum ItemType {
             @SerializedName("DEFAULT")
             DEFAULT,
             @SerializedName("LARGE_PRICE")
-            LARGE_PRICE;
+            LARGE_PRICE
 
         }
 
@@ -231,168 +217,168 @@ public class Bill implements Serializable
         private String mHelpText;
 
         @NonNull
-        public ItemType getType()
-        {
+        public ItemType getType() {
             return mType != null ? mType : ItemType.DEFAULT;
         }
 
         @Nullable
-        public String getLabel()
-        {
+        public String getLabel() {
             return mLabel;
         }
 
         @Nullable
-        public Integer getAmountCents()
-        {
+        public Integer getAmountCents() {
             return mAmountCents;
         }
 
         @Nullable
-        public String getAmountText()
-        {
+        public String getAmountText() {
             return mAmountText;
         }
 
         @Nullable
-        public String getHelpText()
-        {
+        public String getHelpText() {
             return mHelpText;
         }
 
-        public boolean hasHelpText()
-        {
+        public boolean hasHelpText() {
             return mHelpText != null;
         }
 
-        public boolean hasAmountText()
-        {
+        public boolean hasAmountText() {
             return mAmountText != null;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return new Gson().toJson(this);
         }
     }
 
 
     public static String TEST_PAYLOAD_JSON = ""
-            + "{\n"
-            + "  \"header_title\":\"Cleaning Plan: Every 2 weeks\",\n"
-            + "  \"header_text\":\"Starting Wed, Jan 10\\n8:00 am\",\n"
-            + "  \"final_amount_cents\":12345,\n"
-            + "  \"currency_symbol\":\"$\",\n"
-            + "  \"sections\":[\n"
-            + "    {\n"
-            + "      \"line_items\":[\n"
-            + "        {\n"
-            + "          \"label\":\"Cleaning + 1 extra\",\n"
-            + "          \"amount_cents\":7500\n"
-            + "        },\n"
-            + "        {\n"
-            + "        \"label\":\"Coupon\",\n"
-            + "        \"amount_cents\":-1740,\n"
-            + "        \"help_text\":\"Coupons are good,\\nMkay?!...\"\n"
-            + "        },\n"
-            + "        {\n"
-            + "          \"label\":\"Trust & Support Fee\",\n"
-            + "          \"amount_cents\":300\n"
-            + "        },\n"
-            + "        {\n"
-            + "          \"label\":\"Overriden default\",\n"
-            + "          \"amount_text\":\"OvErRiDe\",\n"
-            + "          \"help_text\":\"It has to be done...\"\n"
-            + "        },\n"
-            + "        {\n"
-            + "          \"label\":\"Credits\",\n"
-            + "          \"amount_cents\":-1020\n"
-            + "        }\n"
-            + "      ]\n"
-            + "    },\n"
-            + "    {\n"
-            + "      \"line_items\":[\n"
-            + "        {\n"
-            + "          \"label\":\"Empty section below, beware!\",\n"
-            + "          \"amount_text\":\"\"\n"
-            + "        }\n"
-            + "      ]\n"
-            + "    },\n"
-            + "    {\n"
-            + "      \"line_items\":[]\n"
-            + "    },\n"
-            + "    {\n"
-            + "      \"line_items\":[\n"
-            + "        {\n"
-            + "          \"type\":\"LARGE_PRICE\",\n"
-            + "          \"label\":\"Today's Total\",\n"
-            + "          \"amount_cents\":2030\n"
-            + "        },\n"
-            + "        {\n"
-            + "          \"label\":\"Other credits\",\n"
-            + "          \"amount_cents\":-3050\n"
-            + "        },\n"
-            + "        {\n"
-            + "          \"type\":\"LARGE_PRICE\",\n"
-            + "          \"label\":\"Overridden Total\",\n"
-            + "          \"amount_text\":\"OvErRiDe\"\n"
-            + "        }\n"
-            + "      ]\n"
-            + "    },\n"
-            + "    {},\n"
-            + "    {},\n"
-            + "    {},\n"
-            + "    {},\n"
-            + "    {\n"
-            + "      \"line_items\":[\n"
-            + "        {\n"
-            + "          \"label\":\"Number of empty sections above:\",\n"
-            + "          \"amount_text\":\"4\"\n"
-            + "        }\n"
-            + "      ]\n"
-            + "    }\n"
-            + "  ]\n"
-            + "}";
+                                             + "{\n"
+                                             +
+                                             "  \"header_title\":\"Cleaning Plan: Every 2 weeks\",\n"
+                                             +
+                                             "  \"header_text\":\"Starting Wed, Jan 10\\n8:00 am\",\n"
+                                             + "  \"final_amount_cents\":12345,\n"
+                                             + "  \"currency_symbol\":\"$\",\n"
+                                             + "  \"sections\":[\n"
+                                             + "    {\n"
+                                             + "      \"line_items\":[\n"
+                                             + "        {\n"
+                                             + "          \"label\":\"Cleaning + 1 extra\",\n"
+                                             + "          \"amount_cents\":7500\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "        \"label\":\"Coupon\",\n"
+                                             + "        \"amount_cents\":-1740,\n"
+                                             +
+                                             "        \"help_text\":\"Coupons are good,\\nMkay?!...\"\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "          \"label\":\"Trust & Support Fee\",\n"
+                                             + "          \"amount_cents\":300\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "          \"label\":\"Overriden default\",\n"
+                                             + "          \"amount_text\":\"OvErRiDe\",\n"
+                                             + "          \"help_text\":\"It has to be done...\"\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "          \"label\":\"Credits\",\n"
+                                             + "          \"amount_cents\":-1020\n"
+                                             + "        }\n"
+                                             + "      ]\n"
+                                             + "    },\n"
+                                             + "    {\n"
+                                             + "      \"line_items\":[\n"
+                                             + "        {\n"
+                                             +
+                                             "          \"label\":\"Empty section below, beware!\",\n"
+                                             + "          \"amount_text\":\"\"\n"
+                                             + "        }\n"
+                                             + "      ]\n"
+                                             + "    },\n"
+                                             + "    {\n"
+                                             + "      \"line_items\":[]\n"
+                                             + "    },\n"
+                                             + "    {\n"
+                                             + "      \"line_items\":[\n"
+                                             + "        {\n"
+                                             + "          \"type\":\"LARGE_PRICE\",\n"
+                                             + "          \"label\":\"Today's Total\",\n"
+                                             + "          \"amount_cents\":2030\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "          \"label\":\"Other credits\",\n"
+                                             + "          \"amount_cents\":-3050\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "          \"type\":\"LARGE_PRICE\",\n"
+                                             + "          \"label\":\"Overridden Total\",\n"
+                                             + "          \"amount_text\":\"OvErRiDe\"\n"
+                                             + "        }\n"
+                                             + "      ]\n"
+                                             + "    },\n"
+                                             + "    {},\n"
+                                             + "    {},\n"
+                                             + "    {},\n"
+                                             + "    {},\n"
+                                             + "    {\n"
+                                             + "      \"line_items\":[\n"
+                                             + "        {\n"
+                                             +
+                                             "          \"label\":\"Number of empty sections above:\",\n"
+                                             + "          \"amount_text\":\"4\"\n"
+                                             + "        }\n"
+                                             + "      ]\n"
+                                             + "    }\n"
+                                             + "  ]\n"
+                                             + "}";
 
     public static String MOCK_PAYLOAD_JSON = ""
-            + "{\n"
-            + "  \"header_title\":\"Cleaning Plan: Every 2 weeks\",\n"
-            + "  \"header_text\":\"Starting Wed, Jan 10\\n8:00 am\",\n"
-            + "  \"final_amount_cents\":6050,\n"
-            + "  \"currency_symbol\":\"$\",\n"
-            + "  \"sections\":[\n"
-            + "    {\n"
-            + "      \"line_items\":[\n"
-            + "        {\n"
-            + "          \"label\":\"Cleaning + 1 extra\",\n"
-            + "          \"amount_cents\":8500\n"
-            + "        },\n"
-            + "        {\n"
-            + "        \"label\":\"Coupon\",\n"
-            + "        \"amount_cents\":-1750\n"
-            + "        },\n"
-            + "        {\n"
-            + "          \"label\":\"Trust & Support Fee\",\n"
-            + "          \"amount_cents\":300,\n"
-            + "          \"help_text\":\"We gots to charge you.\"\n"
-            + "        },\n"
-            + "        {\n"
-            + "          \"label\":\"Credits\",\n"
-            + "          \"amount_cents\":-1000\n"
-            + "        }\n"
-            + "      ]\n"
-            + "    },\n"
-            + "    {\n"
-            + "      \"line_items\":[\n"
-            + "        {\n"
-            + "          \"type\":\"LARGE_PRICE\",\n"
-            + "          \"label\":\"Today's Total\",\n"
-            + "          \"amount_cents\":6050\n"
-            + "        }\n"
-            + "      ]\n"
-            + "    }\n"
-            + "  ]\n"
-            + "}";
+                                             + "{\n"
+                                             +
+                                             "  \"header_title\":\"Cleaning Plan: Every 2 weeks\",\n"
+                                             +
+                                             "  \"header_text\":\"Starting Wed, Jan 10\\n8:00 am\",\n"
+                                             + "  \"final_amount_cents\":6050,\n"
+                                             + "  \"currency_symbol\":\"$\",\n"
+                                             + "  \"sections\":[\n"
+                                             + "    {\n"
+                                             + "      \"line_items\":[\n"
+                                             + "        {\n"
+                                             + "          \"label\":\"Cleaning + 1 extra\",\n"
+                                             + "          \"amount_cents\":8500\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "        \"label\":\"Coupon\",\n"
+                                             + "        \"amount_cents\":-1750\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "          \"label\":\"Trust & Support Fee\",\n"
+                                             + "          \"amount_cents\":300,\n"
+                                             +
+                                             "          \"help_text\":\"We gots to charge you.\"\n"
+                                             + "        },\n"
+                                             + "        {\n"
+                                             + "          \"label\":\"Credits\",\n"
+                                             + "          \"amount_cents\":-1000\n"
+                                             + "        }\n"
+                                             + "      ]\n"
+                                             + "    },\n"
+                                             + "    {\n"
+                                             + "      \"line_items\":[\n"
+                                             + "        {\n"
+                                             + "          \"type\":\"LARGE_PRICE\",\n"
+                                             + "          \"label\":\"Today's Total\",\n"
+                                             + "          \"amount_cents\":6050\n"
+                                             + "        }\n"
+                                             + "      ]\n"
+                                             + "    }\n"
+                                             + "  ]\n"
+                                             + "}";
 
 }

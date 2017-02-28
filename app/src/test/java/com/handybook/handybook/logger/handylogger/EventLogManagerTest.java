@@ -1,11 +1,11 @@
 package com.handybook.handybook.logger.handylogger;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.TestBaseApplication;
-import com.handybook.handybook.logger.handylogger.model.EventLog;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.FileManager;
+import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +19,8 @@ import static junit.framework.Assert.assertTrue;
 /**
  * Created by sng on 10/6/16.
  */
-public class EventLogManagerTest extends RobolectricGradleTestWrapper
-{
+public class EventLogManagerTest extends RobolectricGradleTestWrapper {
+
     @Inject
     EventLogManager mEventLogManager;
 
@@ -31,14 +31,12 @@ public class EventLogManagerTest extends RobolectricGradleTestWrapper
     DefaultPreferencesManager mDefaultPreferencesManager;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         ((TestBaseApplication) RuntimeEnvironment.application.getApplicationContext()).inject(this);
     }
 
     @Test
-    public void shouldSaveLogsToFile()
-    {
+    public void shouldSaveLogsToFile() {
         addLogEvent("event1");
 
         //No logs shoudl be stored to file system until a send is requested
@@ -49,8 +47,7 @@ public class EventLogManagerTest extends RobolectricGradleTestWrapper
 
     @Test
     public void shouldSaveLogsToOneFile() {
-        for (int i = 0; i < EventLogManager.MAX_EVENTS_PER_BUNDLE; i++)
-        {
+        for (int i = 0; i < EventLogManager.MAX_EVENTS_PER_BUNDLE; i++) {
             addLogEvent("event" + i);
         }
         mEventLogManager.sendLogsFromPreference();
@@ -59,8 +56,7 @@ public class EventLogManagerTest extends RobolectricGradleTestWrapper
 
     @Test
     public void shouldSaveLogsToMultipleFiles() {
-        for (int i = 0; i < (EventLogManager.MAX_EVENTS_PER_BUNDLE + 1); i++)
-        {
+        for (int i = 0; i < (EventLogManager.MAX_EVENTS_PER_BUNDLE + 1); i++) {
             addLogEvent("event" + i);
         }
         mEventLogManager.sendLogsFromPreference();
@@ -101,8 +97,7 @@ public class EventLogManagerTest extends RobolectricGradleTestWrapper
      */
     private class TestEventLog extends EventLog {
 
-        public TestEventLog(final String eventType, final String eventContext)
-        {
+        public TestEventLog(final String eventType, final String eventContext) {
             super(eventType, eventContext);
         }
     }

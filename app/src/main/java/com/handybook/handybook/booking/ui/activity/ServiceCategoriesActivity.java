@@ -16,53 +16,45 @@ import com.handybook.handybook.deeplink.DeepLinkParams;
 
 import javax.inject.Inject;
 
-public final class ServiceCategoriesActivity extends MenuDrawerActivity
-{
+public final class ServiceCategoriesActivity extends MenuDrawerActivity {
+
     @Inject
     SecurePreferencesManager mSecurePreferencesManager;
 
     public static Intent getIntent(Activity activity, Intent startupIntent) {
         Intent intent = new Intent(activity, ServiceCategoriesActivity.class);
-        if(startupIntent != null)
-        {
+        if (startupIntent != null) {
             intent.putExtras(startupIntent);
         }
         return intent;
     }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    protected final Fragment createFragment()
-    {
+    protected final Fragment createFragment() {
         //handle deep link params
         String serviceId = bundleOrUrlParam(DeepLinkParams.SERVICE_ID);
         String promoCode = bundleOrUrlParam(DeepLinkParams.PROMO_CODE);
 
         Configuration configuration = mConfigurationManager.getPersistentConfiguration();
-        if(configuration.isBottomNavEnabled() && configuration.isHomeScreenV2Enabled())
-        {
+        if (configuration.isBottomNavEnabled() && configuration.isHomeScreenV2Enabled()) {
             return ServiceCategoriesHomeFragment.newInstance(serviceId, promoCode);
         }
 
         return ServiceCategoriesFragment.newInstance(serviceId, promoCode);
     }
 
-    private String bundleOrUrlParam(final String name)
-    {
-        if (getIntent().hasExtra(name))
-        {
+    private String bundleOrUrlParam(final String name) {
+        if (getIntent().hasExtra(name)) {
             return getIntent().getStringExtra(name);
         }
-        else
-        {
+        else {
             final Uri data = getIntent().getData();
-            if (data != null && !data.isOpaque())
-            {
+            if (data != null && !data.isOpaque()) {
                 return data.getQueryParameter(name);
             }
         }
@@ -70,8 +62,7 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity
     }
 
     @Override
-    protected final String getNavItemTitle()
-    {
+    protected final String getNavItemTitle() {
         return getString(R.string.home);
     }
 }

@@ -14,8 +14,7 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PriceView extends FrameLayout
-{
+public class PriceView extends FrameLayout {
 
     @Bind(R.id.price_view_cardinal_tv)
     TextView mCardinal;
@@ -27,122 +26,100 @@ public class PriceView extends FrameLayout
     private String mDecimalText;
     private boolean mShouldDisplayEmptyDecimals; // If false, zero cents will be hidden
 
-    public PriceView(Context context)
-    {
+    public PriceView(Context context) {
         super(context);
         init(null, 0);
     }
 
-    private void init(AttributeSet attrs, int defStyle)
-    {
+    private void init(AttributeSet attrs, int defStyle) {
         inflate(getContext(), R.layout.layout_price_view, this);
         ButterKnife.bind(this);
         mCardinal.setId(hashCode());
         mDecimal.setId(hashCode());
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.PriceView, 0, 0);
-        try
-        {
+        try {
             mShouldDisplayEmptyDecimals = ta
                     .getBoolean(R.styleable.PriceView_priceShowZeroCents, false);
             setCurrencySymbol(ta.getString(R.styleable.PriceView_priceCurrencySymbol));
             setCardinal(ta.getInt(R.styleable.PriceView_priceCardinal, 0));
             setDecimal(ta.getInt(R.styleable.PriceView_priceDecimal, 0));
         }
-        finally
-        {
+        finally {
             ta.recycle();
         }
         updateUi();
     }
 
-    private void updateUi()
-    {
-        if (mCurrencySymbol == null)
-        {
+    private void updateUi() {
+        if (mCurrencySymbol == null) {
             mCurrencySymbol = "";
         }
-        else
-        {
+        else {
             mDecimal.setVisibility(VISIBLE);
         }
         mCardinal.setText(mCardinalText);
         mDecimal.setText(mDecimalText);
-        if (TextUtils.isEmpty(mDecimalText))
-        {
+        if (TextUtils.isEmpty(mDecimalText)) {
             mDecimal.setVisibility(GONE);
         }
-        else
-        {
+        else {
             mDecimal.setVisibility(VISIBLE);
         }
     }
 
-    public PriceView(Context context, AttributeSet attrs)
-    {
+    public PriceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public PriceView(Context context, AttributeSet attrs, int defStyle)
-    {
+    public PriceView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
 
-    public String getCurrencySymbol()
-    {
+    public String getCurrencySymbol() {
         return mCurrencySymbol;
     }
 
-    public void setCurrencySymbol(final String currencySymbol)
-    {
+    public void setCurrencySymbol(final String currencySymbol) {
         mCurrencySymbol = currencySymbol;
         updateUi();
     }
 
-    public void setCardinal(final int cardinalValue)
-    {
+    public void setCardinal(final int cardinalValue) {
         mCardinalText = String.format(Locale.getDefault(), "%s%d", mCurrencySymbol, cardinalValue);
         updateUi();
     }
 
-    public void setDecimal(final int decimalValue)
-    {
-        if (decimalValue == 0 && !mShouldDisplayEmptyDecimals)
-        {
+    public void setDecimal(final int decimalValue) {
+        if (decimalValue == 0 && !mShouldDisplayEmptyDecimals) {
             setDecimal("");
         }
-        else
-        {
+        else {
             setDecimal(String.format(Locale.getDefault(), "%02d", decimalValue));
         }
         updateUi();
     }
 
-    public String getCardinalText()
-    {
+    public String getCardinalText() {
         return mCardinalText;
     }
 
-    public void setCardinal(final String cardinalText)
-    {
+    public void setCardinal(final String cardinalText) {
         mCardinalText = cardinalText;
         updateUi();
     }
 
-    public String getDecimalText()
-    {
+    public String getDecimalText() {
         return mDecimalText;
     }
 
-    public void setDecimal(final String decimalText)
-    {
+    public void setDecimal(final String decimalText) {
         mDecimalText = decimalText;
         updateUi();
     }
 
-    public void setPriceDollars(final float dollars)
-    {
+    public void setPriceDollars(final float dollars) {
         final int cents = Math.round(dollars * 100);
         /*
         using Math.round() to handle floating point precision issues
@@ -152,20 +129,17 @@ public class PriceView extends FrameLayout
         setDecimal(getDecimalValue(cents));
     }
 
-    public void setPriceCents(final int priceCents)
-    {
+    public void setPriceCents(final int priceCents) {
         setCardinal(getCardinalValue(priceCents));
         setDecimal(getDecimalValue(priceCents));
 
     }
 
-    private static int getCardinalValue(final int cents)
-    {
+    private static int getCardinalValue(final int cents) {
         return cents / 100;
     }
 
-    private static int getDecimalValue(final int cents)
-    {
+    private static int getDecimalValue(final int cents) {
         return cents % 100;
     }
 

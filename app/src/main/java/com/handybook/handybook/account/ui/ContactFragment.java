@@ -24,8 +24,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ContactFragment extends InjectedFragment
-{
+public class ContactFragment extends InjectedFragment {
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.contact_name_text)
@@ -37,14 +37,12 @@ public class ContactFragment extends InjectedFragment
 
     private User mUser;
 
-    public static ContactFragment newInstance()
-    {
+    public static ContactFragment newInstance() {
         return new ContactFragment();
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUser = userManager.getCurrentUser();
     }
@@ -54,8 +52,7 @@ public class ContactFragment extends InjectedFragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
                                        .inflate(R.layout.fragment_update_contact, container, false);
         ButterKnife.bind(this, view);
@@ -63,22 +60,19 @@ public class ContactFragment extends InjectedFragment
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         setupToolbar(mToolbar, getString(R.string.account_contact_info));
         updateDisplay();
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoShown()));
 
     }
 
-    private void updateDisplay()
-    {
+    private void updateDisplay() {
         mFullNameText.setText(mUser.getFullName());
         mEmailText.setText(mUser.getEmail());
         mPhoneText.setText(mUser.getPhone());
@@ -86,12 +80,10 @@ public class ContactFragment extends InjectedFragment
     }
 
     @OnClick(R.id.contact_update_button)
-    public void updateContact()
-    {
+    public void updateContact() {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateTapped()));
 
-        if (validateFields())
-        {
+        if (validateFields()) {
             disableInputs();
             progressDialog.show();
 
@@ -105,11 +97,9 @@ public class ContactFragment extends InjectedFragment
             dataManager.updateUser(
                     updateUserRequest,
                     mUser.getAuthToken(),
-                    new FragmentSafeCallback<User>(this)
-                    {
+                    new FragmentSafeCallback<User>(this) {
                         @Override
-                        public void onCallbackSuccess(final User user)
-                        {
+                        public void onCallbackSuccess(final User user) {
                             bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateSuccess()));
 
                             userManager.setCurrentUser(user);
@@ -124,8 +114,7 @@ public class ContactFragment extends InjectedFragment
                         }
 
                         @Override
-                        public void onCallbackError(final DataManager.DataManagerError error)
-                        {
+                        public void onCallbackError(final DataManager.DataManagerError error) {
                             bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateError()));
 
                             progressDialog.dismiss();
@@ -139,8 +128,7 @@ public class ContactFragment extends InjectedFragment
         }
     }
 
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         return mFullNameText.validate() & mEmailText.validate() & mPhoneText.validate();
     }
 }

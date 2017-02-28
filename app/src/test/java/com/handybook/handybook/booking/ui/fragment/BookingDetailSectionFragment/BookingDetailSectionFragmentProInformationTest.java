@@ -39,8 +39,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingDetailSectionFragmentProInformationTest extends RobolectricGradleTestWrapper
-{
+public class BookingDetailSectionFragmentProInformationTest extends RobolectricGradleTestWrapper {
+
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Booking mBooking;
     @Mock
@@ -58,8 +58,7 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     private BookingDetailSectionFragmentProInformation mFragment;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance()
                                                 .getApplicationContext()).inject(this);
@@ -75,8 +74,7 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     }
 
     @Test
-    public void shouldShowManageProTeamButtonWhenPendingProviderAssignment() throws Exception
-    {
+    public void shouldShowManageProTeamButtonWhenPendingProviderAssignment() throws Exception {
         when(mBooking.hasAssignedProvider()).thenReturn(false);
         when(mBooking.isPast()).thenReturn(false);
 
@@ -95,8 +93,7 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     }
 
     @Test
-    public void shouldShowProviderNameWhenProviderAssigned() throws Exception
-    {
+    public void shouldShowProviderNameWhenProviderAssigned() throws Exception {
         when(mBooking.hasAssignedProvider()).thenReturn(true);
         when(mBooking.isPast()).thenReturn(false);
         String providerName = "Testy M.";
@@ -110,8 +107,7 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     }
 
     @Test
-    public void shouldShowTipButtonWhenBookingPastAndCanShowTip() throws Exception
-    {
+    public void shouldShowTipButtonWhenBookingPastAndCanShowTip() throws Exception {
         when(mBooking.hasAssignedProvider()).thenReturn(true);
         when(mBooking.isPast()).thenReturn(true);
         when(mBooking.canLeaveTip()).thenReturn(true);
@@ -134,11 +130,11 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     }
 
     @Test
-    public void shouldShowProTeamMatchIndicatorWhenProIsOnProTeam() throws Exception
-    {
+    public void shouldShowProTeamMatchIndicatorWhenProIsOnProTeam() throws Exception {
         when(mBooking.hasAssignedProvider()).thenReturn(true);
         when(mBooking.isPast()).thenReturn(false);
-        Booking.ProviderAssignmentInfo providerAssignmentInfo = mock(Booking.ProviderAssignmentInfo.class);
+        Booking.ProviderAssignmentInfo providerAssignmentInfo
+                = mock(Booking.ProviderAssignmentInfo.class);
         when(providerAssignmentInfo.isProTeamMatch()).thenReturn(true);
 
         when(mBooking.getProviderAssignmentInfo()).thenReturn(providerAssignmentInfo);
@@ -151,8 +147,7 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     }
 
     @Test
-    public void shouldNotShowActionTextViewWhenBookingPastAndCannotLeaveTip() throws Exception
-    {
+    public void shouldNotShowActionTextViewWhenBookingPastAndCannotLeaveTip() throws Exception {
         when(mBooking.hasAssignedProvider()).thenReturn(true);
         when(mBooking.isPast()).thenReturn(true);
         when(mBooking.canLeaveTip()).thenReturn(false);

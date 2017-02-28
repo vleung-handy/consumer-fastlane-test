@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public final class BookingCoupon
-{
+public final class BookingCoupon {
+
     @SerializedName("coupon_id")
     private int id;
     @SerializedName("price_table")
@@ -15,23 +15,19 @@ public final class BookingCoupon
     @SerializedName("commitment_prices")
     private JsonObject mCommitmentPrices;
 
-    final int getId()
-    {
+    final int getId() {
         return id;
     }
 
-    public final ArrayList<BookingPriceInfo> getPriceTable()
-    {
+    public final ArrayList<BookingPriceInfo> getPriceTable() {
         return priceTable;
     }
 
-    public final JsonObject getCommitmentPrices()
-    {
+    public final JsonObject getCommitmentPrices() {
         return mCommitmentPrices;
     }
 
-    public static BookingCoupon fromJson(final String json)
-    {
+    public static BookingCoupon fromJson(final String json) {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
                                 .fromJson(json, BookingCoupon.class);
     }

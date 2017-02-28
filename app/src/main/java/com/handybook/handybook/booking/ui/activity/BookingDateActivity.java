@@ -12,8 +12,7 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
 
-public final class BookingDateActivity extends MenuDrawerActivity
-{
+public final class BookingDateActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {

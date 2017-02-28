@@ -17,30 +17,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BookingEditExtrasViewModel
-{
+public class BookingEditExtrasViewModel {
+
     private final BookingEditExtrasInfoResponse mBookingEditExtrasInfoResponse;
 
     private BookingEditExtrasViewModel(
-            @NonNull final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
-    {
+            @NonNull final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse
+    ) {
         mBookingEditExtrasInfoResponse = bookingEditExtrasInfoResponse;
     }
 
     public static BookingEditExtrasViewModel from(
-            @NonNull final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse)
-    {
+            @NonNull final BookingEditExtrasInfoResponse bookingEditExtrasInfoResponse
+    ) {
         return new BookingEditExtrasViewModel(bookingEditExtrasInfoResponse);
     }
 
     /**
      * @return an array of images for each option, used for options display
      */
-    public int[] getOptionImagesResourceIdArray()
-    {
+    public int[] getOptionImagesResourceIdArray() {
         int[] resourceIds = new int[mBookingEditExtrasInfoResponse.getOptionsDisplayNames().length];
-        for (int i = 0; i < resourceIds.length; i++)
-        {
+        for (int i = 0; i < resourceIds.length; i++) {
             resourceIds[i] = Booking.getImageResourceIdForMachineName(
                     mBookingEditExtrasInfoResponse.getOptionsMachineNames()[i]);
         }
@@ -52,21 +50,19 @@ public class BookingEditExtrasViewModel
      * @param booking
      * @return an array of the indexes that should be checked, based on the booking extras
      */
-    public Integer[] getCheckedIndexesForBooking(Booking booking)
-    {
+    public Integer[] getCheckedIndexesForBooking(Booking booking) {
         ArrayList<Booking.ExtraInfo> extrasInfo = booking.getExtrasInfo();
 
-        Map<String, Integer> extraDisplayNameToOptionIndexMap = getExtraDisplayNameToOptionIndexMap();
+        Map<String, Integer> extraDisplayNameToOptionIndexMap
+                = getExtraDisplayNameToOptionIndexMap();
         Integer checkedIndexes[] = new Integer[extrasInfo.size()];
-        for (int i = 0; i < checkedIndexes.length; i++)
-        {
+        for (int i = 0; i < checkedIndexes.length; i++) {
             checkedIndexes[i] = extraDisplayNameToOptionIndexMap.get(extrasInfo.get(i).getLabel());
         }
         return checkedIndexes;
     }
 
-    public float getBookingBaseHours()
-    {
+    public float getBookingBaseHours() {
         return mBookingEditExtrasInfoResponse.getBaseHours();
     }
 
@@ -75,29 +71,24 @@ public class BookingEditExtrasViewModel
      * @param context needed for getting string resources
      * @return
      */
-    public String getOriginalBookingBasePriceFormatted(Context context)
-    {
+    public String getOriginalBookingBasePriceFormatted(Context context) {
         float bookingBaseHours = mBookingEditExtrasInfoResponse.getBaseHours();
         //it is weird for api to return this
         String originalBookingBaseHours = getFormattedHoursForPriceTable(bookingBaseHours);
         Map<String, PriceInfo> priceTable = mBookingEditExtrasInfoResponse.getPriceTable();
 
         //booking id is already logged before this
-        if(priceTable == null)
-        {
+        if (priceTable == null) {
             Crashlytics.logException(new Exception("Price table for edit extras response is null"));
         }
-        else
-        {
+        else {
             PriceInfo priceInfo = priceTable.get(originalBookingBaseHours);
-            if(priceInfo == null)
-            {
+            if (priceInfo == null) {
                 Crashlytics.logException(
                         new Exception("Price info for " +
-                                originalBookingBaseHours + " booking hrs is null"));
+                                      originalBookingBaseHours + " booking hrs is null"));
             }
-            else
-            {
+            else {
                 return priceInfo.getTotalDueFormatted();
             }
         }
@@ -111,11 +102,9 @@ public class BookingEditExtrasViewModel
      * so we must map those display names to associated index in the options
      * @return
      */
-    public Map<String, Integer> getExtraDisplayNameToOptionIndexMap()
-    {
+    public Map<String, Integer> getExtraDisplayNameToOptionIndexMap() {
         Map<String, Integer> extraDisplayNameToOptionIndexMap = new HashMap<>();
-        for (int i = 0; i < mBookingEditExtrasInfoResponse.getOptionsDisplayNames().length; i++)
-        {
+        for (int i = 0; i < mBookingEditExtrasInfoResponse.getOptionsDisplayNames().length; i++) {
             extraDisplayNameToOptionIndexMap.put(
                     mBookingEditExtrasInfoResponse.getOptionsDisplayNames()[i], i);
         }
@@ -125,8 +114,7 @@ public class BookingEditExtrasViewModel
     /**
      * @return the BookingOption model to be used to render the options view
      */
-    public BookingOption getBookingOption()
-    {
+    public BookingOption getBookingOption() {
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_CHECKLIST);
         bookingOption.setOptions(mBookingEditExtrasInfoResponse.getOptionsDisplayNames());
@@ -134,8 +122,7 @@ public class BookingEditExtrasViewModel
         bookingOption.setImageResourceIds(getOptionImagesResourceIdArray());
         OptionPrice[] optionPrices = mBookingEditExtrasInfoResponse.getOptionPrices();
         String[] optionsRightStrings = new String[optionPrices.length];
-        for (int i = 0; i < optionPrices.length; i++)
-        {
+        for (int i = 0; i < optionPrices.length; i++) {
             optionsRightStrings[i] = optionPrices[i].getFormattedPrice();
         }
 
@@ -148,8 +135,7 @@ public class BookingEditExtrasViewModel
      * @param checkedIndexes the indexes of the booking extra options selected
      * @return the total number of hours for the booking extras selected
      */
-    public float getExtraHoursForCheckedIndexes(Integer[] checkedIndexes)
-    {
+    public float getExtraHoursForCheckedIndexes(Integer[] checkedIndexes) {
         float extrasHours = 0;
         for (Integer i : checkedIndexes) //build the extras details section
         {
@@ -163,8 +149,7 @@ public class BookingEditExtrasViewModel
      * @param checkedIndexes the indexes of the booking extra options selected
      * @return the total number of hours for the booking, including the extras selected
      */
-    public float getTotalHoursForCheckedIndexes(Integer[] checkedIndexes)
-    {
+    public float getTotalHoursForCheckedIndexes(Integer[] checkedIndexes) {
         float bookingBaseHours = mBookingEditExtrasInfoResponse.getBaseHours();
         float extrasHours = getExtraHoursForCheckedIndexes(checkedIndexes);
         return bookingBaseHours + extrasHours;
@@ -173,8 +158,7 @@ public class BookingEditExtrasViewModel
     /**
      * @return the formatted date that the customer is expected to be charged for this
      */
-    public String getFutureBillDateFormatted()
-    {
+    public String getFutureBillDateFormatted() {
         return mBookingEditExtrasInfoResponse.getPaidStatus().getFutureBillDateFormatted();
     }
 
@@ -183,47 +167,40 @@ public class BookingEditExtrasViewModel
      * @param context
      * @return the string to display as "Total Due"
      */
-    public String getTotalDueText(Integer[] checkedIndexes, Context context)
-    {
+    public String getTotalDueText(Integer[] checkedIndexes, Context context) {
         String totalHoursFormatted = getFormattedHoursForPriceTable(
                 getTotalHoursForCheckedIndexes(checkedIndexes));
         Map<String, PriceInfo> priceTable = mBookingEditExtrasInfoResponse.getPriceTable();
         return priceTable.containsKey(
                 totalHoursFormatted) ?
-                priceTable.get(totalHoursFormatted).getTotalDueFormatted() :
-                context.getResources().getString(R.string.no_data_indicator);
+               priceTable.get(totalHoursFormatted).getTotalDueFormatted() :
+               context.getResources().getString(R.string.no_data_indicator);
     }
 
     /**
      * @return the number of options available to choose from
      */
-    public int getNumberOfOptions()
-    {
+    public int getNumberOfOptions() {
         return mBookingEditExtrasInfoResponse.getOptionsDisplayNames().length;
     }
 
-    public String getOptionMachineName(int optionIndex)
-    {
+    public String getOptionMachineName(int optionIndex) {
         return mBookingEditExtrasInfoResponse.getOptionsMachineNames()[optionIndex];
     }
 
-    public String getOptionDisplayName(int optionIndex)
-    {
+    public String getOptionDisplayName(int optionIndex) {
         return mBookingEditExtrasInfoResponse.getOptionsDisplayNames()[optionIndex];
     }
 
-    public String getFormattedOptionPrice(int optionIndex)
-    {
+    public String getFormattedOptionPrice(int optionIndex) {
         return mBookingEditExtrasInfoResponse.getOptionPrices()[optionIndex].getFormattedPrice();
     }
 
-    public float getHourInfo(int optionIndex)
-    {
+    public float getHourInfo(int optionIndex) {
         return mBookingEditExtrasInfoResponse.getHourInfo()[optionIndex];
     }
 
-    private String getFormattedHoursForPriceTable(float hours)
-    {
+    private String getFormattedHoursForPriceTable(float hours) {
         //have to do this because the price table returned from the api has key values
         // like 2, 2.5, 3, 3.5, etc
 

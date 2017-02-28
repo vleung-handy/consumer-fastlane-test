@@ -7,12 +7,11 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
  * Created by sng on 9/22/16.
  */
 
-public class AccountLog extends EventLog
-{
+public class AccountLog extends EventLog {
+
     private static final String EVENT_CONTEXT = "account";
 
-    private AccountLog(final String eventType)
-    {
+    private AccountLog(final String eventType) {
         super(eventType, EVENT_CONTEXT);
     }
 
@@ -22,70 +21,64 @@ public class AccountLog extends EventLog
      * 2. When you come to Page shows the first time
      * 3. When you click away from page, but now you hit back and page is shown again
      */
-    public static class Shown extends AccountLog
-    {
+    public static class Shown extends AccountLog {
+
         private static final String EVENT_TYPE = "shown";
 
-        public Shown()
-        {
+        public Shown() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class EditProfileTapped extends AccountLog
-    {
+    public static class EditProfileTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "edit_profile_tapped";
 
-        public EditProfileTapped()
-        {
+        public EditProfileTapped() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class EditPasswordTapped extends AccountLog
-    {
+    public static class EditPasswordTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "edit_password_tapped";
 
-        public EditPasswordTapped()
-        {
+        public EditPasswordTapped() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class EditPaymentTapped extends AccountLog
-    {
+    public static class EditPaymentTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "edit_payment_tapped";
 
-        public EditPaymentTapped()
-        {
+        public EditPaymentTapped() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class ApplyPromoTapped extends AccountLog
-    {
+    public static class ApplyPromoTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "apply_promo_tapped";
 
-        public ApplyPromoTapped()
-        {
+        public ApplyPromoTapped() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class PlanManagementTapped extends AccountLog
-    {
+    public static class PlanManagementTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "plan_management_tapped";
 
         @SerializedName("plan_count")
         private final int mPlanCount;
 
-        public PlanManagementTapped(int planCount)
-        {
+        public PlanManagementTapped(int planCount) {
             super(EVENT_TYPE);
 
             mPlanCount = planCount;
@@ -93,34 +86,31 @@ public class AccountLog extends EventLog
     }
 
 
-    public static class LogoutTapped extends AccountLog
-    {
+    public static class LogoutTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "logout_tapped";
 
-        public LogoutTapped()
-        {
+        public LogoutTapped() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class LogoutSuccess extends AccountLog
-    {
+    public static class LogoutSuccess extends AccountLog {
+
         private static final String EVENT_TYPE = "logout_success";
 
-        public LogoutSuccess()
-        {
+        public LogoutSuccess() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class LogoutCancelled extends AccountLog
-    {
+    public static class LogoutCancelled extends AccountLog {
+
         private static final String EVENT_TYPE = "logout_cancelled";
 
-        public LogoutCancelled()
-        {
+        public LogoutCancelled() {
             super(EVENT_TYPE);
         }
     }
@@ -128,45 +118,41 @@ public class AccountLog extends EventLog
     // Contact Info Logs
 
 
-    public static class ContactInfoShown extends AccountLog
-    {
+    public static class ContactInfoShown extends AccountLog {
+
         private static final String EVENT_TYPE = "contact_info_shown";
 
-        public ContactInfoShown()
-        {
+        public ContactInfoShown() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class ContactInfoUpdateTapped extends AccountLog
-    {
+    public static class ContactInfoUpdateTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "contact_info_update_tapped";
 
-        public ContactInfoUpdateTapped()
-        {
+        public ContactInfoUpdateTapped() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class ContactInfoUpdateSuccess extends AccountLog
-    {
+    public static class ContactInfoUpdateSuccess extends AccountLog {
+
         private static final String EVENT_TYPE = "contact_info_update_success";
 
-        public ContactInfoUpdateSuccess()
-        {
+        public ContactInfoUpdateSuccess() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class ContactInfoUpdateError extends AccountLog
-    {
+    public static class ContactInfoUpdateError extends AccountLog {
+
         private static final String EVENT_TYPE = "contact_info_update_error";
 
-        public ContactInfoUpdateError()
-        {
+        public ContactInfoUpdateError() {
             super(EVENT_TYPE);
         }
     }
@@ -174,45 +160,41 @@ public class AccountLog extends EventLog
     // Update Password Logs
 
 
-    public static class UpdatePasswordShown extends AccountLog
-    {
+    public static class UpdatePasswordShown extends AccountLog {
+
         private static final String EVENT_TYPE = "update_password_shown";
 
-        public UpdatePasswordShown()
-        {
+        public UpdatePasswordShown() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class UpdatePasswordTapped extends AccountLog
-    {
+    public static class UpdatePasswordTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "update_password_update_tapped";
 
-        public UpdatePasswordTapped()
-        {
+        public UpdatePasswordTapped() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class UpdatePasswordSuccess extends AccountLog
-    {
+    public static class UpdatePasswordSuccess extends AccountLog {
+
         private static final String EVENT_TYPE = "update_password_update_success";
 
-        public UpdatePasswordSuccess()
-        {
+        public UpdatePasswordSuccess() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class UpdatePasswordError extends AccountLog
-    {
+    public static class UpdatePasswordError extends AccountLog {
+
         private static final String EVENT_TYPE = "update_password_update_error";
 
-        public UpdatePasswordError()
-        {
+        public UpdatePasswordError() {
             super(EVENT_TYPE);
         }
     }
@@ -220,67 +202,63 @@ public class AccountLog extends EventLog
     // Edit Payment Methods Logs
 
 
-    public static class PaymentMethodShown extends AccountLog
-    {
+    public static class PaymentMethodShown extends AccountLog {
+
         private static final String EVENT_TYPE = "edit_payment_shown";
 
-        public PaymentMethodShown()
-        {
+        public PaymentMethodShown() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class PaymentMethodUpdateTapped extends AccountLog
-    {
+    public static class PaymentMethodUpdateTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "edit_payment_update_tapped";
 
-        public PaymentMethodUpdateTapped()
-        {
+        public PaymentMethodUpdateTapped() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class PaymentMethodUpdateSuccess extends AccountLog
-    {
+    public static class PaymentMethodUpdateSuccess extends AccountLog {
+
         private static final String EVENT_TYPE = "edit_payment_change_success";
 
-        public PaymentMethodUpdateSuccess()
-        {
+        public PaymentMethodUpdateSuccess() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class PaymentMethodUpdateError extends AccountLog
-    {
+    public static class PaymentMethodUpdateError extends AccountLog {
+
         private static final String EVENT_TYPE = "edit_payment_change_error";
 
-        public PaymentMethodUpdateError()
-        {
+        public PaymentMethodUpdateError() {
             super(EVENT_TYPE);
         }
     }
 
+
     //Help section
-    public static class HelpTapped extends AccountLog
-    {
+    public static class HelpTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "help_tapped";
 
-        public HelpTapped()
-        {
+        public HelpTapped() {
             super(EVENT_TYPE);
         }
     }
 
+
     //Help section
-    public static class BookingHistoryTapped extends AccountLog
-    {
+    public static class BookingHistoryTapped extends AccountLog {
+
         private static final String EVENT_TYPE = "booking_history_tapped";
 
-        public BookingHistoryTapped()
-        {
+        public BookingHistoryTapped() {
             super(EVENT_TYPE);
         }
     }

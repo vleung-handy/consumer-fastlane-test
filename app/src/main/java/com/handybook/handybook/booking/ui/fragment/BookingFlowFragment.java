@@ -47,62 +47,54 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class BookingFlowFragment extends InjectedFragment
-{
+public class BookingFlowFragment extends InjectedFragment {
+
     @Inject
     protected DefaultPreferencesManager mDefaultPreferencesManager;
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Crashlytics.log(getClass().getSimpleName() + ".onCreate with transaction "
-                + bookingManager.getCurrentTransaction());
+                        + bookingManager.getCurrentTransaction());
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         Crashlytics.log(getClass().getSimpleName() + ".onResume with transaction "
-                + bookingManager.getCurrentTransaction());
+                        + bookingManager.getCurrentTransaction());
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         Crashlytics.log(getClass().getSimpleName() + ".onPause with transaction "
-                + bookingManager.getCurrentTransaction());
+                        + bookingManager.getCurrentTransaction());
         super.onPause();
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         Crashlytics.log(getClass().getSimpleName() + ".onDestroy with transaction "
-                + bookingManager.getCurrentTransaction());
+                        + bookingManager.getCurrentTransaction());
         super.onDestroy();
     }
 
-    protected final void startBookingFlow(final int serviceId, final String uniq)
-    {
+    protected final void startBookingFlow(final int serviceId, final String uniq) {
         startBookingFlow(serviceId, uniq, null);
     }
 
-    final void startBookingFlow(final int serviceId, final String uniq, final PromoCode promoCode)
-    {
+    final void startBookingFlow(final int serviceId, final String uniq, final PromoCode promoCode) {
         final BookingRequest request = new BookingRequest();
         request.setServiceId(serviceId);
         request.setUniq(uniq);
-        if (promoCode != null)
-        {
+        if (promoCode != null) {
             request.setPromoCode(promoCode.getCode());
             request.setPromoType(promoCode.getType());
         }
         request.setCoupon(bookingManager.getPromoTabCoupon());
         final User user = userManager.getCurrentUser();
-        if (user != null)
-        {
+        if (user != null) {
             request.setEmail(user.getEmail());
         }
         bookingManager.clear();
@@ -110,12 +102,10 @@ public class BookingFlowFragment extends InjectedFragment
 
         Configuration config = mConfigurationManager.getLastKnowConfiguration();
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
-        if (config != null && config.isOnboardingV2Enabled() && !TextUtils.isBlank(zip))
-        {
+        if (config != null && config.isOnboardingV2Enabled() && !TextUtils.isBlank(zip)) {
             validateZipAndProceed(zip);
         }
-        else
-        {
+        else {
             final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
             startActivity(intent);
         }
@@ -125,8 +115,7 @@ public class BookingFlowFragment extends InjectedFragment
      * Even though we're not showing the "zip" page to the user we still have to call this
      * "zip validation" step, so we can have the proper time zone setup
      */
-    private void validateZipAndProceed(final String zipCode)
-    {
+    private void validateZipAndProceed(final String zipCode) {
         showUiBlockers();
         final BookingRequest request = bookingManager.getCurrentRequest();
         final User user = userManager.getCurrentUser();
@@ -137,24 +126,20 @@ public class BookingFlowFragment extends InjectedFragment
                 zipCode,
                 userId,
                 request.getPromoCode(),
-                new FragmentSafeCallback<ZipValidationResponse>(BookingFlowFragment.this)
-                {
+                new FragmentSafeCallback<ZipValidationResponse>(BookingFlowFragment.this) {
                     @Override
-                    public void onCallbackSuccess(ZipValidationResponse response)
-                    {
+                    public void onCallbackSuccess(ZipValidationResponse response) {
                         //if we are in "onboarding" mode, and we have a zip, then skip the BookingLocationActivity
                         //and go directly to the Booking options (beds, bath)
                         bookingManager.getCurrentRequest().setZipCode(zipCode);
                         bookingManager.getCurrentRequest().setZipArea(response.getZipArea());
                         bookingManager.getCurrentRequest().setTimeZone(response.getTimeZone());
 
-                        if (TextUtils.isBlank(request.getPromoCode()))
-                        {
+                        if (TextUtils.isBlank(request.getPromoCode())) {
                             //we're not in a promotional flow, so we can display booking options
                             displayBookingOptions();
                         }
-                        else
-                        {
+                        else {
                             removeUiBlockers();
                             //if we're in a promotional flow, we go straight to the date selection
                             final Intent intent = new Intent(
@@ -166,8 +151,7 @@ public class BookingFlowFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         removeUiBlockers();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
@@ -178,22 +162,18 @@ public class BookingFlowFragment extends InjectedFragment
     /**
      * proceeds to display the Booking options (beds, baths)
      */
-    protected void displayBookingOptions()
-    {
+    protected void displayBookingOptions() {
         final BookingRequest request = bookingManager.getCurrentRequest();
         String userId = null;
         final User user = userManager.getCurrentUser();
-        if (user != null)
-        {
+        if (user != null) {
             userId = user.getId();
         }
         dataManager.getQuoteOptions(
                 request.getServiceId(), userId,
-                new FragmentSafeCallback<BookingOptionsWrapper>(this)
-                {
+                new FragmentSafeCallback<BookingOptionsWrapper>(this) {
                     @Override
-                    public void onCallbackSuccess(final BookingOptionsWrapper options)
-                    {
+                    public void onCallbackSuccess(final BookingOptionsWrapper options) {
                         if (!allowCallbacks) { return; }
                         removeUiBlockers();
                         List<BookingOption> bookingOptions = options.getBookingOptions();
@@ -210,8 +190,7 @@ public class BookingFlowFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         if (!allowCallbacks) { return; }
                         removeUiBlockers();
                         dataManagerErrorHandler.handleError(getActivity(), error);
@@ -220,25 +199,22 @@ public class BookingFlowFragment extends InjectedFragment
         );
     }
 
-    public final void continueBookingFlow()
-    {
+    public final void continueBookingFlow() {
         /*
           don't reload quote after recurrence selection, after extras selection,
           or if user skipped peak pricing
         */
         if (this instanceof BookingRecurrenceFragment
-                || this instanceof BookingSubscriptionFragment
-                || this instanceof PeakPricingFragment
-                || this instanceof BookingExtrasFragment
-                || this instanceof PeakPricingFragment)
-        {
+            || this instanceof BookingSubscriptionFragment
+            || this instanceof PeakPricingFragment
+            || this instanceof BookingExtrasFragment
+            || this instanceof PeakPricingFragment) {
             continueFlow();
             return;
         }
 
         // user selected new time, reload quote
-        if (this instanceof PeakPricingTableFragment)
-        {
+        if (this instanceof PeakPricingTableFragment) {
             disableInputs();
             progressDialog.show();
 
@@ -252,13 +228,11 @@ public class BookingFlowFragment extends InjectedFragment
         }
         final BookingRequest request = bookingManager.getCurrentRequest();
         final User user = userManager.getCurrentUser();
-        if (user != null)
-        {
+        if (user != null) {
             request.setUserId(user.getId());
             request.setEmail(user.getEmail());
         }
-        else if (!hasStoredEmailAndZip() && !(this instanceof LoginFragment))
-        {
+        else if (!hasStoredEmailAndZip() && !(this instanceof LoginFragment)) {
             //if we are not in the new onboarding flow (i.e., we don't have zip & email stored),
             //then we should prompt the user to login.
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -267,8 +241,7 @@ public class BookingFlowFragment extends InjectedFragment
             startActivity(intent);
             return;
         }
-        else if (hasStoredEmail())
-        {
+        else if (hasStoredEmail()) {
             request.setEmail(mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null));
         }
         disableInputs();
@@ -281,19 +254,16 @@ public class BookingFlowFragment extends InjectedFragment
      * returns true if we already have zip and email stored in shared prefs.
      * @return
      */
-    protected boolean hasStoredEmailAndZip()
-    {
+    protected boolean hasStoredEmailAndZip() {
         return hasStoredEmail() && hasStoredZip();
     }
 
-    protected boolean hasStoredZip()
-    {
+    protected boolean hasStoredZip() {
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
         return !TextUtils.isBlank(zip);
     }
 
-    protected boolean hasStoredEmail()
-    {
+    protected boolean hasStoredEmail() {
         String email = mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null);
         return !TextUtils.isBlank(email);
     }
@@ -305,16 +275,14 @@ public class BookingFlowFragment extends InjectedFragment
             @Nullable final String providerId,
             final BookingDetailFragment.RescheduleType rescheduleType,
             @Nullable final String recurringId
-    )
-    {
+    ) {
         final String newDate = TextUtils.formatDate(date, "yyyy-MM-dd HH:mm");
         final User user = userManager.getCurrentUser();
         disableInputs();
         progressDialog.show();
 
         //log submitted
-        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
-        {
+        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT) {
             bus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleSubmittedLog(
                     providerId,
                     booking.getId(),
@@ -324,8 +292,7 @@ public class BookingFlowFragment extends InjectedFragment
                      ))
             );
         }
-        else
-        {
+        else {
             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                              BookingDetailsLog.EventType.SUBMITTED,
                              booking.getId(),
@@ -341,14 +308,11 @@ public class BookingFlowFragment extends InjectedFragment
                 rescheduleAll,
                 user.getId(),
                 providerId,
-                new FragmentSafeCallback<Pair<String, BookingQuote>>(this)
-                {
+                new FragmentSafeCallback<Pair<String, BookingQuote>>(this) {
                     @Override
-                    public void onCallbackSuccess(final Pair<String, BookingQuote> response)
-                    {
+                    public void onCallbackSuccess(final Pair<String, BookingQuote> response) {
                         //log success
-                        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
-                        {
+                        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT) {
                             bus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleSuccessLog(
                                              providerId,
                                              booking.getId(),
@@ -358,8 +322,7 @@ public class BookingFlowFragment extends InjectedFragment
                                      ))
                             );
                         }
-                        else
-                        {
+                        else {
                             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                                              BookingDetailsLog.EventType.SUCCESS,
                                              booking.getId(),
@@ -369,24 +332,24 @@ public class BookingFlowFragment extends InjectedFragment
                             );
                         }
 
-                        if (!allowCallbacks)
-                        {
+                        if (!allowCallbacks) {
                             return;
                         }
                         enableInputs();
                         progressDialog.dismiss();
                         final String message = response.first;
-                        if (message != null)
-                        {
+                        if (message != null) {
                             toast.setText(message);
                             toast.show();
                         }
                         final BookingQuote quote = response.second;
                         final ArrayList<ArrayList<PeakPriceInfo>> peakTable
                                 = quote != null ? quote.getPeakPriceTable() : null;
-                        if (peakTable != null && !peakTable.isEmpty())
-                        {
-                            final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+                        if (peakTable != null && !peakTable.isEmpty()) {
+                            final Intent intent = new Intent(
+                                    getActivity(),
+                                    PeakPricingActivity.class
+                            );
                             intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
                             intent.putExtra(BundleKeys.RESCHEDULE_PRICE_TABLE, peakTable);
                             intent.putExtra(BundleKeys.RESCHEDULE_ALL, rescheduleAll);
@@ -394,18 +357,15 @@ public class BookingFlowFragment extends InjectedFragment
                             return;
                         }
                         final Intent intent = new Intent();
-                        if (BookingFlowFragment.this instanceof PeakPricingTableFragment)
-                        {
+                        if (BookingFlowFragment.this instanceof PeakPricingTableFragment) {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
                             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
                         }
-                        else if (BookingFlowFragment.this instanceof BookingDateFragment)
-                        {
+                        else if (BookingFlowFragment.this instanceof BookingDateFragment) {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
                             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
                         }
-                        else if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment)
-                        {
+                        else if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment) {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
                             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
                         }
@@ -413,11 +373,9 @@ public class BookingFlowFragment extends InjectedFragment
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         //log error
-                        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT)
-                        {
+                        if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT) {
                             bus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleErrorLog(
                                              providerId,
                                              booking.getId(),
@@ -427,8 +385,7 @@ public class BookingFlowFragment extends InjectedFragment
                                      ))
                             );
                         }
-                        else
-                        {
+                        else {
                             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                                              BookingDetailsLog.EventType.ERROR,
                                              booking.getId(),
@@ -438,30 +395,27 @@ public class BookingFlowFragment extends InjectedFragment
                             );
                         }
 
-                        if (!allowCallbacks)
-                        {
+                        if (!allowCallbacks) {
                             return;
                         }
                         enableInputs();
                         progressDialog.dismiss();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                         // go back to date screen if error occurs on options screen
-                        if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment)
-                        {
+                        if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment) {
                             getActivity().finish();
                         }
                     }
-                });
+                }
+        );
     }
 
-    private void continueFlow()
-    {
+    private void continueFlow() {
         final BookingRequest request = bookingManager.getCurrentRequest();
         final BookingQuote quote = bookingManager.getCurrentQuote();
         final User user = userManager.getCurrentUser();
         BookingTransaction transaction = bookingManager.getCurrentTransaction();
-        if (transaction == null)
-        {
+        if (transaction == null) {
             transaction = new BookingTransaction();
         }
         transaction.setBookingId(quote.getBookingId());
@@ -471,15 +425,16 @@ public class BookingFlowFragment extends InjectedFragment
         transaction.setUserId(quote.getUserId());
         transaction.setServiceId(quote.getServiceId());
         transaction.setProviderId(request.getProviderId());
-        transaction.setPromoCode(bookingManager.getPromoTabCoupon(), transaction.shouldPromoCodeBeHidden());
-        if (user != null)
-        {
+        transaction.setPromoCode(
+                bookingManager.getPromoTabCoupon(),
+                transaction.shouldPromoCodeBeHidden()
+        );
+        if (user != null) {
             transaction.setEmail(user.getEmail());
             transaction.setAuthToken(user.getAuthToken());
             transaction.setUserId(user.getId());
         }
-        else
-        {
+        else {
             transaction.setEmail(request.getEmail());
         }
         bookingManager.setCurrentTransaction(transaction);
@@ -487,45 +442,38 @@ public class BookingFlowFragment extends InjectedFragment
                 = quote.getPeakPriceTable();
         boolean isVoucherFlow = request.getPromoType() == PromoCode.Type.VOUCHER;
         // show recurrence options if available (show first if regular flow)
-        if (!isVoucherFlow && shouldShowRecurrenceOptions(request, false))
-        {
+        if (!isVoucherFlow && shouldShowRecurrenceOptions(request, false)) {
             startActivity(new Intent(getActivity(), BookingRecurrenceActivity.class));
         }
         // show surge pricing options if necessary (show second if regular flow)
-        else if (!isVoucherFlow && shouldShowSurgePricingOptions(peakTable, false))
-        {
+        else if (!isVoucherFlow && shouldShowSurgePricingOptions(peakTable, false)) {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
             startActivity(intent);
         }
         // show surge pricing options if necessary (show first if voucher flow)
-        else if (isVoucherFlow && shouldShowSurgePricingOptions(peakTable, true))
-        {
+        else if (isVoucherFlow && shouldShowSurgePricingOptions(peakTable, true)) {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
             intent.putExtra(BundleKeys.FOR_VOUCHER, true);
             startActivity(intent);
         }
         // show recurrence options if available (show second if voucher flow)
-        else if (isVoucherFlow && shouldShowRecurrenceOptions(request, true))
-        {
+        else if (isVoucherFlow && shouldShowRecurrenceOptions(request, true)) {
             final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
             startActivity(intent);
         }
         // show extras for home cleaning
         else if (!(BookingFlowFragment.this instanceof BookingExtrasFragment)
-                && request.getUniq().equals("home_cleaning"))
-        {
+                 && request.getUniq().equals("home_cleaning")) {
             final Intent intent = new Intent(getActivity(), BookingExtrasActivity.class);
             startActivity(intent);
         }
         // show address info
-        else
-        {
+        else {
             final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
             startActivity(intent);
         }
         // if user logged in, hide login view on back
-        if (user != null && BookingFlowFragment.this instanceof LoginFragment)
-        {
+        if (user != null && BookingFlowFragment.this instanceof LoginFragment) {
             getActivity().setResult(ActivityResult.LOGIN_FINISH);
             getActivity().finish();
         }
@@ -534,35 +482,29 @@ public class BookingFlowFragment extends InjectedFragment
     }
 
     private DataManager.Callback<BookingQuote> bookingQuoteCallback
-            = new FragmentSafeCallback<BookingQuote>(this)
-    {
+            = new FragmentSafeCallback<BookingQuote>(this) {
         @Override
-        public void onCallbackSuccess(final BookingQuote quote)
-        {
+        public void onCallbackSuccess(final BookingQuote quote) {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestSuccess()));
             handleBookingQuoteSuccess(quote, false);
         }
 
         @Override
-        public void onCallbackError(final DataManager.DataManagerError error)
-        {
+        public void onCallbackError(final DataManager.DataManagerError error) {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestError(error.getMessage())));
             handleBookingQuoteError(error);
         }
     };
 
     private DataManager.Callback<BookingQuote> bookingQuoteUpdateCallback
-            = new FragmentSafeCallback<BookingQuote>(this)
-    {
+            = new FragmentSafeCallback<BookingQuote>(this) {
         @Override
-        public void onCallbackSuccess(final BookingQuote quote)
-        {
+        public void onCallbackSuccess(final BookingQuote quote) {
             handleBookingQuoteSuccess(quote, true);
         }
 
         @Override
-        public void onCallbackError(final DataManager.DataManagerError error)
-        {
+        public void onCallbackError(final DataManager.DataManagerError error) {
             handleBookingQuoteError(error);
         }
     };
@@ -570,89 +512,77 @@ public class BookingFlowFragment extends InjectedFragment
     private boolean shouldShowRecurrenceOptions(
             final BookingRequest request,
             final boolean isVoucherFlow
-    )
-    {
+    ) {
         return !(
                 (BookingFlowFragment.this instanceof BookingRecurrenceFragment)
-                        || (BookingFlowFragment.this instanceof BookingSubscriptionFragment)
-                        || (BookingFlowFragment.this instanceof BookingExtrasFragment)
-                        || !request.getUniq().equals("home_cleaning")
+                || (BookingFlowFragment.this instanceof BookingSubscriptionFragment)
+                || (BookingFlowFragment.this instanceof BookingExtrasFragment)
+                || !request.getUniq().equals("home_cleaning")
         ) && (
-                isVoucherFlow || (
-                        !(BookingFlowFragment.this instanceof PeakPricingFragment)
-                                && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
-                )
-        );
+                       isVoucherFlow || (
+                               !(BookingFlowFragment.this instanceof PeakPricingFragment)
+                               && !(BookingFlowFragment.this instanceof PeakPricingTableFragment)
+                       )
+               );
     }
 
     private boolean shouldShowSurgePricingOptions(
             final ArrayList<ArrayList<PeakPriceInfo>> peakTable,
             final boolean isVoucherFlow
-    )
-    {
+    ) {
         return !(
                 (BookingFlowFragment.this instanceof PeakPricingFragment)
-                        || (BookingFlowFragment.this instanceof PeakPricingTableFragment)
-                        || (BookingFlowFragment.this instanceof BookingExtrasFragment)
-                        || peakTable == null
-                        || peakTable.isEmpty()
+                || (BookingFlowFragment.this instanceof PeakPricingTableFragment)
+                || (BookingFlowFragment.this instanceof BookingExtrasFragment)
+                || peakTable == null
+                || peakTable.isEmpty()
         ) && (
-                !isVoucherFlow
-                        || (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)));
+                       !isVoucherFlow
+                       || (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)));
     }
 
-    private void handleBookingQuoteError(final DataManager.DataManagerError error)
-    {
-        if (!allowCallbacks)
-        {
+    private void handleBookingQuoteError(final DataManager.DataManagerError error) {
+        if (!allowCallbacks) {
             return;
         }
         enableInputs();
         progressDialog.dismiss();
-        if (isErrorCausedByInvalidCoupon(error))
-        {
+        if (isErrorCausedByInvalidCoupon(error)) {
             informUserWeWillProceedWithoutCoupon(error);
             return;
         }
         dataManagerErrorHandler.handleError(getActivity(), error);
-        if (BookingFlowFragment.this instanceof LoginFragment)
-        {
+        if (BookingFlowFragment.this instanceof LoginFragment) {
             getActivity().setResult(ActivityResult.LOGIN_FINISH);
             getActivity().finish();
         }
     }
 
-    private boolean isErrorCausedByInvalidCoupon(final DataManager.DataManagerError error)
-    {
+    private boolean isErrorCausedByInvalidCoupon(final DataManager.DataManagerError error) {
         return error != null
-                && error.getMessage() != null
-                && error.getMessage().toUpperCase().contains("CODE") // This is dirty but at least
-                && error.getMessage().toUpperCase().contains("INVALID"); // they can finish booking
+               && error.getMessage() != null
+               && error.getMessage().toUpperCase().contains("CODE") // This is dirty but at least
+               && error.getMessage().toUpperCase().contains("INVALID"); // they can finish booking
     }
 
-    private void informUserWeWillProceedWithoutCoupon(final DataManager.DataManagerError error)
-    {
+    private void informUserWeWillProceedWithoutCoupon(final DataManager.DataManagerError error) {
         showToast(R.string.toast_error_booking_flow_coupon_invalid);
     }
 
-    private void handleBookingQuoteSuccess(final BookingQuote quote, final boolean isUpdate)
-    {
-        if (!allowCallbacks)
-        {
+    private void handleBookingQuoteSuccess(final BookingQuote quote, final boolean isUpdate) {
+        if (!allowCallbacks) {
             return;
         }
         // persist extras since api doesn't return them on quote update calls
         final BookingQuote oldQuote = bookingManager.getCurrentQuote();
-        if (isUpdate && oldQuote != null)
-        {
+        if (isUpdate && oldQuote != null) {
             quote.setBookingOption(oldQuote.getBookingOption());
             quote.setSurgePriceTable(oldQuote.getSurgePriceTable());
         }
         // remove promo and reset its hidden state if new quote requested
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         if (transaction != null && oldQuote != null && oldQuote.getBookingId()
-                != quote.getBookingId())
-        {
+                                                       != quote.getBookingId()) {
             //TODO for ugly promo code hotfix
             transaction.setPromoCode(null, false);
         }
@@ -660,8 +590,7 @@ public class BookingFlowFragment extends InjectedFragment
         continueFlow();
     }
 
-    protected void onReceiveErrorEvent(HandyEvent.ReceiveErrorEvent event)
-    {
+    protected void onReceiveErrorEvent(HandyEvent.ReceiveErrorEvent event) {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }

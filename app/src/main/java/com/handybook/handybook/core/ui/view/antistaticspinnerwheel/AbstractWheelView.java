@@ -38,7 +38,6 @@ import com.handybook.handybook.R;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 
-
 /**
  * Abstract spinner spinnerwheel view.
  * This class should be subclassed.
@@ -66,7 +65,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
     protected static final int DEF_ITEM_OFFSET_PERCENT = 10;
 
     protected static final int DEF_ITEM_PADDING = 10;
-    
+
     protected static final int DEF_SELECTION_DIVIDER_SIZE = 2;
 
     //----------------------------------
@@ -128,10 +127,8 @@ public abstract class AbstractWheelView extends AbstractWheel {
      */
     protected static final String PROPERTY_SEPARATORS_PAINT_ALPHA = "separatorsPaintAlpha";
 
-
     protected Bitmap mSpinBitmap;
     protected Bitmap mSeparatorsBitmap;
-
 
     //--------------------------------------------------------------------------
     //
@@ -152,15 +149,38 @@ public abstract class AbstractWheelView extends AbstractWheel {
     @Override
     protected void initAttributes(AttributeSet attrs, int defStyle) {
         super.initAttributes(attrs, defStyle);
-        
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.AbstractWheelView, defStyle, 0);
-        mItemsDimmedAlpha = a.getInt(R.styleable.AbstractWheelView_itemsDimmedAlpha, DEF_ITEMS_DIMMED_ALPHA);
-        mSelectionDividerActiveAlpha = a.getInt(R.styleable.AbstractWheelView_selectionDividerActiveAlpha, DEF_SELECTION_DIVIDER_ACTIVE_ALPHA);
-        mSelectionDividerDimmedAlpha = a.getInt(R.styleable.AbstractWheelView_selectionDividerDimmedAlpha, DEF_SELECTION_DIVIDER_DIMMED_ALPHA);
-        mItemOffsetPercent = a.getInt(R.styleable.AbstractWheelView_itemOffsetPercent, DEF_ITEM_OFFSET_PERCENT);
-        mItemsPadding = a.getDimensionPixelSize(R.styleable.AbstractWheelView_itemsPadding, DEF_ITEM_PADDING);
+
+        TypedArray a = getContext().obtainStyledAttributes(
+                attrs,
+                R.styleable.AbstractWheelView,
+                defStyle,
+                0
+        );
+        mItemsDimmedAlpha = a.getInt(
+                R.styleable.AbstractWheelView_itemsDimmedAlpha,
+                DEF_ITEMS_DIMMED_ALPHA
+        );
+        mSelectionDividerActiveAlpha = a.getInt(
+                R.styleable.AbstractWheelView_selectionDividerActiveAlpha,
+                DEF_SELECTION_DIVIDER_ACTIVE_ALPHA
+        );
+        mSelectionDividerDimmedAlpha = a.getInt(
+                R.styleable.AbstractWheelView_selectionDividerDimmedAlpha,
+                DEF_SELECTION_DIVIDER_DIMMED_ALPHA
+        );
+        mItemOffsetPercent = a.getInt(
+                R.styleable.AbstractWheelView_itemOffsetPercent,
+                DEF_ITEM_OFFSET_PERCENT
+        );
+        mItemsPadding = a.getDimensionPixelSize(
+                R.styleable.AbstractWheelView_itemsPadding,
+                DEF_ITEM_PADDING
+        );
         mSelectionDivider = a.getDrawable(R.styleable.AbstractWheelView_selectionDivider);
-        mIsDisableDimAnimation = a.getBoolean(R.styleable.AbstractWheelView_disableDimAnimation, false);
+        mIsDisableDimAnimation = a.getBoolean(
+                R.styleable.AbstractWheelView_disableDimAnimation,
+                false
+        );
         a.recycle();
     }
 
@@ -169,10 +189,18 @@ public abstract class AbstractWheelView extends AbstractWheel {
         super.initData(context);
 
         // creating animators
-        mDimSelectorWheelAnimator = ObjectAnimator.ofFloat(this, PROPERTY_SELECTOR_PAINT_COEFF, 1, 0);
+        mDimSelectorWheelAnimator = ObjectAnimator.ofFloat(
+                this,
+                PROPERTY_SELECTOR_PAINT_COEFF,
+                1,
+                0
+        );
 
-        mDimSeparatorsAnimator = ObjectAnimator.ofInt(this, PROPERTY_SEPARATORS_PAINT_ALPHA,
-                mSelectionDividerActiveAlpha, mSelectionDividerDimmedAlpha
+        mDimSeparatorsAnimator = ObjectAnimator.ofInt(
+                this,
+                PROPERTY_SEPARATORS_PAINT_ALPHA,
+                mSelectionDividerActiveAlpha,
+                mSelectionDividerDimmedAlpha
         );
 
         // creating paints
@@ -192,7 +220,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
      */
     @Override
     protected void recreateAssets(int width, int height) {
-        if (width <= 0 || height <= 0) return;
+        if (width <= 0 || height <= 0) { return; }
         mSpinBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         mSeparatorsBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         setSelectorPaintCoeff(0);
@@ -231,8 +259,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
     protected void onScrollTouched() {
         mDimSelectorWheelAnimator.cancel();
         mDimSeparatorsAnimator.cancel();
-        if(!mIsDisableDimAnimation)
-        {
+        if (!mIsDisableDimAnimation) {
             setSelectorPaintCoeff(1);
         }
         setSeparatorsPaintAlpha(mSelectionDividerActiveAlpha);
@@ -241,8 +268,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
     @Override
     protected void onScrollTouchedUp() {
         super.onScrollTouchedUp();
-        if(!mIsDisableDimAnimation)
-        {
+        if (!mIsDisableDimAnimation) {
             fadeSelectorWheel(750);
             lightSeparators(750);
         }
@@ -250,8 +276,7 @@ public abstract class AbstractWheelView extends AbstractWheel {
 
     @Override
     protected void onScrollFinished() {
-        if(!mIsDisableDimAnimation)
-        {
+        if (!mIsDisableDimAnimation) {
             fadeSelectorWheel(500);
             lightSeparators(500);
         }
@@ -281,7 +306,6 @@ public abstract class AbstractWheelView extends AbstractWheel {
         mDimSeparatorsAnimator.start();
     }
 
-
     //--------------------------------------------------------------------------
     //
     //  Layout measuring
@@ -292,7 +316,6 @@ public abstract class AbstractWheelView extends AbstractWheel {
      * Perform layout measurements
      */
     abstract protected void measureLayout();
-
 
     //--------------------------------------------------------------------------
     //

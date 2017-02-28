@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class HandyNotification implements Serializable, Parcelable
-{
+public class HandyNotification implements Serializable, Parcelable {
+
     @SerializedName("id")
     private long mId;
     @SerializedName("title")
@@ -36,8 +36,7 @@ public class HandyNotification implements Serializable, Parcelable
 
     private HandyNotification() {} //Only server can create notifications
 
-    protected HandyNotification(Parcel in)
-    {
+    protected HandyNotification(Parcel in) {
         mId = in.readLong();
         mTitle = in.readString();
         mBody = in.readString();
@@ -48,80 +47,65 @@ public class HandyNotification implements Serializable, Parcelable
         mActions = in.createTypedArray(Action.CREATOR);
     }
 
-    public static final Creator<HandyNotification> CREATOR = new Creator<HandyNotification>()
-    {
+    public static final Creator<HandyNotification> CREATOR = new Creator<HandyNotification>() {
         @Override
-        public HandyNotification createFromParcel(Parcel in)
-        {
+        public HandyNotification createFromParcel(Parcel in) {
             return new HandyNotification(in);
         }
 
         @Override
-        public HandyNotification[] newArray(int size)
-        {
+        public HandyNotification[] newArray(int size) {
             return new HandyNotification[size];
         }
     };
 
-    public long getId()
-    {
+    public long getId() {
         return mId;
     }
 
-    public HandyNotificationType getType()
-    {
+    public HandyNotificationType getType() {
         return mType;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getBody()
-    {
+    public String getBody() {
         return mBody;
     }
 
-    public String getHtmlBody()
-    {
+    public String getHtmlBody() {
         return mHtmlBody;
     }
 
-    public Calendar getCreatedAt()
-    {
+    public Calendar getCreatedAt() {
         return mCreatedAt;
     }
 
-    public Calendar getExpiresAt()
-    {
+    public Calendar getExpiresAt() {
         return mExpiresAt;
     }
 
-    public boolean getReadStatus()
-    {
+    public boolean getReadStatus() {
         return mReadStatus;
     }
 
-    public Image[] getImages()
-    {
+    public Image[] getImages() {
         return mImages;
     }
 
-    public Action[] getActions()
-    {
+    public Action[] getActions() {
         return mActions;
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(final Parcel dest, final int flags)
-    {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeLong(mId);
         dest.writeString(mTitle);
         dest.writeString(mBody);
@@ -132,7 +116,6 @@ public class HandyNotification implements Serializable, Parcelable
         dest.writeTypedArray(mActions, flags);
     }
 
-
     /**
      * List of HandyNotifications
      * <p/>
@@ -141,8 +124,7 @@ public class HandyNotification implements Serializable, Parcelable
     public static class List extends ArrayList<HandyNotification> implements Serializable {}
 
 
-    public enum HandyNotificationType implements Serializable
-    {
+    public enum HandyNotificationType implements Serializable {
         @SerializedName(Constants.TYPE_STRING_NOTIFICATION)
         NOTIFICATION,
         @SerializedName(Constants.TYPE_STRING_PROMO)
@@ -150,10 +132,8 @@ public class HandyNotification implements Serializable, Parcelable
         @SerializedName(Constants.TYPE_STRING_INVALID)
         INVALID;
 
-        public static HandyNotificationType from(final String string)
-        {
-            switch (string)
-            {
+        public static HandyNotificationType from(final String string) {
+            switch (string) {
                 case Constants.TYPE_STRING_NOTIFICATION:
                     return NOTIFICATION;
                 case Constants.TYPE_STRING_PROMO:
@@ -163,8 +143,8 @@ public class HandyNotification implements Serializable, Parcelable
             }
         }
 
-        public static class Constants
-        {
+        public static class Constants {
+
             public static final String TYPE_STRING_NOTIFICATION = "notification";
             public static final String TYPE_STRING_PROMO = "promo";
             public static final String TYPE_STRING_INVALID = "invalid";
@@ -172,8 +152,7 @@ public class HandyNotification implements Serializable, Parcelable
     }
 
 
-    public enum HandyNotificationActionType implements Serializable
-    {
+    public enum HandyNotificationActionType implements Serializable {
         @SerializedName(Constants.TYPE_STRING_NOTIFICATION)
         NOTIFICATION,
         @SerializedName(Constants.TYPE_STRING_CALL_TO_ACTION)
@@ -181,10 +160,8 @@ public class HandyNotification implements Serializable, Parcelable
         @SerializedName(Constants.TYPE_STRING_INVALID)
         INVALID;
 
-        public static HandyNotificationActionType from(final String string)
-        {
-            switch (string)
-            {
+        public static HandyNotificationActionType from(final String string) {
+            switch (string) {
                 case Constants.TYPE_STRING_NOTIFICATION:
                     return NOTIFICATION;
                 case Constants.TYPE_STRING_CALL_TO_ACTION:
@@ -194,8 +171,8 @@ public class HandyNotification implements Serializable, Parcelable
             }
         }
 
-        public static class Constants
-        {
+        public static class Constants {
+
             public static final String TYPE_STRING_NOTIFICATION = "notification";
             public static final String TYPE_STRING_CALL_TO_ACTION = "call_to_action";
             public static final String TYPE_STRING_INVALID = "invalid";
@@ -203,8 +180,8 @@ public class HandyNotification implements Serializable, Parcelable
     }
 
 
-    public static class Image implements Serializable, Parcelable
-    {
+    public static class Image implements Serializable, Parcelable {
+
         @SerializedName("scale")
         private float mScale;
         @SerializedName("url")
@@ -212,54 +189,46 @@ public class HandyNotification implements Serializable, Parcelable
 
         private Image() {} //No-one is allowed! Only GSON
 
-        protected Image(Parcel in)
-        {
+        protected Image(Parcel in) {
             mScale = in.readFloat();
             mUrl = in.readString();
         }
 
-        public static final Creator<Image> CREATOR = new Creator<Image>()
-        {
+        public static final Creator<Image> CREATOR = new Creator<Image>() {
             @Override
-            public Image createFromParcel(Parcel in)
-            {
+            public Image createFromParcel(Parcel in) {
                 return new Image(in);
             }
 
             @Override
-            public Image[] newArray(int size)
-            {
+            public Image[] newArray(int size) {
                 return new Image[size];
             }
         };
 
-        public float getScale()
-        {
+        public float getScale() {
             return mScale;
         }
 
-        public String getUrl()
-        {
+        public String getUrl() {
             return mUrl;
         }
 
         @Override
-        public int describeContents()
-        {
+        public int describeContents() {
             return 0;
         }
 
         @Override
-        public void writeToParcel(final Parcel dest, final int flags)
-        {
+        public void writeToParcel(final Parcel dest, final int flags) {
             dest.writeFloat(mScale);
             dest.writeString(mUrl);
         }
     }
 
 
-    public static class Action implements Serializable, Parcelable
-    {
+    public static class Action implements Serializable, Parcelable {
+
         @SerializedName("deeplink")
         private String mDeeplink;
         @SerializedName("type")
@@ -269,97 +238,81 @@ public class HandyNotification implements Serializable, Parcelable
 
         private Action() {} //No-one is allowed! Only GSON
 
-        protected Action(Parcel in)
-        {
+        protected Action(Parcel in) {
             mDeeplink = in.readString();
             mText = in.readString();
             mType = HandyNotificationActionType.from(in.readString());
         }
 
-        public static final Creator<Action> CREATOR = new Creator<Action>()
-        {
+        public static final Creator<Action> CREATOR = new Creator<Action>() {
             @Override
-            public Action createFromParcel(Parcel in)
-            {
+            public Action createFromParcel(Parcel in) {
                 return new Action(in);
             }
 
             @Override
-            public Action[] newArray(int size)
-            {
+            public Action[] newArray(int size) {
                 return new Action[size];
             }
         };
 
-        public String getDeeplink()
-        {
+        public String getDeeplink() {
             return mDeeplink;
         }
 
-        public HandyNotificationActionType getType()
-        {
+        public HandyNotificationActionType getType() {
             return mType;
         }
 
-        public String getText()
-        {
+        public String getText() {
             return mText;
         }
 
         @Override
-        public int describeContents()
-        {
+        public int describeContents() {
             return 0;
         }
 
         @Override
-        public void writeToParcel(final Parcel dest, final int flags)
-        {
+        public void writeToParcel(final Parcel dest, final int flags) {
             dest.writeString(mDeeplink);
             dest.writeString(mText);
         }
     }
 
 
-    public static class ResultSet implements Serializable, Parcelable
-    {
+    public static class ResultSet implements Serializable, Parcelable {
+
         @SerializedName("notifications")
         HandyNotification.List mHandyNotifications;
 
         private ResultSet() {} //No-one is allowed! Only GSON
 
-        protected ResultSet(Parcel in)
-        {
+        protected ResultSet(Parcel in) {
         }
 
-        public static final Creator<ResultSet> CREATOR = new Creator<ResultSet>()
-        {
+        public static final Creator<ResultSet> CREATOR = new Creator<ResultSet>() {
             @Override
-            public ResultSet createFromParcel(Parcel in)
-            {
+            public ResultSet createFromParcel(Parcel in) {
                 return new ResultSet(in);
             }
 
             @Override
-            public ResultSet[] newArray(int size)
-            {
+            public ResultSet[] newArray(int size) {
                 return new ResultSet[size];
             }
         };
 
-        public List getHandyNotifications()
-        {
+        public List getHandyNotifications() {
             return mHandyNotifications;
         }
 
         @Override
-        public int describeContents()
-        {
+        public int describeContents() {
             return 0;
         }
 
         @Override
-        public void writeToParcel(final Parcel dest, final int flags)
-        {}
+        public void writeToParcel(final Parcel dest, final int flags) {}
     }
 }

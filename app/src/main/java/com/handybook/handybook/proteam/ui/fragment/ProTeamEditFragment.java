@@ -52,8 +52,8 @@ import static com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewM
  * method to create an instance of this fragment.
  */
 public class ProTeamEditFragment extends InjectedFragment implements
-        ProTeamProListFragment.OnProInteraction
-{
+        ProTeamProListFragment.OnProInteraction {
+
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.pro_team_swipe_refresh_layout)
@@ -75,16 +75,13 @@ public class ProTeamEditFragment extends InjectedFragment implements
     private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
     private ProTeamProListFragment mProTeamListFragment;
 
-    public static ProTeamEditFragment newInstance()
-    {
+    public static ProTeamEditFragment newInstance() {
         return newInstance(null);
     }
 
-    public static ProTeamEditFragment newInstance(@Nullable final ProTeam proTeam)
-    {
+    public static ProTeamEditFragment newInstance(@Nullable final ProTeam proTeam) {
         final ProTeamEditFragment fragment = new ProTeamEditFragment();
-        if (proTeam != null)
-        {
+        if (proTeam != null) {
             final Bundle arguments = new Bundle();
             arguments.putParcelable(BundleKeys.PRO_TEAM, proTeam);
             fragment.setArguments(arguments);
@@ -93,12 +90,10 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Bundle arguments = getArguments();
-        if (arguments != null)
-        {
+        if (arguments != null) {
             mProTeam = arguments.getParcelable(BundleKeys.PRO_TEAM);
         }
     }
@@ -107,8 +102,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(R.layout.fragment_pro_team_edit, container, false);
         ButterKnife.bind(this, view);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -118,42 +112,35 @@ public class ProTeamEditFragment extends InjectedFragment implements
                 R.color.handy_service_painter,
                 R.color.handy_service_plumber
         );
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh()
-            {
+            public void onRefresh() {
                 requestProTeam();
             }
         });
         mToolbarSaveButton.setVisibility(isSettingFavoriteProEnabled() ? View.GONE : View.VISIBLE);
-        if (mProTeam != null)
-        {
+        if (mProTeam != null) {
             initialize();
         }
         return view;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         setupToolbar(mToolbar, getString(R.string.edit_pro_team));
-        if (mProTeam == null)
-        {
+        if (mProTeam == null) {
             mSwipeRefreshLayout.setRefreshing(true);
             requestProTeam();
         }
     }
 
-    private void requestProTeam()
-    {
+    private void requestProTeam() {
         bus.post(new ProTeamEvent.RequestProTeam());
     }
 
     @Subscribe
-    public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
-    {
+    public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event) {
         mSwipeRefreshLayout.setRefreshing(false);
         mProTeam = event.getProTeam();
         initialize();
@@ -161,31 +148,25 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     @Subscribe
-    public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
-    {
+    public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event) {
         mSwipeRefreshLayout.setRefreshing(false);
         showToast(R.string.default_error_string);
     }
 
-    private void initialize()
-    {
-        if (isSettingFavoriteProEnabled())
-        {
+    private void initialize() {
+        if (isSettingFavoriteProEnabled()) {
             initProTeamViewPager();
         }
-        else
-        {
+        else {
             initProTeamListFragment();
         }
     }
 
-    private boolean isSettingFavoriteProEnabled()
-    {
+    private boolean isSettingFavoriteProEnabled() {
         return mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled();
     }
 
-    private void initProTeamListFragment()
-    {
+    private void initProTeamListFragment() {
         mViewPager.setVisibility(View.GONE);
         mListHolder.setVisibility(View.VISIBLE);
         mProTeamListFragment = ProTeamProListFragment.newInstance(mProTeam, null, false);
@@ -197,10 +178,8 @@ public class ProTeamEditFragment extends InjectedFragment implements
         mProTeamListFragment.setProTeam(mProTeam);
     }
 
-    private void initProTeamViewPager()
-    {
-        if (mProTeam != null)
-        {
+    private void initProTeamViewPager() {
+        if (mProTeam != null) {
             mListHolder.setVisibility(View.GONE);
             mViewPager.setVisibility(View.VISIBLE);
             mTabAdapter = new TabAdapter(getActivity(), getChildFragmentManager());
@@ -213,11 +192,9 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     @Subscribe
-    public void onReceiveProTeamEditSuccess(final ProTeamEvent.ReceiveProTeamEditSuccess event)
-    {
+    public void onReceiveProTeamEditSuccess(final ProTeamEvent.ReceiveProTeamEditSuccess event) {
         mProTeam = event.getProTeam();
-        if (mProTeamListFragment != null)
-        {
+        if (mProTeamListFragment != null) {
             mProTeamListFragment.setProTeam(mProTeam);
         }
         clearEditHolders();
@@ -229,22 +206,19 @@ public class ProTeamEditFragment extends InjectedFragment implements
 
     // This is triggered by NewProTeamProListFragment
     @Subscribe
-    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event)
-    {
+    public void onProTeamUpdated(final ProTeamEvent.ProTeamUpdated event) {
         mProTeam = event.getUpdatedProTeam();
         setActivityResult();
     }
 
-    private void setActivityResult()
-    {
+    private void setActivityResult() {
         getActivity().setResult(
                 Activity.RESULT_OK,
                 new Intent().putExtra(BundleKeys.PRO_TEAM, mProTeam)
         );
     }
 
-    private void clearEditHolders()
-    {
+    private void clearEditHolders() {
         mCleanersToAdd.clear();
         mCleanersToRemove.clear();
         mHandymenToAdd.clear();
@@ -252,19 +226,16 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     @Subscribe
-    public void onReceiveProTeamEditError(final ProTeamEvent.ReceiveProTeamEditError event)
-    {
+    public void onReceiveProTeamEditError(final ProTeamEvent.ReceiveProTeamEditError event) {
         removeUiBlockers();
     }
 
     @OnClick(R.id.pro_team_toolbar_save_button)
-    void saveProTeamEdits()
-    {
+    void saveProTeamEdits() {
         if (mCleanersToAdd.isEmpty()
-                && mCleanersToRemove.isEmpty()
-                && mHandymenToAdd.isEmpty()
-                && mHandymenToRemove.isEmpty())
-        {
+            && mCleanersToRemove.isEmpty()
+            && mHandymenToAdd.isEmpty()
+            && mHandymenToRemove.isEmpty()) {
             //no changes were made, so we'll just tell them save successful
             showToast(R.string.pro_team_update_successful);
             return;
@@ -293,8 +264,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onProRemovalRequested(
             final ProTeamPro proTeamPro,
             final ProviderMatchPreference providerMatchPreference
-    )
-    {
+    ) {
         final ProTeamActionPickerViewModel viewModel = new ProTeamActionPickerViewModel(
                 proTeamPro.getId(),
                 proTeamPro.getCategoryType(),
@@ -316,20 +286,17 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK
-                && requestCode == RequestCode.EDIT_PRO_TEAM_PREFERENCE
-                && data != null)
-        {
+            && requestCode == RequestCode.EDIT_PRO_TEAM_PREFERENCE
+            && data != null) {
             final int proId = data.getIntExtra(BundleKeys.PRO_TEAM_PRO_ID, -1);
             final ProTeamCategoryType categoryType = (ProTeamCategoryType)
                     data.getSerializableExtra(BundleKeys.PRO_TEAM_CATEGORY_TYPE);
             final ActionType actionType = (ActionType) data.getSerializableExtra(
                     BundleKeys.EDIT_PRO_TEAM_PREFERENCE_ACTION_TYPE);
-            if (proId != -1 && actionType != null && categoryType != null && actionType == BLOCK)
-            {
+            if (proId != -1 && actionType != null && categoryType != null && actionType == BLOCK) {
                 bus.post(new ProTeamEvent.RequestProTeamEdit(
                         proId,
                         categoryType,
@@ -350,12 +317,9 @@ public class ProTeamEditFragment extends InjectedFragment implements
     public void onProCheckboxStateChanged(
             @NonNull final ProTeamPro proTeamPro,
             final boolean isChecked
-    )
-    {
-        if (isChecked)
-        {
-            switch (proTeamPro.getCategoryType())
-            {
+    ) {
+        if (isChecked) {
+            switch (proTeamPro.getCategoryType()) {
                 case CLEANING:
                     mCleanersToAdd.add(proTeamPro);
                     mCleanersToRemove.remove(proTeamPro);
@@ -366,10 +330,8 @@ public class ProTeamEditFragment extends InjectedFragment implements
                     break;
             }
         }
-        else
-        {
-            switch (proTeamPro.getCategoryType())
-            {
+        else {
+            switch (proTeamPro.getCategoryType()) {
                 case CLEANING:
                     mCleanersToRemove.add(proTeamPro);
                     mCleanersToAdd.remove(proTeamPro);
@@ -388,19 +350,17 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     @Override
-    public void onSave()
-    {
+    public void onSave() {
         saveProTeamEdits();
     }
 
-    private class TabAdapter extends FragmentPagerAdapter
-    {
+    private class TabAdapter extends FragmentPagerAdapter {
+
         private final Context mContext;
         private List<InjectedFragment> mFragments = new ArrayList<>();
         private List<CharSequence> mPageTitles = new ArrayList<>();
 
-        TabAdapter(final Context context, final FragmentManager fragmentManager)
-        {
+        TabAdapter(final Context context, final FragmentManager fragmentManager) {
             super(fragmentManager);
             mContext = context;
             mFragments.add(NewProTeamProListFragment.newInstance(
@@ -408,8 +368,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
                     ProTeamCategoryType.CLEANING
             ));
             mPageTitles.add(mContext.getString(R.string.cleaners));
-            if (shouldShowHandymenTab())
-            {
+            if (shouldShowHandymenTab()) {
                 final ProTeamProListFragment fragment = ProTeamProListFragment.newInstance(
                         mProTeam,
                         ProTeamCategoryType.HANDYMEN,
@@ -421,16 +380,14 @@ public class ProTeamEditFragment extends InjectedFragment implements
             }
         }
 
-        private boolean shouldShowHandymenTab()
-        {
+        private boolean shouldShowHandymenTab() {
             final ProTeam.ProTeamCategory handymenCategory =
                     mProTeam.getCategory(ProTeamCategoryType.HANDYMEN);
             return handymenCategory != null && !handymenCategory.isEmpty();
         }
 
         @Override
-        public CharSequence getPageTitle(final int position)
-        {
+        public CharSequence getPageTitle(final int position) {
             final CharSequence text = mPageTitles.get(position);
             final CalligraphyTypefaceSpan titleType = new CalligraphyTypefaceSpan(
                     TextUtils.get(mContext, TextUtils.Fonts.CIRCULAR_BOOK));
@@ -440,14 +397,12 @@ public class ProTeamEditFragment extends InjectedFragment implements
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             return mFragments.size();
         }
 
         @Override
-        public InjectedFragment getItem(int position)
-        {
+        public InjectedFragment getItem(int position) {
             return mFragments.get(position);
         }
     }

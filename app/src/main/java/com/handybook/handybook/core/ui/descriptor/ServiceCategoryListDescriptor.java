@@ -5,8 +5,7 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 
-public enum ServiceCategoryListDescriptor
-{
+public enum ServiceCategoryListDescriptor {
     HOME_CLEANING(
             R.string.home_cleaner,
             R.string.home_cleaner_slogan,
@@ -43,8 +42,12 @@ public enum ServiceCategoryListDescriptor
     private final int mIconDrawable;
     private final int mImageDrawable;
 
-    ServiceCategoryListDescriptor(int titleString, int subtitleString, int iconDrawable, int imageDrawable)
-    {
+    ServiceCategoryListDescriptor(
+            int titleString,
+            int subtitleString,
+            int iconDrawable,
+            int imageDrawable
+    ) {
 
         mTitleString = titleString;
         mSubtitleString = subtitleString;
@@ -52,28 +55,23 @@ public enum ServiceCategoryListDescriptor
         mImageDrawable = imageDrawable;
     }
 
-    public int getTitleString()
-    {
+    public int getTitleString() {
         return mTitleString;
     }
 
-    public int getSubtitleString()
-    {
+    public int getSubtitleString() {
         return mSubtitleString;
     }
 
-    public int getIconDrawable()
-    {
+    public int getIconDrawable() {
         return mIconDrawable;
     }
 
-    public int getImageDrawable()
-    {
+    public int getImageDrawable() {
         return mImageDrawable;
     }
 
-    public static final ServiceCategoryListDescriptor getServiceDescriptorFromService(@NonNull Service service)
-    {
+    public static final ServiceCategoryListDescriptor getServiceDescriptorFromService(@NonNull Service service) {
         String serviceMachineName = service.getUniq().toUpperCase();
         return ServiceCategoryListDescriptor.valueOf(serviceMachineName);
     }

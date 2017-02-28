@@ -34,8 +34,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class PromosFragment extends BookingFlowFragment
-{
+public final class PromosFragment extends BookingFlowFragment {
 
     public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
 
@@ -56,8 +55,7 @@ public final class PromosFragment extends BookingFlowFragment
     // The snackbar that's used for undo removing promo code
     private Snackbar mSnackbar;
 
-    public static PromosFragment newInstance(@Nullable String extraPromoCode)
-    {
+    public static PromosFragment newInstance(@Nullable String extraPromoCode) {
         PromosFragment fragment = new PromosFragment();
         final Bundle bundle = new Bundle();
         bundle.putString(EXTRA_PROMO_CODE, extraPromoCode);
@@ -65,14 +63,12 @@ public final class PromosFragment extends BookingFlowFragment
         return fragment;
     }
 
-    public static PromosFragment newInstance()
-    {
+    public static PromosFragment newInstance() {
         return new PromosFragment();
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bus.post(new LogEvent.AddLogEvent(new CodeRedemptionLog.CodeRedemptionOpenedLog()));
     }
@@ -81,8 +77,7 @@ public final class PromosFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity()
                 .getLayoutInflater().inflate(R.layout.fragment_promos, container, false);
         ButterKnife.bind(this, view);
@@ -90,16 +85,14 @@ public final class PromosFragment extends BookingFlowFragment
         setupToolbar(mToolbar, getString(R.string.promotions));
 
         mPromoCoupon = bookingManager.getPromoTabCoupon();
-        mPromoText.addTextChangedListener(new TextWatcher()
-        {
+        mPromoText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
                     final CharSequence s,
                     final int start,
                     final int count,
                     final int after
-            )
-            {
+            ) {
             }
 
             @Override
@@ -108,29 +101,24 @@ public final class PromosFragment extends BookingFlowFragment
                     final int start,
                     final int before,
                     final int count
-            )
-            {
+            ) {
             }
 
             @Override
-            public void afterTextChanged(final Editable s)
-            {
+            public void afterTextChanged(final Editable s) {
                 mPromoTextClearImage.setVisibility(s.toString()
                                                     .isEmpty() ? View.GONE : View.VISIBLE);
                 mPromoText.setHintTextColor(getResources().getColor(R.color.black_pressed));
             }
         });
-        mAutoScrollListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        mAutoScrollListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 mPromoScrollView.smoothScrollTo(0, mPromoScrollView.getBottom());
             }
         };
         mPromoScrollView.getViewTreeObserver().addOnGlobalLayoutListener(mAutoScrollListener);
-        if (mPromoCoupon != null)
-        {
+        if (mPromoCoupon != null) {
             mPromoText.setText(mPromoCoupon);
         }
         return view;
@@ -141,14 +129,11 @@ public final class PromosFragment extends BookingFlowFragment
      * <p/>
      * must be called after onCreateView() due to butterknife dependency
      */
-    private void handleBundleArguments()
-    {
+    private void handleBundleArguments() {
         final Bundle args = getArguments();
-        if (args != null)
-        {
+        if (args != null) {
             String promoCode = args.getString(EXTRA_PROMO_CODE);
-            if (promoCode != null)
-            {
+            if (promoCode != null) {
                 args.remove(EXTRA_PROMO_CODE);
                 mPromoText.setText(promoCode);
             }
@@ -156,8 +141,7 @@ public final class PromosFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         handleBundleArguments();
         mPromoText.requestFocus();
@@ -167,67 +151,59 @@ public final class PromosFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         dismissSnackbar();
         super.onPause();
     }
 
     @OnClick(R.id.promotions_apply_button)
-    public void applyChanges()
-    {
+    public void applyChanges() {
         final String promoCode = mPromoText.getText().toString();
 
-        if (promoCode.trim().length() > 0)
-        {
+        if (promoCode.trim().length() > 0) {
             disableInputs();
             progressDialog.show();
 
             bus.post(new CodeRedemptionLog.CodeRedemptionPromoSubmittedLog(promoCode));
-            dataManager.getPreBookingPromo(promoCode, new FragmentSafeCallback<PromoCode>(this)
-            {
+            dataManager.getPreBookingPromo(promoCode, new FragmentSafeCallback<PromoCode>(this) {
                 @Override
-                public void onCallbackSuccess(final PromoCode code)
-                {
+                public void onCallbackSuccess(final PromoCode code) {
                     if (!allowCallbacks) { return; }
 
                     progressDialog.dismiss();
                     enableInputs();
-                    if (code.getType() == PromoCode.Type.VOUCHER)
-                    {
+                    if (code.getType() == PromoCode.Type.VOUCHER) {
                         bus.post(new CodeRedemptionLog.CodeRedemptionPromoSuccessLog(
                                 promoCode, code.getUniq()));
 
                         startBookingFlow(code.getServiceId(), code.getUniq(), code);
                     }
-                    else if (code.getType() == PromoCode.Type.COUPON)
-                    {
+                    else if (code.getType() == PromoCode.Type.COUPON) {
                         bus.post(new CodeRedemptionLog.CodeRedemptionPromoSuccessLog(
                                 promoCode, null));
 
                         bookingManager.setPromoTabCoupon(code.getCode());
 
                         Intent intent;
-                        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-                        {
+                        if (mConfigurationManager.getPersistentConfiguration()
+                                                 .isBottomNavEnabled()) {
                             //launch bottom nav activity and select services tab
                             intent = new Intent(getActivity(), BottomNavActivity.class);
                             intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
                         }
-                        else
-                        {
+                        else {
                             //launch service categories activity which extends menu drawer activity
                             intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
                         }
 
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         getActivity().startActivity(intent);
                     }
                 }
 
                 @Override
-                public void onCallbackError(final DataManager.DataManagerError error)
-                {
+                public void onCallbackError(final DataManager.DataManagerError error) {
                     if (!allowCallbacks) { return; }
 
                     bus.post(new CodeRedemptionLog.CodeRedemptionPromoErrorLog(promoCode));
@@ -238,20 +214,17 @@ public final class PromosFragment extends BookingFlowFragment
                 }
             });
         }
-        else if (mPromoCoupon != null)
-        {
+        else if (mPromoCoupon != null) {
             // The user wants to delete the promo code
             bookingManager.setPromoTabCoupon(null);
             showSnackbar();
         }
-        else
-        {
+        else {
             mPromoText.setHintTextColor(getResources().getColor(R.color.error_red));
         }
     }
 
-    private void showSnackbar()
-    {
+    private void showSnackbar() {
         mSnackbar = Snackbar.make(
                 getView(),
                 R.string.snackbar_promo_code_deleted,
@@ -260,11 +233,9 @@ public final class PromosFragment extends BookingFlowFragment
         final TextView snackText = (TextView) mSnackbar.getView()
                                                        .findViewById(android.support.design.R.id.snackbar_text);
         snackText.setTextColor(Color.WHITE);
-        mSnackbar.setAction(R.string.undo, new View.OnClickListener()
-        {
+        mSnackbar.setAction(R.string.undo, new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 bookingManager.setPromoTabCoupon(mPromoCoupon);
                 mPromoText.setText(mPromoCoupon);
                 Snackbar undoSnackbar = Snackbar.make(
@@ -284,48 +255,39 @@ public final class PromosFragment extends BookingFlowFragment
         mSnackbar.show();
     }
 
-    private void dismissSnackbar()
-    {
-        if (mSnackbar != null)
-        {
+    private void dismissSnackbar() {
+        if (mSnackbar != null) {
             mSnackbar.dismiss();
         }
     }
 
     @OnClick(R.id.promotions_coupon_text_clear)
-    public void clearPromoCode()
-    {
+    public void clearPromoCode() {
         mPromoText.setText("");
-        if (mPromoCoupon != null)
-        { // If the user had a coupon and clears the field, apply changes
+        if (mPromoCoupon != null) { // If the user had a coupon and clears the field, apply changes
             applyChanges();
         }
     }
 
     @Override
-    protected final void disableInputs()
-    {
+    protected final void disableInputs() {
         super.disableInputs();
         mApplyButton.setClickable(false);
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mApplyButton.setClickable(true);
     }
 
     @Override
-    public void onDestroyView()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-        {
+    public void onDestroyView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mPromoScrollView.getViewTreeObserver()
                             .removeOnGlobalLayoutListener(mAutoScrollListener);
         }
-        else
-        {
+        else {
             mPromoScrollView.getViewTreeObserver()
                             .removeGlobalOnLayoutListener(mAutoScrollListener);
         }

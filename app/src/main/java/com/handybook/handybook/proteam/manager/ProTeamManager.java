@@ -18,8 +18,8 @@ import org.json.JSONObject;
 
 import javax.inject.Inject;
 
-public class ProTeamManager
-{
+public class ProTeamManager {
+
     private static final String DEFAULT_USER_ID = "0";
     private final Bus mBus;
     private final HandyRetrofitService mService;
@@ -30,8 +30,7 @@ public class ProTeamManager
             final Bus bus,
             HandyRetrofitService service,
             UserManager userManager
-    )
-    {
+    ) {
         mBus = bus;
         mBus.register(this);
         mService = service;
@@ -39,13 +38,10 @@ public class ProTeamManager
     }
 
     @Subscribe
-    public void onRequestProTeam(final ProTeamEvent.RequestProTeam event)
-    {
-        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>()
-        {
+    public void onRequestProTeam(final ProTeamEvent.RequestProTeam event) {
+        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>() {
             @Override
-            public void onSuccess(final ProTeamWrapper proTeamWrapper)
-            {
+            public void onSuccess(final ProTeamWrapper proTeamWrapper) {
                 mBus.post(new ProTeamEvent.ReceiveProTeamSuccess(
                         proTeamWrapper.getProTeam(),
                         proTeamWrapper.getProTeamHelpCenterUrl()
@@ -53,34 +49,28 @@ public class ProTeamManager
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
+            public void onError(final DataManager.DataManagerError error) {
                 mBus.post(new ProTeamEvent.ReceiveProTeamError(error));
             }
         };
         requestProTeam(cb);
     }
 
-    public void requestProTeam(final DataManager.Callback<ProTeamWrapper> cb)
-    {
+    public void requestProTeam(final DataManager.Callback<ProTeamWrapper> cb) {
         mService.requestProTeam(
                 getUserIdString(),
-                new HandyRetrofitCallback(cb)
-                {
+                new HandyRetrofitCallback(cb) {
                     @Override
-                    protected void success(final JSONObject response)
-                    {
+                    protected void success(final JSONObject response) {
                         cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
                     }
                 }
         );
     }
 
-    private String getUserIdString()
-    {
+    private String getUserIdString() {
         final User currentUser = mUserManager.getCurrentUser();
-        if (currentUser == null)
-        {
+        if (currentUser == null) {
             return DEFAULT_USER_ID;
         }
         final String id = currentUser.getId();
@@ -88,72 +78,57 @@ public class ProTeamManager
     }
 
     @Subscribe
-    public void onRequestEditProTeam(final ProTeamEvent.RequestProTeamEdit event)
-    {
-        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>()
-        {
+    public void onRequestEditProTeam(final ProTeamEvent.RequestProTeamEdit event) {
+        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>() {
             @Override
-            public void onSuccess(final ProTeamWrapper response)
-            {
+            public void onSuccess(final ProTeamWrapper response) {
                 mBus.post(new ProTeamEvent.ReceiveProTeamEditSuccess(response.getProTeam()));
 
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
+            public void onError(final DataManager.DataManagerError error) {
                 mBus.post(new ProTeamEvent.ReceiveProTeamEditError(error));
             }
         };
         mService.editProTeam(
                 getUserIdString(),
                 event.getProTeamEditWrapper(),
-                new HandyRetrofitCallback(cb)
-                {
+                new HandyRetrofitCallback(cb) {
                     @Override
-                    protected void success(final JSONObject response)
-                    {
+                    protected void success(final JSONObject response) {
                         cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
                     }
                 }
         );
     }
 
-    public void requestBookingProTeam(@NonNull final String bookingId)
-    {
+    public void requestBookingProTeam(@NonNull final String bookingId) {
 
-        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>()
-        {
+        final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>() {
             @Override
-            public void onSuccess(final ProTeamWrapper proTeamWrapper)
-            {
+            public void onSuccess(final ProTeamWrapper proTeamWrapper) {
                 requestBookingProTeam(proTeamWrapper.getProTeam(), bookingId);
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
+            public void onError(final DataManager.DataManagerError error) {
                 mBus.post(new ProTeamEvent.ReceiveBookingProTeamError(error));
             }
         };
 
-        mService.requestProTeam(getUserIdString(), new HandyRetrofitCallback(cb)
-        {
+        mService.requestProTeam(getUserIdString(), new HandyRetrofitCallback(cb) {
             @Override
-            protected void success(final JSONObject response)
-            {
+            protected void success(final JSONObject response) {
                 cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
             }
         });
     }
 
-    private void requestBookingProTeam(@NonNull final ProTeam proTeam, @NonNull String bookingId)
-    {
-        final DataManager.Callback<BookingProTeam> cb = new DataManager.Callback<BookingProTeam>()
-        {
+    private void requestBookingProTeam(@NonNull final ProTeam proTeam, @NonNull String bookingId) {
+        final DataManager.Callback<BookingProTeam> cb = new DataManager.Callback<BookingProTeam>() {
             @Override
-            public void onSuccess(final BookingProTeam response)
-            {
+            public void onSuccess(final BookingProTeam response) {
                 // We filter the existing pro team based on the returning result
                 ProTeam.ProTeamCategory proTeamCategory = proTeam.getAllCategories();
                 proTeamCategory.filterFavorPros(response.getProTeamPros());
@@ -161,16 +136,13 @@ public class ProTeamManager
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error)
-            {
+            public void onError(final DataManager.DataManagerError error) {
                 mBus.post(new ProTeamEvent.ReceiveBookingProTeamError(error));
             }
         };
-        mService.requestProTeamViaBooking(bookingId, new HandyRetrofitCallback(cb)
-        {
+        mService.requestProTeamViaBooking(bookingId, new HandyRetrofitCallback(cb) {
             @Override
-            protected void success(final JSONObject response)
-            {
+            protected void success(final JSONObject response) {
                 cb.onSuccess(BookingProTeam.fromJson(response.toString()));
             }
         });

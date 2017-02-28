@@ -14,8 +14,8 @@ import java.lang.annotation.RetentionPolicy;
  * Holds ReferralInfo objects for each supported channel used for in-app sharing. Supported
  * channels include SMS, Facebook, Twitter, etc.
  */
-public class ReferralChannels implements Serializable
-{
+public class ReferralChannels implements Serializable {
+
     public static final String CHANNEL_EMAIL = "email";
     public static final String CHANNEL_GMAIL = "gmail";
     public static final String CHANNEL_GPLUS = "gplus";
@@ -40,13 +40,13 @@ public class ReferralChannels implements Serializable
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            CHANNEL_EMAIL,
-            CHANNEL_GMAIL,
-            CHANNEL_GPLUS,
-            CHANNEL_FACEBOOK,
-            CHANNEL_TWITTER,
-            CHANNEL_SMS,
-    })
+                       CHANNEL_EMAIL,
+                       CHANNEL_GMAIL,
+                       CHANNEL_GPLUS,
+                       CHANNEL_FACEBOOK,
+                       CHANNEL_TWITTER,
+                       CHANNEL_SMS,
+               })
     public @interface Channel {}
 
     /**
@@ -58,10 +58,8 @@ public class ReferralChannels implements Serializable
      * @see Channel
      */
     @Nullable
-    public ReferralInfo getReferralInfoForChannel(@NonNull @Channel final String channel)
-    {
-        switch (channel)
-        {
+    public ReferralInfo getReferralInfoForChannel(@NonNull @Channel final String channel) {
+        switch (channel) {
             case CHANNEL_EMAIL:
                 return mEmailReferralInfo;
             case CHANNEL_GMAIL:

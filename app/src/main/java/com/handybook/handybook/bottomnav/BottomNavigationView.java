@@ -119,7 +119,7 @@ public class BottomNavigationView extends FrameLayout {
             }
             if (failed) {
                 throw new IllegalArgumentException("You need to use a Theme.AppCompat theme "
-                        + "(or descendant) with the design library.");
+                                                   + "(or descendant) with the design library.");
             }
         }
     }
@@ -149,19 +149,19 @@ public class BottomNavigationView extends FrameLayout {
                 R.styleable.HandyBottomNavigationView,
                 0, 0
         );
-        if (a.hasValue(R.styleable.HandyBottomNavigationView_itemIconTint))
-        {
+        if (a.hasValue(R.styleable.HandyBottomNavigationView_itemIconTint)) {
             mMenuView.setIconTintList(
                     a.getColorStateList(R.styleable.HandyBottomNavigationView_itemIconTint));
-        } else {
+        }
+        else {
             mMenuView.setIconTintList(
                     createDefaultColorStateList(android.R.attr.textColorSecondary));
         }
-        if (a.hasValue(R.styleable.HandyBottomNavigationView_itemTextColor))
-        {
+        if (a.hasValue(R.styleable.HandyBottomNavigationView_itemTextColor)) {
             mMenuView.setItemTextColor(
                     a.getColorStateList(R.styleable.HandyBottomNavigationView_itemTextColor));
-        } else {
+        }
+        else {
             mMenuView.setItemTextColor(
                     createDefaultColorStateList(android.R.attr.textColorSecondary));
         }
@@ -177,8 +177,7 @@ public class BottomNavigationView extends FrameLayout {
 
         mMenuView.setItemBackgroundRes(itemBackground);
 
-        if (a.hasValue(R.styleable.HandyBottomNavigationView_menu))
-        {
+        if (a.hasValue(R.styleable.HandyBottomNavigationView_menu)) {
             inflateMenu(a.getResourceId(
                     R.styleable.HandyBottomNavigationView_menu,
                     0
@@ -208,19 +207,17 @@ public class BottomNavigationView extends FrameLayout {
      * @param listener The listener to notify
      */
     public void setOnNavigationItemSelectedListener(
-            @Nullable OnNavigationItemSelectedListener listener) {
+            @Nullable OnNavigationItemSelectedListener listener
+    ) {
         mListener = listener;
     }
-
 
     /**
      * Handy Custom method
      * @param showIndicator true to show chat indicator, false to hide
      */
-    public void showChatIndicator(boolean showIndicator)
-    {
-        if(mChatIndicatorIndex > -1 && mMenuView != null)
-        {
+    public void showChatIndicator(boolean showIndicator) {
+        if (mChatIndicatorIndex > -1 && mMenuView != null) {
             mMenuView.showIndicator(showIndicator, mChatIndicatorIndex);
         }
     }
@@ -347,11 +344,15 @@ public class BottomNavigationView extends FrameLayout {
     private void addCompatibilityTopDivider(Context context) {
         View divider = new View(context);
         divider.setBackgroundColor(
-                ContextCompat.getColor(context, android.support.design.R.color.design_bottom_navigation_shadow_color));
+                ContextCompat.getColor(
+                        context,
+                        android.support.design.R.color.design_bottom_navigation_shadow_color
+                ));
         FrameLayout.LayoutParams dividerParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 getResources().getDimensionPixelSize(
-                        android.support.design.R.dimen.design_bottom_navigation_shadow_height));
+                        android.support.design.R.dimen.design_bottom_navigation_shadow_height)
+        );
         divider.setLayoutParams(dividerParams);
         addView(divider);
     }

@@ -15,22 +15,20 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 import static junit.framework.Assert.assertEquals;
 import static org.robolectric.Shadows.shadowOf;
 
-public class EditPlanFragmentTest extends RobolectricGradleTestWrapper
-{
+public class EditPlanFragmentTest extends RobolectricGradleTestWrapper {
+
     private EditPlanFragment mFragment;
     private RecurringBooking mPlan;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         mPlan = ModelFactory.createRecurringPlan();
         mFragment = EditPlanFragment.newInstance(mPlan);
         SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
     }
 
     @Test
-    public void shouldDisplayCorrectInfo()
-    {
+    public void shouldDisplayCorrectInfo() {
         assertEquals(
                 mFragment.getString(R.string.account_your_plan),
                 mFragment.mToolbar.getTitle()
@@ -40,8 +38,7 @@ public class EditPlanFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldNavigateToEditFrequencyFragment()
-    {
+    public void shouldNavigateToEditFrequencyFragment() {
         mFragment.getView().findViewById(R.id.edit_plan_frequency).performClick();
         ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
         Intent intent = shadowActivity.getNextStartedActivity();
@@ -52,8 +49,7 @@ public class EditPlanFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldNavigateToEditAddressFragment()
-    {
+    public void shouldNavigateToEditAddressFragment() {
         mFragment.getView().findViewById(R.id.edit_plan_address).performClick();
         ShadowActivity shadowActivity = shadowOf(mFragment.getActivity());
         Intent intent = shadowActivity.getNextStartedActivity();

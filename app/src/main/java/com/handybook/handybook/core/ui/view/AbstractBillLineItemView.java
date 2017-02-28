@@ -13,20 +13,17 @@ import com.handybook.handybook.core.model.bill.Bill;
 
 import butterknife.ButterKnife;
 
-public abstract class AbstractBillLineItemView extends LinearLayout
-{
+public abstract class AbstractBillLineItemView extends LinearLayout {
 
     private Bill.BillLineItem mBillLineItem;
     private String mCurrencySymbol = "";
 
-    public AbstractBillLineItemView(final Context context)
-    {
+    public AbstractBillLineItemView(final Context context) {
         super(context);
         init(null, 0, 0);
     }
 
-    public AbstractBillLineItemView(final Context context, final AttributeSet attrs)
-    {
+    public AbstractBillLineItemView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0, 0);
     }
@@ -35,8 +32,7 @@ public abstract class AbstractBillLineItemView extends LinearLayout
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr);
         init(attrs, defStyleAttr, 0);
     }
@@ -47,14 +43,12 @@ public abstract class AbstractBillLineItemView extends LinearLayout
             final AttributeSet attrs,
             final int defStyleAttr,
             final int defStyleRes
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs, defStyleAttr, defStyleRes);
     }
 
-    protected void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes)
-    {
+    protected void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         setSaveEnabled(true);
         inflate(getContext(), getLayout(), this);
         ButterKnife.bind(this, getRootView());
@@ -64,11 +58,9 @@ public abstract class AbstractBillLineItemView extends LinearLayout
     public void setData(
             @NonNull final Bill.BillLineItem billLineItem,
             @NonNull final String currencySymbol
-    )
-    {
+    ) {
 
-        if (billLineItem.equals(mBillLineItem))
-        {
+        if (billLineItem.equals(mBillLineItem)) {
             return;
         }
         mBillLineItem = billLineItem;
@@ -76,15 +68,12 @@ public abstract class AbstractBillLineItemView extends LinearLayout
         update();
     }
 
-    public Bill.BillLineItem getBillLineItem()
-    {
+    public Bill.BillLineItem getBillLineItem() {
         return mBillLineItem;
     }
 
-    public void setCurrencySymbol(@NonNull final String currencySymbol)
-    {
-        if (currencySymbol.equals(mCurrencySymbol))
-        {
+    public void setCurrencySymbol(@NonNull final String currencySymbol) {
+        if (currencySymbol.equals(mCurrencySymbol)) {
             return;
         }
         mCurrencySymbol = currencySymbol;
@@ -92,8 +81,7 @@ public abstract class AbstractBillLineItemView extends LinearLayout
     }
 
     @NonNull
-    public String getCurrencySymbol()
-    {
+    public String getCurrencySymbol() {
         return mCurrencySymbol;
     }
 
@@ -102,8 +90,7 @@ public abstract class AbstractBillLineItemView extends LinearLayout
     protected abstract void update();
 
     @Override
-    protected Parcelable onSaveInstanceState()
-    {
+    protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
         savedState.setBillLineItem(getBillLineItem());
@@ -112,90 +99,76 @@ public abstract class AbstractBillLineItemView extends LinearLayout
     }
 
     @Override
-    protected void onRestoreInstanceState(final Parcelable state)
-    {
+    protected void onRestoreInstanceState(final Parcelable state) {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         setData(savedState.getBillLineItem(), savedState.getCurrencySymbol());
     }
 
-    private static class SavedState extends BaseSavedState
-    {
+    private static class SavedState extends BaseSavedState {
 
         private Bill.BillLineItem mBillLineItem;
         private String mCurrencySymbol;
 
-        SavedState(final Parcelable superState)
-        {
+        SavedState(final Parcelable superState) {
             super(superState);
         }
 
-        SavedState(final Parcel source)
-        {
+        SavedState(final Parcel source) {
             super(source);
             mBillLineItem = (Bill.BillLineItem) source.readSerializable();
             mCurrencySymbol = source.readString();
         }
 
         @Override
-        public void writeToParcel(final Parcel out, final int flags)
-        {
+        public void writeToParcel(final Parcel out, final int flags) {
             super.writeToParcel(out, flags);
             out.writeSerializable(mBillLineItem);
             out.writeString(mCurrencySymbol);
         }
 
-        void setBillLineItem(@NonNull final Bill.BillLineItem billLineItem)
-        {
+        void setBillLineItem(@NonNull final Bill.BillLineItem billLineItem) {
             mBillLineItem = billLineItem;
         }
 
         @NonNull
-        Bill.BillLineItem getBillLineItem()
-        {
+        Bill.BillLineItem getBillLineItem() {
             return mBillLineItem;
         }
 
-        void setCurrencySymbol(@NonNull final String currencySymbol)
-        {
+        void setCurrencySymbol(@NonNull final String currencySymbol) {
             mCurrencySymbol = currencySymbol;
         }
 
         @NonNull
-        String getCurrencySymbol()
-        {
+        String getCurrencySymbol() {
             return mCurrencySymbol;
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>()
-        {
+        public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>() {
             @Override
-            public SavedState createFromParcel(final Parcel source)
-            {
+            public SavedState createFromParcel(final Parcel source) {
                 return new SavedState(source);
             }
 
             @Override
-            public SavedState[] newArray(final int size)
-            {
+            public SavedState[] newArray(final int size) {
                 return new SavedState[size];
             }
         };
     }
 
 
-    public static class Factory
-    {
+    public static class Factory {
+
         public static AbstractBillLineItemView from(
                 @NonNull final Context ctx,
                 @NonNull final Bill.BillLineItem billLineItem,
                 @NonNull String currencySymbol
-        )
-        {
+        ) {
 
             AbstractBillLineItemView lineItemView;
-            switch (billLineItem.getType())
-            {
+            switch (billLineItem.getType()) {
                 case LARGE_PRICE:
                     lineItemView = new LargeBillLineItemView(ctx);
                     break;

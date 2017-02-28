@@ -15,8 +15,8 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BookingTransaction extends Observable
-{
+public class BookingTransaction extends Observable {
+
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     @SerializedName("booking_id")
@@ -91,233 +91,191 @@ public class BookingTransaction extends Observable
     @SerializedName("commitment_length")
     private int mCommitmentLength;
 
-    public boolean shouldPromoCodeBeHidden()
-    {
+    public boolean shouldPromoCodeBeHidden() {
         return mShouldPromoCodeBeHidden;
     }
 
-    public int getBookingId()
-    {
+    public int getBookingId() {
         return mBookingId;
     }
 
-    public void setBookingId(final int bookingId)
-    {
+    public void setBookingId(final int bookingId) {
         mBookingId = bookingId;
         triggerObservers();
     }
 
-    final String getUserId()
-    {
+    final String getUserId() {
         return mUserId;
     }
 
-    public void setUserId(final String userId)
-    {
+    public void setUserId(final String userId) {
         mUserId = userId;
         triggerObservers();
     }
 
-    public final int getServiceId()
-    {
+    public final int getServiceId() {
         return mServiceId;
     }
 
-    public void setServiceId(final int serviceId)
-    {
+    public void setServiceId(final int serviceId) {
         mServiceId = serviceId;
         triggerObservers();
     }
 
-    public String getProviderId()
-    {
+    public String getProviderId() {
         return mProviderId;
     }
 
-    public void setProviderId(final String providerId)
-    {
+    public void setProviderId(final String providerId) {
         mProviderId = providerId;
         triggerObservers();
     }
 
-    final String getFirstName()
-    {
+    final String getFirstName() {
         return mFirstName;
     }
 
-    public void setFirstName(final String firstName)
-    {
+    public void setFirstName(final String firstName) {
         mFirstName = firstName;
         triggerObservers();
     }
 
-    final String getLastName()
-    {
+    final String getLastName() {
         return mLastName;
     }
 
-    public void setLastName(final String lastName)
-    {
+    public void setLastName(final String lastName) {
         mLastName = lastName;
         triggerObservers();
     }
 
-    final String getAddress1()
-    {
+    final String getAddress1() {
         return mAddress1;
     }
 
-    public void setAddress1(final String address1)
-    {
+    public void setAddress1(final String address1) {
         mAddress1 = address1;
         triggerObservers();
     }
 
-    final String getAddress2()
-    {
+    final String getAddress2() {
         return mAddress2;
     }
 
-    public void setAddress2(final String address2)
-    {
+    public void setAddress2(final String address2) {
         mAddress2 = address2;
         triggerObservers();
     }
 
-    public String getCommitmentType()
-    {
+    public String getCommitmentType() {
         return mCommitmentType;
     }
 
-    public void setCommitmentType(final String commitmentType)
-    {
+    public void setCommitmentType(final String commitmentType) {
         mCommitmentType = commitmentType;
         triggerObservers();
     }
 
-    public int getCommitmentLength()
-    {
+    public int getCommitmentLength() {
         return mCommitmentLength;
     }
 
-    public void setCommitmentLength(final int commitmentLength)
-    {
+    public void setCommitmentLength(final int commitmentLength) {
         mCommitmentLength = commitmentLength;
         triggerObservers();
     }
 
-    final String getPhone()
-    {
+    final String getPhone() {
         return mPhone;
     }
 
-    public void setPhone(final String phone)
-    {
+    public void setPhone(final String phone) {
         mPhone = phone;
         triggerObservers();
     }
 
-    public String getZipCode()
-    {
+    public String getZipCode() {
         return mZipCode;
     }
 
-    public void setZipCode(final String zipCode)
-    {
+    public void setZipCode(final String zipCode) {
         mZipCode = zipCode;
         triggerObservers();
     }
 
-    public final String getEmail()
-    {
+    public final String getEmail() {
         return mEmail;
     }
 
-    public void setEmail(final String email)
-    {
+    public void setEmail(final String email) {
         mEmail = email;
         triggerObservers();
     }
 
-    public float getHours()
-    {
+    public float getHours() {
         return mHours;
     }
 
-    public void setHours(final float hours)
-    {
+    public void setHours(final float hours) {
         mHours = hours;
         triggerObservers();
     }
 
-    public int getRecurringFrequency()
-    {
+    public int getRecurringFrequency() {
         return mRecurringFrequency;
     }
 
-    public void setRecurringFrequency(final int recurringFrequency)
-    {
+    public void setRecurringFrequency(final int recurringFrequency) {
         mRecurringFrequency = recurringFrequency;
         triggerObservers();
     }
 
-    public String getExtraCleaningText()
-    {
+    public String getExtraCleaningText() {
         return mExtraCleaningText;
     }
 
-    public void setExtraCleaningText(final String extraCleaningText)
-    {
+    public void setExtraCleaningText(final String extraCleaningText) {
         mExtraCleaningText = extraCleaningText;
         triggerObservers();
     }
 
-    public float getExtraHours()
-    {
+    public float getExtraHours() {
         return mExtraHours;
     }
 
-    public void setExtraHours(final float extraHours)
-    {
+    public void setExtraHours(final float extraHours) {
         mExtraHours = extraHours;
         triggerObservers();
     }
 
-    public Date getStartDate()
-    {
+    public Date getStartDate() {
         return mStartDate;
     }
 
-    public void setStartDate(final Date startDate)
-    {
+    public void setStartDate(final Date startDate) {
         mStartDate = startDate;
         triggerObservers();
     }
 
-    final String getAuthToken()
-    {
+    final String getAuthToken() {
         return mAuthToken;
     }
 
-    public void setAuthToken(final String authToken)
-    {
+    public void setAuthToken(final String authToken) {
         mAuthToken = authToken;
         triggerObservers();
     }
 
-    final String getStripeToken()
-    {
+    final String getStripeToken() {
         return mStripeToken;
     }
 
-    public void setStripeToken(final String stripeToken)
-    {
+    public void setStripeToken(final String stripeToken) {
         mStripeToken = stripeToken;
         triggerObservers();
     }
 
-    public String getPromoCode()
-    {
+    public String getPromoCode() {
         return mPromoCode;
     }
 
@@ -327,21 +285,18 @@ public class BookingTransaction extends Observable
      * @param promoCode
      * @param shouldPromoCodeBeHidden we want the promo code hidden if not from deeplink or user input (temporary solution for hotfix)
      */
-    public void setPromoCode(final String promoCode, final boolean shouldPromoCodeBeHidden)
-    {
+    public void setPromoCode(final String promoCode, final boolean shouldPromoCodeBeHidden) {
         mPromoCode = promoCode;
         mShouldPromoCodeBeHidden = shouldPromoCodeBeHidden;
         triggerObservers();
     }
 
-    private void triggerObservers()
-    {
+    private void triggerObservers() {
         setChanged();
         notifyObservers();
     }
 
-    public final String toJson()
-    {
+    public final String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat(DATE_FORMAT)
                                            .setExclusionStrategies(getExclusionStrategy())
                                            .registerTypeAdapter(
@@ -352,60 +307,51 @@ public class BookingTransaction extends Observable
         return gson.toJson(this);
     }
 
-    public static BookingTransaction fromJson(final String json)
-    {
+    public static BookingTransaction fromJson(final String json) {
         return new GsonBuilder().setDateFormat(DATE_FORMAT).create()
                                 .fromJson(json, BookingTransaction.class);
     }
 
-    public static ExclusionStrategy getExclusionStrategy()
-    {
-        return new ExclusionStrategy()
-        {
+    public static ExclusionStrategy getExclusionStrategy() {
+        return new ExclusionStrategy() {
             @Override
-            public boolean shouldSkipField(final FieldAttributes f)
-            {
+            public boolean shouldSkipField(final FieldAttributes f) {
                 return false;
             }
 
             @Override
-            public boolean shouldSkipClass(final Class<?> clazz)
-            {
+            public boolean shouldSkipClass(final Class<?> clazz) {
                 return clazz.equals(Observer.class);
             }
         };
     }
 
-    public void setPaymentMethod(String paymentMethod)
-    {
+    public void setPaymentMethod(String paymentMethod) {
         mPaymentMethod = paymentMethod;
         triggerObservers();
     }
 
-    public String getPaymentMethod()
-    {
+    public String getPaymentMethod() {
         return mPaymentMethod;
     }
 
-    public void setReferrerToken(final String referrerToken)
-    {
+    public void setReferrerToken(final String referrerToken) {
         mReferrerToken = referrerToken;
         triggerObservers();
     }
 
-    public String getReferrerToken()
-    {
+    public String getReferrerToken() {
         return mReferrerToken;
     }
 
-    public static final class BookingTransactionSerializer implements JsonSerializer<BookingTransaction>
-    {
+    public static final class BookingTransactionSerializer
+            implements JsonSerializer<BookingTransaction> {
+
         @Override
         public final JsonElement serialize(
                 final BookingTransaction value, final Type type,
                 final JsonSerializationContext context
-        )
-        {
+        ) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("booking_id", context.serialize(value.getBookingId()));
             jsonObj.add("user_id", context.serialize(value.getUserId()));
@@ -427,17 +373,18 @@ public class BookingTransaction extends Observable
             jsonObj.add("mobile", context.serialize(1));
             jsonObj.add("button_referrer_token", context.serialize(value.getReferrerToken()));
             jsonObj.add("_android_promo_applied", context.serialize(value.getPromoCode()));
-            jsonObj.add("should_promo_code_be_hidden", context.serialize(value.shouldPromoCodeBeHidden()));
+            jsonObj.add(
+                    "should_promo_code_be_hidden",
+                    context.serialize(value.shouldPromoCodeBeHidden())
+            );
 
-            if (value.getCommitmentType() != null)
-            {
+            if (value.getCommitmentType() != null) {
                 jsonObj.add("commitment_type", context.serialize(value.getCommitmentType()));
             }
 
             final int recur = value.getRecurringFrequency();
 
-            if (recur > 0)
-            {
+            if (recur > 0) {
                 jsonObj.add(
                         "updated_recurring_freq",
                         context.serialize(Integer.toString(recur))

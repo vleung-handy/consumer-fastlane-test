@@ -28,14 +28,13 @@ import android.view.ViewGroup;
 /**
  * this is mostly copied from android.support.design.internal.BottomNavigationPresenter
  */
-class BottomNavigationPresenter implements MenuPresenter
-{
+class BottomNavigationPresenter implements MenuPresenter {
+
     private MenuBuilder mMenu;
     private BottomNavigationMenuView mMenuView;
     private boolean mUpdateSuspended = false;
 
-    void setBottomNavigationMenuView(BottomNavigationMenuView menuView)
-    {
+    void setBottomNavigationMenuView(BottomNavigationMenuView menuView) {
         mMenuView = menuView;
     }
 
@@ -52,10 +51,11 @@ class BottomNavigationPresenter implements MenuPresenter
 
     @Override
     public void updateMenuView(boolean cleared) {
-        if (mUpdateSuspended) return;
+        if (mUpdateSuspended) { return; }
         if (cleared) {
             mMenuView.buildMenuView();
-        } else {
+        }
+        else {
             mMenuView.updateMenuView();
         }
     }
@@ -99,8 +99,7 @@ class BottomNavigationPresenter implements MenuPresenter
     @Override
     public void onRestoreInstanceState(Parcelable state) {}
 
-    void setUpdateSuspended(boolean updateSuspended)
-    {
+    void setUpdateSuspended(boolean updateSuspended) {
         mUpdateSuspended = updateSuspended;
     }
 }

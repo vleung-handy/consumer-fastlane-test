@@ -34,18 +34,16 @@ import java.util.Map;
  * <p/>
  * Created by jtse on 4/1/16.
  */
-public class Reasons implements Serializable
-{
+public class Reasons implements Serializable {
+
     private String mTitle;
     private List<Reason> mReasons;
-
 
     /**
      * key is used as the parent key of the list. For example, quality_of_service is the
      * key for the list [kitchen, bathroom, bedroom, etc.]
      */
     private String mKey;
-
 
     /**
      * Beware, this complicated. Reasons is a hash map. Each key is a "title" that will be displayed to the
@@ -59,49 +57,45 @@ public class Reasons implements Serializable
      * <p/>
      * quality_of_service will be Quality of service
      */
-    public Reasons(Map<String, Object> mRawReasons, boolean isCleaning, String key)
-    {
+    public Reasons(Map<String, Object> mRawReasons, boolean isCleaning, String key) {
         mKey = key;
         mReasons = new ArrayList<>();
-        for (String s : mRawReasons.keySet())
-        {
-            if ("title".equalsIgnoreCase(s))
-            {
+        for (String s : mRawReasons.keySet()) {
+            if ("title".equalsIgnoreCase(s)) {
                 mTitle = (String) mRawReasons.get(s);
             }
-            else if (!"type".equalsIgnoreCase(s))
-            {
+            else if (!"type".equalsIgnoreCase(s)) {
                 //Each reason can potentially have subreasons. Look above for the sample JSON, quality_of_service.
                 Object object = mRawReasons.get(s);
                 Reasons subReasons = null;
 
-                if (object instanceof Map)
-                {
+                if (object instanceof Map) {
                     Map<String, Object> rawSubReasons = (Map<String, Object>) object;
-                    if (!rawSubReasons.isEmpty())
-                    {
+                    if (!rawSubReasons.isEmpty()) {
                         subReasons = new Reasons(rawSubReasons, isCleaning, s);
                     }
                 }
 
                 //capitalize the first letter
-                mReasons.add(new Reason(s, StringUtils.capitalizeFirstCharacter(s).replace("_", " "), subReasons, isCleaning));
+                mReasons.add(new Reason(
+                        s,
+                        StringUtils.capitalizeFirstCharacter(s).replace("_", " "),
+                        subReasons,
+                        isCleaning
+                ));
             }
         }
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public List<Reason> getReasons()
-    {
+    public List<Reason> getReasons() {
         return mReasons;
     }
 
-    public String getKey()
-    {
+    public String getKey() {
         return mKey;
     }
 }

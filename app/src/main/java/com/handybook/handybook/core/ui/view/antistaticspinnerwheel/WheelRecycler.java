@@ -33,9 +33,7 @@ import java.util.List;
 /**
  * Recycle stored spinnerwheel items to reuse.
  */
-public class WheelRecycler
-{
-
+public class WheelRecycler {
 
     @SuppressWarnings("unused")
     private static final String LOG_TAG = WheelRecycler.class.getName();
@@ -54,8 +52,7 @@ public class WheelRecycler
      *
      * @param wheel the spinnerwheel view
      */
-    public WheelRecycler(AbstractWheel wheel)
-    {
+    public WheelRecycler(AbstractWheel wheel) {
         this.wheel = wheel;
     }
 
@@ -68,22 +65,17 @@ public class WheelRecycler
      * @param range     the range of current spinnerwheel items
      * @return the new value of first item number
      */
-    public int recycleItems(LinearLayout layout, int firstItem, ItemsRange range)
-    {
+    public int recycleItems(LinearLayout layout, int firstItem, ItemsRange range) {
         int index = firstItem;
-        for (int i = 0; i < layout.getChildCount(); )
-        {
-            if (!range.contains(index))
-            {
+        for (int i = 0; i < layout.getChildCount(); ) {
+            if (!range.contains(index)) {
                 recycleView(layout.getChildAt(i), index);
                 layout.removeViewAt(i);
-                if (i == 0)
-                { // first item
+                if (i == 0) { // first item
                     firstItem++;
                 }
             }
-            else
-            {
+            else {
                 i++; // go to next item
             }
             index++;
@@ -96,8 +88,7 @@ public class WheelRecycler
      *
      * @return the cached view
      */
-    public View getItem()
-    {
+    public View getItem() {
         return getCachedView(items);
     }
 
@@ -106,22 +97,18 @@ public class WheelRecycler
      *
      * @return the cached empty view
      */
-    public View getEmptyItem()
-    {
+    public View getEmptyItem() {
         return getCachedView(emptyItems);
     }
 
     /**
      * Clears all views
      */
-    public void clearAll()
-    {
-        if (items != null)
-        {
+    public void clearAll() {
+        if (items != null) {
             items.clear();
         }
-        if (emptyItems != null)
-        {
+        if (emptyItems != null) {
             emptyItems.clear();
         }
     }
@@ -133,10 +120,8 @@ public class WheelRecycler
      * @param cache the cache list
      * @return the cache list
      */
-    private List<View> addView(View view, List<View> cache)
-    {
-        if (cache == null)
-        {
+    private List<View> addView(View view, List<View> cache) {
+        if (cache == null) {
             cache = new LinkedList<>();
         }
 
@@ -150,19 +135,15 @@ public class WheelRecycler
      * @param view  the view to be cached
      * @param index the index of view
      */
-    private void recycleView(View view, int index)
-    {
+    private void recycleView(View view, int index) {
         int count = wheel.getViewAdapter().getItemsCount();
 
-        if ((index < 0 || index >= count) && !wheel.isCyclic())
-        {
+        if ((index < 0 || index >= count) && !wheel.isCyclic()) {
             // empty view
             emptyItems = addView(view, emptyItems);
         }
-        else
-        {
-            while (index < 0)
-            {
+        else {
+            while (index < 0) {
                 index = count + index;
             }
             index %= count;
@@ -176,10 +157,8 @@ public class WheelRecycler
      * @param cache the cache
      * @return the first view from cache.
      */
-    private View getCachedView(List<View> cache)
-    {
-        if (cache != null && cache.size() > 0)
-        {
+    private View getCachedView(List<View> cache) {
+        if (cache != null && cache.size() > 0) {
             View view = cache.get(0);
             cache.remove(0);
             return view;

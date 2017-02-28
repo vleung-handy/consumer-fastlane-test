@@ -7,13 +7,11 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 /**
  */
-public class PlayServicesUtils
-{
-    public static boolean hasPlayServices(Context context)
-    {
+public class PlayServicesUtils {
+
+    public static boolean hasPlayServices(Context context) {
         int statusCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
-        switch (statusCode)
-        {
+        switch (statusCode) {
             case ConnectionResult.SUCCESS:
                 return true;
             case ConnectionResult.SERVICE_MISSING:

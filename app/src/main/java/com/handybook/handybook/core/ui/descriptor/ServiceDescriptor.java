@@ -3,8 +3,7 @@ package com.handybook.handybook.core.ui.descriptor;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 
-public enum ServiceDescriptor
-{
+public enum ServiceDescriptor {
     HANGING_PICTURES_SHELVES(
             R.string.hanging_items,
             R.string.hanging_items_service_description,
@@ -97,35 +96,29 @@ public enum ServiceDescriptor
     private final int mDescription;
     private final int mIcon;
 
-    ServiceDescriptor(int title, int description, int icon)
-    {
+    ServiceDescriptor(int title, int description, int icon) {
         mTitle = title;
         mDescription = description;
         mIcon = icon;
     }
 
-    public int getTitle()
-    {
+    public int getTitle() {
         return mTitle;
     }
 
-    public int getDescription()
-    {
+    public int getDescription() {
         return mDescription;
     }
 
-    public int getIcon()
-    {
+    public int getIcon() {
         return mIcon;
     }
 
-    public static boolean hasValueOf(String name)
-    {
-        try
-        {
+    public static boolean hasValueOf(String name) {
+        try {
             return ServiceDescriptor.valueOf(name) != null;
-        } catch (IllegalArgumentException e)
-        {
+        }
+        catch (IllegalArgumentException e) {
             Crashlytics.logException(new RuntimeException("Cannot find service type: " + name));
             return false;
         }

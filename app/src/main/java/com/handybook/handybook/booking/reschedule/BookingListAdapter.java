@@ -9,8 +9,8 @@ import com.handybook.handybook.core.ui.view.BookingListItem;
 
 import java.util.List;
 
-public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder>
-{
+public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder> {
+
     private List<Booking> mUpcomingBookings;
     private View.OnClickListener mClickListener;
 
@@ -23,16 +23,15 @@ public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder>
             final List<Booking> upcomingBookings,
             final View.OnClickListener clickListener,
             final boolean isBookingHoursClarificationExperimentEnabled
-    )
-    {
+    ) {
         mUpcomingBookings = upcomingBookings;
         mClickListener = clickListener;
-        mIsBookingHoursClarificationExperimentEnabled = isBookingHoursClarificationExperimentEnabled;
+        mIsBookingHoursClarificationExperimentEnabled
+                = isBookingHoursClarificationExperimentEnabled;
     }
 
     @Override
-    public BookingItemHolder onCreateViewHolder(final ViewGroup parent, final int viewType)
-    {
+    public BookingItemHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
 
         BookingListItem item = new BookingListItem(
                 parent.getContext(),
@@ -50,14 +49,12 @@ public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder>
     }
 
     @Override
-    public void onBindViewHolder(final BookingItemHolder holder, final int position)
-    {
+    public void onBindViewHolder(final BookingItemHolder holder, final int position) {
         holder.bindToBooking(mUpcomingBookings.get(position));
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return mUpcomingBookings == null ? 0 : mUpcomingBookings.size();
     }
 

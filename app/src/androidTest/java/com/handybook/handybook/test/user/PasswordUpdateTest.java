@@ -1,6 +1,5 @@
 package com.handybook.handybook.test.user;
 
-
 import android.support.test.espresso.Espresso;
 
 import com.handybook.handybook.R;
@@ -21,8 +20,8 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-public class PasswordUpdateTest
-{
+public class PasswordUpdateTest {
+
     private static final TestUser TEST_USER = TestUsers.UPDATE_PASSWORD_USER;
     private static final String NEW_PASSWORD = "newpassword";
 
@@ -30,10 +29,8 @@ public class PasswordUpdateTest
     public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
-
     @Test
-    public void testUpdatePassword()
-    {
+    public void testUpdatePassword() {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();

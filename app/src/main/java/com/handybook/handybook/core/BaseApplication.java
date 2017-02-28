@@ -15,23 +15,23 @@ import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.bookingedit.manager.BookingEditManager;
 import com.handybook.handybook.booking.manager.BookingManager;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.core.event.ActivityLifecycleEvent;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
-import com.handybook.handybook.helpcenter.manager.HelpManager;
-import com.handybook.handybook.library.util.DateTimeUtils;
-import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.core.manager.AppBlockManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.manager.StripeManager;
 import com.handybook.handybook.core.manager.UserDataManager;
-import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
+import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
+import com.handybook.handybook.helpcenter.manager.HelpManager;
+import com.handybook.handybook.library.util.DateTimeUtils;
+import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.manager.NotificationManager;
 import com.handybook.handybook.promos.splash.SplashPromoManager;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
@@ -53,8 +53,8 @@ import io.fabric.sdk.android.Fabric;
 import retrofit.RestAdapter;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
-public class BaseApplication extends MultiDexApplication
-{
+public class BaseApplication extends MultiDexApplication {
+
     private static final String TAG = BaseApplication.class.getName();
 
     public static final String FLAVOR_PROD = "prod";
@@ -125,14 +125,12 @@ public class BaseApplication extends MultiDexApplication
 
     private static BaseApplication sInstance;
 
-    public static GoogleAnalytics googleAnalytics()
-    {
+    public static GoogleAnalytics googleAnalytics() {
         return googleAnalytics;
     }
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
         sInstance = this;
         createObjectGraph();
@@ -148,18 +146,15 @@ public class BaseApplication extends MultiDexApplication
         sTracker.setSessionTimeout(GA_SESSION_TIMEOUT_SECONDS);
         //tracker.enableAutoActivityTracking(true); // Using custom activity tracking for now
         final User user = userManager.getCurrentUser();
-        if (user != null)
-        {
+        if (user != null) {
             sTracker.setClientId(user.getId());
         }
         initFabric();
         initButton();
         final AirshipConfigOptions options = setupUrbanAirshipConfig();
-        UAirship.takeOff(this, options, new UAirship.OnReadyCallback()
-        {
+        UAirship.takeOff(this, options, new UAirship.OnReadyCallback() {
             @Override
-            public void onAirshipReady(final UAirship airship)
-            {
+            public void onAirshipReady(final UAirship airship) {
                 final DefaultNotificationFactory defaultNotificationFactory =
                         new DefaultNotificationFactory(getApplicationContext());
                 defaultNotificationFactory.setColor(
@@ -177,50 +172,42 @@ public class BaseApplication extends MultiDexApplication
                         .build()
         );
 
-        if (mSecurePreferencesManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0)
-        {
+        if (mSecurePreferencesManager.getLong(PrefsKey.APP_FIRST_RUN, 0) == 0) {
             mSecurePreferencesManager.setLong(PrefsKey.APP_FIRST_RUN, System.currentTimeMillis());
         }
 
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks()
-        {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(
                     final Activity activity,
                     final Bundle savedInstanceState
-            )
-            {
+            ) {
                 trackScreen(activity);
                 bus.post(new ActivityLifecycleEvent.Created(activity, savedInstanceState));
                 savedInstance = savedInstanceState != null;
             }
 
             @Override
-            public void onActivityStarted(final Activity activity)
-            {
+            public void onActivityStarted(final Activity activity) {
                 bus.post(new ActivityLifecycleEvent.Started(activity));
                 ++started;
-                if (started == 1)
-                {
+                if (started == 1) {
                     updateUser();
                 }
             }
 
             @Override
-            public void onActivityResumed(final Activity activity)
-            {
+            public void onActivityResumed(final Activity activity) {
                 bus.post(new ActivityLifecycleEvent.Resumed(activity));
             }
 
             @Override
-            public void onActivityPaused(final Activity activity)
-            {
+            public void onActivityPaused(final Activity activity) {
                 bus.post(new ActivityLifecycleEvent.Paused(activity));
             }
 
             @Override
-            public void onActivityStopped(final Activity activity)
-            {
+            public void onActivityStopped(final Activity activity) {
                 bus.post(new ActivityLifecycleEvent.Stopped(activity));
             }
 
@@ -228,14 +215,12 @@ public class BaseApplication extends MultiDexApplication
             public void onActivitySaveInstanceState(
                     final Activity activity,
                     final Bundle outState
-            )
-            {
+            ) {
                 bus.post(new ActivityLifecycleEvent.SavedInstanceState(activity, outState));
             }
 
             @Override
-            public void onActivityDestroyed(final Activity activity)
-            {
+            public void onActivityDestroyed(final Activity activity) {
                 bus.post(new ActivityLifecycleEvent.Destroyed(activity));
             }
         });
@@ -245,62 +230,51 @@ public class BaseApplication extends MultiDexApplication
 
     }
 
-    private void initFabric()
-    {
+    private void initFabric() {
         Fabric.with(this, new Crashlytics());
         Crashlytics.setUserIdentifier(
                 Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID)
         );
         User currentUser = userManager.getCurrentUser();
-        if (currentUser != null)
-        {
+        if (currentUser != null) {
             Crashlytics.setUserEmail(currentUser.getEmail());
         }
     }
 
-    private void initButton()
-    {
-        if (BuildConfig.DEBUG)
-        {
+    private void initButton() {
+        if (BuildConfig.DEBUG) {
             com.usebutton.sdk.Button.enableDebugLogging();
         }
         com.usebutton.sdk.Button.getButton(this).start();
     }
 
-    public void updateUser()
-    {
+    public void updateUser() {
         final User user = userManager.getCurrentUser();
-        if (user != null)
-        {
+        if (user != null) {
             bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(), null));
         }
     }
 
-    protected AirshipConfigOptions setupUrbanAirshipConfig()
-    {
+    protected AirshipConfigOptions setupUrbanAirshipConfig() {
         AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(this);
         options.inProduction = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD);
         return options;
     }
 
-    protected void createObjectGraph()
-    {
+    protected void createObjectGraph() {
         graph = ObjectGraph.create(new ApplicationModule(this));
         inject(this);
     }
 
-    public final void inject(final Object object)
-    {
+    public final void inject(final Object object) {
         graph.inject(object);
     }
 
-    public final static BookingManager getBookingManager()
-    {
+    public final static BookingManager getBookingManager() {
         return sInstance.mBookingManager;
     }
 
-    private static void track(final Activity activity, final String action)
-    {
+    private static void track(final Activity activity, final String action) {
         BaseApplication.tracker().send(
                 new HitBuilders.EventBuilder("activity_lifecycle", action)
                         .setLabel(activity.getLocalClassName())
@@ -308,8 +282,7 @@ public class BaseApplication extends MultiDexApplication
         );
     }
 
-    private static void trackScreen(final Activity activity)
-    {
+    private static void trackScreen(final Activity activity) {
         sTracker.setScreenName(ScreenName.from(activity));
         sTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
@@ -318,8 +291,7 @@ public class BaseApplication extends MultiDexApplication
      * Should be careful not to store the application context in a local variable, otherwise memory won't release
      * @return
      */
-    public static Tracker tracker()
-    {
+    public static Tracker tracker() {
         return sTracker;
     }
 
@@ -328,8 +300,7 @@ public class BaseApplication extends MultiDexApplication
      *
      * @return
      */
-    public boolean isNewlyLaunched()
-    {
+    public boolean isNewlyLaunched() {
         long diff = DateTimeUtils.getDiffInSeconds(new Date(), mApplicationStartTime);
         return diff <= NEWLY_LAUNCH_THRESHOLD_IN_SECONDS;
     }

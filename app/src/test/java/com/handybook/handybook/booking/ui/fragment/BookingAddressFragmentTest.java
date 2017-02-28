@@ -27,8 +27,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingAddressFragment mFragment;
 
     @Mock
@@ -41,8 +41,7 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
     BookingManager mBookingManager;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -60,8 +59,7 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchBookingPaymentActivity() throws Exception
-    {
+    public void shouldLaunchBookingPaymentActivity() throws Exception {
         mFragment.mTextFullName.setText("John Doe");
         mFragment.mAutoCompleteFragment.mStreet.setText("123 Handy St");
         mFragment.mTextPhone.setText("1111111111");
@@ -69,7 +67,9 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper
         mFragment.mButtonNext.performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingPaymentActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingPaymentActivity.class.getName())
+        );
     }
 }

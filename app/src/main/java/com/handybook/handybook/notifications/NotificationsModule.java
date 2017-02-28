@@ -18,15 +18,14 @@ import dagger.Provides;
                 NotificationsActivity.class,
                 NotificationFeedFragment.class,
         })
-public final class NotificationsModule
-{
+public final class NotificationsModule {
+
     @Provides
     @Singleton
     final NotificationManager provideNotificationManager(
             final Bus bus,
             final DataManager dataManager
-    )
-    {
+    ) {
         return new NotificationManager(bus, dataManager);
     }
 }

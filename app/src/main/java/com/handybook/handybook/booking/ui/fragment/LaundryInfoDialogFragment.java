@@ -24,8 +24,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LaundryInfoDialogFragment extends BaseDialogFragment
-{
+public class LaundryInfoDialogFragment extends BaseDialogFragment {
+
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
 
     private Booking booking;
@@ -62,15 +62,21 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             final Bundle savedInstanceState) {
+    public View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_laundry_info, container, true);
         ButterKnife.bind(this, view);
 
-        Linkify.addLinks(priceLink, Pattern.compile(getResources().getString(R.string.see_pricing))
-                , "http://help.handy.com/customer/portal/articles/1809526-dry-cleaning-and-laundry-on-demand?text=");
+        Linkify.addLinks(
+                priceLink,
+                Pattern.compile(getResources().getString(R.string.see_pricing))
+                ,
+                "http://help.handy.com/customer/portal/articles/1809526-dry-cleaning-and-laundry-on-demand?text="
+        );
 
         TextUtils.stripUnderlines(priceLink);
 
@@ -87,7 +93,10 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment
                 dismiss();
 
                 AddLaundryDialogFragment.newInstance(booking)
-                        .show(getActivity().getSupportFragmentManager(), "AddLaundryDialogFragment");
+                                        .show(
+                                                getActivity().getSupportFragmentManager(),
+                                                "AddLaundryDialogFragment"
+                                        );
             }
         });
 

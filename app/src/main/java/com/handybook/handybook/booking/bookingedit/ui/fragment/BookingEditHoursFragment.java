@@ -32,8 +32,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditHoursFragment extends BookingFlowFragment
-{
+public final class BookingEditHoursFragment extends BookingFlowFragment {
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.booking_edit_hours_base_time_row)
@@ -63,8 +63,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     private BookingOptionsSelectView mApplyToRecurringBookingsSelectView;
     private BookingOptionsSpinnerView mOptionsView;
 
-    public static BookingEditHoursFragment newInstance(Booking booking)
-    {
+    public static BookingEditHoursFragment newInstance(Booking booking) {
         final BookingEditHoursFragment fragment = new BookingEditHoursFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
@@ -73,26 +72,29 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         showUiBlockers();
         bus.post(new BookingEditEvent.RequestEditHoursInfoViewModel(Integer.parseInt(mBooking.getId())));
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState)
-    {
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_edit_hours, container, false);
+                                       .inflate(
+                                               R.layout.fragment_booking_edit_hours,
+                                               container,
+                                               false
+                                       );
 
         ButterKnife.bind(this, view);
 
@@ -102,87 +104,111 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (mBooking.isRecurring())
-        {
+        if (mBooking.isRecurring()) {
             //show the "apply to recurring bookings" option
-            BookingOption bookingOption = new BookingOption(); //TODO: is there a standalone checkbox widget?
+            BookingOption bookingOption
+                    = new BookingOption(); //TODO: is there a standalone checkbox widget?
             bookingOption.setType(BookingOption.TYPE_CHECKLIST);
             bookingOption.setOptions(new String[]{getResources().getString(R.string.booking_edit_should_apply_to_subsequent_bookings_option_label)});
 
-            mApplyToRecurringBookingsSelectView = new BookingOptionsSelectView(getActivity(), bookingOption,
-                    null);
+            mApplyToRecurringBookingsSelectView = new BookingOptionsSelectView(
+                    getActivity(),
+                    bookingOption,
+                    null
+            );
             mApplyToRecurringBookingsSelectView.setCurrentIndex(0);
             mApplyToRecurringBookingsSelectView.hideTitle();
-            UiUtils.replaceView(mApplyToRecurringOptionPlaceholder, mApplyToRecurringBookingsSelectView);
+            UiUtils.replaceView(
+                    mApplyToRecurringOptionPlaceholder,
+                    mApplyToRecurringBookingsSelectView
+            );
         }
     }
 
     @OnClick(R.id.next_button)
-    public void onSaveButtonPressed()
-    {
+    public void onSaveButtonPressed() {
         showUiBlockers();
         float selectedHours = Float.parseFloat(mOptionsView.getCurrentValue());
         BookingEditHoursRequest bookingEditHoursRequest = new BookingEditHoursRequest();
         bookingEditHoursRequest.setNewBaseHrs(selectedHours);
         bookingEditHoursRequest.setApplyToRecurring(
                 mApplyToRecurringBookingsSelectView != null
-                        && mApplyToRecurringBookingsSelectView.getCheckedIndexes().length > 0);
+                && mApplyToRecurringBookingsSelectView.getCheckedIndexes().length > 0);
         bus.post(new BookingEditEvent.RequestEditHours(
                 Integer.parseInt(mBooking.getId()), bookingEditHoursRequest));
     }
 
-    private void initializeUiForEditHoursInfo()
-    {
+    private void initializeUiForEditHoursInfo() {
         inflateOptionsView();
 
         //these are not editable from this screen
         String baseHoursFormatted = mBookingEditHoursViewModel.getBaseHoursFormatted();
         String basePriceFormatted = mBookingEditHoursViewModel.getBasePriceFormatted();
         mBaseTimeDetailsView.setLabelAndValueText(
-                getResources().getString(R.string.booking_edit_base_hours_formatted, baseHoursFormatted), basePriceFormatted);
+                getResources().getString(
+                        R.string.booking_edit_base_hours_formatted,
+                        baseHoursFormatted
+                ), basePriceFormatted);
         mExtrasTimeDetailsView.setLabelAndValueText(
-                getResources().getString(R.string.booking_edit_extra_hours_formatted, mBookingEditHoursViewModel.getExtrasHoursFormatted()),
-                getResources().getString(R.string.booking_edit_positive_price_formatted, mBookingEditHoursViewModel.getExtrasPriceFormatted()));
+                getResources().getString(
+                        R.string.booking_edit_extra_hours_formatted,
+                        mBookingEditHoursViewModel.getExtrasHoursFormatted()
+                ),
+                getResources().getString(
+                        R.string.booking_edit_positive_price_formatted,
+                        mBookingEditHoursViewModel.getExtrasPriceFormatted()
+                )
+        );
 
     }
 
     /**
      * Updates the price details view (which includes "Base time", "Added time", "Total Due", etc) based on the option that the user has selected
      */
-    private void updateUiForOptionSelected()
-    {
+    private void updateUiForOptionSelected() {
         float selectedHours = Float.parseFloat(mOptionsView.getCurrentValue());
 
-        String addedHoursFormatted = mBookingEditHoursViewModel.getAddedHoursFormatted(selectedHours);
-        String addedPriceFormatted = mBookingEditHoursViewModel.getAddedHoursPriceFormatted(selectedHours);
-        String totalHoursFormatted = mBookingEditHoursViewModel.getTotalHoursFormatted(selectedHours);
+        String addedHoursFormatted
+                = mBookingEditHoursViewModel.getAddedHoursFormatted(selectedHours);
+        String addedPriceFormatted = mBookingEditHoursViewModel.getAddedHoursPriceFormatted(
+                selectedHours);
+        String totalHoursFormatted
+                = mBookingEditHoursViewModel.getTotalHoursFormatted(selectedHours);
 
         mAddedTimeDetailsView.setLabelAndValueText(
-                getResources().getString(R.string.booking_edit_added_hours_formatted, addedHoursFormatted),
+                getResources().getString(
+                        R.string.booking_edit_added_hours_formatted,
+                        addedHoursFormatted
+                ),
                 mBookingEditHoursViewModel.isSelectedHoursLessThanBaseHours(selectedHours) ?
-                        addedPriceFormatted : getResources().getString(R.string.booking_edit_positive_price_formatted,
-                        addedPriceFormatted));
+                addedPriceFormatted : getResources().getString(
+                        R.string.booking_edit_positive_price_formatted,
+                        addedPriceFormatted
+                )
+        );
 
         mBookingDurationText.setText(
-                getResources().getString(R.string.booking_edit_num_hours_formatted, totalHoursFormatted));
-        mBilledOnText.setText(getResources().getString(R.string.billed_on_date_formatted,
-                mBookingEditHoursViewModel.getFutureBillDateFormatted()));
+                getResources().getString(
+                        R.string.booking_edit_num_hours_formatted,
+                        totalHoursFormatted
+                ));
+        mBilledOnText.setText(getResources().getString(
+                R.string.billed_on_date_formatted,
+                mBookingEditHoursViewModel.getFutureBillDateFormatted()
+        ));
         mTotalDueText.setText(mBookingEditHoursViewModel.getTotalDuePriceFormatted(selectedHours));
 
         TextView warningText = ((TextView) mOptionsView.findViewById(R.id.warning_text));
         //options view does not have a method to set this text. why?
 
         //this is the same logic that the web is using to show the edit hours warning message
-        if (mBookingEditHoursViewModel.isSelectedHoursLessThanBaseHours(selectedHours))
-        {
+        if (mBookingEditHoursViewModel.isSelectedHoursLessThanBaseHours(selectedHours)) {
             warningText.setVisibility(View.VISIBLE);
             warningText.setText(R.string.booking_edit_hours_options_warning);
         }
-        else
-        {
+        else {
             warningText.setVisibility(View.GONE);
         }
 
@@ -191,8 +217,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     /**
      * initializes the option selector view based on the edit hours view model
      */
-    private void inflateOptionsView()
-    {
+    private void inflateOptionsView() {
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION_PICKER);
 
@@ -203,10 +228,8 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         float baseHours = mBookingEditHoursViewModel.getBaseHours();
         //find out which index in the option hour array should be selected
         int selectedIndex = 0;
-        for (int i = 0; i < optionHourStrings.length; i++)
-        {
-            if (baseHours == Float.parseFloat(optionHourStrings[i]))
-            {
+        for (int i = 0; i < optionHourStrings.length; i++) {
+            if (baseHours == Float.parseFloat(optionHourStrings[i])) {
                 selectedIndex = i;
                 break;
             }
@@ -215,26 +238,27 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         //for some reason this function only accepts a string, but then the view converts it to an index?
 
         mOptionsView = new BookingOptionsSpinnerView(getActivity(), bookingOption,
-                new BookingOptionsView.OnUpdatedListener()
-                {
-                    @Override
-                    public void onUpdate(final BookingOptionsView view)
-                    {
-                        updateUiForOptionSelected();
-                    }
+                                                     new BookingOptionsView.OnUpdatedListener() {
+                                                         @Override
+                                                         public void onUpdate(final BookingOptionsView view) {
+                                                             updateUiForOptionSelected();
+                                                         }
 
-                    @Override
-                    public void onShowChildren(final BookingOptionsView view,
-                                               final String[] items)
-                    {
-                    }
+                                                         @Override
+                                                         public void onShowChildren(
+                                                                 final BookingOptionsView view,
+                                                                 final String[] items
+                                                         ) {
+                                                         }
 
-                    @Override
-                    public void onHideChildren(final BookingOptionsView view,
-                                               final String[] items)
-                    {
-                    }
-                });
+                                                         @Override
+                                                         public void onHideChildren(
+                                                                 final BookingOptionsView view,
+                                                                 final String[] items
+                                                         ) {
+                                                         }
+                                                     }
+        );
 
         ((TextView) mOptionsView.findViewById(R.id.title_text)).setText(
                 R.string.booking_edit_hours_options_title);
@@ -244,29 +268,25 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
         mOptionsViewContainer.addView(mOptionsView);
     }
 
-    private void setSaveButtonEnabled(boolean enabled)
-    {
+    private void setSaveButtonEnabled(boolean enabled) {
         mSaveButton.setEnabled(enabled);
     }
 
     @Override
-    protected void showUiBlockers()
-    {
+    protected void showUiBlockers() {
         super.showUiBlockers();
         setSaveButtonEnabled(false);
     }
 
     @Override
-    protected void removeUiBlockers()
-    {
+    protected void removeUiBlockers() {
         super.removeUiBlockers();
         mContainer.setVisibility(View.VISIBLE);
         setSaveButtonEnabled(true);
     }
 
     @Subscribe
-    public final void onReceiveEditHoursInfoSuccess(BookingEditEvent.ReceiveEditHoursInfoViewModelSuccess event)
-    {
+    public final void onReceiveEditHoursInfoSuccess(BookingEditEvent.ReceiveEditHoursInfoViewModelSuccess event) {
         mBookingEditHoursViewModel = event.editHoursInfoViewModel;
         initializeUiForEditHoursInfo();
         updateUiForOptionSelected();
@@ -274,15 +294,13 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditHoursInfoError(BookingEditEvent.ReceiveEditHoursInfoViewModelError event)
-    {
+    public final void onReceiveEditHoursInfoError(BookingEditEvent.ReceiveEditHoursInfoViewModelError event) {
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
     @Subscribe
-    public final void onReceiveEditHoursSuccess(BookingEditEvent.ReceiveEditHoursSuccess event)
-    {
+    public final void onReceiveEditHoursSuccess(BookingEditEvent.ReceiveEditHoursSuccess event) {
         showToast(getString(R.string.booking_edit_hours_update_success));
 
         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
@@ -290,8 +308,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditHoursError(BookingEditEvent.ReceiveEditHoursError event)
-    {
+    public final void onReceiveEditHoursError(BookingEditEvent.ReceiveEditHoursError event) {
         onReceiveErrorEvent(event);
         removeUiBlockers(); //allow user to try again
     }

@@ -8,36 +8,33 @@ import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.RedemptionDetails;
 import com.handybook.handybook.referral.model.ReferralResponse;
 
-public abstract class ReferralsEvent
-{
-    public static class RequestPrepareReferrals extends HandyEvent.RequestEvent
-    {
+public abstract class ReferralsEvent {
+
+    public static class RequestPrepareReferrals extends HandyEvent.RequestEvent {
+
         private boolean mIsForDialog;
         private ReferralsManager.Source mSource;
 
         public RequestPrepareReferrals(
                 final boolean isForDialog,
                 @NonNull final ReferralsManager.Source source
-        )
-        {
+        ) {
             mIsForDialog = isForDialog;
             mSource = source;
         }
 
-        public boolean isForDialog()
-        {
+        public boolean isForDialog() {
             return mIsForDialog;
         }
 
-        public ReferralsManager.Source getSource()
-        {
+        public ReferralsManager.Source getSource() {
             return mSource;
         }
     }
 
 
-    public static class ReceivePrepareReferralsSuccess extends HandyEvent.ReceiveSuccessEvent
-    {
+    public static class ReceivePrepareReferralsSuccess extends HandyEvent.ReceiveSuccessEvent {
+
         private final ReferralResponse mReferralResponse;
         private boolean mIsForDialog;
         private ReferralsManager.Source mSource;
@@ -46,91 +43,79 @@ public abstract class ReferralsEvent
                 final ReferralResponse referralResponse,
                 final boolean isForDialog,
                 @NonNull final ReferralsManager.Source source
-        )
-        {
+        ) {
             mReferralResponse = referralResponse;
             mIsForDialog = isForDialog;
             mSource = source;
         }
 
-        public ReferralResponse getReferralResponse()
-        {
+        public ReferralResponse getReferralResponse() {
             return mReferralResponse;
         }
 
-        public boolean isForDialog()
-        {
+        public boolean isForDialog() {
             return mIsForDialog;
         }
 
-        public ReferralsManager.Source getSource()
-        {
+        public ReferralsManager.Source getSource() {
             return mSource;
         }
     }
 
 
-    public static class ReceivePrepareReferralsError extends HandyEvent.ReceiveErrorEvent
-    {
-        public ReceivePrepareReferralsError(final DataManager.DataManagerError error)
-        {
+    public static class ReceivePrepareReferralsError extends HandyEvent.ReceiveErrorEvent {
+
+        public ReceivePrepareReferralsError(final DataManager.DataManagerError error) {
             this.error = error;
         }
     }
 
 
-    public static class RequestConfirmReferral
-    {
+    public static class RequestConfirmReferral {
+
         private String mGuid;
 
-        public RequestConfirmReferral(final String guid)
-        {
+        public RequestConfirmReferral(final String guid) {
             mGuid = guid;
         }
 
-        public String getGuid()
-        {
+        public String getGuid() {
             return mGuid;
         }
     }
 
 
-    public static class RequestRedemptionDetails
-    {
+    public static class RequestRedemptionDetails {
+
         private String mGuid;
 
-        public RequestRedemptionDetails(final String guid)
-        {
+        public RequestRedemptionDetails(final String guid) {
             mGuid = guid;
         }
 
-        public String getGuid()
-        {
+        public String getGuid() {
             return mGuid;
         }
     }
 
 
-    public static class ReceiveRedemptionDetailsSuccess
-    {
+    public static class ReceiveRedemptionDetailsSuccess {
+
         private RedemptionDetails mRedemptionDetails;
 
-        public ReceiveRedemptionDetailsSuccess(final RedemptionDetails redemptionDetails)
-        {
+        public ReceiveRedemptionDetailsSuccess(final RedemptionDetails redemptionDetails) {
             mRedemptionDetails = redemptionDetails;
         }
 
-        public RedemptionDetails getRedemptionDetails()
-        {
+        public RedemptionDetails getRedemptionDetails() {
             return mRedemptionDetails;
         }
     }
 
 
-    public static class ReceiveRedemptionDetailsError extends HandyEvent.ReceiveErrorEvent
-    {
-        public ReceiveRedemptionDetailsError(final DataManager.DataManagerError error)
-        {
+    public static class ReceiveRedemptionDetailsError extends HandyEvent.ReceiveErrorEvent {
+
+        public ReceiveRedemptionDetailsError(final DataManager.DataManagerError error) {
             this.error = error;
         }
     }

@@ -11,12 +11,12 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.Date;
 
-public final class BookingRescheduleOptionsActivity extends MenuDrawerActivity
-{
+public final class BookingRescheduleOptionsActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        final Booking rescheduleBooking = getIntent().getParcelableExtra(BundleKeys.RESCHEDULE_BOOKING);
+        final Booking rescheduleBooking
+                = getIntent().getParcelableExtra(BundleKeys.RESCHEDULE_BOOKING);
         final Date date = new Date(getIntent().getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0));
         final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
         final BookingDetailFragment.RescheduleType type = (BookingDetailFragment.RescheduleType)

@@ -26,20 +26,18 @@ import java.util.Comparator;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BookingDetailSectionPaymentView extends BookingDetailSectionView
-{
+public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
+
     @Bind(R.id.pay_lines_section)
     public LinearLayout paymentLinesSection;
     @Bind(R.id.total_text)
     public TextView totalText;
 
-    public BookingDetailSectionPaymentView(final Context context)
-    {
+    public BookingDetailSectionPaymentView(final Context context) {
         super(context);
     }
 
-    public BookingDetailSectionPaymentView(final Context context, final AttributeSet attrs)
-    {
+    public BookingDetailSectionPaymentView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -47,47 +45,39 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
             final Context context,
             final AttributeSet attrs,
             final int defStyle
-    )
-    {
+    ) {
         super(context, attrs, defStyle);
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         inflate(getContext(), R.layout.view_booking_detail_section_payment, this);
         ButterKnife.bind(this);
     }
 
     //TODO: Clean this up
-    public void updatePaymentDisplay(final Booking booking, final User user)
-    {
+    public void updatePaymentDisplay(final Booking booking, final User user) {
         totalText.setText(booking.formatPrice(user.getCurrencyChar()));
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
 
         //Sort the payment info
-        if (paymentInfo != null && paymentInfo.size() > 0)
-        {
-            Collections.sort(paymentInfo, new Comparator<Booking.LineItem>()
-            {
+        if (paymentInfo != null && paymentInfo.size() > 0) {
+            Collections.sort(paymentInfo, new Comparator<Booking.LineItem>() {
                 @Override
-                public int compare(final Booking.LineItem lhs, final Booking.LineItem rhs)
-                {
+                public int compare(final Booking.LineItem lhs, final Booking.LineItem rhs) {
                     return lhs.getOrder() - rhs.getOrder();
                 }
             });
         }
 
         //Display the payment info
-        if (paymentInfo != null && paymentInfo.size() > 0)
-        {
+        if (paymentInfo != null && paymentInfo.size() > 0) {
             paymentLinesSection.setVisibility(View.VISIBLE);
 
             View paymentLineView;
 
-            for (int i = 0; i < paymentInfo.size(); i++)
-            {
+            for (int i = 0; i < paymentInfo.size(); i++) {
                 paymentLineView = inflate(getContext(), R.layout.view_payment_line, null);
                 paymentLinesSection.addView(paymentLineView);
 
@@ -104,18 +94,14 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
 
                 labelText.setText(line.getLabel());
                 amountText.setText(line.getAmount());
-                if (line.hasHelpText())
-                {
+                if (line.hasHelpText()) {
                     questionMark.setVisibility(VISIBLE);
-                    paymentLineView.setOnClickListener(new OnClickListener()
-                    {
+                    paymentLineView.setOnClickListener(new OnClickListener() {
                         @Override
-                        public void onClick(final View v)
-                        {
+                        public void onClick(final View v) {
                             final FragmentManager fm = ((AppCompatActivity) getContext())
                                     .getSupportFragmentManager();
-                            if (fm.findFragmentByTag(PriceLineHelpTextDialog.TAG) == null)
-                            {
+                            if (fm.findFragmentByTag(PriceLineHelpTextDialog.TAG) == null) {
                                 PriceLineHelpTextDialog
                                         .newInstance(line.getHelpText())
                                         .show(fm, PriceLineHelpTextDialog.TAG);
@@ -124,38 +110,32 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
                     });
 
                 }
-                else
-                {
+                else {
                     questionMark.setVisibility(GONE);
                 }
 
                 //Adjust padding for the payment line view for any that are not the last
-                if (i < paymentInfo.size() - 1)
-                {
+                if (i < paymentInfo.size() - 1) {
                     paymentLineView.setPadding(0, 0, 0, Utils.toDP(10, getContext()));
                 }
             }
         }
 
         final String billedStatus = booking.getBilledStatus();
-        if (billedStatus != null)
-        {
+        if (billedStatus != null) {
             getEntryText().setText(billedStatus);
         }
-        else
-        {
+        else {
             getEntryText().setVisibility(View.GONE);
         }
     }
 
-    public static class PriceLineHelpTextDialog extends DialogFragment
-    {
+    public static class PriceLineHelpTextDialog extends DialogFragment {
+
         public static final String KEY_MESSAGE = "PLHTD:Message";
         public static final String TAG = "PriceLineHelpTextDialog";
 
-
-        public static PriceLineHelpTextDialog newInstance(final String text)
-        {
+        public static PriceLineHelpTextDialog newInstance(final String text) {
             PriceLineHelpTextDialog dialogFragment = new PriceLineHelpTextDialog();
             Bundle args = new Bundle();
             args.putString(KEY_MESSAGE, text);
@@ -164,25 +144,20 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView
         }
 
         @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState)
-        {
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             String message = "";
-            if (getArguments() == null)
-            {
+            if (getArguments() == null) {
                 dismiss();
                 throw new RuntimeException("Use newInstance() to initialize this dialog!");
             }
-            else
-            {
+            else {
                 message = getArguments().getString(KEY_MESSAGE);
             }
             builder.setMessage(message)
-                   .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-                   {
-                       public void onClick(DialogInterface dialog, int id)
-                       {
+                   .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int id) {
                            dialog.dismiss();
                        }
                    });

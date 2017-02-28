@@ -7,26 +7,26 @@ import com.handybook.handybook.R;
 
 import butterknife.ButterKnife;
 
-public class BookingDetailSectionBookingActionsView extends BookingDetailSectionView
-{
-    public BookingDetailSectionBookingActionsView(final Context context)
-    {
+public class BookingDetailSectionBookingActionsView extends BookingDetailSectionView {
+
+    public BookingDetailSectionBookingActionsView(final Context context) {
         super(context);
     }
 
-    public BookingDetailSectionBookingActionsView(final Context context, final AttributeSet attrs)
-    {
+    public BookingDetailSectionBookingActionsView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BookingDetailSectionBookingActionsView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
+    public BookingDetailSectionBookingActionsView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         inflate(getContext(), R.layout.view_booking_detail_section_actions, this);
         ButterKnife.bind(this);
         showSeparator(false);

@@ -58,8 +58,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class ServiceCategoriesFragment extends BookingFlowFragment
-{
+public final class ServiceCategoriesFragment extends BookingFlowFragment {
+
     private static final String EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID";
     private static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
@@ -103,8 +103,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     @Inject
     EnvironmentModifier mEnvironmentModifier;
 
-    public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode)
-    {
+    public static ServiceCategoriesFragment newInstance(String serviceId, String promoCode) {
         ServiceCategoriesFragment fragment = new ServiceCategoriesFragment();
         final Bundle bundle = new Bundle();
         bundle.putString(EXTRA_SERVICE_ID, serviceId);
@@ -113,14 +112,12 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         return fragment;
     }
 
-    public static ServiceCategoriesFragment newInstance()
-    {
+    public static ServiceCategoriesFragment newInstance() {
         return new ServiceCategoriesFragment();
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         bus.post(new LogEvent.AddLogEvent(new HandybookDefaultLog.AllServicesPageShownLog()));
@@ -131,8 +128,7 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater().inflate(
                 R.layout.fragment_service_categories, container, false);
         ButterKnife.bind(this, view);
@@ -144,12 +140,10 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled() &&
-                activity instanceof MenuDrawerActivity)
-        {
+            activity instanceof MenuDrawerActivity) {
             ((MenuDrawerActivity) activity).setupHamburgerMenu(mToolbar);
         }
-        else
-        {
+        else {
             mToolbar.setNavigationIcon(null);
         }
 
@@ -160,11 +154,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewAdapter(mServices, new View.OnClickListener()
-        {
+        mAdapter = new RecyclerViewAdapter(mServices, new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 int itemPosition = mRecyclerView.getChildLayoutPosition(view);
                 Service service = mServices.get(itemPosition);
 
@@ -181,46 +173,37 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             inflater.inflate(R.menu.menu_service_categories, menu);
         }
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu)
-    {
+    public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
         final MenuItem signInMenuItem = menu.findItem(R.id.menu_sign_in);
         final MenuItem envMenuItem = menu.findItem(R.id.menu_environment);
 
-        if (signInMenuItem != null)
-        {
+        if (signInMenuItem != null) {
             signInMenuItem.setVisible(!mUserManager.isUserLoggedIn());
         }
 
-        if (envMenuItem != null)
-        {
+        if (envMenuItem != null) {
             // We will only enable environment modifier if this is a stage build
-            if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE))
-            {
+            if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) {
                 envMenuItem.setTitle(mEnvironmentModifier.getEnvironment());
             }
-            else
-            {
+            else {
                 envMenuItem.setVisible(false);
             }
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.menu_sign_in:
                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(intent);
@@ -231,11 +214,9 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
                 new AlertDialog.Builder(getContext())
                         .setTitle(R.string.set_environment)
                         .setView(input)
-                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i)
-                            {
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 // change the environment and update the menu text
                                 mEnvironmentModifier.setEnvironment(input.getText().toString());
                                 item.setTitle(input.getText().toString());
@@ -251,15 +232,13 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onActivityCreated(final Bundle savedInstanceState)
-    {
+    public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         allowCallbacks = true;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         loadServices();
     }
@@ -269,39 +248,30 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
      * <p/>
      * should be called after handleLoadServicesResponse() so that we have the list of services
      */
-    private void handleBundleArguments()
-    {
+    private void handleBundleArguments() {
         final Bundle args = getArguments();
-        if (args != null)
-        {
+        if (args != null) {
             String promoCode = args.getString(EXTRA_PROMO_CODE);
-            if (promoCode != null)
-            {
+            if (promoCode != null) {
                 args.remove(EXTRA_PROMO_CODE); //only handle once
                 bus.post(new BookingEvent.RequestPreBookingPromo(promoCode));
             }
 
             String extraServiceIdString = args.getString(EXTRA_SERVICE_ID);
-            if (extraServiceIdString != null)
-            {
+            if (extraServiceIdString != null) {
                 args.remove(EXTRA_SERVICE_ID); //only handle once
-                try
-                {
+                try {
                     int extraServiceId = Integer.parseInt(extraServiceIdString);
-                    if (mServices != null && extraServiceId >= 0)
-                    {
-                        for (Service service : mServices)
-                        {
-                            if (service.getId() == extraServiceId)
-                            {
+                    if (mServices != null && extraServiceId >= 0) {
+                        for (Service service : mServices) {
+                            if (service.getId() == extraServiceId) {
                                 launchServiceActivity(service);
                                 break;
                             }
                         }
                     }
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     //probably an integer parsing error
                     Crashlytics.logException(e);
                 }
@@ -309,37 +279,30 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
     }
 
-    private void loadServices()
-    {
+    private void loadServices() {
         progressDialog.show();
         mUsedCache = false;
         bus.post(new BookingEvent.RequestServices());
     }
 
     @Subscribe
-    public void onReceivePreBookingPromoSuccess(BookingEvent.ReceivePreBookingPromoSuccess event)
-    {
+    public void onReceivePreBookingPromoSuccess(BookingEvent.ReceivePreBookingPromoSuccess event) {
         PromoCode promoCode = event.getPromoCode();
         showCouponAppliedNotificationIfNecessary(); //could have removed the promo code
-        if (promoCode != null)
-        {
-            if (promoCode.getType() == PromoCode.Type.VOUCHER)
-            {
+        if (promoCode != null) {
+            if (promoCode.getType() == PromoCode.Type.VOUCHER) {
                 startBookingFlow(promoCode.getServiceId(), promoCode.getUniq(), promoCode);
             }
         }
     }
 
     @Subscribe
-    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
-    {
+    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event) {
         handleLoadServicesResponse(event.getServices(), false);
     }
 
-    private void handleLoadServicesResponse(List<Service> services, boolean usedCache)
-    {
-        if (!allowCallbacks)
-        {
+    private void handleLoadServicesResponse(List<Service> services, boolean usedCache) {
+        if (!allowCallbacks) {
             return;
         }
         mUsedCache = usedCache;
@@ -351,22 +314,18 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError event)
-    {
-        if (!allowCallbacks || mUsedCache)
-        {
+    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError event) {
+        if (!allowCallbacks || mUsedCache) {
             return;
         }
         progressDialog.dismiss();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private void showCouponAppliedNotificationIfNecessary()
-    {
+    private void showCouponAppliedNotificationIfNecessary() {
         //TODO currently not showing anything for hidden coupons; confirm with PM this behavior is OK
         final String coupon = bookingManager.getPromoTabCoupon();
-        if (coupon != null)
-        {
+        if (coupon != null) {
             final Spannable text =
                     new SpannableString(String.format(getString(R.string.using_promo), coupon));
 
@@ -383,22 +342,19 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
             mPromoText.setText(text, TextView.BufferType.SPANNABLE);
             mCouponLayout.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mCouponLayout.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         showCouponAppliedNotificationIfNecessary();
     }
 
     @OnClick(R.id.coupon_layout)
-    public void onCouponClick()
-    {
+    public void onCouponClick() {
         startActivity(new Intent(getContext(), PromosActivity.class));
     }
 
@@ -407,61 +363,53 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
      *
      * @param service
      */
-    private void launchServiceActivity(@NonNull Service service)
-    {
-        if (service.getChildServices().size() > 0)
-        {
+    private void launchServiceActivity(@NonNull Service service) {
+        if (service.getChildServices().size() > 0) {
             final Intent intent = new Intent(getActivity(), ServicesActivity.class);
             intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 Bundle bundle = null;
                 ImageView transitionImageView = mServiceIconMap.get(service.getId());
-                if (transitionImageView != null)
-                {
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                if (transitionImageView != null) {
+                    ActivityOptionsCompat options
+                            = ActivityOptionsCompat.makeSceneTransitionAnimation(
                             getActivity(), transitionImageView, SHARED_ICON_ELEMENT_NAME
                     );
                     bundle = options.toBundle();
                 }
                 getActivity().startActivity(intent, bundle);
             }
-            else
-            {
+            else {
                 startActivity(intent);
             }
         }
-        else
-        {
+        else {
             startBookingFlow(service.getId(), service.getUniq());
         }
     }
 
-    static class RecyclerViewHolder extends RecyclerView.ViewHolder
-    {
-        public RecyclerViewHolder(View itemView)
-        {
+    static class RecyclerViewHolder extends RecyclerView.ViewHolder {
+
+        public RecyclerViewHolder(View itemView) {
             super(itemView);
         }
     }
 
 
-    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder>
-    {
+    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+
         private final String TAG = RecyclerViewAdapter.class.getName();
 
         private List<Service> services;
         private View.OnClickListener mListener;
 
-        public RecyclerViewAdapter(List<Service> itemList, View.OnClickListener listener)
-        {
+        public RecyclerViewAdapter(List<Service> itemList, View.OnClickListener listener) {
             services = itemList;
             mListener = listener;
         }
 
         @Override
-        public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
+        public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             ServiceCategoryView v = new ServiceCategoryView(getContext());
             v.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -472,19 +420,16 @@ public final class ServiceCategoriesFragment extends BookingFlowFragment
         }
 
         @Override
-        public void onBindViewHolder(RecyclerViewHolder holder, int position)
-        {
+        public void onBindViewHolder(RecyclerViewHolder holder, int position) {
             ((ServiceCategoryView) holder.itemView).init(services.get(position));
         }
 
         @Override
-        public int getItemCount()
-        {
+        public int getItemCount() {
             return services.size();
         }
 
-        public void clearAndAdd(List<Service> s)
-        {
+        public void clearAndAdd(List<Service> s) {
             services.clear();
             services.addAll(s);
             notifyDataSetChanged();

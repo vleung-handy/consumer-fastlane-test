@@ -126,8 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         super.onResume();
         mSessionManager.markActivity();
 
-        if (mWasOpenBefore)
-        {
+        if (mWasOpenBefore) {
             mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(false, false)));
         }
         /*

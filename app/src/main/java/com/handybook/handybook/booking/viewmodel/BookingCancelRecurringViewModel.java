@@ -10,19 +10,19 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.List;
 
-public class BookingCancelRecurringViewModel
-{
+public class BookingCancelRecurringViewModel {
+
     private final List<RecurringBooking> mRecurringBookingList;
 
     private BookingCancelRecurringViewModel(
-            @NonNull final List<RecurringBooking> recurringBookingList)
-    {
+            @NonNull final List<RecurringBooking> recurringBookingList
+    ) {
         mRecurringBookingList = recurringBookingList;
     }
 
     public static BookingCancelRecurringViewModel from(
-            @NonNull final List<RecurringBooking> bookingList)
-    {
+            @NonNull final List<RecurringBooking> bookingList
+    ) {
         return new BookingCancelRecurringViewModel(bookingList);
     }
 
@@ -31,20 +31,19 @@ public class BookingCancelRecurringViewModel
      * @return the BookingOption model that the cancel recurring fragment will use to render an
      * options view
      */
-    public BookingOption getBookingOption(final Context context)
-    {
+    public BookingOption getBookingOption(final Context context) {
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
         String optionStrings[] = new String[mRecurringBookingList.size()];
         String optionSubtitleStrings[] = new String[optionStrings.length];
-        for (int i = 0; i < optionStrings.length; i++)
-        {
+        for (int i = 0; i < optionStrings.length; i++) {
             RecurringBooking recurringBooking = mRecurringBookingList.get(i);
             optionStrings[i] = recurringBooking.getFrequency();
-            optionSubtitleStrings[i] = context.getString(R.string
+            optionSubtitleStrings[i] = context.getString(
+                    R.string
                             .cancel_recurring_booking_option_entry_subtitle_formatted,
-                                                         DateTimeUtils.SHORT_DAY_MONTH_DATE_AT_TIME_FORMATTER
-                                                                 .format(recurringBooking.getNextBookingDate())
+                    DateTimeUtils.SHORT_DAY_MONTH_DATE_AT_TIME_FORMATTER
+                            .format(recurringBooking.getNextBookingDate())
             );
         }
         option.setOptions(optionStrings);
@@ -52,8 +51,7 @@ public class BookingCancelRecurringViewModel
         return option;
     }
 
-    public RecurringBooking getBookingForIndex(final int index)
-    {
+    public RecurringBooking getBookingForIndex(final int index) {
         return mRecurringBookingList.get(index);
     }
 }

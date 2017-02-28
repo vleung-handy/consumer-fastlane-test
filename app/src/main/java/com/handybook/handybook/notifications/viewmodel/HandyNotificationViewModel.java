@@ -9,22 +9,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class HandyNotificationViewModel
-{
+public class HandyNotificationViewModel {
+
     private HandyNotification mHandyNotification;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
+    private static final SimpleDateFormat DATE_FORMAT
+            = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
 
-    public HandyNotificationViewModel(final HandyNotification handyNotification)
-    {
+    public HandyNotificationViewModel(final HandyNotification handyNotification) {
         mHandyNotification = handyNotification;
     }
 
-    public String getIconUrl(final Context context)
-    {
+    public String getIconUrl(final Context context) {
         // TODO: Absolutely redo this before releasing anything!
-        switch (context.getResources().getDisplayMetrics().densityDpi)
-        {
+        switch (context.getResources().getDisplayMetrics().densityDpi) {
             case DisplayMetrics.DENSITY_LOW:
                 return mHandyNotification.getImages()[0].getUrl();
             case DisplayMetrics.DENSITY_MEDIUM:
@@ -43,34 +41,27 @@ public class HandyNotificationViewModel
         // TODO: Seriously! Did you redo this?
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mHandyNotification.getTitle();
     }
 
-    public String getBody()
-    {
+    public String getBody() {
         return mHandyNotification.getBody();
     }
 
-    public String getTimestamp()
-    {
+    public String getTimestamp() {
         return DATE_FORMAT.format(mHandyNotification.getCreatedAt().getTime());
     }
 
-    public HandyNotification.HandyNotificationType getType()
-    {
+    public HandyNotification.HandyNotificationType getType() {
         return mHandyNotification.getType();
     }
 
+    public static class List extends ArrayList<HandyNotificationViewModel> {
 
-    public static class List extends ArrayList<HandyNotificationViewModel>
-    {
-        public static List from(final Collection<HandyNotification> notifications)
-        {
+        public static List from(final Collection<HandyNotification> notifications) {
             final List notificationViewModelList = new List();
-            for (HandyNotification eachNotification : notifications)
-            {
+            for (HandyNotification eachNotification : notifications) {
                 notificationViewModelList.add(new HandyNotificationViewModel(eachNotification));
             }
             return notificationViewModelList;

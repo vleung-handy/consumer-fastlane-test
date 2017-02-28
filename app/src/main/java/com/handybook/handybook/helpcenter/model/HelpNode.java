@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public final class HelpNode implements Parcelable {
+
     @SerializedName("id") private int id;
     @SerializedName("type") private String type;
     @SerializedName("label") private String label;
@@ -20,7 +21,7 @@ public final class HelpNode implements Parcelable {
     @SerializedName("hrs") private float hours;
     @SerializedName("slt") private String loginToken;
 
-    public HelpNode(){}
+    public HelpNode() {}
 
     public final int getId() {
         return id;
@@ -79,10 +80,9 @@ public final class HelpNode implements Parcelable {
         in.readTypedList(children, HelpNode.CREATOR);
     }
 
-    public static HelpNode fromJson(final String json)
-    {
+    public static HelpNode fromJson(final String json) {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, HelpNode.class);
+                                .fromJson(json, HelpNode.class);
     }
 
     @Override
@@ -90,12 +90,12 @@ public final class HelpNode implements Parcelable {
         out.writeIntArray(new int[]{id});
         out.writeStringArray(new String[]{type, label, content, service, loginToken});
         out.writeFloatArray(new float[]{hours});
-        out.writeLong(startDate != null ? startDate.getTime(): 0);
+        out.writeLong(startDate != null ? startDate.getTime() : 0);
         out.writeTypedList(children);
     }
 
     @Override
-    public final int describeContents(){
+    public final int describeContents() {
         return 0;
     }
 
@@ -103,13 +103,15 @@ public final class HelpNode implements Parcelable {
         public HelpNode createFromParcel(final Parcel in) {
             return new HelpNode(in);
         }
+
         public HelpNode[] newArray(final int size) {
             return new HelpNode[size];
         }
     };
 
-    public static class HelpNodeType
-    {
+
+    public static class HelpNodeType {
+
         public static final String FAQ = "help-faq-container";
         public static final String CTA = "help-cta";
         public static final String CONTACT = "help-contact-form";

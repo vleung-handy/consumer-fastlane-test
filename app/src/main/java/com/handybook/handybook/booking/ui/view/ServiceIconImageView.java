@@ -13,8 +13,8 @@ import java.util.List;
 /**
  * Created by cdavis on 9/22/15.
  */
-public class ServiceIconImageView extends ImageView
-{
+public class ServiceIconImageView extends ImageView {
+
     public ServiceIconImageView(final Context context) {
         super(context);
     }
@@ -23,12 +23,15 @@ public class ServiceIconImageView extends ImageView
         super(context, attrs);
     }
 
-    public ServiceIconImageView(final Context context, final AttributeSet attrs, final int defStyle) {
+    public ServiceIconImageView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
     }
 
-    public void updateServiceIconByBooking(Booking booking, List<Service> services)
-    {
+    public void updateServiceIconByBooking(Booking booking, List<Service> services) {
         Integer iconResourceId = BookingUtil.getIconForService(booking, BookingUtil.IconType.FILL);
         setImageResource(iconResourceId);
     }

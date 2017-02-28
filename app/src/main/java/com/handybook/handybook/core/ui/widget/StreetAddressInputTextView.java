@@ -5,8 +5,7 @@ import android.util.AttributeSet;
 
 import com.handybook.handybook.library.ui.view.InputTextField;
 
-public final class StreetAddressInputTextView extends InputTextField
-{
+public final class StreetAddressInputTextView extends InputTextField {
 
     public StreetAddressInputTextView(final Context context) {
         super(context);
@@ -16,7 +15,11 @@ public final class StreetAddressInputTextView extends InputTextField
         super(context, attrs);
     }
 
-    public StreetAddressInputTextView(final Context context, final AttributeSet attrs, final int defStyle) {
+    public StreetAddressInputTextView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
     }
 

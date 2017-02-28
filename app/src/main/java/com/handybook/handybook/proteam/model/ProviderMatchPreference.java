@@ -5,8 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum ProviderMatchPreference
-{
+public enum ProviderMatchPreference {
     @SerializedName(Constants.STRING_VALUE_NEVER)
     NEVER(Constants.STRING_VALUE_NEVER),
     @SerializedName(Constants.STRING_VALUE_INDIFFERENT)
@@ -18,15 +17,13 @@ public enum ProviderMatchPreference
 
     private final String mValue;
 
-    ProviderMatchPreference(String value)
-    {
+    ProviderMatchPreference(String value) {
         mValue = value;
     }
 
     @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return mValue;
     }
 
@@ -36,16 +33,15 @@ public enum ProviderMatchPreference
      * representation of INDIFFERENT type ('indifferent')
      */
     @NonNull
-    public static String asString(@Nullable ProviderMatchPreference preference)
-    {
+    public static String asString(@Nullable ProviderMatchPreference preference) {
         return preference == null ? INDIFFERENT.toString() : preference.toString();
     }
 
     /**
      * String constants that represent/can be converted to/from the ProviderMatchPreference
      */
-    public static class Constants
-    {
+    public static class Constants {
+
         static final String STRING_VALUE_NEVER = "never";
         static final String STRING_VALUE_PREFERRED = "preferred";
         static final String STRING_VALUE_INDIFFERENT = "indifferent";

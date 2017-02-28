@@ -5,17 +5,18 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.data.DataManager;
 
 import butterknife.ButterKnife;
 
 public class OldDeeplinkSplashActivity extends BaseActivity {
+
     private static final String STATE_LAUNCHED_NEXT = "LAUNCHED_NEXT";
 
     private User user;
@@ -27,13 +28,11 @@ public class OldDeeplinkSplashActivity extends BaseActivity {
         setContentView(R.layout.activity_olddeeplinksplash);
         ButterKnife.bind(this);
 
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             launchedNext = savedInstanceState.getBoolean(STATE_LAUNCHED_NEXT, false);
         }
 
-        if (!launchedNext)
-        {
+        if (!launchedNext) {
             user = mUserManager.getCurrentUser();
 
             final Intent intent = this.getIntent();
@@ -48,8 +47,7 @@ public class OldDeeplinkSplashActivity extends BaseActivity {
             mNavigationManager.handleSplashScreenLaunch(this.getIntent(), this);
             launchedNext = true;
         }
-        else
-        {
+        else {
             openServiceCategoriesActivity();
         }
     }
@@ -57,7 +55,7 @@ public class OldDeeplinkSplashActivity extends BaseActivity {
     @Override
     public void startActivity(final Intent intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         super.startActivity(intent);
 
         launchedNext = true;
@@ -89,39 +87,58 @@ public class OldDeeplinkSplashActivity extends BaseActivity {
     }
 
     private void openRescheduleActivity(final String bookingId) {
-        mDataManager.getBooking(bookingId,
+        mDataManager.getBooking(
+                bookingId,
                 new DataManager.Callback<Booking>() {
                     @Override
                     public void onSuccess(final Booking booking) {
-                        if (!allowCallbacks) return;
+                        if (!allowCallbacks) { return; }
 
-                        mDataManager.getPreRescheduleInfo(bookingId, new DataManager.Callback<String>()
-                        {
-                            @Override
-                            public void onSuccess(final String notice) {
-                                if (!allowCallbacks) return;
+                        mDataManager.getPreRescheduleInfo(
+                                bookingId,
+                                new DataManager.Callback<String>() {
+                                    @Override
+                                    public void onSuccess(final String notice) {
+                                        if (!allowCallbacks) { return; }
 
-                                final Intent intent = new Intent(OldDeeplinkSplashActivity.this, BookingDateActivity.class);
-                                intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
-                                intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
-                                startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
-                            }
+                                        final Intent intent = new Intent(
+                                                OldDeeplinkSplashActivity.this,
+                                                BookingDateActivity.class
+                                        );
+                                        intent.putExtra(
+                                                BundleKeys.RESCHEDULE_BOOKING,
+                                                booking
+                                        );
+                                        intent.putExtra(
+                                                BundleKeys.RESCHEDULE_NOTICE,
+                                                notice
+                                        );
+                                        startActivityForResult(
+                                                intent,
+                                                ActivityResult.RESCHEDULE_NEW_DATE
+                                        );
+                                    }
 
-                            @Override
-                            public void onError(final DataManager.DataManagerError error) {
-                                if (!allowCallbacks) return;
-                                mDataManagerErrorHandler.handleError(OldDeeplinkSplashActivity.this, error);
-                                openServiceCategoriesActivity();
-                            }
-                        });
+                                    @Override
+                                    public void onError(final DataManager.DataManagerError error) {
+                                        if (!allowCallbacks) { return; }
+                                        mDataManagerErrorHandler.handleError(
+                                                OldDeeplinkSplashActivity.this,
+                                                error
+                                        );
+                                        openServiceCategoriesActivity();
+                                    }
+                                }
+                        );
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error) {
-                        if (!allowCallbacks) return;
+                        if (!allowCallbacks) { return; }
                         mDataManagerErrorHandler.handleError(OldDeeplinkSplashActivity.this, error);
                         openServiceCategoriesActivity();
                     }
-                });
+                }
+        );
     }
 }

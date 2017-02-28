@@ -22,19 +22,18 @@ import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.ui.view.BasicInputTextView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-
 public final class BookingPreferencesFragment extends BookingFlowFragment
-        implements BaseActivity.OnBackPressedListener
-{
+        implements BaseActivity.OnBackPressedListener {
+
     static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
     static final String EXTRA_INSTRUCTIONS = "com.handy.handy.EXTRA_INSTRUCTIONS";
 
@@ -57,13 +56,10 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
 
     {
 
-        mOnNextClickedListener = new View.OnClickListener()
-        {
+        mOnNextClickedListener = new View.OnClickListener() {
             @Override
-            public void onClick(final View view)
-            {
-                if (bookingManager.getCurrentTransaction() == null)
-                {
+            public void onClick(final View view) {
+                if (bookingManager.getCurrentTransaction() == null) {
                     //quick-fix for current transaction being null when user clicks "finish" super fast
                     Crashlytics.logException(new Exception(
                             "current booking transaction is null on next click"));
@@ -75,8 +71,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 //discourage user from pressing button twice
                 //note that this doesn't prevent super fast clicks
                 showUiBlockers();
-                if (mInstructions != null)
-                {
+                if (mInstructions != null) {
                     mFinalizeBookingRequestPayload.setBookingInstructions(
                             mInstructions.getBookingInstructions()
                     );
@@ -100,8 +95,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                     startActivity(intent);
                     removeUiBlockers();
                 }
-                else
-                {
+                else {
                     bus.post(
                             new BookingEvent.RequestFinalizeBooking(
                                     bookingManager.getCurrentTransaction().getBookingId(),
@@ -116,8 +110,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     public static BookingPreferencesFragment newInstance(
             final boolean isNewUser,
             final Instructions instructions
-    )
-    {
+    ) {
         final BookingPreferencesFragment fragment = new BookingPreferencesFragment();
         final Bundle args = new Bundle();
         args.putBoolean(EXTRA_NEW_USER, isNewUser);
@@ -127,8 +120,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIsNewUser = getArguments().getBoolean(EXTRA_NEW_USER, false);
         mInstructions = getArguments().getParcelable(EXTRA_INSTRUCTIONS);
@@ -142,10 +134,13 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_preferences, container, false);
+                                       .inflate(
+                                               R.layout.fragment_booking_preferences,
+                                               container,
+                                               false
+                                       );
 
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.job_details));
@@ -153,40 +148,33 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        if (bookingManager.getCurrentFinalizeBookingPayload() == null)
-        {
+        if (bookingManager.getCurrentFinalizeBookingPayload() == null) {
             bookingManager.setCurrentFinalizeBookingRequestPayload(
                     new FinalizeBookingRequestPayload()
             );
         }
         mFinalizeBookingRequestPayload = bookingManager.getCurrentFinalizeBookingPayload();
-        if (!mIsNewUser)
-        {
+        if (!mIsNewUser) {
             mNextButton.setText(getString(R.string.finish));
         }
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_TEXT);
         option.setDefaultValue(getString(R.string.preferences_note_to_pro_placeholder));
         if (mInstructions != null && mInstructions.getBookingInstructions() != null &&
-                !mInstructions.getBookingInstructions().isEmpty())
-        {
+            !mInstructions.getBookingInstructions().isEmpty()) {
 
             setToolbarTitle(getString(R.string.cleaning_routine));
             mInstructionListView.reflect(mInstructions);
             mInstructionListView.setOnInstructionsChangedListener(
-                    new InstructionListView.OnInstructionsChangedListener()
-                    {
+                    new InstructionListView.OnInstructionsChangedListener() {
                         @Override
                         public void onInstructionsChanged(
                                 final Instructions instructions,
                                 InstructionListView.ChangeType changeType
-                        )
-                        {
-                            switch (changeType)
-                            {
+                        ) {
+                            switch (changeType) {
                                 case UNKNOWN:
                                     break;
                                 case POSITION_CHANGE:
@@ -202,45 +190,38 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                     });
             mInstructionListView.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mInstructionListView.setVisibility(View.GONE);
         }
         mNextButton.setOnClickListener(mOnNextClickedListener);
     }
 
     @Override
-    protected final void disableInputs()
-    {
+    protected final void disableInputs() {
         super.disableInputs();
         mNextButton.setClickable(false);
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mNextButton.setClickable(true);
     }
 
     @Override
-    public final void onBack()
-    {
+    public final void onBack() {
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingShareInfoDismissedLog()));
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRoutineDismissedLog()));
     }
 
-
     @Subscribe()
-    public void onFinalizedSuccess(final BookingEvent.FinalizeBookingSuccess event)
-    {
+    public void onFinalizedSuccess(final BookingEvent.FinalizeBookingSuccess event) {
         if (!allowCallbacks ||
-                bookingManager.getCurrentTransaction() == null)
+            bookingManager.getCurrentTransaction() == null)
                                     /*
                                     hot fix to prevent NPE caused by rapid multi-click
                                     of the next button
-                                     */
-        {
+                                     */ {
             return;
         }
         String bookingId = Integer.toString(
@@ -251,40 +232,39 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     }
 
     @Subscribe()
-    public void onFinalizedError(final BookingEvent.FinalizeBookingError event)
-    {
-        if (!allowCallbacks)
-        {
+    public void onFinalizedError(final BookingEvent.FinalizeBookingError event) {
+        if (!allowCallbacks) {
             return;
         }
         showToast(R.string.error_sending_preferences);
         removeUiBlockers();
     }
 
-
-    private void showBookingDetails(String bookingId)
-    {
+    private void showBookingDetails(String bookingId) {
         bookingManager.clearAll();
-        dataManager.getBooking(bookingId,
-                new FragmentSafeCallback<Booking>(this)
-                {
+        dataManager.getBooking(
+                bookingId,
+                new FragmentSafeCallback<Booking>(this) {
                     @Override
-                    public void onCallbackSuccess(final Booking booking)
-                    {
-                        final Intent intent = new Intent(getActivity(), BookingDetailActivity.class);
+                    public void onCallbackSuccess(final Booking booking) {
+                        final Intent intent = new Intent(
+                                getActivity(),
+                                BookingDetailActivity.class
+                        );
                         intent.putExtra(BundleKeys.IS_FROM_BOOKING_FLOW, true);
                         intent.putExtra(BundleKeys.BOOKING, booking);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         dataManagerErrorHandler.handleError(getActivity(), error);
                         startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
                     }
-                });
+                }
+        );
     }
 
 }

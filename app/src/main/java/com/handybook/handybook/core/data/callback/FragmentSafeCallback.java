@@ -12,8 +12,8 @@ import java.lang.ref.WeakReference;
  *
  * @param <T>
  */
-public abstract class FragmentSafeCallback<T> extends CancellableCallback<T>
-{
+public abstract class FragmentSafeCallback<T> extends CancellableCallback<T> {
+
     /**
      * NOTE: for the WeakReference to effectively avoid memory leaks,
      * this callback should be used as a static class;
@@ -21,18 +21,16 @@ public abstract class FragmentSafeCallback<T> extends CancellableCallback<T>
      */
     private WeakReference<Fragment> mFragmentWeakReference;
 
-    public FragmentSafeCallback(@NonNull Fragment fragment)
-    {
+    public FragmentSafeCallback(@NonNull Fragment fragment) {
         mFragmentWeakReference = new WeakReference<>(fragment);
     }
 
     @Override
-    protected boolean areCallbacksEnabled()
-    {
+    protected boolean areCallbacksEnabled() {
         return super.areCallbacksEnabled()
-                && mFragmentWeakReference.get() != null
-                && mFragmentWeakReference.get().getActivity() != null
-                && !mFragmentWeakReference.get().isDetached()
-                && mFragmentWeakReference.get().isAdded();
+               && mFragmentWeakReference.get() != null
+               && mFragmentWeakReference.get().getActivity() != null
+               && !mFragmentWeakReference.get().isDetached()
+               && mFragmentWeakReference.get().isAdded();
     }
 }

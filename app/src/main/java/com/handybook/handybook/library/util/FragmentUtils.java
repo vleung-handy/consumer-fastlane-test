@@ -13,8 +13,8 @@ import com.handybook.handybook.R;
 /**
  * utility class for fragments
  */
-public class FragmentUtils
-{
+public class FragmentUtils {
+
     /**
      * wrapper method for launching dialog fragments to prevent crash due to IllegalStateException
      * due to this fragment transaction being performed in an asynchronous callback that might be
@@ -27,15 +27,12 @@ public class FragmentUtils
      */
     public static boolean safeLaunchDialogFragment(
             DialogFragment dialogFragment, FragmentActivity activity, String tag
-    )
-    {
-        try
-        {
+    ) {
+        try {
             dialogFragment.show(activity.getSupportFragmentManager(), tag);
             return true;
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Crashlytics.logException(e);
         }
         return false;
@@ -43,16 +40,13 @@ public class FragmentUtils
 
     public static void switchToFragment(
             Fragment currentFragment, Fragment newFragment, boolean addToBackStack
-    )
-    {
+    ) {
         FragmentTransaction transaction = currentFragment.getFragmentManager().beginTransaction();
 
-        if (addToBackStack)
-        {
+        if (addToBackStack) {
             transaction.replace(R.id.fragment_container, newFragment).addToBackStack(null).commit();
         }
-        else
-        {
+        else {
             transaction.replace(R.id.fragment_container, newFragment).commit();
         }
     }
@@ -61,16 +55,13 @@ public class FragmentUtils
             @NonNull AppCompatActivity activity,
             @NonNull Fragment newFragment,
             boolean addToBackStack
-    )
-    {
+    ) {
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
 
-        if (addToBackStack)
-        {
+        if (addToBackStack) {
             transaction.replace(R.id.fragment_container, newFragment).addToBackStack(null).commit();
         }
-        else
-        {
+        else {
             //clears out the whole stack
             activity.getSupportFragmentManager().popBackStackImmediate(null, 0);
 

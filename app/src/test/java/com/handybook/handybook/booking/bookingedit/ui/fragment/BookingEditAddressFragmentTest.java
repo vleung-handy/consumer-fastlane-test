@@ -26,8 +26,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingEditAddressFragment mFragment;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Booking mBooking;
@@ -37,8 +37,7 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     private ArgumentCaptor<Object> mCaptor;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         when(mBookingAddress.getAddress1()).thenReturn("1 Test Drive");
         when(mBookingAddress.getZip()).thenReturn("10001");
@@ -49,8 +48,8 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldNotRequestEditAddressWhenInputInvalidAndSubmitButtonPressed() throws Exception
-    {
+    public void shouldNotRequestEditAddressWhenInputInvalidAndSubmitButtonPressed() throws
+            Exception {
         reset(mFragment.bus);
         mFragment.mAutoCompleteFragment.mStreet.setText("");
         mFragment.onNextButtonClick();
@@ -58,20 +57,23 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldRequestEditAddressWhenSubmitButtonPressed() throws Exception
-    {
+    public void shouldRequestEditAddressWhenSubmitButtonPressed() throws Exception {
         mFragment.mAutoCompleteFragment.mStreet.setText("2 Test Drive");
         mFragment.onNextButtonClick();
-        AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor, instanceOf(BookingEditEvent.RequestEditBookingAddress.class));
+        AppAssertionUtils.assertBusPost(
+                mFragment.bus,
+                mCaptor,
+                instanceOf(BookingEditEvent.RequestEditBookingAddress.class)
+        );
     }
 
     @Test
-    public void shouldShowErrorToastWhenServerError() throws Exception
-    {
+    public void shouldShowErrorToastWhenServerError() throws Exception {
         String errorMessage = mFragment.getString(R.string
-                .default_error_string);
-        mFragment.onReceiveEditBookingAddressError(new BookingEditEvent.ReceiveEditBookingAddressError(new DataManager.DataManagerError(DataManager
-                .Type.SERVER)));
+                                                          .default_error_string);
+        mFragment.onReceiveEditBookingAddressError(new BookingEditEvent.ReceiveEditBookingAddressError(
+                new DataManager.DataManagerError(DataManager
+                                                         .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }
 }

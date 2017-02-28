@@ -14,8 +14,8 @@ import org.junit.runner.RunWith;
 
 //note that animations should be disabled on the device running these tests
 @RunWith(AndroidJUnit4.class)
-public class LoginTest
-{
+public class LoginTest {
+
     private static final TestUser TEST_USER = TestUsers.LOGIN;
 
     @Rule
@@ -23,8 +23,7 @@ public class LoginTest
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
     @Test
-    public void testLogin()
-    {
+    public void testLogin() {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();

@@ -29,15 +29,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ReferralDialogFragment extends BaseDialogFragment
-{
+public class ReferralDialogFragment extends BaseDialogFragment {
+
     public static final String TAG = ReferralDialogFragment.class.getSimpleName();
 
     @Bind(R.id.dialog_referral_subtitle)
     TextView mSubtitle;
 
     private static final String REFERRAL_DESCRIPTOR = "referral_descriptor";
-    private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{"handy-referrals@handy.com"};
+    private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{
+            "handy-referrals@handy.com"
+    };
     private ReferralChannels mReferralChannels;
     private ReferralDescriptor mReferralDescriptor;
     private ReferralsManager.Source mSource;
@@ -45,8 +47,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
     public static ReferralDialogFragment newInstance(
             final ReferralDescriptor referralDescriptor,
             @NonNull final ReferralsManager.Source source
-    )
-    {
+    ) {
         final ReferralDialogFragment dialogFragment = new ReferralDialogFragment();
         final Bundle arguments = new Bundle();
         arguments.putSerializable(REFERRAL_DESCRIPTOR, referralDescriptor);
@@ -56,8 +57,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mReferralDescriptor = (ReferralDescriptor) getArguments()
                 .getSerializable(REFERRAL_DESCRIPTOR);
@@ -72,8 +72,7 @@ public class ReferralDialogFragment extends BaseDialogFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.dialog_referral, container, true);
         ButterKnife.bind(this, view);
@@ -83,18 +82,15 @@ public class ReferralDialogFragment extends BaseDialogFragment
     }
 
     @OnClick(R.id.dialog_referral_close_button)
-    public void onCloseButtonClicked()
-    {
+    public void onCloseButtonClicked() {
         dismiss();
     }
 
     @OnClick(R.id.dialog_referral_email_button)
-    public void onEmailButtonClicked()
-    {
+    public void onEmailButtonClicked() {
         final ReferralInfo emailReferralInfo =
                 mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_EMAIL);
-        if (emailReferralInfo != null)
-        {
+        if (emailReferralInfo != null) {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("plain/text");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
@@ -103,19 +99,16 @@ public class ReferralDialogFragment extends BaseDialogFragment
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
             sendShareButtonTappedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
         }
-        else
-        {
+        else {
             Crashlytics.logException(new Exception("Email referral info is null"));
         }
     }
 
     @OnClick(R.id.dialog_referral_text_button)
-    public void onTextButtonClicked()
-    {
+    public void onTextButtonClicked() {
         final ReferralInfo smsReferralInfo =
                 mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
-        if (smsReferralInfo != null)
-        {
+        if (smsReferralInfo != null) {
             final Intent smsReferralIntent = ReferralIntentUtil.getSmsReferralIntent(
                     getActivity(),
                     smsReferralInfo
@@ -123,15 +116,13 @@ public class ReferralDialogFragment extends BaseDialogFragment
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
             sendShareButtonTappedLog(smsReferralInfo.getGuid(), ReferralChannels.CHANNEL_SMS);
         }
-        else
-        {
+        else {
             Crashlytics.logException(new Exception("SMS referral info is null"));
         }
 
     }
 
-    private void showReferralDetails()
-    {
+    private void showReferralDetails() {
         final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
         final String formattedReceiverCouponAmount = TextUtils.formatPrice(
                 mReferralDescriptor.getReceiverCouponAmount(),
@@ -148,33 +139,26 @@ public class ReferralDialogFragment extends BaseDialogFragment
         ));
     }
 
-
     private void launchShareIntent(
             final Intent intent,
             @Nullable @ReferralChannels.Channel final String channel
-    )
-    {
-        if (channel != null)
-        {
+    ) {
+        if (channel != null) {
             final ReferralInfo referralInfo = mReferralChannels.getReferralInfoForChannel(channel);
-            if (referralInfo != null)
-            {
+            if (referralInfo != null) {
                 mBus.post(new ReferralsEvent.RequestConfirmReferral(referralInfo.getGuid()));
             }
         }
         Utils.safeLaunchIntent(intent, getActivity());
     }
 
-    private void sendShareButtonTappedLog(final String guid, final String referralMedium)
-    {
-        if (mReferralDescriptor != null && mSource != null)
-        {
+    private void sendShareButtonTappedLog(final String guid, final String referralMedium) {
+        if (mReferralDescriptor != null && mSource != null) {
             String couponCode = StringUtils.replaceWithEmptyIfNull(
                     mReferralDescriptor.getCouponCode());
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
 
-            switch (mSource)
-            {
+            switch (mSource) {
                 case POST_BOOKING:
                     mBus.post(new LogEvent.AddLogEvent(new ShareModalLog.PostBookingShareButtonTappedLog(
                             referralMedium,

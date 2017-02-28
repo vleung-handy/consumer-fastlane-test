@@ -9,10 +9,10 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingLocationActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
-import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 
@@ -35,8 +35,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
-{
+public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper {
+
     private ServiceCategoriesFragment mFragment;
     @Mock
     private Service mMockService;
@@ -57,10 +57,10 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
     private User.Analytics mAnalytics;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
-        mTestBaseApplication = ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext());
+        mTestBaseApplication = ((TestBaseApplication) ShadowApplication.getInstance()
+                                                                       .getApplicationContext());
         mTestBaseApplication.inject(this);
         mFragment = ServiceCategoriesFragment.newInstance();
 
@@ -75,8 +75,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
      * The user should remain in the services page
      */
     @Test
-    public void testLoggedInOldLaunch()
-    {
+    public void testLoggedInOldLaunch() {
         when(mAnalytics.getUpcomingBookings()).thenReturn(0);
         when(mUserWithBooking.getAnalytics()).thenReturn(mAnalytics);
         when(mUserManager.getCurrentUser()).thenReturn(mUserWithBooking);
@@ -95,8 +94,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
      * The user is logged in, but has no bookings. Should stay on the services page
      */
     @Test
-    public void testLoggedInNoBookings()
-    {
+    public void testLoggedInNoBookings() {
         when(mAnalytics.getUpcomingBookings()).thenReturn(0);
         when(mUserWithBooking.getAnalytics()).thenReturn(mAnalytics);
         when(mUserManager.getCurrentUser()).thenReturn(mUserWithBooking);
@@ -115,8 +113,7 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
      * A user not logged in is supposed to see the main services screen onload
      */
     @Test
-    public void testNotLoggedInUser()
-    {
+    public void testNotLoggedInUser() {
         when(mUserManager.getCurrentUser()).thenReturn(null);
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
         //should have a list of one item.
@@ -128,22 +125,22 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
 
     @Test
     @Ignore
-    public void shouldStartBookingFlowIfServiceHasNoNestedCategories() throws Exception
-    {
+    public void shouldStartBookingFlowIfServiceHasNoNestedCategories() throws Exception {
         when(mMockService.getChildServices()).thenReturn(Collections.<Service>emptyList());
 
         mFragment.onReceiveServicesSuccess(
                 new BookingEvent.ReceiveServicesSuccess(Lists.newArrayList(mMockService)));
         mFragment.mRecyclerView.getChildAt(0).performClick();
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingLocationActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingLocationActivity.class.getName())
+        );
     }
 
     @Test
     @Ignore
-    public void shouldLaunchServiceActivityFlowIfServiceHasNestedCategories() throws Exception
-    {
+    public void shouldLaunchServiceActivityFlowIfServiceHasNestedCategories() throws Exception {
         when(mMockService.getChildServices()).thenReturn(Lists.newArrayList(mMockService));
 
         mFragment.onReceiveServicesSuccess(
@@ -152,7 +149,9 @@ public class ServiceCategoriesFragmentTest extends RobolectricGradleTestWrapper
         mFragment.mRecyclerView.getChildAt(0).performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(ServicesActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(ServicesActivity.class.getName())
+        );
     }
 }

@@ -21,8 +21,8 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-public class ContactFragmentTest extends RobolectricGradleTestWrapper
-{
+public class ContactFragmentTest extends RobolectricGradleTestWrapper {
+
     @Inject
     UserManager mUserManager;
     @Inject
@@ -31,16 +31,14 @@ public class ContactFragmentTest extends RobolectricGradleTestWrapper
     private ContactFragment mFragment;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         ((TestBaseApplication) RuntimeEnvironment.application).inject(this);
         mFragment = new ContactFragment();
         SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
     }
 
     @Test
-    public void shouldDisplayCorrectInfo()
-    {
+    public void shouldDisplayCorrectInfo() {
         assertEquals(
                 mFragment.getString(R.string.account_contact_info),
                 mFragment.mToolbar.getTitle()
@@ -56,8 +54,7 @@ public class ContactFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldValidateInput()
-    {
+    public void shouldValidateInput() {
         mFragment.mFullNameText.setText("");
         mFragment.getView().findViewById(R.id.contact_update_button).performClick();
         verify(mDataManager, never()).updateUser(

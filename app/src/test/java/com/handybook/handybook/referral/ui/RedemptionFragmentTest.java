@@ -33,8 +33,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
-{
+public class RedemptionFragmentTest extends RobolectricGradleTestWrapper {
+
     @Mock
     private DataManager.DataManagerError mMockError;
 
@@ -44,8 +44,7 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
     private ReferralsEvent.ReceiveRedemptionDetailsError mTestReceiveRedemptionDetailsError;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         mTestGuid = "test_guid";
         mTestErrorMessage = "Something bad happened!";
@@ -58,21 +57,23 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldRequestRedemptionDetails() throws Exception
-    {
+    public void shouldRequestRedemptionDetails() throws Exception {
         final ReferralsEvent.RequestRedemptionDetails event =
-                AppAssertionUtils.getFirstMatchingBusEvent(mFragment.bus,
-                        ReferralsEvent.RequestRedemptionDetails.class);
+                AppAssertionUtils.getFirstMatchingBusEvent(
+                        mFragment.bus,
+                        ReferralsEvent.RequestRedemptionDetails.class
+                );
         assertNotNull(event);
         assertThat(event.getGuid(), equalTo(mTestGuid));
     }
 
     @Test
-    public void shouldDisplaySignUpFragmentOnReceiveRedemptionDetailsSuccess() throws Exception
-    {
+    public void shouldDisplaySignUpFragmentOnReceiveRedemptionDetailsSuccess() throws Exception {
         final ReferralsEvent.ReceiveRedemptionDetailsSuccess mockEvent =
-                mock(ReferralsEvent.ReceiveRedemptionDetailsSuccess.class,
-                        Answers.RETURNS_DEEP_STUBS.get());
+                mock(
+                        ReferralsEvent.ReceiveRedemptionDetailsSuccess.class,
+                        Answers.RETURNS_DEEP_STUBS.get()
+                );
 
         mFragment.onReceiveRedemptionDetailsSuccess(mockEvent);
 
@@ -83,8 +84,7 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldDisplayDialogOnReceiveRedemptionDetailsError() throws Exception
-    {
+    public void shouldDisplayDialogOnReceiveRedemptionDetailsError() throws Exception {
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
         mFragment.onReceiveRedemptionDetailsError(mTestReceiveRedemptionDetailsError);
 
@@ -95,8 +95,7 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
 
     @Test
     public void shouldRequestRedemptionDetailsOnReceiveRedemptionDetailsErrorDialogRetry()
-            throws Exception
-    {
+            throws Exception {
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
         mFragment.onReceiveRedemptionDetailsError(mTestReceiveRedemptionDetailsError);
         reset(mFragment.bus);
@@ -105,16 +104,17 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
         dialog.findViewById(android.R.id.button1).performClick();
 
         final ReferralsEvent.RequestRedemptionDetails event =
-                AppAssertionUtils.getFirstMatchingBusEvent(mFragment.bus,
-                        ReferralsEvent.RequestRedemptionDetails.class);
+                AppAssertionUtils.getFirstMatchingBusEvent(
+                        mFragment.bus,
+                        ReferralsEvent.RequestRedemptionDetails.class
+                );
         assertNotNull(event);
         assertThat(event.getGuid(), equalTo(mTestGuid));
     }
 
     @Test
     public void shouldNavigateToHomeScreenOnReceiveRedemptionDetailsErrorDialogCancel()
-            throws Exception
-    {
+            throws Exception {
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
         mFragment.onReceiveRedemptionDetailsError(mTestReceiveRedemptionDetailsError);
 
@@ -123,13 +123,14 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
 
         final Intent nextStartedActivity =
                 shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(ServiceCategoriesActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(ServiceCategoriesActivity.class.getName())
+        );
     }
 
     @Test
-    public void shouldDisplayToastOnReceiveAuthUserError() throws Exception
-    {
+    public void shouldDisplayToastOnReceiveAuthUserError() throws Exception {
         final HandyEvent.ReceiveAuthUserError mockEvent =
                 new HandyEvent.ReceiveAuthUserError(mMockError, UserDataManager.AuthType.FACEBOOK);
         mFragment.onReceiveAuthUserError(mockEvent);
@@ -138,24 +139,28 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldRequestUserOnReceiveAuthUserSuccess() throws Exception
-    {
-        mFragment.onReceiveAuthUserSuccess(mock(HandyEvent.ReceiveAuthUserSuccess.class,
-                Answers.RETURNS_DEEP_STUBS.get()));
+    public void shouldRequestUserOnReceiveAuthUserSuccess() throws Exception {
+        mFragment.onReceiveAuthUserSuccess(mock(
+                HandyEvent.ReceiveAuthUserSuccess.class,
+                Answers.RETURNS_DEEP_STUBS.get()
+        ));
 
         final HandyEvent.RequestUser event =
-                AppAssertionUtils.getFirstMatchingBusEvent(mFragment.bus,
-                        HandyEvent.RequestUser.class);
+                AppAssertionUtils.getFirstMatchingBusEvent(
+                        mFragment.bus,
+                        HandyEvent.RequestUser.class
+                );
         assertNotNull(event);
     }
 
     @Test
     public void shouldRequestUserOnReceiveUserErrorDialogRetry()
-            throws Exception
-    {
+            throws Exception {
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
-        mFragment.onReceiveAuthUserSuccess(mock(HandyEvent.ReceiveAuthUserSuccess.class,
-                Answers.RETURNS_DEEP_STUBS.get()));
+        mFragment.onReceiveAuthUserSuccess(mock(
+                HandyEvent.ReceiveAuthUserSuccess.class,
+                Answers.RETURNS_DEEP_STUBS.get()
+        ));
         mFragment.onReceiveUserError(new HandyEvent.ReceiveUserError(mMockError, null));
         reset(mFragment.bus);
 
@@ -163,20 +168,25 @@ public class RedemptionFragmentTest extends RobolectricGradleTestWrapper
         dialog.findViewById(android.R.id.button1).performClick();
 
         final HandyEvent.RequestUser event =
-                AppAssertionUtils.getFirstMatchingBusEvent(mFragment.bus,
-                        HandyEvent.RequestUser.class);
+                AppAssertionUtils.getFirstMatchingBusEvent(
+                        mFragment.bus,
+                        HandyEvent.RequestUser.class
+                );
         assertNotNull(event);
     }
 
     @Test
-    public void shouldNavigateToHomeScreenOnReceiveUserSuccess() throws Exception
-    {
-        mFragment.onReceiveUserSuccess(mock(HandyEvent.ReceiveUserSuccess.class,
-                Answers.RETURNS_DEEP_STUBS.get()));
+    public void shouldNavigateToHomeScreenOnReceiveUserSuccess() throws Exception {
+        mFragment.onReceiveUserSuccess(mock(
+                HandyEvent.ReceiveUserSuccess.class,
+                Answers.RETURNS_DEEP_STUBS.get()
+        ));
 
         final Intent nextStartedActivity =
                 shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(ServiceCategoriesActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(ServiceCategoriesActivity.class.getName())
+        );
     }
 }

@@ -12,23 +12,25 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.RecurringBooking;
 
-public class BookingEditFrequencyViewModel
-{
+public class BookingEditFrequencyViewModel {
+
     private final BookingEditFrequencyInfoResponse mEditFrequencyInfoResponse;
-    private final int[] mFrequencyOptionsArray = new int[]{BookingRecurrence.WEEKLY, BookingRecurrence.BIWEEKLY, BookingRecurrence.MONTHLY};
+    private final int[] mFrequencyOptionsArray = new int[]{
+            BookingRecurrence.WEEKLY,
+            BookingRecurrence.BIWEEKLY,
+            BookingRecurrence.MONTHLY
+    };
     //allowing edit frequency only for recurring bookings
 
     private BookingEditFrequencyViewModel(
             @NonNull final BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse
-    )
-    {
+    ) {
         mEditFrequencyInfoResponse = bookingEditFrequencyInfoResponse;
     }
 
     public static BookingEditFrequencyViewModel from(
             @NonNull final BookingEditFrequencyInfoResponse bookingEditFrequencyInfoResponse
-    )
-    {
+    ) {
         return new BookingEditFrequencyViewModel(bookingEditFrequencyInfoResponse);
     }
 
@@ -42,8 +44,7 @@ public class BookingEditFrequencyViewModel
             final Context context,
             final Booking booking,
             final RecurringBooking recurringBooking
-    )
-    {
+    ) {
         //TODO: mostly duplicated from checkout flow fragment, should reconsider redesigning the options logic
         final BookingOption option = new BookingOption();
         option.setType(BookingOption.TYPE_OPTION);
@@ -53,8 +54,7 @@ public class BookingEditFrequencyViewModel
         String optionsSubText[] = new String[mFrequencyOptionsArray.length];
 
         int indexForFreq = getOptionIndexForFrequencyValue();
-        if (indexForFreq >= 0)
-        {
+        if (indexForFreq >= 0) {
             optionsSubText[indexForFreq] = context.getResources()
                                                   .getString(R.string.current);//highlight the current selected option
         }
@@ -68,8 +68,7 @@ public class BookingEditFrequencyViewModel
         );
 
         //set all the right sub texts to the service short name
-        for (int i = 0; i < optionsRightSubText.length; i++)
-        {
+        for (int i = 0; i < optionsRightSubText.length; i++) {
             optionsRightSubText[i] = rightSubText;
         }
         option.setOptionsRightSubText(optionsRightSubText);
@@ -89,22 +88,18 @@ public class BookingEditFrequencyViewModel
             final Context context,
             final Booking booking,
             final RecurringBooking recurringBooking
-    )
-    {
+    ) {
         String serviceName = "";
 
-        if (booking != null)
-        {
+        if (booking != null) {
             serviceName = booking.getServiceMachineName();
         }
 
-        if (recurringBooking != null)
-        {
+        if (recurringBooking != null) {
             serviceName = recurringBooking.getMachineName();
         }
 
-        switch (serviceName)
-        {
+        switch (serviceName) {
             case Booking.SERVICE_CLEANING:
             case Booking.SERVICE_HOME_CLEANING:
             case Booking.SERVICE_OFFICE_CLEANING:
@@ -118,13 +113,11 @@ public class BookingEditFrequencyViewModel
      * @return An array of formatted strings that represent frequencies, to be displayed as the main
      * options text
      */
-    private String[] getFormattedPricesForFrequencyArray()
-    {
+    private String[] getFormattedPricesForFrequencyArray() {
         String[] priceArray = new String[mFrequencyOptionsArray.length];
         //this is string because server returns formatted prices (let's not do that in new api)
 
-        for (int i = 0; i < priceArray.length; i++)
-        {
+        for (int i = 0; i < priceArray.length; i++) {
             priceArray[i] = getFormattedPriceForFrequency(mFrequencyOptionsArray[i]);
         }
         return priceArray;
@@ -134,10 +127,8 @@ public class BookingEditFrequencyViewModel
      * @param recurrenceCode
      * @return The new booking price for a given booking frequency
      */
-    public String getFormattedPriceForFrequency(@BookingRecurrenceCode final int recurrenceCode)
-    {
-        switch (recurrenceCode)
-        {
+    public String getFormattedPriceForFrequency(@BookingRecurrenceCode final int recurrenceCode) {
+        switch (recurrenceCode) {
             case BookingRecurrence.WEEKLY:
                 return mEditFrequencyInfoResponse.getWeeklyPriceFormatted();
             case BookingRecurrence.BIWEEKLY:
@@ -154,25 +145,21 @@ public class BookingEditFrequencyViewModel
      * @return the index of the options array entry that reflects the current frequency of the
      * booking series. used to select a default option
      */
-    public int getOptionIndexForFrequencyValue()
-    {
+    public int getOptionIndexForFrequencyValue() {
         final int freq = mEditFrequencyInfoResponse.getCurrentFrequency();
-        for (int i = 0; i < mFrequencyOptionsArray.length; i++)
-        {
+        for (int i = 0; i < mFrequencyOptionsArray.length; i++) {
             if (freq == mFrequencyOptionsArray[i]) { return i; }
         }
         Crashlytics.logException(new Exception(
                 "BookingEditFrequencyViewModel::getOptionIdexForFrequencyValue():" +
-                        "current frequency of booking does not " +
-                        "match any frequency in the options array: " + freq));
+                "current frequency of booking does not " +
+                "match any frequency in the options array: " + freq));
         return -1;
     }
 
-    private String[] getDisplayStringsArray(final Context context)
-    {
+    private String[] getDisplayStringsArray(final Context context) {
         String[] displayStrings = new String[mFrequencyOptionsArray.length];
-        for (int i = 0; i < mFrequencyOptionsArray.length; i++)
-        {
+        for (int i = 0; i < mFrequencyOptionsArray.length; i++) {
             @BookingRecurrenceCode final int recurrenceCode = mFrequencyOptionsArray[i];
             displayStrings[i] = getDisplayStringForBookingFrequency(context, recurrenceCode);
         }
@@ -182,10 +169,8 @@ public class BookingEditFrequencyViewModel
     private String getDisplayStringForBookingFrequency(
             final Context context,
             @BookingRecurrenceCode final int recurrenceCode
-    )
-    {
-        switch (recurrenceCode)
-        {
+    ) {
+        switch (recurrenceCode) {
             case BookingRecurrence.WEEKLY:
                 return context.getResources().getString(R.string.every_week);
             case BookingRecurrence.BIWEEKLY:

@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Type;
 
-public class BookingCompleteTransaction
-{
+public class BookingCompleteTransaction {
+
     public static final String ENTRY_METHODS_INFO = "entry_methods_info";
     public static final String CHARGE = "charge";
     public static final String ID = "id";
@@ -30,68 +30,61 @@ public class BookingCompleteTransaction
     @SerializedName(ENTRY_METHODS_INFO)
     private EntryMethodsInfo mEntryMethodsInfo;
 
-    public EntryMethodsInfo getEntryMethodsInfo()
-    {
+    public EntryMethodsInfo getEntryMethodsInfo() {
         return mEntryMethodsInfo;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return mId;
     }
 
-    public void setId(final int id)
-    {
+    public void setId(final int id) {
         mId = id;
     }
 
-    public int getCharge()
-    {
+    public int getCharge() {
         return mCharge;
     }
 
-    public boolean isFirstEverBooking()
-    {
+    public boolean isFirstEverBooking() {
         return firstEverBooking;
     }
 
-    public User getUser()
-    {
+    public User getUser() {
         return mUser;
     }
 
-    void setUser(final User user)
-    {
+    void setUser(final User user) {
         mUser = user;
     }
 
-    public Instructions getInstructions()
-    {
+    public Instructions getInstructions() {
         return mInstructions;
     }
 
-    String toJson()
-    {
+    String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .registerTypeAdapter(BookingCompleteTransaction.class,
-                        new BookingCompleteTransaction()).create();
+                                           .registerTypeAdapter(
+                                                   BookingCompleteTransaction.class,
+                                                   new BookingCompleteTransaction()
+                                           ).create();
 
         return gson.toJson(this);
     }
 
-    public static BookingCompleteTransaction fromJson(final String json)
-    {
+    public static BookingCompleteTransaction fromJson(final String json) {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
-                .fromJson(json, BookingCompleteTransaction.class);
+                                .fromJson(json, BookingCompleteTransaction.class);
     }
 
     static class BookingCompleteTransactionSerializer
-            implements JsonSerializer<BookingCompleteTransaction>
-    {
+            implements JsonSerializer<BookingCompleteTransaction> {
+
         @Override
-        public JsonElement serialize(final BookingCompleteTransaction value, final Type type,
-                                     final JsonSerializationContext context)
-        {
+        public JsonElement serialize(
+                final BookingCompleteTransaction value, final Type type,
+                final JsonSerializationContext context
+        ) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add(ID, context.serialize(value.getId()));
             jsonObj.add(USER_INFO, context.serialize(value.getUser()));
@@ -103,20 +96,18 @@ public class BookingCompleteTransaction
     }
 
 
-    public static class User
-    {
+    public static class User {
+
         @SerializedName("auth_token")
         private String mAuthToken;
         @SerializedName(ID)
         private String mId;
 
-        public String getAuthToken()
-        {
+        public String getAuthToken() {
             return mAuthToken;
         }
 
-        public String getId()
-        {
+        public String getId() {
             return mId;
         }
     }

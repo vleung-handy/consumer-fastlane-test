@@ -23,6 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class BookingRescheduleOptionsFragment extends BookingFlowFragment {
+
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_DATE = "com.handy.handy.EXTRA_RESCHEDULE_DATE";
     static final String EXTRA_RESCHEDULE_TYPE = "com.handy.handy.EXTRA_RESCHEDULE_TYPE";
@@ -45,8 +46,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
             final Date date,
             @Nullable final String providerId,
             final BookingDetailFragment.RescheduleType rescheduleType
-    )
-    {
+    ) {
         final BookingRescheduleOptionsFragment fragment = new BookingRescheduleOptionsFragment();
         final Bundle args = new Bundle();
 
@@ -74,10 +74,16 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_reschedule_options, container, false);
+                                       .inflate(
+                                               R.layout.fragment_booking_reschedule_options,
+                                               container,
+                                               false
+                                       );
 
         ButterKnife.bind(this, view);
 
@@ -87,7 +93,9 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         options.setDefaultValue(Integer.toString(optionIndex));
 
         final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(getActivity(),
-                options, optionUpdated);
+                                                                                  options,
+                                                                                  optionUpdated
+        );
 
         optionsView.hideTitle();
         optionsLayout.addView(optionsView, 0);
@@ -116,15 +124,15 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
     }
 
     @Override
-    public final void onActivityResult(final int requestCode, final int resultCode,
-                                       final Intent data) {
+    public final void onActivityResult(
+            final int requestCode, final int resultCode,
+            final Intent data
+    ) {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Pass along any valid reschedules
-        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
-        {
-            if(data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0)
-            {
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
+            if (data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0) != 0) {
                 final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
                 final Intent intent = new Intent();
                 intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
@@ -142,13 +150,17 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         }
 
         @Override
-        public void onShowChildren(final BookingOptionsView view,
-                                   final String[] items) {
+        public void onShowChildren(
+                final BookingOptionsView view,
+                final String[] items
+        ) {
         }
 
         @Override
-        public void onHideChildren(final BookingOptionsView view,
-                                   final String[] items) {
+        public void onHideChildren(
+                final BookingOptionsView view,
+                final String[] items
+        ) {
         }
     };
 }

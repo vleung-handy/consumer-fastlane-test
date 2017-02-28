@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class BookingRequest extends Observable
-{
+public class BookingRequest extends Observable {
+
     public static final String KEY_UNIQ = "uniq";
     public static final String KEY_SERVICE_ID = "service_id";
     public static final String KEY_PROVIDER_ID = "provider_id";
@@ -65,197 +65,166 @@ public class BookingRequest extends Observable
 
     transient private String mTimeZone;
 
-    public int getServiceId()
-    {
+    public int getServiceId() {
         return mServiceId;
     }
 
-    public void setServiceId(final int serviceId)
-    {
+    public void setServiceId(final int serviceId) {
         mServiceId = serviceId;
         triggerObservers();
     }
 
-    public String getUniq()
-    {
+    public String getUniq() {
         return mUniq;
     }
 
-    public void setUniq(final String uniq)
-    {
+    public void setUniq(final String uniq) {
         mUniq = uniq;
         triggerObservers();
     }
 
-    public String getZipCode()
-    {
+    public String getZipCode() {
         return mZipCode;
     }
 
-    public void setZipCode(final String zipCode)
-    {
+    public void setZipCode(final String zipCode) {
         mZipCode = zipCode;
         triggerObservers();
     }
 
-    public ZipValidationResponse.ZipArea getZipArea()
-    {
+    public ZipValidationResponse.ZipArea getZipArea() {
         return mZipArea;
     }
 
-    public void setZipArea(final ZipValidationResponse.ZipArea zipArea)
-    {
+    public void setZipArea(final ZipValidationResponse.ZipArea zipArea) {
         mZipArea = zipArea;
         triggerObservers();
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return mEmail;
     }
 
-    public void setEmail(final String email)
-    {
+    public void setEmail(final String email) {
         mEmail = email;
         triggerObservers();
     }
 
-    final String getUserId()
-    {
+    final String getUserId() {
         return mUserId;
     }
 
-    public void setUserId(final String userId)
-    {
+    public void setUserId(final String userId) {
         mUserId = userId;
         triggerObservers();
     }
 
-    public Date getStartDate()
-    {
+    public Date getStartDate() {
         return mStartDate;
     }
 
-    public void setStartDate(final Date startDate)
-    {
+    public void setStartDate(final Date startDate) {
         mStartDate = startDate;
         triggerObservers();
     }
 
-    public HashMap<String, String> getOptions()
-    {
+    public HashMap<String, String> getOptions() {
         if (mOptions == null) { mOptions = new HashMap<>(); }
         return mOptions;
     }
 
-    public void setOptions(final HashMap<String, String> options)
-    {
+    public void setOptions(final HashMap<String, String> options) {
         mOptions = options;
         triggerObservers();
     }
 
-    public String getPromoCode()
-    {
+    public String getPromoCode() {
         return mPromoCode;
     }
 
-    public void setPromoCode(final String promoCode)
-    {
+    public void setPromoCode(final String promoCode) {
         mPromoCode = promoCode;
         triggerObservers();
     }
 
-    public String getTimeZone()
-    {
+    public String getTimeZone() {
         return mTimeZone;
     }
 
-    public void setTimeZone(final String timeZone)
-    {
+    public void setTimeZone(final String timeZone) {
         mTimeZone = timeZone;
         triggerObservers();
     }
 
-    public PromoCode.Type getPromoType()
-    {
+    public PromoCode.Type getPromoType() {
         return mPromoType;
     }
 
-    public void setPromoType(final PromoCode.Type promoType)
-    {
+    public void setPromoType(final PromoCode.Type promoType) {
         mPromoType = promoType;
         triggerObservers();
     }
 
-    public String getCoupon()
-    {
+    public String getCoupon() {
         return mCoupon;
     }
 
-    public void setCoupon(final String coupon)
-    {
+    public void setCoupon(final String coupon) {
         mCoupon = coupon;
         triggerObservers();
     }
 
-    public String getProviderId()
-    {
+    public String getProviderId() {
         return mProviderId;
     }
 
-    public void setProviderId(final String providerId)
-    {
+    public void setProviderId(final String providerId) {
         mProviderId = providerId;
         triggerObservers();
     }
 
-    private void triggerObservers()
-    {
+    private void triggerObservers() {
         setChanged();
         notifyObservers();
     }
 
-    public final String toJson()
-    {
+    public final String toJson() {
         final Gson gson = new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
-                .setExclusionStrategies(getExclusionStrategy())
-                .registerTypeAdapter(BookingRequest.class, new BookingRequestSerializer()).create();
+                                           .setExclusionStrategies(getExclusionStrategy())
+                                           .registerTypeAdapter(
+                                                   BookingRequest.class,
+                                                   new BookingRequestSerializer()
+                                           ).create();
 
         return gson.toJson(this);
     }
 
-    public static BookingRequest fromJson(final String json)
-    {
+    public static BookingRequest fromJson(final String json) {
         return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
-                .fromJson(json, BookingRequest.class);
+                                .fromJson(json, BookingRequest.class);
     }
 
-    public static ExclusionStrategy getExclusionStrategy()
-    {
-        return new ExclusionStrategy()
-        {
+    public static ExclusionStrategy getExclusionStrategy() {
+        return new ExclusionStrategy() {
             @Override
-            public boolean shouldSkipField(final FieldAttributes f)
-            {
+            public boolean shouldSkipField(final FieldAttributes f) {
                 return false;
             }
 
             @Override
-            public boolean shouldSkipClass(final Class<?> clazz)
-            {
+            public boolean shouldSkipClass(final Class<?> clazz) {
                 return clazz.equals(Observer.class);
             }
         };
     }
 
-    public static final class BookingRequestSerializer implements JsonSerializer<BookingRequest>
-    {
+    public static final class BookingRequestSerializer implements JsonSerializer<BookingRequest> {
+
         @Override
         public JsonElement serialize(
                 final BookingRequest value, final Type type,
                 final JsonSerializationContext context
-        )
-        {
+        ) {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add(KEY_SERVICE_ID, context.serialize(value.getServiceId()));
             jsonObj.add(KEY_PROVIDER_ID, context.serialize(value.getProviderId()));

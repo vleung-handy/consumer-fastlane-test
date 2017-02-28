@@ -33,8 +33,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper {
+
     //TODO: add a test to verify that the request reflects the options selected
     private BookingEditExtrasFragment mFragment;
 
@@ -57,8 +57,7 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     private ArgumentCaptor<Object> mCaptor;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
 
         when(mBooking.getId()).thenReturn("12345");
@@ -68,15 +67,14 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldRequestEditHoursViewModelOnCreateView() throws Exception
-    {
+    public void shouldRequestEditHoursViewModelOnCreateView() throws Exception {
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
-                instanceOf(BookingEditEvent.RequestEditBookingExtrasViewModel.class));
+                                        instanceOf(BookingEditEvent.RequestEditBookingExtrasViewModel.class)
+        );
     }
 
     @Test
-    public void shouldRequestEditHoursWhenSubmitButtonPressed() throws Exception
-    {
+    public void shouldRequestEditHoursWhenSubmitButtonPressed() throws Exception {
         //mock the booking extras info
         ArrayList<Booking.ExtraInfo> extraInfos = new ArrayList<>();
         extraInfos.add(mExtraInfo);
@@ -98,7 +96,10 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
                 Booking.ExtrasMachineName.INSIDE_CABINETS, Booking.ExtrasMachineName.INSIDE_FRIDGE
         });
         when(mBookingEditExtrasInfoResponse.getOptionPrices()).thenReturn(new OptionPrice[]
-                {new OptionPrice(), new OptionPrice()});
+                                                                                  {
+                                                                                          new OptionPrice(),
+                                                                                          new OptionPrice()
+                                                                                  });
         when(mPaidStatus.getFutureBillDateFormatted()).thenReturn("Jan 1");
         when(mBookingEditExtrasInfoResponse.getPaidStatus()).thenReturn(mPaidStatus);
 
@@ -106,22 +107,23 @@ public class BookingEditExtrasFragmentTest extends RobolectricGradleTestWrapper
                 (mBookingEditExtrasInfoResponse);
         //get the edit extras info response
         mFragment.onReceiveEditExtrasViewModelSuccess(
-                new BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess(bookingEditExtrasViewModel));
+                new BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess(
+                        bookingEditExtrasViewModel));
 
         //press the save button
         mFragment.onSaveButtonPressed();
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
-                instanceOf(BookingEditEvent.RequestEditBookingExtras.class));
+                                        instanceOf(BookingEditEvent.RequestEditBookingExtras.class)
+        );
     }
 
     @Test
-    public void shouldShowErrorToastWhenServerError() throws Exception
-    {
+    public void shouldShowErrorToastWhenServerError() throws Exception {
         String errorMessage = mFragment.getString(R.string.default_error_string);
         mFragment.onReceiveEditExtrasViewModelError(
                 new BookingEditEvent.ReceiveEditBookingExtrasViewModelError(
-                new DataManager.DataManagerError(DataManager
-                .Type.SERVER)));
+                        new DataManager.DataManagerError(DataManager
+                                                                 .Type.SERVER)));
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo(errorMessage));
     }
 }

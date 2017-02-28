@@ -3,9 +3,9 @@ package com.handybook.handybook.helpcenter.helpcontact.ui.activity;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.helpcenter.model.HelpNode;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 public final class HelpContactActivity extends MenuDrawerActivity {
 

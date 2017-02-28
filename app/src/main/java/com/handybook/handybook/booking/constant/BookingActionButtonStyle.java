@@ -2,8 +2,7 @@ package com.handybook.handybook.booking.constant;
 
 import com.handybook.handybook.R;
 
-public enum BookingActionButtonStyle
-{
+public enum BookingActionButtonStyle {
     GREEN(
             R.drawable.button_booking_action_green,
             R.style.Button_BookingAction_Green,
@@ -49,25 +48,21 @@ public enum BookingActionButtonStyle
     private int textStyleId;
     private int layoutTemplateId;
 
-    BookingActionButtonStyle(int backgroundDrawableId, int textStyleId, int layoutTemplateId)
-    {
+    BookingActionButtonStyle(int backgroundDrawableId, int textStyleId, int layoutTemplateId) {
         this.backgroundDrawableId = backgroundDrawableId;
         this.textStyleId = textStyleId;
         this.layoutTemplateId = layoutTemplateId;
     }
 
-    public int getBackgroundDrawableId()
-    {
+    public int getBackgroundDrawableId() {
         return backgroundDrawableId;
     }
 
-    public int getLayoutTemplateId()
-    {
+    public int getLayoutTemplateId() {
         return layoutTemplateId;
     }
 
-    public int getTextStyleId()
-    {
+    public int getTextStyleId() {
         return textStyleId;
     }
 }

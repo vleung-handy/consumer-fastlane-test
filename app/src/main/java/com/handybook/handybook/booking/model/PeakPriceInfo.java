@@ -1,6 +1,5 @@
 package com.handybook.handybook.booking.model;
 
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
@@ -15,17 +14,17 @@ import java.util.Date;
 /**
  * Created by odolejsi on 4/13/16.
  */
-public class PeakPriceInfo implements Serializable
-{
+public class PeakPriceInfo implements Serializable {
+
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
-            RECURRENCE_INVALID,
-            RECURRENCE_NONRECURRING,
-            RECURRENCE_WEEKLY,
-            RECURRENCE_BIWEEKLY,
-            RECURRENCE_QUADWEEKLY
+                       RECURRENCE_INVALID,
+                       RECURRENCE_NONRECURRING,
+                       RECURRENCE_WEEKLY,
+                       RECURRENCE_BIWEEKLY,
+                       RECURRENCE_QUADWEEKLY
 
-    })
+               })
     public @interface Recurrence {}
 
 
@@ -46,10 +45,8 @@ public class PeakPriceInfo implements Serializable
 
     public static
     @Recurrence
-    String recurrenceFrom(int intRecurrence)
-    {
-        switch (intRecurrence)
-        {
+    String recurrenceFrom(int intRecurrence) {
+        switch (intRecurrence) {
             case 0:
                 return RECURRENCE_NONRECURRING;
             case 1:
@@ -63,44 +60,38 @@ public class PeakPriceInfo implements Serializable
         }
     }
 
-    public Date getDate()
-    {
+    public Date getDate() {
         return mDate;
     }
 
-    public Type getType()
-    {
+    public Type getType() {
         return mType;
     }
 
     @Nullable
-    public Type getType(@NonNull @Recurrence String recurrence)
-    {
-        final QuotePriceBreakdownRecurrenceOption option = getQuotePriceBreakdownRecurrenceOption(recurrence);
-        if (option == null)
-        {
+    public Type getType(@NonNull @Recurrence String recurrence) {
+        final QuotePriceBreakdownRecurrenceOption option = getQuotePriceBreakdownRecurrenceOption(
+                recurrence);
+        if (option == null) {
             return getType(); // Fallback
         }
         return option.getType();
     }
 
-    public float getPrice()
-    {
+    public float getPrice() {
         return mPrice;
     }
 
-    public float getPrice(@NonNull @Recurrence String recurrence)
-    {
-        final QuotePriceBreakdownRecurrenceOption option = getQuotePriceBreakdownRecurrenceOption(recurrence);
-        if (option == null)
-        {
+    public float getPrice(@NonNull @Recurrence String recurrence) {
+        final QuotePriceBreakdownRecurrenceOption option = getQuotePriceBreakdownRecurrenceOption(
+                recurrence);
+        if (option == null) {
             return getPrice(); // Fallback
         }
         return option.getPrice();
     }
 
-    public QuotePriceRecurrenceBreakdown getQuotePriceRecurrenceBreakdown()
-    {
+    public QuotePriceRecurrenceBreakdown getQuotePriceRecurrenceBreakdown() {
         return mQuotePriceRecurrenceBreakdown;
     }
 
@@ -113,15 +104,12 @@ public class PeakPriceInfo implements Serializable
     @Nullable
     public QuotePriceBreakdownRecurrenceOption getQuotePriceBreakdownRecurrenceOption(
             @NonNull @Recurrence String recurrence
-    )
-    {
+    ) {
         final QuotePriceRecurrenceBreakdown breakdown = getQuotePriceRecurrenceBreakdown();
-        if (breakdown == null)
-        {
+        if (breakdown == null) {
             return null;
         }
-        switch (recurrence)
-        {
+        switch (recurrence) {
             case RECURRENCE_NONRECURRING:
                 return breakdown.getNonRecurring();
             case RECURRENCE_WEEKLY:
@@ -134,8 +122,8 @@ public class PeakPriceInfo implements Serializable
         return null;
     }
 
-    private static class QuotePriceRecurrenceBreakdown implements Serializable
-    {
+    private static class QuotePriceRecurrenceBreakdown implements Serializable {
+
         @SerializedName(PeakPriceInfo.RECURRENCE_NONRECURRING)
         private QuotePriceBreakdownRecurrenceOption mNonRecurring;
         @SerializedName(PeakPriceInfo.RECURRENCE_WEEKLY)
@@ -146,52 +134,45 @@ public class PeakPriceInfo implements Serializable
         private QuotePriceBreakdownRecurrenceOption mQuadWeekly;
 
         @Nullable
-        public QuotePriceBreakdownRecurrenceOption getNonRecurring()
-        {
+        public QuotePriceBreakdownRecurrenceOption getNonRecurring() {
             return mNonRecurring;
         }
 
         @Nullable
-        public QuotePriceBreakdownRecurrenceOption getWeekly()
-        {
+        public QuotePriceBreakdownRecurrenceOption getWeekly() {
             return mWeekly;
         }
 
         @Nullable
-        public QuotePriceBreakdownRecurrenceOption getBiWeekly()
-        {
+        public QuotePriceBreakdownRecurrenceOption getBiWeekly() {
             return mBiWeekly;
         }
 
         @Nullable
-        public QuotePriceBreakdownRecurrenceOption getQuadWeekly()
-        {
+        public QuotePriceBreakdownRecurrenceOption getQuadWeekly() {
             return mQuadWeekly;
         }
     }
 
 
-    private static class QuotePriceBreakdownRecurrenceOption implements Serializable
-    {
+    private static class QuotePriceBreakdownRecurrenceOption implements Serializable {
+
         @SerializedName("price")
         private float mPrice;
         @SerializedName("type")
         private Type mType;
 
-        public float getPrice()
-        {
+        public float getPrice() {
             return mPrice;
         }
 
-        public Type getType()
-        {
+        public Type getType() {
             return mType;
         }
     }
 
 
-    public enum Type
-    {
+    public enum Type {
         @SerializedName("reg-price")
         REG_PRICE,
         @SerializedName("peak-price")

@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.model;
 import com.google.gson.annotations.SerializedName;
 
 public final class BookingPriceInfo {
+
     @SerializedName("hours") private float hours;
     @SerializedName("price") private float price;
     @SerializedName("discount_price") private float discountPrice;
@@ -23,8 +24,7 @@ public final class BookingPriceInfo {
             final float discountMonthlyPrice,
             final float weeklyPrice,
             final float discountWeeklyPrice
-    )
-    {
+    ) {
         this.hours = hours;
         this.price = price;
         this.discountPrice = discountPrice;

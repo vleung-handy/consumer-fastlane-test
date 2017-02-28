@@ -11,19 +11,18 @@ import org.robolectric.RuntimeEnvironment;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 
-public class DefaultPreferencesManagerTest extends RobolectricGradleTestWrapper
-{
+public class DefaultPreferencesManagerTest extends RobolectricGradleTestWrapper {
+
     DefaultPreferencesManager mPrefsManager;
 
     @Before
-    public void setUp()
-    {
-        mPrefsManager = new DefaultPreferencesManager(RuntimeEnvironment.application.getApplicationContext());
+    public void setUp() {
+        mPrefsManager
+                = new DefaultPreferencesManager(RuntimeEnvironment.application.getApplicationContext());
     }
 
     @Test
-    public void installationIdShouldBeConsistent()
-    {
+    public void installationIdShouldBeConsistent() {
         String installationId = mPrefsManager.getInstallationId();
         // the id should never be empty
         assertFalse(TextUtils.isEmpty(installationId));

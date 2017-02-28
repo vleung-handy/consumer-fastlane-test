@@ -32,8 +32,8 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.mime.TypedInput;
 
-public interface HandyRetrofitService
-{
+public interface HandyRetrofitService {
+
     @GET("/promos")
     void getAvailableSplashPromo(
             @Query("user_id") String userId,
@@ -219,7 +219,6 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
-
     @POST("/bookings/{booking}/description_update")
         //points to same endpoint as update entry info but that is because the endpoint currently does too much
     void updateBookingNoteToPro(
@@ -265,7 +264,6 @@ public interface HandyRetrofitService
             HandyRetrofitCallback cb
     );
 
-
     /**
      * @param bookingId
      * @param bookingEditFrequencyRequest
@@ -278,7 +276,6 @@ public interface HandyRetrofitService
             @Body BookingEditFrequencyRequest bookingEditFrequencyRequest,
             HandyRetrofitCallback cb
     );
-
 
     /**
      * @param bookingId
@@ -499,13 +496,12 @@ public interface HandyRetrofitService
     @GET("/help/help_info")
     void getHelpCenterInfo(HandyRetrofitCallback cb);
 
-    final class RateProRequest
-    {
+    final class RateProRequest {
+
         @SerializedName("positive_feedback")
         private String positiveFeedback;
 
-        RateProRequest(final String positiveFeedback)
-        {
+        RateProRequest(final String positiveFeedback) {
             this.positiveFeedback = positiveFeedback;
         }
     }
