@@ -9,6 +9,7 @@ import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -31,7 +32,6 @@ import javax.inject.Inject;
 
 public class SplashActivity extends BaseActivity
 {
-    private static final String TAG = SplashActivity.class.getSimpleName();
     @Inject
     SecurePreferencesManager mSecurePreferencesManager;
     @Inject
@@ -74,13 +74,51 @@ public class SplashActivity extends BaseActivity
             }
         });
 
+        //this is to work around the subscriber inheritance issue that Otto has.
+        //https://github.com/square/otto/issues/26
+        mBusEventListener = new Object() {
+            @Subscribe
+            public void onReceiveConfigurationSuccess(
+                    final ConfigurationEvent.ReceiveConfigurationSuccess event
+            ) {
+                if (event != null) {
+                    determineStartPage(event.getConfiguration());
+                }
+                else {
+                    navigateToServiceCategoriesActivity();
+                    unregisterAndFinish();
+                }
+            }
+        };
+
+        mBusErrorEventListener = new Object() {
+            @Subscribe
+            public void onReceiveConfigurationError(ConfigurationEvent.ReceiveConfigurationError event) {
+                //on all errors, default to home page.
+                navigateToServiceCategoriesActivity();
+                unregisterAndFinish();
+            }
+        };
+
+        mBus.register(mBusEventListener);
+        mBus.register(mBusErrorEventListener);
+        mBus.post(new ConfigurationEvent.RequestConfiguration());
+
+    }
+
+    /**
+     * After we have a config, we use that information to decide where to go next (especially
+     * for onboarding and bottom nav)
+     * @param config
+     */
+    private void determineStartPage(Configuration config) {
         final User user = userManager.getCurrentUser();
 
         //if onboarding is enabled, and we haven't collected email and zip yet, then show the onboarding page
-        if (requiresOnboardingV2())
+        if (requiresOnboardingV2(config))
         {
             startActivity(new Intent(this, OnboardActivity.class));
-            finish();
+            unregisterAndFinish();
         }
         else if (!mDefaultPreferencesManager.getBoolean(
                 PrefsKey.APP_ONBOARD_SHOWN,
@@ -89,55 +127,38 @@ public class SplashActivity extends BaseActivity
         {
             final Intent intent = new Intent(this, OnboardActivity.class);
             startActivity(intent);
-            finish();
+            unregisterAndFinish();
         }
-        else if (user != null
-                && mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
+        else if (user != null && config.isBottomNavEnabled())
         {
-            //TODO investigate
+            //TODO investigate  <-- @Xi what is it that we need to investigate?
             final Intent intent = new Intent(this, BottomNavActivity.class);
             startActivity(intent);
-            finish();
+            unregisterAndFinish();
         }
         else if (user != null
-                && user.getAnalytics() != null
-                && user.getAnalytics().getUpcomingBookings() > 0
-                && ((BaseApplication) getApplication()).isNewlyLaunched())
+                 && user.getAnalytics() != null
+                 && user.getAnalytics().getUpcomingBookings() > 0
+                 && ((BaseApplication) getApplication()).isNewlyLaunched())
         {
             final Intent intent = new Intent(this, BookingsActivity.class);
             startActivity(intent);
-            finish();
+            unregisterAndFinish();
         }
-        else
-        {
-            //this is to work around the subscriber inheritance issue that Otto has.
-            //https://github.com/square/otto/issues/26
-            mBusEventListener = new Object()
-            {
-                @Subscribe
-                public void onReceiveConfigurationSuccess(
-                        final ConfigurationEvent.ReceiveConfigurationSuccess event
-                )
-                {
-                    if (event != null)
-                    {
-                        navigateToServiceCategoriesActivity();
-                    }
-                }
-            };
+        else {
+            //all else, go to home page
+            navigateToServiceCategoriesActivity();
+            unregisterAndFinish();
+        }
+    }
 
-            mBusErrorEventListener = new Object()
-            {
-                @Subscribe
-                public void onReceiveConfigurationError(ConfigurationEvent.ReceiveConfigurationError event)
-                {
-                    if (event != null)
-                    {
-                        navigateToServiceCategoriesActivity();
-                    }
-                }
-            };
-        }
+    /**
+     * After we did what we need to do, we no longer care about bus events. 
+     */
+    private void unregisterAndFinish() {
+        if (mBusEventListener != null) { mBus.unregister(mBusEventListener); }
+        if (mBusErrorEventListener != null) { mBus.unregister(mBusErrorEventListener); }
+        finish();
     }
 
     private void navigateToServiceCategoriesActivity()
@@ -149,23 +170,6 @@ public class SplashActivity extends BaseActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         //don't need history when launching this activity from splash
         startActivity(intent);
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        if (mBusEventListener != null) { mBus.register(mBusEventListener); }
-        if (mBusErrorEventListener != null) { mBus.register(mBusErrorEventListener); }
-        mBus.post(new ConfigurationEvent.RequestConfiguration());
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        if (mBusEventListener != null) { mBus.unregister(mBusEventListener); }
-        if (mBusErrorEventListener != null) { mBus.unregister(mBusErrorEventListener); }
     }
 
     @Override
