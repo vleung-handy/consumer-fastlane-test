@@ -192,7 +192,8 @@ public abstract class ProTeamEvent {
 
     public enum Source {
         PRO_MANAGEMENT("pro_management"),
-        BOOKING_FLOW("booking_flow");
+        BOOKING_FLOW("booking_flow"),
+        RATING_FLOW("rating_flow");
 
         private final String mSource;
 

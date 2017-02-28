@@ -7,4 +7,5 @@ public class RequestCode {
     public static final int EDIT_PLAN_FREQUENCY = 1003;
     public static final int LOGIN_FROM_ONBOARDING = 1004;
     public static final int EDIT_PRO_TEAM_PREFERENCE = 1005;
+    public static final int SELECT_MATCH_PREFERENCE = 1006;
 }

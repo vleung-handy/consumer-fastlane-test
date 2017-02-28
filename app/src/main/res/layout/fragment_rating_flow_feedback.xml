@@ -48,6 +48,14 @@
         android:transitionName="@string/transition_divider"
         />
 
+    <FrameLayout
+        android:id="@+id/rating_flow_feedback_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rating_flow_next_button"
+        android:layout_below="@+id/rating_flow_divider"
+        />
+
     <Button
         android:id="@+id/rating_flow_next_button"
         style="@style/Button.Green"

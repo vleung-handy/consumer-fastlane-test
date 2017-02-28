@@ -64,11 +64,6 @@ public class RatingFlowActivity extends BaseActivity {
                     );
                 }
                 break;
-            case REFERRAL_STEP:
-                if (mReferralDescriptor != null) {
-                    fragment = null;
-                }
-                break;
             default:
                 finish();
                 return;
