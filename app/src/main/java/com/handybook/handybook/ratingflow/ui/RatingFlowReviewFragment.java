@@ -129,7 +129,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
             );
         }
         else {
-            showToast(R.string.default_error_string);
+            finishStep();
         }
     }
 }
