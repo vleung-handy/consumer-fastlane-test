@@ -4,6 +4,8 @@ import android.content.Intent;
 
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -35,6 +37,11 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper {
     private User mUserWithBooking;
     @Mock
     private User.Analytics mAnalytics;
+    @Mock
+    private Configuration mConfiguration;
+
+    @Inject
+    ConfigurationManager mConfigurationManager;
 
     TestBaseApplication mTestBaseApplication;
 
@@ -43,6 +50,7 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper {
         initMocks(this);
         mTestBaseApplication = ((TestBaseApplication) ShadowApplication.getInstance()
                                                                        .getApplicationContext());
+        when(mConfiguration.isOnboardingV2Enabled()).thenReturn(true);
         mTestBaseApplication.inject(this);
     }
 
@@ -57,6 +65,7 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper {
         ActivityController<SplashActivity> activityController = Robolectric.buildActivity(
                 SplashActivity.class);
         activityController.create();
+        activityController.get().determineStartPage(mConfiguration);
         Intent nextStartedActivity = shadowOf(activityController.get()).getNextStartedActivity();
         assertThat(
                 nextStartedActivity.getComponent().getClassName(),
@@ -78,6 +87,7 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper {
         ActivityController<SplashActivity> activityController = Robolectric.buildActivity(
                 SplashActivity.class);
         activityController.create();
+        activityController.get().determineStartPage(mConfiguration);
         Intent nextStartedActivity = shadowOf(activityController.get()).getNextStartedActivity();
         assertThat(
                 nextStartedActivity.getComponent().getClassName(),

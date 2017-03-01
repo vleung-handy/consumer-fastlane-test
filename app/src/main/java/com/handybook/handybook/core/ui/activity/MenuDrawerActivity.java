@@ -128,8 +128,10 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Subscribe
             public void userAuthUpdated(final UserLoggedInEvent event) {
                 checkLayerInitiation();
-                if (!event.isLoggedIn()) {
-                    if (requiresOnboardingV2()) {
+                if (!event.isLoggedIn())
+                {
+                    if (requiresOnboardingV2(mConfigurationManager.getPersistentConfiguration()))
+                    {
                         //upon logout, if onboarding is enabled, then we bring user back to onboarding screen.
                         final Intent intent = new Intent(
                                 MenuDrawerActivity.this,
