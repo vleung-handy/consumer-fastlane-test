@@ -60,7 +60,7 @@ public class BookingCancellationData implements Serializable {
     }
 
     @NonNull
-    public static String toJson(final BookingCancellationData value) {
+    public static String toJson(@NonNull final BookingCancellationData value) {
         return GSON.toJson(value, BookingCancellationData.class);
     }
 
@@ -128,7 +128,7 @@ public class BookingCancellationData implements Serializable {
         public String getNavigationTitle() { return mNavigationTitle; }
 
         public boolean hasUrl() {
-            return mUrl != null;
+            return mUrl != null && !mUrl.isEmpty();
         }
 
         @Nullable

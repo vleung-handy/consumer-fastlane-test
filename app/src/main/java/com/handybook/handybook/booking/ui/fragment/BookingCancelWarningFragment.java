@@ -71,9 +71,12 @@ public final class BookingCancelWarningFragment extends BookingFlowFragment {
         mBookingCancellationData = (BookingCancellationData) getArguments()
                 .getSerializable(EXTRA_BOOKING_CANCELLATION_DATA);
         mBooking = getArguments().getParcelable(EXTRA_BOOKING);
-        if (mBooking == null) { onNextClicked(); }
-        if (mBookingCancellationData == null) { onNextClicked(); }
-        if (!mBookingCancellationData.hasPrecancellationInfo()) { onNextClicked(); }
+        if ( // Make sure we have all the necessary data
+                mBooking == null
+                || mBookingCancellationData == null
+                || !mBookingCancellationData.hasPrecancellationInfo()) {
+            onNextClicked();
+        }
         mPreCancellationInfo = mBookingCancellationData.getPreCancellationInfo();
         bus.post(new LogEvent.AddLogEvent(
                 new BookingLog.BookingCancelWarningShown(mBooking.getId())
