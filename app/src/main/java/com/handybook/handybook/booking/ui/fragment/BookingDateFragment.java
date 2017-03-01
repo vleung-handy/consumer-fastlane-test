@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -289,10 +290,12 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
         final Calendar cal = Calendar.getInstance();
         cal.setTimeZone(getBookingTimeZone());
         cal.set(Calendar.MINUTE, 0);
+
         if (mRescheduleBooking != null) {
             cal.setTime(mRescheduleDate);
             return cal;
         }
+
         final Date requestDate = bookingManager.getCurrentRequest().getStartDate();
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         Date tranDate = null;
@@ -322,15 +325,17 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
         return cal;
     }
 
+    @NonNull
     private TimeZone getBookingTimeZone() {
-        TimeZone timeZone = null;
-        if (mRescheduleBooking != null && !TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone())) {
-            timeZone = TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone());
-        } else if (bookingManager.getCurrentRequest() != null &&
-                !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone())) {
-            timeZone = TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone());
+        if (mRescheduleBooking != null &&
+            !TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone())) {
+            return TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone());
         }
-        return timeZone;
+        if (bookingManager.getCurrentRequest() != null &&
+                 !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone())) {
+            return TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone());
+        }
+        return TimeZone.getDefault();
     }
 
     /**

@@ -43,6 +43,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingDateTimeInputFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
@@ -76,6 +77,7 @@ import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
+import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialogFragment;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
@@ -214,6 +216,8 @@ import static org.mockito.Mockito.when;
         SplashActivityTest.class,
         ProTeamConversationsFragment.class,
         BookingHeaderFragmentTest.class,
+        BookingDateTimeInputFragment.class,
+        BookingTimeInputDialogFragment.class,
 }, library = true)
 public class TestApplicationModule {
 
