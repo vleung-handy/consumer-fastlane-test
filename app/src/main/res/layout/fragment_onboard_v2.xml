@@ -15,6 +15,7 @@
         android:minHeight="?attr/actionBarSize"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="0dp"
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -131,13 +132,19 @@
             android:adjustViewBounds="true"
             />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_down_drop"
+            android:layout_gravity="top|center"
+            />
         <ViewSwitcher
             android:id="@+id/onboard_view_switcher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin_3x"
             android:layout_marginRight="@dimen/default_margin_3x"
-            android:layout_marginTop="@dimen/default_margin_double"
+            android:layout_marginTop="@dimen/default_margin_3x"
             android:background="@color/handy_white"
             android:elevation="@dimen/med_elevation"
             android:clipToPadding="false"
