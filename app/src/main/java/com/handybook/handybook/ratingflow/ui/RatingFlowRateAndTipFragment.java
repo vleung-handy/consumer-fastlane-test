@@ -26,6 +26,7 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
 import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -123,13 +124,16 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
         dataManager.ratePro(
                 Integer.parseInt(mBooking.getId()),
                 mSelectedRating,
-                tipAmountCents,
+                tipAmountCents == 0 ? null : tipAmountCents,
                 null,
                 new FragmentSafeCallback<Void>(this) {
                     @Override
                     public void onCallbackSuccess(final Void response) {
                         removeUiBlockers();
-                        getActivity().finish();
+                        if (getActivity() instanceof RatingFlowActivity) {
+                            ((RatingFlowActivity) getActivity())
+                                    .finishStepWithProRating(mSelectedRating);
+                        }
                     }
 
                     @Override
@@ -185,8 +189,7 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
                .noFade()
                .into(mProImage);
         int stringResId = R.string.rate_your_booking_prompt_formatted;
-        if (Booking.SERVICE_CLEANING.equalsIgnoreCase(mBooking.getServiceMachineName())
-            || Booking.SERVICE_HOME_CLEANING.equalsIgnoreCase(mBooking.getServiceMachineName())) {
+        if (mBooking.getProvider().getCategoryType() == ProTeamCategoryType.CLEANING) {
             stringResId = R.string.rate_your_cleaning_prompt_formatted;
         }
         mRatePrompt.setText(getString(

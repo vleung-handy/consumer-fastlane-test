@@ -133,6 +133,9 @@
 
     <!-- New Rating Flow -->
     <dimen name="rating_flow.profile_image_size">68dp</dimen>
+    <dimen name="rating_flow.profile_image_size_small">54dp</dimen>
     <dimen name="rating_flow.star_size">24dp</dimen>
+    <dimen name="rating_flow.star_size_small">18dp</dimen>
     <dimen name="rating_flow.star_margin">9dp</dimen>
+    <dimen name="rating_flow.star_margin_small">5dp</dimen>
 </resources>

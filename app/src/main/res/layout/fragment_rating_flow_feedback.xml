@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/rating_flow_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/rating_flow_pro_image"
+            android:layout_width="@dimen/rating_flow.profile_image_size_small"
+            android:layout_height="@dimen/rating_flow.profile_image_size_small"
+            android:layout_marginBottom="@dimen/default_margin_half"
+            android:layout_marginTop="@dimen/default_margin_double"
+            android:transitionName="@string/transition_pro_image"
+            tools:src="@drawable/img_pro_placeholder"
+            />
+
+        <com.handybook.handybook.ratingflow.ui.RatingFlowFiveStarsView
+            android:id="@+id/rating_flow_stars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_double"
+            android:transitionName="@string/transition_stars"
+            app:starHeight="@dimen/rating_flow.star_size_small"
+            app:starMargin="@dimen/rating_flow.star_margin_small"
+            app:starWidth="@dimen/rating_flow.star_size_small"
+            />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/rating_flow_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_margin_quarter"
+        android:layout_below="@+id/rating_flow_header"
+        android:background="@color/handy_bg"
+        android:transitionName="@string/transition_divider"
+        />
+
+    <FrameLayout
+        android:id="@+id/rating_flow_feedback_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rating_flow_next_button"
+        android:layout_below="@+id/rating_flow_divider"
+        />
+
+    <Button
+        android:id="@+id/rating_flow_next_button"
+        style="@style/Button.Green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/next"
+        />
+</RelativeLayout>

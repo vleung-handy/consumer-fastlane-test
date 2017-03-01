@@ -57,4 +57,11 @@
         <attr name="chatIndicatorIndex"
               format="integer"/>
     </declare-styleable>
+
+    <!-- Rating Flow -->
+    <declare-styleable name="RatingFlowFiveStarsView">
+        <attr name="starWidth" format="dimension"/>
+        <attr name="starHeight" format="dimension"/>
+        <attr name="starMargin" format="dimension"/>
+    </declare-styleable>
 </resources>

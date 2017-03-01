@@ -1,7 +1,10 @@
 package com.handybook.handybook.ratingflow;
 
 import com.handybook.handybook.ratingflow.ui.RatingFlowActivity;
+import com.handybook.handybook.ratingflow.ui.RatingFlowFeedbackFragment;
+import com.handybook.handybook.ratingflow.ui.RatingFlowMatchPreferenceFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowRateAndTipFragment;
+import com.handybook.handybook.ratingflow.ui.RatingFlowReviewFragment;
 
 import dagger.Module;
 
@@ -11,6 +14,9 @@ import dagger.Module;
         injects = {
                 RatingFlowActivity.class,
                 RatingFlowRateAndTipFragment.class,
+                RatingFlowFeedbackFragment.class,
+                RatingFlowMatchPreferenceFragment.class,
+                RatingFlowReviewFragment.class,
         })
 public class RatingFlowModule {
 }
