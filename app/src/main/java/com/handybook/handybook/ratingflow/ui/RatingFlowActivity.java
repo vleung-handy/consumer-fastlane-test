@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.transition.AutoTransition;
+import android.transition.Fade;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -97,13 +98,17 @@ public class RatingFlowActivity extends BaseActivity {
             final FragmentTransaction fragmentTransaction,
             final Fragment targetFragment
     ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            targetFragment.setSharedElementEnterTransition(new AutoTransition().setInterpolator(
-                    new DecelerateInterpolator()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (targetFragment instanceof RatingFlowReferralFragment) {
+                targetFragment.setEnterTransition(new Fade(Fade.IN));
+            }
+        }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             final Fragment currentFragment
                     = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (currentFragment instanceof RatingFlowRateAndTipFragment) {
+            if (currentFragment instanceof RatingFlowRateAndTipFragment
+                && targetFragment instanceof RatingFlowFeedbackFragment) {
                 final View view = currentFragment.getView();
                 if (view == null) { return; }
                 final ImageView proImage
@@ -112,6 +117,8 @@ public class RatingFlowActivity extends BaseActivity {
                         = (RatingFlowFiveStarsView) view.findViewById(R.id.rating_flow_stars);
                 final View divider = view.findViewById(R.id.rating_flow_divider);
                 if (proImage == null || stars == null || divider == null) { return; }
+                targetFragment.setSharedElementEnterTransition(
+                        new AutoTransition().setInterpolator(new DecelerateInterpolator()));
                 fragmentTransaction.addSharedElement(
                         proImage,
                         getString(R.string.transition_pro_image)

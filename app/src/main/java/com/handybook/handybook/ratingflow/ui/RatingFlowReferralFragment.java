@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -38,6 +40,14 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
     @Bind(R.id.rating_flow_referral_subtitle)
     TextView mSubtitle;
+    @Bind(R.id.rating_flow_referral_header)
+    View mHeader;
+    @Bind(R.id.rating_flow_referral_header_icon)
+    View mHeaderIcon;
+    @Bind(R.id.rating_flow_referral_header_text)
+    View mHeaderText;
+    @Bind(R.id.rating_flow_referral_content)
+    View mContent;
 
     @NonNull
     public static RatingFlowReferralFragment newInstance(
@@ -91,7 +101,63 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         mSubtitle.setText(getString(R.string.referral_dialog_subtitle_formatted,
                                     formattedReceiverCouponAmount, formattedSenderCreditAmount
         ));
+        startAnimations();
+    }
 
+    private void startAnimations() {
+        final Animation slideDownAnimation
+                = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_from_top);
+        slideDownAnimation.setDuration(400);
+        slideDownAnimation.setInterpolator(getActivity(), android.R.anim.decelerate_interpolator);
+        slideDownAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(final Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(final Animation animation) {
+                final Animation fadeInAnimation = AnimationUtils.loadAnimation(
+                        getActivity(),
+                        R.anim.fade_in
+                );
+                fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(final Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(final Animation animation) {
+                        final Animation slideInAnimation = AnimationUtils.loadAnimation(
+                                getActivity(),
+                                R.anim.slide_in_right
+                        );
+                        slideInAnimation.setInterpolator(
+                                getActivity(),
+                                android.R.anim.overshoot_interpolator
+                        );
+                        slideInAnimation.setFillAfter(true);
+                        slideInAnimation.setFillEnabled(true);
+                        slideInAnimation.setDuration(400);
+                        mContent.startAnimation(slideInAnimation);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(final Animation animation) {
+
+                    }
+                });
+                mHeaderIcon.startAnimation(fadeInAnimation);
+                mHeaderText.startAnimation(fadeInAnimation);
+            }
+
+            @Override
+            public void onAnimationRepeat(final Animation animation) {
+
+            }
+        });
+        mHeader.startAnimation(slideDownAnimation);
     }
 
     @OnClick(R.id.rating_flow_referral_email_button)
