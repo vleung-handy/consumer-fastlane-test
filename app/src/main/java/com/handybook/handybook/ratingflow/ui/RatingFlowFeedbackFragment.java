@@ -115,6 +115,11 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         }
     }
 
+    @OnClick(R.id.rating_flow_skip_button)
+    public void onSkipClicked() {
+        getActivity().finish();
+    }
+
     void continueFeedbackFlow() {
         int nextStepOrdinal = mCurrentStep == null ? 0 : mCurrentStep.ordinal() + 1;
         if (nextStepOrdinal < Step.values().length) {
