@@ -26,6 +26,7 @@ import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.RequiredModalsEventListener;
@@ -114,8 +115,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
      * Do this only if the user is not currently logged in
      * @return
      */
-    protected boolean requiresOnboardingV2() {
-        return mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()
+    protected boolean requiresOnboardingV2(Configuration config) {
+        return config.isOnboardingV2Enabled()
                && !mUserManager.isUserLoggedIn() &&
                (TextUtils.isEmpty(mDefaultPreferencesManager.getString(PrefsKey.ZIP, null))
                 || TextUtils.isEmpty(mDefaultPreferencesManager.getString(
