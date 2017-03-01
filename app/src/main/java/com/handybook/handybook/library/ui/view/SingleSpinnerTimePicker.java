@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.NumberPicker;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +49,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
             int maxHourOfDay,
             int maxMinuteOfMaxHour,
             int minuteInterval,
-            @NonNull SimpleDateFormat timeFormatter
+            @NonNull DateFormat timeFormatter
     ) {
         mAdapter = new Adapter(
                 minHourOfDay,
@@ -108,7 +108,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
                 int maxHourOfDay,
                 int maxMinuteOfMaxHour,
                 int minuteInterval,
-                @NonNull SimpleDateFormat timeFormatter
+                @NonNull DateFormat timeFormatter
         ) {
             mMaxMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(maxHourOfDay) + maxMinuteOfMaxHour;
             mMinMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(minHourOfDay) + minMinuteOfMinHour;

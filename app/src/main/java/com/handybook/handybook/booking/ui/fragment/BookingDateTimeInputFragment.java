@@ -16,6 +16,7 @@ import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialog
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,7 +41,7 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         DatePickerDialog.OnDateSetListener {
 
     private SimpleDateFormat mEditDateButtonFormatter;
-    private SimpleDateFormat mEditTimeButtonFormatter;
+    private DateFormat mEditTimeButtonFormatter;
     @Bind(R.id.booking_edit_date_button)
     Button mBookingEditDateButton;
     @Bind(R.id.booking_edit_time_button)
@@ -51,18 +52,15 @@ public class BookingDateTimeInputFragment extends InjectedFragment
 
     public static final String BUNDLE_KEY_START_DATE_TIME = "BUNDLE_KEY_START_DATE_TIME";
     public static final String BUNDLE_KEY_DATE_DISPLAY_PATTERN = "BUNDLE_KEY_DATE_DISPLAY_PATTERN";
-    public static final String BUNDLE_KEY_TIME_DISPLAY_PATTERN = "BUNDLE_KEY_TIME_DISPLAY_PATTERN";
 
     public static BookingDateTimeInputFragment newInstance(
             @NonNull Calendar startDateTimeWithTimezone,
-            @NonNull String dateDisplayPattern,
-            @NonNull String timeDisplayPattern
+            @NonNull String dateDisplayPattern
     ) {
         BookingDateTimeInputFragment fragment = new BookingDateTimeInputFragment();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_KEY_START_DATE_TIME, startDateTimeWithTimezone);
         args.putString(BUNDLE_KEY_DATE_DISPLAY_PATTERN, dateDisplayPattern);
-        args.putString(BUNDLE_KEY_TIME_DISPLAY_PATTERN, timeDisplayPattern);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,14 +90,12 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         Bundle args = getArguments();
         Calendar startDateAndTime = (Calendar) args.getSerializable(BUNDLE_KEY_START_DATE_TIME);
         String dateDisplayPattern = args.getString(BUNDLE_KEY_DATE_DISPLAY_PATTERN);
-        String timeDisplayPattern = args.getString(BUNDLE_KEY_TIME_DISPLAY_PATTERN);
+        mEditTimeButtonFormatter = android.text.format.DateFormat.getTimeFormat(getContext());
+        mEditTimeButtonFormatter.setTimeZone(startDateAndTime.getTimeZone());
 
         mEditDateButtonFormatter =
                 new SimpleDateFormat(dateDisplayPattern, Locale.getDefault());
         mEditDateButtonFormatter.setTimeZone(startDateAndTime.getTimeZone());
-        mEditTimeButtonFormatter =
-                new SimpleDateFormat(timeDisplayPattern, Locale.getDefault());
-        mEditTimeButtonFormatter.setTimeZone(startDateAndTime.getTimeZone());
 
         mSelectedDateTime = startDateAndTime;
 

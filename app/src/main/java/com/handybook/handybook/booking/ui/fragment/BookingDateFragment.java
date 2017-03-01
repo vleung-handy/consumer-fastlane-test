@@ -51,11 +51,9 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
 
     /**
-     * server currently doesn't return these, but it should,
-     * because of countries like UK that have different formats
+     * not using device defaults because the format is too long
      */
     private static final String DEFAULT_DATE_DISPLAY_PATTERN = "EEE, MMM d";
-    private static final String DEFAULT_TIME_DISPLAY_PATTERN = "h:mm aa";
 
     @Bind(R.id.next_button)
     Button mNextButton;
@@ -268,8 +266,7 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
         final Calendar startDateTime = getInitialStartDateTimeWithTimeZone();
         BookingDateTimeInputFragment bookingDateTimeInputFragment = BookingDateTimeInputFragment.newInstance(
                 startDateTime,
-                DEFAULT_DATE_DISPLAY_PATTERN,
-                DEFAULT_TIME_DISPLAY_PATTERN
+                DEFAULT_DATE_DISPLAY_PATTERN
         );
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.booking_date_time_input_fragment_container, bookingDateTimeInputFragment,

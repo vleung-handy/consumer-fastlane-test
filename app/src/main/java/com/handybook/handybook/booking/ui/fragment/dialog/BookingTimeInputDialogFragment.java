@@ -10,7 +10,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.ui.view.SingleSpinnerTimePicker;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,7 +43,7 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
 
     public static BookingTimeInputDialogFragment newInstance(
             int minuteOfDay,
-            @NonNull SimpleDateFormat timePickerDisplayPattern
+            @NonNull DateFormat timePickerDisplayFormat
     ) {
         BookingTimeInputDialogFragment bookingTimeInputDialogFragment =
                 new BookingTimeInputDialogFragment();
@@ -51,7 +51,7 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
 
         Bundle bundle = new Bundle();
         bundle.putInt(BUNDLE_KEY_SELECTED_MINUTE_OF_DAY, minuteOfDay);
-        bundle.putSerializable(BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN, timePickerDisplayPattern);
+        bundle.putSerializable(BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN, timePickerDisplayFormat);
         bookingTimeInputDialogFragment.setArguments(bundle);
         return bookingTimeInputDialogFragment;
     }
@@ -72,8 +72,8 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
         ButterKnife.bind(this, view);
 
         int minuteOfDay = getArguments().getInt(BUNDLE_KEY_SELECTED_MINUTE_OF_DAY);
-        SimpleDateFormat timePickerFormatPattern
-                = (SimpleDateFormat) getArguments().getSerializable(
+        DateFormat timePickerDisplayFormat
+                = (DateFormat) getArguments().getSerializable(
                 BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN);
 
         mSingleSpinnerTimePicker.initialize(
@@ -82,7 +82,7 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
                 MAX_HOUR_OF_DAY,
                 MAX_MINUTE_OF_MAX_HOUR_OF_DAY,
                 TIME_PICKER_MINUTE_INTERVAL,
-                timePickerFormatPattern
+                timePickerDisplayFormat
         );
         mSingleSpinnerTimePicker.setSelectedHourAndMinute(minuteOfDay);
 
