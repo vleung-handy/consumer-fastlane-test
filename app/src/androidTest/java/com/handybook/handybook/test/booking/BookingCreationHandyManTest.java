@@ -86,7 +86,7 @@ public class BookingCreationHandyManTest {
         clickNextButton();
 
         //select time to be 0700
-        AppInteractionUtil.setBookingTime(7, 0);
+        AppInteractionUtil.setBookingTimeFromEditBookingTimeButton(7, 0);
 
         clickNextButton();
 

@@ -31,8 +31,8 @@ import butterknife.OnClick;
  * <p>
  * - need to init and launch dialog fragment to capture time input
  * and want to encapsulate that logic so that this input can be easily moved
- * - may want to inject things like event bus in the future
- * - may want to do things onResume
+ * - eventually this will be needed in booking flow consolidation experiments
+ * so more logic from BookingDateFragment may be moved here. may want to inject things
  */
 
 public class BookingDateTimeInputFragment extends InjectedFragment
@@ -88,7 +88,6 @@ public class BookingDateTimeInputFragment extends InjectedFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        init();
 
         Bundle args = getArguments();
         Calendar startDateAndTime = (Calendar) args.getSerializable(BUNDLE_KEY_START_DATE_TIME);
@@ -104,81 +103,32 @@ public class BookingDateTimeInputFragment extends InjectedFragment
 
         mSelectedDateTime = startDateAndTime;
 
-        final Calendar today = Calendar.getInstance();
-        today.setTimeZone(startDateAndTime.getTimeZone());
-        today.setTime(new Date());
-        long minDateMs = today.getTimeInMillis() - 1000;
-        // set max date to one year from today
-        today.set(Calendar.YEAR, today.get(Calendar.YEAR) + 1);
-        today.set(Calendar.DATE, today.get(Calendar.DATE) - 1);
-        long maxDateMs = today.getTimeInMillis();
-
-        initDatePicker(
-                startDateAndTime.get(Calendar.YEAR),
-                startDateAndTime.get(Calendar.MONTH),
-                startDateAndTime.get(Calendar.DAY_OF_MONTH),
-                minDateMs,
-                maxDateMs
-        );
-
+        initDatePicker(startDateAndTime);
         updateDateTimeDisplay();
-        mBookingEditTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getChildFragmentManager().findFragmentByTag(BookingTimeInputDialogFragment.TAG) ==
-                    null) {
-                    int hourOfDay = mSelectedDateTime.get(Calendar.HOUR_OF_DAY);
-                    int minuteOfHour = mSelectedDateTime.get(Calendar.MINUTE);
-
-                    int minutesOfDay = (int) (TimeUnit.HOURS.toMinutes(hourOfDay) + minuteOfHour);
-                    BookingTimeInputDialogFragment bookingTimeInputDialogFragment
-                            = BookingTimeInputDialogFragment.newInstance(
-                            minutesOfDay,
-                            mEditTimeButtonFormatter
-                    );
-                    FragmentUtils.safeLaunchDialogFragment(
-                            bookingTimeInputDialogFragment,
-                            BookingDateTimeInputFragment.this,
-                            BookingTimeInputDialogFragment.TAG
-                    );
-                }
-
-            }
-        });
     }
 
-    private void init() {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
+    private void initDatePicker(@NonNull Calendar startDateAndTime) {
         mDatePickerDialog =
                 new DatePickerDialog(
                         getContext(),
                         R.style.DateTimePickerTheme,
                         this,
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)
+                        startDateAndTime.get(Calendar.YEAR),
+                        startDateAndTime.get(Calendar.MONTH),
+                        startDateAndTime.get(Calendar.DAY_OF_MONTH)
                 );
-    }
 
-    /**
-     * initializes the date picker with a selected date and input range
-     *
-     * @param selectedYear
-     * @param selectedMonth
-     * @param selectedDayOfMonth
-     * @param minDateMs
-     * @param maxDateMs
-     */
-    public void initDatePicker(
-            int selectedYear,
-            int selectedMonth,
-            int selectedDayOfMonth,
-            long minDateMs,
-            long maxDateMs
-    ) {
+        //set min/max dates
         DatePicker datePicker = mDatePickerDialog.getDatePicker();
-        mDatePickerDialog.updateDate(selectedYear, selectedMonth, selectedDayOfMonth);
+        final Calendar today = Calendar.getInstance();
+        today.setTimeZone(startDateAndTime.getTimeZone());
+        today.setTime(new Date());
+
+        long minDateMs = today.getTimeInMillis() - 1000;
+        // set max date to one year from today
+        today.set(Calendar.YEAR, today.get(Calendar.YEAR) + 1);
+        today.set(Calendar.DATE, today.get(Calendar.DATE) - 1);
+        long maxDateMs = today.getTimeInMillis();
         datePicker.setMinDate(minDateMs);
         datePicker.setMaxDate(maxDateMs);
 
@@ -187,6 +137,27 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         mDatePickerDialog.setTitle(null);
         mDatePickerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDatePickerDialog.setCustomTitle(null);
+    }
+
+    @OnClick(R.id.booking_edit_time_button)
+    public void onEditTimeButtonClicked() {
+        if (getChildFragmentManager().findFragmentByTag(BookingTimeInputDialogFragment.TAG) ==
+            null) {
+            int hourOfDay = mSelectedDateTime.get(Calendar.HOUR_OF_DAY);
+            int minuteOfHour = mSelectedDateTime.get(Calendar.MINUTE);
+
+            int minutesOfDay = (int) (TimeUnit.HOURS.toMinutes(hourOfDay) + minuteOfHour);
+            BookingTimeInputDialogFragment bookingTimeInputDialogFragment
+                    = BookingTimeInputDialogFragment.newInstance(
+                    minutesOfDay,
+                    mEditTimeButtonFormatter
+            );
+            FragmentUtils.safeLaunchDialogFragment(
+                    bookingTimeInputDialogFragment,
+                    BookingDateTimeInputFragment.this,
+                    BookingTimeInputDialogFragment.TAG
+            );
+        }
     }
 
     @OnClick(R.id.booking_edit_date_button)
@@ -201,12 +172,12 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         mBookingEditDateButton.setText(
                 mEditDateButtonFormatter.format(selectedDate));
         mBookingEditTimeButton.setText(
-                mEditTimeButtonFormatter.format(selectedDate));
+                mEditTimeButtonFormatter.format(selectedDate).toLowerCase());
+        //SimpleDateFormat apparently doesn't allow us to specify lowercase am/pm
     }
 
     private void notifyTimeUpdatedListener() {
-        ((OnSelectedDateTimeUpdatedListener) getParentFragment()).
-                                                                         onSelectedDateTimeUpdatedListener(
+        ((OnSelectedDateTimeUpdatedListener) getParentFragment()).onSelectedDateTimeUpdatedListener(
                                                                                  mSelectedDateTime);
     }
 

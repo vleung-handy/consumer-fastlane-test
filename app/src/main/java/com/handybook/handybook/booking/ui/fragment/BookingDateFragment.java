@@ -49,6 +49,10 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
     static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
 
+    /**
+     * server currently doesn't return these, but it should,
+     * because of countries like UK that have different formats
+     */
     private static final String DEFAULT_DATE_DISPLAY_PATTERN = "EEE, MMM d";
     private static final String DEFAULT_TIME_DISPLAY_PATTERN = "h:mm aa";
 

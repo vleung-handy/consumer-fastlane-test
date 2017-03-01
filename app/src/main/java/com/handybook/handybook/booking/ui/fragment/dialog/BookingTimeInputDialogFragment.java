@@ -29,6 +29,15 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
 
     private static int TIME_PICKER_MINUTE_INTERVAL = 30;
 
+    /**
+     * would be nice if server sent us this
+     *
+     */
+    private static int MIN_HOUR_OF_DAY = 7;
+    private static int MIN_MINUTE_OF_MIN_HOUR_OF_DAY = 0;
+    private static int MAX_HOUR_OF_DAY = 21;
+    private static int MAX_MINUTE_OF_MAX_HOUR_OF_DAY = 0;
+
     @Bind(R.id.fragment_dialog_booking_time_input_picker)
     SingleSpinnerTimePicker mSingleSpinnerTimePicker;
 
@@ -67,12 +76,11 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
                 = (SimpleDateFormat) getArguments().getSerializable(
                 BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN);
 
-        //parameterize
         mSingleSpinnerTimePicker.initialize(
-                7,
-                0,
-                20,
-                30,
+                MIN_HOUR_OF_DAY,
+                MIN_MINUTE_OF_MIN_HOUR_OF_DAY,
+                MAX_HOUR_OF_DAY,
+                MAX_MINUTE_OF_MAX_HOUR_OF_DAY,
                 TIME_PICKER_MINUTE_INTERVAL,
                 timePickerFormatPattern
         );

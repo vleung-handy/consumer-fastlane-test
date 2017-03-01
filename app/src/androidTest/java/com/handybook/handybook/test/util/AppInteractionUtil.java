@@ -49,8 +49,7 @@ public class AppInteractionUtil {
         };
     }
 
-    //TODO rename
-    public static void setBookingTime(int hourOfDay, int minuteOfHour)
+    public static void setBookingTimeFromEditBookingTimeButton(int hourOfDay, int minuteOfHour)
     {
         ViewUtil.waitForViewVisible(R.id.booking_edit_time_button, ViewUtil.LONG_MAX_WAIT_TIME_MS);
         onView(withId(R.id.booking_edit_time_button)).perform(click());

@@ -124,6 +124,8 @@ public class SingleSpinnerTimePicker extends NumberPicker {
             mDisplayValues = new String[totalNumValues];
             for (int i = 0; i < totalNumValues; i++) {
                 String displayString = timeFormatter.format(calendar.getTime()).toLowerCase();
+                //SimpleDateFormat apparently doesn't allow us to specify lowercase am/pm
+
                 mDisplayValues[i] = displayString;
                 calendar.add(Calendar.MINUTE, minuteInterval);
             }
