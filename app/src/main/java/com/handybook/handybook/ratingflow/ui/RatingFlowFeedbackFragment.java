@@ -141,7 +141,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                 getChildFragmentManager()
                         .beginTransaction()
                         .disallowAddToBackStack()
-                        .setCustomAnimations(R.anim.fade_slide_in_right, R.anim.none)
+                        .setCustomAnimations(R.anim.fade_slide_in_right, R.anim.fade_slide_out_left)
                         .replace(R.id.rating_flow_feedback_content, fragment)
                         .commit();
             }

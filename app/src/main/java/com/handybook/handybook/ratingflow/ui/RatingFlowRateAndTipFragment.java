@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,11 +71,14 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
         public void onUpdate(final BookingOptionsView view) {
             if (mOther.equalsIgnoreCase(view.getCurrentValue())) {
                 mCustomTip.setText(null);
+                mCustomTip.setGravity(Gravity.LEFT);
                 mCustomTip.setVisibility(View.VISIBLE);
                 mCustomTip.requestFocus();
+                Utils.showSoftKeyboard(getActivity(), mCustomTip);
             }
             else {
                 mCustomTip.setVisibility(View.GONE);
+                Utils.hideSoftKeyboard(getActivity(), mCustomTip);
             }
         }
 
@@ -106,6 +111,7 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
         public void afterTextChanged(final Editable s) {
             super.afterTextChanged(s);
             final String value = mCustomTip.getText().toString();
+            mCustomTip.setGravity(TextUtils.isEmpty(value) ? Gravity.LEFT : Gravity.CENTER);
             if (value.matches(CUSTOM_TIP_AMOUNT_PATTERN) && !value.startsWith(mCurrencyChar)) {
                 mCustomTip.setText(mCurrencyChar + value);
                 mCustomTip.setSelection(mCustomTip.getText().length());

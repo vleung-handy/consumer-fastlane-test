@@ -53,7 +53,7 @@
 
                     <TextView
                         android:id="@+id/rating_flow_referral_header_text"
-                        style="@style/TextView.Large.Bold"
+                        style="@style/TextView.XLarge.Bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/default_padding"
@@ -95,14 +95,14 @@
 
                 <TextView
                     android:id="@+id/rating_flow_referral_subtitle"
-                    style="@style/TextView.Small"
+                    style="@style/TextView.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin_half"
-                    android:layout_marginEnd="@dimen/default_margin_double"
-                    android:layout_marginLeft="@dimen/default_margin_double"
-                    android:layout_marginRight="@dimen/default_margin_double"
-                    android:layout_marginStart="@dimen/default_margin_double"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
                     android:gravity="center_horizontal"
                     android:lineSpacingMultiplier="1"
                     tools:text="@string/referral_dialog_subtitle_formatted"

@@ -5,14 +5,14 @@
     >
     <translate
         android:duration="200"
-        android:fromXDelta="100%"
-        android:interpolator="@android:anim/decelerate_interpolator"
-        android:toXDelta="0"
+        android:fromXDelta="0%"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:toXDelta="-100%"
         />
     <alpha
         android:duration="200"
-        android:fromAlpha="0.0"
+        android:fromAlpha="1.0"
         android:interpolator="@android:anim/linear_interpolator"
-        android:toAlpha="1.0"
+        android:toAlpha="0.0"
         />
 </set>
