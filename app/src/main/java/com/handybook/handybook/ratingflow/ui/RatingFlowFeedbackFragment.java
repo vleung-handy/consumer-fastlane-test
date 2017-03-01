@@ -76,7 +76,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-
         final View view = inflater.inflate(
                 R.layout.fragment_rating_flow_feedback,
                 container,

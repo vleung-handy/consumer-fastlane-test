@@ -2,6 +2,7 @@ package com.handybook.handybook.ratingflow.ui;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.transition.AutoTransition;
@@ -48,9 +49,10 @@ public class RatingFlowActivity extends BaseActivity {
         continueRatingFlow();
     }
 
-    // TODO: Solve edge case where data isn't ready by the time the step is ready to execute
     private synchronized void continueRatingFlow() {
+        // Expect this to stay null if data isn't available for the fragment.
         Fragment fragment = null;
+
         switch (mCurrentStep) {
             case RATE_TIP_STEP:
                 fragment = RatingFlowRateAndTipFragment.newInstance(mBooking);
@@ -64,28 +66,41 @@ public class RatingFlowActivity extends BaseActivity {
                     );
                 }
                 break;
+            case REFERRAL_STEP:
+                if (mReferralDescriptor != null) {
+                    fragment = RatingFlowReferralFragment.newInstance(mReferralDescriptor);
+                }
+                break;
             default:
                 finish();
                 return;
         }
-        if (fragment != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                fragment.setSharedElementEnterTransition(new AutoTransition().setInterpolator(
-                        new DecelerateInterpolator()));
-            }
+        displayFragmentOrSkip(fragment);
+    }
 
+    private void displayFragmentOrSkip(@Nullable final Fragment fragment) {
+        if (fragment != null) {
             final FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction()
                     .disallowAddToBackStack();
 
-            addSharedElements(fragmentTransaction);
+            addSharedElements(fragmentTransaction, fragment);
 
             fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
         }
+        else {
+            finishStep();
+        }
     }
 
-    private void addSharedElements(final FragmentTransaction fragmentTransaction) {
+    private void addSharedElements(
+            final FragmentTransaction fragmentTransaction,
+            final Fragment targetFragment
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            targetFragment.setSharedElementEnterTransition(new AutoTransition().setInterpolator(
+                    new DecelerateInterpolator()));
+
             final Fragment currentFragment
                     = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if (currentFragment instanceof RatingFlowRateAndTipFragment) {

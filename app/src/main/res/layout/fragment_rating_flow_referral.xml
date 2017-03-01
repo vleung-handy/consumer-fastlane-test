@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rating_flow_next_button"
+        android:background="@color/handy_bg"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:id="@+id/rating_flow_referral_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/default_padding_4x"
+                    android:paddingTop="@dimen/default_padding_4x"
+                    >
+
+                    <CheckBox
+                        android:id="@+id/check_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/option_checkbox"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:padding="@dimen/icon_padding"
+                        />
+
+                    <TextView
+                        style="@style/TextView.Large.Bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/default_padding"
+                        android:text="@string/thanks_for_feedback"
+                        />
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/img_point"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rating_flow_referral_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                android:background="@drawable/bg_rounded_white"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    style="@style/TextView.Large.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin_half"
+                    android:layout_marginTop="@dimen/default_margin_double"
+                    android:gravity="center_horizontal"
+                    android:text="@string/referral_dialog_title"
+                    />
+
+                <TextView
+                    android:id="@+id/rating_flow_referral_subtitle"
+                    style="@style/TextView.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin_half"
+                    android:layout_marginEnd="@dimen/default_margin_double"
+                    android:layout_marginLeft="@dimen/default_margin_double"
+                    android:layout_marginRight="@dimen/default_margin_double"
+                    android:layout_marginStart="@dimen/default_margin_double"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingMultiplier="1"
+                    tools:text="@string/referral_dialog_subtitle_formatted"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin_half"
+                    android:orientation="horizontal"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/rating_flow_referral_email_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/default_padding"
+                        >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_email_gray"
+                            />
+
+                        <TextView
+                            style="@style/TextView.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email"
+                            android:textColor="@color/handy_tertiary_gray"
+                            />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/rating_flow_referral_text_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/default_padding"
+                        >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_text_gray"
+                            />
+
+                        <TextView
+                            style="@style/TextView.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text"
+                            android:textColor="@color/handy_tertiary_gray"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/rating_flow_next_button"
+        style="@style/Button.Green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/close"
+        />
+</RelativeLayout>
