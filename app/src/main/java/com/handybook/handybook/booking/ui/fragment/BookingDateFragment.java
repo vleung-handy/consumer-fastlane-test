@@ -287,6 +287,12 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
         final Calendar cal = Calendar.getInstance();
         cal.setTimeZone(getBookingTimeZone());
         cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        /*
+        just in case the device default time format that we use
+        specifies to display seconds or milliseconds
+         */
 
         if (mRescheduleBooking != null) {
             cal.setTime(mRescheduleDate);

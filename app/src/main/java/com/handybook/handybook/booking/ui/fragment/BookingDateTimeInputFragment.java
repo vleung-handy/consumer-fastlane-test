@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 
@@ -92,6 +91,10 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         String dateDisplayPattern = args.getString(BUNDLE_KEY_DATE_DISPLAY_PATTERN);
         mEditTimeButtonFormatter = android.text.format.DateFormat.getTimeFormat(getContext());
         mEditTimeButtonFormatter.setTimeZone(startDateAndTime.getTimeZone());
+        /*
+        get the device default time display format (ex. 1:00 pm, 13:00)
+        ASSUMING the format doesn't include seconds, milliseconds..
+         */
 
         mEditDateButtonFormatter =
                 new SimpleDateFormat(dateDisplayPattern, Locale.getDefault());
@@ -127,12 +130,6 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         long maxDateMs = today.getTimeInMillis();
         datePicker.setMinDate(minDateMs);
         datePicker.setMaxDate(maxDateMs);
-
-        //apparently this will not work if set before call to setMaxDate()
-        //needed to hide the header
-        mDatePickerDialog.setTitle(null);
-        mDatePickerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mDatePickerDialog.setCustomTitle(null);
     }
 
     @OnClick(R.id.booking_edit_time_button)
