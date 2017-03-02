@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -107,10 +108,21 @@ public class BookingDateTimeInputFragment extends InjectedFragment
     }
 
     private void initDatePicker(@NonNull Calendar startDateAndTime) {
+        int dialogTheme;
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        {
+            //calendar mode not supported in older versions so it will show a spinner instead
+            //if we don't use this theme, an ugly, additional border will show around the spinner
+            dialogTheme = R.style.SpinnerDatePickerTheme;
+        }
+        else
+        {
+            dialogTheme = R.style.CalendarDatePickerTheme;
+        }
         mDatePickerDialog =
                 new DatePickerDialog(
                         getContext(),
-                        R.style.DateTimePickerTheme,
+                        dialogTheme,
                         this,
                         startDateAndTime.get(Calendar.YEAR),
                         startDateAndTime.get(Calendar.MONTH),

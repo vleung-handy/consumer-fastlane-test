@@ -24,9 +24,16 @@
         <item name="android:windowBackground">@drawable/backgroundsplash</item>
     </style>
 
-    <style name="DateTimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+    <style name="CalendarDatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/handy_blue</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:datePickerMode">calendar</item>
+    </style>
+
+    <style name="SpinnerDatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="colorAccent">@color/handy_blue</item>
+        <item name="android:datePickerMode">spinner</item>
     </style>
 
     <style name="HandyTheme.AppBarOverlay">
