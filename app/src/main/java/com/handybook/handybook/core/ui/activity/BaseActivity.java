@@ -276,8 +276,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     }
 
     private void showProRateDialog(final User user, final String proName, final int bookingId) {
-        final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
-                user.getDefaultTipAmounts();
         if (mConfigurationManager.getPersistentConfiguration().isNewRatingFlowEnabled()) {
             mDataManager.getBooking(
                     String.valueOf(bookingId),
@@ -295,6 +293,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             );
         }
         else {
+            final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
+                    user.getDefaultTipAmounts();
             RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
                     .newInstance(
                             bookingId,

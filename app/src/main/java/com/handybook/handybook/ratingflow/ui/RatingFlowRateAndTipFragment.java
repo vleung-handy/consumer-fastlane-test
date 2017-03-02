@@ -207,7 +207,8 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
 
     private void initTipSection() {
         final User currentUser = userManager.getCurrentUser();
-        if (currentUser != null
+        if (mBooking.canLeaveTip()
+            && currentUser != null
             && currentUser.getDefaultTipAmounts() != null
             && !currentUser.getDefaultTipAmounts().isEmpty()) {
 
@@ -257,6 +258,10 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
 
     @Nullable
     private Integer getTipAmountCents() {
+        if (mTipSection.getVisibility() != View.VISIBLE)
+        {
+            return 0;
+        }
         Integer tipAmount = null;
         if (mOther.equalsIgnoreCase(mTipOptionsSpinner.getCurrentValue())) {
             tipAmount = getCustomTipAmountCents();
