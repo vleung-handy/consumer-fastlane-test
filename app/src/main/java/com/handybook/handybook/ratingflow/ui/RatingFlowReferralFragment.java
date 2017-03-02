@@ -32,9 +32,6 @@ import butterknife.OnClick;
 
 public class RatingFlowReferralFragment extends InjectedFragment {
 
-    private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{
-            "handy-referrals@handy.com"
-    };
     private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
 
@@ -169,7 +166,10 @@ public class RatingFlowReferralFragment extends InjectedFragment {
             emailIntent.setType("plain/text");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
-            emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
+            emailIntent.putExtra(
+                    Intent.EXTRA_BCC,
+                    getResources().getStringArray(R.array.referral_email_bcc_array)
+            );
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
             sendShareButtonTappedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
         }
