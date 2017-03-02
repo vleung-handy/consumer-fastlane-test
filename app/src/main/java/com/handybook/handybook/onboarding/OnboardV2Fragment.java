@@ -176,8 +176,10 @@ public class OnboardV2Fragment extends InjectedFragment {
                     final TextView v,
                     final int actionId,
                     final KeyEvent event
-            ) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+            )
+            {
+                if (actionId == EditorInfo.IME_ACTION_DONE && mNextButton.isEnabled())
+                {
                     nextClicked();
                     return true;
                 }
@@ -204,8 +206,10 @@ public class OnboardV2Fragment extends InjectedFragment {
                     final TextView v,
                     final int actionId,
                     final KeyEvent event
-            ) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+            )
+            {
+                if (actionId == EditorInfo.IME_ACTION_DONE && mSubmitButton.isEnabled())
+                {
                     emailSubmitClicked();
                     return true;
                 }

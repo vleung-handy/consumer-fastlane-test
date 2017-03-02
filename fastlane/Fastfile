@@ -11,7 +11,7 @@ end
 
 lane :beta do
   ensure_git_branch_release_candidate
-
+  ensure_git_branch_clean_and_latest
   gradle(task: "assembleProdRelease")
 
   crashlytics(
