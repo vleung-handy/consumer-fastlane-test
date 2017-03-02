@@ -4,13 +4,13 @@
     android:fillAfter="false"
     >
     <translate
-        android:duration="200"
+        android:duration="@integer/anim_duration_short"
         android:fromXDelta="100%"
         android:interpolator="@android:anim/decelerate_interpolator"
         android:toXDelta="0"
         />
     <alpha
-        android:duration="200"
+        android:duration="@integer/anim_duration_short"
         android:fromAlpha="0.0"
         android:interpolator="@android:anim/linear_interpolator"
         android:toAlpha="1.0"
