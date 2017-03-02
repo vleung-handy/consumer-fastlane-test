@@ -15,17 +15,12 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.HandyRetrofitCallback;
 import com.handybook.handybook.core.data.HandyRetrofitService;
-import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.data.VoidRetrofitCallback;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
-import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
-
-import org.json.JSONObject;
 
 import javax.inject.Inject;
 
@@ -138,21 +133,6 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
 
     @Override
     void onSubmit() {
-        showUiBlockers();
-        final DataManager.Callback<ProTeamWrapper> cb =
-                new FragmentSafeCallback<ProTeamWrapper>(this) {
-                    @Override
-                    public void onCallbackSuccess(final ProTeamWrapper proTeamWrapper) {
-                        removeUiBlockers();
-                        finishStep();
-                    }
-
-                    @Override
-                    public void onCallbackError(final DataManager.DataManagerError error) {
-                        removeUiBlockers();
-                        showToast(R.string.default_error_string);
-                    }
-                };
         final ProTeamEdit proTeamEdit = new ProTeamEdit(mSelectedPreference);
         proTeamEdit.addId(
                 Integer.parseInt(mProvider.getId()),
@@ -164,12 +144,8 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                         Lists.newArrayList(proTeamEdit),
                         ProTeamEvent.Source.PRO_MANAGEMENT.toString()
                 ),
-                new HandyRetrofitCallback(cb) {
-                    @Override
-                    protected void success(final JSONObject response) {
-                        cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
-                    }
-                }
+                new VoidRetrofitCallback()
         );
+        finishStep();
     }
 }
