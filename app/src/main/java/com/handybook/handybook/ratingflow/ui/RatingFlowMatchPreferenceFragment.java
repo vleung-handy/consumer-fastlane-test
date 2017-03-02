@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
@@ -24,7 +23,6 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.NEVER;
@@ -34,11 +32,6 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
 
     @Inject
     HandyRetrofitService mService;
-
-    @Bind(R.id.rating_flow_section_title)
-    TextView mSectionTitle;
-    @Bind(R.id.rating_flow_section_container)
-    ViewGroup mSectionContainer;
 
     private Provider mProvider;
     private int mOptionIndex;
@@ -83,23 +76,6 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
         super.onCreate(savedInstanceState);
         mProvider = (Provider) getArguments().getSerializable(BundleKeys.PROVIDER);
         mOptionIndex = -1;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(
-            final LayoutInflater inflater,
-            @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState
-    ) {
-
-        final View view = inflater.inflate(
-                R.layout.fragment_rating_flow_generic,
-                container,
-                false
-        );
-        ButterKnife.bind(this, view);
-        return view;
     }
 
     @Override
