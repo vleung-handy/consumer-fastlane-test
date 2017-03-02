@@ -27,6 +27,7 @@ import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
 import butterknife.Bind;
+import butterknife.BindInt;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -45,6 +46,8 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     View mHeaderText;
     @Bind(R.id.rating_flow_referral_content)
     View mContent;
+    @BindInt(R.integer.anim_duration_medium)
+    int mMediumDuration;
 
     @NonNull
     public static RatingFlowReferralFragment newInstance(
@@ -104,7 +107,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     private void startAnimations() {
         final Animation slideDownAnimation
                 = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_from_top);
-        slideDownAnimation.setDuration(400);
+        slideDownAnimation.setDuration(mMediumDuration);
         slideDownAnimation.setInterpolator(getActivity(), android.R.anim.decelerate_interpolator);
         slideDownAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -136,7 +139,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                         );
                         slideInAnimation.setFillAfter(true);
                         slideInAnimation.setFillEnabled(true);
-                        slideInAnimation.setDuration(400);
+                        slideInAnimation.setDuration(mMediumDuration);
                         mContent.startAnimation(slideInAnimation);
                     }
 
