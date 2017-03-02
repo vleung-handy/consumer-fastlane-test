@@ -30,10 +30,11 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
 @Ignore
-public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrapper {
+
     private static final String JSON_SUBSCRIPTION_NEW_QUOTE = "subscription_new_quote.json";
-    private static final String JSON_SUBSCRIPTION_ONETIME_QUOTE = "subscription_with_onetime_quote.json";
+    private static final String JSON_SUBSCRIPTION_ONETIME_QUOTE
+            = "subscription_with_onetime_quote.json";
 
     private static final String FREQ_ONETIME = "One-time $81.00";
     private static final String FREQ_WEEKLY = "Weekly";
@@ -45,7 +46,12 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
     private static final String SUB_12MONTHS = "12 Months";
 
     private static final String[] FREQUENCY_LABELS = {FREQ_WEEKLY, FREQ_BIWEEKLY, FREQ_MONTHLY};
-    private static final String[] FREQUENCY_LABELS_WITH_ONETIME = {FREQ_ONETIME, FREQ_WEEKLY, FREQ_BIWEEKLY, FREQ_MONTHLY};
+    private static final String[] FREQUENCY_LABELS_WITH_ONETIME = {
+            FREQ_ONETIME,
+            FREQ_WEEKLY,
+            FREQ_BIWEEKLY,
+            FREQ_MONTHLY
+    };
     private static final String[] SUBSCRIPTION_LABELS = {SUB_3MONTHS, SUB_6MONTHS, SUB_12MONTHS};
 
     private BookingSubscriptionFragment mFragment;
@@ -58,8 +64,7 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
     private BookingRequest mMockRequest;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
@@ -71,8 +76,7 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
     }
 
     @Test
-    public void shouldHandleNewSubscriptionQuote() throws Exception
-    {
+    public void shouldHandleNewSubscriptionQuote() throws Exception {
         when(mBookingManager.getCurrentQuote()).thenReturn(getNewSubscriptionBookingQuote());
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
 
@@ -96,8 +100,7 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
     }
 
     @Test
-    public void shouldHandleOneTimeQuote() throws Exception
-    {
+    public void shouldHandleOneTimeQuote() throws Exception {
         when(mBookingManager.getCurrentQuote()).thenReturn(getOneTimeWithSubscriptionBookingQuote());
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
 
@@ -130,8 +133,7 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
     }
 
     @Test
-    public void shouldLaunchBookingExtrasActivity() throws Exception
-    {
+    public void shouldLaunchBookingExtrasActivity() throws Exception {
         when(mBookingManager.getCurrentQuote()).thenReturn(getNewSubscriptionBookingQuote());
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
         mFragment.nextButton.performClick();
@@ -143,10 +145,11 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
         );
     }
 
-    private void verifyFrequencyLabels(BookingOptionsSpinnerView frequencySpinner, String[] labels)
-    {
-        for (int i = 0; i < labels.length; i++)
-        {
+    private void verifyFrequencyLabels(
+            BookingOptionsSpinnerView frequencySpinner,
+            String[] labels
+    ) {
+        for (int i = 0; i < labels.length; i++) {
             frequencySpinner.setCurrentIndex(i);
             assertThat(frequencySpinner.getCurrentValue(), equalTo(labels[i]));
         }
@@ -155,22 +158,18 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
     private void verifySubscriptionLabels(
             BookingOptionsSelectView subscriptionViews,
             String[] labels
-    )
-    {
-        for (int i = 0; i < labels.length; i++)
-        {
+    ) {
+        for (int i = 0; i < labels.length; i++) {
             subscriptionViews.setCurrentIndex(i);
             assertThat(subscriptionViews.getCurrentValue(), equalTo(labels[i]));
         }
     }
 
-    private BookingQuote getNewSubscriptionBookingQuote() throws Exception
-    {
+    private BookingQuote getNewSubscriptionBookingQuote() throws Exception {
         return BookingQuote.fromJson(IOUtils.getJsonStringForTest(JSON_SUBSCRIPTION_NEW_QUOTE));
     }
 
-    private BookingQuote getOneTimeWithSubscriptionBookingQuote() throws Exception
-    {
+    private BookingQuote getOneTimeWithSubscriptionBookingQuote() throws Exception {
         return BookingQuote.fromJson(IOUtils.getJsonStringForTest(JSON_SUBSCRIPTION_ONETIME_QUOTE));
     }
 }

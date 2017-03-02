@@ -20,13 +20,12 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
-public class AccountFragmentTest extends RobolectricGradleTestWrapper
-{
+public class AccountFragmentTest extends RobolectricGradleTestWrapper {
+
     private AccountFragment mFragment;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         mFragment = AccountFragment.newInstance();
 
         SupportFragmentTestUtil.startVisibleFragment(mFragment, ProfileActivity.class,
@@ -35,8 +34,7 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchCorrectFragmentWhenContactClicked() throws Exception
-    {
+    public void shouldLaunchCorrectFragmentWhenContactClicked() throws Exception {
         assertNotNull(mFragment.getView());
         View view = mFragment.getView().findViewById(R.id.account_contact_info_layout);
         assertNotNull(view);
@@ -47,8 +45,7 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchCorrectFragmentWhenPasswordClicked() throws Exception
-    {
+    public void shouldLaunchCorrectFragmentWhenPasswordClicked() throws Exception {
         assertNotNull(mFragment.getView());
         View view = mFragment.getView().findViewById(R.id.account_password_layout);
         assertNotNull(view);
@@ -59,8 +56,7 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchCorrectFragmentWhenPaymentClicked() throws Exception
-    {
+    public void shouldLaunchCorrectFragmentWhenPaymentClicked() throws Exception {
         assertNotNull(mFragment.getView());
         View view = mFragment.getView().findViewById(R.id.account_payment_method_layout);
         assertNotNull(view);
@@ -71,8 +67,7 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchCorrectFragmentWhenActivePlansClicked() throws Exception
-    {
+    public void shouldLaunchCorrectFragmentWhenActivePlansClicked() throws Exception {
         assertNotNull(mFragment.getView());
         View view = mFragment.getView().findViewById(R.id.account_active_plans_layout);
         assertNotNull(view);
@@ -82,8 +77,7 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchCorrectFragmentWhenPromoClicked() throws Exception
-    {
+    public void shouldLaunchCorrectFragmentWhenPromoClicked() throws Exception {
         assertNotNull(mFragment.getView());
         View view = mFragment.getView().findViewById(R.id.account_promo_code_layout);
         assertNotNull(view);
@@ -94,8 +88,7 @@ public class AccountFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldShowLogOutDialog() throws Exception
-    {
+    public void shouldShowLogOutDialog() throws Exception {
         assertNotNull(mFragment.getView());
         View view = mFragment.getView().findViewById(R.id.account_sign_out_button);
         assertNotNull(view);

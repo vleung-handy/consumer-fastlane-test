@@ -43,6 +43,9 @@ import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2;
+import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2Test;
+import com.handybook.handybook.booking.ui.fragment.BookingDateTimeInputFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
@@ -76,6 +79,7 @@ import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
+import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialogFragment;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
@@ -146,7 +150,9 @@ import static org.mockito.Mockito.when;
         BookingOptionsFragmentTest.class,
         BookingDateActivity.class,
         BookingDateFragment.class,
+        BookingDateFragmentV2.class,
         BookingDateFragmentTest.class,
+        BookingDateFragmentV2Test.class,
         BookingRecurrenceActivity.class,
         BookingRecurrenceFragment.class,
         BookingRecurrenceFragmentTest.class,
@@ -214,41 +220,38 @@ import static org.mockito.Mockito.when;
         SplashActivityTest.class,
         ProTeamConversationsFragment.class,
         BookingHeaderFragmentTest.class,
+        BookingDateTimeInputFragment.class,
+        BookingTimeInputDialogFragment.class,
 }, library = true)
-public class TestApplicationModule
-{
+public class TestApplicationModule {
+
     public final Context context;
 
-    public TestApplicationModule(Context context)
-    {
+    public TestApplicationModule(Context context) {
         this.context = context;
     }
 
     @Provides
     @Singleton
-    final Properties providerProperties()
-    {
+    final Properties providerProperties() {
         return mock(Properties.class);
     }
 
     @Provides
     @Singleton
-    final AppseeManager provideAppseeManager()
-    {
+    final AppseeManager provideAppseeManager() {
         return mock(AppseeManager.class);
     }
 
     @Provides
     @Singleton
-    final DataManagerErrorHandler provideDataManagerHandler()
-    {
+    final DataManagerErrorHandler provideDataManagerHandler() {
         return mock(DataManagerErrorHandler.class);
     }
 
     @Provides
     @Singleton
-    final EnvironmentModifier provideEnvironmentModifier()
-    {
+    final EnvironmentModifier provideEnvironmentModifier() {
         EnvironmentModifier environmentModifier = mock(EnvironmentModifier.class);
         when(environmentModifier.getEnvironment()).thenReturn("s");
         return environmentModifier;
@@ -256,8 +259,7 @@ public class TestApplicationModule
 
     @Provides
     @Singleton
-    final HandyRetrofitEndpoint provideHandyEndpoint()
-    {
+    final HandyRetrofitEndpoint provideHandyEndpoint() {
         return mock(HandyRetrofitEndpoint.class);
     }
 
@@ -266,29 +268,25 @@ public class TestApplicationModule
     RestAdapter providesRestAdapter(
             final HandyRetrofitEndpoint endpoint,
             final UserManager userManager
-    )
-    {
+    ) {
         return mock(RestAdapter.class);
     }
 
     @Provides
     @Singleton
-    final HandyRetrofitService provideHandyService()
-    {
+    final HandyRetrofitService provideHandyService() {
         return mock(HandyRetrofitService.class);
     }
 
     @Provides
     @Singleton
-    final PlacesService providesPlacesService()
-    {
+    final PlacesService providesPlacesService() {
         return mock(PlacesService.class);
     }
 
     @Provides
     @Singleton
-    final AddressAutoCompleteManager providesAddressAutoCompleteManager()
-    {
+    final AddressAutoCompleteManager providesAddressAutoCompleteManager() {
         return mock(AddressAutoCompleteManager.class);
     }
 
@@ -297,8 +295,7 @@ public class TestApplicationModule
     final DataManager provideDataManager(
             final HandyRetrofitService service,
             final HandyRetrofitEndpoint endpoint
-    )
-    {
+    ) {
         return spy(new TestDataManager(service, endpoint));
     }
 
@@ -310,8 +307,7 @@ public class TestApplicationModule
             final FileManager fileManager,
             final DefaultPreferencesManager defaultPreferencesManager,
             final UserManager userManager
-    )
-    {
+    ) {
         return spy(new EventLogManager(
                 context,
                 bus,
@@ -328,92 +324,84 @@ public class TestApplicationModule
             final Bus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DefaultPreferencesManager defaultPreferencesManager
-    )
-    {
-        return spy(new TestUserManager(context, bus, securePreferencesManager, defaultPreferencesManager));
+    ) {
+        return spy(new TestUserManager(
+                context,
+                bus,
+                securePreferencesManager,
+                defaultPreferencesManager
+        ));
     }
 
     @Provides
     @Singleton
-    final Bus provideBus()
-    {
+    final Bus provideBus() {
         return mock(Bus.class);
     }
 
     @Provides
     @Singleton
-    final Application provideApplication()
-    {
+    final Application provideApplication() {
         return mock(Application.class);
     }
 
     @Provides
     @Singleton
-    final BookingManager provideBookingManager()
-    {
+    final BookingManager provideBookingManager() {
         return mock(BookingManager.class);
     }
 
     @Provides
     @Singleton
-    final FileManager provideFileManager()
-    {
+    final FileManager provideFileManager() {
         return new FileManager(context);
     }
 
     @Provides
     @Singleton
-    final LoginManager provideLoginManager()
-    {
+    final LoginManager provideLoginManager() {
         return mock(LoginManager.class);
     }
 
     @Provides
     @Singleton
-    final SecurePreferencesManager provideSecurePreferencesManager()
-    {
+    final SecurePreferencesManager provideSecurePreferencesManager() {
         return mock(SecurePreferencesManager.class);
     }
 
     @Provides
     @Singleton
-    final DefaultPreferencesManager provideDefaultPreferencesManager()
-    {
+    final DefaultPreferencesManager provideDefaultPreferencesManager() {
         return new DefaultPreferencesManager(context);
     }
 
     @Provides
     @Singleton
-    final AppBlockManager provideAppBlockManager()
-    {
+    final AppBlockManager provideAppBlockManager() {
         return mock(AppBlockManager.class);
     }
 
     @Provides
     @Singleton
-    final Context provideContext()
-    {
+    final Context provideContext() {
         return context;
     }
 
     @Provides
     @Singleton
-    final StripeManager provideStripeManager()
-    {
+    final StripeManager provideStripeManager() {
         return mock(StripeManager.class);
     }
 
     @Provides
     @Singleton
-    final LayerHelper provideLayerHelper()
-    {
+    final LayerHelper provideLayerHelper() {
         return mock(LayerHelper.class, RETURNS_DEEP_STUBS);
     }
 
     @Provides
     @Singleton
-    final UrbanAirshipManager provideUrbanAirshipManager()
-    {
+    final UrbanAirshipManager provideUrbanAirshipManager() {
         return mock(UrbanAirshipManager.class);
     }
 
@@ -423,8 +411,7 @@ public class TestApplicationModule
             final Bus bus,
             final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
-    )
-    {
+    ) {
         TestConfigurationManager configManager = spy(new TestConfigurationManager(
                 bus,
                 defaultPreferencesManager,

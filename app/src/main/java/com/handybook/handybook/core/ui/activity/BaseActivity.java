@@ -37,6 +37,7 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
+import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
 import com.handybook.handybook.core.event.ActivityLifecycleEvent;
 import com.handybook.handybook.core.manager.AppseeManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
@@ -44,8 +45,10 @@ import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.handybook.handybook.notifications.splash.model.SplashPromo;
-import com.handybook.handybook.notifications.splash.view.fragment.SplashPromoDialogFragment;
+import com.handybook.handybook.promos.splash.SplashPromo;
+import com.handybook.handybook.promos.splash.SplashPromoDialogFragment;
+import com.handybook.handybook.ratingflow.ui.RatingFlowActivity;
+
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralResponse;
 import com.squareup.otto.Bus;
@@ -85,6 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
     private boolean mWasOpenBefore;
+    private boolean mRateDialogShown;
 
     //Public Properties
     public boolean getAllowCallbacks() {
@@ -127,8 +131,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
         super.onResume();
         mSessionManager.markActivity();
 
-        if (mWasOpenBefore)
-        {
+        if (mWasOpenBefore) {
             mBus.post(new LogEvent.AddLogEvent(new AppLog.AppOpenLog(false, false)));
         }
         /*
@@ -276,21 +279,43 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     private void showProRateDialog(final User user, final String proName, final int bookingId) {
         final ArrayList<LocalizedMonetaryAmount> localizedMonetaryAmounts =
                 user.getDefaultTipAmounts();
+        if (mConfigurationManager.getPersistentConfiguration().isNewRatingFlowEnabled()) {
+            mDataManager.getBooking(
+                    String.valueOf(bookingId),
+                    new ActivitySafeCallback<Booking, BaseActivity>(this) {
+                        @Override
+                        public void onCallbackSuccess(final Booking booking) {
+                            launchRatingFlowActivity(booking);
+                        }
 
-        RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
-                .newInstance(
-                        bookingId,
-                        proName,
-                        -1,
-                        localizedMonetaryAmounts,
-                        user.getCurrencyChar()
-                );
+                        @Override
+                        public void onCallbackError(final DataManager.DataManagerError error) {
+                            // do nothing
+                        }
+                    }
+            );
+        }
+        else {
+            RateServiceDialogFragment rateServiceDialogFragment = RateServiceDialogFragment
+                    .newInstance(
+                            bookingId,
+                            proName,
+                            -1,
+                            localizedMonetaryAmounts,
+                            user.getCurrencyChar()
+                    );
+            FragmentUtils.safeLaunchDialogFragment(
+                    rateServiceDialogFragment,
+                    BaseActivity.this,
+                    RateServiceDialogFragment.class.getSimpleName()
+            );
+        }
+    }
 
-        FragmentUtils.safeLaunchDialogFragment(
-                rateServiceDialogFragment,
-                BaseActivity.this,
-                RateServiceDialogFragment.class.getSimpleName()
-        );
+    private void launchRatingFlowActivity(final Booking booking) {
+        final Intent intent = new Intent(BaseActivity.this, RatingFlowActivity.class);
+        intent.putExtra(BundleKeys.BOOKING, booking);
+        startActivity(intent);
     }
 
     private void showLaundryInfoModal(final int bookingId) {

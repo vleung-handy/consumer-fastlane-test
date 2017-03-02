@@ -31,6 +31,7 @@ package com.handybook.handybook.core.ui.view.antistaticspinnerwheel;
  * <li> Wheel view is scrolled
  */
 public interface OnWheelClickedListener {
+
     /**
      * Callback method to be invoked when current item clicked
      * @param wheel the spinnerwheel view

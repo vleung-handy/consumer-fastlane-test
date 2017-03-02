@@ -21,6 +21,8 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.library.util.FragmentUtils;
@@ -28,8 +30,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.PastBookingsLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.referral.ui.ReferralActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -40,8 +40,9 @@ import butterknife.OnClick;
 
 /**
  */
-public class HistoryFragment extends InjectedFragment implements SwipeRefreshLayout.OnRefreshListener
-{
+public class HistoryFragment extends InjectedFragment
+        implements SwipeRefreshLayout.OnRefreshListener {
+
     private static final String TAG = HistoryFragment.class.getName();
 
     @Bind(R.id.history_swipe_refresh_layout)
@@ -70,15 +71,13 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
             @NonNull final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.history));
         if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
-                && getActivity() instanceof MenuDrawerActivity)
-        {
+            && getActivity() instanceof MenuDrawerActivity) {
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -95,18 +94,14 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
         mEmptiableRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
         // Only allow SwipeRefresh when Recycler scrolled all the way up
-        mEmptiableRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
-        {
+        mEmptiableRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
-            {
+            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (!recyclerView.canScrollVertically(-1))
-                {
+                if (!recyclerView.canScrollVertically(-1)) {
                     mSwipeRefreshLayout.setEnabled(true);
                 }
-                else
-                {
+                else {
                     mSwipeRefreshLayout.setEnabled(false);
                 }
             }
@@ -116,40 +111,36 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
         return view;
     }
 
-    protected void loadBookings()
-    {
+    protected void loadBookings() {
         mBookingsRequestCompleted = false;
         mSwipeRefreshLayout.setRefreshing(true);
         bus.post(new BookingEvent.RequestBookings(Booking.List.VALUE_ONLY_BOOKINGS_PAST));
     }
 
-    private void bindBookingsToList()
-    {
-        if (mBookings != null)
-        {
+    private void bindBookingsToList() {
+        if (mBookings != null) {
             mAdapter = new HistoryListAdapter(
                     mBookings,
                     mConfigurationManager.getPersistentConfiguration()
                                          .isBookingHoursClarificationExperimentEnabled(),
-                    new View.OnClickListener()
-                    {
+                    new View.OnClickListener() {
                         @Override
-                        public void onClick(final View v)
-                        {
+                        public void onClick(final View v) {
                             Booking booking = (Booking) v.getTag();
-                            bus.post(new LogEvent.AddLogEvent(new PastBookingsLog.BookingDetailsTappedLog(booking.getId())));
+                            bus.post(new LogEvent.AddLogEvent(new PastBookingsLog.BookingDetailsTappedLog(
+                                    booking.getId())));
                             Fragment fragment = BookingDetailFragment.newInstance(booking, false);
                             FragmentUtils.switchToFragment(HistoryFragment.this, fragment, true);
                         }
-                    });
+                    }
+            );
 
             mEmptiableRecyclerView.setAdapter(mAdapter);
         }
     }
 
     @Subscribe
-    public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event)
-    {
+    public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event) {
         mBookingsRequestCompleted = true;
         Log.d(TAG, "onReceiveBookingsSuccess: " + event.getOnlyBookingsValue());
         mBookings = event.getBookingWrapper().getBookings();
@@ -157,8 +148,7 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
     }
 
     @Subscribe
-    public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e)
-    {
+    public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e) {
         mBookingsRequestCompleted = true;
         mSwipeRefreshLayout.setRefreshing(false);
         toast.setText("Error loading bookings, please try again.");
@@ -169,18 +159,15 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
     /**
      * Only perform the setup if we got responses from both bookings and get services
      */
-    private void setupBookingsView()
-    {
-        if (mBookingsRequestCompleted)
-        {
+    private void setupBookingsView() {
+        if (mBookingsRequestCompleted) {
             mSwipeRefreshLayout.setRefreshing(false);
             bindBookingsToList();
         }
     }
 
     @OnClick(R.id.bookings_share_button)
-    public void onShareButtonClicked()
-    {
+    public void onShareButtonClicked() {
         bus.post(new LogEvent.AddLogEvent(new PastBookingsLog.PastBookingsShareMenuPressedLog()));
         Intent intent = new Intent(getContext(), ReferralActivity.class);
         intent.putExtra(
@@ -191,17 +178,14 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
-        if (mBookings == null || mBookings.isEmpty())
-        {
+        if (mBookings == null || mBookings.isEmpty()) {
             mNoBookingsView.setVisibility(View.GONE);
             loadBookings();
         }
-        else
-        {
+        else {
             mBookingsRequestCompleted = true;
         }
 
@@ -209,26 +193,32 @@ public class HistoryFragment extends InjectedFragment implements SwipeRefreshLay
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    public final void onStart()
-    {
+    public final void onStart() {
         super.onStart();
         TypedValue typed_value = new TypedValue();
         // Workaround to be able to display the SwipeRefreshLayout onStart
         // as in: http://stackoverflow.com/a/26860930/486332
-        getActivity().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
-        mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
+        getActivity().getTheme()
+                     .resolveAttribute(
+                             android.support.v7.appcompat.R.attr.actionBarSize,
+                             typed_value,
+                             true
+                     );
+        mSwipeRefreshLayout.setProgressViewOffset(
+                false,
+                0,
+                getResources().getDimensionPixelSize(typed_value.resourceId)
+        );
     }
 
     @Override
-    public void onRefresh()
-    {
+    public void onRefresh() {
         loadBookings();
     }
 }

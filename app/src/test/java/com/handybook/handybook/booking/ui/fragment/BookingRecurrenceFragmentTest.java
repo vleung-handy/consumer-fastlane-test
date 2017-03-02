@@ -28,8 +28,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingRecurrenceFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingRecurrenceFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingRecurrenceFragment mFragment;
 
     @Mock
@@ -42,13 +42,15 @@ public class BookingRecurrenceFragmentTest extends RobolectricGradleTestWrapper
     BookingManager mBookingManager;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{
+                0.0f,
+                0.0f
+        });
         when(mMockQuote.getPeakPriceTable()).thenReturn(null);
         when(mMockRequest.getUniq()).thenReturn("home_cleaning");
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
@@ -58,12 +60,13 @@ public class BookingRecurrenceFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchBookingExtrasActivity() throws Exception
-    {
+    public void shouldLaunchBookingExtrasActivity() throws Exception {
         mFragment.nextButton.performClick();
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingExtrasActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingExtrasActivity.class.getName())
+        );
     }
 }

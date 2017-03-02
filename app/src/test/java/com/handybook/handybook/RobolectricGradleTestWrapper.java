@@ -23,12 +23,10 @@ import static org.mockito.Mockito.spy;
         constants = BuildConfig.class,
         application = TestBaseApplication.class,
         packageName = "com.handybook.handybook")
-public class RobolectricGradleTestWrapper
-{
-    protected void preventAnimationStart(final Object parent, final String viewFieldName)
-    {
-        try
-        {
+public class RobolectricGradleTestWrapper {
+
+    protected void preventAnimationStart(final Object parent, final String viewFieldName) {
+        try {
             final Field viewField = parent.getClass().getDeclaredField(viewFieldName);
             viewField.setAccessible(true);
             final View view = (View) viewField.get(parent);
@@ -36,8 +34,7 @@ public class RobolectricGradleTestWrapper
             doNothing().when(spy).startAnimation(any(Animation.class));
             viewField.set(parent, spy);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

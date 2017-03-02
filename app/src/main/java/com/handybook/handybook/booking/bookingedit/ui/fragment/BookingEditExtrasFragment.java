@@ -35,8 +35,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditExtrasFragment extends BookingFlowFragment
-{
+public final class BookingEditExtrasFragment extends BookingFlowFragment {
+
     //TODO: use ViewModel
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -62,8 +62,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     private BookingEditExtrasViewModel mBookingEditExtrasViewModel;
     private BookingOptionsSelectView mOptionsView;
 
-    public static BookingEditExtrasFragment newInstance(@NonNull Booking booking)
-    {
+    public static BookingEditExtrasFragment newInstance(@NonNull Booking booking) {
         final BookingEditExtrasFragment fragment = new BookingEditExtrasFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
@@ -72,20 +71,17 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //booking should never be null here
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        if (mBooking != null)
-        {
+        if (mBooking != null) {
             Crashlytics.log("Showing edit extras for booking with id " + mBooking.getId());
         }
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         showUiBlockers();
         bus.post(new BookingEditEvent.RequestEditBookingExtrasViewModel(
@@ -96,10 +92,13 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_edit_extras, container, false);
+                                       .inflate(
+                                               R.layout.fragment_booking_edit_extras,
+                                               container,
+                                               false
+                                       );
 
         ButterKnife.bind(this, view);
 
@@ -109,8 +108,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @OnClick(R.id.next_button)
-    public void onSaveButtonPressed()
-    {
+    public void onSaveButtonPressed() {
         //api expects 2 string arrays of service machine names
         //one of added extras and one of removed extras, relative to the original booking
         List<String> addedExtras = new LinkedList<>();
@@ -119,21 +117,18 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         //build a set of options that user has picked
         //so that we can check in constant time if a particular option was picked
         Set<Integer> selectedOptionIndexes = new HashSet<>();
-        for (int i = 0; i < mOptionsView.getCheckedIndexes().length; i++)
-        {
+        for (int i = 0; i < mOptionsView.getCheckedIndexes().length; i++) {
             selectedOptionIndexes.add(mOptionsView.getCheckedIndexes()[i]);
         }
 
         //build a set of extras that the original booking contained
         //so that we can check in constant time if a particular extra was already in the original booking
         Set<String> bookingExtras = new HashSet<>();
-        for (int i = 0; i < mBooking.getExtrasInfo().size(); i++)
-        {
+        for (int i = 0; i < mBooking.getExtrasInfo().size(); i++) {
             bookingExtras.add(mBooking.getExtrasInfo().get(i).getLabel());
         }
 
-        for (int i = 0; i < mBookingEditExtrasViewModel.getNumberOfOptions(); i++)
-        {
+        for (int i = 0; i < mBookingEditExtrasViewModel.getNumberOfOptions(); i++) {
             //unfortunately, the booking object returned from the server
             //only contains display names (and no machine/key names) of the extras!
             String optionDisplayName = mBookingEditExtrasViewModel.getOptionDisplayName(i);
@@ -146,8 +141,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
                 }
                 //otherwise it was already in original booking. do nothing
             }
-            else
-            {
+            else {
                 if (optionWasInOriginalBooking) //if index was not selected and it was in original booking
                 {
                     removedExtras.add(mBookingEditExtrasViewModel.getOptionMachineName(i));
@@ -165,11 +159,9 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     private final BookingOptionsView.OnUpdatedListener optionUpdated
-            = new BookingOptionsView.OnUpdatedListener()
-    {
+            = new BookingOptionsView.OnUpdatedListener() {
         @Override
-        public void onUpdate(final BookingOptionsView view)
-        {
+        public void onUpdate(final BookingOptionsView view) {
             updateBookingSummaryViewForOptionsSelected();
         }
 
@@ -177,29 +169,29 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         public void onShowChildren(
                 final BookingOptionsView view,
                 final String[] items
-        )
-        {
+        ) {
         }
 
         @Override
         public void onHideChildren(
                 final BookingOptionsView view,
                 final String[] items
-        )
-        {
+        ) {
         }
     };
 
     //TODO: clean up
-    private void createOptionsView()
-    {
+    private void createOptionsView() {
         mOptionsView = new BookingOptionsSelectView(getActivity(),
-                mBookingEditExtrasViewModel.getBookingOption(), optionUpdated);
+                                                    mBookingEditExtrasViewModel.getBookingOption(),
+                                                    optionUpdated
+        );
 
         mOptionsView.hideTitle();
 
         //highlight the current selection
-        mOptionsView.setCheckedIndexes(mBookingEditExtrasViewModel.getCheckedIndexesForBooking(mBooking));
+        mOptionsView.setCheckedIndexes(mBookingEditExtrasViewModel.getCheckedIndexesForBooking(
+                mBooking));
 
         mOptionsLayout.removeAllViews();
         mOptionsLayout.addView(mOptionsView, 0);
@@ -214,7 +206,8 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
 
         for (Integer i : mOptionsView.getCheckedIndexes()) //build the extras details section
         {
-            addExtrasDetailsRow(mBookingEditExtrasViewModel.getOptionDisplayName(i),
+            addExtrasDetailsRow(
+                    mBookingEditExtrasViewModel.getOptionDisplayName(i),
                     mBookingEditExtrasViewModel.getHourInfo(i),
                     mBookingEditExtrasViewModel.getFormattedOptionPrice(i)
             );
@@ -229,18 +222,30 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         mBilledOnText.setText(getResources().getString(
                 R.string.billed_on_date_formatted,
                 mBookingEditExtrasViewModel
-                        .getFutureBillDateFormatted()));
+                        .getFutureBillDateFormatted()
+        ));
 
         mTotalDueText.setText(mBookingEditExtrasViewModel.getTotalDueText(
                 mOptionsView.getCheckedIndexes(),
-                this.getActivity()));
+                this.getActivity()
+        ));
     }
 
-    private void addExtrasDetailsRow(String displayName, float hours, String formattedPrice)
-    {
-        String rowLabel = getResources().getString(R.string.booking_edit_extras_booking_extras_entry_formatted, displayName, hours);
-        String priceLabel = getResources().getString(R.string.booking_edit_positive_price_formatted, formattedPrice);
-        LabelValueView extrasDetailRow = LabelValueView.newInstance(getActivity(), rowLabel, priceLabel);
+    private void addExtrasDetailsRow(String displayName, float hours, String formattedPrice) {
+        String rowLabel = getResources().getString(
+                R.string.booking_edit_extras_booking_extras_entry_formatted,
+                displayName,
+                hours
+        );
+        String priceLabel = getResources().getString(
+                R.string.booking_edit_positive_price_formatted,
+                formattedPrice
+        );
+        LabelValueView extrasDetailRow = LabelValueView.newInstance(
+                getActivity(),
+                rowLabel,
+                priceLabel
+        );
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.default_margin));
@@ -248,32 +253,31 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
         mBookingExtrasPriceTableLayout.addView(extrasDetailRow, layoutParams);
     }
 
-    private void updateBookingSummaryText()
-    {
+    private void updateBookingSummaryText() {
         float bookingBaseHours = mBookingEditExtrasViewModel.getBookingBaseHours();
         String originalBookingBasePrice = mBookingEditExtrasViewModel
                 .getOriginalBookingBasePriceFormatted(getContext());
         mBookingTableRow.setLabelAndValueText(
-                getResources().getString(R.string.booking_edit_base_hours_formatted,
-                        Float.toString(bookingBaseHours)),
-                originalBookingBasePrice);
+                getResources().getString(
+                        R.string.booking_edit_base_hours_formatted,
+                        Float.toString(bookingBaseHours)
+                ),
+                originalBookingBasePrice
+        );
     }
 
-    private void setSaveButtonEnabled(boolean enabled)
-    {
+    private void setSaveButtonEnabled(boolean enabled) {
         mSaveButton.setEnabled(enabled);
     }
 
     @Override
-    protected void showUiBlockers()
-    {
+    protected void showUiBlockers() {
         super.showUiBlockers();
         setSaveButtonEnabled(false);
     }
 
     @Override
-    protected void removeUiBlockers()
-    {
+    protected void removeUiBlockers() {
         super.removeUiBlockers();
         mContentContainer.setVisibility(View.VISIBLE);
         setSaveButtonEnabled(true);
@@ -282,8 +286,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     @Subscribe
     public final void onReceiveEditExtrasViewModelSuccess(
             BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess event
-    )
-    {
+    ) {
         mBookingEditExtrasViewModel = event.mBookingEditExtrasViewModel;
 
         createOptionsView();
@@ -295,15 +298,13 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     @Subscribe
     public final void onReceiveEditExtrasViewModelError(
             BookingEditEvent.ReceiveEditBookingExtrasViewModelError event
-    )
-    {
+    ) {
         onReceiveErrorEvent(event);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
     @Subscribe
-    public final void onReceiveEditBookingExtrasSuccess(BookingEditEvent.ReceiveEditExtrasSuccess event)
-    {
+    public final void onReceiveEditBookingExtrasSuccess(BookingEditEvent.ReceiveEditExtrasSuccess event) {
         showToast(getString(R.string.booking_edit_extras_update_success));
 
         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
@@ -311,8 +312,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public final void onReceiveEditBookingExtrasError(BookingEditEvent.ReceiveEditExtrasError event)
-    {
+    public final void onReceiveEditBookingExtrasError(BookingEditEvent.ReceiveEditExtrasError event) {
         onReceiveErrorEvent(event);
         removeUiBlockers(); //allow user to try again
     }

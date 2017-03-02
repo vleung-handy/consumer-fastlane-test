@@ -1,6 +1,5 @@
 package com.handybook.handybook.logger.handylogger;
 
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,11 +15,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.handybook.handybook.BuildConfig;
-import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.core.manager.FileManager;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.library.util.SystemUtils;
 import com.handybook.handybook.logger.handylogger.model.Event;
@@ -30,8 +31,6 @@ import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
 import com.handybook.handybook.logger.handylogger.model.EventSuperProperties;
 import com.handybook.handybook.logger.handylogger.model.EventSuperPropertiesBase;
 import com.handybook.handybook.logger.handylogger.model.Session;
-import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.handybook.handybook.core.manager.FileManager;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -48,8 +47,8 @@ import java.util.TimerTask;
 
 import javax.inject.Inject;
 
-public class EventLogManager
-{
+public class EventLogManager {
+
     private static final String TAG = EventLogManager.class.getSimpleName();
     private static final int DEFAULT_USER_ID = -1;
     private static final String KEY_SENT_TIMESTAMP_SECS = "event_bundle_sent_timestamp";
@@ -79,8 +78,7 @@ public class EventLogManager
             final FileManager fileManager,
             final DefaultPreferencesManager prefsManager,
             final UserManager userManager
-    )
-    {
+    ) {
         mContext = context;
         mBus = bus;
         mBus.register(this);
@@ -96,8 +94,7 @@ public class EventLogManager
     }
 
     @Subscribe
-    public synchronized void addLog(@NonNull LogEvent.AddLogEvent event)
-    {
+    public synchronized void addLog(@NonNull LogEvent.AddLogEvent event) {
         EventLog log = event.getLog();
         mSession.incrementEventCount(mPrefsManager);
         Event eventLog = new Event(log, mSession.getId(), mSession.getEventCount());
@@ -109,29 +106,26 @@ public class EventLogManager
         if (mTimer == null) { setUploadTimer(); }
 
         //log the payload to Crashlytics too, useful for follow steps for debugging when crash
-        try
-        {
+        try {
             //putting in try/catch block just in case GSON.toJson throws an exception
             //Get the log only to log
             JSONObject eventLogJson = new JSONObject(GSON.toJson(log));
             String logString = log.getEventName() + ": " + eventLogJson.toString();
             Crashlytics.log(logString);
 
-            if(BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-            {
+            if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
                 //Mixpanel tracking info in NOR-1016
                 addMixPanelProperties(eventLogJson, eventLog);
                 mMixpanel.track(eventLog.getEventType(), eventLogJson);
             }
         }
-        catch (JsonParseException | JSONException e)
-        {
+        catch (JsonParseException | JSONException e) {
             Crashlytics.logException(e);
         }
 
         //If event log bundle is null or we've hit the max num per bundle then we create a new bundle
-        if (sCurrentEventLogBundle == null || sCurrentEventLogBundle.size() >= MAX_EVENTS_PER_BUNDLE)
-        {
+        if (sCurrentEventLogBundle == null ||
+            sCurrentEventLogBundle.size() >= MAX_EVENTS_PER_BUNDLE) {
             //Create new event log bundle and add it to the List
             sCurrentEventLogBundle = new EventLogBundle(
                     getUserId(),
@@ -142,8 +136,7 @@ public class EventLogManager
                     SystemUtils.getDeviceModel(),
                     mPrefsManager.getInstallationId()
             );
-            synchronized (BundlesWrapper.class)
-            {
+            synchronized (BundlesWrapper.class) {
                 BundlesWrapper.BUNDLES.add(sCurrentEventLogBundle);
             }
         }
@@ -151,11 +144,9 @@ public class EventLogManager
         //Save the EventLogBundle to preferences always
         //Must wrap the sCurrentEventLogBundle in this also, because the bundleWrapper might be in the process of
         //  converting the hash to JSON which also includes the sCurrentEventLogBundle
-        synchronized (BundlesWrapper.class)
-        {
+        synchronized (BundlesWrapper.class) {
             //If it's null here, it means that the current bundle was just sent. Reattempt to add log
-            if(sCurrentEventLogBundle == null)
-            {
+            if (sCurrentEventLogBundle == null) {
                 addLog(event);
                 return;
             }
@@ -172,10 +163,8 @@ public class EventLogManager
      * @return The list of Strings if returned, otherwise, null if nothing was saved in that pref
      * previously
      */
-    private String loadSavedEventLogBundles(PrefsKey prefsKey)
-    {
-        synchronized (mPrefsManager)
-        {
+    private String loadSavedEventLogBundles(PrefsKey prefsKey) {
+        synchronized (mPrefsManager) {
             return mPrefsManager.getString(prefsKey, null);
         }
     }
@@ -183,46 +172,35 @@ public class EventLogManager
     /**
      * Save the List of EventLogBundles to the prefsKey
      */
-    private void saveToPreference(PrefsKey prefsKey, List<EventLogBundle> eventLogBundles)
-    {
-        try
-        {
-            synchronized (mPrefsManager)
-            {
+    private void saveToPreference(PrefsKey prefsKey, List<EventLogBundle> eventLogBundles) {
+        try {
+            synchronized (mPrefsManager) {
                 mPrefsManager.setString(prefsKey, GSON.toJson(eventLogBundles));
             }
         }
         //Concurrent modification could happen if the sCurrentEventLogBundle is modified while
         // GSON is turing the eventLogBundles into json. Hoping line 154 fix stops this from happening
-        catch (JsonParseException | ConcurrentModificationException e)
-        {
+        catch (JsonParseException | ConcurrentModificationException e) {
             //If there's an JsonParseException then clear the eventLogBundles because invalid json
-            synchronized (BundlesWrapper.class)
-            {
+            synchronized (BundlesWrapper.class) {
                 BundlesWrapper.BUNDLES.clear();
             }
         }
     }
 
-    private void removePreference(PrefsKey prefsKey)
-    {
-        synchronized (mPrefsManager)
-        {
+    private void removePreference(PrefsKey prefsKey) {
+        synchronized (mPrefsManager) {
             mPrefsManager.removeValue(prefsKey);
         }
     }
 
-    private int getUserId()
-    {
+    private int getUserId() {
         User user = mUserManager.getCurrentUser();
-        if (user != null)
-        {
-            try
-            {
+        if (user != null) {
+            try {
                 return Integer.parseInt(user.getId());
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 return DEFAULT_USER_ID;
             }
         }
@@ -230,38 +208,30 @@ public class EventLogManager
     }
 
     //************************************* handle all saving/sending of logs **********************
-    private void setUploadTimer()
-    {
-        if (mTimer != null)
-        {
+    private void setUploadTimer() {
+        if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;
         }
 
         mTimer = new Timer();
-        mTimer.schedule(new TimerTask()
-        {
+        mTimer.schedule(new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 sendLogsFromPreference();
             }
             //Check network connection and set timer delay appropriately
         }, hasNetworkConnection() ? UPLOAD_TIMER_DELAY_MS : UPLOAD_TIMER_DELAY_NO_INTERNET_MS);
     }
 
-    private void sendLogsOnInitialization()
-    {
-        new Thread(new Runnable()
-        {
+    private void sendLogsOnInitialization() {
+        new Thread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 //Check if there was logs that were to be sent but were never saved to file system
                 String logBundles = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
 
-                if (!TextUtils.isEmpty(logBundles))
-                {
+                if (!TextUtils.isEmpty(logBundles)) {
                     //Save the previous ones to file system
                     saveLogsToFileSystem(logBundles);
                 }
@@ -275,14 +245,11 @@ public class EventLogManager
      * Should be triggered from the timer
      */
     @VisibleForTesting
-    void sendLogsFromPreference()
-    {
+    void sendLogsFromPreference() {
         String logBundles = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES);
 
-        if (!TextUtils.isEmpty(logBundles))
-        {
-            synchronized (BundlesWrapper.class)
-            {
+        if (!TextUtils.isEmpty(logBundles)) {
+            synchronized (BundlesWrapper.class) {
                 //Save the EventLogBundle to preferences always
                 saveToPreference(
                         PrefsKey.EVENT_LOG_BUNDLES_TO_SEND,
@@ -297,15 +264,14 @@ public class EventLogManager
 
         // We need to retrieve the logs previously and save them into the preference as send log key
         // clear out the existing variables for the log manager
-        final String prefBundleString = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
+        final String prefBundleString
+                = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
 
         //This means nothing was stored previously in prefs
-        if (!TextUtils.isEmpty(prefBundleString))
-        {
+        if (!TextUtils.isEmpty(prefBundleString)) {
             String eventLogBundles = loadSavedEventLogBundles(PrefsKey.EVENT_LOG_BUNDLES_TO_SEND);
             //Save this to the file system and remove from original preference
-            if (!TextUtils.isEmpty(eventLogBundles))
-            {
+            if (!TextUtils.isEmpty(eventLogBundles)) {
                 saveLogsToFileSystem(eventLogBundles);
             }
         }
@@ -313,20 +279,17 @@ public class EventLogManager
         sendLogs();
     }
 
-    private synchronized void saveLogsToFileSystem(final String prefBundleString)
-    {
+    private synchronized void saveLogsToFileSystem(final String prefBundleString) {
         JsonObject[] eventLogBundles = GSON.fromJson(
                 prefBundleString,
                 JsonObject[].class
         );
-        for (JsonObject logBundleJson : eventLogBundles)
-        {
+        for (JsonObject logBundleJson : eventLogBundles) {
             String eventBundleId = logBundleJson.get(EventLogBundle.KEY_EVENT_BUNDLE_ID)
                                                 .getAsString();
             boolean fileSaved = mFileManager.saveLogFile(eventBundleId, logBundleJson.toString());
             // If the file didn't save then we log an exception
-            if (!fileSaved)
-            {
+            if (!fileSaved) {
                 Crashlytics.logException(
                         new Exception(
                                 "Failed to save log to file system: " + logBundleJson.toString()
@@ -342,16 +305,13 @@ public class EventLogManager
     /**
      * handles sending the logs
      */
-    private void sendLogs()
-    {
+    private void sendLogs() {
         //This is jsut in case there's an invalid json file for some reason
         File invalidFile = null;
 
-        try
-        {
+        try {
             File[] files = mFileManager.getLogFileList();
-            if (files == null)
-            {
+            if (files == null) {
                 //Log exception
                 Crashlytics.logException(new Exception(
                         "Log Files list returns null. Should not happen"));
@@ -360,16 +320,14 @@ public class EventLogManager
             }
 
             mSendingLogsCount = files.length;
-            for (final File file : files)
-            {
+            for (final File file : files) {
                 invalidFile = file;
                 //Get each event log bundle
                 JsonObject eventLogBundle = GSON.fromJson(
                         mFileManager.readFile(file),
                         JsonObject.class
                 );
-                if (eventLogBundle == null)
-                {
+                if (eventLogBundle == null) {
                     mFileManager.deleteLogFile(file.getName());
                     continue;
                 }
@@ -382,35 +340,28 @@ public class EventLogManager
                 //Upload logs
                 mDataManager.postLogs(
                         eventLogBundle,
-                        new DataManager.Callback<EventLogResponse>()
-                        {
+                        new DataManager.Callback<EventLogResponse>() {
                             @Override
-                            public void onSuccess(EventLogResponse response)
-                            {
+                            public void onSuccess(EventLogResponse response) {
                                 mFileManager.deleteLogFile(response.getBundleId());
                                 finishUpload();
                             }
 
                             @Override
-                            public void onError(DataManager.DataManagerError error)
-                            {
+                            public void onError(DataManager.DataManagerError error) {
                                 finishUpload();
                             }
 
-                            private void finishUpload()
-                            {
+                            private void finishUpload() {
                                 //If uploads are finished
-                                if (--mSendingLogsCount == 0)
-                                {
+                                if (--mSendingLogsCount == 0) {
                                     //If there are currently logs, set timer, else clear old timer
                                     if (!BundlesWrapper.BUNDLES.isEmpty()
-                                            || mFileManager.getLogFileList().length > 0
-                                            )
-                                    {
+                                        || mFileManager.getLogFileList().length > 0
+                                            ) {
                                         setUploadTimer();
                                     }
-                                    else
-                                    {
+                                    else {
                                         mTimer.cancel();
                                         mTimer = null;
                                     }
@@ -420,13 +371,11 @@ public class EventLogManager
                 );
             }
         }
-        catch (JsonSyntaxException e)
-        {
+        catch (JsonSyntaxException e) {
             Crashlytics.logException(e);
             Log.e(TAG, e.getMessage());
             //If there's json exception it means logs aren't valid and clear it out
-            if (invalidFile != null)
-            {
+            if (invalidFile != null) {
                 mFileManager.deleteLogFile(invalidFile.getName());
             }
             //reset log count
@@ -435,14 +384,13 @@ public class EventLogManager
     }
 
     // This should be called from BaseApplication after
-    public void initMixPanel()
-    {
-        if(BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) return;
+    public void initMixPanel() {
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) { return; }
 
         //Set up mix panel
         String mixPanelProperty = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
-                ? "mixpanel_api_key"
-                : "mixpanel_api_key_internal";
+                                  ? "mixpanel_api_key"
+                                  : "mixpanel_api_key_internal";
         String mixpanelApiKey = PropertiesReader.getProperties(
                 mContext,
                 "config.properties"
@@ -452,8 +400,7 @@ public class EventLogManager
 
         //Set up super properties for mix panel
         JSONObject superProperties = null;
-        try
-        {
+        try {
             superProperties = new JSONObject(GSON.toJson(new EventSuperPropertiesBase(
                     Build.VERSION.RELEASE,
                     BuildConfig.VERSION_NAME,
@@ -462,13 +409,11 @@ public class EventLogManager
                     mPrefsManager.getInstallationId()
             )));
         }
-        catch (JSONException e)
-        {
+        catch (JSONException e) {
             Crashlytics.logException(e);
         }
 
-        if (mUserManager.isUserLoggedIn())
-        {
+        if (mUserManager.isUserLoggedIn()) {
             mIsUserLoggedIn = true;
             //Only set this on initialization. Setting it after initialization will break mixpanel
             mMixpanel.identify(String.valueOf(getUserId()));
@@ -477,24 +422,19 @@ public class EventLogManager
         if (superProperties != null) { mMixpanel.registerSuperProperties(superProperties); }
     }
 
-    private void addMixPanelUserSuperProperty()
-    {
+    private void addMixPanelUserSuperProperty() {
 
         //If user is not logged in, check if he's logged in
-        if (!mIsUserLoggedIn)
-        {
+        if (!mIsUserLoggedIn) {
             //If logged in add user id to super properties
-            if (mUserManager.isUserLoggedIn())
-            {
-                try
-                {
+            if (mUserManager.isUserLoggedIn()) {
+                try {
                     JSONObject userIdJson = new JSONObject();
                     userIdJson.put(EventSuperProperties.USER_ID, getUserId());
                     mMixpanel.registerSuperProperties(userIdJson);
                     mIsUserLoggedIn = true;
                 }
-                catch (JSONException e)
-                {
+                catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -507,8 +447,7 @@ public class EventLogManager
      * @param event
      * @throws JSONException
      */
-    private void addMixPanelProperties(JSONObject eventLogJson, Event event) throws JSONException
-    {
+    private void addMixPanelProperties(JSONObject eventLogJson, Event event) throws JSONException {
         addMixPanelUserSuperProperty();
 
         //Mixpanel tracking info in NOR-1016
@@ -523,26 +462,22 @@ public class EventLogManager
         eventLogJson.put("mobile", 1);
 
         User user = mUserManager.getCurrentUser();
-        if (user != null)
-        {
+        if (user != null) {
             eventLogJson.put("email", user.getEmail());
             eventLogJson.put("name", user.getFirstName() + " " + user.getLastName());
             eventLogJson.put("user_id", user.getId());
             eventLogJson.put("user_logged_in", 1);
             //This can be new when a new user is first created
-            if (user.getAnalytics() != null)
-            {
+            if (user.getAnalytics() != null) {
                 eventLogJson.put("booking_count", user.getAnalytics().getTotalBookings());
             }
         }
-        else
-        {
+        else {
             eventLogJson.put("user_logged_in", 0);
         }
     }
 
-    private boolean hasNetworkConnection()
-    {
+    private boolean hasNetworkConnection() {
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -550,8 +485,8 @@ public class EventLogManager
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
-    private static class BundlesWrapper
-    {
+    private static class BundlesWrapper {
+
         static final List<EventLogBundle> BUNDLES = new ArrayList<>();
     }
 }

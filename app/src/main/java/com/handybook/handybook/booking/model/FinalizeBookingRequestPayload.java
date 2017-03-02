@@ -16,9 +16,10 @@ import java.util.Observable;
  * Body of POST request to /api/v3/bookings/:id/finalize_booking
  *
  */
-public class FinalizeBookingRequestPayload extends Observable
-{
-    public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+public class FinalizeBookingRequestPayload extends Observable {
+
+    public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                                                     .create();
     @SerializedName("password")
     private String mPassword;
     @SerializedName("apply_to_all")
@@ -26,45 +27,36 @@ public class FinalizeBookingRequestPayload extends Observable
     @SerializedName("booking_instructions")
     private List<BookingInstruction> mBookingInstructions;
 
-    public String getPassword()
-    {
+    public String getPassword() {
         return mPassword;
     }
 
-    public void setPassword(final String password)
-    {
+    public void setPassword(final String password) {
         mPassword = password;
         triggerObservers();
     }
 
-    public Boolean getShouldApplyToAll()
-    {
+    public Boolean getShouldApplyToAll() {
         return mShouldApplyToAll;
     }
 
-    public void setShouldApplyToAll(final Boolean shouldApplyToAll)
-    {
+    public void setShouldApplyToAll(final Boolean shouldApplyToAll) {
         mShouldApplyToAll = shouldApplyToAll;
         triggerObservers();
     }
 
-    public List<BookingInstruction> getBookingInstructions()
-    {
+    public List<BookingInstruction> getBookingInstructions() {
         return mBookingInstructions;
     }
 
-    public void setBookingInstructions(final List<BookingInstruction> bookingInstructions)
-    {
-        if (mBookingInstructions == null)
-        {
+    public void setBookingInstructions(final List<BookingInstruction> bookingInstructions) {
+        if (mBookingInstructions == null) {
             mBookingInstructions = new ArrayList<>();
         }
         //filter out all previous instructions of
         ArrayList<BookingInstruction> preferenceInstructions = new ArrayList<>();
-        for (BookingInstruction eBookingInstruction : mBookingInstructions)
-        {
-            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.PREFERENCE))
-            {
+        for (BookingInstruction eBookingInstruction : mBookingInstructions) {
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.PREFERENCE)) {
                 preferenceInstructions.add(eBookingInstruction);
             }
         }
@@ -73,19 +65,16 @@ public class FinalizeBookingRequestPayload extends Observable
         triggerObservers();
     }
 
-    public static FinalizeBookingRequestPayload fromJson(final String jsonIn)
-    {
+    public static FinalizeBookingRequestPayload fromJson(final String jsonIn) {
         return GSON.fromJson(jsonIn, FinalizeBookingRequestPayload.class);
     }
 
-    public String toJson()
-    {
+    public String toJson() {
         final Gson gson = GSON;
         return gson.toJson(this);
     }
 
-    private void triggerObservers()
-    {
+    private void triggerObservers() {
         setChanged();
         notifyObservers();
     }
@@ -100,8 +89,7 @@ public class FinalizeBookingRequestPayload extends Observable
     public void setEntryInfo(
             String selectedEntryMethodMachineName,
             @NonNull Map<String, String> selectedEntryMethodInputFormValues
-    )
-    {
+    ) {
         BookingInstruction entryInfoTypeInstruction = new BookingInstruction(
                 null,
                 BookingInstruction.MachineName.ENTRY_METHOD,
@@ -121,8 +109,7 @@ public class FinalizeBookingRequestPayload extends Observable
             "machine_name": "key_location", #optional if id included
             "description": "I'll be home so just ring the buzzer!"
         }*/
-        if (mBookingInstructions == null)
-        {
+        if (mBookingInstructions == null) {
             mBookingInstructions = new ArrayList<>();
         }
         /*
@@ -131,15 +118,15 @@ public class FinalizeBookingRequestPayload extends Observable
         using a map instead of list so we can easily check if these are present
         in the current booking instructions
          */
-        Map<String, BookingInstruction> entryInfoBookingInstructionsMap = new HashMap<>();//TODO rename
+        Map<String, BookingInstruction> entryInfoBookingInstructionsMap
+                = new HashMap<>();//TODO rename
         entryInfoBookingInstructionsMap.put(
                 BookingInstruction.MachineName.ENTRY_METHOD,
                 entryInfoTypeInstruction
         );
 
         //create booking instructions from the selected entry method input form values
-        for (String inputFormFieldMachineName : selectedEntryMethodInputFormValues.keySet())
-        {
+        for (String inputFormFieldMachineName : selectedEntryMethodInputFormValues.keySet()) {
             BookingInstruction entryInfoMessageInstruction = new BookingInstruction(
                     null,
                     inputFormFieldMachineName,
@@ -158,26 +145,24 @@ public class FinalizeBookingRequestPayload extends Observable
         check if these instructions are already present in the global booking instructions list.
         if so, update and remove from list to be added
          */
-        for(BookingInstruction bookingInstruction : mBookingInstructions)
-        {
+        for (BookingInstruction bookingInstruction : mBookingInstructions) {
             String bookingInstructionMachineName = bookingInstruction.getMachineName();
             BookingInstruction entryMethodBookingInstruction =
                     entryInfoBookingInstructionsMap.get(bookingInstructionMachineName);
-            if (entryMethodBookingInstruction != null) //global booking instructions list already has this entry method booking instruction
+            if (entryMethodBookingInstruction !=
+                null) //global booking instructions list already has this entry method booking instruction
             {
                 /*
                 update the booking instruction in the global list with the entry method info,
                 and remove from the entry methods to be added later to the global list
                  */
-                if (BookingInstruction.MachineName.ENTRY_METHOD.equals(bookingInstructionMachineName))
-                {
+                if (BookingInstruction.MachineName.ENTRY_METHOD.equals(bookingInstructionMachineName)) {
                     /*
                     booking instructions has weird structure so have to do this
                      */
                     bookingInstruction.setInstructionType(entryMethodBookingInstruction.getInstructionType());
                 }
-                else
-                {
+                else {
                     bookingInstruction.setDescription(entryMethodBookingInstruction.getDescription());
                 }
                 entryInfoBookingInstructionsMap.remove(bookingInstructionMachineName);
@@ -189,14 +174,12 @@ public class FinalizeBookingRequestPayload extends Observable
         triggerObservers();
     }
 
-    public void setNoteToPro(final String noteToPro)
-    {
+    public void setNoteToPro(final String noteToPro) {
         /*{
             machine_name: 'note_to_pro',
             description:  'Please remember to take out my trash',
           }*/
-        if (mBookingInstructions == null)
-        {
+        if (mBookingInstructions == null) {
             mBookingInstructions = new ArrayList<>();
         }
         BookingInstruction noteToProInstruction = new BookingInstruction(
@@ -205,13 +188,12 @@ public class FinalizeBookingRequestPayload extends Observable
                 null,
                 null,
                 noteToPro,
-                null);
+                null
+        );
 
         // Find it and if it exists update it
-        for (BookingInstruction eBookingInstruction : mBookingInstructions)
-        {
-            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.NOTE_TO_PRO))
-            {
+        for (BookingInstruction eBookingInstruction : mBookingInstructions) {
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.NOTE_TO_PRO)) {
                 eBookingInstruction.setDescription(noteToPro);
                 notifyObservers();
                 return;
@@ -227,16 +209,12 @@ public class FinalizeBookingRequestPayload extends Observable
      *
      * @return
      */
-    public String getNoteToPro()
-    {
-        if (mBookingInstructions == null)
-        {
+    public String getNoteToPro() {
+        if (mBookingInstructions == null) {
             return null;
         }
-        for (BookingInstruction eBookingInstruction : mBookingInstructions)
-        {
-            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.NOTE_TO_PRO))
-            {
+        for (BookingInstruction eBookingInstruction : mBookingInstructions) {
+            if (eBookingInstruction.isOfMachineName(BookingInstruction.MachineName.NOTE_TO_PRO)) {
                 return eBookingInstruction.getDescription();
             }
         }

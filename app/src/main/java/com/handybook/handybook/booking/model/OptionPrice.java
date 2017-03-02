@@ -2,15 +2,13 @@ package com.handybook.handybook.booking.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class OptionPrice
-{
-    public String getFormattedPrice()
-    {
+public final class OptionPrice {
+
+    public String getFormattedPrice() {
         return mFormattedPrice;
     }
 
-    public float getAmountDollars()
-    {
+    public float getAmountDollars() {
         return mAmountDollars;
     }
 

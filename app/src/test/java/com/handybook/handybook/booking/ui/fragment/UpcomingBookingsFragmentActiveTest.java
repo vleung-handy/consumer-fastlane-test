@@ -13,18 +13,24 @@ import org.junit.Test;
  * Tests all the different parts that relates to having an active booking, upcoming bookings
  * and the existence of a cleaning plan.
  */
-public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
-{
+public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest {
+
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         super.setup();
         String json = IOUtils.getJsonStringForTest("upcoming_bookings.json");
-        final UserBookingsWrapper activeBooking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                .create()
-                .fromJson(json, UserBookingsWrapper.class);
+        final UserBookingsWrapper activeBooking = new GsonBuilder().setDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ssX")
+                                                                   .create()
+                                                                   .fromJson(
+                                                                           json,
+                                                                           UserBookingsWrapper.class
+                                                                   );
 
-        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(activeBooking, Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING);
+        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(
+                activeBooking,
+                Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING
+        );
         mUpcomingBookingsFragment.onReceiveBookingsSuccess(mBookingReceiveSuccessfulEvent);
     }
 
@@ -34,8 +40,7 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
      * @throws Exception
      */
     @Test
-    public void testActiveBookingSection() throws Exception
-    {
+    public void testActiveBookingSection() throws Exception {
         testActiveBookingPresent(mUpcomingBookingsFragment, "195370");
     }
 
@@ -43,8 +48,7 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
      * Verify that there are upcoming bookings
      */
     @Test
-    public void testUpcomingBookingsSection()
-    {
+    public void testUpcomingBookingsSection() {
         //6 bookings + one share banner
         testUpcomingBookingsContainingBookings(mUpcomingBookingsFragment, 7);
     }
@@ -53,14 +57,12 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
      * Verify the correctness of the cleaning plans
      */
     @Test
-    public void testCleaningPlan()
-    {
+    public void testCleaningPlan() {
         testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 3);
     }
 
     @Test
-    public void testEmptyViewNotShowing()
-    {
+    public void testEmptyViewNotShowing() {
         assertEmptyViewNotShowing();
     }
 

@@ -11,21 +11,19 @@ import com.handybook.handybook.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProTeamSectionListHeaderView extends FrameLayout
-{
+public class ProTeamSectionListHeaderView extends FrameLayout {
+
     @Bind(R.id.title)
     TextView mTitle;
     @Bind(R.id.help_icon)
     ImageView mHelpIcon;
 
-    public ProTeamSectionListHeaderView(final Context context)
-    {
+    public ProTeamSectionListHeaderView(final Context context) {
         super(context);
         init();
     }
 
-    private void init()
-    {
+    private void init() {
         setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -34,13 +32,11 @@ public class ProTeamSectionListHeaderView extends FrameLayout
         ButterKnife.bind(this);
     }
 
-    public void setTitle(final String text)
-    {
+    public void setTitle(final String text) {
         mTitle.setText(text);
     }
 
-    public void setHelpIconClickListener(final OnClickListener listener)
-    {
+    public void setHelpIconClickListener(final OnClickListener listener) {
         mHelpIcon.setOnClickListener(listener);
     }
 }

@@ -20,9 +20,9 @@ import com.handybook.handybook.booking.model.subscription.SubscriptionPrices;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
@@ -35,8 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingSubscriptionFragment extends BookingFlowFragment
-{
+public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     private static final String TAG = BookingSubscriptionFragment.class.getName();
 
@@ -57,14 +56,12 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     //This used to do a looking up from the selected frequency value to the frequency key
     private Map<String, String> mFrequencyValueToKey;
 
-    public static BookingSubscriptionFragment newInstance()
-    {
+    public static BookingSubscriptionFragment newInstance() {
         return new BookingSubscriptionFragment();
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBookingTransaction = bookingManager.getCurrentTransaction();
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.BookingDetailsShownLog()));
@@ -75,13 +72,12 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(
-                                               R.layout.fragment_booking_subscription,
-                                               container,
-                                               false
-                                       );
+                R.layout.fragment_booking_subscription,
+                container,
+                false
+        );
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_subscription_titlebar));
 
@@ -91,8 +87,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     }
 
     @OnClick(R.id.next_button)
-    public void onNextButtonClick()
-    {
+    public void onNextButtonClick() {
         //Get the frequency selected
         mBookingTransaction.setRecurringFrequency(Integer.parseInt(getCurrentFrequencyKey()));
 
@@ -105,8 +100,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
     }
 
     @OnClick(R.id.booking_subscription_toolbar_faq)
-    public void onFAQClicked()
-    {
+    public void onFAQClicked() {
         String faqURL = bookingManager.getCurrentQuote().getCommitmentFaqUrl();
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFAQPressedLog(faqURL)));
         WebViewFragment fragment = WebViewFragment
@@ -114,8 +108,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         FragmentUtils.switchToFragment(this, fragment, true);
     }
 
-    private void createFrequencyView()
-    {
+    private void createFrequencyView() {
         List<SubscriptionFrequency> frequencies = bookingManager.getCurrentQuote()
                                                                 .getCommitmentType()
                                                                 .getUniqueFrequencies();
@@ -128,14 +121,12 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         bookingOption.setDefaultValue(Integer.toString(0));
         bookingOption.setTitle(getString(R.string.booking_subscription_frequency_title));
 
-        for (int i = 0; i < frequencies.size(); i++)
-        {
+        for (int i = 0; i < frequencies.size(); i++) {
             SubscriptionFrequency frequency = frequencies.get(i);
             mFrequencyValueToKey.put(frequency.getTitle(), frequency.getKey());
             frequencyTitles[i] = frequency.getTitle();
 
-            if (frequency.isDefault())
-            {
+            if (frequency.isDefault()) {
                 bookingOption.setDefaultValue(Integer.toString(i));
             }
         }
@@ -144,23 +135,25 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         mFrequencyOptionsSpinnerView = new BookingOptionsSpinnerView(
                 getContext(),
                 bookingOption,
-                new BookingOptionsView.OnUpdatedListener()
-                {
+                new BookingOptionsView.OnUpdatedListener() {
                     @Override
-                    public void onUpdate(final BookingOptionsView view)
-                    {
+                    public void onUpdate(final BookingOptionsView view) {
                         updateSubscriptionOptions();
                     }
 
                     @Override
-                    public void onShowChildren(final BookingOptionsView view, final String[] items)
-                    {
+                    public void onShowChildren(
+                            final BookingOptionsView view,
+                            final String[] items
+                    ) {
 
                     }
 
                     @Override
-                    public void onHideChildren(final BookingOptionsView view, final String[] items)
-                    {
+                    public void onHideChildren(
+                            final BookingOptionsView view,
+                            final String[] items
+                    ) {
 
                     }
                 }
@@ -169,8 +162,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         mFrequencyLayout.addView(mFrequencyOptionsSpinnerView);
     }
 
-    private void createSubscriptionOptions()
-    {
+    private void createSubscriptionOptions() {
         //Booking option used for the BookingOptionsSelectView
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION);
@@ -184,12 +176,10 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
 
         String cleaningText = getString(R.string.booking_subscription_term_cleaning);
 
-        for (int i = 0; i < subscriptionLengths.size(); i++)
-        {
+        for (int i = 0; i < subscriptionLengths.size(); i++) {
             SubscriptionLength subscriptionLength = subscriptionLengths.get(i);
             String key = subscriptionLength.getKey();
-            if (subscriptionLength.isDefault())
-            {
+            if (subscriptionLength.isDefault()) {
                 bookingOption.setDefaultValue(Integer.toString(i));
             }
             mSubscriptionLengthToKey.put(subscriptionLength.getTitle(), key);
@@ -200,11 +190,11 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                     Float.toString(mBookingTransaction.getHours())
             );
 
-            if (price != null)
-            {
-                pricesText[i] = TextUtils.formatPriceCents(price.getFullPrice(),
-                                                           bookingManager.getCurrentQuote()
-                                                                         .getCurrencyChar()
+            if (price != null) {
+                pricesText[i] = TextUtils.formatPriceCents(
+                        price.getFullPrice(),
+                        bookingManager.getCurrentQuote()
+                                      .getCurrencyChar()
                 );
             }
 
@@ -224,13 +214,11 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
         mSubscriptionOptionsLayout.addView(mSubscriptionOptionsView, 1);
     }
 
-    private void updateSubscriptionOptions()
-    {
+    private void updateSubscriptionOptions() {
         CommitmentType commitmentType = bookingManager.getCurrentQuote().getCommitmentType();
         List<SubscriptionLength> subscriptionLengths = commitmentType.getUniqueLengths();
 
-        for (int i = 0; i < subscriptionLengths.size(); i++)
-        {
+        for (int i = 0; i < subscriptionLengths.size(); i++) {
             SubscriptionLength subscriptionLength = subscriptionLengths.get(i);
             String key = subscriptionLength.getKey();
             SubscriptionPrices subscriptionPrice = commitmentType.getSubscriptionPrice(
@@ -238,16 +226,14 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                     getCurrentFrequencyKey()
             );
 
-            if (subscriptionPrice != null)
-            {
+            if (subscriptionPrice != null) {
                 boolean isEnabled = subscriptionPrice.isEnabled();
                 mSubscriptionOptionsView.setIsOptionEnabled(isEnabled, i);
 
                 Price price = subscriptionPrice.getPrices()
                                                .get(Float.toString(mBookingTransaction.getHours()));
 
-                if (price != null)
-                {
+                if (price != null) {
                     mSubscriptionOptionsView.updateRightOptionsTitleText(
                             TextUtils.formatPriceCents(
                                     price.getFullPrice(),
@@ -257,19 +243,16 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment
                     );
                 }
 
-                if (isEnabled && subscriptionLength.isDefault())
-                {
+                if (isEnabled && subscriptionLength.isDefault()) {
                     mSubscriptionOptionsView.setCurrentIndex(i);
                 }
             }
         }
     }
 
-    private String getCurrentFrequencyKey()
-    {
+    private String getCurrentFrequencyKey() {
         //This is here only because unit tests fail here. Should never happen in real life
-        if(mFrequencyOptionsSpinnerView.getListSize() == 0)
-            return "0";
+        if (mFrequencyOptionsSpinnerView.getListSize() == 0) { return "0"; }
 
         return mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
     }

@@ -3,9 +3,8 @@ package com.handybook.handybook.logger.handylogger.model.user;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
+public class ShareModalLog extends EventLog {
 
-public class ShareModalLog extends EventLog
-{
     public static final String SRC_UPCOMING_BOOKINGS = "upcoming_bookings";
     public static final String SRC_PAST_BOOKINGS = "past_bookings";
 
@@ -32,8 +31,7 @@ public class ShareModalLog extends EventLog
             final String ctaSource,
             final int senderOfferAmount,
             final int receiverOfferAmount
-    )
-    {
+    ) {
         super(EVENT_TYPE, eventContext);
         mReferralMedium = referralMedium;
         mReferralIdentifier = referralIdentifier;
@@ -43,8 +41,8 @@ public class ShareModalLog extends EventLog
         mReceiverOfferAmount = receiverOfferAmount;
     }
 
-    public static class PostBookingShareButtonTappedLog extends ShareModalLog
-    {
+    public static class PostBookingShareButtonTappedLog extends ShareModalLog {
+
         public static final String EVENT_CONTEXT = "post_booking_share_modal";
 
         public PostBookingShareButtonTappedLog(
@@ -54,8 +52,7 @@ public class ShareModalLog extends EventLog
                 final String ctaSource,
                 final int senderOfferAmount,
                 final int receiverOfferAmount
-        )
-        {
+        ) {
             super(
                     EVENT_CONTEXT,
                     referralMedium,
@@ -68,8 +65,9 @@ public class ShareModalLog extends EventLog
         }
     }
 
-    public static class PostRatingShareButtonTappedLog extends ShareModalLog
-    {
+
+    public static class PostRatingShareButtonTappedLog extends ShareModalLog {
+
         public static final String EVENT_CONTEXT = "post_rating_share_modal";
 
         public PostRatingShareButtonTappedLog(
@@ -79,8 +77,7 @@ public class ShareModalLog extends EventLog
                 final String ctaSource,
                 final int senderOfferAmount,
                 final int receiverOfferAmount
-        )
-        {
+        ) {
             super(
                     EVENT_CONTEXT,
                     referralMedium,
@@ -94,8 +91,8 @@ public class ShareModalLog extends EventLog
     }
 
 
-    public static class NativeShareTappedLog extends ShareModalLog
-    {
+    public static class NativeShareTappedLog extends ShareModalLog {
+
         private static final String EVENT_CONTEXT = "native_share";
 
         public NativeShareTappedLog(
@@ -105,8 +102,7 @@ public class ShareModalLog extends EventLog
                 final String ctaSource,
                 final int senderOfferAmount,
                 final int receiverOfferAmount
-        )
-        {
+        ) {
             super(
                     EVENT_CONTEXT,
                     referralMedium,

@@ -17,17 +17,17 @@ import com.facebook.login.LoginResult;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.LeftIconButton;
-import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RedemptionSignUpFragment extends InjectedFragment
-{
+public class RedemptionSignUpFragment extends InjectedFragment {
+
     private static final String FACEBOOK_PERMISSION_EMAIL = "email";
     private static final String KEY_RECEIVER_COUPON_AMOUNT = "receiver_coupon_amount";
     private static final String KEY_SENDER_NAME = "sender_name";
@@ -51,8 +51,7 @@ public class RedemptionSignUpFragment extends InjectedFragment
             final String referralGuid,
             final String senderName,
             final String receiverCouponAmount
-    )
-    {
+    ) {
         final RedemptionSignUpFragment fragment = new RedemptionSignUpFragment();
         final Bundle arguments = new Bundle();
         arguments.putString(KEY_SENDER_NAME, senderName);
@@ -63,14 +62,12 @@ public class RedemptionSignUpFragment extends InjectedFragment
     }
 
     @OnClick(R.id.login_button)
-    public void onLoginButtonClicked()
-    {
+    public void onLoginButtonClicked() {
         startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 
     @OnClick(R.id.facebook_register_button)
-    public void onFacebookRegisterButtonClicked()
-    {
+    public void onFacebookRegisterButtonClicked() {
         LoginManager.getInstance().logInWithReadPermissions(
                 this,
                 Lists.newArrayList(FACEBOOK_PERMISSION_EMAIL)
@@ -78,8 +75,7 @@ public class RedemptionSignUpFragment extends InjectedFragment
     }
 
     @OnClick(R.id.email_register_button)
-    public void onEmailRegisterButtonClicked()
-    {
+    public void onEmailRegisterButtonClicked() {
         final RedemptionEmailSignUpFragment fragment =
                 RedemptionEmailSignUpFragment.newInstance(mReferralGuid);
         getFragmentManager()
@@ -87,7 +83,8 @@ public class RedemptionSignUpFragment extends InjectedFragment
                 .addToBackStack(null)
                 .setCustomAnimations(
                         R.anim.slide_in_right, R.anim.slide_out_left,
-                        R.anim.slide_in_left, R.anim.slide_out_right)
+                        R.anim.slide_in_left, R.anim.slide_out_right
+                )
                 .replace(R.id.child_fragment_container, fragment)
                 .commit();
     }
@@ -97,15 +94,13 @@ public class RedemptionSignUpFragment extends InjectedFragment
             final int requestCode,
             final int resultCode,
             final Intent data
-    )
-    {
+    ) {
         super.onActivityResult(requestCode, resultCode, data);
         mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSenderName = getArguments().getString(KEY_SENDER_NAME);
         mReceiverCouponAmount = getArguments().getString(KEY_RECEIVER_COUPON_AMOUNT);
@@ -124,63 +119,58 @@ public class RedemptionSignUpFragment extends InjectedFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(R.layout.fragment_redemption_sign_up, container, false);
         ButterKnife.bind(this, view);
 
         mTitle.setText(getString(R.string.redemption_title_formatted, mSenderName,
-                mReceiverCouponAmount));
+                                 mReceiverCouponAmount
+        ));
         mSubtitle.setText(getString(R.string.redemption_subtitle_formatted, mReceiverCouponAmount));
 
         return view;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         // The following init calls are here due to an issue where both views are displaying the
         // same text after going back to this fragment. This will trigger re-initialization of
         // the views before the fragment goes visible.
         mFacebookRegisterButton.init(R.string.sign_up_with_facebook, R.drawable.ic_facebook_white,
-                R.drawable.facebook_pressed_round_left);
+                                     R.drawable.facebook_pressed_round_left
+        );
         mEmailRegisterButton.init(R.string.sign_up_with_email, R.drawable.ic_email_white,
-                R.drawable.handy_blue_pressed_round_left);
+                                  R.drawable.handy_blue_pressed_round_left
+        );
     }
 
     @Subscribe
-    public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event)
-    {
+    public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event) {
         // RedemptionFragment handles post authentication procedures
         removeUiBlockers();
     }
 
     @Subscribe
-    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
-    {
+    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event) {
         removeUiBlockers();
     }
 
     private FacebookCallback<LoginResult> mFacebookCallback =
-            new FacebookCallback<LoginResult>()
-            {
+            new FacebookCallback<LoginResult>() {
                 @Override
-                public void onSuccess(final LoginResult loginResult)
-                {
+                public void onSuccess(final LoginResult loginResult) {
                     final AccessToken accessToken = loginResult.getAccessToken();
                     bus.post(new HandyEvent.RequestAuthFacebookUser(accessToken, mReferralGuid));
                 }
 
                 @Override
-                public void onCancel()
-                {
+                public void onCancel() {
 
                 }
 
                 @Override
-                public void onError(final FacebookException error)
-                {
+                public void onError(final FacebookException error) {
 
                 }
             };

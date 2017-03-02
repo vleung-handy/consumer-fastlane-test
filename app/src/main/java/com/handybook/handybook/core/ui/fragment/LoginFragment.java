@@ -53,9 +53,10 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class LoginFragment extends BookingFlowFragment
-{
-    public static final String EXTRA_FROM_BOOKING_FUNNEL = "com.handy.handy.EXTRA_FROM_BOOKING_FUNNEL";
+public final class LoginFragment extends BookingFlowFragment {
+
+    public static final String EXTRA_FROM_BOOKING_FUNNEL
+            = "com.handy.handy.EXTRA_FROM_BOOKING_FUNNEL";
     public static final String EXTRA_FROM_ONBOARDING = "com.handy.handy.EXTRA_FROM_ONBOARDING";
     static final String EXTRA_FIND_USER = "com.handy.handy.EXTRA_FIND_USER";
     static final String EXTRA_BOOKING_USER_NAME = "com.handy.handy.EXTRA_BOOKING_USER_NAME";
@@ -107,8 +108,7 @@ public final class LoginFragment extends BookingFlowFragment
             final String bookingUserEmail,
             final boolean fromBookingFunnel,
             final boolean fromOnboarding
-    )
-    {
+    ) {
         final LoginFragment fragment = new LoginFragment();
         final Bundle args = new Bundle();
 
@@ -122,8 +122,7 @@ public final class LoginFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         callbackManager = CallbackManager.Factory.create();
@@ -135,8 +134,7 @@ public final class LoginFragment extends BookingFlowFragment
         mBookingUserName = getArguments().getString(EXTRA_BOOKING_USER_NAME);
         mBookingUserEmail = getArguments().getString(EXTRA_BOOKING_EMAIL);
 
-        if (TextUtils.isEmpty(mBookingUserEmail))
-        {
+        if (TextUtils.isEmpty(mBookingUserEmail)) {
             //if there is no email passed in, look in shared prefs
             mBookingUserEmail = mDefaultPreferencesManager.getString(PrefsKey.EMAIL);
         }
@@ -146,26 +144,21 @@ public final class LoginFragment extends BookingFlowFragment
 
         String mDestinationActivity = getActivity().getIntent().getStringExtra(BundleKeys.ACTIVITY);
         mDestinationExtras = getActivity().getIntent().getExtras();
-        if (!TextUtils.isEmpty(mDestinationActivity))
-        {
-            try
-            {
+        if (!TextUtils.isEmpty(mDestinationActivity)) {
+            try {
                 mDestinationClass = (Class<? extends Activity>) Class.forName(mDestinationActivity);
             }
-            catch (ClassNotFoundException e)
-            {
+            catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
 
-        if (mIsFromBookingFunnel)
-        {
+        if (mIsFromBookingFunnel) {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserContactShownLog()));
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_EMAIL)));
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_FACEBOOK)));
         }
-        else
-        {
+        else {
             bus.post(new LogEvent.AddLogEvent(new UserContactLog.UserContactShownLog()));
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_EMAIL)));
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(UserLoginLog.AUTH_TYPE_FACEBOOK)));
@@ -176,8 +169,7 @@ public final class LoginFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
                                        .inflate(R.layout.fragment_login, container, false);
 
@@ -186,31 +178,26 @@ public final class LoginFragment extends BookingFlowFragment
 
         mEmailText.clearFocus();
 
-        if (mFindUser)
-        {
+        if (mFindUser) {
             mToolbar.setTitle(getString(R.string.contact));
             mPasswordText.setVisibility(View.GONE);
             mForgotButton.setVisibility(View.GONE);
             mLoginButton.setText(getString(R.string.next));
             mEmailText.setText(mBookingRequest.getEmail());
         }
-        else if (mBookingUserEmail != null)
-        {
+        else if (mBookingUserEmail != null) {
             mFbLayout.setVisibility(View.GONE);
             mOrText.setVisibility(View.GONE);
             mEmailText.setText(mBookingUserEmail);
-            if (ValidationUtils.isNullOrEmpty(mBookingUserName))
-            {
+            if (ValidationUtils.isNullOrEmpty(mBookingUserName)) {
                 mWelcomeText.setVisibility(View.GONE);
             }
-            else
-            {
+            else {
                 mWelcomeText.setText(getString(R.string.welcome_back, mBookingUserName));
                 mWelcomeText.setVisibility(View.VISIBLE);
             }
             //NOTE: mBookingRequest could be null if this is a login coming from the onboarding process
-            if (mBookingRequest != null)
-            {
+            if (mBookingRequest != null) {
                 mBookingRequest.setEmail(mBookingUserEmail);
             }
         }
@@ -219,25 +206,21 @@ public final class LoginFragment extends BookingFlowFragment
         mFbLoginButton.setReadPermissions("public_profile", "email", "user_friends");
 
         // Callback registration
-        mFbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>()
-        {
+        mFbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(final LoginResult loginResult)
-            {
+            public void onSuccess(final LoginResult loginResult) {
                 final AccessToken accessToken = loginResult.getAccessToken();
                 bus.post(new HandyEvent.RequestAuthFacebookUser(accessToken, null));
             }
 
             @Override
-            public void onCancel()
-            {
+            public void onCancel() {
                 assert true;
                 //TODO: Handle case when user cancels Facebook login
             }
 
             @Override
-            public void onError(FacebookException exception)
-            {
+            public void onError(FacebookException exception) {
                 Crashlytics.logException(exception);
                 progressDialog.dismiss();
                 enableInputs();
@@ -246,11 +229,9 @@ public final class LoginFragment extends BookingFlowFragment
             }
         });
 
-        mAutoScrollListener = new ViewTreeObserver.OnGlobalLayoutListener()
-        {
+        mAutoScrollListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 mLoginScrollView.smoothScrollTo(0, mLoginScrollView.getBottom());
             }
         };
@@ -261,53 +242,44 @@ public final class LoginFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public final void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             if (savedInstanceState.getBoolean(STATE_EMAIL_HIGHLIGHT)) { mEmailText.highlight(); }
-            if (savedInstanceState.getBoolean(STATE_PASSWORD_HIGHLIGHT))
-            {
+            if (savedInstanceState.getBoolean(STATE_PASSWORD_HIGHLIGHT)) {
                 mPasswordText.highlight();
             }
         }
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mLoginButton.setOnClickListener(loginClicked);
         mForgotButton.setOnClickListener(forgotClicked);
     }
 
     @Override
-    public final void onResume()
-    {
+    public final void onResume() {
         super.onResume();
         //mUiHelper.onResume();
         mHandleFBSessionUpdates = true;
     }
 
     @Override
-    public final void onPause()
-    {
+    public final void onPause() {
         super.onPause();
         //mUiHelper.onPause();
         mHandleFBSessionUpdates = false;
     }
 
     @Override
-    public void onDestroyView()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-        {
+    public void onDestroyView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mLoginScrollView.getViewTreeObserver()
                             .removeOnGlobalLayoutListener(mAutoScrollListener);
         }
-        else
-        {
+        else {
             mLoginScrollView.getViewTreeObserver()
                             .removeGlobalOnLayoutListener(mAutoScrollListener);
         }
@@ -315,15 +287,13 @@ public final class LoginFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onDestroy()
-    {
+    public final void onDestroy() {
         super.onDestroy();
         //mUiHelper.onDestroy();
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
+    public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         //mUiHelper.onSaveInstanceState(outState);
         outState.putBoolean(STATE_EMAIL_HIGHLIGHT, mEmailText.isHighlighted());
@@ -334,22 +304,19 @@ public final class LoginFragment extends BookingFlowFragment
     public final void onActivityResult(
             final int requestCode, final int resultCode,
             final Intent data
-    )
-    {
+    ) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         //mUiHelper.onActivityResult(requestCode, resultCode, data);
     }
 
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         if (!mEmailText.validate()) { return false; }
         return !(!mFindUser && !mPasswordText.validate());
     }
 
     @Override
-    protected final void disableInputs()
-    {
+    protected final void disableInputs() {
         super.disableInputs();
         mLoginButton.setClickable(false);
         mForgotButton.setClickable(false);
@@ -360,119 +327,111 @@ public final class LoginFragment extends BookingFlowFragment
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mLoginButton.setClickable(true);
         mForgotButton.setClickable(true);
     }
 
-    private final View.OnClickListener loginClicked = new View.OnClickListener()
-    {
+    private final View.OnClickListener loginClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View view)
-        {
-            if (validateFields())
-            {
+        public void onClick(final View view) {
+            if (validateFields()) {
                 disableInputs();
                 progressDialog.show();
 
                 final String email = mEmailText.getEmail();
-                if (mIsFromBookingFunnel)
-                {
+                if (mIsFromBookingFunnel) {
                     bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginSubmittedLog(
                             email,
                             UserLoginLog.AUTH_TYPE_EMAIL
                     )));
                 }
-                else
-                {
+                else {
                     bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSubmittedLog(
                             email,
                             UserLoginLog.AUTH_TYPE_EMAIL
                     )));
                 }
 
-                if (mFindUser)
-                {
-                    dataManager.getUserExists(email, new FragmentSafeCallback<UserExistsResponse>(LoginFragment.this)
-                    {
-                        @Override
-                        public void onCallbackSuccess(final UserExistsResponse userExistsResponse)
-                        {
-                            if (!allowCallbacks)
-                            { return; }
+                if (mFindUser) {
+                    dataManager.getUserExists(
+                            email,
+                            new FragmentSafeCallback<UserExistsResponse>(LoginFragment.this) {
+                                @Override
+                                public void onCallbackSuccess(final UserExistsResponse userExistsResponse) {
+                                    if (!allowCallbacks) { return; }
 
-                            if (userExistsResponse.exists())
-                            {
-                                final Intent intent = new Intent(
-                                        getActivity(),
-                                        LoginActivity.class
-                                );
-                                intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, email);
-                                intent.putExtra(
-                                        LoginActivity.EXTRA_BOOKING_USER_NAME,
-                                        userExistsResponse.getFirstName()
-                                );
-                                startActivityForResult(intent, ActivityResult.LOGIN_FINISH);
+                                    if (userExistsResponse.exists()) {
+                                        final Intent intent = new Intent(
+                                                getActivity(),
+                                                LoginActivity.class
+                                        );
+                                        intent.putExtra(
+                                                LoginActivity.EXTRA_BOOKING_EMAIL,
+                                                email
+                                        );
+                                        intent.putExtra(
+                                                LoginActivity.EXTRA_BOOKING_USER_NAME,
+                                                userExistsResponse.getFirstName()
+                                        );
+                                        startActivityForResult(
+                                                intent,
+                                                ActivityResult.LOGIN_FINISH
+                                        );
 
-                                progressDialog.dismiss();
-                                enableInputs();
+                                        progressDialog.dismiss();
+                                        enableInputs();
+                                    }
+                                    else {
+
+                                        //this is when the user doesn't already exist.
+                                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.EmailCollectedLog(
+                                                email
+                                        )));
+
+                                        mBookingRequest.setEmail(email);
+                                        continueBookingFlow();
+                                    }
+                                }
+
+                                @Override
+                                public void onCallbackError(DataManager.DataManagerError error) {
+                                    if (!allowCallbacks) {
+                                        return;
+                                    }
+                                    dataManagerErrorHandler.handleError(
+                                            getActivity(),
+                                            error
+                                    );
+                                    enableInputs();
+                                    progressDialog.dismiss();
+
+                                }
                             }
-                            else
-                            {
-
-                                //this is when the user doesn't already exist.
-                                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.EmailCollectedLog(
-                                        email
-                                )));
-
-                                mBookingRequest.setEmail(email);
-                                continueBookingFlow();
-                            }
-                        }
-
-                        @Override
-                        public void onCallbackError(DataManager.DataManagerError error)
-                        {
-                            if (!allowCallbacks)
-                            {
-                                return;
-                            }
-                            dataManagerErrorHandler.handleError(getActivity(), error);
-                            enableInputs();
-                            progressDialog.dismiss();
-
-                        }
-                    });
+                    );
                 }
-                else
-                {
+                else {
                     bus.post(new HandyEvent.RequestAuthUser(email, mPasswordText.getPassword()));
                 }
             }
         }
     };
 
-    private final View.OnClickListener forgotClicked = new View.OnClickListener()
-    {
+    private final View.OnClickListener forgotClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View view)
-        {
+        public void onClick(final View view) {
             mEmailText.unHighlight();
             mPasswordText.unHighlight();
-            if (mEmailText.validate())
-            {
+            if (mEmailText.validate()) {
                 disableInputs();
                 progressDialog.show();
 
                 dataManager.requestPasswordReset(
                         mEmailText.getText().toString(),
-                        new FragmentSafeCallback<String>(LoginFragment.this)
-                        {
+                        new FragmentSafeCallback<String>(LoginFragment.this) {
                             @Override
-                            public void onCallbackSuccess(final String response)
-                            {
+                            public void onCallbackSuccess(final String response) {
                                 if (!allowCallbacks) { return; }
                                 progressDialog.dismiss();
                                 enableInputs();
@@ -482,8 +441,7 @@ public final class LoginFragment extends BookingFlowFragment
                             }
 
                             @Override
-                            public void onCallbackError(final DataManager.DataManagerError error)
-                            {
+                            public void onCallbackError(final DataManager.DataManagerError error) {
                                 if (!allowCallbacks) { return; }
                                 progressDialog.dismiss();
                                 enableInputs();
@@ -495,24 +453,20 @@ public final class LoginFragment extends BookingFlowFragment
         }
     };
 
-
     @Subscribe
-    public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event)
-    {
+    public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event) {
         final User user = event.getUser();
         final UserDataManager.AuthType authType = event.getAuthType();
         bus.post(new HandyEvent.RequestUser(user.getId(), user.getAuthToken(), authType));
     }
 
     @Subscribe
-    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
-    {
+    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event) {
         handleUserCallbackError(event.error, event.getAuthType());
     }
 
     @Subscribe
-    public void onReceiveUserSuccess(final HandyEvent.ReceiveUserSuccess event)
-    {
+    public void onReceiveUserSuccess(final HandyEvent.ReceiveUserSuccess event) {
         final UserDataManager.AuthType authType = event.getAuthType();
         String authTypeForLogger = getAuthTypeForLogger(authType);
 
@@ -521,15 +475,13 @@ public final class LoginFragment extends BookingFlowFragment
             mDefaultPreferencesManager.setString(PrefsKey.ZIP, getUserZip(event.getUser()));
         }
 
-        if (mIsFromBookingFunnel)
-        {
+        if (mIsFromBookingFunnel) {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginSuccessLog(
                     authTypeForLogger)));
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginShownLog(
                     authTypeForLogger)));
         }
-        else
-        {
+        else {
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginSuccessLog(authTypeForLogger)));
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginShownLog(authTypeForLogger)));
         }
@@ -537,9 +489,8 @@ public final class LoginFragment extends BookingFlowFragment
         mConfigurationManager.invalidateCache();
 
         if (!mIsFromOnboarding &&
-                (mBookingUserName != null ||
-                        authType == UserDataManager.AuthType.FACEBOOK && mFindUser))
-        {
+            (mBookingUserName != null ||
+             authType == UserDataManager.AuthType.FACEBOOK && mFindUser)) {
             continueBookingFlow();
             return;
         }
@@ -548,37 +499,32 @@ public final class LoginFragment extends BookingFlowFragment
         enableInputs();
 
         //TODO refactor
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             //in case bottom nav config flag gets set to true after LoginFragment
             // already instantiated by LoginActivity
             // (which is currently a MenuDrawerActivity)
             //TODO consolidate this logic
             Intent intent;
-            if(mDestinationClass != null)
-            {
+            if (mDestinationClass != null) {
                 //destination class could be BookingDetailActivity
                 intent = new Intent(getActivity(), mDestinationClass);
                 intent.putExtras(mDestinationExtras);
             }
-            else
-            {
+            else {
                 intent = new Intent(getActivity(), BottomNavActivity.class);
                 intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
         }
-        else if (hasStoredZip())
-        {
+        else if (hasStoredZip()) {
             //This is a case of login from Onboarding v2 -- whether it's a successful login from
             //onboarding, or from the booking process, we direct the user to the home page for a
             //clean start.
             bookingManager.clear();
             goToHomePage();
         }
-        else
-        {
+        else {
             //go to the legacy homepage
             goToHomePage();
         }
@@ -597,8 +543,7 @@ public final class LoginFragment extends BookingFlowFragment
         return null;
     }
 
-    private void goToHomePage()
-    {
+    private void goToHomePage() {
         getActivity().setResult(ActivityResult.LOGIN_FINISH);
         Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -606,17 +551,14 @@ public final class LoginFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public void onReceiveUserError(final HandyEvent.ReceiveUserError event)
-    {
+    public void onReceiveUserError(final HandyEvent.ReceiveUserError event) {
         handleUserCallbackError(event.error, event.getAuthType());
     }
 
     @UserLoginLog.AuthType
-    private String getAuthTypeForLogger(UserDataManager.AuthType authType)
-    {
+    private String getAuthTypeForLogger(UserDataManager.AuthType authType) {
         if (authType == null) { return null; }
-        switch (authType)
-        {
+        switch (authType) {
             case FACEBOOK:
                 return UserLoginLog.AUTH_TYPE_FACEBOOK;
             case EMAIL:
@@ -628,19 +570,16 @@ public final class LoginFragment extends BookingFlowFragment
     private void handleUserCallbackError(
             final DataManager.DataManagerError error,
             final UserDataManager.AuthType authType
-    )
-    {
+    ) {
         String authTypeForLogger = getAuthTypeForLogger(authType);
-        if (mIsFromBookingFunnel)
-        {
+        if (mIsFromBookingFunnel) {
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.UserLoginErrorLog(
                     authTypeForLogger,
                     error == null ? null : error
                             .getMessage()
             )));
         }
-        else
-        {
+        else {
             bus.post(new LogEvent.AddLogEvent(new UserLoginLog.UserLoginErrorLog(
                     authTypeForLogger,
                     error == null ? null : error

@@ -42,8 +42,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingDateFragment extends BookingFlowFragment
-{
+public final class BookingDateFragment extends BookingFlowFragment {
+
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
@@ -72,14 +72,11 @@ public final class BookingDateFragment extends BookingFlowFragment
 
     private ArrayList<BookingOption> mBookingOptions;
     private Booking mRescheduleBooking;
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
-    {
+    private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View view)
-        {
+        public void onClick(final View view) {
             updateRequestDate(mDatePicker);
-            if (mRescheduleBooking != null)
-            {
+            if (mRescheduleBooking != null) {
                 final Calendar date = Calendar.getInstance();
                 date.set(Calendar.DAY_OF_MONTH, mDatePicker.getDayOfMonth());
                 date.set(Calendar.MONTH, mDatePicker.getMonth());
@@ -92,8 +89,8 @@ public final class BookingDateFragment extends BookingFlowFragment
 
                 //we only do recurring reschedules if not coming from chat.
                 if ((mRescheduleBooking.isRecurring()
-                        && (mRescheduleType == null || mRescheduleType != BookingDetailFragment.RescheduleType.FROM_CHAT)))
-                {
+                     && (mRescheduleType == null ||
+                         mRescheduleType != BookingDetailFragment.RescheduleType.FROM_CHAT))) {
                     final Intent intent = new Intent(
                             getActivity(),
                             BookingRescheduleOptionsActivity.class
@@ -104,8 +101,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                     intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
                     startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
                 }
-                else
-                {
+                else {
                     rescheduleBooking(
                             mRescheduleBooking,
                             date.getTime(),
@@ -116,35 +112,36 @@ public final class BookingDateFragment extends BookingFlowFragment
                     );
                 }
             }
-            else
-            {
+            else {
                 BookingRequest bookingRequest = bookingManager.getCurrentRequest();
-                if (bookingRequest != null)
-                {
+                if (bookingRequest != null) {
                     Date dateStart = bookingRequest.getStartDate();
                     String timezone = bookingRequest.getTimeZone();
-                    if (dateStart != null && !Strings.isNullOrEmpty(timezone))
-                    {
+                    if (dateStart != null && !Strings.isNullOrEmpty(timezone)) {
                         String dateString = DateTimeUtils.formatDate(dateStart,
-                                DateTimeUtils.UNIVERSAL_DATE_FORMAT, timezone);
-                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerSubmittedLog(dateString)));
+                                                                     DateTimeUtils.UNIVERSAL_DATE_FORMAT,
+                                                                     timezone
+                        );
+                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerSubmittedLog(
+                                dateString)));
                     }
 
                 }
 
-                if (mBookingOptions != null && mBookingOptions.size() > 0)
-                {
+                if (mBookingOptions != null && mBookingOptions.size() > 0) {
                     final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
                     intent.putParcelableArrayListExtra(
                             BookingOptionsActivity.EXTRA_OPTIONS,
                             new ArrayList<>(mBookingOptions)
                     );
-                    intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, mBookingOptions.get(0).getPage());
+                    intent.putExtra(
+                            BookingOptionsActivity.EXTRA_PAGE,
+                            mBookingOptions.get(0).getPage()
+                    );
                     intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
                     startActivity(intent);
                 }
-                else
-                {
+                else {
                     continueBookingFlow();
                 }
             }
@@ -156,8 +153,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     private BookingDetailFragment.RescheduleType mRescheduleType;
     private String mProviderId;
 
-    public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions)
-    {
+    public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
         final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
         args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
@@ -170,8 +166,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             final String notice,
             BookingDetailFragment.RescheduleType type,
             final String providerId
-    )
-    {
+    ) {
         final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
@@ -183,18 +178,14 @@ public final class BookingDateFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRescheduleBooking = getArguments().getParcelable(EXTRA_RESCHEDULE_BOOKING);
-        if (mRescheduleBooking != null)
-        {
-            if (savedInstanceState != null)
-            {
+        if (mRescheduleBooking != null) {
+            if (savedInstanceState != null) {
                 mRescheduleDate = new Date(savedInstanceState.getLong(STATE_RESCHEDULE_DATE, 0));
             }
-            else
-            {
+            else {
                 mRescheduleDate = mRescheduleBooking.getStartDate();
             }
             mNotice = getArguments().getString(EXTRA_RESCHEDULE_NOTICE);
@@ -203,8 +194,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             mRescheduleType = (BookingDetailFragment.RescheduleType)
                     getArguments().getSerializable(EXTRA_RESCHEDULE_TYPE);
         }
-        else
-        {
+        else {
             mBookingOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
         }
 
@@ -212,25 +202,23 @@ public final class BookingDateFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onResume()
-    {
+    public final void onResume() {
         super.onResume();
         final Calendar startDate = currentStartDate();
         mDatePicker.updateDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH),
-                startDate.get(Calendar.DAY_OF_MONTH));
+                               startDate.get(Calendar.DAY_OF_MONTH)
+        );
         setTimePicker(startDate);
     }
 
     @Override
-    protected final void disableInputs()
-    {
+    protected final void disableInputs() {
         super.disableInputs();
         mNextButton.setClickable(false);
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mNextButton.setClickable(true);
     }
@@ -239,19 +227,16 @@ public final class BookingDateFragment extends BookingFlowFragment
     public final void onActivityResult(
             final int requestCode, final int resultCode,
             final Intent data
-    )
-    {
+    ) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
-        {
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
             final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
             getActivity().finish();
         }
-        else if (resultCode == ActivityResult.BOOKING_CANCELED)
-        {
+        else if (resultCode == ActivityResult.BOOKING_CANCELED) {
             getActivity().setResult(ActivityResult.BOOKING_CANCELED, new Intent());
             getActivity().finish();
         }
@@ -261,19 +246,17 @@ public final class BookingDateFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_date, container, false);
+                                       .inflate(R.layout.fragment_booking_date, container, false);
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.time));
 
         mGroovedTimePicker.setInterval(MINUTE_INTERVAL);
-        if (mRescheduleBooking != null)
-        {
-            if (mRescheduleType != null && mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CANCELATION)
-            {
+        if (mRescheduleBooking != null) {
+            if (mRescheduleType != null &&
+                mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CANCELATION) {
                 //this is the reschedule flow from cancelation
                 //log that we are here.
                 bus.post(new LogEvent.AddLogEvent(
@@ -284,48 +267,46 @@ public final class BookingDateFragment extends BookingFlowFragment
                 mLocationText.setText(getString(R.string.reschedule_instead_of_canceling));
                 mRescheduleCancelText.setVisibility(View.VISIBLE);
             }
-            else
-            {
+            else {
                 setToolbarTitle(getString(R.string.reschedule));
                 mLocationText.setText(getString(R.string.when_come));
                 mRescheduleCancelText.setVisibility(View.GONE);
             }
             mNextButton.setText(getString(R.string.reschedule));
-            if (mNotice != null)
-            {
+            if (mNotice != null) {
                 mNoticeTextView.setText(mNotice);
                 mNoticeTextView.setVisibility(View.VISIBLE);
             }
         }
         final Calendar startDate = currentStartDate();
-        mDatePicker.init(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH),
-                startDate.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener()
-                {
+        mDatePicker.init(
+                startDate.get(Calendar.YEAR),
+                startDate.get(Calendar.MONTH),
+                startDate.get(Calendar.DAY_OF_MONTH),
+                new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(
                             final DatePicker view,
                             final int year,
                             final int monthOfYear,
                             final int dayOfMonth
-                    )
-                    {
+                    ) {
                         updateRequestDate(view);
                     }
-                });
+                }
+        );
 
         // resolves issue https://code.google.com/p/android/issues/detail?id=22754
         mGroovedTimePicker.setSaveFromParentEnabled(false);
         mGroovedTimePicker.setSaveEnabled(true);
         setTimePicker(startDate);
         mGroovedTimePicker.setOnTimeChangedListener(
-                new TimePicker.OnTimeChangedListener()
-                {
+                new TimePicker.OnTimeChangedListener() {
                     @Override
                     public void onTimeChanged(
                             final TimePicker view, final int hourOfDay,
                             final int minute
-                    )
-                    {
+                    ) {
                         updateRequestDate(mDatePicker);
                     }
                 });
@@ -342,11 +323,9 @@ public final class BookingDateFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
+    public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mRescheduleDate != null)
-        {
+        if (mRescheduleDate != null) {
             outState.putLong(STATE_RESCHEDULE_DATE, mRescheduleDate.getTime());
         }
     }
@@ -356,29 +335,25 @@ public final class BookingDateFragment extends BookingFlowFragment
      *
      * @param startDate
      */
-    private void setTimePicker(Calendar startDate)
-    {
+    private void setTimePicker(Calendar startDate) {
         Calendar tempCal = (Calendar) startDate.clone();
 
         if (mRescheduleBooking != null &&
-                !android.text.TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone()))
-        {
+            !android.text.TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone())) {
             tempCal.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
         }
         else if (bookingManager.getCurrentRequest() != null &&
-                !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
-        {
-            tempCal.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone()));
+                 !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone())) {
+            tempCal.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest()
+                                                                   .getTimeZone()));
         }
 
         mGroovedTimePicker.setCurrentHour(tempCal.get(Calendar.HOUR_OF_DAY));
         mGroovedTimePicker.setCurrentMinute(tempCal.get(Calendar.MINUTE) / MINUTE_INTERVAL);
     }
 
-    private Calendar currentStartDate()
-    {
-        if (mRescheduleBooking != null)
-        {
+    private Calendar currentStartDate() {
+        if (mRescheduleBooking != null) {
             final Calendar startDate = Calendar.getInstance();
             startDate.setTime(mRescheduleDate);
             return startDate;
@@ -387,18 +362,15 @@ public final class BookingDateFragment extends BookingFlowFragment
         final Date requestDate = bookingManager.getCurrentRequest().getStartDate();
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         Date tranDate = null;
-        if (transaction != null)
-        {
+        if (transaction != null) {
             tranDate = transaction.getStartDate();
         }
         final Date startDate = tranDate != null ? tranDate : requestDate;
         //TODO fix issue when going back for surge and date changes to initial date
-        if (startDate != null)
-        {
+        if (startDate != null) {
             cal.setTime(startDate);
         }
-        else
-        {
+        else {
             // initialize date 3 days ahead with random time between 10a - 5p
             final Random random = new Random();
             cal.set(Calendar.HOUR_OF_DAY, random.nextInt(8) + 10);
@@ -406,10 +378,8 @@ public final class BookingDateFragment extends BookingFlowFragment
             cal.add(Calendar.DATE, 3);
             // if suggested day is on a weekend, suggest new date during the following week
             final int day = cal.get(Calendar.DAY_OF_WEEK);
-            if (day == Calendar.FRIDAY || day == Calendar.SATURDAY || day == Calendar.SUNDAY)
-            {
-                if (day != Calendar.SUNDAY)
-                {
+            if (day == Calendar.FRIDAY || day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
+                if (day != Calendar.SUNDAY) {
                     cal.add(Calendar.WEEK_OF_YEAR, 1);
                 }
                 cal.set(Calendar.DAY_OF_WEEK, random.nextInt(4) + 2);
@@ -418,8 +388,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         return cal;
     }
 
-    private void updateRequestDate(final DatePicker datePicker)
-    {
+    private void updateRequestDate(final DatePicker datePicker) {
         //this function can be called after butterknife unbinds the views
         //TODO: need to prevent listener from being called when view is unbound
         //below line is needed to prevent NPE caused by above issue
@@ -436,31 +405,27 @@ public final class BookingDateFragment extends BookingFlowFragment
 
         //Since the date picker was formatted to show in the booking location's time zone,
         //we have to make sure we specify that in the Calendar, otherwise it will assume the device's timezone
-        if (mRescheduleBooking != null && !TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone()))
-        {
+        if (mRescheduleBooking != null &&
+            !TextUtils.isEmpty(mRescheduleBooking.getBookingTimezone())) {
             date.setTimeZone(TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone()));
         }
         else if (bookingManager.getCurrentRequest() != null &&
-                !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone()))
-        {
-            date.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone()));
+                 !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone())) {
+            date.setTimeZone(TimeZone.getTimeZone(bookingManager.getCurrentRequest()
+                                                                .getTimeZone()));
         }
         final Date newDate = date.getTime();
 
-        if (mRescheduleBooking != null)
-        {
+        if (mRescheduleBooking != null) {
             mRescheduleDate = newDate;
         }
-        else
-        {
+        else {
             final BookingRequest request = bookingManager.getCurrentRequest();
-            if (request != null)
-            {
+            if (request != null) {
                 request.setStartDate(newDate);
             }
             final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-            if (transaction != null)
-            {
+            if (transaction != null) {
                 transaction.setStartDate(newDate);
             }
         }
@@ -472,8 +437,7 @@ public final class BookingDateFragment extends BookingFlowFragment
      * @param event
      */
     @Subscribe
-    public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceiveBookingCancellationDataSuccess event)
-    {
+    public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceiveBookingCancellationDataSuccess event) {
         removeUiBlockers();
         BookingCancellationData bookingCancellationData = event.result;
 
@@ -484,8 +448,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public void onReceivePreCancelationInfoError(BookingEvent.ReceiveBookingCancellationDataError event)
-    {
+    public void onReceivePreCancelationInfoError(BookingEvent.ReceiveBookingCancellationDataError event) {
         removeUiBlockers();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
@@ -494,11 +457,9 @@ public final class BookingDateFragment extends BookingFlowFragment
      * User clicks on the option to cancel booking anyways.
      */
     @OnClick(R.id.reschedule_cancel_text)
-    public void cancelClicked()
-    {
+    public void cancelClicked() {
         showUiBlockers();
-        if (mRescheduleBooking != null)
-        {
+        if (mRescheduleBooking != null) {
             bus.post(new LogEvent.AddLogEvent(
                     new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId())
             ));

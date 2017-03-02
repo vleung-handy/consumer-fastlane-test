@@ -19,8 +19,8 @@ import java.util.Observer;
 
 import javax.inject.Inject;
 
-public class UserManager implements Observer
-{
+public class UserManager implements Observer {
+
     private Context mContext;
     private Bus mBus;
     private User mUser;
@@ -33,8 +33,7 @@ public class UserManager implements Observer
             final Bus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DefaultPreferencesManager defaultPreferencesManager
-    )
-    {
+    ) {
         mContext = context;
         mSecurePreferencesManager = securePreferencesManager;
         mDefaultPreferencesManager = defaultPreferencesManager;
@@ -48,22 +47,18 @@ public class UserManager implements Observer
      *
      * @return
      */
-    public boolean isUserLoggedIn()
-    {
+    public boolean isUserLoggedIn() {
         return getCurrentUser() != null;
     }
 
     @Nullable
-    public User getCurrentUser()
-    {
-        if (mUser != null)
-        {
+    public User getCurrentUser() {
+        if (mUser != null) {
             return mUser;
         }
-        else
-        {
-            if ((mUser = User.fromJson(mSecurePreferencesManager.getString(PrefsKey.USER))) != null)
-            {
+        else {
+            if ((mUser = User.fromJson(mSecurePreferencesManager.getString(PrefsKey.USER))) !=
+                null) {
                 mUser.addObserver(this);
             }
             return mUser;
@@ -71,27 +66,21 @@ public class UserManager implements Observer
     }
 
     @Nullable
-    private String getUserZip(@Nullable User user)
-    {
+    private String getUserZip(@Nullable User user) {
 
-        if (user != null && user.getAddress() != null)
-        {
+        if (user != null && user.getAddress() != null) {
             return user.getAddress().getZip();
         }
 
         return null;
     }
 
-
-    public void setCurrentUser(final User newUser)
-    {
-        if (mUser != null)
-        {
+    public void setCurrentUser(final User newUser) {
+        if (mUser != null) {
             mUser.deleteObserver(this);
         }
 
-        if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null)
-        {
+        if (newUser == null || newUser.getAuthToken() == null || newUser.getId() == null) {
             mUser = null;
             mSecurePreferencesManager.removeValue(PrefsKey.USER);
 
@@ -123,19 +112,16 @@ public class UserManager implements Observer
     }
 
     @Override
-    public void update(final Observable observable, final Object data)
-    {
-        if (observable instanceof User)
-        {
+    public void update(final Observable observable, final Object data) {
+        if (observable instanceof User) {
             setCurrentUser((User) observable);
         }
     }
 
     @Subscribe
-    public final void environmentUpdated(final EnvironmentUpdatedEvent event)
-    {
-        if (event.getEnvironment() != null && !event.getEnvironment().equals(event.getPrevEnvironment()))
-        {
+    public final void environmentUpdated(final EnvironmentUpdatedEvent event) {
+        if (event.getEnvironment() != null &&
+            !event.getEnvironment().equals(event.getPrevEnvironment())) {
             setCurrentUser(null);
         }
     }

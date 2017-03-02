@@ -12,22 +12,20 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static junit.framework.Assert.assertEquals;
 
-public class EditPlanFrequencyFragmentTest extends RobolectricGradleTestWrapper
-{
+public class EditPlanFrequencyFragmentTest extends RobolectricGradleTestWrapper {
+
     private EditPlanFrequencyFragment mFragment;
     private RecurringBooking mPlan;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         mPlan = ModelFactory.createRecurringPlan();
         mFragment = EditPlanFrequencyFragment.newInstance(mPlan);
         SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
     }
 
     @Test
-    public void shouldDisplayCorrectInfo()
-    {
+    public void shouldDisplayCorrectInfo() {
         assertEquals(mFragment.getString(R.string.edit_frequency), mFragment.mToolbar.getTitle());
 
         FrequencySelectionsView frequencyView = mFragment.mFrequencySelectionsView;
@@ -37,8 +35,7 @@ public class EditPlanFrequencyFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldUpdateFrequency()
-    {
+    public void shouldUpdateFrequency() {
         FrequencySelectionsView frequencyView = mFragment.mFrequencySelectionsView;
         frequencyView.getChildAt(1).findViewById(R.id.frequency_option_radio).performClick();
         assertEquals(2, frequencyView.getCurrentlySelectedFrequency());

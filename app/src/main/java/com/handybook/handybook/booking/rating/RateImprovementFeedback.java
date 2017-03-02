@@ -22,30 +22,26 @@ import java.util.HashMap;
  * <p>
  * Created by jtse on 3/31/16.
  */
-public class RateImprovementFeedback implements Serializable
-{
+public class RateImprovementFeedback implements Serializable {
+
     @SerializedName("rating_attributes")
     private HashMap<String, ArrayList<String>> mSelectedOptions;
     private String mBookingId;
 
-    public RateImprovementFeedback(String bookingId)
-    {
+    public RateImprovementFeedback(String bookingId) {
         mSelectedOptions = new HashMap<>();
         mBookingId = bookingId;
     }
 
-    public void putAll(HashMap<String, ArrayList<String>> optionsToAdd)
-    {
+    public void putAll(HashMap<String, ArrayList<String>> optionsToAdd) {
         mSelectedOptions.putAll(optionsToAdd);
     }
 
-    public String getBookingId()
-    {
+    public String getBookingId() {
         return mBookingId;
     }
 
-    public HashMap<String, ArrayList<String>> getSelectedOptions()
-    {
+    public HashMap<String, ArrayList<String>> getSelectedOptions() {
         return mSelectedOptions;
     }
 }

@@ -11,12 +11,12 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
 
-public final class PeakPricingActivity extends MenuDrawerActivity
-{
+public final class PeakPricingActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        final Booking rescheduleBooking = getIntent().getParcelableExtra(BundleKeys.RESCHEDULE_BOOKING);
+        final Booking rescheduleBooking
+                = getIntent().getParcelableExtra(BundleKeys.RESCHEDULE_BOOKING);
         final boolean rescheduleAll = getIntent().getBooleanExtra(BundleKeys.RESCHEDULE_ALL, false);
         final boolean forVoucher = getIntent().getBooleanExtra(BundleKeys.FOR_VOUCHER, false);
 
@@ -31,7 +31,7 @@ public final class PeakPricingActivity extends MenuDrawerActivity
                     rescheduleAll
             );
         }
-        else return PeakPricingFragment.newInstance(forVoucher);
+        else { return PeakPricingFragment.newInstance(forVoucher); }
     }
 
     @Override

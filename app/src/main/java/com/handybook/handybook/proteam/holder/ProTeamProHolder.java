@@ -7,8 +7,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.handybook.core.ui.view.MiniProProfile;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -16,8 +16,8 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 public class ProTeamProHolder extends RecyclerView.ViewHolder
-        implements CompoundButton.OnCheckedChangeListener
-{
+        implements CompoundButton.OnCheckedChangeListener {
+
     private ProTeamProViewModel mProTeamProViewModel;
     private boolean mShowProImage;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
@@ -30,8 +30,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
             View itemView,
             boolean showProImage,
             ProTeamProViewModel.OnInteractionListener onInteractionListener
-    )
-    {
+    ) {
         super(itemView);
         mShowProImage = showProImage;
         mOnInteractionListener = onInteractionListener;
@@ -40,8 +39,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
 
     public void bindProTeamProViewModel(
             @NonNull final ProTeamProViewModel proTeamProViewModel
-    )
-    {
+    ) {
         mCheckbox.setOnCheckedChangeListener(null);
         mProTeamProViewModel = proTeamProViewModel;
         mCheckbox.setChecked(mProTeamProViewModel.isChecked());
@@ -55,17 +53,14 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         mProProfile.setProTeamIndicatorEnabled(false);
         mProProfile.setHandymanIndicatorEnabled(mProTeamProViewModel.isHandymanIndicatorEnabled());
 
-        if (mShowProImage)
-        {
+        if (mShowProImage) {
             mProProfile.setImage(mProTeamProViewModel.getImageUrl());
         }
     }
 
     @OnLongClick(R.id.pro_team_pro_card)
-    boolean onLongClick()
-    {
-        if (mOnInteractionListener != null)
-        {
+    boolean onLongClick() {
+        if (mOnInteractionListener != null) {
             mOnInteractionListener.onLongClick(
                     mProTeamProViewModel.getProTeamPro(),
                     mProTeamProViewModel.getProviderMatchPreference()
@@ -75,18 +70,15 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     }
 
     @OnClick(R.id.pro_team_pro_card)
-    void onClick()
-    {
+    void onClick() {
         mCheckbox.setChecked(!mCheckbox.isChecked());
     }
 
     @Override
-    public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked)
-    {
+    public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
         mProTeamProViewModel.setChecked(isChecked);
         mProProfile.setIsProTeam(isChecked);
-        if (mOnInteractionListener != null)
-        {
+        if (mOnInteractionListener != null) {
             mOnInteractionListener.onCheckedChanged(
                     mProTeamProViewModel.getProTeamPro(),
                     isChecked

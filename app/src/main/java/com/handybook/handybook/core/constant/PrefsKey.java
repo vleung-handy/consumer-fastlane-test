@@ -1,7 +1,6 @@
 package com.handybook.handybook.core.constant;
 
-public enum PrefsKey
-{
+public enum PrefsKey {
     USER("USER_OBJ"),
     BOOKING_REQUEST("BOOKING_REQ"),
     BOOKING_QUOTE("BOOKING_QUOTE"),
@@ -31,19 +30,16 @@ public enum PrefsKey
 
     private String mKey;
 
-    PrefsKey(String key)
-    {
+    PrefsKey(String key) {
         mKey = key;
     }
 
-    public String getKey()
-    {
+    public String getKey() {
         return this.mKey;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.getKey();
     }
 }

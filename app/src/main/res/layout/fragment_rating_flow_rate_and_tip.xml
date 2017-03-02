@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rating_flow_next_button"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/default_padding_double"
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/rating_flow_pro_image"
+                    android:layout_width="@dimen/rating_flow.profile_image_size"
+                    android:layout_height="@dimen/rating_flow.profile_image_size"
+                    android:layout_marginBottom="@dimen/default_margin_quarter"
+                    android:layout_marginTop="@dimen/default_margin_double"
+                    android:transitionName="@string/transition_pro_image"
+                    tools:src="@drawable/img_pro_placeholder"
+                    />
+
+                <TextView
+                    android:id="@+id/rating_flow_rate_prompt"
+                    style="@style/TextView.Large.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin_double"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:gravity="center"
+                    tools:text="How was your cleaning with Jennifer?"
+                    />
+
+                <com.handybook.handybook.ratingflow.ui.RatingFlowFiveStarsView
+                    android:id="@+id/rating_flow_stars"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:transitionName="@string/transition_stars"
+                    />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/rating_flow_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/default_margin_quarter"
+                android:background="@color/handy_bg"
+                android:transitionName="@string/transition_divider"
+                />
+
+            <LinearLayout
+                android:id="@+id/rating_flow_tip_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
+
+                <FrameLayout
+                    android:id="@+id/rating_flow_tip_options"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <EditText
+                    android:id="@+id/rating_flow_custom_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/enter_amount"
+                    android:inputType="number"
+                    android:padding="@dimen/default_padding_half"
+                    android:textColorHint="@color/handy_tertiary_gray"
+                    android:textCursorDrawable="@drawable/handy_cursor"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/rating_flow_next_button"
+        style="@style/Button.Green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/submit"
+        />
+</RelativeLayout>

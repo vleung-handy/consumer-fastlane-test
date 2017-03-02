@@ -5,24 +5,20 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public class HistoryActivity extends MenuDrawerActivity
-{
+public class HistoryActivity extends MenuDrawerActivity {
 
     @Override
-    protected boolean requiresUser()
-    {
+    protected boolean requiresUser() {
         return true;
     }
 
     @Override
-    protected final Fragment createFragment()
-    {
+    protected final Fragment createFragment() {
         return new HistoryFragment();
     }
 
     @Override
-    protected final String getNavItemTitle()
-    {
+    protected final String getNavItemTitle() {
         return getString(R.string.history);
     }
 

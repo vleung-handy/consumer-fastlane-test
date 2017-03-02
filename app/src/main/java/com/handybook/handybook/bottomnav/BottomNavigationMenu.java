@@ -9,6 +9,7 @@ import android.view.SubMenu;
  * this is copied from android.support.design.internal.BottomNavigationMenu
  */
 public final class BottomNavigationMenu extends MenuBuilder {
+
     public static final int MAX_ITEM_COUNT = 5;
 
     public BottomNavigationMenu(Context context) {
@@ -25,7 +26,7 @@ public final class BottomNavigationMenu extends MenuBuilder {
         if (size() + 1 > MAX_ITEM_COUNT) {
             throw new IllegalArgumentException(
                     "Maximum number of items supported by BottomNavigationView is " + MAX_ITEM_COUNT
-                            + ". Limit can be checked with BottomNavigationView#getMaxItemCount()");
+                    + ". Limit can be checked with BottomNavigationView#getMaxItemCount()");
         }
         return super.addInternal(group, id, categoryOrder, title);
     }

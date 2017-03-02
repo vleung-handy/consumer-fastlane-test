@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Deprecated
-public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.CommitmentType>
-{
+public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.CommitmentType> {
 
     private static final String PRICE_KEY = "price";
     private static final String PRICE_WEEKLY_RECURRING_KEY = "weekly_recurring_price";
@@ -15,15 +14,13 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
     private static final String PRICE_BIMONTHLY_RECURRING_KEY = "bimonthly_recurring_price";
     private static final String NO_COMMITMENT_KEY = "no_commitment";
 
-    ArrayList<BookingPriceInfo> toPriceTable()
-    {
+    ArrayList<BookingPriceInfo> toPriceTable() {
         final ArrayList<BookingPriceInfo> priceTable = new ArrayList<>();
         HashMap<String, CommitmentRecurrenceFrequency> crf = get(NO_COMMITMENT_KEY)
                 .get("0")
                 .getFrequencyHashMap();
         ArrayList<String> keys = new ArrayList<>(crf.get(PRICE_KEY).getPriceItemHashMap().keySet());
-        for (String hoursKey : keys)
-        {
+        for (String hoursKey : keys) {
 
             final float hours = Float.valueOf(hoursKey);
             final float price = getPrice(PRICE_KEY, hoursKey);
@@ -58,11 +55,9 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         return priceTable;
     }
 
-    private float getPrice(final String recurrenceKey, final String hourKey)
-    {
+    private float getPrice(final String recurrenceKey, final String hourKey) {
         float fullPriceDollars;
-        try
-        {
+        try {
             final HashMap<String, CommitmentRecurrenceFrequency> crf = get(NO_COMMITMENT_KEY)
                     .get("0")
                     .getFrequencyHashMap();
@@ -73,8 +68,7 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
                     .getFullPriceCents();
             fullPriceDollars = convertCentsToDollars(fullPriceCents);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
             //TODO: Refactor prices in all of the app to be in cents as Long wrapper
             fullPriceDollars = 0f;
@@ -82,11 +76,9 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         return fullPriceDollars;
     }
 
-    private float getDiscountPrice(final String recurrenceKey, final String hourKey)
-    {
+    private float getDiscountPrice(final String recurrenceKey, final String hourKey) {
         float fullPriceDollars;
-        try
-        {
+        try {
             final HashMap<String, CommitmentRecurrenceFrequency> crf = get(NO_COMMITMENT_KEY)
                     .get("0")
                     .getFrequencyHashMap();
@@ -97,8 +89,7 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
                     .getAmountDueCents();
             fullPriceDollars = convertCentsToDollars(fullPriceCents);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
             //TODO: Refactor prices in all of the app to be in cents as Long wrapper
             fullPriceDollars = 0f;
@@ -107,57 +98,49 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
         return fullPriceDollars;
     }
 
-    private static float convertCentsToDollars(final int fullPriceCents)
-    {
+    private static float convertCentsToDollars(final int fullPriceCents) {
         return fullPriceCents / 100f;
     }
 
-    static class CommitmentType extends HashMap<String, CommitmentLength>
-    {
+    static class CommitmentType extends HashMap<String, CommitmentLength> {
     }
 
 
-    static class CommitmentLength
-    {
+    static class CommitmentLength {
+
         @SerializedName("frequency")
         private HashMap<String, CommitmentRecurrenceFrequency> mFrequencyHashMap;
 
-        HashMap<String, CommitmentRecurrenceFrequency> getFrequencyHashMap()
-        {
+        HashMap<String, CommitmentRecurrenceFrequency> getFrequencyHashMap() {
             return mFrequencyHashMap;
         }            //TODO: Refactor prices in all of the app to be in cents as Long wrapper
 
     }
 
 
-    private static class CommitmentRecurrenceFrequency
-    {
+    private static class CommitmentRecurrenceFrequency {
 
         @SerializedName("hours")
         private HashMap<String, CommitmentPriceItem> mPriceItemHashMap;
 
-        HashMap<String, CommitmentPriceItem> getPriceItemHashMap()
-        {
+        HashMap<String, CommitmentPriceItem> getPriceItemHashMap() {
             return mPriceItemHashMap;
         }
     }
 
 
-    private static class CommitmentPriceItem
-    {
+    private static class CommitmentPriceItem {
 
         @SerializedName("full_price")
         private int mFullPriceCents;
         @SerializedName("amount_due")
         private int mAmountDueCents;
 
-        int getFullPriceCents()
-        {
+        int getFullPriceCents() {
             return mFullPriceCents;
         }
 
-        int getAmountDueCents()
-        {
+        int getAmountDueCents() {
             return mAmountDueCents;
         }
     }

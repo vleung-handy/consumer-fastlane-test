@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import com.handybook.handybook.R;
 
 public final class BasicInputTextView extends InputTextField {
+
     private int minLength;
 
     public BasicInputTextView(final Context context, final int minLength) {
@@ -24,9 +25,9 @@ public final class BasicInputTextView extends InputTextField {
         readStyleAttributes(context, attrs);
     }
 
-    private void readStyleAttributes(final Context context, final AttributeSet attrs)
-    {
-        TypedArray ta = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BasicInputTextView, 0, 0);
+    private void readStyleAttributes(final Context context, final AttributeSet attrs) {
+        TypedArray ta = context.getTheme()
+                               .obtainStyledAttributes(attrs, R.styleable.BasicInputTextView, 0, 0);
         try {
             init(ta.getInteger(R.styleable.BasicInputTextView_minLength, 0));
         }
@@ -53,7 +54,7 @@ public final class BasicInputTextView extends InputTextField {
             return true;
         }
     }
-    
+
     public final String getInput() {
         return this.getText().toString().trim();
     }

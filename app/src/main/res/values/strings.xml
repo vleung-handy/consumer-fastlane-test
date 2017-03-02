@@ -147,6 +147,10 @@
     <string name="ok">OK</string>
     <string name="cleaners">Cleaners</string>
     <string name="handymen">Handymen</string>
+    <string name="other">Other</string>
+    <string name="none">None</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="press_back_again">Press back button again to exit</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>
@@ -534,4 +538,18 @@
     <string name="onboard_already_account">Already have an account?</string>
     <string name="onboard_location_prompt">Where are you \n located?</string>
     <string name="onboard_email_prompt">What\'s your email \n address?</string>
+
+    <string name="fragment_dialog_booking_time_input_title">Select a Time</string>
+
+    <!-- New Rating Flow -->
+    <string name="rate_your_pro">Rate Your Pro</string>
+    <string name="leave_a_tip_prompt">Leave a tip?</string>
+    <string name="rate_your_cleaning_prompt_formatted">How was your cleaning with %1$s?</string>
+    <string name="rate_your_booking_prompt_formatted">How was your booking with %1$s?</string>
+    <string name="invalid_tip_amount">Invalid tip amount</string>
+    <string name="transition_pro_image">pro_image</string>
+    <string name="transition_stars">stars</string>
+    <string name="transition_divider">divider</string>
+    <string name="write_a_review_formatted">Write a public review for %1$s</string>
+    <string name="rating_flow_feedback_hint">Amazing work on the kitchen!</string>
 </resources>

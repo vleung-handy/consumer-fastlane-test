@@ -16,23 +16,20 @@ import java.util.List;
 /**
  * This a unit test to verify the correctness of the new commitment type pricing conversions
  */
-public class CommitmentTypeTest
-{
+public class CommitmentTypeTest {
+
     BookingQuote mQuote;
 
-    private void setup() throws Exception
-    {
+    private void setup() throws Exception {
         String json = IOUtils.getJsonStringForTest("commitment_quote.json");
 
         mQuote = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
                                   .create()
                                   .fromJson(json, BookingQuote.class);
 
-        if (mQuote != null && mQuote.getCommitmentPrices() != null)
-        {
+        if (mQuote != null && mQuote.getCommitmentPrices() != null) {
             //if there is a specified active commitment to use
-            if (mQuote.isCommitmentMonthsActive())
-            {
+            if (mQuote.isCommitmentMonthsActive()) {
                 mQuote.setupCommitmentPricingStructure();
             }
         }
@@ -40,8 +37,7 @@ public class CommitmentTypeTest
     }
 
     @Test
-    public void testUniqueLengths() throws Exception
-    {
+    public void testUniqueLengths() throws Exception {
         setup();
 
         List<SubscriptionLength> uniqueLengths = mQuote.getCommitmentType().getUniqueLengths();
@@ -53,12 +49,9 @@ public class CommitmentTypeTest
 
     }
 
-    private boolean containsLength(List<SubscriptionLength> uniqueLengths, String title)
-    {
-        for (final SubscriptionLength uniqueLength : uniqueLengths)
-        {
-            if (uniqueLength.getTitle().equals(title))
-            {
+    private boolean containsLength(List<SubscriptionLength> uniqueLengths, String title) {
+        for (final SubscriptionLength uniqueLength : uniqueLengths) {
+            if (uniqueLength.getTitle().equals(title)) {
                 return true;
             }
         }
@@ -66,12 +59,9 @@ public class CommitmentTypeTest
         return false;
     }
 
-    private boolean containsFrequency(List<SubscriptionFrequency> uniqueFrequencies, String title)
-    {
-        for (final SubscriptionFrequency freq : uniqueFrequencies)
-        {
-            if (freq.getTitle().equals(title))
-            {
+    private boolean containsFrequency(List<SubscriptionFrequency> uniqueFrequencies, String title) {
+        for (final SubscriptionFrequency freq : uniqueFrequencies) {
+            if (freq.getTitle().equals(title)) {
                 return true;
             }
         }
@@ -80,8 +70,7 @@ public class CommitmentTypeTest
     }
 
     @Test
-    public void testUniqueFrequencies() throws Exception
-    {
+    public void testUniqueFrequencies() throws Exception {
         setup();
 
         List<SubscriptionFrequency> uniqueFrequencies = mQuote.getCommitmentType()
@@ -110,8 +99,7 @@ public class CommitmentTypeTest
     }
 
     @Test
-    public void testSubscriptionPrices() throws Exception
-    {
+    public void testSubscriptionPrices() throws Exception {
         setup();
         //6 months, bimonthly, 11.5 hours should have price: 24462, 12387
         Price price = mQuote.getCommitmentType()

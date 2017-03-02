@@ -23,11 +23,11 @@ import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingConfirmationLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.core.ui.activity.BaseActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.Map;
 
@@ -35,8 +35,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public final class BookingEntryInfoFragment extends BookingFlowFragment
-        implements BaseActivity.OnBackPressedListener
-{
+        implements BaseActivity.OnBackPressedListener {
+
     //TODO other fragments have these too. needs to be consolidated
     static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
     static final String EXTRA_INSTRUCTIONS = "com.handy.handy.EXTRA_INSTRUCTIONS";
@@ -58,8 +58,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             final boolean isNewUser,
             final Instructions instructions,
             final EntryMethodsInfo entryMethodsInfo
-    )
-    {
+    ) {
         final BookingEntryInfoFragment fragment = new BookingEntryInfoFragment();
         final Bundle args = new Bundle();
 
@@ -71,8 +70,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIsNewUser = getArguments().getBoolean(EXTRA_NEW_USER, false);
         mInstructions = getArguments().getParcelable(EXTRA_INSTRUCTIONS);
@@ -86,8 +84,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
                                        .inflate(
                                                R.layout.fragment_booking_entry_info,
@@ -99,26 +96,22 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         //we don't allow the user to go back to the previous screen.
         setupToolbar(mToolbar, getString(R.string.confirmation));
 
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             mToolbar.setNavigationIcon(null);
         }
-        else if (getActivity() instanceof MenuDrawerActivity)
-        {
+        else if (getActivity() instanceof MenuDrawerActivity) {
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
 
         EntryMethodsInfo entryMethodsInfo = (EntryMethodsInfo) getArguments()
                 .getSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO);
-        if (entryMethodsInfo != null)
-        {
+        if (entryMethodsInfo != null) {
             mEntryMethodsInfoView.updateViewForModel(entryMethodsInfo, getContext());
             onEntryMethodsViewUpdated(entryMethodsInfo);
             mNextButton.setOnClickListener(nextClicked);
         }
-        else
-        {
+        else {
             //something has gone horribly wrong
             Crashlytics.logException(new Exception("Entry methods info from bundle args is null"));
             Toast.makeText(getContext(), R.string.default_error_string, Toast.LENGTH_SHORT).show();
@@ -133,23 +126,19 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
      *
      * @param entryMethodsInfo
      */
-    private void onEntryMethodsViewUpdated(@NonNull EntryMethodsInfo entryMethodsInfo)
-    {
+    private void onEntryMethodsViewUpdated(@NonNull EntryMethodsInfo entryMethodsInfo) {
         //log entry method recommendation shown
         BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-        if (bookingTransaction == null || entryMethodsInfo.getEntryMethodOptions() == null)
-        {
+        if (bookingTransaction == null || entryMethodsInfo.getEntryMethodOptions() == null) {
             return;
         }
-        for (EntryMethodOption entryMethodOption : entryMethodsInfo.getEntryMethodOptions())
-        {
+        for (EntryMethodOption entryMethodOption : entryMethodsInfo.getEntryMethodOptions()) {
             /*
             in logging terms, whether an entry method is "recommended"
             is whether the entry method option subtitle is present
             ex. "Chosen by 13 of your neighbors"
              */
-            if (!TextUtils.isEmpty(entryMethodOption.getSubtitleText()))
-            {
+            if (!TextUtils.isEmpty(entryMethodOption.getSubtitleText())) {
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.EntryMethodLog.
                         RecommendationShown(
                         String.valueOf(bookingTransaction.getBookingId()),
@@ -161,59 +150,52 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onStart()
-    {
+    public final void onStart() {
         super.onStart();
         ((BaseActivity) getActivity()).setOnBackPressedListener(this);
     }
 
     @Override
-    public final void onStop()
-    {
+    public final void onStop() {
         super.onStop();
         ((BaseActivity) getActivity()).setOnBackPressedListener(null);
     }
 
     @Override
-    protected final void disableInputs()
-    {
+    protected final void disableInputs() {
         super.disableInputs();
         mNextButton.setClickable(false);
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mNextButton.setClickable(true);
     }
 
     @Override
-    public final void onBack()
-    {
+    public final void onBack() {
         showBookings();
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAccessInformationDismissedLog()));
     }
 
-    private final View.OnClickListener nextClicked = new View.OnClickListener()
-    {
+    private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View view)
-        {
+        public void onClick(final View view) {
             if (!mEntryMethodsInfoView.validateFields() ||
-                    bookingManager.getCurrentTransaction() == null)
+                bookingManager.getCurrentTransaction() == null)
                     /*
                     hot fix to prevent NPE caused by rapid multi-click
                     of the next button
-                     */
-            {
+                     */ {
                 return;
             }
 
-            Map<String, String> selectedEntryMethodInputFormValues = mEntryMethodsInfoView.getSelectedEntryMethodInputFormValues();
-            EntryMethodOption selectedEntryMethodOption = mEntryMethodsInfoView.getSelectedEntryMethodOption();
-            if (selectedEntryMethodOption != null)
-            {
+            Map<String, String> selectedEntryMethodInputFormValues
+                    = mEntryMethodsInfoView.getSelectedEntryMethodInputFormValues();
+            EntryMethodOption selectedEntryMethodOption
+                    = mEntryMethodsInfoView.getSelectedEntryMethodOption();
+            if (selectedEntryMethodOption != null) {
                 bookingManager.getCurrentFinalizeBookingPayload().setEntryInfo(
                         selectedEntryMethodOption.getMachineName(),
                         selectedEntryMethodInputFormValues
@@ -222,16 +204,15 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
 
                 //business expects the "submitted" event to be logged when the user clicks next
                 BookingTransaction bookingTransaction = bookingManager.getCurrentTransaction();
-                if (bookingTransaction != null)
-                {
+                if (bookingTransaction != null) {
                     bus.post(new LogEvent.AddLogEvent(
                             new BookingFunnelLog.EntryMethodLog.InfoSubmitted(
                                     String.valueOf(bookingTransaction.getBookingId()),
-                                    bookingTransaction.getRecurringFrequency() != BookingRecurrence.ONE_TIME,
+                                    bookingTransaction.getRecurringFrequency() !=
+                                    BookingRecurrence.ONE_TIME,
                                     selectedEntryMethodOption.getMachineName()
                             )));
                 }
-
 
                 bus.post(new LogEvent.AddLogEvent(
                         new BookingFunnelLog.BookingAccessInformationSubmittedLog(
@@ -254,20 +235,18 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         }
     };
 
-    private void showBookings()
-    {
+    private void showBookings() {
         bookingManager.clearAll();
 
         Intent intent;
-        if(mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             intent = new Intent(getActivity(), BottomNavActivity.class);
-        } else
-        {
+        }
+        else {
             intent = new Intent(getActivity(), BookingsActivity.class);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }

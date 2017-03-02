@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -40,8 +41,8 @@ import java.io.Serializable;
  *   }
  * }
  */
-public class BookingCancellationData implements Serializable
-{
+public class BookingCancellationData implements Serializable {
+
     private static final Gson GSON = new GsonBuilder()
             .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
             .create();
@@ -53,28 +54,31 @@ public class BookingCancellationData implements Serializable
     @SerializedName("precancellation_info")
     private PreCancellationInfo mPreCancellationInfo;
 
-    public static BookingCancellationData fromJson(final String json)
-    {
+    @NonNull
+    public static BookingCancellationData fromJson(@NonNull final String json) {
         return GSON.fromJson(json, BookingCancellationData.class);
     }
 
-    public static String toJson(final BookingCancellationData value)
-    {
+    @NonNull
+    public static String toJson(@NonNull final BookingCancellationData value) {
         return GSON.toJson(value, BookingCancellationData.class);
     }
 
+    @Nullable
     public String getWarningMessage() { return mWarningMessage; }
 
+    @NonNull
     public CancellationInfo getCancellationInfo() { return mCancellationInfo; }
 
+    @Nullable
     public PreCancellationInfo getPreCancellationInfo() { return mPreCancellationInfo; }
 
     public boolean hasWarning() { return !TextUtils.isEmpty(getWarningMessage()); }
 
     public boolean hasPrecancellationInfo() { return getPreCancellationInfo() != null; }
 
-    public static class CancellationInfo implements Serializable
-    {
+    public static class CancellationInfo implements Serializable {
+
         @SerializedName("title")
         private String mTitle;
         @SerializedName("reasons")
@@ -98,8 +102,8 @@ public class BookingCancellationData implements Serializable
     }
 
 
-    public static class PreCancellationInfo implements Serializable
-    {
+    public static class PreCancellationInfo implements Serializable {
+
         @SerializedName("title")
         private String mTitle;
         @SerializedName("message")
@@ -108,6 +112,8 @@ public class BookingCancellationData implements Serializable
         private String mButtonLabel;
         @SerializedName("navigation_title")
         private String mNavigationTitle;
+        @SerializedName("url")
+        private String mUrl;
 
         @NonNull
         public String getTitle() { return mTitle; }
@@ -120,11 +126,21 @@ public class BookingCancellationData implements Serializable
 
         @NonNull
         public String getNavigationTitle() { return mNavigationTitle; }
+
+        public boolean hasUrl() {
+            return mUrl != null && !mUrl.isEmpty();
+        }
+
+        @Nullable
+        public String getUrl() {
+            return mUrl;
+        }
+
     }
 
 
-    public static class CancellationReason implements Serializable
-    {
+    public static class CancellationReason implements Serializable {
+
         @SerializedName("id")
         private Integer mId;
         @SerializedName("label")

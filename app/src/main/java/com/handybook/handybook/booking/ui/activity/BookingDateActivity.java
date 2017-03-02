@@ -6,14 +6,14 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
 
-public final class BookingDateActivity extends MenuDrawerActivity
-{
+public final class BookingDateActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
@@ -26,12 +26,30 @@ public final class BookingDateActivity extends MenuDrawerActivity
                     getIntent().getSerializableExtra(BundleKeys.RESCHEDULE_TYPE);
 
             final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
-            return BookingDateFragment.newInstance(rescheduleBooking, notice, type, providerId);
+
+            //config will be removed soon
+            if(mConfigurationManager.getPersistentConfiguration().isBookingDateTimeInputScreenV2Enabled())
+            {
+                return BookingDateFragmentV2.newInstance(rescheduleBooking, notice, type, providerId);
+            }
+            else
+            {
+                return BookingDateFragment.newInstance(rescheduleBooking, notice, type, providerId);
+            }
         }
 
         final ArrayList<BookingOption> postOptions
                 = getIntent().getParcelableArrayListExtra(BundleKeys.POST_OPTIONS);
-        return BookingDateFragment.newInstance(postOptions);
+
+        //config will be removed soon
+        if(mConfigurationManager.getPersistentConfiguration().isBookingDateTimeInputScreenV2Enabled())
+        {
+            return BookingDateFragmentV2.newInstance(postOptions);
+        }
+        else
+        {
+            return BookingDateFragment.newInstance(postOptions);
+        }
     }
 
     @Override

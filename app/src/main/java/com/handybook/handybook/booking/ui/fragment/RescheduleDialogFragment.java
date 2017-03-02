@@ -20,16 +20,15 @@ import butterknife.OnClick;
 /**
  * Displayed as confirmation when the user selects a recurring series to cancel
  */
-public class RescheduleDialogFragment extends BaseDialogFragment
-{
+public class RescheduleDialogFragment extends BaseDialogFragment {
+
     private ProTeam.ProTeamCategory mCategory;
     private Booking mBooking;
 
     public static RescheduleDialogFragment newInstance(
             final ProTeam.ProTeamCategory category,
             final Booking booking
-    )
-    {
+    ) {
         RescheduleDialogFragment fragment = new RescheduleDialogFragment();
         Bundle args = new Bundle();
         args.putParcelable(BundleKeys.PRO_TEAM_CATEGORY, category);
@@ -39,8 +38,7 @@ public class RescheduleDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
@@ -51,8 +49,7 @@ public class RescheduleDialogFragment extends BaseDialogFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_reschedule, container, true);
@@ -63,8 +60,7 @@ public class RescheduleDialogFragment extends BaseDialogFragment
     }
 
     @OnClick(R.id.reschedule_button)
-    public void onRescheduleButtonClicked()
-    {
+    public void onRescheduleButtonClicked() {
         Intent intent = new Intent(getContext(), ProTeamPerBookingActivity.class);
         intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mCategory);
         intent.putExtra(BundleKeys.BOOKING, mBooking);

@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.RecurringBooking;
+import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.UiUtils;
-import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.util.List;
 
@@ -25,8 +25,7 @@ import butterknife.OnClick;
 /**
  * Use with R.layout.layout_cleaning_plan
  */
-public class ExpandableCleaningPlan extends LinearLayout
-{
+public class ExpandableCleaningPlan extends LinearLayout {
 
     @Bind(R.id.text_view_title)
     TextView mTextView;
@@ -46,8 +45,7 @@ public class ExpandableCleaningPlan extends LinearLayout
     @Bind(R.id.header_container)
     FrameLayout mHeaderContainer;
 
-    public ExpandableCleaningPlan(final Context context, final AttributeSet attrs)
-    {
+    public ExpandableCleaningPlan(final Context context, final AttributeSet attrs) {
         super(context, attrs);
 
         inflate(getContext(), R.layout.layout_cleaning_plan, this);
@@ -55,19 +53,21 @@ public class ExpandableCleaningPlan extends LinearLayout
     }
 
     @OnClick(R.id.button_plan_expand)
-    public void expand()
-    {
+    public void expand() {
         planContainer.setVisibility(View.VISIBLE);
         mButtonExpand.setVisibility(View.GONE);
         mImageCollapse.setVisibility(View.VISIBLE);
         mDivider.setVisibility(View.VISIBLE);
 
-        UiUtils.extendTouchArea(mHeaderContainer, mImageCollapse, UiUtils.SERVICE_ICON_TOUCH_PADDING);
+        UiUtils.extendTouchArea(
+                mHeaderContainer,
+                mImageCollapse,
+                UiUtils.SERVICE_ICON_TOUCH_PADDING
+        );
     }
 
     @OnClick(R.id.image_plan_collapse)
-    public void collapse()
-    {
+    public void collapse() {
         planContainer.setVisibility(View.GONE);
         mButtonExpand.setVisibility(View.VISIBLE);
         mImageCollapse.setVisibility(View.GONE);
@@ -78,14 +78,17 @@ public class ExpandableCleaningPlan extends LinearLayout
             final View.OnClickListener clickListener,
             final List<RecurringBooking> recurringBookings,
             final String activePlanCountTitle
-    )
-    {
+    ) {
         mTextView.setText(activePlanCountTitle);
         planContainer.removeAllViews();
-        for (int i = 0; i < recurringBookings.size(); i++)
-        {
+        for (int i = 0; i < recurringBookings.size(); i++) {
             RecurringBooking recurringBooking = recurringBookings.get(i);
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_cleaning_plan_item, planContainer, false);
+            View view = LayoutInflater.from(getContext())
+                                      .inflate(
+                                              R.layout.layout_cleaning_plan_item,
+                                              planContainer,
+                                              false
+                                      );
             view.setTag(recurringBooking);
 
             Button editButton = (Button) view.findViewById(R.id.button_edit);
@@ -101,10 +104,14 @@ public class ExpandableCleaningPlan extends LinearLayout
 
             planContainer.addView(view);
 
-            if (i < recurringBookings.size() - 1)
-            {
+            if (i < recurringBookings.size() - 1) {
                 //since there are more bookings to come, add a divider
-                View divider = LayoutInflater.from(getContext()).inflate(R.layout.layout_divider, planContainer, false);
+                View divider = LayoutInflater.from(getContext())
+                                             .inflate(
+                                                     R.layout.layout_divider,
+                                                     planContainer,
+                                                     false
+                                             );
                 planContainer.addView(divider);
             }
         }

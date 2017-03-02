@@ -7,18 +7,16 @@ import android.content.Intent;
 import com.crashlytics.android.Crashlytics;
 import com.yozio.android.YozioReferrerReceiver;
 
-public class InstallReferrerReceiver extends BroadcastReceiver
-{
+public class InstallReferrerReceiver extends BroadcastReceiver {
+
     @Override
-    public void onReceive(final Context context, final Intent intent)
-    {
+    public void onReceive(final Context context, final Intent intent) {
 
         triggerYozioReferrerReceiver(context, intent);
         triggerButtonReferrerReceiver(context, intent);
     }
 
-    private void triggerYozioReferrerReceiver(final Context context, final Intent intent)
-    {
+    private void triggerYozioReferrerReceiver(final Context context, final Intent intent) {
         /**
          * YozioReferrerReceiver will process the referrer string,
          * fetch out the meta data, and call YozioMetaDataCallback accordingly.
@@ -41,25 +39,23 @@ public class InstallReferrerReceiver extends BroadcastReceiver
          *    millisecond counts.
          *
          */
-        try
-        {
+        try {
             new YozioReferrerReceiver().onReceive(context, intent);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Crashlytics.logException(e);
         }
 
     }
 
-    private void triggerButtonReferrerReceiver(final Context context, final Intent intent)
-    {
-        try
-        {
-            new com.usebutton.sdk.internal.receivers.InstallReferrerReceiver().onReceive(context, intent);
+    private void triggerButtonReferrerReceiver(final Context context, final Intent intent) {
+        try {
+            new com.usebutton.sdk.internal.receivers.InstallReferrerReceiver().onReceive(
+                    context,
+                    intent
+            );
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Crashlytics.logException(e);
         }
 

@@ -2,13 +2,10 @@ package com.handybook.handybook.library.util;
 
 import com.google.gson.JsonElement;
 
-public class GsonUtil
-{
+public class GsonUtil {
 
-    public static String safeGetAsString(JsonElement element)
-    {
-        if (element != null)
-        {
+    public static String safeGetAsString(JsonElement element) {
+        if (element != null) {
             return element.getAsString();
         }
 
@@ -20,10 +17,8 @@ public class GsonUtil
      * @param element
      * @return
      */
-    public static boolean safeGetAsBoolean(JsonElement element)
-    {
-        if (element != null)
-        {
+    public static boolean safeGetAsBoolean(JsonElement element) {
+        if (element != null) {
             return element.getAsBoolean();
         }
 

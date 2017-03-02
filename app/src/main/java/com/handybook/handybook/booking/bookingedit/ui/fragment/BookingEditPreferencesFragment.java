@@ -29,8 +29,8 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public final class BookingEditPreferencesFragment extends BookingFlowFragment
-{
+public final class BookingEditPreferencesFragment extends BookingFlowFragment {
+
     private Booking mBooking;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload
             = new FinalizeBookingRequestPayload();
@@ -50,8 +50,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
 
     private boolean mIsPreferenceDragged, mIsPreferenceToggled;
 
-    public static BookingEditPreferencesFragment newInstance(final Booking booking)
-    {
+    public static BookingEditPreferencesFragment newInstance(final Booking booking) {
         final BookingEditPreferencesFragment fragment = new BookingEditPreferencesFragment();
         final Bundle args = new Bundle();
         args.putParcelable(BundleKeys.BOOKING, booking);
@@ -60,17 +59,14 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        if (mBooking == null)
-        {
+        if (mBooking == null) {
             return;
         }
         mFinalizeBookingRequestPayload.setNoteToPro(mBooking.getProNote());
-        if (mBooking.getInstructions() == null)
-        {
+        if (mBooking.getInstructions() == null) {
             return;
         }
         mFinalizeBookingRequestPayload.setBookingInstructions(
@@ -83,14 +79,16 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_booking_edit_preferences, container, false);
+                                       .inflate(
+                                               R.layout.fragment_booking_edit_preferences,
+                                               container,
+                                               false
+                                       );
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_edit_preferences_title));
-        if (mBooking.isRecurring())
-        {
+        if (mBooking.isRecurring()) {
             mFinalizeBookingRequestPayload.setShouldApplyToAll(true);
             mApplyToAllContainer.setVisibility(View.VISIBLE);
         }
@@ -98,28 +96,23 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         mInstructionListView.setParentScrollContainer(mScrollView);
         //if there are instructions (even if they are not requested)
         if (mBooking != null && mBooking.getInstructions() != null
-                && mBooking.getInstructions().getBookingInstructions() != null
-                && !mBooking.getInstructions().getBookingInstructions().isEmpty())
-        {
+            && mBooking.getInstructions().getBookingInstructions() != null
+            && !mBooking.getInstructions().getBookingInstructions().isEmpty()) {
             setToolbarTitle(getString(R.string.booking_edit_cleaning_routine_title));
             mInstructionListView.reflect(mBooking.getInstructions());
             mInstructionListView.setOnInstructionsChangedListener(
-                    new InstructionListView.OnInstructionsChangedListener()
-                    {
+                    new InstructionListView.OnInstructionsChangedListener() {
                         @Override
                         public void onInstructionsChanged(
                                 final Instructions instructions,
                                 InstructionListView.ChangeType changeType
-                        )
-                        {
-                            switch (changeType)
-                            {
+                        ) {
+                            switch (changeType) {
                                 case UNKNOWN:
                                     break;
                                 case POSITION_CHANGE:
@@ -135,21 +128,18 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                     });
             mInstructionListView.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mInstructionListView.setVisibility(View.GONE);
         }
         mNoteToProTextView.setText(mFinalizeBookingRequestPayload.getNoteToPro());
-        mNoteToProTextView.addTextChangedListener(new TextWatcher()
-        {
+        mNoteToProTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
                     final CharSequence s,
                     final int start,
                     final int count,
                     final int after
-            )
-            {
+            ) {
             }
 
             @Override
@@ -158,28 +148,24 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
                     final int start,
                     final int before,
                     final int count
-            )
-            {
+            ) {
             }
 
             @Override
-            public void afterTextChanged(final Editable s)
-            {
+            public void afterTextChanged(final Editable s) {
                 mFinalizeBookingRequestPayload.setNoteToPro(s.toString());
             }
         });
     }
 
     @Override
-    protected final void disableInputs()
-    {
+    protected final void disableInputs() {
         super.disableInputs();
         mNextButton.setClickable(false);
     }
 
     @Override
-    protected final void enableInputs()
-    {
+    protected final void enableInputs() {
         super.enableInputs();
         mNextButton.setClickable(true);
     }
@@ -187,8 +173,7 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     @Subscribe
     public final void onUpdateSuccess(
             BookingEditEvent.ReceiveEditPreferencesSuccess event
-    )
-    {
+    ) {
         enableInputs();
         progressDialog.dismiss();
         showToast(R.string.updated_preferences);
@@ -199,25 +184,25 @@ public final class BookingEditPreferencesFragment extends BookingFlowFragment
     @Subscribe
     public final void onUpdateError(
             BookingEditEvent.ReceiveEditPreferencesError event
-    )
-    {
+    ) {
         enableInputs();
         progressDialog.dismiss();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @OnClick(R.id.next_button)
-    public void onNextButtonClick()
-    {
+    public void onNextButtonClick() {
         disableInputs();
         progressDialog.show();
         int bookingId = Integer.parseInt(mBooking.getId());
-        bus.post(new BookingEditEvent.RequestEditPreferences(bookingId, mFinalizeBookingRequestPayload));
+        bus.post(new BookingEditEvent.RequestEditPreferences(
+                bookingId,
+                mFinalizeBookingRequestPayload
+        ));
     }
 
     @OnCheckedChanged(R.id.edit_preferences_apply_to_all_checkbox)
-    public void onApplyToAllToggled(AppCompatCheckBox checkbox)
-    {
+    public void onApplyToAllToggled(AppCompatCheckBox checkbox) {
         mFinalizeBookingRequestPayload.setShouldApplyToAll(checkbox.isChecked());
     }
 

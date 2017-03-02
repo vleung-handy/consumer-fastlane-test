@@ -13,14 +13,13 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 
-public class HelpActivity extends MenuDrawerActivity
-{
+public class HelpActivity extends MenuDrawerActivity {
+
     private static final String LINK_TYPE_ARTICLES = "/articles/";
     private static final String LINK_TYPE_SECTIONS = "/sections/";
 
 
-    public enum DeepLink
-    {
+    public enum DeepLink {
         CANCEL(296, 217659877),
         PRO_LATE(450, 214917058),
         ADJUST_HOURS(498, 215563597),
@@ -31,22 +30,19 @@ public class HelpActivity extends MenuDrawerActivity
         private final int mId;
         private String mLinkType;
 
-        DeepLink(final int nodeId, final int articleId)
-        {
+        DeepLink(final int nodeId, final int articleId) {
             mNodeId = nodeId;
             mId = articleId;
             mLinkType = LINK_TYPE_ARTICLES;     //this is the default, since most things use that.
         }
 
-        DeepLink(final int nodeId, final int articleId, final String linkType)
-        {
+        DeepLink(final int nodeId, final int articleId, final String linkType) {
             mNodeId = nodeId;
             mId = articleId;
             mLinkType = linkType;
         }
 
-        public Intent getIntent(final Context context)
-        {
+        public Intent getIntent(final Context context) {
             final Intent intent = new Intent(context, HelpActivity.class);
             intent.putExtra(BundleKeys.HELP_ID, Integer.toString(mId));
             intent.putExtra(BundleKeys.HELP_NODE_ID, Integer.toString(mNodeId));
@@ -56,44 +52,35 @@ public class HelpActivity extends MenuDrawerActivity
     }
 
     @Override
-    protected Fragment createFragment()
-    {
+    protected Fragment createFragment() {
         Bundle args = getIntent().getExtras();
-        if (args != null && !args.isEmpty())
-        {
-            if (!Strings.isNullOrEmpty(args.getString(BundleKeys.HELP_ID)) && !Strings.isNullOrEmpty(args.getString(BundleKeys.HELP_LINK_TYPE)))
-            {
+        if (args != null && !args.isEmpty()) {
+            if (!Strings.isNullOrEmpty(args.getString(BundleKeys.HELP_ID)) &&
+                !Strings.isNullOrEmpty(args.getString(BundleKeys.HELP_LINK_TYPE))) {
                 return HelpWebViewFragment.newInstance(getIntent().getExtras());
             }
-            else
-            { return launchHelpFragmentWithOptionalArgsIfEnabled(); }
+            else { return launchHelpFragmentWithOptionalArgsIfEnabled(); }
         }
-        else
-        {
+        else {
             return launchHelpFragmentWithOptionalArgsIfEnabled();
         }
     }
 
     @Override
-    protected String getNavItemTitle()
-    {
+    protected String getNavItemTitle() {
         return getString(R.string.help);
     }
 
-    private Fragment launchHelpFragmentWithOptionalArgsIfEnabled()
-    {
+    private Fragment launchHelpFragmentWithOptionalArgsIfEnabled() {
         Configuration config = mConfigurationManager.getPersistentConfiguration();
 
         String helpCenterUrl = config.getHelpCenterUrl();
-        if (config.isNativeHelpCenterEnabled())
-        {
+        if (config.isNativeHelpCenterEnabled()) {
             return HelpFragment.newInstance(helpCenterUrl);
         }
-        else
-        {
+        else {
             Bundle args = new Bundle();
-            if (!Strings.isNullOrEmpty(helpCenterUrl))
-            {
+            if (!Strings.isNullOrEmpty(helpCenterUrl)) {
                 args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
             }
             return HelpWebViewFragment.newInstance(args);

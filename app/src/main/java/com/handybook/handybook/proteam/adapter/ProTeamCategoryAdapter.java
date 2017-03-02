@@ -18,8 +18,8 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-{
+public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private static final int FACEBOOK_HEADER = 1;
 
     private final ProTeam.ProTeamCategory mProTeamCategory;
@@ -35,8 +35,7 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             final boolean shouldShowProImage,
             final boolean shouldShowHandymanIndicators,
             @NonNull final ProTeamProViewModel.OnInteractionListener onInteractionListener
-    )
-    {
+    ) {
         mProTeamCategory = proTeamCategory;
         mShouldShowProImage = shouldShowProImage;
         mShouldShowHandymanIndicators = shouldShowHandymanIndicators;
@@ -44,26 +43,21 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         initProTeamProViewModels();
     }
 
-    public void setFacebookHeaderHolder(ProTeamFacebookHolder proTeamFacebookHolder)
-    {
+    public void setFacebookHeaderHolder(ProTeamFacebookHolder proTeamFacebookHolder) {
         mFacebookHeaderHolder = proTeamFacebookHolder;
         enableFacebookHeader(true);
     }
 
-    public void enableFacebookHeader(boolean enable)
-    {
+    public void enableFacebookHeader(boolean enable) {
         mHeaderCount = enable ? 1 : 0;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
-        if (viewType == FACEBOOK_HEADER)
-        {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == FACEBOOK_HEADER) {
             return mFacebookHeaderHolder;
         }
-        else
-        {
+        else {
             final View itemView = LayoutInflater
                     .from(parent.getContext())
                     .inflate(R.layout.layout_pro_team_pro_card, parent, false);
@@ -71,39 +65,30 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position)
-    {
-        if (position >= mHeaderCount)
-        {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (position >= mHeaderCount) {
             ((ProTeamProHolder) holder).bindProTeamProViewModel(
                     mProTeamProViewModels.get(position - mHeaderCount));
         }
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return mProTeamProViewModels.size() + mHeaderCount;
     }
 
     @Override
-    public int getItemViewType(final int position)
-    {
+    public int getItemViewType(final int position) {
         return position < mHeaderCount ? FACEBOOK_HEADER : super.getItemViewType(position);
     }
 
-    private void initProTeamProViewModels()
-    {
+    private void initProTeamProViewModels() {
         mProTeamProViewModels = new ArrayList<>();
-        if (mProTeamCategory != null)
-        {
+        if (mProTeamCategory != null) {
             final List<ProTeamPro> preferredPros = mProTeamCategory.getPreferred();
-            if (preferredPros != null)
-            {
-                for (ProTeamPro eachPro : preferredPros)
-                {
+            if (preferredPros != null) {
+                for (ProTeamPro eachPro : preferredPros) {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
                             ProviderMatchPreference.PREFERRED,
@@ -112,10 +97,8 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
             final List<ProTeamPro> indifferentPros = mProTeamCategory.getIndifferent();
-            if (indifferentPros != null)
-            {
-                for (ProTeamPro eachPro : indifferentPros)
-                {
+            if (indifferentPros != null) {
+                for (ProTeamPro eachPro : indifferentPros) {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
                             ProviderMatchPreference.INDIFFERENT,

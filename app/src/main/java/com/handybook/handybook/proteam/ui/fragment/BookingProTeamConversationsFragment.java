@@ -44,8 +44,8 @@ import butterknife.ButterKnife;
 
 // TODO: a lot of these code are duplicated from ProTeamConversationsFragment. Consider a refactor.
 public class BookingProTeamConversationsFragment extends InjectedFragment
-        implements ConversationCallback
-{
+        implements ConversationCallback {
+
     @Inject
     ProTeamManager mProTeamManager;
     @Inject
@@ -65,8 +65,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
     public static BookingProTeamConversationsFragment newInstance(
             ProTeam.ProTeamCategory category,
             Booking booking
-    )
-    {
+    ) {
         Bundle args = new Bundle();
         args.putParcelable(BundleKeys.PRO_TEAM_CATEGORY, category);
         args.putParcelable(BundleKeys.BOOKING, booking);
@@ -78,11 +77,9 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
             mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         }
@@ -93,8 +90,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(
                 R.layout.fragment_booking_pro_team_conversations,
                 container,
@@ -108,15 +104,13 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSelectedProShown(
                 mProTeamCategory.getPreferred().size())));
     }
 
     @Subscribe
-    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event)
-    {
+    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event) {
         removeUiBlockers();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
@@ -128,15 +122,13 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event)
-    {
+    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event) {
         removeUiBlockers();
 
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private void initRecyclerView()
-    {
+    private void initRecyclerView() {
         if (mRecyclerView == null || mProTeamCategory == null) { return; }
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -145,11 +137,9 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
         mAdapter = new ProConversationAdapter(
                 mProTeamCategory,
                 mLayerHelper,
-                new View.OnClickListener()
-                {
+                new View.OnClickListener() {
                     @Override
-                    public void onClick(final View v)
-                    {
+                    public void onClick(final View v) {
                         int pos = mRecyclerView.getChildAdapterPosition(v);
 
                         // ignore header
@@ -168,16 +158,14 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
                                         providerId,
                                         conversationId
                                 )));
-                        if (conversation != null)
-                        {
+                        if (conversation != null) {
                             startMessagesActivity(
                                     conversation.getId(),
                                     mSelectedProTeamMember.getTitle(),
                                     mSelectedProTeamMember.getProTeamPro()
                             );
                         }
-                        else
-                        {
+                        else {
                             createNewConversation(providerId);
                         }
                     }
@@ -191,11 +179,9 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
                 R.layout.list_item_conversation_header1, mRecyclerView, false);
         View header2 = LayoutInflater.from(getContext()).inflate(
                 R.layout.list_item_conversation_header2, mRecyclerView, false);
-        header2.setOnClickListener(new View.OnClickListener()
-        {
+        header2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleIndifferenceSelected()));
 
@@ -216,8 +202,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
             final Uri conversationId,
             final String title,
             final ProTeamPro mPro
-    )
-    {
+    ) {
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);
         intent.putExtra(LayerConstants.LAYER_MESSAGE_TITLE, title);
@@ -232,8 +217,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
      * conversation synced, we will launch the ProMessagesActivity for the actual conversation to
      * happen
      */
-    private void createNewConversation(String providerId)
-    {
+    private void createNewConversation(String providerId) {
         progressDialog.show();
 
         HandyLibrary.getInstance()
@@ -252,8 +236,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
      * @param conversationId
      */
     @Override
-    public void onCreateConversationSuccess(String conversationId)
-    {
+    public void onCreateConversationSuccess(String conversationId) {
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ConversationCreatedLog(String.valueOf(
                 mSelectedProTeamMember.getProTeamPro().getId()), conversationId)));
         startMessagesActivity(
@@ -266,31 +249,26 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreateConversationError()
-    {
+    public void onCreateConversationError() {
         progressDialog.dismiss();
         Toast.makeText(getContext(), R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         setupToolbar(mToolbar, getString(R.string.reschedule));
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
-        {
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
             final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
-            if (requestCode == ActivityResult.START_RESCHEDULE)
-            {
+            if (requestCode == ActivityResult.START_RESCHEDULE) {
                 getActivity().finish();
             }
         }

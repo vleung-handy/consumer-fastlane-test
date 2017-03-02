@@ -66,8 +66,8 @@ import static com.handybook.handybook.core.constant.RequestCode.LOGIN_FROM_ONBOA
  * The ZIP will always be stored locally in shared prefs. The email will only be stored if it's a
  * new user to Handy.
  */
-public class OnboardV2Fragment extends InjectedFragment
-{
+public class OnboardV2Fragment extends InjectedFragment {
+
     private static final int ZIP_MIN_LENGTH = 5;
 
     // Threshold for minimal keyboard height.
@@ -131,8 +131,7 @@ public class OnboardV2Fragment extends InjectedFragment
     private int mSignInOriginalLeft;
     private int mPadding;
 
-    public static OnboardV2Fragment newInstance()
-    {
+    public static OnboardV2Fragment newInstance() {
         return new OnboardV2Fragment();
     }
 
@@ -141,8 +140,7 @@ public class OnboardV2Fragment extends InjectedFragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         View view = inflater.inflate(R.layout.fragment_onboard_v2, container, false);
         ButterKnife.bind(this, view);
         mEditZip.clearFocus();
@@ -160,24 +158,19 @@ public class OnboardV2Fragment extends InjectedFragment
         mEmailString = getString(R.string.email);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        mEditZip.addTextChangedListener(new TextWatcherAdapter()
-        {
+        mEditZip.addTextChangedListener(new TextWatcherAdapter() {
             @Override
-            public void afterTextChanged(final Editable s)
-            {
-                if (s.toString().trim().length() >= ZIP_MIN_LENGTH)
-                {
+            public void afterTextChanged(final Editable s) {
+                if (s.toString().trim().length() >= ZIP_MIN_LENGTH) {
                     mNextButton.setEnabled(true);
                 }
-                else
-                {
+                else {
                     mNextButton.setEnabled(false);
                 }
             }
         });
 
-        mEditZip.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
+        mEditZip.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(
                     final TextView v,
@@ -194,25 +187,20 @@ public class OnboardV2Fragment extends InjectedFragment
             }
         });
 
-        mEditEmail.addTextChangedListener(new TextWatcherAdapter()
-        {
+        mEditEmail.addTextChangedListener(new TextWatcherAdapter() {
             @Override
-            public void afterTextChanged(final Editable s)
-            {
+            public void afterTextChanged(final Editable s) {
                 final String email = s.toString().trim();
-                if (email.matches(Utils.EMAIL_VALIDATION_REGEX))
-                {
+                if (email.matches(Utils.EMAIL_VALIDATION_REGEX)) {
                     mSubmitButton.setEnabled(true);
                 }
-                else
-                {
+                else {
                     mSubmitButton.setEnabled(false);
                 }
             }
         });
 
-        mEditEmail.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
+        mEditEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(
                     final TextView v,
@@ -232,15 +220,11 @@ public class OnboardV2Fragment extends InjectedFragment
         /*
         Needs the toolbar to intercept the touch event
          */
-        mToolbar.setOnTouchListener(new View.OnTouchListener()
-        {
+        mToolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(final View v, final MotionEvent event)
-            {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                {
-                    if (isWithinButtonBounds(event.getX(), event.getY()))
-                    {
+            public boolean onTouch(final View v, final MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (isWithinButtonBounds(event.getX(), event.getY())) {
                         mButtonSignIn.performClick();
                     }
                 }
@@ -248,11 +232,9 @@ public class OnboardV2Fragment extends InjectedFragment
             }
         });
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 getActivity().onBackPressed();
             }
         });
@@ -267,18 +249,15 @@ public class OnboardV2Fragment extends InjectedFragment
     /**
      * Disables the app bar from letting the user drag to expand/collapse the toolbar
      */
-    private void disableAppBarDragging()
-    {
+    private void disableAppBarDragging() {
         // Disable "Drag" for AppBarLayout (i.e. User can't scroll appBarLayout by directly touching appBarLayout - User can only scroll appBarLayout by only using scrollContent)
-        if (mAppBar.getLayoutParams() != null)
-        {
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams();
+        if (mAppBar.getLayoutParams() != null) {
+            CoordinatorLayout.LayoutParams layoutParams
+                    = (CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams();
             AppBarLayout.Behavior appBarLayoutBehaviour = new AppBarLayout.Behavior();
-            appBarLayoutBehaviour.setDragCallback(new AppBarLayout.Behavior.DragCallback()
-            {
+            appBarLayoutBehaviour.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
                 @Override
-                public boolean canDrag(AppBarLayout appBarLayout)
-                {
+                public boolean canDrag(AppBarLayout appBarLayout) {
                     return false;
                 }
             });
@@ -295,26 +274,19 @@ public class OnboardV2Fragment extends InjectedFragment
      * @param y
      * @return
      */
-    private boolean isWithinButtonBounds(float x, float y)
-    {
+    private boolean isWithinButtonBounds(float x, float y) {
         int[] location = new int[2];
         mButtonSignIn.getLocationOnScreen(location);
 
-        if (x > location[0]
-                && x < location[0] + mButtonSignIn.getWidth()
-                && y > Math.max(location[1] - mPadding, 0)
-                && y < location[1] + mButtonSignIn.getHeight()
-                )
-        {
-            return true;
-        }
+        return x > location[0]
+               && x < location[0] + mButtonSignIn.getWidth()
+               && y > Math.max(location[1] - mPadding, 0)
+               && y < location[1] + mButtonSignIn.getHeight();
 
-        return false;
     }
 
     @OnClick(R.id.onboard_button_next)
-    public void nextClicked()
-    {
+    public void nextClicked() {
         mZip = mEditZip.getText().toString();
         mEmail = null;
         requestForServices(mZip);
@@ -322,14 +294,12 @@ public class OnboardV2Fragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
-    {
+    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event) {
         onServicesReceived(event.getServices(), event.getZip());
     }
 
     @VisibleForTesting
-    public void onServicesReceived(@NonNull final List<Service> services, final String zip)
-    {
+    public void onServicesReceived(@NonNull final List<Service> services, final String zip) {
         mServices = services;
 
         if (!mServices.isEmpty()) {
@@ -347,20 +317,17 @@ public class OnboardV2Fragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError error)
-    {
+    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError error) {
         dataManagerErrorHandler.handleError(getActivity(), error.error);
     }
 
-    private void requestForServices(final String zip)
-    {
+    private void requestForServices(final String zip) {
         mServices = null;
 
         mServicesManager.requestServices(zip, false);
     }
 
-    private void showNext()
-    {
+    private void showNext() {
         mToolbar.setTitle(mEmailString);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mViewSwitcher.setInAnimation(mSlideInFromRight);
@@ -368,8 +335,7 @@ public class OnboardV2Fragment extends InjectedFragment
         mViewSwitcher.showNext();
     }
 
-    private void showPrevious()
-    {
+    private void showPrevious() {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mToolbar.setTitle(mZipCodeString);
         mViewSwitcher.setInAnimation(mSlideInFromLeft);
@@ -381,16 +347,13 @@ public class OnboardV2Fragment extends InjectedFragment
      * Returns true if it's been handled.
      * @return
      */
-    public boolean onBackPressed()
-    {
-        if (mViewSwitcher.getCurrentView() == mEmailView)
-        {
+    public boolean onBackPressed() {
+        if (mViewSwitcher.getCurrentView() == mEmailView) {
             //we just want to go back to zip
             showPrevious();
             return true;
         }
-        else
-        {
+        else {
             //we're backing out of the zip, which is the same as exiting the app.
             getActivity().finish();
             return false;
@@ -398,21 +361,18 @@ public class OnboardV2Fragment extends InjectedFragment
     }
 
     @OnClick(R.id.onboard_signin)
-    public void signinClicked()
-    {
+    public void signinClicked() {
         redirectToLogin();
     }
 
-    private void redirectToLogin()
-    {
+    private void redirectToLogin() {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.putExtra(LoginActivity.EXTRA_FROM_ONBOARDING, true);
         startActivityForResult(intent, LOGIN_FROM_ONBOARDING);
     }
 
     @OnClick(R.id.onboard_button_submit)
-    public void emailSubmitClicked()
-    {
+    public void emailSubmitClicked() {
         //mark onboarding shown, so we don't show the old one, even if the config eventually gets turned off.
         mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
         mEmail = mEditEmail.getText().toString();
@@ -420,20 +380,16 @@ public class OnboardV2Fragment extends InjectedFragment
         userCreateLead();
     }
 
-    private void userCreateLead()
-    {
+    private void userCreateLead() {
         //we only do this step if we have both the email and the zip response. If the zip
         //response is received, mServices will not equal to null
-        if (mServices != null && !TextUtils.isEmpty(mEmail))
-        {
+        if (mServices != null && !TextUtils.isEmpty(mEmail)) {
             dataManager.userCreateLead(
                     mEmail,
                     mZip,
-                    new DataManager.Callback<UserExistsResponse>()
-                    {
+                    new DataManager.Callback<UserExistsResponse>() {
                         @Override
-                        public void onSuccess(final UserExistsResponse response)
-                        {
+                        public void onSuccess(final UserExistsResponse response) {
                             bus.post(new LogEvent.AddLogEvent(new OnboardingLog.EmailCollectedLog(
                                     mEmail
                             )));
@@ -442,8 +398,7 @@ public class OnboardV2Fragment extends InjectedFragment
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error)
-                        {
+                        public void onError(final DataManager.DataManagerError error) {
                             dataManagerErrorHandler.handleError(getActivity(), error);
                         }
                     }
@@ -452,11 +407,9 @@ public class OnboardV2Fragment extends InjectedFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        if (userManager.isUserLoggedIn())
-        {
+        if (userManager.isUserLoggedIn()) {
             //don't need to show this screen if the user is already logged in.
             getActivity().finish();
         }
@@ -470,10 +423,8 @@ public class OnboardV2Fragment extends InjectedFragment
      * @param emailResponse
      */
     @VisibleForTesting
-    public void handleEmailResponse(UserExistsResponse emailResponse)
-    {
-        if (emailResponse.exists())
-        {
+    public void handleEmailResponse(UserExistsResponse emailResponse) {
+        if (emailResponse.exists()) {
             //user exists, go to login
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, mEmail);
@@ -481,22 +432,19 @@ public class OnboardV2Fragment extends InjectedFragment
             intent.putExtra(LoginActivity.EXTRA_FROM_ONBOARDING, true);
             startActivityForResult(intent, LOGIN_FROM_ONBOARDING);
         }
-        else
-        {
+        else {
             //mark onboarding shown, so we don't show the old one, even if the config eventually gets turned off.
             //we only store the email after we know this email doesn't already exist.
             mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
             mDefaultPreferencesManager.setString(PrefsKey.EMAIL, mEmail);
 
-            if (mServices == null || mServices.isEmpty())
-            {
+            if (mServices == null || mServices.isEmpty()) {
                 //we don't support this zip
                 Intent intent = new Intent(getActivity(), ServiceNotSupportedActivity.class);
                 intent.putExtra(ZIP, mZip);
                 startActivity(intent);
             }
-            else
-            {
+            else {
                 //we do support this zip, just go to home page without prompting to login
                 startActivity(new Intent(getActivity(), ServiceCategoriesActivity.class));
             }
@@ -507,36 +455,33 @@ public class OnboardV2Fragment extends InjectedFragment
      * Android doesn't have an API for this, this is an approximation
      * https://pspdfkit.com/blog/2016/keyboard-handling-on-android/
      */
-    private void registerKeyboardListener()
-    {
+    private void registerKeyboardListener() {
         // Register global layout listener.
         final View decorView = getActivity().getWindow().getDecorView();
         decorView.getViewTreeObserver()
-                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
-                 {
+                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                      private final Rect windowVisibleDisplayFrame = new Rect();
                      private int lastVisibleDecorViewHeight;
 
                      @Override
-                     public void onGlobalLayout()
-                     {
+                     public void onGlobalLayout() {
                          // Retrieve visible rectangle inside window.
                          decorView.getWindowVisibleDisplayFrame(windowVisibleDisplayFrame);
                          final int visibleDecorViewHeight = windowVisibleDisplayFrame.height();
 
                          // Decide whether keyboard is visible from changing decor view height.
-                         if (lastVisibleDecorViewHeight != 0)
-                         {
-                             if (lastVisibleDecorViewHeight > visibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX)
-                             {
+                         if (lastVisibleDecorViewHeight != 0) {
+                             if (lastVisibleDecorViewHeight >
+                                 visibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX) {
                                  // Calculate current keyboard height (this includes also navigation bar height when in fullscreen mode).
-                                 int currentKeyboardHeight = decorView.getHeight() - windowVisibleDisplayFrame.bottom;
+                                 int currentKeyboardHeight = decorView.getHeight() -
+                                                             windowVisibleDisplayFrame.bottom;
                                  // Notify listener about keyboard being shown.
                                  //                        listener.onKeyboardShown(currentKeyboardHeight);
                                  collapse();
                              }
-                             else if (lastVisibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX < visibleDecorViewHeight)
-                             {
+                             else if (lastVisibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX <
+                                      visibleDecorViewHeight) {
                                  // Notify listener about keyboard being hidden.
                                  expand();
                              }
@@ -547,10 +492,8 @@ public class OnboardV2Fragment extends InjectedFragment
                  });
     }
 
-    private void expand()
-    {
-        if (!mExpanded)
-        {
+    private void expand() {
+        if (!mExpanded) {
             mExpanded = true;
             mAppBar.setExpanded(true);
 
@@ -566,10 +509,8 @@ public class OnboardV2Fragment extends InjectedFragment
         }
     }
 
-    private void collapse()
-    {
-        if (mExpanded)
-        {
+    private void collapse() {
+        if (mExpanded) {
             mExpanded = false;
 
             mToolbar.setVisibility(View.VISIBLE);

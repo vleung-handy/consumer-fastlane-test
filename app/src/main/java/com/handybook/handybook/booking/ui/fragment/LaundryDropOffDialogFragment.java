@@ -29,8 +29,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LaundryDropOffDialogFragment extends BaseDialogFragment
-{
+public class LaundryDropOffDialogFragment extends BaseDialogFragment {
+
     static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
     static final String EXTRA_DROP_INFO = "com.handy.handy.EXTRA_DROP_INFO";
 
@@ -56,8 +56,7 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
     public static LaundryDropOffDialogFragment newInstance(
             final int bookingId,
             final LaundryDropInfo dropInfo
-    )
-    {
+    ) {
         final LaundryDropOffDialogFragment laundryDropOffDialogFragment
                 = new LaundryDropOffDialogFragment();
 
@@ -70,8 +69,7 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final Bundle args = getArguments();
@@ -83,8 +81,7 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
     public View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.dialog_laundry_drop_off, container, true);
@@ -96,22 +93,23 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
         final List<Date> dropDates = dropInfo.getDates();
         dateSpinner.setAdapter(new DropDateAdapter(this.getActivity(), dropDates));
 
-        timeSpinner.setAdapter(new DropTimeAdapter(this.getActivity(),
-                dropInfo.getDropTimes(dropDates.get(0))));
+        timeSpinner.setAdapter(new DropTimeAdapter(
+                this.getActivity(),
+                dropInfo.getDropTimes(dropDates.get(0))
+        ));
 
         // update avail times by date selected
-        dateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        dateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                timeSpinner.setAdapter(new DropTimeAdapter(LaundryDropOffDialogFragment.this.getActivity(),
-                        dropInfo.getDropTimes(dropDates.get(position))));
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                timeSpinner.setAdapter(new DropTimeAdapter(
+                        LaundryDropOffDialogFragment.this.getActivity(),
+                        dropInfo.getDropTimes(dropDates.get(position))
+                ));
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -121,104 +119,109 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
     }
 
     @Override
-    protected void enableInputs()
-    {
+    protected void enableInputs() {
         super.enableInputs();
         submitButton.setClickable(true);
     }
 
     @Override
-    protected void disableInputs()
-    {
+    protected void disableInputs() {
         super.disableInputs();
         submitButton.setClickable(false);
     }
 
-    private View.OnClickListener submitListener = new View.OnClickListener()
-    {
+    private View.OnClickListener submitListener = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
+        public void onClick(final View v) {
             disableInputs();
             submitProgress.setVisibility(View.VISIBLE);
             submitButton.setText(null);
 
-            final String date = TextUtils.formatDate((Date) dateSpinner.getSelectedItem(), "dd/MM/yyyy");
+            final String date = TextUtils.formatDate(
+                    (Date) dateSpinner.getSelectedItem(),
+                    "dd/MM/yyyy"
+            );
 
             final LaundryDropInfo.DropTime dropTime
                     = (LaundryDropInfo.DropTime) timeSpinner.getSelectedItem();
 
-            dataManager.setLaundryDropOff(booking, date, dropTime.getHour(),
-                    dropTime.getMinute(), dropInfo.getType(), new FragmentSafeCallback<Void>(LaundryDropOffDialogFragment.this)
-                    {
+            dataManager.setLaundryDropOff(
+                    booking,
+                    date,
+                    dropTime.getHour(),
+                    dropTime.getMinute(),
+                    dropInfo.getType(),
+                    new FragmentSafeCallback<Void>(
+                            LaundryDropOffDialogFragment.this) {
                         @Override
-                        public void onCallbackSuccess(final Void response)
-                        {
+                        public void onCallbackSuccess(final Void response) {
                             if (!allowCallbacks) { return; }
                             dismiss();
                         }
 
                         @Override
-                        public void onCallbackError(final DataManager.DataManagerError error)
-                        {
+                        public void onCallbackError(final DataManager.DataManagerError error) {
                             if (!allowCallbacks) { return; }
                             submitProgress.setVisibility(View.GONE);
                             submitButton.setText(R.string.submit);
                             enableInputs();
-                            dataManagerErrorHandler.handleError(getActivity(), error);
+                            dataManagerErrorHandler.handleError(
+                                    getActivity(),
+                                    error
+                            );
                         }
-                    });
+                    }
+            );
         }
     };
 
 
-    private static class DropDateAdapter extends ArrayAdapter<Date>
-    {
+    private static class DropDateAdapter extends ArrayAdapter<Date> {
+
         final Context context;
         final List<Date> dates;
 
-        DropDateAdapter(final Context context, final List<Date> dates)
-        {
+        DropDateAdapter(final Context context, final List<Date> dates) {
             super(context, R.layout.list_item_drop_down, dates);
             this.context = context;
             this.dates = dates;
         }
 
         @Override
-        public View getView(final int position, final View convertView, final ViewGroup parent)
-        {
+        public View getView(final int position, final View convertView, final ViewGroup parent) {
             return buildRow(position, convertView, parent, false);
         }
 
         @Override
-        public View getDropDownView(final int position, final View convertView, final ViewGroup parent)
-        {
+        public View getDropDownView(
+                final int position,
+                final View convertView,
+                final ViewGroup parent
+        ) {
             return buildRow(position, convertView, parent, true);
         }
 
         private View buildRow(
                 final int position, final View convertView, final ViewGroup parent,
                 final boolean isDropDown
-        )
-        {
+        ) {
             final LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             View row = convertView;
             TextView textView;
 
-            if (!isDropDown)
-            {
-                if (row == null)
-                {
+            if (!isDropDown) {
+                if (row == null) {
                     row = inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
                 }
 
                 textView = (TextView) row;
-                textView.setTextColor(ContextCompat.getColor(getContext(), R.color.handy_text_black));
+                textView.setTextColor(ContextCompat.getColor(
+                        getContext(),
+                        R.color.handy_text_black
+                ));
             }
-            else
-            {
-                if (row == null)
-                {
+            else {
+                if (row == null) {
                     row = inflater.inflate(R.layout.list_item_drop_down, parent, false);
                 }
 
@@ -231,54 +234,53 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment
     }
 
 
-    private static class DropTimeAdapter extends ArrayAdapter<LaundryDropInfo.DropTime>
-    {
+    private static class DropTimeAdapter extends ArrayAdapter<LaundryDropInfo.DropTime> {
+
         final Context context;
         final List<LaundryDropInfo.DropTime> times;
 
-        DropTimeAdapter(final Context context, final List<LaundryDropInfo.DropTime> times)
-        {
+        DropTimeAdapter(final Context context, final List<LaundryDropInfo.DropTime> times) {
             super(context, R.layout.list_item_drop_down, times);
             this.context = context;
             this.times = times;
         }
 
         @Override
-        public View getView(final int position, final View convertView, final ViewGroup parent)
-        {
+        public View getView(final int position, final View convertView, final ViewGroup parent) {
             return buildRow(position, convertView, parent, false);
         }
 
         @Override
-        public View getDropDownView(final int position, final View convertView, final ViewGroup parent)
-        {
+        public View getDropDownView(
+                final int position,
+                final View convertView,
+                final ViewGroup parent
+        ) {
             return buildRow(position, convertView, parent, true);
         }
 
         private View buildRow(
                 final int position, final View convertView, final ViewGroup parent,
                 final boolean isDropDown
-        )
-        {
+        ) {
 
             final LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             View row = convertView;
             TextView textView;
 
-            if (!isDropDown)
-            {
-                if (row == null)
-                {
+            if (!isDropDown) {
+                if (row == null) {
                     row = inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
                 }
 
                 textView = (TextView) row;
-                textView.setTextColor(ContextCompat.getColor(getContext(), R.color.handy_text_black));
+                textView.setTextColor(ContextCompat.getColor(
+                        getContext(),
+                        R.color.handy_text_black
+                ));
             }
-            else
-            {
-                if (row == null)
-                {
+            else {
+                if (row == null) {
                     row = inflater.inflate(R.layout.list_item_drop_down, parent, false);
                 }
 

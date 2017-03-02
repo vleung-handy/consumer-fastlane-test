@@ -35,8 +35,8 @@ import butterknife.ButterKnife;
  * of a pro team conversation.  Assumes that this activity will only be called if there are bookings
  * to reschedule
  */
-public class RescheduleUpcomingActivity extends BaseActivity
-{
+public class RescheduleUpcomingActivity extends BaseActivity {
+
     @Bind(R.id.reschedule_recycler_view)
     RecyclerView mRecyclerView;
 
@@ -50,8 +50,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
     private Booking mSelectedBooking;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reschedule_upcoming);
         ButterKnife.bind(this);
@@ -62,16 +61,13 @@ public class RescheduleUpcomingActivity extends BaseActivity
         mToolbar.setTitle(R.string.reschedule_title);
         setSupportActionBar(mToolbar);
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 onBackPressed();
             }
         });
-        if (!mUserManager.isUserLoggedIn())
-        {
+        if (!mUserManager.isUserLoggedIn()) {
             //user is not logged in.
             startActivity(new Intent(this, ServiceCategoriesActivity.class));
             finish();
@@ -83,12 +79,10 @@ public class RescheduleUpcomingActivity extends BaseActivity
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(getString(R.string.loading));
 
-        if (mBookings == null)
-        {
+        if (mBookings == null) {
             loadBookings();
         }
-        else
-        {
+        else {
             onBookingReceived(mBookings);
         }
 
@@ -96,17 +90,18 @@ public class RescheduleUpcomingActivity extends BaseActivity
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
     }
 
-    private void loadBookings()
-    {
+    private void loadBookings() {
         mProgressDialog.show();
         mDataManager.getBookingsForReschedule(mProviderId, new BookingsCallback(this));
     }
 
     @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
-        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE)
-        {
+    protected void onActivityResult(
+            final int requestCode,
+            final int resultCode,
+            final Intent data
+    ) {
+        if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
             final long date = data.getLongExtra(BundleKeys.RESCHEDULE_NEW_DATE, 0);
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
@@ -115,16 +110,13 @@ public class RescheduleUpcomingActivity extends BaseActivity
         }
     }
 
-    public void onBookingReceived(final List<Booking> bookings)
-    {
+    public void onBookingReceived(final List<Booking> bookings) {
         mProgressDialog.dismiss();
         mBookings = bookings;
 
-        mAdapter = new BookingListAdapter(mBookings, new View.OnClickListener()
-        {
+        mAdapter = new BookingListAdapter(mBookings, new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 //before we advance to the reschedule flow, we first must grab the pre-reschedule info
                 mSelectedBooking = ((BookingListItem) v).getBooking();
                 getPreRescheduleInfo();
@@ -136,15 +128,13 @@ public class RescheduleUpcomingActivity extends BaseActivity
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public void onBookingsRequestError()
-    {
+    public void onBookingsRequestError() {
         mProgressDialog.dismiss();
         Toast.makeText(this, R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
         finish();
     }
 
-    private void getPreRescheduleInfo()
-    {
+    private void getPreRescheduleInfo() {
         mProgressDialog.setMessage(getString(R.string.rescheduling));
         mProgressDialog.show();
         mDataManager.getPreRescheduleInfo(
@@ -153,8 +143,7 @@ public class RescheduleUpcomingActivity extends BaseActivity
         );
     }
 
-    public void onReceivePreRescheduleInfoSuccess(String notice)
-    {
+    public void onReceivePreRescheduleInfoSuccess(String notice) {
         mProgressDialog.dismiss();
 
         mBus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleBookingSelectedLog(
@@ -171,66 +160,53 @@ public class RescheduleUpcomingActivity extends BaseActivity
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }
 
-    public void onRescheduleRequestError()
-    {
+    public void onRescheduleRequestError() {
         mProgressDialog.dismiss();
         Toast.makeText(this, R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
     }
 
-    private static class PreRescheduleCallback implements DataManager.Callback<String>
-    {
+    private static class PreRescheduleCallback implements DataManager.Callback<String> {
 
         private final WeakReference<RescheduleUpcomingActivity> mActivity;
 
-        public PreRescheduleCallback(RescheduleUpcomingActivity activity)
-        {
+        public PreRescheduleCallback(RescheduleUpcomingActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
         @Override
-        public void onSuccess(final String response)
-        {
-            if (mActivity.get() != null)
-            {
+        public void onSuccess(final String response) {
+            if (mActivity.get() != null) {
                 mActivity.get().onReceivePreRescheduleInfoSuccess(response);
             }
         }
 
         @Override
-        public void onError(final DataManager.DataManagerError error)
-        {
-            if (mActivity.get() != null)
-            {
+        public void onError(final DataManager.DataManagerError error) {
+            if (mActivity.get() != null) {
                 mActivity.get().onRescheduleRequestError();
             }
         }
     }
 
 
-    private static class BookingsCallback implements DataManager.Callback<UserBookingsWrapper>
-    {
+    private static class BookingsCallback implements DataManager.Callback<UserBookingsWrapper> {
 
         private final WeakReference<RescheduleUpcomingActivity> mActivity;
 
-        public BookingsCallback(RescheduleUpcomingActivity activity)
-        {
+        public BookingsCallback(RescheduleUpcomingActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
         @Override
-        public void onSuccess(final UserBookingsWrapper response)
-        {
-            if (mActivity.get() != null)
-            {
+        public void onSuccess(final UserBookingsWrapper response) {
+            if (mActivity.get() != null) {
                 mActivity.get().onBookingReceived(response.getBookings());
             }
         }
 
         @Override
-        public void onError(final DataManager.DataManagerError error)
-        {
-            if (mActivity.get() != null)
-            {
+        public void onError(final DataManager.DataManagerError error) {
+            if (mActivity.get() != null) {
                 mActivity.get().onBookingsRequestError();
             }
         }

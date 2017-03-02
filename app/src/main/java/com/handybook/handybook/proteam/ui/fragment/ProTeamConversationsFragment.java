@@ -55,8 +55,8 @@ import butterknife.OnClick;
 import static com.handybook.handybook.logger.handylogger.model.LogConstants.PRO_TEAM_CONVERSATIONS;
 
 public class ProTeamConversationsFragment extends InjectedFragment
-        implements SwipeRefreshLayout.OnRefreshListener, ConversationCallback
-{
+        implements SwipeRefreshLayout.OnRefreshListener, ConversationCallback {
+
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
 
@@ -74,16 +74,13 @@ public class ProTeamConversationsFragment extends InjectedFragment
     private ProTeam mProTeam;
     private ProTeamProViewModel mSelectedProTeamMember;
 
-    private BroadcastReceiver mPushNotificationReceiver = new BroadcastReceiver()
-    {
+    private BroadcastReceiver mPushNotificationReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(final Context context, final Intent intent)
-        {
+        public void onReceive(final Context context, final Intent intent) {
             final Bundle extras = intent.getExtras();
             if (extras == null) { return; }
             final Uri conversationId = extras.getParcelable(LayerConstants.LAYER_CONVERSATION_KEY);
-            if (conversationId != null)
-            {
+            if (conversationId != null) {
                 // Assuming this receiver has a high system priority, this will prevent push
                 // notifications regarding any conversation from being displayed.
                 abortBroadcast();
@@ -94,8 +91,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Inject
     LayerHelper mLayerHelper;
 
-    public static ProTeamConversationsFragment newInstance()
-    {
+    public static ProTeamConversationsFragment newInstance() {
         return new ProTeamConversationsFragment();
     }
 
@@ -105,8 +101,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(
                 R.layout.fragment_pro_team_conversations,
                 container,
@@ -131,28 +126,24 @@ public class ProTeamConversationsFragment extends InjectedFragment
         return view;
     }
 
-    private boolean hasPreferred()
-    {
+    private boolean hasPreferred() {
         return mProTeam != null
-                && mProTeam.getAllCategories() != null
-                && mProTeam.getAllCategories().getPreferred() != null
-                && !mProTeam.getAllCategories().getPreferred().isEmpty();
+               && mProTeam.getAllCategories() != null
+               && mProTeam.getAllCategories().getPreferred() != null
+               && !mProTeam.getAllCategories().getPreferred().isEmpty();
 
     }
 
-    private boolean hasIndifferent()
-    {
+    private boolean hasIndifferent() {
         return mProTeam != null
-                && mProTeam.getAllCategories() != null
-                && mProTeam.getAllCategories().getIndifferent() != null
-                && !mProTeam.getAllCategories().getIndifferent().isEmpty();
+               && mProTeam.getAllCategories() != null
+               && mProTeam.getAllCategories().getIndifferent() != null
+               && !mProTeam.getAllCategories().getIndifferent().isEmpty();
 
     }
 
-    private void initRecyclerView()
-    {
-        if (mRecyclerView == null || mProTeam == null)
-        {
+    private void initRecyclerView() {
+        if (mRecyclerView == null || mProTeam == null) {
             return;
         }
 
@@ -161,18 +152,14 @@ public class ProTeamConversationsFragment extends InjectedFragment
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
 
         // Only allow SwipeRefresh when Recycler scrolled all the way up
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
-        {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy)
-            {
+            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (!recyclerView.canScrollVertically(-1))
-                {
+                if (!recyclerView.canScrollVertically(-1)) {
                     mSwipeRefreshLayout.setEnabled(true);
                 }
-                else
-                {
+                else {
                     mSwipeRefreshLayout.setEnabled(false);
                 }
             }
@@ -182,11 +169,9 @@ public class ProTeamConversationsFragment extends InjectedFragment
         mAdapter = new ProConversationAdapter(
                 allCategories,
                 mLayerHelper,
-                new View.OnClickListener()
-                {
+                new View.OnClickListener() {
                     @Override
-                    public void onClick(final View v)
-                    {
+                    public void onClick(final View v) {
                         int pos = mRecyclerView.getChildAdapterPosition(v);
                         mSelectedProTeamMember = mAdapter.getItem(pos);
                         Conversation conversation = mAdapter.getItem(pos).getConversation();
@@ -200,8 +185,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
                                 conversationId
                         )));
 
-                        if (conversation != null)
-                        {
+                        if (conversation != null) {
                             startMessagesActivity(
                                     conversation.getId(),
                                     mSelectedProTeamMember.getTitle(),
@@ -209,8 +193,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
                                     mSelectedProTeamMember.getProviderMatchPreference()
                             );
                         }
-                        else
-                        {
+                        else {
                             createNewConversation(providerId);
                         }
                     }
@@ -228,8 +211,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
             final String title,
             final ProTeamPro mPro,
             final ProviderMatchPreference preference
-    )
-    {
+    ) {
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);
         intent.putExtra(LayerConstants.LAYER_MESSAGE_TITLE, title);
@@ -242,8 +224,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
      * conversation synced, we will launch the ProMessagesActivity for the actual conversation to
      * happen
      */
-    private void createNewConversation(String providerId)
-    {
+    private void createNewConversation(String providerId) {
         progressDialog.show();
 
         HandyLibrary.getInstance()
@@ -262,8 +243,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
      * @param conversationId
      */
     @Override
-    public void onCreateConversationSuccess(String conversationId)
-    {
+    public void onCreateConversationSuccess(String conversationId) {
         bus.post(new LogEvent.AddLogEvent(new ChatLog.ConversationCreatedLog(String.valueOf(
                 mSelectedProTeamMember.getProTeamPro().getId()), conversationId)));
         startMessagesActivity(
@@ -277,59 +257,48 @@ public class ProTeamConversationsFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreateConversationError()
-    {
+    public void onCreateConversationError() {
         progressDialog.dismiss();
         Toast.makeText(getContext(), R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
     }
 
-    private void requestProTeam()
-    {
+    private void requestProTeam() {
         mSwipeRefreshLayout.setRefreshing(true);
         bus.post(new ProTeamEvent.RequestProTeam());
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             setupToolbar(mToolbar, getString(R.string.messages));
         }
-        else
-        {
+        else {
             setupToolbar(mToolbar, getString(R.string.pro_team));
         }
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             mToolbar.setNavigationIcon(null);
         }
-        else if (getActivity() instanceof MenuDrawerActivity)
-        {
+        else if (getActivity() instanceof MenuDrawerActivity) {
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
-        if (mProTeam == null)
-        {
+        if (mProTeam == null) {
             requestProTeam();
         }
-        if (mAdapter != null)
-        {
+        if (mAdapter != null) {
             clearNotifications();
         }
         registerPushNotificationReceiver();
     }
 
-    private void registerPushNotificationReceiver()
-    {
+    private void registerPushNotificationReceiver() {
         final IntentFilter filter = new IntentFilter(LayerConstants.ACTION_SHOW_NOTIFICATION);
         filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         getActivity().registerReceiver(mPushNotificationReceiver, filter);
     }
 
     @Subscribe
-    public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event)
-    {
+    public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event) {
         mProTeam = event.getProTeam();
         mSwipeRefreshLayout.setRefreshing(false);
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
@@ -346,14 +315,12 @@ public class ProTeamConversationsFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event)
-    {
+    public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event) {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @OnClick(R.id.pro_team_toolbar_edit_pro_team_button)
-    public void onEditListClicked()
-    {
+    public void onEditListClicked() {
         startActivityForResult(
                 new Intent(getContext(), ProTeamEditActivity.class),
                 RequestCode.EDIT_PRO_TEAM
@@ -361,14 +328,11 @@ public class ProTeamConversationsFragment extends InjectedFragment
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == RequestCode.EDIT_PRO_TEAM)
-        {
+        if (resultCode == Activity.RESULT_OK && requestCode == RequestCode.EDIT_PRO_TEAM) {
             final ProTeam updatedProTeam = data.getParcelableExtra(BundleKeys.PRO_TEAM);
-            if (updatedProTeam != null)
-            {
+            if (updatedProTeam != null) {
                 mProTeam = updatedProTeam;
                 initRecyclerView();
             }
@@ -376,27 +340,22 @@ public class ProTeamConversationsFragment extends InjectedFragment
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         getActivity().unregisterReceiver(mPushNotificationReceiver);
         mSwipeRefreshLayout.setRefreshing(false);
         super.onPause();
     }
 
     @Override
-    public void onRefresh()
-    {
+    public void onRefresh() {
         requestProTeam();
     }
 
-    private void clearNotifications()
-    {
-        if (mAdapter == null)
-        {
+    private void clearNotifications() {
+        if (mAdapter == null) {
             return;
         }
-        for (int i = 0; i < mAdapter.getItemCount(); i++)
-        {
+        for (int i = 0; i < mAdapter.getItemCount(); i++) {
             PushNotificationReceiver.getNotifications(getActivity())
                                     .clear(mAdapter.getItem(i).getConversation());
         }

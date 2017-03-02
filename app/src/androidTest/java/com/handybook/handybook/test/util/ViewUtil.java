@@ -34,44 +34,37 @@ import static org.hamcrest.Matchers.not;
 /**
  * utility class containing non-app-specific methods to check for certain view states
  */
-public final class ViewUtil
-{
+public final class ViewUtil {
+
     private static final long VIEW_STATE_QUERY_INTERVAL_MS = 50;
     public static final long LONG_MAX_WAIT_TIME_MS = 10000;
     public static final long SHORT_MAX_WAIT_TIME_MS = 5000;
 
-    private ViewUtil()
-    {
+    private ViewUtil() {
         //don't want this instantiated. should use static methods only
     }
 
-    public static void waitForViewVisible(int viewId, long maxWaitingTimeMs)
-    {
+    public static void waitForViewVisible(int viewId, long maxWaitingTimeMs) {
         waitForViewVisibility(withId(viewId), true, maxWaitingTimeMs);
     }
 
-    public static void waitForViewInScrollViewVisible(int viewId, long maxWaitingTimeMs)
-    {
+    public static void waitForViewInScrollViewVisible(int viewId, long maxWaitingTimeMs) {
         waitForViewInScrollViewVisibility(withId(viewId), true, maxWaitingTimeMs);
     }
 
-    public static void waitForViewNotVisible(int viewId, long maxWaitingTimeMs)
-    {
+    public static void waitForViewNotVisible(int viewId, long maxWaitingTimeMs) {
         waitForViewVisibility(withId(viewId), false, maxWaitingTimeMs);
     }
 
-    public static void waitForTextVisible(int stringResourceId, long maxWaitingTimeMs)
-    {
+    public static void waitForTextVisible(int stringResourceId, long maxWaitingTimeMs) {
         waitForViewVisibility(withText(stringResourceId), true, maxWaitingTimeMs);
     }
 
-    public static void waitForTextNotVisible(int stringResourceId, long maxWaitingTimeMs)
-    {
+    public static void waitForTextNotVisible(int stringResourceId, long maxWaitingTimeMs) {
         waitForViewVisibility(withText(stringResourceId), false, maxWaitingTimeMs);
     }
 
-    public static void checkToastDisplayed(int toastStringResourceId, Activity activity)
-    {
+    public static void checkToastDisplayed(int toastStringResourceId, Activity activity) {
         onView(withText(toastStringResourceId)).
                                                        inRoot(withDecorView(not(activity.getWindow()
                                                                                         .getDecorView())))
@@ -88,14 +81,11 @@ public final class ViewUtil
             @NonNull Matcher<View> viewMatcher,
             final boolean visible,
             final long maxWaitingTimeMs
-    )
-    {
+    ) {
         final long startTime = System.currentTimeMillis();
         final long endTime = startTime + maxWaitingTimeMs;
-        while (System.currentTimeMillis() < endTime)
-        {
-            if (visible == isViewDisplayed(viewMatcher))
-            {
+        while (System.currentTimeMillis() < endTime) {
+            if (visible == isViewDisplayed(viewMatcher)) {
                 return;
             }
 
@@ -114,16 +104,13 @@ public final class ViewUtil
             boolean visible,
             Activity activity,
             final long maxWaitingTimeMs
-    )
-    {
+    ) {
         ViewInteraction viewInteraction = onView(withText(toastStringResourceId))
                 .inRoot(withDecorView(not(activity.getWindow().getDecorView())));
         final long startTime = System.currentTimeMillis();
         final long endTime = startTime + maxWaitingTimeMs;
-        while (System.currentTimeMillis() < endTime)
-        {
-            if (visible == isViewDisplayed(viewInteraction))
-            {
+        while (System.currentTimeMillis() < endTime) {
+            if (visible == isViewDisplayed(viewInteraction)) {
                 return;
             }
 
@@ -131,7 +118,8 @@ public final class ViewUtil
         }
         throw new PerformException.Builder()
                 .withActionDescription("wait for toast message visibility ")
-                .withViewDescription("view id: " + onView(withText(toastStringResourceId)).toString())
+                .withViewDescription(
+                        "view id: " + onView(withText(toastStringResourceId)).toString())
                 .withCause(new TimeoutException())
                 .build();
     }
@@ -140,14 +128,11 @@ public final class ViewUtil
             @NonNull Matcher<View> viewMatcher,
             final boolean visible,
             final long maxWaitingTimeMs
-    )
-    {
+    ) {
         final long startTime = System.currentTimeMillis();
         final long endTime = startTime + maxWaitingTimeMs;
-        while (System.currentTimeMillis() < endTime)
-        {
-            if (visible == isViewInScrollViewDisplayed(viewMatcher))
-            {
+        while (System.currentTimeMillis() < endTime) {
+            if (visible == isViewInScrollViewDisplayed(viewMatcher)) {
                 return;
             }
 
@@ -163,42 +148,34 @@ public final class ViewUtil
     /**
      * checks to see if a view is displayed without throwing an exception if it isn't displayed
      */
-    public static boolean isViewDisplayed(int viewId)
-    {
+    public static boolean isViewDisplayed(int viewId) {
         return isViewDisplayed(withId(viewId));
     }
 
     /**
      * checks to see if a view is displayed without throwing an exception if it isn't displayed
      */
-    public static boolean isViewDisplayed(@NonNull Matcher<View> viewMatcher)
-    {
-        try
-        {
+    public static boolean isViewDisplayed(@NonNull Matcher<View> viewMatcher) {
+        try {
             onView(viewMatcher).check(matches(isDisplayed()));
             return true;
         }
-        catch (Throwable e)
-        {
+        catch (Throwable e) {
             return false;
         }
     }
 
-    public static boolean isViewDisplayed(@NonNull ViewInteraction viewInteraction)
-    {
-        try
-        {
+    public static boolean isViewDisplayed(@NonNull ViewInteraction viewInteraction) {
+        try {
             viewInteraction.check(matches(isDisplayed()));
             return true;
         }
-        catch (Throwable e)
-        {
+        catch (Throwable e) {
             return false;
         }
     }
 
-    public static ViewInteraction matchToolbarTitle(int stringResourceId)
-    {
+    public static ViewInteraction matchToolbarTitle(int stringResourceId) {
         return onView(
                 allOf(isAssignableFrom(TextView.class), withParent(isAssignableFrom(Toolbar.class)))
         ).check(matches(withText(stringResourceId)));
@@ -207,15 +184,12 @@ public final class ViewUtil
     /**
      * checks to see if a view is displayed without throwing an exception if it isn't displayed
      */
-    public static boolean isViewInScrollViewDisplayed(@NonNull Matcher<View> viewMatcher)
-    {
-        try
-        {
+    public static boolean isViewInScrollViewDisplayed(@NonNull Matcher<View> viewMatcher) {
+        try {
             onView(viewMatcher).perform(scrollTo()).check(matches(isDisplayed()));
             return true;
         }
-        catch (Throwable e)
-        {
+        catch (Throwable e) {
             return false;
         }
     }
@@ -223,41 +197,33 @@ public final class ViewUtil
     public static Matcher<View> nthChildOf(
             final Matcher<View> parentMatcher,
             final int childPosition
-    )
-    {
-        return new TypeSafeMatcher<View>()
-        {
+    ) {
+        return new TypeSafeMatcher<View>() {
             @Override
-            public void describeTo(Description description)
-            {
+            public void describeTo(Description description) {
                 description.appendText("position " + childPosition + " of parent ");
                 parentMatcher.describeTo(description);
             }
 
             @Override
-            public boolean matchesSafely(View view)
-            {
+            public boolean matchesSafely(View view) {
                 if (!(view.getParent() instanceof ViewGroup)) { return false; }
                 ViewGroup parent = (ViewGroup) view.getParent();
 
                 return parentMatcher.matches(parent)
-                        && parent.getChildCount() > childPosition
-                        && parent.getChildAt(childPosition).equals(view);
+                       && parent.getChildCount() > childPosition
+                       && parent.getChildAt(childPosition).equals(view);
             }
         };
     }
 
-    public static <T> Matcher<T> first(final Matcher<T> matcher)
-    {
-        return new BaseMatcher<T>()
-        {
+    public static <T> Matcher<T> first(final Matcher<T> matcher) {
+        return new BaseMatcher<T>() {
             boolean isFirst = true;
 
             @Override
-            public boolean matches(final Object item)
-            {
-                if (isFirst && matcher.matches(item))
-                {
+            public boolean matches(final Object item) {
+                if (isFirst && matcher.matches(item)) {
                     isFirst = false;
                     return true;
                 }
@@ -266,8 +232,7 @@ public final class ViewUtil
             }
 
             @Override
-            public void describeTo(final Description description)
-            {
+            public void describeTo(final Description description) {
                 description.appendText("should return first matching item");
             }
         };
@@ -276,25 +241,20 @@ public final class ViewUtil
     /**
      * Perform action of waiting for a specific time.
      */
-    public static ViewAction waitFor(final long millis)
-    {
-        return new ViewAction()
-        {
+    public static ViewAction waitFor(final long millis) {
+        return new ViewAction() {
             @Override
-            public Matcher<View> getConstraints()
-            {
+            public Matcher<View> getConstraints() {
                 return isRoot();
             }
 
             @Override
-            public String getDescription()
-            {
+            public String getDescription() {
                 return "wait for a specific time: " + millis + " millis.";
             }
 
             @Override
-            public void perform(final UiController uiController, final View view)
-            {
+            public void perform(final UiController uiController, final View view) {
                 uiController.loopMainThreadForAtLeast(millis);
             }
         };

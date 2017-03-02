@@ -1,6 +1,5 @@
 package com.handybook.handybook.logger.handylogger.model;
 
-
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 
@@ -9,18 +8,16 @@ import com.google.gson.annotations.SerializedName;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-public abstract class AppLog extends EventLog
-{
+public abstract class AppLog extends EventLog {
+
     private static final String EVENT_CONTEXT = "app";
 
-    public AppLog(final String eventType)
-    {
+    public AppLog(final String eventType) {
         super(eventType, EVENT_CONTEXT);
     }
 
+    public static class AppOpenLog extends AppLog {
 
-    public static class AppOpenLog extends AppLog
-    {
         private static final String EVENT_TYPE = "open";
 
         @SerializedName("first_launch")
@@ -28,8 +25,7 @@ public abstract class AppLog extends EventLog
         @SerializedName("new_open")
         private final boolean mNewOpen;
 
-        public AppOpenLog(final boolean firstLaunch, final boolean newOpen)
-        {
+        public AppOpenLog(final boolean firstLaunch, final boolean newOpen) {
             super(EVENT_TYPE);
             mFirstLaunch = firstLaunch;
             mNewOpen = newOpen;
@@ -37,35 +33,37 @@ public abstract class AppLog extends EventLog
     }
 
 
-    public static class AppNavigationLog extends AppLog
-    {
+    public static class AppNavigationLog extends AppLog {
+
         private static final String EVENT_TYPE = "navigation";
 
         @SerializedName("page")
         private final String mPage;
 
-        public AppNavigationLog(final String page)
-        {
+        public AppNavigationLog(final String page) {
             super(EVENT_TYPE);
             mPage = page;
         }
     }
 
-    public abstract static class PromoLog extends AppLog
-    {
-        public static class Type
-        {
+
+    public abstract static class PromoLog extends AppLog {
+
+        public static class Type {
+
             public static final String PERSISTENT = "persistent";
             public static final String SPLASH = "splash";
         }
+
+
         @Retention(RetentionPolicy.SOURCE)
         @StringDef({
-                Type.PERSISTENT,
-                Type.SPLASH
-        })
-        @interface PromoType
-        {
+                           Type.PERSISTENT,
+                           Type.SPLASH
+                   })
+        @interface PromoType {
         }
+
 
         private static final String EVENT_TYPE = "promotion";
 
@@ -75,8 +73,7 @@ public abstract class AppLog extends EventLog
         @SerializedName("type")
         private final String mPromoType;
 
-        PromoLog(String eventSubType, String promoId, @PromoType String promoType)
-        {
+        PromoLog(String eventSubType, String promoId, @PromoType String promoType) {
             super(EVENT_TYPE + "_" + eventSubType);
             mPromoId = promoId;
             mPromoType = promoType;
@@ -85,11 +82,11 @@ public abstract class AppLog extends EventLog
         /**
          * persistent promo preview is shown
          */
-        public static class Shown extends PromoLog
-        {
+        public static class Shown extends PromoLog {
+
             private static final String EVENT_TYPE = "shown";
-            public Shown(@NonNull String promoId, @NonNull @PromoType String promoType)
-            {
+
+            public Shown(@NonNull String promoId, @NonNull @PromoType String promoType) {
                 super(EVENT_TYPE, promoId, promoType);
             }
         }
@@ -98,11 +95,11 @@ public abstract class AppLog extends EventLog
         /**
          * promo is fully expanded
          */
-        public static class FullyExpanded extends PromoLog
-        {
+        public static class FullyExpanded extends PromoLog {
+
             private static final String EVENT_TYPE = "expanded";
-            public FullyExpanded(@NonNull String promoId, @NonNull @PromoType String promoType)
-            {
+
+            public FullyExpanded(@NonNull String promoId, @NonNull @PromoType String promoType) {
                 super(EVENT_TYPE, promoId, promoType);
             }
         }
@@ -111,23 +108,24 @@ public abstract class AppLog extends EventLog
         /**
          * promo action button is clicked
          */
-        public static class Accepted extends PromoLog
-        {
+        public static class Accepted extends PromoLog {
+
             private static final String EVENT_TYPE = "accepted";
-            public Accepted(@NonNull String promoId, @NonNull @PromoType String promoType)
-            {
+
+            public Accepted(@NonNull String promoId, @NonNull @PromoType String promoType) {
                 super(EVENT_TYPE, promoId, promoType);
             }
         }
 
+
         /**
          * persistent promo is slid down via user interaction
          */
-        public static class Previewed extends PromoLog
-        {
+        public static class Previewed extends PromoLog {
+
             private static final String EVENT_TYPE = "previewed";
-            public Previewed(@NonNull String promoId, @NonNull @PromoType String promoType)
-            {
+
+            public Previewed(@NonNull String promoId, @NonNull @PromoType String promoType) {
                 super(EVENT_TYPE, promoId, promoType);
             }
         }

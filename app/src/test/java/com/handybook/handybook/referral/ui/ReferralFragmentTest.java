@@ -48,8 +48,8 @@ import static org.robolectric.Shadows.shadowOf;
  * the parent activity. Calling the parent activity will cause this test suite to fail
  */
 @Ignore
-public class ReferralFragmentTest extends RobolectricGradleTestWrapper
-{
+public class ReferralFragmentTest extends RobolectricGradleTestWrapper {
+
     private ReferralFragment mFragment;
 
     @Mock
@@ -66,8 +66,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
     UserManager mUserManager;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         mFragment = (ReferralFragment) ReferralFragment.newInstance(null);
         SupportFragmentTestUtil.startFragment(mFragment);
         initMocks(this);
@@ -100,27 +99,28 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldRequestPrepareReferrals() throws Exception
-    {
-        assertNotNull(AppAssertionUtils.getFirstMatchingBusEvent(mFragment.bus,
-                ReferralsEvent.RequestPrepareReferrals.class));
+    public void shouldRequestPrepareReferrals() throws Exception {
+        assertNotNull(AppAssertionUtils.getFirstMatchingBusEvent(
+                mFragment.bus,
+                ReferralsEvent.RequestPrepareReferrals.class
+        ));
     }
 
     @Test
-    public void shouldDisplayReferralDataOnReceivePrepareReferralsSuccess() throws Exception
-    {
+    public void shouldDisplayReferralDataOnReceivePrepareReferralsSuccess() throws Exception {
         mFragment.onReceivePrepareReferralsSuccess(mMockReceivePrepareReferralsSuccessEvent);
 
         assertThat(mFragment.mReferralContent.getVisibility(), equalTo(View.VISIBLE));
         assertThat(mFragment.mTitle.getText().toString(), equalTo("Give $30, Get $20"));
-        assertThat(mFragment.mSubtitle.getText().toString(),
-                equalTo("Give your friends $30 off their first Handy booking, and you get $20!"));
+        assertThat(
+                mFragment.mSubtitle.getText().toString(),
+                equalTo("Give your friends $30 off their first Handy booking, and you get $20!")
+        );
         assertThat(mFragment.mShareUrl.getText().toString(), equalTo("ABC123"));
     }
 
     @Test
-    public void shouldLaunchSmsIntentOnInviteFriendsClicked() throws Exception
-    {
+    public void shouldLaunchSmsIntentOnInviteFriendsClicked() throws Exception {
         when(mMockReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS))
                 .thenReturn(mMockReferralInfo);
         when(mMockReferralInfo.getMessage()).thenReturn("share me!");
@@ -133,8 +133,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldLaunchActivityPickerOnShareClicked() throws Exception
-    {
+    public void shouldLaunchActivityPickerOnShareClicked() throws Exception {
         mFragment.onOtherShareCtaClicked();
         final ShadowActivity.IntentForResult intent =
                 shadowOf(mFragment.getActivity()).getNextStartedActivityForResult();
@@ -142,8 +141,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldConfirmAndLaunchSelectedActivityOnActivityResult() throws Exception
-    {
+    public void shouldConfirmAndLaunchSelectedActivityOnActivityResult() throws Exception {
         // assume selected activity was Facebook
         mFragment.onReceivePrepareReferralsSuccess(mMockReceivePrepareReferralsSuccessEvent);
         final Intent mockIntent = mock(Intent.class, Answers.RETURNS_DEEP_STUBS.get());
@@ -156,8 +154,10 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper
         mFragment.onActivityResult(ActivityResult.PICK_ACTIVITY, Activity.RESULT_OK, mockIntent);
 
         final RequestConfirmReferral event =
-                AppAssertionUtils.getFirstMatchingBusEvent(mFragment.bus,
-                        RequestConfirmReferral.class);
+                AppAssertionUtils.getFirstMatchingBusEvent(
+                        mFragment.bus,
+                        RequestConfirmReferral.class
+                );
         assertNotNull(event);
         assertThat(event.getGuid(), equalTo("1234"));
         final Intent intent = shadowOf(mFragment.getActivity()).getNextStartedActivity();

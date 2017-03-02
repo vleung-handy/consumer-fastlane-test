@@ -23,74 +23,61 @@ import javax.inject.Inject;
  * <p/>
  * Manager that handles CRUD operations on default shared preferences
  **/
-public class DefaultPreferencesManager
-{
+public class DefaultPreferencesManager {
+
     private final SharedPreferences mDefaultSharedPreferences;
 
     @Inject
-    public DefaultPreferencesManager(final Context context)
-    {
+    public DefaultPreferencesManager(final Context context) {
         mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public boolean contains(@NonNull PrefsKey prefsKey)
-    {
+    public boolean contains(@NonNull PrefsKey prefsKey) {
         return mDefaultSharedPreferences.contains(prefsKey.getKey());
     }
 
-    public long getLong(@NonNull final PrefsKey prefsKey, int defaultValue)
-    {
+    public long getLong(@NonNull final PrefsKey prefsKey, int defaultValue) {
         return mDefaultSharedPreferences.getLong(prefsKey.getKey(), defaultValue);
     }
 
-    public void setLong(@NonNull final PrefsKey prefsKey, final long value)
-    {
+    public void setLong(@NonNull final PrefsKey prefsKey, final long value) {
         mDefaultSharedPreferences.edit().putLong(prefsKey.getKey(), value).apply();
     }
 
-    public void setString(@NonNull final PrefsKey prefsKey, @Nullable final String value)
-    {
+    public void setString(@NonNull final PrefsKey prefsKey, @Nullable final String value) {
         mDefaultSharedPreferences.edit().putString(prefsKey.getKey(), value).apply();
     }
 
     @Nullable
-    public String getString(@NonNull final PrefsKey prefsKey)
-    {
+    public String getString(@NonNull final PrefsKey prefsKey) {
         return getString(prefsKey, null);
     }
 
     @Nullable
-    public String getString(@NonNull final PrefsKey prefsKey, @Nullable final String defaultValue)
-    {
+    public String getString(@NonNull final PrefsKey prefsKey, @Nullable final String defaultValue) {
         return mDefaultSharedPreferences.getString(prefsKey.getKey(), defaultValue);
     }
 
-    public void setBoolean(@NonNull final PrefsKey prefsKey, final boolean value)
-    {
+    public void setBoolean(@NonNull final PrefsKey prefsKey, final boolean value) {
         mDefaultSharedPreferences.edit().putBoolean(prefsKey.getKey(), value).apply();
     }
 
-    public boolean getBoolean(@NonNull final PrefsKey prefsKey, final boolean defaultValue)
-    {
+    public boolean getBoolean(@NonNull final PrefsKey prefsKey, final boolean defaultValue) {
         return mDefaultSharedPreferences.getBoolean(prefsKey.getKey(), defaultValue);
     }
 
-    public void removeValue(@NonNull final PrefsKey prefsKey)
-    {
+    public void removeValue(@NonNull final PrefsKey prefsKey) {
         mDefaultSharedPreferences.edit().remove(prefsKey.getKey()).apply();
     }
 
-    public void clearAll()
-    {
+    public void clearAll() {
         mDefaultSharedPreferences.edit().clear().apply();
     }
 
-    public String getInstallationId()
-    {
+    public String getInstallationId() {
         String installationId =
                 mDefaultSharedPreferences.getString(PrefsKey.INSTALLATION_ID.getKey(), null);
-        if (TextUtils.isEmpty(installationId))
-        {
+        if (TextUtils.isEmpty(installationId)) {
             installationId = System.currentTimeMillis() + "+" + UUID.randomUUID().toString();
             mDefaultSharedPreferences
                     .edit().putString(PrefsKey.INSTALLATION_ID.getKey(), installationId).apply();

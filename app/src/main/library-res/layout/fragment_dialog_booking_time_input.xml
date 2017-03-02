@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/fragment_dialog_slide_up_transparent_background_layout"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:gravity="center"
+              android:orientation="vertical"
+    >
+
+    <TextView
+        style="@style/TextView.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/handy_blue"
+        android:gravity="center"
+        android:padding="@dimen/default_padding"
+        android:text="@string/fragment_dialog_booking_time_input_title"
+        android:textColor="@color/white"
+        />
+
+    <com.handybook.handybook.library.ui.view.SingleSpinnerTimePicker
+        android:id="@+id/fragment_dialog_booking_time_input_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin_3x"
+        android:layout_marginRight="@dimen/default_margin_3x"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="@dimen/default_margin_half"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/default_padding_4x"
+        >
+
+        <Button
+            android:id="@+id/fragment_dialog_booking_time_input_cancel_button"
+            style="@style/Button.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/handy_blue"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <Button
+            android:id="@+id/fragment_dialog_booking_time_input_save_button"
+            style="@style/Button.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:textAllCaps="true"
+            android:textColor="@color/handy_blue"
+            android:textSize="@dimen/text_size_small"
+            />
+    </LinearLayout>
+
+</LinearLayout>

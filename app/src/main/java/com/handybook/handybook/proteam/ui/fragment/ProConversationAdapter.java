@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.ViewHolder>
-{
+public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.ViewHolder> {
+
     private static final int NORMAL = Integer.MIN_VALUE;
 
     private List<SingleViewHolder> mHeaders = new ArrayList<>();
@@ -49,8 +49,7 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
             @NonNull final LayerHelper layerHelper,
             @NonNull final View.OnClickListener onClickListener,
             @NonNull final Bus bus
-    )
-    {
+    ) {
         super(layerHelper);
         mProTeamCategory = proTeamCategory;
         mLayerHelper = layerHelper;
@@ -59,35 +58,27 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
         initProTeamProViewModels();
     }
 
-    public void addHeader(@NonNull View header)
-    {
+    public void addHeader(@NonNull View header) {
         mHeaders.add(new SingleViewHolder(header));
     }
 
-    public void setHideConversation(boolean hideConversation)
-    {
+    public void setHideConversation(boolean hideConversation) {
         mHideConversation = hideConversation;
     }
 
-    public void setProviderId(@NonNull String providerId)
-    {
+    public void setProviderId(@NonNull String providerId) {
         mProviderId = providerId;
     }
 
-    private void initProTeamProViewModels()
-    {
+    private void initProTeamProViewModels() {
         mProTeamProViewModels = new ArrayList<>();
         mChatEligibleMemberIds = new ArrayList<>();
 
-        if (mProTeamCategory != null)
-        {
+        if (mProTeamCategory != null) {
             final List<ProTeamPro> preferredPros = mProTeamCategory.getPreferred();
-            if (preferredPros != null)
-            {
-                for (ProTeamPro eachPro : preferredPros)
-                {
-                    if (eachPro.isChatEnabled())
-                    {
+            if (preferredPros != null) {
+                for (ProTeamPro eachPro : preferredPros) {
+                    if (eachPro.isChatEnabled()) {
                         //we only want to show on the screen where chat is enabled.
                         mProTeamProViewModels.add(ProTeamProViewModel.from(
                                 eachPro,
@@ -99,12 +90,9 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
                 }
             }
             final List<ProTeamPro> indifferentPros = mProTeamCategory.getIndifferent();
-            if (indifferentPros != null)
-            {
-                for (ProTeamPro eachPro : indifferentPros)
-                {
-                    if (eachPro.isChatEnabled())
-                    {
+            if (indifferentPros != null) {
+                for (ProTeamPro eachPro : indifferentPros) {
+                    if (eachPro.isChatEnabled()) {
                         //we only want to show on the screen where chat is enabled.
                         mProTeamProViewModels.add(ProTeamProViewModel.from(
                                 eachPro,
@@ -124,19 +112,16 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
      * conversations could've changed. See if we need to update the screen.
      */
     @Override
-    protected void onConversationUpdated()
-    {
+    protected void onConversationUpdated() {
         //get a list of all conversations and see if we can match them with the pro teams
         List<Conversation> conversations = mLayerHelper.getAllConversationsWith(
                 mChatEligibleMemberIds);
 
-        if (conversations == null)
-        {
+        if (conversations == null) {
             return;
         }
 
-        if (!mConversationLoaded && mProTeamProViewModels != null)
-        {
+        if (!mConversationLoaded && mProTeamProViewModels != null) {
             //the first update we get is essentially the "loaded" part. Subsequent updates are for changes.
             mConversationLoaded = true;
             mBus.post(new LogEvent.AddLogEvent(
@@ -148,29 +133,23 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
         }
 
         //update each pro team model with the correct conversation
-        for (final ProTeamProViewModel model : mProTeamProViewModels)
-        {
-            if (model.getConversation() == null)
-            {
+        for (final ProTeamProViewModel model : mProTeamProViewModels) {
+            if (model.getConversation() == null) {
                 //if there isn't a conversation tied to the pro, check to see if there is one
                 //that just got created.
 
                 String proLayerId = model.getProTeamPro().getLayerUserId();
-                for (final Conversation convo : conversations)
-                {
+                for (final Conversation convo : conversations) {
                     boolean conversationSet = false;
-                    for (final Identity participant : convo.getParticipants())
-                    {
-                        if (participant.getUserId().equals(proLayerId))
-                        {
+                    for (final Identity participant : convo.getParticipants()) {
+                        if (participant.getUserId().equals(proLayerId)) {
                             //this the conversation with DanH
                             model.setConversation(convo);
                             conversationSet = true;
                             break;
                         }
                     }
-                    if (conversationSet)
-                    {
+                    if (conversationSet) {
                         break;
                     }
                 }
@@ -181,16 +160,13 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
         notifyDataSetChanged();
     }
 
-    private void sortByMessageReadDate()
-    {
+    private void sortByMessageReadDate() {
         Collections.sort(mProTeamProViewModels, new ProConversationComparator());
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
-        if (viewType == NORMAL)
-        {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == NORMAL) {
             final View itemView = LayoutInflater
                     .from(parent.getContext())
                     .inflate(R.layout.layout_pro_team_conversation_item, parent, false);
@@ -206,40 +182,34 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position)
-    {
-        if (position >= mHeaders.size() && position < mProTeamProViewModels.size() + mHeaders.size())
-        {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (position >= mHeaders.size() &&
+            position < mProTeamProViewModels.size() + mHeaders.size()) {
             super.onBindViewHolder(holder, position - mHeaders.size());
             ((ConversationHolder) holder).bind(getItem(position - mHeaders.size()));
         }
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return mProTeamProViewModels.size() + mHeaders.size();
     }
 
-    public int getHeaderCount()
-    {
+    public int getHeaderCount() {
         return mHeaders.size();
     }
 
-    public ProTeamProViewModel getItem(final int index)
-    {
+    public ProTeamProViewModel getItem(final int index) {
         return mProTeamProViewModels.get(index);
     }
 
     @Override
-    public long getItemId(final int position)
-    {
+    public long getItemId(final int position) {
         return position;
     }
 
     @Override
-    public int getItemViewType(final int position)
-    {
+    public int getItemViewType(final int position) {
         // We return the position as type if it's header.
         return position >= mHeaders.size() ? NORMAL : position;
     }

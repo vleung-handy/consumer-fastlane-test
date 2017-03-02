@@ -6,8 +6,7 @@ import android.util.AttributeSet;
 
 import com.handybook.handybook.library.ui.view.InputTextField;
 
-public final class PasswordInputTextView extends InputTextField
-{
+public final class PasswordInputTextView extends InputTextField {
 
     public PasswordInputTextView(final Context context) {
         super(context);
@@ -19,7 +18,11 @@ public final class PasswordInputTextView extends InputTextField
         init();
     }
 
-    public PasswordInputTextView(final Context context, final AttributeSet attrs, final int defStyle) {
+    public PasswordInputTextView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
         init();
     }

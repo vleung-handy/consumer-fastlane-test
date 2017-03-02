@@ -15,10 +15,10 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
-import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -29,8 +29,8 @@ import butterknife.OnClick;
 
 // TODO: Continue chopping this class up into fragments so all the elements in BookingDetailFragment
 // are BookingDetailSectionFragments
-public final class BookingDetailView extends InjectedRelativeLayout
-{
+public final class BookingDetailView extends InjectedRelativeLayout {
+
     @Bind(R.id.date_text)
     TextView dateText;
     @Bind(R.id.time_text)
@@ -56,20 +56,17 @@ public final class BookingDetailView extends InjectedRelativeLayout
     private Context mContext;
     private Booking mBooking;
 
-    public BookingDetailView(final Context context)
-    {
+    public BookingDetailView(final Context context) {
         super(context);
         init(context);
     }
 
-    public BookingDetailView(final Context context, final AttributeSet attrs)
-    {
+    public BookingDetailView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public BookingDetailView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
+    public BookingDetailView(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -78,8 +75,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
             final Booking booking,
             List<Service> serviceList,
             boolean isBookingHoursClarificationExperimentEnabled
-    )
-    {
+    ) {
         mBooking = booking;
         navText.setText(booking.getServiceName());
         bookingText.setText(getContext().getString(R.string.booking_number, booking.getId()));
@@ -93,13 +89,10 @@ public final class BookingDetailView extends InjectedRelativeLayout
     }
 
     @OnClick(R.id.add_to_calendar_image)
-    public void addToCalendarClicked()
-    {
+    public void addToCalendarClicked() {
         if (mBooking != null && mBooking.getAddress() != null &&
-                mBooking.getStartDate() != null && mBooking.getEndDate() != null)
-        {
-            try
-            {
+            mBooking.getStartDate() != null && mBooking.getEndDate() != null) {
+            try {
                 Intent intent = new Intent(Intent.ACTION_INSERT);
                 intent.setType("vnd.android.cursor.item/event");
                 intent.putExtra(
@@ -113,18 +106,15 @@ public final class BookingDetailView extends InjectedRelativeLayout
                 intent.putExtra(CalendarContract.Events.TITLE, HANDY_BOOKING);
                 mContext.startActivity(intent);
             }
-            catch (ActivityNotFoundException e)
-            {
+            catch (ActivityNotFoundException e) {
                 mAddToCalendarImage.setVisibility(GONE);
                 Crashlytics.logException(e);
             }
         }
     }
 
-    public void updateServiceIcon(final Booking booking, List<Service> serviceList)
-    {
-        if (booking != null && serviceList != null && !serviceList.isEmpty())
-        {
+    public void updateServiceIcon(final Booking booking, List<Service> serviceList) {
+        if (booking != null && serviceList != null && !serviceList.isEmpty()) {
             serviceIcon.updateServiceIconByBooking(booking, serviceList);
         }
     }
@@ -135,8 +125,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
             final Booking booking,
             final Date startDate,
             boolean isBookingHoursClarificationExperimentEnabled
-    )
-    {
+    ) {
         final float hours = booking.getHours();
         //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
         final int minutes = (int) (60 * hours);
@@ -155,8 +144,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
         //in the format "3 hours"
         String numHoursDisplayString = BookingUtil.getNumHoursDisplayString(hours, getContext());
 
-        if (isBookingHoursClarificationExperimentEnabled)
-        {
+        if (isBookingHoursClarificationExperimentEnabled) {
             //5:00 pm (up to 3 hours)
             timeText.setText(getResources().getString(
                     R.string.booking_details_hours_clarification_experiment_hours_formatted,
@@ -164,8 +152,7 @@ public final class BookingDetailView extends InjectedRelativeLayout
                     numHoursDisplayString
             ));
         }
-        else
-        {
+        else {
             //5:00 pm - 8:00 pm (3 hours)
             String endTimeDisplayString =
                     StringUtils.toLowerCase(DateTimeUtils.formatDate(
@@ -181,7 +168,6 @@ public final class BookingDetailView extends InjectedRelativeLayout
             ));
         }
 
-
         dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
                                                   booking.getBookingTimezone()
         ));
@@ -190,26 +176,21 @@ public final class BookingDetailView extends InjectedRelativeLayout
     public void updateReportIssueButton(
             final Booking booking,
             final OnClickListener onClickListener
-    )
-    {
+    ) {
         mReportIssueButton.setVisibility(booking.isMilestonesEnabled() ? VISIBLE : GONE);
         mReportIssueButton.setOnClickListener(onClickListener);
     }
 
-    private void init(Context context)
-    {
+    private void init(Context context) {
         mContext = context;
     }
 
-    private void updateFrequencySectionDisplay(final Booking booking)
-    {
+    private void updateFrequencySectionDisplay(final Booking booking) {
         final String recurringInfo = booking.getRecurringInfo();
-        if (recurringInfo == null)
-        {
+        if (recurringInfo == null) {
             freqLayout.setVisibility(View.GONE);
         }
-        else
-        {
+        else {
             freqText.setText(booking.getRecurringInfo());
         }
     }

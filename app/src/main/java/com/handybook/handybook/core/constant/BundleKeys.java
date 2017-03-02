@@ -1,7 +1,7 @@
 package com.handybook.handybook.core.constant;
 
-public class BundleKeys
-{
+public class BundleKeys {
+
     public static final String ACTIVITY = "activity";
     public static final String BOOKING = "booking";
     public static final String BOOKINGS = "bookings";
@@ -31,7 +31,8 @@ public class BundleKeys
     public static final String PRO_TEAM_PRO = "pro_team_pro";
     public static final String PRO_TEAM_PRO_ID = "pro_team_pro_id";
     public static final String PRO_TEAM_PRO_PREFERENCE = "pro_team_pro_preference";
-    public static final String EDIT_PRO_TEAM_PREFERENCE_ACTION_TYPE = "edit_pro_team_preference_action_type";
+    public static final String EDIT_PRO_TEAM_PREFERENCE_ACTION_TYPE
+            = "edit_pro_team_preference_action_type";
     public static final String RECURRING_BOOKING = "recurring_booking";
     public static final String RECURRING_PLAN = "recurring_plan";
     public static final String RECURRING_PLANS = "recurring_plans";
@@ -51,4 +52,6 @@ public class BundleKeys
     public static final String ZIP = "zip";
     public static final String TAB_ID = "tab_id";
     public static final String PRO_MESSAGES_VIEW_MODEL = "pro_messages_view_model";
+    public static final String PRO_RATING = "pro_rating";
+    public static final String PROVIDER = "provider";
 }

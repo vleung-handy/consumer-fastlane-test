@@ -6,8 +6,8 @@ import com.handybook.handybook.R;
 import java.io.Serializable;
 import java.util.Date;
 
-public class JobStatus implements Serializable
-{
+public class JobStatus implements Serializable {
+
     @SerializedName("milestones")
     private Milestone[] mMilestones;
     @SerializedName("links")
@@ -15,8 +15,11 @@ public class JobStatus implements Serializable
     @SerializedName("complete")
     private boolean mComplete;
 
-    public JobStatus(final Milestone[] milestones, final DeepLinkWrapper[] deepLinkWrappers, final boolean complete)
-    {
+    public JobStatus(
+            final Milestone[] milestones,
+            final DeepLinkWrapper[] deepLinkWrappers,
+            final boolean complete
+    ) {
         mMilestones = milestones;
         mDeepLinkWrappers = deepLinkWrappers;
         mComplete = complete;
@@ -29,14 +32,13 @@ public class JobStatus implements Serializable
     public boolean isComplete() { return mComplete; }
 
     // Return stroke if it's the last element and the job is completed
-    public int getStatusDrawableId(int index)
-    {
+    public int getStatusDrawableId(int index) {
         boolean isFill = index < mMilestones.length - 1 || mComplete;
         return mMilestones[index].getStatusDrawableId(isFill);
     }
 
-    public static class Milestone implements Serializable
-    {
+    public static class Milestone implements Serializable {
+
         public static final String NORMAL = "normal";
         public static final String WARNING = "warning";
         public static final String ERROR = "error";
@@ -65,8 +67,13 @@ public class JobStatus implements Serializable
         @SerializedName("timestamp")
         private Date mTimestamp;
 
-        public Milestone(final String title, final String body, final String status, final Action action, final Date timestamp)
-        {
+        public Milestone(
+                final String title,
+                final String body,
+                final String status,
+                final Action action,
+                final Date timestamp
+        ) {
             mTitle = title;
             mBody = body;
             mStatus = status;
@@ -78,8 +85,7 @@ public class JobStatus implements Serializable
 
         public String getBody() { return mBody; }
 
-        public String getState()
-        {
+        public String getState() {
             return mState;
         }
 
@@ -89,15 +95,12 @@ public class JobStatus implements Serializable
 
         public Date getTimestamp() { return mTimestamp; }
 
-        public int getStatusDrawableId(boolean isFill)
-        {
-            if (mStatus == null)
-            {
+        public int getStatusDrawableId(boolean isFill) {
+            if (mStatus == null) {
                 return R.drawable.circle_grey_stroke_light;
             }
 
-            switch (mStatus)
-            {
+            switch (mStatus) {
                 case Milestone.NORMAL:
                     return isFill ? R.drawable.circle_green : R.drawable.circle_green_stroke;
                 case Milestone.WARNING:
@@ -114,8 +117,8 @@ public class JobStatus implements Serializable
     }
 
 
-    public static class Action implements Serializable
-    {
+    public static class Action implements Serializable {
+
         public static final String CALL_OR_TEXT = "call_sms_contact";
 
         @SerializedName("type")
@@ -127,8 +130,8 @@ public class JobStatus implements Serializable
     }
 
 
-    public static class DeepLinkWrapper implements Serializable
-    {
+    public static class DeepLinkWrapper implements Serializable {
+
         public static final String TYPE_CANCEL = "cancel";
         public static final String TYPE_RESCHEDULE = "reschedule";
 
@@ -139,8 +142,7 @@ public class JobStatus implements Serializable
         @SerializedName("link")
         private String mDeeplink;
 
-        public DeepLinkWrapper(final String text, final String type, final String deeplink)
-        {
+        public DeepLinkWrapper(final String text, final String type, final String deeplink) {
             mText = text;
             mType = type;
             mDeeplink = deeplink;

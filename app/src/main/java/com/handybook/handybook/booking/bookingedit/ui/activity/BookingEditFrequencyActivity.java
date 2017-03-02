@@ -13,14 +13,13 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
  * NOTE: doesn't look like this is being used anymore
  */
 @Deprecated
-public final class BookingEditFrequencyActivity extends MenuDrawerActivity
-{
+public final class BookingEditFrequencyActivity extends MenuDrawerActivity {
 
     @Override
-    protected final Fragment createFragment()
-    {
+    protected final Fragment createFragment() {
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
-        final RecurringBooking recurringBooking = (RecurringBooking) getIntent().getSerializableExtra(
+        final RecurringBooking recurringBooking
+                = (RecurringBooking) getIntent().getSerializableExtra(
                 BundleKeys.RECURRING_BOOKING);
 
         //note that only one of the two parameters will be used.
@@ -28,14 +27,12 @@ public final class BookingEditFrequencyActivity extends MenuDrawerActivity
     }
 
     @Override
-    protected final String getNavItemTitle()
-    {
+    protected final String getNavItemTitle() {
         return null;
     }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         disableDrawer = true;
     }

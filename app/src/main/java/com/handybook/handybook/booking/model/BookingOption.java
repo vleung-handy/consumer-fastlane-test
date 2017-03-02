@@ -6,15 +6,15 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 //TODO this class and associates need major refactoring. and change field names
-public class BookingOption implements Parcelable
-{
+public class BookingOption implements Parcelable {
 
     //todo: auto serialized enums for type see : Booking.LaundryStatus
     public final static String TYPE_OPTION = "option";
     public final static String TYPE_QUANTITY = "quantity"; //what does this look like
     public final static String TYPE_TEXT = "text";
     public final static String TYPE_CHECKLIST = "checklist";
-    public final static String TYPE_OPTION_PICKER = "option_picker"; //TODO: what's the difference between this and "option"?
+    public final static String TYPE_OPTION_PICKER = "option_picker";
+    //TODO: what's the difference between this and "option"?
 
     @SerializedName("uniq")
     private String uniq;
@@ -27,7 +27,8 @@ public class BookingOption implements Parcelable
     @SerializedName("default_value")
     private String defaultValue;
     @SerializedName("options")
-    private String[] options; //TODO making the option attributes in separate arrays is ugly, needs refactoring
+    private String[] options;
+    //TODO making the option attributes in separate arrays is ugly, needs refactoring
     @SerializedName("options_sub_text")
     private String[] optionsSubText;
     @SerializedName("options_super_text")
@@ -57,202 +58,162 @@ public class BookingOption implements Parcelable
     //some fields in this class are not actually from the server and are set programmatically. how can we make this cleaner?
     private int[] mImageResourceIds;
 
-    public BookingOption()
-    {
+    public BookingOption() {
     }
 
-    public void setLeftStripIndicatorVisible(final boolean[] leftStripIndicatorVisible)
-    {
+    public void setLeftStripIndicatorVisible(final boolean[] leftStripIndicatorVisible) {
         mLeftStripIndicatorVisible = leftStripIndicatorVisible;
     }
 
-    public boolean[] getLeftStripIndicatorVisible()
-    {
+    public boolean[] getLeftStripIndicatorVisible() {
         return mLeftStripIndicatorVisible;
     }
 
-    public void setOptionsSuperText(final String[] optionsSuperText)
-    {
+    public void setOptionsSuperText(final String[] optionsSuperText) {
         mOptionsSuperText = optionsSuperText;
     }
 
-    public String[] getOptionsSuperText()
-    {
+    public String[] getOptionsSuperText() {
         return mOptionsSuperText;
     }
 
-    public void setImageResourceIds(int[] imageResourceIds)
-    {
+    public void setImageResourceIds(int[] imageResourceIds) {
         mImageResourceIds = imageResourceIds;
     }
 
-    public void setOptionsHidden(final boolean[] optionsHidden)
-    {
+    public void setOptionsHidden(final boolean[] optionsHidden) {
         this.optionsHidden = optionsHidden;
     }
 
-    public boolean[] getOptionsHidden()
-    {
+    public boolean[] getOptionsHidden() {
         return optionsHidden;
     }
 
-    public int[] getImageResourceIds()
-    {
+    public int[] getImageResourceIds() {
         return mImageResourceIds;
     }
 
-    public String getUniq()
-    {
+    public String getUniq() {
         return uniq;
     }
 
-    void setUniq(final String uniq)
-    {
+    void setUniq(final String uniq) {
         this.uniq = uniq;
     }
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setType(final String type)
-    {
+    public void setType(final String type) {
         this.type = type;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(final String title)
-    {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
-    public String getInfo()
-    {
+    public String getInfo() {
         return info;
     }
 
-    void setInfo(final String info)
-    {
+    void setInfo(final String info) {
         this.info = info;
     }
 
-    public String getDefaultValue()
-    {
+    public String getDefaultValue() {
         return defaultValue;
     }
 
-    public void setDefaultValue(final String defaultValue)
-    {
+    public void setDefaultValue(final String defaultValue) {
         this.defaultValue = defaultValue;
     }
 
-    public String[] getOptions()
-    {
+    public String[] getOptions() {
         return options;
     }
 
-    public void setOptions(final String[] options)
-    {
+    public void setOptions(final String[] options) {
         this.options = options;
     }
 
-    public String[] getOptionsSubText()
-    {
+    public String[] getOptionsSubText() {
         return optionsSubText;
     }
 
-    public void setOptionsSubText(final String[] optionsSubText)
-    {
+    public void setOptionsSubText(final String[] optionsSubText) {
         this.optionsSubText = optionsSubText;
     }
 
-    public String[] getOptionsRightSubText()
-    {
+    public String[] getOptionsRightSubText() {
         return optionsRightSubText;
     }
 
-    public String[] getOptionsRightTitleText()
-    {
+    public String[] getOptionsRightTitleText() {
         return optionsRightTitleText;
     }
 
-    public void setOptionsRightTitleText(String[] optionsRightTitleText)
-    {
+    public void setOptionsRightTitleText(String[] optionsRightTitleText) {
         this.optionsRightTitleText = optionsRightTitleText;
     }
 
-    public void setOptionsRightSubText(final String[] optionsRightSubText)
-    {
+    public void setOptionsRightSubText(final String[] optionsRightSubText) {
         this.optionsRightSubText = optionsRightSubText;
     }
 
-    String[][] getOptionsImages()
-    {
+    String[][] getOptionsImages() {
         return optionsImages;
     }
 
-    void setOptionsImages(final String[][] optionsImages)
-    {
+    void setOptionsImages(final String[][] optionsImages) {
         this.optionsImages = optionsImages;
     }
 
-    public float[] getHoursInfo()
-    {
+    public float[] getHoursInfo() {
         return hoursInfo;
     }
 
-    void setHoursInfo(final float[] hoursInfo)
-    {
+    void setHoursInfo(final float[] hoursInfo) {
         this.hoursInfo = hoursInfo;
     }
 
-    public String[][] getWarnings()
-    {
+    public String[][] getWarnings() {
         return warnings;
     }
 
-    void setWarnings(final String[][] warnings)
-    {
+    void setWarnings(final String[][] warnings) {
         this.warnings = warnings;
     }
 
-    public String[][] getChildren()
-    {
+    public String[][] getChildren() {
         return children;
     }
 
-    void setChildren(final String[][] children)
-    {
+    void setChildren(final String[][] children) {
         this.children = children;
     }
 
-    public int getPage()
-    {
+    public int getPage() {
         return page;
     }
 
-    void setPage(final int page)
-    {
+    void setPage(final int page) {
         this.page = page;
     }
 
-    public boolean isPost()
-    {
+    public boolean isPost() {
         return post == 1;
     }
 
-    void setPost(final boolean post)
-    {
+    void setPost(final boolean post) {
         this.post = post ? 1 : 0;
     }
 
-    private BookingOption(final Parcel in)
-    {
+    private BookingOption(final Parcel in) {
         final String[] stringData = new String[5];
         in.readStringArray(stringData);
         uniq = stringData[0];
@@ -278,8 +239,7 @@ public class BookingOption implements Parcelable
     }
 
     @Override
-    public final void writeToParcel(final Parcel out, final int flags)
-    {
+    public final void writeToParcel(final Parcel out, final int flags) {
         out.writeStringArray(new String[]{uniq, type, title, defaultValue, info});
         out.writeIntArray(new int[]{page, post});
         out.writeStringArray(options);
@@ -294,20 +254,16 @@ public class BookingOption implements Parcelable
     }
 
     @Override
-    public final int describeContents()
-    {
+    public final int describeContents() {
         return 0;
     }
 
-    public static final Creator CREATOR = new Creator()
-    {
-        public BookingOption createFromParcel(final Parcel in)
-        {
+    public static final Creator CREATOR = new Creator() {
+        public BookingOption createFromParcel(final Parcel in) {
             return new BookingOption(in);
         }
 
-        public BookingOption[] newArray(final int size)
-        {
+        public BookingOption[] newArray(final int size) {
             return new BookingOption[size];
         }
     };

@@ -2,8 +2,8 @@ package com.handybook.handybook.referral.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RedemptionDetails
-{
+public class RedemptionDetails {
+
     @SerializedName("localization_data")
     private LocalizationData mLocalizationData;
     @SerializedName("receiver_coupon_amount")
@@ -11,41 +11,35 @@ public class RedemptionDetails
     @SerializedName("sender")
     private Sender mSender;
 
-    public LocalizationData getLocalizationData()
-    {
+    public LocalizationData getLocalizationData() {
         return mLocalizationData;
     }
 
-    public int getReceiverCouponAmount()
-    {
+    public int getReceiverCouponAmount() {
         return mReceiverCouponAmount;
     }
 
-    public Sender getSender()
-    {
+    public Sender getSender() {
         return mSender;
     }
 
+    public static class LocalizationData {
 
-    public static class LocalizationData
-    {
         @SerializedName("currency_symbol")
         private String mCurrencySymbol;
 
-        public String getCurrencySymbol()
-        {
+        public String getCurrencySymbol() {
             return mCurrencySymbol;
         }
     }
 
 
-    public static class Sender
-    {
+    public static class Sender {
+
         @SerializedName("first_name")
         private String mFirstName;
 
-        public String getFirstName()
-        {
+        public String getFirstName() {
             return mFirstName;
         }
     }

@@ -32,8 +32,8 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public class InjectedFragment extends android.support.v4.app.Fragment
-{
+public class InjectedFragment extends android.support.v4.app.Fragment {
+
     protected boolean allowCallbacks;
     protected ProgressDialog progressDialog; //TODO: we should take this out of this class
     protected Toast toast;
@@ -58,8 +58,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     public Bus bus;
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getActivity().getApplication()).inject(this);
 
@@ -77,13 +76,11 @@ public class InjectedFragment extends android.support.v4.app.Fragment
      *
      * @param title
      */
-    public void setupToolbar(Toolbar toolbar, String title)
-    {
+    public void setupToolbar(Toolbar toolbar, String title) {
         setupToolbar(toolbar, title, false);
     }
 
-    public void setupToolbar(Toolbar toolbar, String title, boolean setDisplayHomeAsUp)
-    {
+    public void setupToolbar(Toolbar toolbar, String title, boolean setDisplayHomeAsUp) {
         setupToolbar(toolbar, title, setDisplayHomeAsUp, Integer.MIN_VALUE);
     }
 
@@ -99,70 +96,58 @@ public class InjectedFragment extends android.support.v4.app.Fragment
             final String title,
             final boolean setDisplayHomeAsUp,
             final @DrawableRes int navigationIcon
-    )
-    {
+    ) {
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         setToolbarTitle(title);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(true);
-        if (setDisplayHomeAsUp)
-        {
-            if (navigationIcon == Integer.MIN_VALUE)
-            {
+        if (setDisplayHomeAsUp) {
+            if (navigationIcon == Integer.MIN_VALUE) {
                 activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_x_white);
             }
-            else
-            {
+            else {
                 activity.getSupportActionBar().setHomeAsUpIndicator(navigationIcon);
             }
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 getActivity().onBackPressed();
             }
         });
     }
 
-    public void setToolbarTitle(String title)
-    {
+    public void setToolbarTitle(String title) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         allowCallbacks = true;
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         allowCallbacks = false;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         this.bus.register(this);
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         this.bus.unregister(this);
         super.onPause();
     }
@@ -172,70 +157,57 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     protected void enableInputs() {}
 
     //Helpers
-    protected void showToast(int stringId)
-    {
+    protected void showToast(int stringId) {
         showToast(getString(stringId));
     }
 
-    protected void showToast(String message)
-    {
+    protected void showToast(String message) {
         showToast(message, Toast.LENGTH_SHORT);
     }
 
-    protected void showToast(int stringId, int length)
-    {
+    protected void showToast(int stringId, int length) {
         showToast(getString(stringId), length);
     }
 
-    protected void showToast(String message, int length)
-    {
+    protected void showToast(String message, int length) {
         toast = Toast.makeText(getActivity().getApplicationContext(), message, length);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
     //Each fragment if it requires arguments from the bundles should override this list
-    protected List<String> requiredArguments()
-    {
+    protected List<String> requiredArguments() {
         return new ArrayList<>();
     }
 
-    protected boolean validateRequiredArguments()
-    {
+    protected boolean validateRequiredArguments() {
         boolean validated = true;
 
         Bundle suppliedArguments = this.getArguments();
 
-        if (suppliedArguments == null)
-        {
+        if (suppliedArguments == null) {
             return requiredArguments().size() == 0;
         }
 
         List<String> requiredArguments = requiredArguments();
         String errorDetails = "";
-        for (String requiredArgument : requiredArguments)
-        {
+        for (String requiredArgument : requiredArguments) {
             //TODO: Is there a way we can validate without knowing the type in advance?
-            if (!suppliedArguments.containsKey(requiredArgument))
-            {
+            if (!suppliedArguments.containsKey(requiredArgument)) {
                 validated = false;
 
-                if (!validated)
-                {
+                if (!validated) {
                     errorDetails += "Missing required argument : " + requiredArgument + "\n";
                 }
             }
         }
 
-        try
-        {
-            if (!validated)
-            {
+        try {
+            if (!validated) {
                 throw new Exception(errorDetails);
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Crashlytics.logException(e);
         }
 
@@ -243,48 +215,39 @@ public class InjectedFragment extends android.support.v4.app.Fragment
     }
 
     //TODO: why is the progress dialog in this class?
-    protected void postBlockingEvent(HandyEvent event)
-    {
+    protected void postBlockingEvent(HandyEvent event) {
         showUiBlockers();
         bus.post(event);
     }
 
-    protected void showUiBlockers()
-    {
+    protected void showUiBlockers() {
         disableInputs();
         progressDialog.show();
     }
 
-    protected void removeUiBlockers()
-    {
+    protected void removeUiBlockers() {
         enableInputs();
         progressDialog.dismiss();
     }
 
-    protected void showErrorDialog(final String errorMessage, final DialogCallback callback)
-    {
+    protected void showErrorDialog(final String errorMessage, final DialogCallback callback) {
         removeUiBlockers();
         String displayMessage = errorMessage;
-        if (ValidationUtils.isNullOrEmpty(displayMessage))
-        {
+        if (ValidationUtils.isNullOrEmpty(displayMessage)) {
             displayMessage = getString(R.string.an_error_has_occurred);
         }
         new AlertDialog.Builder(getActivity())
                 .setTitle(displayMessage)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-                {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(final DialogInterface dialog, final int which)
-                    {
+                    public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
                         callback.onCancel();
                     }
                 })
-                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(final DialogInterface dialog, final int which)
-                    {
+                    public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
                         callback.onRetry();
                     }
@@ -294,8 +257,8 @@ public class InjectedFragment extends android.support.v4.app.Fragment
                 .show();
     }
 
-    protected interface DialogCallback
-    {
+    protected interface DialogCallback {
+
         void onRetry();
 
         void onCancel();

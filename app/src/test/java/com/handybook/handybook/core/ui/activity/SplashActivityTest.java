@@ -29,8 +29,8 @@ import static org.robolectric.Shadows.shadowOf;
 /**
  * Created by sng on 11/10/16.
  */
-public class SplashActivityTest extends RobolectricGradleTestWrapper
-{
+public class SplashActivityTest extends RobolectricGradleTestWrapper {
+
     @Inject
     UserManager mUserManager;
     @Mock
@@ -46,8 +46,7 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper
     TestBaseApplication mTestBaseApplication;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         mTestBaseApplication = ((TestBaseApplication) ShadowApplication.getInstance()
                                                                        .getApplicationContext());
@@ -59,36 +58,40 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper
      * Tests first launch goes to OnBoarding Activity
      */
     @Test
-    public void testFirstLaunch()
-    {
+    public void testFirstLaunch() {
         mTestBaseApplication.setNewlyLaunched(true);
         when(mUserManager.getCurrentUser()).thenReturn(null);
 
-        ActivityController<SplashActivity> activityController = Robolectric.buildActivity(SplashActivity.class);
+        ActivityController<SplashActivity> activityController = Robolectric.buildActivity(
+                SplashActivity.class);
         activityController.create();
         activityController.get().determineStartPage(mConfiguration);
         Intent nextStartedActivity = shadowOf(activityController.get()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                   equalTo(OnboardActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(OnboardActivity.class.getName())
+        );
     }
 
     /**
      * Tests that a logged in user with bookings needs to go to the bookings page
      */
     @Test
-    public void testLoggedInWithBookings()
-    {
+    public void testLoggedInWithBookings() {
         when(mAnalytics.getUpcomingBookings()).thenReturn(3);
         when(mUserWithBooking.getAnalytics()).thenReturn(mAnalytics);
         when(mUserManager.getCurrentUser()).thenReturn(mUserWithBooking);
 
         mTestBaseApplication.setNewlyLaunched(true);
 
-        ActivityController<SplashActivity> activityController = Robolectric.buildActivity(SplashActivity.class);
+        ActivityController<SplashActivity> activityController = Robolectric.buildActivity(
+                SplashActivity.class);
         activityController.create();
         activityController.get().determineStartPage(mConfiguration);
         Intent nextStartedActivity = shadowOf(activityController.get()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                   equalTo(BookingsActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingsActivity.class.getName())
+        );
     }
 }

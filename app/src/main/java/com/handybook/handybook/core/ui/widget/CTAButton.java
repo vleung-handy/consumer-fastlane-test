@@ -5,13 +5,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 
-import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.core.NavigationManager;
+import com.handybook.handybook.helpcenter.model.HelpNode;
 
 import javax.inject.Inject;
 
-public final class CTAButton extends Button
-{
+public final class CTAButton extends Button {
+
     @Inject NavigationManager navigationManager;
 
     public CTANavigationData navigationData;
@@ -34,8 +34,7 @@ public final class CTAButton extends Button
         super(context);
     }
 
-    public void initFromHelpNode(HelpNode node, String loginToken)
-    {
+    public void initFromHelpNode(HelpNode node, String loginToken) {
         this.nodeLabel = node.getLabel();
         this.nodeId = node.getId();
         this.setText(this.nodeLabel);

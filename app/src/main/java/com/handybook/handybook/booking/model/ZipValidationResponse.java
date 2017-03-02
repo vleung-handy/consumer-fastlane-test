@@ -7,8 +7,8 @@ import java.io.Serializable;
 /**
  * Created by jtse on 3/23/16.
  */
-public class ZipValidationResponse
-{
+public class ZipValidationResponse {
+
     @SerializedName("region_time_zone")
     private String mTimeZone;
 
@@ -16,8 +16,7 @@ public class ZipValidationResponse
     private ZipArea mZipArea;
 
 
-    public static class ZipArea implements Serializable
-    {
+    public static class ZipArea implements Serializable {
 
         @SerializedName("city")
         private String mCity;
@@ -28,60 +27,49 @@ public class ZipValidationResponse
         @SerializedName("zip")
         private String mZip;
 
-        public ZipArea()
-        {
+        public ZipArea() {
         }
 
-        public ZipArea(final String city, final String state, final String zip)
-        {
+        public ZipArea(final String city, final String state, final String zip) {
             mCity = city;
             mState = state;
             mZip = zip;
         }
 
-        public String getZip()
-        {
+        public String getZip() {
             return mZip;
         }
 
-        public void setZip(final String zip)
-        {
+        public void setZip(final String zip) {
             mZip = zip;
         }
 
-        public String getCity()
-        {
+        public String getCity() {
             return mCity;
         }
 
-        public void setCity(final String city)
-        {
+        public void setCity(final String city) {
             mCity = city;
         }
 
-        public String getState()
-        {
+        public String getState() {
             return mState;
         }
 
-        public void setState(final String state)
-        {
+        public void setState(final String state) {
             mState = state;
         }
     }
 
-    public ZipArea getZipArea()
-    {
+    public ZipArea getZipArea() {
         return mZipArea;
     }
 
-    public String getTimeZone()
-    {
+    public String getTimeZone() {
         return mTimeZone;
     }
 
-    public void setTimeZone(final String timeZone)
-    {
+    public void setTimeZone(final String timeZone) {
         mTimeZone = timeZone;
     }
 }

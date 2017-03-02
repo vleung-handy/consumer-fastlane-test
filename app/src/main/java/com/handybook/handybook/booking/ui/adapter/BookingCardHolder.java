@@ -18,8 +18,7 @@ import butterknife.ButterKnife;
 /**
  * Used in the history view
  */
-public class BookingCardHolder extends RecyclerView.ViewHolder
-{
+public class BookingCardHolder extends RecyclerView.ViewHolder {
 
     private Booking mBooking;
 
@@ -48,23 +47,21 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
             View itemView,
             View.OnClickListener clickListener,
             boolean isBookingHoursClarificationExperimentEnabled
-    )
-    {
+    ) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         mOnClickListener = clickListener;
-        mIsBookingHoursClarificationExperimentEnabled = isBookingHoursClarificationExperimentEnabled;
+        mIsBookingHoursClarificationExperimentEnabled
+                = isBookingHoursClarificationExperimentEnabled;
     }
 
-    public void bindToBooking(@NonNull final Booking booking)
-    {
+    public void bindToBooking(@NonNull final Booking booking) {
         mBooking = booking;
         mImageIcon.setVisibility(View.VISIBLE);
 
         Date endDate = mBooking.getEndDate();
         BookingUtil.IconType iconType = BookingUtil.IconType.OUTLINE;
-        if (new Date().compareTo(endDate) > 0)
-        {
+        if (new Date().compareTo(endDate) > 0) {
             iconType = BookingUtil.IconType.GRAY;
         }
 
@@ -73,16 +70,14 @@ public class BookingCardHolder extends RecyclerView.ViewHolder
         mTextBookingSubtitle.setText(BookingUtil.getSubtitle(
                 mBooking,
                 itemView.getContext(),
-                mIsBookingHoursClarificationExperimentEnabled));
+                mIsBookingHoursClarificationExperimentEnabled
+        ));
 
         itemView.setTag(mBooking);
-        itemView.setOnClickListener(new View.OnClickListener()
-        {
+        itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
-                if (mOnClickListener != null)
-                {
+            public void onClick(final View v) {
+                if (mOnClickListener != null) {
                     mOnClickListener.onClick(v);
                 }
             }

@@ -11,48 +11,47 @@ import com.handybook.handybook.library.ui.view.FreezableInputTextView;
 import com.handybook.handybook.library.util.TextUtils;
 import com.stripe.android.model.Card;
 
-public final class CreditCardNumberInputTextView extends FreezableInputTextView
-{
+public final class CreditCardNumberInputTextView extends FreezableInputTextView {
+
     private CreditCard.Type mCardType;
 
-    public CreditCardNumberInputTextView(final Context context)
-    {
+    public CreditCardNumberInputTextView(final Context context) {
         super(context);
         addTextChangedListener(new CreditCardInputTextWatcher());
     }
 
-    public CreditCardNumberInputTextView(final Context context, final AttributeSet attrs)
-    {
+    public CreditCardNumberInputTextView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         addTextChangedListener(new CreditCardInputTextWatcher());
     }
 
-    public CreditCardNumberInputTextView(final Context context, final AttributeSet attrs,
-                                         final int defStyle)
-    {
+    public CreditCardNumberInputTextView(
+            final Context context, final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
         addTextChangedListener(new CreditCardInputTextWatcher());
     }
 
-    private class CreditCardInputTextWatcher implements TextWatcher
-    {
+    private class CreditCardInputTextWatcher implements TextWatcher {
+
         @Override
-        public void beforeTextChanged(final CharSequence charSequence, final int start,
-                                      final int count, final int after)
-        {
+        public void beforeTextChanged(
+                final CharSequence charSequence, final int start,
+                final int count, final int after
+        ) {
         }
 
         @Override
-        public void onTextChanged(final CharSequence charSequence, final int start,
-                                  final int before, final int count)
-        {
+        public void onTextChanged(
+                final CharSequence charSequence, final int start,
+                final int before, final int count
+        ) {
         }
 
         @Override
-        public void afterTextChanged(final Editable editable)
-        {
-            if (!CreditCardNumberInputTextView.this.isEnabled())
-            {
+        public void afterTextChanged(final Editable editable) {
+            if (!CreditCardNumberInputTextView.this.isEnabled()) {
                 return;
             }
 
@@ -61,10 +60,8 @@ public final class CreditCardNumberInputTextView extends FreezableInputTextView
             dummyCard.setNumber(cardNumber);
 
             if (dummyCard.getType() == null) { mCardType = CreditCard.Type.OTHER; }
-            else
-            {
-                switch (dummyCard.getType())
-                {
+            else {
+                switch (dummyCard.getType()) {
                     case Card.AMERICAN_EXPRESS:
                         mCardType = CreditCard.Type.AMEX;
                         break;
@@ -86,18 +83,15 @@ public final class CreditCardNumberInputTextView extends FreezableInputTextView
                 }
             }
 
-            new AsyncTask<String, Void, String>()
-            {
+            new AsyncTask<String, Void, String>() {
                 @Override
-                protected String doInBackground(final String... params)
-                {
+                protected String doInBackground(final String... params) {
                     final String cardNumber = params[0];
                     return TextUtils.formatCreditCardNumber(mCardType, cardNumber);
                 }
 
                 @Override
-                protected void onPostExecute(final String formattedText)
-                {
+                protected void onPostExecute(final String formattedText) {
                     CreditCardNumberInputTextView.this.removeTextChangedListener(
                             CreditCardInputTextWatcher.this);
                     CreditCardNumberInputTextView.this.setText(formattedText);
@@ -110,29 +104,24 @@ public final class CreditCardNumberInputTextView extends FreezableInputTextView
         }
     }
 
-    public final boolean validate()
-    {
+    public final boolean validate() {
         final Card card = new Card(getCardNumber(), -1, -1, "");
 
-        if (!card.validateNumber())
-        {
+        if (!card.validateNumber()) {
             highlight();
             return false;
         }
-        else
-        {
+        else {
             unHighlight();
             return true;
         }
     }
 
-    public final String getCardNumber()
-    {
+    public final String getCardNumber() {
         return getText().toString().replaceAll("\\D+", "");
     }
 
-    public final CreditCard.Type getCardType()
-    {
+    public final CreditCard.Type getCardType() {
         return mCardType;
     }
 }

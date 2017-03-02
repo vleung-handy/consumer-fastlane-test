@@ -14,8 +14,8 @@ import com.handybook.handybook.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BookingDetailSectionView extends FrameLayout
-{
+public class BookingDetailSectionView extends FrameLayout {
+
     @Bind(R.id.entry_sep)
     View mSeparator;
     @Bind(R.id.entry_title)
@@ -27,22 +27,19 @@ public class BookingDetailSectionView extends FrameLayout
     @Bind(R.id.action_buttons_layout)
     LinearLayout mActionButtonsLayout;
 
-    public BookingDetailSectionView(final Context context)
-    {
+    public BookingDetailSectionView(final Context context) {
         super(context);
         init();
     }
 
-    public BookingDetailSectionView(final Context context, final AttributeSet attrs)
-    {
+    public BookingDetailSectionView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
     public BookingDetailSectionView(
             final Context context, final AttributeSet attrs, final int defStyleAttr
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -53,40 +50,33 @@ public class BookingDetailSectionView extends FrameLayout
             final AttributeSet attrs,
             final int defStyleAttr,
             final int defStyleRes
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
-    protected void init()
-    {
+    protected void init() {
         inflate(getContext(), R.layout.element_booking_detail_section, this);
         ButterKnife.bind(this);
     }
 
-    public void showSeparator(boolean show)
-    {
+    public void showSeparator(boolean show) {
         mSeparator.setVisibility(show ? VISIBLE : GONE);
     }
 
-    public TextView getEntryTitle()
-    {
+    public TextView getEntryTitle() {
         return mEntryTitle;
     }
 
-    public TextView getEntryText()
-    {
+    public TextView getEntryText() {
         return mEntryText;
     }
 
-    public TextView getEntryActionText()
-    {
+    public TextView getEntryActionText() {
         return mEntryActionText;
     }
 
-    public LinearLayout getActionButtonsLayout()
-    {
+    public LinearLayout getActionButtonsLayout() {
         return mActionButtonsLayout;
     }
 }

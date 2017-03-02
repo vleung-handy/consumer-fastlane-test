@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Service implements Parcelable {
+
     @SerializedName("id") private int id;
     @SerializedName("name") private String name;
     @SerializedName("order") private int order;
@@ -72,36 +73,30 @@ public class Service implements Parcelable {
         this.parentId = parentId;
     }
 
-    public boolean isNoShow()
-    {
+    public boolean isNoShow() {
         return isNoShow;
     }
 
-    public boolean isIgnore()
-    {
+    public boolean isIgnore() {
         return isIgnore;
     }
 
-    public void addChildService(Service service)
-    {
+    public void addChildService(Service service) {
         services = getChildServices();
         services.add(service);
     }
 
     public List<Service> getChildServices() {
-        if (services == null) services = new ArrayList<>();
+        if (services == null) { services = new ArrayList<>(); }
         return services;
     }
 
-    public boolean isCleaning()
-    {
-        if (mMachineName != null)
-        {
+    public boolean isCleaning() {
+        if (mMachineName != null) {
             return mMachineName.toLowerCase().contains(PREFIX_CLEAN_CONSTANT);
         }
 
-        if (name != null)
-        {
+        if (name != null) {
             return name.toLowerCase().contains(PREFIX_CLEAN_CONSTANT);
         }
 
@@ -137,13 +132,13 @@ public class Service implements Parcelable {
     @Override
     public final void writeToParcel(final Parcel out, final int flags) {
         out.writeStringArray(new String[]{name, mUniq, mMachineName});
-        out.writeIntArray(new int[]{ order, parentId, id });
-        out.writeBooleanArray(new boolean[]{ isNoShow, isIgnore});
+        out.writeIntArray(new int[]{order, parentId, id});
+        out.writeBooleanArray(new boolean[]{isNoShow, isIgnore});
         out.writeTypedList(services);
     }
 
     @Override
-    public final int describeContents(){
+    public final int describeContents() {
         return 0;
     }
 
@@ -151,6 +146,7 @@ public class Service implements Parcelable {
         public Service createFromParcel(final Parcel in) {
             return new Service(in);
         }
+
         public Service[] newArray(final int size) {
             return new Service[size];
         }

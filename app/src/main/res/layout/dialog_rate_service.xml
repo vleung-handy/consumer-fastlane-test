@@ -74,9 +74,8 @@
 
                     <ImageView
                         android:id="@+id/rate_dialog_star_1"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_width="@dimen/rating_star_size"
+                        android:layout_height="@dimen/rating_star_size"
                         android:layout_marginLeft="@dimen/rating_star_margin"
                         android:layout_marginRight="@dimen/rating_star_margin"
                         android:contentDescription="@string/cd_star_icon"
@@ -85,9 +84,8 @@
 
                     <ImageView
                         android:id="@+id/rate_dialog_star_2"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_width="@dimen/rating_star_size"
+                        android:layout_height="@dimen/rating_star_size"
                         android:layout_marginLeft="@dimen/rating_star_margin"
                         android:layout_marginRight="@dimen/rating_star_margin"
                         android:contentDescription="@string/cd_star_icon"
@@ -96,8 +94,8 @@
 
                     <ImageView
                         android:id="@+id/rate_dialog_star_3"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="@dimen/rating_star_size"
+                        android:layout_height="@dimen/rating_star_size"
                         android:layout_marginLeft="@dimen/rating_star_margin"
                         android:layout_marginRight="@dimen/rating_star_margin"
                         android:contentDescription="@string/cd_star_icon"
@@ -106,9 +104,8 @@
 
                     <ImageView
                         android:id="@+id/rate_dialog_star_4"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_width="@dimen/rating_star_size"
+                        android:layout_height="@dimen/rating_star_size"
                         android:layout_marginLeft="@dimen/rating_star_margin"
                         android:layout_marginRight="@dimen/rating_star_margin"
                         android:contentDescription="@string/cd_star_icon"
@@ -118,9 +115,8 @@
 
                     <ImageView
                         android:id="@+id/rate_dialog_star_5"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_width="@dimen/rating_star_size"
+                        android:layout_height="@dimen/rating_star_size"
                         android:layout_marginLeft="@dimen/rating_star_margin"
                         android:layout_marginRight="@dimen/rating_star_margin"
                         android:contentDescription="@string/cd_star_icon"
@@ -133,6 +129,7 @@
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/default_margin"
                     />
 
                 <LinearLayout

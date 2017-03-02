@@ -11,27 +11,25 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.HandyWebViewClient;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.view.HandyWebView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class WebViewFragment extends InjectedFragment
-{
+public class WebViewFragment extends InjectedFragment {
+
     @Bind(R.id.handy_web_view)
     HandyWebView mWebView;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    public static WebViewFragment newInstance(@NonNull final String uri)
-    {
+    public static WebViewFragment newInstance(@NonNull final String uri) {
         return newInstance(uri, "");
     }
 
-    public static WebViewFragment newInstance(@NonNull String uri, @NonNull String title)
-    {
+    public static WebViewFragment newInstance(@NonNull String uri, @NonNull String title) {
         Bundle args = new Bundle();
         args.putString(BundleKeys.TARGET_URL, uri);
         args.putString(BundleKeys.TITLE, title);
@@ -41,8 +39,7 @@ public class WebViewFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -52,22 +49,17 @@ public class WebViewFragment extends InjectedFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(R.layout.fragment_web_view, container, false);
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getArguments().getString(BundleKeys.TITLE));
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
-                if (mWebView.canGoBack())
-                {
+            public void onClick(final View v) {
+                if (mWebView.canGoBack()) {
                     mWebView.goBack();
                 }
-                else
-                {
+                else {
                     getActivity().onBackPressed();
                 }
             }
@@ -76,27 +68,22 @@ public class WebViewFragment extends InjectedFragment
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState)
-    {
-        mWebView.setWebViewClient(new HandyWebViewClient(getActivity())
-        {
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        mWebView.setWebViewClient(new HandyWebViewClient(getActivity()) {
             @Override
-            public void onPageStarted(final WebView view, final String url, final Bitmap favicon)
-            {
+            public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
                 showUiBlockers();
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
-            public boolean shouldOverrideUrlLoading(final WebView view, final String url)
-            {
+            public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
                 showUiBlockers();
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
             @Override
-            public void onPageFinished(final WebView view, final String url)
-            {
+            public void onPageFinished(final WebView view, final String url) {
                 removeUiBlockers();
                 super.onPageFinished(view, url);
             }

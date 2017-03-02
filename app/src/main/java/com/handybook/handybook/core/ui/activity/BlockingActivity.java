@@ -11,39 +11,33 @@ import com.squareup.otto.Subscribe;
 /**
  * Wrapper for the blocking fragment
  */
-public class BlockingActivity extends BaseActivity
-{
+public class BlockingActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blocking);
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         mBus.register(this);
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         mBus.unregister(this);
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         //Do nothing, by design (block the back button)
     }
 
     @Subscribe
-    public void onStopBlockingEvent(final HandyEvent.StopBlockingAppEvent aVoid)
-    {
+    public void onStopBlockingEvent(final HandyEvent.StopBlockingAppEvent aVoid) {
         Intent restartAppIntent = new Intent(this, ServiceCategoriesActivity.class);
         restartAppIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         restartAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -12,25 +12,24 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.referral.event.ReferralsEvent;
-import com.handybook.handybook.referral.model.RedemptionDetails;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.ValidationUtils;
+import com.handybook.handybook.referral.event.ReferralsEvent;
+import com.handybook.handybook.referral.model.RedemptionDetails;
 import com.squareup.otto.Subscribe;
 
 import java.io.InvalidObjectException;
 
 import butterknife.ButterKnife;
 
-public class RedemptionFragment extends InjectedFragment
-{
+public class RedemptionFragment extends InjectedFragment {
+
     private static final String KEY_REFERRAL_GUID = "referral_guid";
     private String mReferralGuid;
     private User mUser;
 
-    public static RedemptionFragment newInstance(final String referralGuid)
-    {
+    public static RedemptionFragment newInstance(final String referralGuid) {
         final RedemptionFragment fragment = new RedemptionFragment();
         final Bundle arguments = new Bundle();
         arguments.putString(KEY_REFERRAL_GUID, referralGuid);
@@ -39,12 +38,10 @@ public class RedemptionFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mReferralGuid = getArguments().getString(KEY_REFERRAL_GUID);
-        if (mReferralGuid == null || mReferralGuid.isEmpty())
-        {
+        if (mReferralGuid == null || mReferralGuid.isEmpty()) {
             Crashlytics.logException(new InvalidObjectException("Referral GUID is null or empty."));
             navigateToHomeScreen();
         }
@@ -56,8 +53,7 @@ public class RedemptionFragment extends InjectedFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(R.layout.fragment_redemption, container, false);
         ButterKnife.bind(this, view);
 
@@ -66,8 +62,7 @@ public class RedemptionFragment extends InjectedFragment
         return view;
     }
 
-    private void requestRedemptionDetails()
-    {
+    private void requestRedemptionDetails() {
         showUiBlockers();
         bus.post(new ReferralsEvent.RequestRedemptionDetails(mReferralGuid));
     }
@@ -75,8 +70,7 @@ public class RedemptionFragment extends InjectedFragment
     @Subscribe
     public void onReceiveRedemptionDetailsSuccess(
             final ReferralsEvent.ReceiveRedemptionDetailsSuccess event
-    )
-    {
+    ) {
         removeUiBlockers();
         final RedemptionDetails redemptionDetails = event.getRedemptionDetails();
         final String currencySymbol = redemptionDetails.getLocalizationData().getCurrencySymbol();
@@ -102,78 +96,64 @@ public class RedemptionFragment extends InjectedFragment
     @Subscribe
     public void onReceiveRedemptionDetailsError(
             final ReferralsEvent.ReceiveRedemptionDetailsError event
-    )
-    {
-        showErrorDialog(event.error.getMessage(), new DialogCallback()
-        {
+    ) {
+        showErrorDialog(event.error.getMessage(), new DialogCallback() {
             @Override
-            public void onRetry()
-            {
+            public void onRetry() {
                 requestRedemptionDetails();
             }
 
             @Override
-            public void onCancel()
-            {
+            public void onCancel() {
                 navigateToHomeScreen();
             }
         });
     }
 
     @Subscribe
-    public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event)
-    {
+    public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event) {
         mUser = event.getUser();
         requestUser();
     }
 
-    private void requestUser()
-    {
+    private void requestUser() {
         showUiBlockers();
         bus.post(new HandyEvent.RequestUser(mUser.getId(), mUser.getAuthToken(), null));
     }
 
     @Subscribe
-    public void onReceiveUserSuccess(final HandyEvent.ReceiveUserSuccess event)
-    {
+    public void onReceiveUserSuccess(final HandyEvent.ReceiveUserSuccess event) {
         navigateToHomeScreen();
     }
 
     @Subscribe
-    public void onReceiveUserError(final HandyEvent.ReceiveUserError event)
-    {
-        showErrorDialog(event.error.getMessage(), new DialogCallback()
-        {
+    public void onReceiveUserError(final HandyEvent.ReceiveUserError event) {
+        showErrorDialog(event.error.getMessage(), new DialogCallback() {
             @Override
-            public void onRetry()
-            {
+            public void onRetry() {
                 requestUser();
             }
 
             @Override
-            public void onCancel()
-            {
+            public void onCancel() {
             }
         });
     }
 
     @Subscribe
-    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event)
-    {
+    public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event) {
         removeUiBlockers();
         String displayMessage = event.error.getMessage();
-        if (ValidationUtils.isNullOrEmpty(displayMessage))
-        {
+        if (ValidationUtils.isNullOrEmpty(displayMessage)) {
             displayMessage = getString(R.string.an_error_has_occurred);
         }
         showToast(displayMessage);
     }
 
-    private void navigateToHomeScreen()
-    {
+    private void navigateToHomeScreen() {
         final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         getActivity().finish();
     }

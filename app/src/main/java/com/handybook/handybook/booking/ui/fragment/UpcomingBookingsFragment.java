@@ -54,9 +54,11 @@ import butterknife.OnClick;
  * the new way of doing things. We will only show the upcoming bookings here, and show active
  * bookings.
  */
-public class UpcomingBookingsFragment extends InjectedFragment implements SwipeRefreshLayout.OnRefreshListener
-{
-    public static final String mOverlayFragmentTag = ServiceCategoriesOverlayFragment.class.getSimpleName();
+public class UpcomingBookingsFragment extends InjectedFragment
+        implements SwipeRefreshLayout.OnRefreshListener {
+
+    public static final String mOverlayFragmentTag
+            = ServiceCategoriesOverlayFragment.class.getSimpleName();
     private static final String TAG = UpcomingBookingsFragment.class.getName();
 
     @Bind(R.id.add_booking_button)
@@ -111,28 +113,23 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
     // This listener is added to FragmentManager in onStart() and removed in onStop()
     private FragmentManager.OnBackStackChangedListener mOnBackStackChangedListener =
-            new FragmentManager.OnBackStackChangedListener()
-            {
+            new FragmentManager.OnBackStackChangedListener() {
                 @Override
-                public void onBackStackChanged()
-                {
+                public void onBackStackChanged() {
                     int backStackEntryCount = getActivity().getSupportFragmentManager()
                                                            .getBackStackEntryCount();
                     // The button needs to be hidden when the option overlay buttons appear
                     // TODO: This is hacky. It will fail if the UpcomingBookingsFragment is not the first fragment in the stack
-                    if (backStackEntryCount == 0)
-                    {
+                    if (backStackEntryCount == 0) {
                         mAddBookingButton.show();
                     }
-                    else
-                    {
+                    else {
                         mAddBookingButton.hide();
                     }
                 }
             };
 
-    public UpcomingBookingsFragment()
-    {
+    public UpcomingBookingsFragment() {
         // Required empty public constructor
     }
 
@@ -142,18 +139,15 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
      *
      * @return A new instance of fragment BookingsFragmentTabbed.
      */
-    public static UpcomingBookingsFragment newInstance()
-    {
+    public static UpcomingBookingsFragment newInstance() {
         return new UpcomingBookingsFragment();
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ActivityResult.BOOKING_UPDATED
-                || resultCode == ActivityResult.BOOKING_CANCELED)
-        {
+            || resultCode == ActivityResult.BOOKING_CANCELED) {
             //this happens before onResume, so we just have to null out the bookings and it'll reload onResume.
             enableRefresh();
         }
@@ -165,19 +159,16 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = inflater.inflate(R.layout.fragment_upcoming_bookings, container, false);
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.my_bookings));
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             mToolbar.setNavigationIcon(null);
             mShareMenuItem.setVisibility(View.GONE);
         }
-        else if (getActivity() instanceof MenuDrawerActivity)
-        {
+        else if (getActivity() instanceof MenuDrawerActivity) {
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
 
@@ -190,19 +181,17 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
                 R.color.handy_service_plumber
         );
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mMainContainer.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         }
 
         mShareBannerView = new ShareBannerView(getActivity());
-        mShareBannerView.setOnClickListener(new View.OnClickListener()
-        {
+        mShareBannerView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareBannerTappedLog()));
-                Fragment fragment = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
+                Fragment fragment
+                        = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
                 FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
             }
         });
@@ -211,24 +200,20 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     }
 
     @Subscribe
-    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
-    {
-        if (isBeingRemoved())
-        {
+    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event) {
+        if (isBeingRemoved()) {
             return;
         }
         mServiceRequestCompleted = true;
         mServices = event.getServices();
 
         //If this is bottom nav, don't show FAB
-        if (mServices != null && !mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
-            if (ViewCompat.isAttachedToWindow(mAddBookingButton))
-            {
+        if (mServices != null &&
+            !mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
+            if (ViewCompat.isAttachedToWindow(mAddBookingButton)) {
                 UiUtils.revealView(mAddBookingButton);
             }
-            else
-            {
+            else {
                 mAddBookingButton.setVisibility(View.VISIBLE);
             }
         }
@@ -242,17 +227,14 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
      * and receive the incoming events it is not supposed to listen for. This method tells us whether
      * or not this fragment is being removed, so we can ignore event posts.
      */
-    private boolean isBeingRemoved()
-    {
+    private boolean isBeingRemoved() {
         return isRemoving();
     }
 
     @OnClick(R.id.add_booking_button)
-    public void onServicesButtonClicked()
-    {
+    public void onServicesButtonClicked() {
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null)
-        {
+        if (fragmentManager.findFragmentByTag(mOverlayFragmentTag) == null) {
             bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.AddBookingPressedLog()));
             fragmentManager.beginTransaction()
                            .setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out)
@@ -267,42 +249,35 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     }
 
     @OnClick(R.id.bookings_share_button)
-    public void onShareButtonClicked()
-    {
+    public void onShareButtonClicked() {
         bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareMenuPressedLog()));
         Fragment fragment = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
         FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
     }
 
     @OnClick(R.id.try_again_button)
-    public void reFetch()
-    {
+    public void reFetch() {
         loadBookings();
     }
 
-
-    protected void loadBookings()
-    {
+    protected void loadBookings() {
         mBookingsRequestCompleted = false;
         mSwipeRefreshLayout.setRefreshing(true);
         bus.post(new BookingEvent.RequestBookings(Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING));
     }
 
-    private void bindBookingsToList()
-    {
+    private void bindBookingsToList() {
         if (mBookings == null || mBookings.isEmpty()) {return;}
 
         //active bookings, if any, are always at the top of the list.
         int bookingsIndex = -1;
-        for (int i = 0; i < mBookings.size(); i++)
-        {
+        for (int i = 0; i < mBookings.size(); i++) {
             Booking booking = mBookings.get(i);
-            if (booking.getActiveBookingLocationStatus() != null && booking.getActiveBookingLocationStatus()
-                                                                           .isMapEnabled())
-            {
+            if (booking.getActiveBookingLocationStatus() != null &&
+                booking.getActiveBookingLocationStatus()
+                       .isMapEnabled()) {
 
-                if (getChildFragmentManager().findFragmentByTag(booking.getId()) == null)
-                {
+                if (getChildFragmentManager().findFragmentByTag(booking.getId()) == null) {
                     ActiveBookingFragment frag = ActiveBookingFragment.newInstance(booking);
                     frag.setParentScrollView(mScrollView);
 
@@ -323,16 +298,14 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
                 mActiveBookingContainer.setVisibility(View.VISIBLE);
             }
-            else
-            {
+            else {
                 //at this index, we no longer have active bookings.
                 bookingsIndex = i;
                 break;
             }
         }
 
-        if (bookingsIndex > -1)
-        {
+        if (bookingsIndex > -1) {
             //there was at least one booking that is not active.
             setupForUpcomingBookings(bookingsIndex);
         }
@@ -344,19 +317,15 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
      *
      * @param startingIndex
      */
-    private void setupForUpcomingBookings(int startingIndex)
-    {
+    private void setupForUpcomingBookings(int startingIndex) {
         mBookingsContainer.removeAllViews();
-        for (int i = startingIndex; i < mBookings.size(); i++)
-        {
+        for (int i = startingIndex; i < mBookings.size(); i++) {
             final Booking booking = mBookings.get(i);
             mBookingsContainer.addView(new BookingListItem(
                     getActivity(),
-                    new View.OnClickListener()
-                    {
+                    new View.OnClickListener() {
                         @Override
-                        public void onClick(final View v)
-                        {
+                        public void onClick(final View v) {
                             bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.BookingDetailsTappedLog(
                                     booking.getId())));
                             Fragment fragment = BookingDetailFragment.newInstance(booking, false);
@@ -380,8 +349,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         }
     }
 
-    private void enableRefresh()
-    {
+    private void enableRefresh() {
         mBookings = null;
         mRecurringBookings = null;
     }
@@ -389,28 +357,23 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     /**
      * There are quite a bit of views that show/hide. This method manages all those states
      */
-    private void updateVisibilityState()
-    {
-        if (mBookings == null || mBookings.isEmpty())
-        {
+    private void updateVisibilityState() {
+        if (mBookings == null || mBookings.isEmpty()) {
             //no bookings
             mParentBookingsContainer.setVisibility(View.GONE);
 
-            if (mActivePlanCount > 0)
-            {
+            if (mActivePlanCount > 0) {
                 //if there are plans, show active plan, no booking view
                 mNoBookingsView.bindForNoRecurringBookings(mRecurringBookings);
             }
-            else
-            {
+            else {
                 mNoBookingsView.bindForNoBookingsAtAll();
             }
 
             mNoBookingsView.setVisibility(View.VISIBLE);
             mPaddingView.setVisibility(View.GONE);
         }
-        else
-        {
+        else {
             //there are bookings
             mParentBookingsContainer.setVisibility(View.VISIBLE);
             mNoBookingsView.setVisibility(View.GONE);
@@ -418,34 +381,28 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
 
             //if the active bookings are showing, and there are inactive bookings, then show the "upcoming text"
             if (mActiveBookingContainer.getVisibility() == View.VISIBLE
-                    && mBookingsContainer.getChildCount() > 0)
-            {
+                && mBookingsContainer.getChildCount() > 0) {
                 mTextUpcomingBookings.setVisibility(View.VISIBLE);
             }
-            else
-            {
+            else {
                 mTextUpcomingBookings.setVisibility(View.GONE);
             }
 
         }
 
         //active cleaning plans display independently of bookings
-        if (mActivePlanCount > 0)
-        {
+        if (mActivePlanCount > 0) {
             mExpandableCleaningPlan.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mExpandableCleaningPlan.setVisibility(View.GONE);
         }
 
     }
 
     @Subscribe
-    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError error)
-    {
-        if (isBeingRemoved())
-        {
+    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError error) {
+        if (isBeingRemoved()) {
             return;
         }
         //we don't really care that the services errored out, we just won't display the
@@ -454,10 +411,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     }
 
     @Subscribe
-    public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event)
-    {
-        if (isBeingRemoved())
-        {
+    public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event) {
+        if (isBeingRemoved()) {
             return;
         }
         mFetchErrorView.setVisibility(View.GONE);
@@ -466,13 +421,11 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         mBookings = event.getBookingWrapper().getBookings();
 
         if (event.getBookingWrapper().getRecurringBookings() != null &&
-                !event.getBookingWrapper().getRecurringBookings().isEmpty())
-        {
+            !event.getBookingWrapper().getRecurringBookings().isEmpty()) {
             mRecurringBookings = event.getBookingWrapper().getRecurringBookings();
             mActivePlanCount = mRecurringBookings.size();
         }
-        else
-        {
+        else {
             mActivePlanCount = 0;
         }
 
@@ -480,10 +433,8 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     }
 
     @Subscribe
-    public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e)
-    {
-        if (isBeingRemoved())
-        {
+    public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e) {
+        if (isBeingRemoved()) {
             return;
         }
         mFetchErrorView.setVisibility(View.VISIBLE);
@@ -495,20 +446,15 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     /**
      * Only perform the setup if we got responses from both bookings and get services
      */
-    private void setupBookingsView()
-    {
-        if (mBookingsRequestCompleted && mServiceRequestCompleted)
-        {
+    private void setupBookingsView() {
+        if (mBookingsRequestCompleted && mServiceRequestCompleted) {
             mSwipeRefreshLayout.setRefreshing(false);
 
-            if (mActivePlanCount > 0)
-            {
+            if (mActivePlanCount > 0) {
                 mExpandableCleaningPlan.bind(
-                        new View.OnClickListener()
-                        {
+                        new View.OnClickListener() {
                             @Override
-                            public void onClick(final View v)
-                            {
+                            public void onClick(final View v) {
                                 RecurringBooking rb = (RecurringBooking) v.getTag();
                                 EditPlanFragment fragment = EditPlanFragment.newInstance(rb);
                                 FragmentUtils.switchToFragment(
@@ -523,8 +469,7 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             bindBookingsToList();
             updateVisibilityState();
 
-            if (mActiveBookingContainer.getVisibility() == View.VISIBLE)
-            {
+            if (mActiveBookingContainer.getVisibility() == View.VISIBLE) {
                 //if we're showing the map, disable this pull to refresh thing.
                 mSwipeRefreshLayout.setEnabled(false);
             }
@@ -541,11 +486,9 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
      * upcoming booking --done --If there are no upcoming bookings (don't show anything) --done --If
      * there are multiple bookings, then place below the 2nd upcoming booking --done
      */
-    private void insertShareBannerView()
-    {
+    private void insertShareBannerView() {
         ViewParent shareBannerViewParent = mShareBannerView.getParent();
-        if (shareBannerViewParent != null && shareBannerViewParent instanceof ViewGroup)
-        {
+        if (shareBannerViewParent != null && shareBannerViewParent instanceof ViewGroup) {
             ((ViewGroup) shareBannerViewParent).removeView(mShareBannerView);
             /*
             prevents java.lang.IllegalStateException:
@@ -553,76 +496,61 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
             You must call removeView() on the child's parent first.
              */
         }
-        if (mActiveBookingContainer.getVisibility() == View.VISIBLE)
-        {
-            if (mBookingsContainer.getChildCount() > 0)
-            {
+        if (mActiveBookingContainer.getVisibility() == View.VISIBLE) {
+            if (mBookingsContainer.getChildCount() > 0) {
                 //at index 2, because 0 has first booking, and 1 is the divider
                 mBookingsContainer.addView(mShareBannerView, 2);
             }
-            else if (mBookingsContainer.getChildCount() == 0)
-            {
+            else if (mBookingsContainer.getChildCount() == 0) {
                 mActiveBookingContainer.addView(mShareBannerView);
             }
         }
-        else
-        {
+        else {
             //child count 4 means 2 bookings (2 booking view, 2 dividers)
-            if (mBookingsContainer.getChildCount() >= 4)
-            {
+            if (mBookingsContainer.getChildCount() >= 4) {
                 //there are at least 2 upcoming bookings, insert after the 2nd booking
                 mBookingsContainer.addView(mShareBannerView, 4);
             }
-            else if (mBookingsContainer.getChildCount() >= 2)
-            {
+            else if (mBookingsContainer.getChildCount() >= 2) {
                 //there is only one upcoming booking, so insert it there.
                 //at index 2 will go below the first booking & divider
                 mBookingsContainer.addView(mShareBannerView, 2);
             }
-            else
-            {
+            else {
                 //there are no active booking, and there are no upcoming bookings, so we don't do anything.
             }
         }
     }
 
-    private String getActiveCountString()
-    {
-        if (mActivePlanCount > 0)
-        {
+    private String getActiveCountString() {
+        if (mActivePlanCount > 0) {
             return getActivity().getResources().getQuantityString(
                     R.plurals.active_cleaning_plan_formatted,
                     mActivePlanCount,
                     mActivePlanCount
             );
         }
-        else
-        {
+        else {
             return null;
         }
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
-        if (mBookings == null || mBookings.isEmpty())
-        {
+        if (mBookings == null || mBookings.isEmpty()) {
             loadBookings();
         }
-        else
-        {
+        else {
             mBookingsRequestCompleted = true;
         }
 
-        if (mServices == null)
-        {
+        if (mServices == null) {
             mServiceRequestCompleted = false;
             bus.post(new BookingEvent.RequestServices());
         }
-        else
-        {
+        else {
             mServiceRequestCompleted = true;
         }
 
@@ -630,15 +558,13 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    public final void onStart()
-    {
+    public final void onStart() {
         super.onStart();
         // Workaround to be able to display the SwipeRefreshLayout onStart
         // as in: http://stackoverflow.com/a/26860930/486332
@@ -651,29 +577,25 @@ public class UpcomingBookingsFragment extends InjectedFragment implements SwipeR
         );
 
         //If this is bottom nav, don't bother with the on back stack change lister
-        if(!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             getActivity().getSupportFragmentManager()
                          .addOnBackStackChangedListener(mOnBackStackChangedListener);
         }
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
         //If this is bottom nav, don't bother with the on back stack change lister
-        if(!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             getActivity().getSupportFragmentManager()
                          .removeOnBackStackChangedListener(mOnBackStackChangedListener);
         }
     }
 
     @Override
-    public void onRefresh()
-    {
+    public void onRefresh() {
         loadBookings();
     }
 

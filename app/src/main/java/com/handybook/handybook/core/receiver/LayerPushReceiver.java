@@ -18,8 +18,8 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
-public class LayerPushReceiver extends PushNotificationReceiver
-{
+public class LayerPushReceiver extends PushNotificationReceiver {
+
     @Inject
     Bus mBus;
 
@@ -27,18 +27,16 @@ public class LayerPushReceiver extends PushNotificationReceiver
             DeepLinkIntentProvider.DEEP_LINK_BASE_URL + "pro_team";
 
     @Override
-    public void onReceive(final Context context, final Intent intent)
-    {
-        if (LayerConstants.ACTION_PUSH.equals(intent.getAction()))
-        {
+    public void onReceive(final Context context, final Intent intent) {
+        if (LayerConstants.ACTION_PUSH.equals(intent.getAction())) {
             ((BaseApplication) context.getApplicationContext()).inject(this);
-            final Intent orderedBroadcastIntent = new Intent(LayerConstants.ACTION_SHOW_NOTIFICATION);
+            final Intent orderedBroadcastIntent
+                    = new Intent(LayerConstants.ACTION_SHOW_NOTIFICATION);
             orderedBroadcastIntent.putExtras(intent.getExtras());
             context.sendOrderedBroadcast(orderedBroadcastIntent, null);
             mBus.post(new LogEvent.AddLogEvent(new ChatLog.PushNotificationReceived()));
         }
-        else
-        {
+        else {
             super.onReceive(context, intent);
         }
     }
@@ -48,11 +46,9 @@ public class LayerPushReceiver extends PushNotificationReceiver
     protected PendingIntent createNotificationClickIntent(
             final Context context,
             @Nullable final Message message
-    )
-    {
+    ) {
         Intent intent;
-        if (message != null)
-        {
+        if (message != null) {
             intent = new Intent(context, ProMessagesActivity.class)
                     .setPackage(context.getApplicationContext().getPackageName())
                     .putExtra(
@@ -63,8 +59,7 @@ public class LayerPushReceiver extends PushNotificationReceiver
                     .putExtra(LayerConstants.KEY_BACK_NAVIGATION_DEEPLINK, MESSAGES_DEEPLINK)
                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
-        else
-        {
+        else {
             intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MESSAGES_DEEPLINK))
                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }

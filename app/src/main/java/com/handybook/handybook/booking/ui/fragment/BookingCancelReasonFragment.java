@@ -27,8 +27,8 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLo
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingCancelReasonFragment extends BookingFlowFragment
-{
+public final class BookingCancelReasonFragment extends BookingFlowFragment {
+
     public static final String EXTRA_BOOKING_CANCELLATION_DATA
             = "com.handy.handy.EXTRA_BOOKING_CANCELLATION_DATA";
     public static final String EXTRA_BOOKING = "com.handy.handy.EXTRA_BOOKING";
@@ -52,8 +52,7 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
     public static BookingCancelReasonFragment newInstance(
             @NonNull final Booking booking,
             @NonNull final BookingCancellationData bookingCancellationData
-    )
-    {
+    ) {
         final BookingCancelReasonFragment fragment = new BookingCancelReasonFragment();
         final Bundle args = new Bundle();
         args.putSerializable(EXTRA_BOOKING_CANCELLATION_DATA, bookingCancellationData);
@@ -63,8 +62,7 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBookingCancellationData = (BookingCancellationData) getArguments()
                 .getSerializable(EXTRA_BOOKING_CANCELLATION_DATA);
@@ -76,8 +74,7 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity()
                 .getLayoutInflater()
                 .inflate(R.layout.fragment_booking_cancel_options, container, false);
@@ -86,16 +83,14 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
         return view;
     }
 
-    private void initUI()
-    {
+    private void initUI() {
         setupToolbar(
                 mToolbar,
                 mBookingCancellationData.getCancellationInfo().getNavigationTitle(),
                 true
         );
         mTitle.setText(mBookingCancellationData.getCancellationInfo().getTitle());
-        if (mBookingCancellationData.hasWarning())
-        {
+        if (mBookingCancellationData.hasWarning()) {
             mWarning.setText(mBookingCancellationData.getWarningMessage());
             mWarning.setVisibility(View.VISIBLE);
         }
@@ -103,14 +98,11 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
         initOptions();
     }
 
-    private void initButton()
-    {
+    private void initButton() {
         mButton.setText(mBookingCancellationData.getCancellationInfo().getButtonLabel());
-        mButton.setOnClickListener(new View.OnClickListener()
-        {
+        mButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 disableInputs();
                 progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
@@ -120,11 +112,9 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
                 );
                 final FragmentSafeCallback<String> cb = new FragmentSafeCallback<String>(
                         BookingCancelReasonFragment.this
-                )
-                {
+                ) {
                     @Override
-                    public void onCallbackSuccess(final String message)
-                    {
+                    public void onCallbackSuccess(final String message) {
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                                 BookingDetailsLog.EventType.SUCCESS,
                                 mBooking.getId()
@@ -138,8 +128,7 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error)
-                    {
+                    public void onCallbackError(final DataManager.DataManagerError error) {
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                                          BookingDetailsLog.EventType.ERROR,
                                          mBooking.getId()
@@ -153,8 +142,7 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
                     }
                 };
                 Integer reasonId = null;
-                if (mOptionIndex >= 0)
-                {
+                if (mOptionIndex >= 0) {
                     reasonId = mBookingCancellationData
                             .getCancellationInfo()
                             .getReasons()[mOptionIndex]
@@ -165,14 +153,12 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
         });
     }
 
-    private void initOptions()
-    {
+    private void initOptions() {
         final BookingCancellationData.CancellationReason[] reasons = mBookingCancellationData
                 .getCancellationInfo()
                 .getReasons();
         final String[] stringReasons = new String[reasons.length];
-        for (int i = 0; i < reasons.length; i++)
-        {
+        for (int i = 0; i < reasons.length; i++) {
             stringReasons[i] = reasons[i].getLabel();
         }
 
@@ -184,11 +170,9 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
         final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
                 getActivity(),
                 options,
-                new BookingOptionsView.OnUpdatedListener()
-                {
+                new BookingOptionsView.OnUpdatedListener() {
                     @Override
-                    public void onUpdate(final BookingOptionsView view)
-                    {
+                    public void onUpdate(final BookingOptionsView view) {
                         mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
                     }
 
@@ -196,16 +180,14 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
                     public void onShowChildren(
                             final BookingOptionsView view,
                             final String[] items
-                    )
-                    {
+                    ) {
                     }
 
                     @Override
                     public void onHideChildren(
                             final BookingOptionsView view,
                             final String[] items
-                    )
-                    {
+                    ) {
                     }
                 }
         );
@@ -215,8 +197,7 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
+    public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_OPTION_INDEX, mOptionIndex);
     }

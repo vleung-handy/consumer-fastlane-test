@@ -52,8 +52,8 @@ import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
 
-public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
-{
+public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
+
     private static final String EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID";
     private static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
     private static final String SHARED_ICON_ELEMENT_NAME = "icon";
@@ -86,8 +86,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
 
     private ServicesCategoryHomeAdapter mAdapter;
 
-    public static ServiceCategoriesHomeFragment newInstance(String serviceId, String promoCode)
-    {
+    public static ServiceCategoriesHomeFragment newInstance(String serviceId, String promoCode) {
         ServiceCategoriesHomeFragment fragment = new ServiceCategoriesHomeFragment();
         final Bundle bundle = new Bundle();
         bundle.putString(EXTRA_SERVICE_ID, serviceId);
@@ -96,14 +95,12 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
         return fragment;
     }
 
-    public static ServiceCategoriesHomeFragment newInstance()
-    {
+    public static ServiceCategoriesHomeFragment newInstance() {
         return new ServiceCategoriesHomeFragment();
     }
 
     @Override
-    public final void onCreate(final Bundle savedInstanceState)
-    {
+    public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mServices = new ArrayList<>();
 
@@ -116,8 +113,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
                                        .inflate(
                                                R.layout.fragment_service_categories_home,
@@ -157,15 +153,13 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
 
     //only enabled when bottom nav enabled
     @OnClick(R.id.fragment_service_categories_sign_in_text)
-    public void onSignInTextClicked()
-    {
+    public void onSignInTextClicked() {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
         getActivity().startActivity(intent);
     }
 
     @OnClick(R.id.change_button)
-    public void onChangeButtonClicked()
-    {
+    public void onChangeButtonClicked() {
         startActivityForResult(
                 new Intent(getActivity(), ZipActivity.class),
                 REQUEST_CODE_ZIP
@@ -173,15 +167,13 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onActivityCreated(final Bundle savedInstanceState)
-    {
+    public final void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         allowCallbacks = true;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         loadServices();
     }
@@ -205,39 +197,30 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
      * <p/>
      * should be called after handleLoadServicesResponse() so that we have the list of services
      */
-    private void handleBundleArguments()
-    {
+    private void handleBundleArguments() {
         final Bundle args = getArguments();
-        if (args != null)
-        {
+        if (args != null) {
             String promoCode = args.getString(EXTRA_PROMO_CODE);
-            if (promoCode != null)
-            {
+            if (promoCode != null) {
                 args.remove(EXTRA_PROMO_CODE); //only handle once
                 bus.post(new BookingEvent.RequestPreBookingPromo(promoCode));
             }
 
             String extraServiceIdString = args.getString(EXTRA_SERVICE_ID);
-            if (extraServiceIdString != null)
-            {
+            if (extraServiceIdString != null) {
                 args.remove(EXTRA_SERVICE_ID); //only handle once
-                try
-                {
+                try {
                     int extraServiceId = Integer.parseInt(extraServiceIdString);
-                    if (mServices != null && extraServiceId >= 0)
-                    {
-                        for (Service service : mServices)
-                        {
-                            if (service.getId() == extraServiceId)
-                            {
+                    if (mServices != null && extraServiceId >= 0) {
+                        for (Service service : mServices) {
+                            if (service.getId() == extraServiceId) {
                                 launchServiceActivity(service, null);
                                 break;
                             }
                         }
                     }
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     //probably an integer parsing error
                     Crashlytics.logException(e);
                 }
@@ -245,37 +228,30 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
         }
     }
 
-    private void loadServices()
-    {
+    private void loadServices() {
         progressDialog.show();
         mUsedCache = false;
         bus.post(new BookingEvent.RequestServices());
     }
 
     @Subscribe
-    public void onReceivePreBookingPromoSuccess(BookingEvent.ReceivePreBookingPromoSuccess event)
-    {
+    public void onReceivePreBookingPromoSuccess(BookingEvent.ReceivePreBookingPromoSuccess event) {
         PromoCode promoCode = event.getPromoCode();
         showCouponAppliedNotificationIfNecessary(); //could have removed the promo code
-        if (promoCode != null)
-        {
-            if (promoCode.getType() == PromoCode.Type.VOUCHER)
-            {
+        if (promoCode != null) {
+            if (promoCode.getType() == PromoCode.Type.VOUCHER) {
                 startBookingFlow(promoCode.getServiceId(), promoCode.getUniq(), promoCode);
             }
         }
     }
 
     @Subscribe
-    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event)
-    {
+    public void onReceiveServicesSuccess(final BookingEvent.ReceiveServicesSuccess event) {
         handleLoadServicesResponse(event.getServices(), false);
     }
 
-    private void handleLoadServicesResponse(List<Service> services, boolean usedCache)
-    {
-        if (!allowCallbacks)
-        {
+    private void handleLoadServicesResponse(List<Service> services, boolean usedCache) {
+        if (!allowCallbacks) {
             return;
         }
 
@@ -283,27 +259,23 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
         mServices = services;
         handleBundleArguments();
 
-        if (mAdapter == null)
-        {
+        if (mAdapter == null) {
             mAdapter = new ServicesCategoryHomeAdapter(getContext(), mServices);
             mGridView.setAdapter(mAdapter);
-            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
+            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(
                         final AdapterView<?> parent,
                         final View view,
                         final int position,
                         final long id
-                )
-                {
+                ) {
                     //Get the service and launch it
                     launchServiceActivity(mAdapter.getItem(position), view);
                 }
             });
         }
-        else
-        {
+        else {
             mAdapter.refreshData(mServices);
         }
 
@@ -311,22 +283,18 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
     }
 
     @Subscribe
-    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError event)
-    {
-        if (!allowCallbacks || mUsedCache)
-        {
+    public void onReceiveServicesError(final BookingEvent.ReceiveServicesError event) {
+        if (!allowCallbacks || mUsedCache) {
             return;
         }
         progressDialog.dismiss();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
-    private void showCouponAppliedNotificationIfNecessary()
-    {
+    private void showCouponAppliedNotificationIfNecessary() {
         //TODO currently not showing anything for hidden coupons; confirm with PM this behavior is OK
         final String coupon = bookingManager.getPromoTabCoupon();
-        if (coupon != null)
-        {
+        if (coupon != null) {
             final Spannable text =
                     new SpannableString(String.format(getString(R.string.using_promo), coupon));
 
@@ -343,28 +311,23 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
             mPromoText.setText(text, TextView.BufferType.SPANNABLE);
             mCouponLayout.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mCouponLayout.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         showCouponAppliedNotificationIfNecessary();
     }
 
     @OnClick(R.id.coupon_layout)
-    public void onCouponClick()
-    {
-        if (getActivity() instanceof MenuDrawerActivity)
-        {
+    public void onCouponClick() {
+        if (getActivity() instanceof MenuDrawerActivity) {
             ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
         }
-        else
-        {
+        else {
             FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
         }
     }
@@ -374,35 +337,31 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment
      *
      * @param service
      */
-    private void launchServiceActivity(@NonNull Service service, @Nullable View view)
-    {
-        if (service.getChildServices().size() > 0)
-        {
+    private void launchServiceActivity(@NonNull Service service, @Nullable View view) {
+        if (service.getChildServices().size() > 0) {
             final Intent intent = new Intent(getActivity(), ServicesActivity.class);
             intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 Bundle bundle = null;
                 //This is just for animating the icon from home screen to sub-categories screen
-                if (view != null)
-                {
-                    ImageView transitionImageView = ((ServicesCategoryHomeAdapter.CategoryViewHolder) view
+                if (view != null) {
+                    ImageView transitionImageView
+                            = ((ServicesCategoryHomeAdapter.CategoryViewHolder) view
                             .getTag()).getIcon();
 
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    ActivityOptionsCompat options
+                            = ActivityOptionsCompat.makeSceneTransitionAnimation(
                             getActivity(), transitionImageView, SHARED_ICON_ELEMENT_NAME
                     );
                     bundle = options.toBundle();
                 }
                 getActivity().startActivity(intent, bundle);
             }
-            else
-            {
+            else {
                 startActivity(intent);
             }
         }
-        else
-        {
+        else {
             startBookingFlow(service.getId(), service.getUniq());
         }
     }

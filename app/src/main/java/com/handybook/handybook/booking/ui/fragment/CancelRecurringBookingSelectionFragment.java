@@ -15,11 +15,11 @@ import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.viewmodel.BookingCancelRecurringViewModel;
+import com.handybook.handybook.configuration.event.ConfigurationEvent;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataSynchronizer;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.configuration.event.ConfigurationEvent;
-import com.handybook.handybook.configuration.model.Configuration;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -31,8 +31,8 @@ import butterknife.OnClick;
 /**
  * Used to display a selection of recurring bookings that the user may want to cancel.
  */
-public class CancelRecurringBookingSelectionFragment extends InjectedFragment
-{
+public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
+
     public static final int INITIAL_REQUEST_COUNT = 2;
 
     @Bind(R.id.toolbar)
@@ -47,40 +47,35 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     private Configuration mConfiguration;
     private DataSynchronizer mDataSynchronizer;
 
-    public static CancelRecurringBookingSelectionFragment newInstance()
-    {
+    public static CancelRecurringBookingSelectionFragment newInstance() {
         return new CancelRecurringBookingSelectionFragment();
     }
 
-    private void setContentViewVisible(boolean visible)
-    {
-        if (getView() != null)
-        {
+    private void setContentViewVisible(boolean visible) {
+        if (getView() != null) {
             getView().setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
 
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         showUiBlockers();
-        mDataSynchronizer = new DataSynchronizer(INITIAL_REQUEST_COUNT,
-                new DataSynchronizer.Callback()
-                {
+        mDataSynchronizer = new DataSynchronizer(
+                INITIAL_REQUEST_COUNT,
+                new DataSynchronizer.Callback() {
                     @Override
-                    public void onSuccess()
-                    {
+                    public void onSuccess() {
                         displayData();
                     }
 
                     @Override
-                    public void onError(final List<DataManager.DataManagerError> errors)
-                    {
+                    public void onError(final List<DataManager.DataManagerError> errors) {
                         //TODO: change other option-based screens to exit if the options data is missing?
                         //exit and show toast if we cannot render the options
                         showToastAndExit(R.string.default_error_string);
                     }
-                });
+                }
+        );
         bus.post(new ConfigurationEvent.RequestConfiguration());
         bus.post(new BookingEvent.RequestRecurringBookings());
     }
@@ -89,10 +84,13 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_cancel_recurring_booking_selection, container, false);
+                                       .inflate(
+                                               R.layout.fragment_cancel_recurring_booking_selection,
+                                               container,
+                                               false
+                                       );
 
         ButterKnife.bind(this, view);
 
@@ -102,8 +100,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setContentViewVisible(false); //want the fragment to be invisible until options can be rendered
     }
@@ -111,24 +108,28 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     private void handleCancelRecurringBooking(
             final RecurringBooking recurringBooking,
             final boolean isFromSelection
-    )
-    {
-        if (mConfiguration.shouldUseCancelRecurringWebview())
-        {
+    ) {
+        if (mConfiguration.shouldUseCancelRecurringWebview()) {
             removeUiBlockers();
             final String cancelUrl = recurringBooking.getCancelUrl();
             final Fragment fragment = CancelRecurringBookingFragment.newInstance(cancelUrl);
             final FragmentTransaction transaction = getFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
-                    .add(R.id.fragment_container, fragment);
-            if (isFromSelection)
-            {
+                                                                        .setCustomAnimations(
+                                                                                R.anim.slide_up,
+                                                                                0,
+                                                                                0,
+                                                                                R.anim.slide_down
+                                                                        )
+                                                                        .add(
+                                                                                R.id.fragment_container,
+                                                                                fragment
+                                                                        );
+            if (isFromSelection) {
                 transaction.addToBackStack(null);
             }
             transaction.commit();
         }
-        else
-        {
+        else {
             //send the cancel recurring booking email for the series that the user selected
             showUiBlockers();
             int recurringId = recurringBooking.getId();
@@ -137,17 +138,16 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     }
 
     @OnClick(R.id.next_button)
-    public void onNextButtonClicked()
-    {
+    public void onNextButtonClicked() {
         RecurringBooking selectedBooking = mBookingCancelRecurringViewModel.getBookingForIndex
                 (mOptionsView.getCurrentIndex());
         handleCancelRecurringBooking(selectedBooking, true);
     }
 
-    private void createOptionsView()
-    {
+    private void createOptionsView() {
         //create the options view
-        BookingOption bookingOption = mBookingCancelRecurringViewModel.getBookingOption(getActivity());
+        BookingOption bookingOption
+                = mBookingCancelRecurringViewModel.getBookingOption(getActivity());
         mOptionsView
                 = new BookingOptionsSelectView(getActivity(), R.layout
                 .view_booking_select_option_recurring_series, bookingOption, null);
@@ -156,29 +156,25 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
         optionsLayout.addView(mOptionsView);
     }
 
-    private void showEmailSentConfirmationDialog()
-    {
+    private void showEmailSentConfirmationDialog() {
         String userEmailAddress = userManager.getCurrentUser().getEmail();
         EmailCancellationDialogFragment emailCancellationDialogFragment =
                 EmailCancellationDialogFragment.newInstance(userEmailAddress);
         emailCancellationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
     }
 
-    private void handleErrorEvent(final DataManager.DataManagerError error)
-    {
+    private void handleErrorEvent(final DataManager.DataManagerError error) {
         removeUiBlockersAndShowContent();
         dataManagerErrorHandler.handleError(getActivity(), error);
     }
 
-    private void showToastAndExit(int toastStringResourceId)
-    {
+    private void showToastAndExit(int toastStringResourceId) {
         String toastString = getString(toastStringResourceId);
         showToast(toastString);
         getActivity().finish();
     }
 
-    protected void removeUiBlockersAndShowContent()
-    {
+    protected void removeUiBlockersAndShowContent() {
         super.removeUiBlockers();
         setContentViewVisible(true);
     }
@@ -186,8 +182,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     @Subscribe
     public void onReceiveSendCancelRecurringBookingEmailSuccess(
             final BookingEvent.ReceiveSendCancelRecurringBookingEmailSuccess event
-    )
-    {
+    ) {
         removeUiBlockers();
         showEmailSentConfirmationDialog();
     }
@@ -195,8 +190,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     @Subscribe
     public void onReceiveRecurringBookingsSuccess(
             final BookingEvent.ReceiveRecurringBookingsSuccess event
-    )
-    {
+    ) {
         mRecurringBookings = event.recurringBookings;
         mDataSynchronizer.countDownSuccess();
     }
@@ -204,8 +198,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     @Subscribe
     public void onReceiveConfigurationSuccess(
             final ConfigurationEvent.ReceiveConfigurationSuccess event
-    )
-    {
+    ) {
         mConfiguration = event.getConfiguration();
         mDataSynchronizer.countDownSuccess();
     }
@@ -213,48 +206,40 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment
     @Subscribe
     public void onReceiveSendCancelRecurringBookingEmailError(
             final BookingEvent.ReceiveSendCancelRecurringBookingEmailError event
-    )
-    {
+    ) {
         handleErrorEvent(event.error);
     }
 
     @Subscribe
     public void onReceiveRecurringBookingsError(
             final BookingEvent.ReceiveRecurringBookingsError event
-    )
-    {
+    ) {
         mDataSynchronizer.countDownError(event.error);
     }
 
     @Subscribe
     public void onReceiveConfigurationError(
             final ConfigurationEvent.ReceiveConfigurationError event
-    )
-    {
+    ) {
         mDataSynchronizer.countDownError(event.error);
     }
 
-    private void displayData()
-    {
+    private void displayData() {
         mBookingCancelRecurringViewModel = BookingCancelRecurringViewModel.from(mRecurringBookings);
         int numBookings = mRecurringBookings.size();
 
-        if (numBookings > 0)
-        {
-            if (mRecurringBookings.size() > 1)
-            {
+        if (numBookings > 0) {
+            if (mRecurringBookings.size() > 1) {
                 //allow user to select which recurrence they want to cancel
                 createOptionsView();
                 removeUiBlockersAndShowContent();
             }
-            else
-            {
+            else {
                 //send cancellation email for the only recurring booking that user has
                 handleCancelRecurringBooking(mRecurringBookings.get(0), false);
             }
         }
-        else
-        {
+        else {
             //this can happen if the user's analytics.recurring_bookings_count > 0
             //but user doesn't actually have any recurring bookings
             //if this logic is reached, then we are using recurring_bookings_count wrong

@@ -56,8 +56,8 @@ import butterknife.ButterKnife;
  * eventually switch to BottomNavActivity
  */
 public abstract class MenuDrawerActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener
-{
+        implements NavigationView.OnNavigationItemSelectedListener {
+
     private static final String TAG = MenuDrawerActivity.class.getName();
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
     public static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
@@ -84,24 +84,20 @@ public abstract class MenuDrawerActivity extends BaseActivity
 
     protected abstract String getNavItemTitle();
 
-    protected Fragment getActiveFragemnt()
-    {
+    protected Fragment getActiveFragemnt() {
         return mActiveFragment;
     }
 
-    public void setActiveFragment(final Fragment activeFragment)
-    {
+    public void setActiveFragment(final Fragment activeFragment) {
         mActiveFragment = activeFragment;
     }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState)
-    {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_drawer);
         ButterKnife.bind(this);
-        if (requiresUser() && !mUserManager.isUserLoggedIn())
-        {
+        if (requiresUser() && !mUserManager.isUserLoggedIn()) {
             navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
             finish();
             return;
@@ -110,29 +106,27 @@ public abstract class MenuDrawerActivity extends BaseActivity
         setupEnvButton();
         mNavigationView.setNavigationItemSelectedListener(this);
         int selectedMenuId = getIntent().getIntExtra(EXTRA_SHOW_SELECTED_MENU_ITEM, -1);
-        if (selectedMenuId != -1)
-        {
+        if (selectedMenuId != -1) {
             mNavigationView.setCheckedItem(selectedMenuId);
         }
         final FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-        if (fragment == null)
-        {
+        if (fragment == null) {
             fragment = createFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
         if (savedInstanceState == null && (mShouldShowNavForTransition
-                = getIntent().getBooleanExtra(EXTRA_SHOW_NAV_FOR_TRANSITION, false)))
-        {
+                                                   = getIntent().getBooleanExtra(
+                EXTRA_SHOW_NAV_FOR_TRANSITION,
+                false
+        ))) {
             mDrawerLayout.closeDrawers();
         }
         //this is to work around the subscriber inheritance issue that Otto has.
         //https://github.com/square/otto/issues/26
-        mBusEventListener = new Object()
-        {
+        mBusEventListener = new Object() {
             @Subscribe
-            public void userAuthUpdated(final UserLoggedInEvent event)
-            {
+            public void userAuthUpdated(final UserLoggedInEvent event) {
                 checkLayerInitiation();
                 if (!event.isLoggedIn())
                 {
@@ -143,30 +137,27 @@ public abstract class MenuDrawerActivity extends BaseActivity
                                 MenuDrawerActivity.this,
                                 OnboardActivity.class
                         );
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                     }
-                    else
-                    {
+                    else {
                         goToNewHomeScreen();
                     }
                 }
             }
 
             @Subscribe
-            public void envUpdated(final EnvironmentUpdatedEvent event)
-            {
+            public void envUpdated(final EnvironmentUpdatedEvent event) {
                 setupEnvButton();
             }
 
             @Subscribe
             public void onReceiveConfigurationSuccess(
                     final ConfigurationEvent.ReceiveConfigurationSuccess event
-            )
-            {
-                if (event != null)
-                {
+            ) {
+                if (event != null) {
                     checkLayerInitiation();
                     refreshMenu();
                     setDrawerDisabled(mConfigurationManager.getPersistentConfiguration()
@@ -180,17 +171,14 @@ public abstract class MenuDrawerActivity extends BaseActivity
      * Layer needs to be initialized under these 2 conditions, and we have to check these conditions
      * on user events (login, logout), and if the config parameter changes
      */
-    private void checkLayerInitiation()
-    {
+    private void checkLayerInitiation() {
         //chat is enabled, so we'll login if the user is available
         User user = mUserManager.getCurrentUser();
 
-        if (user != null)
-        {
+        if (user != null) {
             mLayerHelper.initLayer(user.getAuthToken());
         }
-        else
-        {
+        else {
             //the user is in a logged out state
             mLayerHelper.deauthenticate();
         }
@@ -198,23 +186,19 @@ public abstract class MenuDrawerActivity extends BaseActivity
         refreshMenu();
     }
 
-    protected boolean hasStoredZip()
-    {
+    protected boolean hasStoredZip() {
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP, null);
         return !TextUtils.isEmpty(zip);
     }
 
-    protected boolean requiresUser()
-    {
+    protected boolean requiresUser() {
         return false;
     }
 
     @Override
-    protected final void onStart()
-    {
+    protected final void onStart() {
         super.onStart();
-        if (mShouldShowNavForTransition)
-        {
+        if (mShouldShowNavForTransition) {
             mDrawerLayout.closeDrawers();
             mShouldShowNavForTransition = false;
         }
@@ -229,15 +213,12 @@ public abstract class MenuDrawerActivity extends BaseActivity
     public final void navigateToActivity(
             final Class<? extends Activity> clazz,
             @Nullable @IdRes Integer menuIdTobeSelected
-    )
-    {
-        if (this.getClass().getName().equals(clazz.getName()))
-        {
+    ) {
+        if (this.getClass().getName().equals(clazz.getName())) {
             //close drawers and not do anything further
             mDrawerLayout.closeDrawers();
         }
-        else
-        {
+        else {
             navigateToActivity(clazz, new Bundle(), menuIdTobeSelected);
         }
     }
@@ -245,14 +226,12 @@ public abstract class MenuDrawerActivity extends BaseActivity
     public final void navigateToActivity(
             final Class<? extends Activity> clazz, final Bundle extras,
             @Nullable @IdRes Integer menuIdToBeSelected
-    )
-    {
+    ) {
         final Intent intent = new Intent(this, clazz);
         intent.putExtras(extras);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_NAV_FOR_TRANSITION, true);
-        if (menuIdToBeSelected != null)
-        {
+        if (menuIdToBeSelected != null) {
             intent.putExtra(MenuDrawerActivity.EXTRA_SHOW_SELECTED_MENU_ITEM, menuIdToBeSelected);
         }
         startActivity(intent);
@@ -260,20 +239,16 @@ public abstract class MenuDrawerActivity extends BaseActivity
         MenuDrawerActivity.this.finish();
     }
 
-    public final void setDrawerDisabled(final boolean disableDrawer)
-    {
-        if (disableDrawer)
-        {
+    public final void setDrawerDisabled(final boolean disableDrawer) {
+        if (disableDrawer) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
-        else
-        {
+        else {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
     }
 
-    private void setupEnvButton()
-    {
+    private void setupEnvButton() {
         Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
         envButton.setText(String.format(
                 getString(R.string.env_format),
@@ -282,25 +257,20 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 Integer.valueOf(BuildConfig.VERSION_CODE).toString()
                           )
         );
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-        {
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
             envButton.setVisibility(View.GONE);
         }
-        envButton.setOnClickListener(new View.OnClickListener()
-        {
+        envButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 final EditText input = new EditText(MenuDrawerActivity.this);
                 input.setText(mEnvironmentModifier.getEnvironment());
                 new AlertDialog.Builder(MenuDrawerActivity.this)
                         .setTitle(R.string.set_environment)
                         .setView(input)
-                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener()
-                        {
+                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i)
-                            {
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 mEnvironmentModifier.setEnvironment(input.getText().toString());
                             }
                         })
@@ -315,8 +285,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
      * This is needed for the little hamburger menu icon to animate when opening and closing the
      * drawer
      */
-    public void setupHamburgerMenu(Toolbar toolbar)
-    {
+    public void setupHamburgerMenu(Toolbar toolbar) {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
@@ -328,8 +297,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         mBus.register(mBusEventListener);
         mBus.post(new ConfigurationEvent.RequestConfiguration());
@@ -337,8 +305,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         mBus.unregister(mBusEventListener);
     }
@@ -346,8 +313,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
     /**
      * Updates the menu item visibilities based on the user's login status
      */
-    private void refreshMenu()
-    {
+    private void refreshMenu() {
         final User currentUser = mUserManager.getCurrentUser();
         final boolean userLoggedIn = currentUser != null;
 
@@ -363,17 +329,13 @@ public abstract class MenuDrawerActivity extends BaseActivity
      * Item selected from the navigation drawer
      */
     @Override
-    public boolean onNavigationItemSelected(final MenuItem menuItem)
-    {
-        switch (menuItem.getItemId())
-        {
+    public boolean onNavigationItemSelected(final MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_menu_home:
-                if (this instanceof ServiceCategoriesActivity)
-                {
+                if (this instanceof ServiceCategoriesActivity) {
                     mDrawerLayout.closeDrawers();
                 }
-                else
-                {
+                else {
                     navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
                 }
                 return true;
@@ -406,22 +368,18 @@ public abstract class MenuDrawerActivity extends BaseActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
-        {
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawers();
         }
         else if (isTaskRoot() && !(this instanceof ServiceCategoriesActivity)
-                && !isOnboardingV2Showing()
-                && getSupportFragmentManager().getBackStackEntryCount() == 0)
-        {
+                 && !isOnboardingV2Showing()
+                 && getSupportFragmentManager().getBackStackEntryCount() == 0) {
             //if back press results in exiting the app AND this is not the home page
             // AND there is no fragment in the backstack, then bring back to the home page first
             goToNewHomeScreen();
         }
-        else
-        {
+        else {
             Utils.hideSoftKeyboard(this, getCurrentFocus());
             super.onBackPressed();
         }
@@ -431,37 +389,26 @@ public abstract class MenuDrawerActivity extends BaseActivity
      * Depending on whether bottom nav is enabled or not, the new home screen would be either
      * the Menu Drawer screen, or the new bottom nav screen.
      */
-    private void goToNewHomeScreen()
-    {
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled())
-        {
+    private void goToNewHomeScreen() {
+        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
             startActivity(new Intent(this, BottomNavActivity.class));
             finish();
         }
-        else
-        {
+        else {
             navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
         }
     }
 
-    private boolean isOnboardingV2Showing()
-    {
-        if (this instanceof OnboardActivity && mActiveFragment instanceof OnboardV2Fragment)
-        {
-            return true;
-        }
+    private boolean isOnboardingV2Showing() {
+        return this instanceof OnboardActivity && mActiveFragment instanceof OnboardV2Fragment;
 
-        return false;
     }
 
-    public void toggleMenu()
-    {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
-        {
+    public void toggleMenu() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawers();
         }
-        else
-        {
+        else {
             mDrawerLayout.openDrawer(GravityCompat.START);
         }
     }

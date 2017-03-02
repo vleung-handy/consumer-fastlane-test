@@ -18,9 +18,7 @@ import com.handybook.handybook.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-
-public class ImageToggleButton extends LinearLayout implements View.OnClickListener, Checkable
-{
+public class ImageToggleButton extends LinearLayout implements View.OnClickListener, Checkable {
 
     @Bind(R.id.image)
     ImageView mImage;
@@ -44,14 +42,12 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     private OnClickListener mListener;
     private String mTag = "";
 
-    public ImageToggleButton(Context context)
-    {
+    public ImageToggleButton(Context context) {
         super(context);
         init();
     }
 
-    public ImageToggleButton(Context context, AttributeSet attrs)
-    {
+    public ImageToggleButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ImageToggleButton);
@@ -72,8 +68,7 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
         init();
     }
 
-    void init()
-    {
+    void init() {
         inflate(getContext(), R.layout.image_toggle_button, this);
         ButterKnife.bind(this);
 
@@ -88,41 +83,33 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
         setChecked(false);
         updateState();
 
-        if (mRippleDrawable != null)
-        {
+        if (mRippleDrawable != null) {
             setRipples();
         }
     }
 
-    public void setListener(final OnClickListener listener)
-    {
+    public void setListener(final OnClickListener listener) {
         mListener = listener;
     }
 
-    public void setCheckedDrawable(final Drawable checkedDrawable)
-    {
+    public void setCheckedDrawable(final Drawable checkedDrawable) {
         mCheckedDrawable = checkedDrawable;
     }
 
-    public void setUncheckedDrawable(final Drawable uncheckedDrawable)
-    {
+    public void setUncheckedDrawable(final Drawable uncheckedDrawable) {
         mUncheckedDrawable = uncheckedDrawable;
     }
 
-    public void setCheckedText(final String checkedText)
-    {
+    public void setCheckedText(final String checkedText) {
         mCheckedText = checkedText;
     }
 
-    public void setUncheckedText(final String uncheckedText)
-    {
+    public void setUncheckedText(final String uncheckedText) {
         mUncheckedText = uncheckedText;
     }
 
-    private void setRipples()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
+    private void setRipples() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setClickable(true);
             mText.setClickable(false);
             mImage.setClickable(false);
@@ -131,26 +118,22 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         toggle();
         updateState();
 
-        if (mListener != null)
-        {
+        if (mListener != null) {
             mListener.onClick(this);
         }
     }
 
     @Override
     @NonNull
-    public String getTag()
-    {
+    public String getTag() {
         return mTag;
     }
 
-    public void setTag(@NonNull final String tag)
-    {
+    public void setTag(@NonNull final String tag) {
         mTag = tag;
     }
 
@@ -158,30 +141,23 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
      * Must call this to refresh the layout
      */
     @SuppressWarnings("deprecation")
-    public void updateState()
-    {
-        if (isChecked())
-        {
+    public void updateState() {
+        if (isChecked()) {
             mImage.setImageDrawable(mCheckedDrawable);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 setBackground(mCheckedBgDrawable);
             }
-            else
-            {
+            else {
                 setBackgroundDrawable(mCheckedBgDrawable);
             }
             mText.setText(mCheckedText);
         }
-        else
-        {
+        else {
             mImage.setImageDrawable(mUncheckedDrawable);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 setBackground(mUncheckedBgDrawable);
             }
-            else
-            {
+            else {
                 setBackgroundDrawable(mUncheckedBgDrawable);
             }
             mText.setText(mUncheckedText);
@@ -189,20 +165,17 @@ public class ImageToggleButton extends LinearLayout implements View.OnClickListe
     }
 
     @Override
-    public void setChecked(boolean b)
-    {
+    public void setChecked(boolean b) {
         mChecked = b;
     }
 
     @Override
-    public boolean isChecked()
-    {
+    public boolean isChecked() {
         return mChecked;
     }
 
     @Override
-    public void toggle()
-    {
+    public void toggle() {
         setChecked(!isChecked());
     }
 }

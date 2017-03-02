@@ -12,22 +12,20 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static junit.framework.Assert.assertEquals;
 
-public class EditPlanAddressFragmentTest extends RobolectricGradleTestWrapper
-{
+public class EditPlanAddressFragmentTest extends RobolectricGradleTestWrapper {
+
     private EditPlanAddressFragment mFragment;
     private RecurringBooking mPlan;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         mPlan = ModelFactory.createRecurringPlan();
         mFragment = EditPlanAddressFragment.newInstance(mPlan);
         SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
     }
 
     @Test
-    public void shouldDisplayCorrectInfo()
-    {
+    public void shouldDisplayCorrectInfo() {
         assertEquals(
                 mFragment.getString(R.string.booking_edit_address_title),
                 mFragment.mToolbar.getTitle()
@@ -44,8 +42,7 @@ public class EditPlanAddressFragmentTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void shouldUpdateAddress()
-    {
+    public void shouldUpdateAddress() {
         String address1 = "33 W 19th Street";
         String address2 = "FL 6";
         String zipCode = "10011";

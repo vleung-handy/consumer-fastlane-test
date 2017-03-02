@@ -26,8 +26,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class OnboardFragment extends BookingFlowFragment
-{
+public final class OnboardFragment extends BookingFlowFragment {
+
     private static final String STATE_ANIMATE_PAGES = "ANIMATED_PAGES";
 
     private int currentIndex;
@@ -48,8 +48,7 @@ public final class OnboardFragment extends BookingFlowFragment
     @Inject
     DefaultPreferencesManager mDefaultPreferencesManager;
 
-    public static OnboardFragment newInstance()
-    {
+    public static OnboardFragment newInstance() {
         return new OnboardFragment();
     }
 
@@ -58,47 +57,40 @@ public final class OnboardFragment extends BookingFlowFragment
             final LayoutInflater inflater,
             final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.fragment_onboard, container, false);
+                                       .inflate(R.layout.fragment_onboard, container, false);
 
         ButterKnife.bind(this, view);
 
-        startButton.setOnClickListener(new View.OnClickListener()
-        {
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
                 final Intent intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 getActivity().finish();
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener()
-        {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 mDefaultPreferencesManager.setBoolean(PrefsKey.APP_ONBOARD_SHOWN, true);
 
                 final Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
 
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             animatePages = savedInstanceState.getBooleanArray(STATE_ANIMATE_PAGES);
         }
-        else
-        {
+        else {
             animatePages = new boolean[count];
             for (int i = 0; i < count; i++) { animatePages[i] = true; }
         }
@@ -107,8 +99,7 @@ public final class OnboardFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onActivityCreated(final Bundle savedInstanceState)
-    {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         pager.setAdapter(new PagerAdapter(getActivity().getSupportFragmentManager()));
         indicator.setViewPager(pager);
@@ -116,19 +107,16 @@ public final class OnboardFragment extends BookingFlowFragment
     }
 
     @Override
-    public final void onSaveInstanceState(final Bundle outState)
-    {
+    public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBooleanArray(STATE_ANIMATE_PAGES, animatePages);
     }
 
     private final ViewPager.OnPageChangeListener pageListener
-            = new ViewPager.OnPageChangeListener()
-    {
+            = new ViewPager.OnPageChangeListener() {
 
         @Override
-        public void onPageScrolled(final int position, final float offset, final int pixelOffset)
-        {
+        public void onPageScrolled(final int position, final float offset, final int pixelOffset) {
             // transition colors
             final int[] backgroundColors = {
                     ContextCompat.getColor(getContext(), R.color.white),
@@ -164,24 +152,27 @@ public final class OnboardFragment extends BookingFlowFragment
             final ArgbEvaluator rgbEval = new ArgbEvaluator();
 
             layout.setBackgroundColor((int) rgbEval.evaluate(offset,
-                    fromBackgroundColor, toBackgroundColor));
+                                                             fromBackgroundColor, toBackgroundColor
+            ));
 
             indicator.setFillColor((int) rgbEval.evaluate(offset,
-                    fromIndicatorFillColor, toIndicatorFillColor));
+                                                          fromIndicatorFillColor,
+                                                          toIndicatorFillColor
+            ));
 
             indicator.setPageColor((int) rgbEval.evaluate(offset,
-                    fromIndicatorPageColor, toIndicatorPageColor));
+                                                          fromIndicatorPageColor,
+                                                          toIndicatorPageColor
+            ));
         }
 
         @Override
-        public void onPageSelected(final int i)
-        {
+        public void onPageSelected(final int i) {
             currentIndex = i;
         }
 
         @Override
-        public void onPageScrollStateChanged(final int state)
-        {
+        public void onPageScrollStateChanged(final int state) {
             final OnboardPageFragment page = ((PagerAdapter) pager
                     .getAdapter()).getFragment(currentIndex);
 
@@ -190,34 +181,32 @@ public final class OnboardFragment extends BookingFlowFragment
     };
 
 
-    private final class PagerAdapter extends FragmentPagerAdapter
-    {
+    private final class PagerAdapter extends FragmentPagerAdapter {
 
         private OnboardPageFragment[] fragments;
 
-        PagerAdapter(final FragmentManager fm)
-        {
+        PagerAdapter(final FragmentManager fm) {
             super(fm);
             fragments = new OnboardPageFragment[count];
         }
 
         @Override
-        public final Fragment getItem(final int i)
-        {
-            final OnboardPageFragment fragment = OnboardPageFragment.newInstance(i, animatePages[i]);
+        public final Fragment getItem(final int i) {
+            final OnboardPageFragment fragment = OnboardPageFragment.newInstance(
+                    i,
+                    animatePages[i]
+            );
             fragments[i] = fragment;
             animatePages[i] = false;
             return fragment;
         }
 
         @Override
-        public final int getCount()
-        {
+        public final int getCount() {
             return count;
         }
 
-        final OnboardPageFragment getFragment(final int i)
-        {
+        final OnboardPageFragment getFragment(final int i) {
             return fragments[i];
         }
     }

@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName;
  * Represents a service object within the context of a booking. Note that this is a
  * different object than {@code Service}
  */
-public class BookingService implements Parcelable
-{
+public class BookingService implements Parcelable {
+
     @SerializedName("id")
     private int mId;
 
@@ -25,8 +25,7 @@ public class BookingService implements Parcelable
     @SerializedName("parent")
     protected BookingService mParent;
 
-    private BookingService(final Parcel in)
-    {
+    private BookingService(final Parcel in) {
         final String[] stringData = new String[2];
         in.readStringArray(stringData);
         mName = stringData[0];
@@ -39,40 +38,33 @@ public class BookingService implements Parcelable
         mParent = in.readParcelable(BookingService.class.getClassLoader());
     }
 
-    public String getMachineName()
-    {
+    public String getMachineName() {
         return mMachineName;
     }
 
     @NonNull
-    public BookingService getParent()
-    {
+    public BookingService getParent() {
         return mParent;
     }
 
     @Override
-    public final void writeToParcel(final Parcel out, final int flags)
-    {
+    public final void writeToParcel(final Parcel out, final int flags) {
         out.writeStringArray(new String[]{mName, mMachineName});
         out.writeIntArray(new int[]{mId});
         out.writeParcelable(mParent, 0);
     }
 
     @Override
-    public final int describeContents()
-    {
+    public final int describeContents() {
         return 0;
     }
 
-    public static final Creator CREATOR = new Creator()
-    {
-        public BookingService createFromParcel(final Parcel in)
-        {
+    public static final Creator CREATOR = new Creator() {
+        public BookingService createFromParcel(final Parcel in) {
             return new BookingService(in);
         }
 
-        public BookingService[] newArray(final int size)
-        {
+        public BookingService[] newArray(final int size) {
             return new BookingService[size];
         }
     };

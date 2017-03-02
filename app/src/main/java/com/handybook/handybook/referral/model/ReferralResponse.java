@@ -2,13 +2,12 @@ package com.handybook.handybook.referral.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ReferralResponse
-{
+public class ReferralResponse {
+
     @SerializedName("referrals")
     private ReferralDescriptor mReferralDescriptor;
 
-    public ReferralDescriptor getReferralDescriptor()
-    {
+    public ReferralDescriptor getReferralDescriptor() {
         return mReferralDescriptor;
     }
 }

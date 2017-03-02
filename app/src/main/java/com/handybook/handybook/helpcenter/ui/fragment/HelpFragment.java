@@ -37,9 +37,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+public class HelpFragment extends InjectedFragment {
 
-public class HelpFragment extends InjectedFragment
-{
     @Bind(R.id.native_help_center_layout)
     ViewGroup mNativeHelpCenterLayout;
     @Bind(R.id.recent_booking_actions_layout)
@@ -62,8 +61,7 @@ public class HelpFragment extends InjectedFragment
     private String mHelpCenterUrl;
     private Booking mBooking;
 
-    public static HelpFragment newInstance(@Nullable String helpCenterUrl)
-    {
+    public static HelpFragment newInstance(@Nullable String helpCenterUrl) {
         final HelpFragment fragment = new HelpFragment();
         Bundle args = new Bundle();
         args.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
@@ -72,12 +70,10 @@ public class HelpFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        if (args != null && !args.isEmpty())
-        {
+        if (args != null && !args.isEmpty()) {
             mHelpCenterUrl = args.getString(BundleKeys.HELP_CENTER_URL);
         }
     }
@@ -88,16 +84,14 @@ public class HelpFragment extends InjectedFragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = getActivity().getLayoutInflater()
                                        .inflate(R.layout.fragment_help, container, false);
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.help));
-        if (getActivity() instanceof MenuDrawerActivity)
-        {
+        if (getActivity() instanceof MenuDrawerActivity) {
             mToolbar.setNavigationIcon(R.drawable.ic_menu);
             ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
         }
@@ -105,61 +99,51 @@ public class HelpFragment extends InjectedFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         showUiBlockers();
         bus.post(new HelpEvent.RequestHelpCenter());
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         removeUiBlockers();
         super.onPause();
     }
 
     @OnClick(R.id.recent_booking_layout)
-    public void recentBookingClicked()
-    {
-        if (mBooking != null)
-        {
+    public void recentBookingClicked() {
+        if (mBooking != null) {
             final String bookingId = mBooking.getId();
-            if (!Strings.isNullOrEmpty(bookingId))
-            {
+            if (!Strings.isNullOrEmpty(bookingId)) {
                 bus.post(new LogEvent.AddLogEvent(
                         new HelpCenterLog.BookingDetailsTappedLog(bookingId)));
             }
 
             Intent intent = new Intent(getContext(), BookingDetailActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
-                                    Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(BundleKeys.BOOKING, mBooking);
             startActivity(intent);
         }
     }
 
     @OnClick(R.id.report_an_issue_text)
-    public void reportAnIssueClicked()
-    {
-        if (mBooking != null)
-        {
+    public void reportAnIssueClicked() {
+        if (mBooking != null) {
             showUiBlockers();
 
             final String bookingId = mBooking.getId();
-            if (!Strings.isNullOrEmpty(bookingId))
-            {
+            if (!Strings.isNullOrEmpty(bookingId)) {
                 bus.post(new LogEvent.AddLogEvent(
                         new HelpCenterLog.ReportIssueTapped(bookingId)));
             }
 
             dataManager.getBookingMilestones(
                     mBooking.getId(),
-                    new DataManager.Callback<JobStatus>()
-                    {
+                    new DataManager.Callback<JobStatus>() {
                         @Override
-                        public void onSuccess(JobStatus status)
-                        {
+                        public void onSuccess(JobStatus status) {
                             removeUiBlockers();
                             Intent intent = new Intent(getContext(), ReportIssueActivity.class);
                             intent.putExtra(BundleKeys.BOOKING, mBooking);
@@ -168,15 +152,12 @@ public class HelpFragment extends InjectedFragment
                         }
 
                         @Override
-                        public void onError(final DataManager.DataManagerError error)
-                        {
+                        public void onError(final DataManager.DataManagerError error) {
                             removeUiBlockers();
-                            if (!Strings.isNullOrEmpty(error.getMessage()))
-                            {
+                            if (!Strings.isNullOrEmpty(error.getMessage())) {
                                 showToast(error.getMessage());
                             }
-                            else
-                            {
+                            else {
                                 showToast(R.string.an_error_has_occurred);
                             }
                         }
@@ -186,8 +167,7 @@ public class HelpFragment extends InjectedFragment
     }
 
     @OnClick(R.id.help_center_layout)
-    public void helpCenterOptionClicked()
-    {
+    public void helpCenterOptionClicked() {
         bus.post(new LogEvent.AddLogEvent(new HelpCenterLog.HelpCenterTappedLog()));
 
         Bundle args = new Bundle();
@@ -199,25 +179,20 @@ public class HelpFragment extends InjectedFragment
     }
 
     @Subscribe
-    public void onReceiveHelpCenterSuccess(HelpEvent.ReceiveHelpCenterSuccess event)
-    {
+    public void onReceiveHelpCenterSuccess(HelpEvent.ReceiveHelpCenterSuccess event) {
         removeUiBlockers();
         HelpCenterResponse response = event.helpCenterResponse;
-        if (response != null)
-        {
+        if (response != null) {
             mBooking = response.getBooking();
-            if (mBooking != null)
-            {
+            if (mBooking != null) {
                 Date bookingStartDate = mBooking.getStartDate();
-                if (bookingStartDate != null)
-                {
+                if (bookingStartDate != null) {
                     mRecentBookingDateText.setText(
                             DateTimeUtils.DAY_MONTH_DATE_FORMATTER.format(bookingStartDate));
 
                     String bookingTime = DateTimeUtils.LOCAL_TIME_12_HOURS_FORMATTER
                             .format(bookingStartDate);
-                    if (!Strings.isNullOrEmpty(bookingTime))
-                    {
+                    if (!Strings.isNullOrEmpty(bookingTime)) {
                         /* Show one decimal digit for booking hours
                          when required, Example: 3.0 -> 3, 2.5 - > 2.5 */
                         DecimalFormat df = new DecimalFormat();
@@ -232,25 +207,21 @@ public class HelpFragment extends InjectedFragment
                     }
                 }
 
-                if (!mBooking.isMilestonesEnabled())
-                {
+                if (!mBooking.isMilestonesEnabled()) {
                     mReportAnIssueLayout.setVisibility(View.GONE);
                 }
                 mHelpBookingImage.setImageResource(
                         BookingUtil.getIconForService(mBooking, BookingUtil.IconType.GRAY));
             }
-            else
-            {
+            else {
                 mRecentBookingActionsLayout.setVisibility(View.GONE);
             }
 
             ArrayList<HelpCenterResponse.Link> links = response.getLinks();
-            if (links != null && !links.isEmpty())
-            {
+            if (links != null && !links.isEmpty()) {
                 mSuggestedActionsLayout.removeAllViews();
 
-                for (HelpCenterResponse.Link link : links)
-                {
+                for (HelpCenterResponse.Link link : links) {
                     HelpCenterActionItemView view = new HelpCenterActionItemView(
                             getContext(),
                             bus
@@ -264,27 +235,23 @@ public class HelpFragment extends InjectedFragment
                     mSuggestedActionsLayout.addView(view);
                 }
             }
-            else
-            {
+            else {
                 mSuggestedActionsLayout.setVisibility(View.GONE);
             }
             mNativeHelpCenterLayout.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             hideDynamicElements();
         }
     }
 
     @Subscribe
-    public void onReceiveHelpCenterError(HelpEvent.ReceiveHelpCenterError event)
-    {
+    public void onReceiveHelpCenterError(HelpEvent.ReceiveHelpCenterError event) {
         removeUiBlockers();
         hideDynamicElements();
     }
 
-    private void hideDynamicElements()
-    {
+    private void hideDynamicElements() {
         mHelpDynamicLayout.setVisibility(View.GONE);
         mNativeHelpCenterLayout.setVisibility(View.VISIBLE);
     }

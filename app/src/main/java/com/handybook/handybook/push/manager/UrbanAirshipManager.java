@@ -21,40 +21,33 @@ import com.urbanairship.push.notifications.NotificationFactory;
 
 import javax.inject.Inject;
 
-public class UrbanAirshipManager
-{
+public class UrbanAirshipManager {
+
     private UserManager mUserManager;
 
     @Inject
-    public UrbanAirshipManager(Context context, Bus bus, UserManager userManager)
-    {
+    public UrbanAirshipManager(Context context, Bus bus, UserManager userManager) {
         mUserManager = userManager;
-        if (!UAirship.isTakingOff() && !UAirship.isFlying())
-        {
+        if (!UAirship.isTakingOff() && !UAirship.isFlying()) {
             startUrbanAirship((Application) context.getApplicationContext());
         }
         bus.register(this);
     }
 
     @Subscribe
-    public void onUserLoggedIn(UserLoggedInEvent event)
-    {
-        if (event.isLoggedIn())
-        {
+    public void onUserLoggedIn(UserLoggedInEvent event) {
+        if (event.isLoggedIn()) {
             setUniqueIdentifiers(UAirship.shared());
         }
     }
 
-    private void startUrbanAirship(final Application application)
-    {
+    private void startUrbanAirship(final Application application) {
         final AirshipConfigOptions options = AirshipConfigOptions.loadDefaultOptions(application);
         options.inProduction = BuildConfig.FLAVOR.equalsIgnoreCase(BaseApplication.FLAVOR_PROD);
 
-        UAirship.takeOff(application, options, new UAirship.OnReadyCallback()
-        {
+        UAirship.takeOff(application, options, new UAirship.OnReadyCallback() {
             @Override
-            public void onAirshipReady(final UAirship airship)
-            {
+            public void onAirshipReady(final UAirship airship) {
                 final NotificationFactory notificationFactory = getNotificationFactory(application);
                 airship.getPushManager().setNotificationFactory(notificationFactory);
                 airship.getPushManager().setPushEnabled(true);
@@ -66,11 +59,9 @@ public class UrbanAirshipManager
         });
     }
 
-    private void setUniqueIdentifiers(final UAirship airship)
-    {
+    private void setUniqueIdentifiers(final UAirship airship) {
         final User currentUser = mUserManager.getCurrentUser();
-        if (UAirship.isFlying() && currentUser != null)
-        {
+        if (UAirship.isFlying() && currentUser != null) {
             final String userId = currentUser.getId();
 
             // Keep alias around for backwards compatibility until named user is backfilled by UrbanAirship
@@ -79,21 +70,23 @@ public class UrbanAirshipManager
         }
     }
 
-    private void setNotificationActionButtons(final UAirship airship)
-    {
+    private void setNotificationActionButtons(final UAirship airship) {
         airship.getPushManager()
-                .addNotificationActionButtonGroup(PushActionConstants.ACTION_GROUP_CONTACT,
-                        PushActionWidgets.createContactActionButtonGroup());
+               .addNotificationActionButtonGroup(
+                       PushActionConstants.ACTION_GROUP_CONTACT,
+                       PushActionWidgets.createContactActionButtonGroup()
+               );
     }
 
-    private NotificationFactory getNotificationFactory(final Application application)
-    {
+    private NotificationFactory getNotificationFactory(final Application application) {
         final DefaultNotificationFactory defaultNotificationFactory =
                 new DefaultNotificationFactory(application);
 
         defaultNotificationFactory.setColor(
-                ContextCompat.getColor(application.getApplicationContext(),
-                        R.color.handy_blue));
+                ContextCompat.getColor(
+                        application.getApplicationContext(),
+                        R.color.handy_blue
+                ));
         defaultNotificationFactory.setSmallIconId(R.drawable.ic_notification);
         return defaultNotificationFactory;
     }

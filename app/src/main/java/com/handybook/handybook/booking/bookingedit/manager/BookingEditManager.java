@@ -18,29 +18,26 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-public class BookingEditManager
-{
+public class BookingEditManager {
+
     private final DataManager mDataManager;
     private final Bus mBus;
 
     @Inject
-    public BookingEditManager(final Bus bus, final DataManager dataManager)
-    {
+    public BookingEditManager(final Bus bus, final DataManager dataManager) {
         mDataManager = dataManager;
         mBus = bus;
         mBus.register(this);
     }
 
     @Subscribe
-    public void onRequestEditBookingAddress(BookingEditEvent.RequestEditBookingAddress event)
-    {
-        mDataManager.editBookingAddress(event.bookingId,
-                                        event.mEditAddressRequest,
-                                        new DataManager.Callback<SuccessWrapper>()
-                {
+    public void onRequestEditBookingAddress(BookingEditEvent.RequestEditBookingAddress event) {
+        mDataManager.editBookingAddress(
+                event.bookingId,
+                event.mEditAddressRequest,
+                new DataManager.Callback<SuccessWrapper>() {
                     @Override
-                    public void onSuccess(SuccessWrapper response)
-                    {
+                    public void onSuccess(SuccessWrapper response) {
                         //the response is useless because server only returns success:true
                         //or error:true. in the latter case, retrofit callback will invoke onError()
                         //even if the http code is 200
@@ -48,11 +45,11 @@ public class BookingEditManager
                     }
 
                     @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
+                    public void onError(DataManager.DataManagerError error) {
                         mBus.post(new BookingEditEvent.ReceiveEditBookingAddressError(error));
                     }
-                });
+                }
+        );
     }
 
     /**
@@ -60,16 +57,18 @@ public class BookingEditManager
      * @param mBookingId
      * @param callback
      */
-    public void getEntryMethodsInfo(@NonNull String mBookingId,
-                                    @NonNull final DataManager.Callback<EntryMethodsInfo> callback)
-    {
+    public void getEntryMethodsInfo(
+            @NonNull String mBookingId,
+            @NonNull final DataManager.Callback<EntryMethodsInfo> callback
+    ) {
         mDataManager.getEntryMethodsInfo(mBookingId, callback);
     }
 
-    public void updateEntryMethodsInfo(@NonNull String mBookingId,
-                                       @NonNull BookingEditEntryInformationRequest bookingEditEntryInformationRequest,
-                                       @NonNull final DataManager.Callback<Void> callback)
-    {
+    public void updateEntryMethodsInfo(
+            @NonNull String mBookingId,
+            @NonNull BookingEditEntryInformationRequest bookingEditEntryInformationRequest,
+            @NonNull final DataManager.Callback<Void> callback
+    ) {
         mDataManager.updateBookingEntryInformation(
                 mBookingId,
                 bookingEditEntryInformationRequest,
@@ -78,14 +77,12 @@ public class BookingEditManager
     }
 
     @Subscribe
-    public void onRequestEditHoursInfoViewModel(BookingEditEvent.RequestEditHoursInfoViewModel event)
-    {
-        mDataManager.getEditHoursInfo(event.bookingId,
-                new DataManager.Callback<BookingEditHoursInfoResponse>()
-                {
+    public void onRequestEditHoursInfoViewModel(BookingEditEvent.RequestEditHoursInfoViewModel event) {
+        mDataManager.getEditHoursInfo(
+                event.bookingId,
+                new DataManager.Callback<BookingEditHoursInfoResponse>() {
                     @Override
-                    public void onSuccess(BookingEditHoursInfoResponse response)
-                    {
+                    public void onSuccess(BookingEditHoursInfoResponse response) {
                         BookingEditHoursViewModel bookingEditHoursViewModel =
                                 BookingEditHoursViewModel.from(response);
                         mBus.post(new BookingEditEvent.ReceiveEditHoursInfoViewModelSuccess(
@@ -93,83 +90,75 @@ public class BookingEditManager
                     }
 
                     @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
+                    public void onError(DataManager.DataManagerError error) {
                         mBus.post(new BookingEditEvent.ReceiveEditHoursInfoViewModelError(error));
                     }
-                });
+                }
+        );
     }
 
     @Subscribe
-    public void onRequestUpdateBookingNoteToPro(BookingEditEvent.RequestUpdateBookingNoteToPro event)
-    {
+    public void onRequestUpdateBookingNoteToPro(BookingEditEvent.RequestUpdateBookingNoteToPro event) {
         mDataManager.updateBookingNoteToPro(event.bookingId, event.descriptionTransaction,
-                new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(final Void response)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess());
-                    }
+                                            new DataManager.Callback<Void>() {
+                                                @Override
+                                                public void onSuccess(final Void response) {
+                                                    mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProSuccess());
+                                                }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProError(error));
-                    }
-                });
+                                                @Override
+                                                public void onError(DataManager.DataManagerError error) {
+                                                    mBus.post(new BookingEditEvent.ReceiveUpdateBookingNoteToProError(
+                                                            error));
+                                                }
+                                            }
+        );
     }
 
     @Subscribe
-    public void onRequestUpdateBookingFrequency(BookingEditEvent.RequestEditBookingFrequency event)
-    {
+    public void onRequestUpdateBookingFrequency(BookingEditEvent.RequestEditBookingFrequency event) {
         mDataManager.updateBookingFrequency(event.bookingId, event.bookingEditFrequencyRequest,
-                new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(Void response)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveEditBookingFrequencySuccess());
+                                            new DataManager.Callback<Void>() {
+                                                @Override
+                                                public void onSuccess(Void response) {
+                                                    mBus.post(new BookingEditEvent.ReceiveEditBookingFrequencySuccess());
 
-                    }
+                                                }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveEditBookingFrequencyError(error));
-                    }
-                });
+                                                @Override
+                                                public void onError(DataManager.DataManagerError error) {
+                                                    mBus.post(new BookingEditEvent.ReceiveEditBookingFrequencyError(
+                                                            error));
+                                                }
+                                            }
+        );
     }
 
     @Subscribe
-    public void onRequestUpdateRecurringFrequency(BookingEditEvent.RequestUpdateRecurringFrequency event)
-    {
+    public void onRequestUpdateRecurringFrequency(BookingEditEvent.RequestUpdateRecurringFrequency event) {
         mDataManager.updateRecurringFrequency(event.recurringId, event.bookingEditFrequencyRequest,
-                new DataManager.Callback<Void>()
-                {
-                    @Override
-                    public void onSuccess(Void response)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveUpdateRecurringFrequencySuccess());
-                    }
+                                              new DataManager.Callback<Void>() {
+                                                  @Override
+                                                  public void onSuccess(Void response) {
+                                                      mBus.post(new BookingEditEvent.ReceiveUpdateRecurringFrequencySuccess());
+                                                  }
 
-                    @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
-                        mBus.post(new BookingEditEvent.ReceiveUpdateRecurringFrequencyError(error));
-                    }
-                });
+                                                  @Override
+                                                  public void onError(DataManager.DataManagerError error) {
+                                                      mBus.post(new BookingEditEvent.ReceiveUpdateRecurringFrequencyError(
+                                                              error));
+                                                  }
+                                              }
+        );
     }
 
     @Subscribe
-    public void onRequestEditFrequencyViewModel(BookingEditEvent.RequestGetEditFrequencyViewModel event)
-    {
-        mDataManager.getBookingPricesForFrequencies(event.bookingId,
-                new DataManager.Callback<BookingEditFrequencyInfoResponse>()
-                {
+    public void onRequestEditFrequencyViewModel(BookingEditEvent.RequestGetEditFrequencyViewModel event) {
+        mDataManager.getBookingPricesForFrequencies(
+                event.bookingId,
+                new DataManager.Callback<BookingEditFrequencyInfoResponse>() {
                     @Override
-                    public void onSuccess(BookingEditFrequencyInfoResponse response)
-                    {
+                    public void onSuccess(BookingEditFrequencyInfoResponse response) {
                         BookingEditFrequencyViewModel bookingEditFrequencyViewModel =
                                 BookingEditFrequencyViewModel.from(response);
                         mBus.post(new BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess(
@@ -178,22 +167,20 @@ public class BookingEditManager
                     }
 
                     @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
+                    public void onError(DataManager.DataManagerError error) {
                         mBus.post(new BookingEditEvent.ReceiveGetEditFrequencyViewModelError(error));
                     }
-                });
+                }
+        );
     }
 
     @Subscribe
-    public void onRequestRecurringFrequencyViewModel(BookingEditEvent.RequestRecurringFrequencyViewModel event)
-    {
-        mDataManager.getRecurringFrequency(event.recurringId,
-                new DataManager.Callback<BookingEditFrequencyInfoResponse>()
-                {
+    public void onRequestRecurringFrequencyViewModel(BookingEditEvent.RequestRecurringFrequencyViewModel event) {
+        mDataManager.getRecurringFrequency(
+                event.recurringId,
+                new DataManager.Callback<BookingEditFrequencyInfoResponse>() {
                     @Override
-                    public void onSuccess(BookingEditFrequencyInfoResponse response)
-                    {
+                    public void onSuccess(BookingEditFrequencyInfoResponse response) {
                         BookingEditFrequencyViewModel bookingEditFrequencyViewModel =
                                 BookingEditFrequencyViewModel.from(response);
                         mBus.post(new BookingEditEvent.ReceiveGetEditFrequencyViewModelSuccess(
@@ -201,69 +188,62 @@ public class BookingEditManager
                     }
 
                     @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
+                    public void onError(DataManager.DataManagerError error) {
                         mBus.post(new BookingEditEvent.ReceiveGetEditFrequencyViewModelError(error));
                     }
-                });
+                }
+        );
     }
 
     @Subscribe
-    public void onRequestEditBookingHours(final BookingEditEvent.RequestEditHours event)
-    {
+    public void onRequestEditBookingHours(final BookingEditEvent.RequestEditHours event) {
         mDataManager.editBookingHours(
                 event.bookingId,
                 event.bookingEditHoursRequest,
-                new DataManager.Callback<SuccessWrapper>()
-                {
+                new DataManager.Callback<SuccessWrapper>() {
                     @Override
-                    public void onSuccess(SuccessWrapper response)
-                    {
+                    public void onSuccess(SuccessWrapper response) {
                         mBus.post(new BookingEditEvent.ReceiveEditHoursSuccess(response));
                     }
 
                     @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
+                    public void onError(DataManager.DataManagerError error) {
                         mBus.post(new BookingEditEvent.ReceiveEditHoursError(error));
 
                     }
-                });
+                }
+        );
     }
 
     @Subscribe
-    public void onRequestEditBookingExtras(final BookingEditEvent.RequestEditBookingExtras event)
-    {
+    public void onRequestEditBookingExtras(final BookingEditEvent.RequestEditBookingExtras event) {
         mDataManager.editBookingExtras(
                 event.bookingId,
                 event.bookingEditExtrasRequest,
-                new DataManager.Callback<SuccessWrapper>()
-                {
+                new DataManager.Callback<SuccessWrapper>() {
                     @Override
-                    public void onSuccess(SuccessWrapper response)
-                    {
+                    public void onSuccess(SuccessWrapper response) {
                         mBus.post(new BookingEditEvent.ReceiveEditExtrasSuccess(response));
                     }
 
                     @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
+                    public void onError(DataManager.DataManagerError error) {
                         mBus.post(new BookingEditEvent.ReceiveEditExtrasError(error));
 
                     }
-                });
+                }
+        );
     }
 
     @Subscribe
     public void onRequestEditBookingExtrasViewModel(
-            final BookingEditEvent.RequestEditBookingExtrasViewModel event)
-    {
-        mDataManager.getEditBookingExtrasInfo(event.bookingId,
-                new DataManager.Callback<BookingEditExtrasInfoResponse>()
-                {
+            final BookingEditEvent.RequestEditBookingExtrasViewModel event
+    ) {
+        mDataManager.getEditBookingExtrasInfo(
+                event.bookingId,
+                new DataManager.Callback<BookingEditExtrasInfoResponse>() {
                     @Override
-                    public void onSuccess(BookingEditExtrasInfoResponse response)
-                    {
+                    public void onSuccess(BookingEditExtrasInfoResponse response) {
                         BookingEditExtrasViewModel editBookingExtrasViewModel =
                                 BookingEditExtrasViewModel.from(response);
                         mBus.post(new BookingEditEvent.ReceiveEditBookingExtrasViewModelSuccess(
@@ -271,11 +251,11 @@ public class BookingEditManager
                     }
 
                     @Override
-                    public void onError(DataManager.DataManagerError error)
-                    {
+                    public void onError(DataManager.DataManagerError error) {
                         mBus.post(new BookingEditEvent.ReceiveEditBookingExtrasViewModelError(error));
 
                     }
-                });
+                }
+        );
     }
 }

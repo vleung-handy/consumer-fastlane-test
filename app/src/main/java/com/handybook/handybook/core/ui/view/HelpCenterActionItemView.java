@@ -23,9 +23,8 @@ import com.squareup.otto.Bus;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+public class HelpCenterActionItemView extends FrameLayout implements View.OnClickListener {
 
-public class HelpCenterActionItemView extends FrameLayout implements View.OnClickListener
-{
     @Bind(R.id.help_center_action_layout)
     ViewGroup mHelpCenterActionLayout;
     @Bind(R.id.help_action_image)
@@ -39,8 +38,7 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
     private String mTitle;
     private Bus mBus;
 
-    public HelpCenterActionItemView(final Context context, final Bus bus)
-    {
+    public HelpCenterActionItemView(final Context context, final Bus bus) {
         super(context);
         init(bus);
     }
@@ -48,8 +46,7 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
     public HelpCenterActionItemView(
             final Context context, final AttributeSet attrs,
             final Bus bus
-    )
-    {
+    ) {
         super(context, attrs);
         init(bus);
     }
@@ -59,8 +56,7 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
             final AttributeSet attrs,
             final int defStyleAttr,
             final Bus bus
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr);
         init(mBus);
     }
@@ -72,14 +68,12 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
             final int defStyleAttr,
             final int defStyleRes,
             final Bus bus
-    )
-    {
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(bus);
     }
 
-    public void setDisplay(String title, String subtitle, String deeplink, @DrawableRes int icon)
-    {
+    public void setDisplay(String title, String subtitle, String deeplink, @DrawableRes int icon) {
         mTitle = title;
         mDeepLink = deeplink;
         mHelpActionTitle.setText(title);
@@ -87,8 +81,7 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
         mHelpActionImage.setImageResource(icon);
     }
 
-    private void init(final Bus bus)
-    {
+    private void init(final Bus bus) {
         mBus = bus;
         inflate(getContext(), R.layout.element_help_center_action, this);
         ButterKnife.bind(this);
@@ -96,12 +89,9 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
     }
 
     @Override
-    public void onClick(final View v)
-    {
-        if (!Strings.isNullOrEmpty(mDeepLink))
-        {
-            if (!Strings.isNullOrEmpty(mTitle))
-            {
+    public void onClick(final View v) {
+        if (!Strings.isNullOrEmpty(mDeepLink)) {
+            if (!Strings.isNullOrEmpty(mTitle)) {
                 mBus.post(new LogEvent.AddLogEvent(new HelpCenterLog.HelpLinkTappedLog(
                         mTitle, mDeepLink
                 )));

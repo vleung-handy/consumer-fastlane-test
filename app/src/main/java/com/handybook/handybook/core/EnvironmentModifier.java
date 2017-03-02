@@ -4,17 +4,17 @@ import android.content.Context;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.core.constant.PrefsKey;
-import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.library.util.PropertiesReader;
 import com.squareup.otto.Bus;
 
 import java.util.Properties;
 
-public class EnvironmentModifier
-{
-    public static final class Environment
-    {
+public class EnvironmentModifier {
+
+    public static final class Environment {
+
         public static final String PRODUCTION = "p";
         public static final String STAGING = "s";
         public static final String LOCAL = "l";
@@ -28,13 +28,11 @@ public class EnvironmentModifier
             Context context,
             Bus bus,
             DefaultPreferencesManager defaultPreferencesManager
-    )
-    {
+    ) {
         mBus = bus;
         mDefaultPreferencesManager = defaultPreferencesManager;
 
-        try
-        {
+        try {
             Properties properties = PropertiesReader.getProperties(context, "override.properties");
             String environment = properties.getProperty("environment", Environment.STAGING);
             environment = mDefaultPreferencesManager.getString(
@@ -43,49 +41,42 @@ public class EnvironmentModifier
             ); // whatever is stored in prefs is higher priority
 
             mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
-        } catch (Exception e)
-        {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String getEnvironment()
-    {
+    public String getEnvironment() {
         String defaultEnvironment = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
-                Environment.PRODUCTION : Environment.STAGING;
+                                    Environment.PRODUCTION : Environment.STAGING;
 
         String response = mDefaultPreferencesManager.getString(
                 PrefsKey.ENVIRONMENT_PREFIX,
                 defaultEnvironment
         );
 
-        if (android.text.TextUtils.isEmpty(response))
-        {
+        if (android.text.TextUtils.isEmpty(response)) {
             return defaultEnvironment;
         }
-        else
-        {
+        else {
             return response;
         }
     }
 
-    public boolean isStaging()
-    {
+    public boolean isStaging() {
         return Environment.STAGING.equals(getEnvironment());
     }
 
-    public boolean isProduction()
-    {
+    public boolean isProduction() {
         return Environment.PRODUCTION.equals(getEnvironment());
     }
 
-    public boolean isLocal()
-    {
+    public boolean isLocal() {
         return Environment.LOCAL.equals(getEnvironment());
     }
 
-    public void setEnvironment(String environment)
-    {
+    public void setEnvironment(String environment) {
         String previousEnvironment = getEnvironment();
         mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
 

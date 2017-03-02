@@ -9,15 +9,13 @@ import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ModelFactory
-{
-    public static RecurringBooking createRecurringPlan()
-    {
+public class ModelFactory {
+
+    public static RecurringBooking createRecurringPlan() {
         return createRecurringPlan(createAddress());
     }
 
-    public static RecurringBooking createRecurringPlan(Booking.Address address)
-    {
+    public static RecurringBooking createRecurringPlan(Booking.Address address) {
         return new RecurringBooking(
                 1,
                 "x",
@@ -32,30 +30,24 @@ public class ModelFactory
         );
     }
 
-
-    public static ArrayList<RecurringBooking> createRecurringPlans(int n)
-    {
+    public static ArrayList<RecurringBooking> createRecurringPlans(int n) {
         ArrayList<RecurringBooking> plans = new ArrayList<>();
-        for (int i = 0; i < n; ++i)
-        {
+        for (int i = 0; i < n; ++i) {
             plans.add(createRecurringPlan());
         }
         return plans;
     }
 
-    public static RecurringBookingsResponse createRecurringBookingsResponse()
-    {
+    public static RecurringBookingsResponse createRecurringBookingsResponse() {
         return new RecurringBookingsResponse(createRecurringPlans(2));
 
     }
 
-    public static Booking.Address createAddress()
-    {
+    public static Booking.Address createAddress() {
         return new Booking.Address("address1", "address2", "city", "state", "10001", 0, 0);
     }
 
-    public static Booking.Address createAddress(EditAddressRequest request)
-    {
+    public static Booking.Address createAddress(EditAddressRequest request) {
         return new Booking.Address(
                 request.getAddress1(),
                 request.getAddress2(),
@@ -67,8 +59,7 @@ public class ModelFactory
         );
     }
 
-    public static BookingEditFrequencyInfoResponse createBookingEditFrequencyInfoResponse(int current)
-    {
+    public static BookingEditFrequencyInfoResponse createBookingEditFrequencyInfoResponse(int current) {
         return new BookingEditFrequencyInfoResponse("$75", "$81", "$87", current);
     }
 }

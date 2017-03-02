@@ -6,8 +6,8 @@ import com.stripe.android.model.Card;
 
 import java.util.UUID;
 
-public class TestUsers
-{
+public class TestUsers {
+
     private static Card mValidVisaCard = new Card(
             "4242424242424242", 12, 50, "424");
 
@@ -23,34 +23,43 @@ public class TestUsers
     }
 
     public static TestUser EXISTING_USER_BOOKING_CREATION =
-            new TestUser("test+user@handybook.com",
-                    "supersecretpassword");
+            new TestUser(
+                    "test+user@handybook.com",
+                    "supersecretpassword"
+            );
 
     public static TestUser CANCEL_SINGLE_BOOKING_USER =
-            new TestUser("test+cancel-single-booking@handybook.com",
-                    "supersecretpassword");
+            new TestUser(
+                    "test+cancel-single-booking@handybook.com",
+                    "supersecretpassword"
+            );
 
     public static TestUser UPDATE_PROFILE_USER =
             new TestUser(
                     "test+user2@handybook.com",
-                    "supersecretpassword");
+                    "supersecretpassword"
+            );
 
     public static TestUser UPDATE_PASSWORD_USER =
             new TestUser(
                     "test+android@handybook.com",
-                    "supersecretpassword");
+                    "supersecretpassword"
+            );
 
     public static TestUser LOGIN =
             new TestUser(
                     "test+user@handybook.com",
-                    "supersecretpassword");
+                    "supersecretpassword"
+            );
 
     public static TestUser CANCEL =
             new TestUser(
                     "test+cancel@handybook.com",
-                    "supersecretpassword");
+                    "supersecretpassword"
+            );
 
     public static TestUser CANCEL_RECURRING_USER = new TestUser(
             "test+cancel-plan@handybook.com",
-            "supersecretpassword");
+            "supersecretpassword"
+    );
 }

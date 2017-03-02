@@ -25,8 +25,8 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class PeakPricingTableFragment extends BookingFlowFragment
-{
+public final class PeakPricingTableFragment extends BookingFlowFragment {
+
     static final String EXTRA_PEAK_PRICE_INDEX = "com.handy.handy.EXTRA_PEAK_PRICE_INDEX";
     static final String EXTRA_PEAK_PRICE_TABLE = "com.handy.handy.EXTRA_PEAK_PRICE_TABLE";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
@@ -50,8 +50,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
     private ArrayList<PeakPriceInfo> mPriceTablePage;
 
 
-    private enum RowState
-    {
+    private enum RowState {
         PRICE_REGULAR,
         PRICE_PEAK,
         AVAILABLE,
@@ -63,8 +62,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
             final ArrayList<ArrayList<PeakPriceInfo>> peakPriceTable,
             final Booking rescheduleBooking,
             final boolean rescheduleAll, final boolean forVoucher
-    )
-    {
+    ) {
         final PeakPricingTableFragment fragment = new PeakPricingTableFragment();
         final Bundle args = new Bundle();
         args.putInt(EXTRA_PEAK_PRICE_INDEX, index);
@@ -78,13 +76,13 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Bundle args = getArguments();
         mPageIndex = args.getInt(EXTRA_PEAK_PRICE_INDEX, 0);
         mIsForVoucher = args.getBoolean(EXTRA_FOR_VOUCHER, false);
-        mPeakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>) args.getSerializable(EXTRA_PEAK_PRICE_TABLE);
+        mPeakPriceTable = (ArrayList<ArrayList<PeakPriceInfo>>) args.getSerializable(
+                EXTRA_PEAK_PRICE_TABLE);
         mBookingToReschedule = args.getParcelable(EXTRA_RESCHEDULE_BOOKING);
         mIsForRescheduleAll = args.getBoolean(EXTRA_RESCHEDULE_ALL);
         mIsForReschedule = mBookingToReschedule != null;
@@ -92,12 +90,10 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         mUser = userManager.getCurrentUser();
         mCurrencyCharacter = mIsForReschedule ? mUser.getCurrencyChar() : mQuote.getCurrencyChar();
         mPriceTablePage = mPeakPriceTable.get(mPageIndex);
-        if (mIsForVoucher || mIsForReschedule)
-        {
+        if (mIsForVoucher || mIsForReschedule) {
             mRecurrence = PeakPriceInfo.RECURRENCE_INVALID;
         }
-        else
-        {
+        else {
             mRecurrence = PeakPriceInfo.recurrenceFrom(
                     bookingManager.getCurrentTransaction().getRecurringFrequency()
             );
@@ -108,42 +104,38 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
         final View root = inflater.inflate(
                 R.layout.fragment_peak_pricing_table,
                 container,
                 false
         );
         ButterKnife.bind(this, root);
-        for (final PeakPriceInfo eachInfo : mPriceTablePage)
-        {
+        for (final PeakPriceInfo eachInfo : mPriceTablePage) {
             final View eachRow = addTimeSlotRow(mTimeSlotContainer, eachInfo);
             mTimeSlotContainer.addView(eachRow, mTimeSlotContainer.getChildCount());
         }
         return root;
     }
 
-    private View addTimeSlotRow(final ViewGroup parent, final PeakPriceInfo peakPriceInfo)
-    {
+    private View addTimeSlotRow(final ViewGroup parent, final PeakPriceInfo peakPriceInfo) {
         final Date date = peakPriceInfo.getDate();
         final PeakPriceInfo.Type type = peakPriceInfo.getType(mRecurrence);
         final float price = peakPriceInfo.getPrice(mRecurrence);
 
         final View row = getActivity().getLayoutInflater()
-                .inflate(R.layout.table_item_price, parent, false);
+                                      .inflate(R.layout.table_item_price, parent, false);
         final TextView timeText = (TextView) row.findViewById(R.id.time_text);
         final TextView priceText = (TextView) row.findViewById(R.id.price_text);
 
         //we want to display the time using the booking location's time zone
         String timeZone = null;
-        if (bookingManager.getCurrentRequest() != null)
-        {
+        if (bookingManager.getCurrentRequest() != null) {
             timeZone = bookingManager.getCurrentRequest().getTimeZone();
         }
-        else
-        {
-            Crashlytics.logException(new RuntimeException("addTimeSlotRow: bookingManager.getCurrentRequest() IS NULL!!!!"));
+        else {
+            Crashlytics.logException(new RuntimeException(
+                    "addTimeSlotRow: bookingManager.getCurrentRequest() IS NULL!!!!"));
         }
         timeText.setText(DateTimeUtils.formatDate(
                 date,
@@ -153,26 +145,21 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         final String priceString = TextUtils.formatPrice(price, mCurrencyCharacter, null);
         priceText.setText(priceString);
 
-        switch (type)
-        {
+        switch (type) {
             case PEAK_PRICE:
                 priceText.setTextColor(ContextCompat.getColor(getContext(), R.color.price_green));
-                if (mIsForVoucher || mIsForReschedule || mIsForRescheduleAll)
-                {
+                if (mIsForVoucher || mIsForReschedule || mIsForRescheduleAll) {
                     formatRow(row, RowState.AVAILABLE);
                 }
-                else
-                {
+                else {
                     formatRow(row, RowState.PRICE_PEAK);
                 }
                 break;
             case REG_PRICE:
-                if (mIsForVoucher || mIsForReschedule || mIsForRescheduleAll)
-                {
+                if (mIsForVoucher || mIsForReschedule || mIsForRescheduleAll) {
                     formatRow(row, RowState.AVAILABLE);
                 }
-                else
-                {
+                else {
                     formatRow(row, RowState.PRICE_REGULAR);
                 }
                 break;
@@ -181,16 +168,13 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
             default:
         }
 
-        if (type.equals(PeakPriceInfo.Type.PEAK_PRICE) || type.equals(PeakPriceInfo.Type.REG_PRICE))
-        {
-            row.setOnClickListener(new View.OnClickListener()
-            {
+        if (type.equals(PeakPriceInfo.Type.PEAK_PRICE) ||
+            type.equals(PeakPriceInfo.Type.REG_PRICE)) {
+            row.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(final View v)
-                {
+                public void onClick(final View v) {
 
-                    if (mIsForReschedule)
-                    {
+                    if (mIsForReschedule) {
                         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingPushbackSubmittedLog(
                                 mBookingToReschedule.getStartDate(), date
                         )));
@@ -203,8 +187,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
                                 null
                         );
                     }
-                    else
-                    {
+                    else {
                         mQuote.setStartDate(date);
                         continueBookingFlow();
                     }
@@ -214,12 +197,10 @@ public final class PeakPricingTableFragment extends BookingFlowFragment
         return row;
     }
 
-    private void formatRow(final View row, final RowState rowState)
-    {
+    private void formatRow(final View row, final RowState rowState) {
         final TextView vTime = (TextView) row.findViewById(R.id.time_text);
         final TextView vPrice = (TextView) row.findViewById(R.id.price_text);
-        switch (rowState)
-        {
+        switch (rowState) {
             case PRICE_REGULAR:
                 vTime.setTextColor(ContextCompat.getColor(getContext(), R.color.handy_text_black));
                 vPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.price_green));

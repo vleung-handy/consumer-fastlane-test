@@ -10,8 +10,8 @@ import java.util.Date;
 /**
  * Object describing one provider in a ProTeam
  */
-public class ProTeamPro implements Serializable, Comparable
-{
+public class ProTeamPro implements Serializable, Comparable {
+
     @SerializedName("id")
     private int mId;
     @SerializedName("name")
@@ -35,85 +35,70 @@ public class ProTeamPro implements Serializable, Comparable
     @SerializedName("is_favorite")
     private boolean mIsFavorite;
 
-    public int getId()
-    {
+    public int getId() {
         return mId;
     }
 
     @Nullable
-    public String getName()
-    {
+    public String getName() {
         return mName;
     }
 
-    public ProTeamCategoryType getCategoryType()
-    {
+    public ProTeamCategoryType getCategoryType() {
         return mCategoryType;
     }
 
     @Nullable
-    public String getDescription()
-    {
+    public String getDescription() {
         return mDescription;
     }
 
     @Nullable
-    public Date getLastSeenAt()
-    {
+    public Date getLastSeenAt() {
         return mLastSeenAt;
     }
 
     @Nullable
-    public Float getAverageRating()
-    {
+    public Float getAverageRating() {
         return mAverageRating;
     }
 
     @Nullable
-    public Integer getBookingCount()
-    {
+    public Integer getBookingCount() {
         return mBookingCount;
     }
 
-    public String getImageUrl()
-    {
+    public String getImageUrl() {
         return mImageUrl;
     }
 
-    public boolean isChatEnabled()
-    {
+    public boolean isChatEnabled() {
         return mChatEnabled;
     }
 
-    public String getLayerUserId()
-    {
+    public String getLayerUserId() {
         return mLayerUserId;
     }
 
-    public boolean isFavorite()
-    {
+    public boolean isFavorite() {
         return mIsFavorite;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "[" + mName + "]";
     }
 
     @Override
-    public int compareTo(final Object object)
-    {
-        if (object instanceof ProTeamPro)
-        {
+    public int compareTo(final Object object) {
+        if (object instanceof ProTeamPro) {
             final ProTeamPro otherProTeamPro = (ProTeamPro) object;
             if (mLastSeenAt == null && otherProTeamPro.mLastSeenAt == null) { return 0; }
             if (otherProTeamPro.mLastSeenAt == null) { return 1; }
             if (mLastSeenAt == null) { return -1; }
             return otherProTeamPro.mLastSeenAt.compareTo(mLastSeenAt);
         }
-        else
-        {
+        else {
             return 1;
         }
     }

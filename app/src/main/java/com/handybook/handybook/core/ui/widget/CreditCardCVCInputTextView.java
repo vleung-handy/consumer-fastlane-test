@@ -7,8 +7,7 @@ import android.util.AttributeSet;
 import com.handybook.handybook.library.ui.view.InputTextField;
 import com.stripe.android.model.Card;
 
-public final class CreditCardCVCInputTextView extends InputTextField
-{
+public final class CreditCardCVCInputTextView extends InputTextField {
 
     private static final int MAX_INPUT_LENGTH = 4;
 
@@ -22,15 +21,18 @@ public final class CreditCardCVCInputTextView extends InputTextField
         init();
     }
 
-    public CreditCardCVCInputTextView(final Context context, final AttributeSet attrs,
-                                      final int defStyle) {
+    public CreditCardCVCInputTextView(
+            final Context context, final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
         init();
     }
 
     protected void init() {
         super.init();
-        InputFilter[] filterArray = new InputFilter[]{ new InputFilter.LengthFilter(MAX_INPUT_LENGTH)};
+        InputFilter[] filterArray
+                = new InputFilter[]{new InputFilter.LengthFilter(MAX_INPUT_LENGTH)};
         this.setFilters(filterArray);
     }
 

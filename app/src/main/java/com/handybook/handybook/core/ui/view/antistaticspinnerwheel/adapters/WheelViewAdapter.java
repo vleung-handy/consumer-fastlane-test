@@ -32,6 +32,7 @@ import android.view.ViewGroup;
  * Wheel items adapter interface
  */
 public interface WheelViewAdapter {
+
     /**
      * Gets items count
      * @return the count of spinnerwheel items

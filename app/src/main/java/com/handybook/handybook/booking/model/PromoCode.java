@@ -1,7 +1,9 @@
 package com.handybook.handybook.booking.model;
 
 public final class PromoCode {
+
     public enum Type {UNKNOWN, COUPON, VOUCHER}
+
 
     private Type type;
     private String code, uniq;

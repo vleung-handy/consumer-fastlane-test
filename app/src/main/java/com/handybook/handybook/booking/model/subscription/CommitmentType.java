@@ -22,8 +22,7 @@ import java.util.Map;
  * In the new pricing / subscription model, there can only be two commitment types :
  * {no_commitment, months}
  */
-public class CommitmentType implements Serializable
-{
+public class CommitmentType implements Serializable {
 
     public static final String STRING_NO_COMMITMENT = "no_commitment";
     public static final String STRING_MONTHS = "months";
@@ -73,33 +72,27 @@ public class CommitmentType implements Serializable
      * the user selects.
      *
      */
-    public void transform(CommitmentTypeName commitmentToUse)
-    {
+    public void transform(CommitmentTypeName commitmentToUse) {
         mSubscriptionPrices = new HashMap<>();
         mUniqueFrequencies = new ArrayList<>();
         mUniqueLengths = new ArrayList<>();
 
-        try
-        {
-            if (commitmentToUse == CommitmentTypeName.MONTHS && mMonths != null)
-            {
+        try {
+            if (commitmentToUse == CommitmentTypeName.MONTHS && mMonths != null) {
                 processLengths(mMonths);
             }
-            else if (mNoCommitment != null)
-            {
+            else if (mNoCommitment != null) {
                 //fall back to use
                 processLengths(mNoCommitment);
                 Crashlytics.logException(new RuntimeException(
                         "We should not be handling no_commitment inside the new CommitmentType model"));
             }
-            else
-            {
+            else {
                 Crashlytics.logException(new RuntimeException(
                         "We should not be in the new CommitmentType model with nothing to process"));
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             //This shouldn't happen, but if it does, just log it
             Crashlytics.logException(new RuntimeException(e.getMessage()));
         }
@@ -110,23 +103,19 @@ public class CommitmentType implements Serializable
      *
      * @param data
      */
-    private void processLengths(JsonObject data) throws Exception
-    {
-        if (data == null)
-        {
+    private void processLengths(JsonObject data) throws Exception {
+        if (data == null) {
             return;
         }
 
         //The first level has keys to the subscription Lengths.
-        for (final Map.Entry<String, JsonElement> entrySet : data.entrySet())
-        {
+        for (final Map.Entry<String, JsonElement> entrySet : data.entrySet()) {
             String lengthKey = entrySet.getKey();       //in the form of {"0", "3", "6", "9"}
 
             JsonObject lengthInformation = (JsonObject) entrySet.getValue();
 
             //if we don't already have this length stored, then store it.
-            if (!contains(mUniqueLengths, lengthKey))
-            {
+            if (!contains(mUniqueLengths, lengthKey)) {
                 SubscriptionLength length = new SubscriptionLength(
                         lengthKey,
                         GsonUtil.safeGetAsString(lengthInformation.get(JSON_KEY_TITLE)),
@@ -135,8 +124,7 @@ public class CommitmentType implements Serializable
 
                 //This is not added to the unique lengths because 0 is not to be displayed
                 // for the Plan terms
-                if (!lengthKey.equals("0"))
-                {
+                if (!lengthKey.equals("0")) {
                     mUniqueLengths.add(length);
                 }
             }
@@ -152,15 +140,12 @@ public class CommitmentType implements Serializable
      * @param data
      * @param lengthKey the length this frequency belongs to
      */
-    private void processFrequencies(JsonObject data, String lengthKey) throws Exception
-    {
-        if (data == null)
-        {
+    private void processFrequencies(JsonObject data, String lengthKey) throws Exception {
+        if (data == null) {
             return;
         }
 
-        for (final Map.Entry<String, JsonElement> entrySet : data.entrySet())
-        {
+        for (final Map.Entry<String, JsonElement> entrySet : data.entrySet()) {
             //The key is in the form of {"price", "weekly_recurring_price", "monthly_recurring_price", etc.},
             //but it needs to be converted to {0, 2, 4, etc. }
             String freqKey = SubscriptionFrequency.convertFrequencyKey(entrySet.getKey());
@@ -173,8 +158,7 @@ public class CommitmentType implements Serializable
             boolean isDefault = GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DEFAULT));
 
             //if it's enabled and we don't already have this frequency, then add it to frequency list
-            if (isEnabled && !contains(mUniqueFrequencies, freqKey))
-            {
+            if (isEnabled && !contains(mUniqueFrequencies, freqKey)) {
                 SubscriptionFrequency frequency = new SubscriptionFrequency(
                         freqKey,
                         GsonUtil.safeGetAsString(freqInformation.get(JSON_KEY_TITLE)),
@@ -191,8 +175,7 @@ public class CommitmentType implements Serializable
             @Override
             public int compare(
                     final SubscriptionFrequency o1, final SubscriptionFrequency o2
-            )
-            {
+            ) {
                 return o1.getKey().compareTo(o2.getKey());
             }
         });
@@ -207,31 +190,26 @@ public class CommitmentType implements Serializable
      * @return
      */
     @Nullable
-    public Price getPrice(String lengthKey, String frequencyKey, String hour)
-    {
+    public Price getPrice(String lengthKey, String frequencyKey, String hour) {
         SubscriptionPrices subscriptionPrices = getSubscriptionPrice(lengthKey, frequencyKey);
 
-        if (subscriptionPrices != null && subscriptionPrices.getPrices() != null)
-        {
+        if (subscriptionPrices != null && subscriptionPrices.getPrices() != null) {
             return subscriptionPrices.getPrices().get(hour);
         }
 
         return null;
     }
 
-    public SubscriptionPrices getSubscriptionPrice(String lengthKey, String frequencyKey)
-    {
-        if (!TextUtils.isEmpty(lengthKey) && !TextUtils.isEmpty(frequencyKey) && mSubscriptionPrices != null)
-        {
+    public SubscriptionPrices getSubscriptionPrice(String lengthKey, String frequencyKey) {
+        if (!TextUtils.isEmpty(lengthKey) && !TextUtils.isEmpty(frequencyKey) &&
+            mSubscriptionPrices != null) {
 
             Map<String, SubscriptionPrices> pricesMap = mSubscriptionPrices.get(lengthKey);
 
-            if (pricesMap != null)
-            {
+            if (pricesMap != null) {
                 return pricesMap.get(frequencyKey);
             }
-            else
-            {
+            else {
                 //there is something wrong here, prices not found. Invalid length / frequency combination
                 Crashlytics.logException(new RuntimeException(
                         String.format(
@@ -258,12 +236,10 @@ public class CommitmentType implements Serializable
             JsonObject data,
             boolean isDefault,
             boolean isEnabled
-    ) throws Exception
-    {
+    ) throws Exception {
 
         //if this length entry doesn't exist yet, create the length entry
-        if (!mSubscriptionPrices.containsKey(lengthKey))
-        {
+        if (!mSubscriptionPrices.containsKey(lengthKey)) {
             mSubscriptionPrices.put(lengthKey, new HashMap<String, SubscriptionPrices>());
         }
 
@@ -271,18 +247,15 @@ public class CommitmentType implements Serializable
 
         //the freqPriceMap is supposed to contain SubscriptionPrices, so we extract that
         //information out of data and build it here.
-        if (!freqPriceMap.containsKey(frequencyKey))
-        {
+        if (!freqPriceMap.containsKey(frequencyKey)) {
 
             //iterates through the "hours" data. "Hours" is also going to be the key
             Map<String, Price> prices = new HashMap<>();
 
-            for (final Map.Entry<String, JsonElement> entrySet : data.entrySet())
-            {
+            for (final Map.Entry<String, JsonElement> entrySet : data.entrySet()) {
                 String hourKey = entrySet.getKey(); //in the form of {"3.0", "3.5", "4.0", etc.}
                 JsonObject priceData = (JsonObject) entrySet.getValue();
-                if (priceData != null)
-                {
+                if (priceData != null) {
                     prices.put(
                             hourKey,
                             new Price(
@@ -291,8 +264,7 @@ public class CommitmentType implements Serializable
                             )
                     );
                 }
-                else
-                {
+                else {
                     prices.put(hourKey, null);
                 }
             }
@@ -309,14 +281,10 @@ public class CommitmentType implements Serializable
         }
     }
 
-    private boolean contains(List<? extends SubscriptionType> subscriptionTypes, String key)
-    {
-        if (subscriptionTypes != null)
-        {
-            for (SubscriptionType sub : subscriptionTypes)
-            {
-                if (sub.getKey().equals(key))
-                {
+    private boolean contains(List<? extends SubscriptionType> subscriptionTypes, String key) {
+        if (subscriptionTypes != null) {
+            for (SubscriptionType sub : subscriptionTypes) {
+                if (sub.getKey().equals(key)) {
                     return true;
                 }
             }
@@ -325,33 +293,27 @@ public class CommitmentType implements Serializable
         return false;
     }
 
-    public void setNoCommitment(final JsonObject noCommitment)
-    {
+    public void setNoCommitment(final JsonObject noCommitment) {
         mNoCommitment = noCommitment;
     }
 
-    public void setMonths(final JsonObject months)
-    {
+    public void setMonths(final JsonObject months) {
         mMonths = months;
     }
 
-    public List<SubscriptionFrequency> getUniqueFrequencies()
-    {
+    public List<SubscriptionFrequency> getUniqueFrequencies() {
         return mUniqueFrequencies;
     }
 
-    public List<SubscriptionLength> getUniqueLengths()
-    {
+    public List<SubscriptionLength> getUniqueLengths() {
         return mUniqueLengths;
     }
 
-    public Map<String, Map<String, SubscriptionPrices>> getSubscriptionPrices()
-    {
+    public Map<String, Map<String, SubscriptionPrices>> getSubscriptionPrices() {
         return mSubscriptionPrices;
     }
 
-    public enum CommitmentTypeName
-    {
+    public enum CommitmentTypeName {
         @SerializedName(STRING_NO_COMMITMENT)
         NO_COMMITMENT(STRING_NO_COMMITMENT),
         @SerializedName(STRING_MONTHS)
@@ -359,15 +321,13 @@ public class CommitmentType implements Serializable
 
         private final String mValue;
 
-        CommitmentTypeName(String value)
-        {
+        CommitmentTypeName(String value) {
             mValue = value;
         }
 
         @NonNull
         @Override
-        public String toString()
-        {
+        public String toString() {
             return mValue;
         }
     }

@@ -12,8 +12,7 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import javax.inject.Inject;
 
-public final class BookingRecurrenceActivity extends MenuDrawerActivity
-{
+public final class BookingRecurrenceActivity extends MenuDrawerActivity {
 
     @Inject
     BookingManager mBookingManager;
@@ -21,14 +20,13 @@ public final class BookingRecurrenceActivity extends MenuDrawerActivity
     @Override
     protected final Fragment createFragment() {
         BookingQuote quote = mBookingManager.getCurrentQuote();
-        if (quote.isCommitmentMonthsActive())
-        {
+        if (quote.isCommitmentMonthsActive()) {
             mBookingManager.getCurrentTransaction().setCommitmentType(CommitmentType.STRING_MONTHS);
             return BookingSubscriptionFragment.newInstance();
         }
-        else
-        {
-            mBookingManager.getCurrentTransaction().setCommitmentType(CommitmentType.STRING_NO_COMMITMENT);
+        else {
+            mBookingManager.getCurrentTransaction()
+                           .setCommitmentType(CommitmentType.STRING_NO_COMMITMENT);
             return BookingRecurrenceFragment.newInstance();
         }
     }

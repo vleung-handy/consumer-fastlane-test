@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 
 class SnowFlake {
+
     private static final float ANGE_RANGE = 0.1f;
     private static final float HALF_ANGLE_RANGE = ANGE_RANGE / 2f;
     private static final float HALF_PI = (float) Math.PI / 2f;
@@ -27,13 +28,21 @@ class SnowFlake {
         int x = random.getRandom(width);
         int y = random.getRandom(height);
         Point position = new Point(x, y);
-        float angle = random.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI - HALF_ANGLE_RANGE;
+        float angle = random.getRandom(ANGLE_SEED) / ANGLE_SEED * ANGE_RANGE + HALF_PI -
+                      HALF_ANGLE_RANGE;
         float increment = random.getRandom(INCREMENT_LOWER, INCREMENT_UPPER);
         float flakeSize = random.getRandom(FLAKE_SIZE_LOWER, FLAKE_SIZE_UPPER);
         return new SnowFlake(random, position, angle, increment, flakeSize, paint);
     }
 
-    SnowFlake(Random random, Point position, float angle, float increment, float flakeSize, Paint paint) {
+    SnowFlake(
+            Random random,
+            Point position,
+            float angle,
+            float increment,
+            float flakeSize,
+            Paint paint
+    ) {
         this.random = random;
         this.position = position;
         this.angle = angle;
@@ -58,7 +67,8 @@ class SnowFlake {
     private boolean isInside(int width, int height) {
         int x = position.x;
         int y = position.y;
-        return x >= -flakeSize - 1 && x + flakeSize <= width && y >= -flakeSize - 1 && y - flakeSize < height;
+        return x >= -flakeSize - 1 && x + flakeSize <= width && y >= -flakeSize - 1 &&
+               y - flakeSize < height;
     }
 
     private void reset(int width) {

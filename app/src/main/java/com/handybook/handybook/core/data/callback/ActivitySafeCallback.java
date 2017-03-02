@@ -14,8 +14,8 @@ import java.lang.ref.WeakReference;
  *
  * @param <T>
  */
-public abstract class ActivitySafeCallback<T, A extends Activity> extends CancellableCallback<T>
-{
+public abstract class ActivitySafeCallback<T, A extends Activity> extends CancellableCallback<T> {
+
     /**
      * NOTE: for the WeakReference to effectively avoid memory leaks,
      * this callback should be used as a static class;
@@ -23,19 +23,17 @@ public abstract class ActivitySafeCallback<T, A extends Activity> extends Cancel
      */
     protected WeakReference<A> mActivityWeakReference;
 
-    public ActivitySafeCallback(@NonNull A activity)
-    {
+    public ActivitySafeCallback(@NonNull A activity) {
         mActivityWeakReference = new WeakReference<>(activity);
     }
 
     @SuppressLint("NewApi")
     @Override
-    protected boolean areCallbacksEnabled()
-    {
+    protected boolean areCallbacksEnabled() {
         return super.areCallbacksEnabled()
-                && mActivityWeakReference.get() != null
-                && !mActivityWeakReference.get().isFinishing()
-                && (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1 //< api 17
-                || !mActivityWeakReference.get().isDestroyed());//requires api 17+
+               && mActivityWeakReference.get() != null
+               && !mActivityWeakReference.get().isFinishing()
+               && (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1 //< api 17
+                   || !mActivityWeakReference.get().isDestroyed());//requires api 17+
     }
 }

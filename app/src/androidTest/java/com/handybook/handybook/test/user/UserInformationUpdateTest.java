@@ -17,9 +17,8 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+public class UserInformationUpdateTest {
 
-public class UserInformationUpdateTest
-{
     private static final TestUser TEST_USER = TestUsers.UPDATE_PROFILE_USER;
 
     private static final String NEW_NAME = "test updateuser";
@@ -32,8 +31,7 @@ public class UserInformationUpdateTest
             new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
 
     @Test
-    public void testUpdateInformation()
-    {
+    public void testUpdateInformation() {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();

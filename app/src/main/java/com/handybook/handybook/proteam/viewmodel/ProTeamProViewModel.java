@@ -8,8 +8,8 @@ import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.layer.sdk.messaging.Conversation;
 
-public class ProTeamProViewModel
-{
+public class ProTeamProViewModel {
+
     private final ProTeamPro mProTeamPro;
     private final ProviderMatchPreference mProviderMatchPreference;
     private final String mTitle;
@@ -25,8 +25,7 @@ public class ProTeamProViewModel
             @NonNull final ProTeamPro proTeamPro,
             @NonNull final ProviderMatchPreference providerMatchPreference,
             final boolean shouldShowHandymanIndicators
-    )
-    {
+    ) {
         mProTeamPro = proTeamPro;
         mProviderMatchPreference = providerMatchPreference;
         mIsChecked = mProviderMatchPreference == ProviderMatchPreference.PREFERRED;
@@ -34,7 +33,7 @@ public class ProTeamProViewModel
         mAverageRating = proTeamPro.getAverageRating();
         mJobsCount = proTeamPro.getBookingCount();
         mIsHandymanIndicatorEnabled = shouldShowHandymanIndicators &&
-                proTeamPro.getCategoryType() == ProTeamCategoryType.HANDYMEN;
+                                      proTeamPro.getCategoryType() == ProTeamCategoryType.HANDYMEN;
         mImageUrl = proTeamPro.getImageUrl();
         mIsFavorite = proTeamPro.isFavorite();
     }
@@ -43,8 +42,7 @@ public class ProTeamProViewModel
             @NonNull final ProTeamPro proTeamPro,
             @NonNull final ProviderMatchPreference providerMatchPreference,
             final boolean shouldShowHandymanIndicators
-    )
-    {
+    ) {
         return new ProTeamProViewModel(
                 proTeamPro,
                 providerMatchPreference,
@@ -52,73 +50,61 @@ public class ProTeamProViewModel
         );
     }
 
-    public ProviderMatchPreference getProviderMatchPreference()
-    {
+    public ProviderMatchPreference getProviderMatchPreference() {
         return mProviderMatchPreference;
     }
 
     @NonNull
-    public ProTeamPro getProTeamPro()
-    {
+    public ProTeamPro getProTeamPro() {
         return mProTeamPro;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
     @Nullable
-    public Float getAverageRating()
-    {
+    public Float getAverageRating() {
         return mAverageRating;
     }
 
     @Nullable
-    public Integer getJobsCount()
-    {
+    public Integer getJobsCount() {
         return mJobsCount;
     }
 
-    public boolean isChecked()
-    {
+    public boolean isChecked() {
         return mIsChecked;
     }
 
-    public void setChecked(final boolean checked)
-    {
+    public void setChecked(final boolean checked) {
         mIsChecked = checked;
     }
 
-    public String getImageUrl()
-    {
+    public String getImageUrl() {
         return mImageUrl;
     }
 
-    public boolean isHandymanIndicatorEnabled()
-    {
+    public boolean isHandymanIndicatorEnabled() {
         return mIsHandymanIndicatorEnabled;
     }
 
-    public boolean isFavorite()
-    {
+    public boolean isFavorite() {
         return mIsFavorite;
     }
 
-    public interface OnInteractionListener
-    {
+    public interface OnInteractionListener {
+
         void onLongClick(ProTeamPro proTeamPro, ProviderMatchPreference providerMatchPreference);
 
         void onCheckedChanged(ProTeamPro proTeamPro, boolean checked);
     }
 
-    public Conversation getConversation()
-    {
+    public Conversation getConversation() {
         return mConversation;
     }
 
-    public void setConversation(final Conversation conversation)
-    {
+    public void setConversation(final Conversation conversation) {
         mConversation = conversation;
     }
 }

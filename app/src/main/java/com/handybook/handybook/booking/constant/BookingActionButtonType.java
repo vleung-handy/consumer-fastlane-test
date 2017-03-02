@@ -2,8 +2,7 @@ package com.handybook.handybook.booking.constant;
 
 import com.handybook.handybook.R;
 
-public enum BookingActionButtonType
-{
+public enum BookingActionButtonType {
     RESCHEDULE(BookingAction.ACTION_RESCHEDULE, R.string.reschedule,
                BookingActionButtonStyle.BLUE, R.id.action_button_reschedule_booking
     ),
@@ -42,8 +41,7 @@ public enum BookingActionButtonType
             int displayNameId,
             BookingActionButtonStyle style,
             int accessibilityId
-    )
-    {
+    ) {
         this.actionName = actionName;
         this.displayNameId = displayNameId;
         this.style = style;
@@ -56,39 +54,32 @@ public enum BookingActionButtonType
             BookingActionButtonStyle style,
             int leftDrawableResourceId,
             int accessibilityId
-    )
-    {
+    ) {
         this(actionName, displayNameId, style, accessibilityId);
         mLeftDrawableResourceId = leftDrawableResourceId;
     }
 
-    public int getLeftDrawableResourceId()
-    {
+    public int getLeftDrawableResourceId() {
         return mLeftDrawableResourceId;
     }
 
-    public int getBackgroundDrawableId()
-    {
+    public int getBackgroundDrawableId() {
         return style.getBackgroundDrawableId();
     }
 
-    public String getActionName()
-    {
+    public String getActionName() {
         return actionName;
     }
 
-    public int getDisplayNameId()
-    {
+    public int getDisplayNameId() {
         return displayNameId;
     }
 
-    public int getLayoutTemplateId()
-    {
+    public int getLayoutTemplateId() {
         return style.getLayoutTemplateId();
     }
 
-    public int getTextStyleId()
-    {
+    public int getTextStyleId() {
         return style.getTextStyleId();
     }
 

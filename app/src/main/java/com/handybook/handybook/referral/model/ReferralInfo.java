@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ReferralInfo implements Serializable
-{
+public class ReferralInfo implements Serializable {
+
     @SerializedName("guid")
     private String mGuid;
     @SerializedName("share_subject")
@@ -15,23 +15,19 @@ public class ReferralInfo implements Serializable
     @SerializedName("share_url")
     private String mUrl;
 
-    public String getGuid()
-    {
+    public String getGuid() {
         return mGuid;
     }
 
-    public String getSubject()
-    {
+    public String getSubject() {
         return mSubject;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return mMessage;
     }
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return mUrl;
     }
 }

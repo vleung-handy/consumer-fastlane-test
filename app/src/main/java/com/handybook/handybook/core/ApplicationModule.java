@@ -74,6 +74,8 @@ import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingCancelReasonFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingCancelWarningFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2;
+import com.handybook.handybook.booking.ui.fragment.BookingDateTimeInputFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
@@ -115,6 +117,7 @@ import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.ZipFragment;
+import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialogFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
@@ -149,12 +152,8 @@ import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.util.PropertiesReader;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
-import com.handybook.handybook.onboarding.OnboardActivity;
-import com.handybook.handybook.onboarding.OnboardFragment;
-import com.handybook.handybook.onboarding.OnboardPageFragment;
-import com.handybook.handybook.onboarding.OnboardV2Fragment;
-import com.handybook.handybook.onboarding.ServiceNotSupportedActivity;
-import com.handybook.handybook.persistentpromo.PersistentPromoModule;
+import com.handybook.handybook.onboarding.OnboardingModule;
+import com.handybook.handybook.promos.PromosModule;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
@@ -167,13 +166,8 @@ import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.push.receiver.PushReceiver;
-import com.handybook.handybook.referral.manager.ReferralsManager;
-import com.handybook.handybook.referral.ui.RedemptionActivity;
-import com.handybook.handybook.referral.ui.RedemptionEmailSignUpFragment;
-import com.handybook.handybook.referral.ui.RedemptionFragment;
-import com.handybook.handybook.referral.ui.RedemptionSignUpFragment;
-import com.handybook.handybook.referral.ui.ReferralActivity;
-import com.handybook.handybook.referral.ui.ReferralFragment;
+import com.handybook.handybook.ratingflow.RatingFlowModule;
+import com.handybook.handybook.referral.ReferralModule;
 import com.handybook.handybook.yozio.YozioMetaDataCallback;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerHelper;
@@ -207,6 +201,7 @@ import retrofit.converter.GsonConverter;
         BookingLocationFragment.class,
         BookingOptionsFragment.class,
         BookingDateFragment.class,
+        BookingDateFragmentV2.class,
         BookingAddressFragment.class,
         BookingHeaderFragment.class,
         BookingPaymentFragment.class,
@@ -243,10 +238,6 @@ import retrofit.converter.GsonConverter;
         BookingCancelReasonFragment.class,
         BookingCancelWarningFragment.class,
         YozioMetaDataCallback.class,
-        OnboardActivity.class,
-        OnboardFragment.class,
-        OnboardV2Fragment.class,
-        OnboardPageFragment.class,
         RateServiceDialogFragment.class,
         RateServiceConfirmDialogFragment.class,
         LaundryDropOffDialogFragment.class,
@@ -286,13 +277,7 @@ import retrofit.converter.GsonConverter;
         NavbarWebViewDialogFragment.class,
         ServiceCategoriesOverlayFragment.class,
         PushReceiver.class,
-        ReferralActivity.class,
-        ReferralFragment.class,
         ReferralDialogFragment.class,
-        RedemptionActivity.class,
-        RedemptionFragment.class,
-        RedemptionSignUpFragment.class,
-        RedemptionEmailSignUpFragment.class,
         RateImprovementDialogFragment.class,
         RatingsGridFragment.class,
         RateProTeamFragment.class,
@@ -310,7 +295,6 @@ import retrofit.converter.GsonConverter;
         WebViewFragment.class,
         AccountFragment.class,
         ContactFragment.class,
-        ServiceNotSupportedActivity.class,
         ProfilePasswordFragment.class,
         PlansFragment.class,
         EditPlanFragment.class,
@@ -331,31 +315,33 @@ import retrofit.converter.GsonConverter;
         ServiceCategoriesHomeFragment.class,
         SessionManager.class,
         ZipActivity.class,
-        ZipFragment.class
+        ZipFragment.class,
+        BookingTimeInputDialogFragment.class,
+        BookingDateTimeInputFragment.class,
         //TODO: WE NEED TO STOP MAKING NEW ACTIVITIES
 },
         includes = {
                 HelpModule.class,
                 NotificationsModule.class,
-                PersistentPromoModule.class,
-                //FIXME add more
+                OnboardingModule.class,
+                ReferralModule.class,
+                PromosModule.class,
+                RatingFlowModule.class,
         }
 )
-public final class ApplicationModule
-{
+public final class ApplicationModule {
+
     private final Context mContext;
     private final Properties mConfigs;
 
-    public ApplicationModule(final Context context)
-    {
+    public ApplicationModule(final Context context) {
         mContext = context.getApplicationContext();
         mConfigs = PropertiesReader.getProperties(context, "config.properties");
     }
 
     @Provides
     @Singleton
-    Properties provideProperties()
-    {
+    Properties provideProperties() {
         return mConfigs;
     }
 
@@ -364,13 +350,11 @@ public final class ApplicationModule
     final EnvironmentModifier provideEnvironmentModifier(
             Bus bus,
             DefaultPreferencesManager defaultPreferencesManager
-    )
-    {
+    ) {
         EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus,
                                                                           defaultPreferencesManager
         );
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-        {
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
             environmentModifier.setEnvironment(EnvironmentModifier.Environment.PRODUCTION);
         }
         return environmentModifier;
@@ -378,22 +362,18 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(EnvironmentModifier environmentModifier)
-    {
+    final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(EnvironmentModifier environmentModifier) {
         return new HandyRetrofitEndpoint(mContext, environmentModifier);
     }
 
     @Provides
     @Singleton
-    final PlacesService providePlacesService()
-    {
+    final PlacesService providePlacesService() {
         final RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(mContext.getString(R.string.places_api_base_url))
-                .setRequestInterceptor(new RequestInterceptor()
-                {
+                .setRequestInterceptor(new RequestInterceptor() {
                     @Override
-                    public void intercept(RequestFacade request)
-                    {
+                    public void intercept(RequestFacade request) {
                         request.addQueryParam("key", mConfigs.getProperty("google_places_api_key"));
                     }
                 })
@@ -409,12 +389,10 @@ public final class ApplicationModule
     final RestAdapter provideRestAdapter(
             final HandyRetrofitEndpoint endpoint,
             final UserManager userManager
-    )
-    {
+    ) {
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) && !BuildConfig.DEBUG)
-        {
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) && !BuildConfig.DEBUG) {
             okHttpClient.setCertificatePinner(new CertificatePinner.Builder()
                                                       .add(
                                                               mConfigs.getProperty("hostname"),
@@ -428,8 +406,7 @@ public final class ApplicationModule
 
         final String username = mConfigs.getProperty("api_username");
         String password = mConfigs.getProperty("api_password_internal");
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD))
-        {
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
             password = mConfigs.getProperty("api_password");
         }
         final String pwd = password;
@@ -437,8 +414,7 @@ public final class ApplicationModule
                 new RestAdapter
                         .Builder()
                         .setEndpoint(endpoint)
-                        .setRequestInterceptor(new RequestInterceptor()
-                        {
+                        .setRequestInterceptor(new RequestInterceptor() {
                             final String auth = "Basic " + Base64.encodeToString(
                                     (username + ":" + pwd).getBytes(),
                                     Base64.NO_WRAP
@@ -447,8 +423,7 @@ public final class ApplicationModule
                             @Override
                             public void intercept(
                                     RequestFacade request
-                            )
-                            {
+                            ) {
                                 request.addHeader("Authorization", auth);
                                 request.addHeader("Accept", "application/json");
                                 request.addQueryParam("client", "android");
@@ -462,12 +437,10 @@ public final class ApplicationModule
                                 request.addQueryParam("app_device_model", getDeviceName());
                                 request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
                                 final User user = userManager.getCurrentUser();
-                                if (user != null)
-                                {
+                                if (user != null) {
                                     request.addQueryParam("app_user_id", user.getId());
                                     String authToken = user.getAuthToken();
-                                    if (authToken != null)
-                                    {
+                                    if (authToken != null) {
                                         request.addHeader("X-Auth-Token", authToken);
                                     }
                                 }
@@ -516,8 +489,7 @@ public final class ApplicationModule
                         .build();
 
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
-                || BuildConfig.BUILD_TYPE.equals("debug"))
-        {
+            || BuildConfig.BUILD_TYPE.equals("debug")) {
             restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
         }
 
@@ -526,8 +498,7 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final SessionManager provideSessionCacheManager()
-    {
+    final SessionManager provideSessionCacheManager() {
         return new SessionManager();
     }
 
@@ -535,8 +506,7 @@ public final class ApplicationModule
     @Singleton
     final HandyRetrofitService provideHandyService(
             final RestAdapter restAdapter
-    )
-    {
+    ) {
         return restAdapter.create(HandyRetrofitService.class);
     }
 
@@ -545,8 +515,7 @@ public final class ApplicationModule
     final DataManager provideDataManager(
             final HandyRetrofitService service,
             final HandyRetrofitEndpoint endpoint
-    )
-    {
+    ) {
         return new DataManager(service, endpoint);
     }
 
@@ -555,32 +524,28 @@ public final class ApplicationModule
     final AppseeManager provideAppseeManager(
             final ConfigurationManager configurationManager,
             final FileManager fileManager
-    )
-    {
+    ) {
         String appseeApiKey = mConfigs.getProperty
                 (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
-                         "app_see_key"
-                         : "app_see_key_internal");
+                 "app_see_key"
+                                                                        : "app_see_key_internal");
         return new AppseeManager(appseeApiKey, configurationManager, fileManager);
     }
 
     @Provides
-    final DataManagerErrorHandler provideDataManagerErrorHandler()
-    {
+    final DataManagerErrorHandler provideDataManagerErrorHandler() {
         return new DataManagerErrorHandler();
     }
 
     @Provides
     @Singleton
-    final Bus provideBus()
-    {
+    final Bus provideBus() {
         return new MainBus();
     }
 
     @Provides
     @Singleton
-    final SecurePreferences providePrefs()
-    {
+    final SecurePreferences providePrefs() {
         return new SecurePreferences(
                 mContext,
                 null,
@@ -595,15 +560,13 @@ public final class ApplicationModule
             final Bus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DataManager dataManager
-    )
-    {
+    ) {
         return new BookingManager(bus, securePreferencesManager, dataManager);
     }
 
     @Provides
     @Singleton
-    final FileManager provideFileManager()
-    {
+    final FileManager provideFileManager() {
         return new FileManager(mContext);
     }
 
@@ -612,8 +575,7 @@ public final class ApplicationModule
     final AddressAutoCompleteManager provideAddressAutoCompleteManager(
             final Bus bus,
             final PlacesService service
-    )
-    {
+    ) {
         return new AddressAutoCompleteManager(bus, service);
     }
 
@@ -622,8 +584,7 @@ public final class ApplicationModule
     final BookingEditManager provideBookingEditManager(
             final Bus bus,
             final DataManager dataManager
-    )
-    {
+    ) {
         return new BookingEditManager(bus, dataManager);
     }
 
@@ -633,8 +594,7 @@ public final class ApplicationModule
             final Bus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DefaultPreferencesManager defaultPreferencesManager
-    )
-    {
+    ) {
         return new UserManager(mContext, bus, securePreferencesManager, defaultPreferencesManager);
     }
 
@@ -644,8 +604,7 @@ public final class ApplicationModule
             final UserManager userManager,
             final DataManager dataManager,
             final Bus bus
-    )
-    {
+    ) {
         return new UserDataManager(userManager, dataManager, bus);
     }
 
@@ -657,8 +616,7 @@ public final class ApplicationModule
             final SecurePreferencesManager securePreferencesManager,
             final ConfigurationManager configurationManager,
             final SessionManager sessionManager
-            )
-    {
+    ) {
         return new ServicesManager(dataManager, bus, securePreferencesManager, configurationManager,
                                    sessionManager
         );
@@ -666,8 +624,7 @@ public final class ApplicationModule
 
     @Provides
     @Singleton
-    final DefaultPreferencesManager provideDefaultPreferencesManager()
-    {
+    final DefaultPreferencesManager provideDefaultPreferencesManager() {
         return new DefaultPreferencesManager(mContext);
     }
 
@@ -675,14 +632,12 @@ public final class ApplicationModule
     @Singleton
     final DeepLinkIntentProvider provideDeepLinkNavigationManager(
             final UserManager userManager, final ConfigurationManager configurationManager
-    )
-    {
+    ) {
         return new DeepLinkIntentProvider(userManager, configurationManager);
     }
 
     @Provides
-    final LayerHelper provideHandyLayer()
-    {
+    final LayerHelper provideHandyLayer() {
         return HandyLibrary.getInstance().getLayerHelper();
     }
 
@@ -692,8 +647,7 @@ public final class ApplicationModule
             final UserManager userManager,
             final DataManager dataManager,
             final DataManagerErrorHandler dataManagerErrorHandler
-    )
-    {
+    ) {
         return new NavigationManager(
                 this.mContext,
                 userManager,
@@ -708,8 +662,7 @@ public final class ApplicationModule
             final Bus bus,
             final DataManager dataManager,
             final SecurePreferencesManager securePreferencesManager
-    )
-    {
+    ) {
         return new AppBlockManager(bus, dataManager, securePreferencesManager);
     }
 
@@ -717,8 +670,7 @@ public final class ApplicationModule
     @Singleton
     final StripeManager provideStripeManager(
             final Bus bus
-    )
-    {
+    ) {
         return new StripeManager(bus, mConfigs);
     }
 
@@ -727,20 +679,8 @@ public final class ApplicationModule
     final UrbanAirshipManager provideUrbanAirshipManager(
             final Bus bus,
             final UserManager userManager
-    )
-    {
+    ) {
         return new UrbanAirshipManager(mContext, bus, userManager);
-    }
-
-    @Provides
-    @Singleton
-    final ReferralsManager provideReferralsManager(
-            final Bus bus,
-            final DataManager dataManager,
-            final DefaultPreferencesManager defaultPreferencesManager
-    )
-    {
-        return new ReferralsManager(bus, dataManager, defaultPreferencesManager);
     }
 
     @Provides
@@ -749,8 +689,7 @@ public final class ApplicationModule
             final Bus bus,
             final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
-    )
-    {
+    ) {
         return new ConfigurationManager(bus, defaultPreferencesManager, dataManager);
     }
 
@@ -762,8 +701,7 @@ public final class ApplicationModule
             final FileManager fileManager,
             final DefaultPreferencesManager defaultPreferencesManager,
             final UserManager userManager
-    )
-    {
+    ) {
         return new EventLogManager(
                 mContext,
                 bus,
@@ -780,27 +718,22 @@ public final class ApplicationModule
             final Bus bus,
             final HandyRetrofitService service,
             final UserManager userDataManager
-    )
-    {
+    ) {
         return new ProTeamManager(bus, service, userDataManager);
     }
 
-    private String getDeviceId()
-    {
+    private String getDeviceId() {
         return Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
-    private String getDeviceName()
-    {
+    private String getDeviceName() {
         final String manufacturer = Build.MANUFACTURER;
         final String model = Build.MODEL;
 
-        if (model.startsWith(manufacturer))
-        {
+        if (model.startsWith(manufacturer)) {
             return model;
         }
-        else
-        {
+        else {
             return manufacturer + " " + model;
         }
     }

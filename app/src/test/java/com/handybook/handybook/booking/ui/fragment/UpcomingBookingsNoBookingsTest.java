@@ -12,42 +12,44 @@ import org.junit.Test;
 /**
  * This tests the situation where there are no bookings at all, and no active cleaning plans
  */
-public class UpcomingBookingsNoBookingsTest extends UpcomingBookingsBaseTest
-{
+public class UpcomingBookingsNoBookingsTest extends UpcomingBookingsBaseTest {
+
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         super.setup();
         String json = IOUtils.getJsonStringForTest("no_bookings.json");
-        final UserBookingsWrapper bookings = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                .create()
-                .fromJson(json, UserBookingsWrapper.class);
+        final UserBookingsWrapper bookings = new GsonBuilder().setDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ssX")
+                                                              .create()
+                                                              .fromJson(
+                                                                      json,
+                                                                      UserBookingsWrapper.class
+                                                              );
 
-        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(bookings, Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING);
+        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(
+                bookings,
+                Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING
+        );
         mUpcomingBookingsFragment.onReceiveBookingsSuccess(mBookingReceiveSuccessfulEvent);
     }
 
     @Test
-    public void testNoActiveBooking()
-    {
+    public void testNoActiveBooking() {
         assertNoActiveBooking();
     }
 
     @Test
-    public void testNoCleaningPlan()
-    {
+    public void testNoCleaningPlan() {
         assertNoCleaningPlan();
     }
 
     @Test
-    public void testNoUpcomingBookings()
-    {
+    public void testNoUpcomingBookings() {
         assertNoUpcomingBookings();
     }
 
     @Test
-    public void testEmptyViewShowing()
-    {
+    public void testEmptyViewShowing() {
         assertEmptyViewShowing();
     }
 

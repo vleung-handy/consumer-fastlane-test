@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
+import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.library.util.IOUtils;
-import com.handybook.handybook.configuration.model.Configuration;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +29,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 /**
  * Created by jtse on 10/7/16.
  */
-public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrapper
-{
+public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrapper {
+
     private static final String ADDRESS_LINE_1 = "1720 77th Street";
 
     private AutoCompleteAddressFragment mFragment;
@@ -38,10 +38,8 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
     @Inject
     AddressAutoCompleteManager mDataManager;
 
-
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         ShadowLog.stream = System.out;
 
         initMocks(this);
@@ -67,17 +65,19 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
      * Tests that the API is able to at least successfully return the number of predictions that come back.
      */
     @Test
-    public void testBaseCase()
-    {
-        assertEquals("There should be 6 predictions", 6, mDataManager.getAddressPrediction("1720").predictions.size());
+    public void testBaseCase() {
+        assertEquals(
+                "There should be 6 predictions",
+                6,
+                mDataManager.getAddressPrediction("1720").predictions.size()
+        );
     }
 
     /**
      * Obviously, if we submit the wrong query, no results should come back.
      */
     @Test
-    public void testNoResult()
-    {
+    public void testNoResult() {
         PlacePredictionResponse addressPrediction = mDataManager.getAddressPrediction("234rsdf");
         assertNull("There should be no predictions", addressPrediction);
     }
@@ -86,8 +86,7 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
      * This tests that we only want the street_address types. Not geocode, not route, etc.
      */
     @Test
-    public void testFilterStreetAddress()
-    {
+    public void testFilterStreetAddress() {
         PlacePredictionResponse response = mDataManager.getAddressPrediction("1720");
         response.filter(null);
 
@@ -102,8 +101,7 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
      * We only want to show results that fall under the same city/zip as the user.
      */
     @Test
-    public void testCityStateFilter()
-    {
+    public void testCityStateFilter() {
 
         PlacePredictionResponse response = mDataManager.getAddressPrediction("1720");
 
@@ -121,17 +119,19 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
      * For users with an existing address, the address should already be pre-filled.
      */
     @Test
-    public void testAddressPrefill()
-    {
-        assertEquals("Address line 1 should be prefilled", ADDRESS_LINE_1, mFragment.mStreet.getText().toString());
+    public void testAddressPrefill() {
+        assertEquals(
+                "Address line 1 should be prefilled",
+                ADDRESS_LINE_1,
+                mFragment.mStreet.getText().toString()
+        );
     }
 
     /**
      * There should be only 1 suggestion in the autocomplete dropdown.
      */
     @Test
-    public void testSuggestionBinding()
-    {
+    public void testSuggestionBinding() {
         List<String> strings = mFragment.makeApiCall("1720");
         mFragment.onAutoCompleteResultsReceived(strings);
 
@@ -146,8 +146,7 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
      * The suggestion list should show if there are results and should hide when there aren't
      */
     @Test
-    public void testListPopupBehavior()
-    {
+    public void testListPopupBehavior() {
         List<String> strings = mFragment.makeApiCall("1720");
 
         mFragment.onAutoCompleteResultsReceived(strings);
@@ -162,8 +161,7 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
      * Tests that the address gets populated correctly with the user-selected autocomplete option
      */
     @Test
-    public void testUserSelection()
-    {
+    public void testUserSelection() {
 
         mFragment.mStreet.setText("FAKE ADDRESS");
         List<String> strings = mFragment.makeApiCall("1720");
@@ -181,8 +179,7 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
      * Validation states that if the street isn't filled, then fails validation
      */
     @Test
-    public void testAddressValidation()
-    {
+    public void testAddressValidation() {
         mFragment.mStreet.setText("     ");
         assertEquals(false, mFragment.validateFields());
 

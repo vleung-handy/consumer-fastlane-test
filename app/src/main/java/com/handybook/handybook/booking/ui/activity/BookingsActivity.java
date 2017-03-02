@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
+import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public final class BookingsActivity extends MenuDrawerActivity
-{
+public final class BookingsActivity extends MenuDrawerActivity {
+
     @Override
-    protected boolean requiresUser()
-    {
+    protected boolean requiresUser() {
         return true;
     }
 
@@ -22,17 +21,15 @@ public final class BookingsActivity extends MenuDrawerActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         //if the over lay fragment is showing, dismiss it and swallow the back press
-        ServiceCategoriesOverlayFragment frag = (ServiceCategoriesOverlayFragment) getSupportFragmentManager()
+        ServiceCategoriesOverlayFragment frag
+                = (ServiceCategoriesOverlayFragment) getSupportFragmentManager()
                 .findFragmentByTag(UpcomingBookingsFragment.mOverlayFragmentTag);
-        if (frag != null)
-        {
+        if (frag != null) {
             frag.animateAndDismissFragment();
         }
-        else
-        {
+        else {
             super.onBackPressed();
         }
     }
@@ -43,13 +40,15 @@ public final class BookingsActivity extends MenuDrawerActivity
     }
 
     @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-    {
+    protected void onActivityResult(
+            final int requestCode,
+            final int resultCode,
+            final Intent data
+    ) {
         super.onActivityResult(requestCode, resultCode, data);
         final Fragment fragment =
                 getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment != null)
-        {
+        if (fragment != null) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }

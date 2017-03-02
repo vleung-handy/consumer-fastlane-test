@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * Passed to the API to move a group of providers to preferred, indifferent or never buckets
  */
-public class ProTeamEdit
-{
+public class ProTeamEdit {
+
     @SerializedName(ProTeamCategoryType.Constants.CLEANING)
     private List<Integer> mCleaningIds = null;
     @SerializedName(ProTeamCategoryType.Constants.HANDYMEN)
@@ -19,16 +19,12 @@ public class ProTeamEdit
     @SerializedName("match_preference")
     private ProviderMatchPreference mMatchPreference;
 
-    public ProTeamEdit(final ProviderMatchPreference matchPreference)
-    {
+    public ProTeamEdit(final ProviderMatchPreference matchPreference) {
         mMatchPreference = matchPreference;
     }
 
-
-    public void addId(final int id, @NonNull final ProTeamCategoryType proTeamCategoryType)
-    {
-        switch (proTeamCategoryType)
-        {
+    public void addId(final int id, @NonNull final ProTeamCategoryType proTeamCategoryType) {
+        switch (proTeamCategoryType) {
             case CLEANING:
                 addCleaningId(id);
                 break;
@@ -38,19 +34,15 @@ public class ProTeamEdit
         }
     }
 
-    public void addCleaningId(final int id)
-    {
-        if (mCleaningIds == null)
-        {
+    public void addCleaningId(final int id) {
+        if (mCleaningIds == null) {
             mCleaningIds = new ArrayList<>();
         }
         mCleaningIds.add(id);
     }
 
-    public void addHandymenId(final int id)
-    {
-        if (mHandymenIds == null)
-        {
+    public void addHandymenId(final int id) {
+        if (mHandymenIds == null) {
             mHandymenIds = new ArrayList<>();
         }
         mHandymenIds.add(id);

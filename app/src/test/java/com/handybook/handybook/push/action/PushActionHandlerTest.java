@@ -25,16 +25,15 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class PushActionHandlerTest extends RobolectricGradleTestWrapper
-{
+public class PushActionHandlerTest extends RobolectricGradleTestWrapper {
+
     @Mock
     private PackageManager mMockPackageManager;
     private Context mSpyContext;
     private ShadowApplication mShadowApplication;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         when(mMockPackageManager.resolveActivity(any(Intent.class), eq(0)))
                 .thenReturn(mock(ResolveInfo.class));
@@ -44,18 +43,17 @@ public class PushActionHandlerTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void handleActionReturnsFalseForUnknownAction() throws Exception
-    {
+    public void handleActionReturnsFalseForUnknownAction() throws Exception {
         assertFalse(PushActionHandler.handleAction(null, "weird_action", null));
     }
 
     @Test
-    public void handleActionLaunchesCallIntentForCallAction() throws Exception
-    {
+    public void handleActionLaunchesCallIntentForCallAction() throws Exception {
         Bundle arguments = new Bundle();
         arguments.putString(BundleKeys.BOOKING_PHONE, "1112223333");
         assertTrue(PushActionHandler.handleAction(mSpyContext,
-                PushActionConstants.ACTION_CONTACT_CALL, arguments));
+                                                  PushActionConstants.ACTION_CONTACT_CALL, arguments
+        ));
 
         final Intent launchedIntent = mShadowApplication.getNextStartedActivity();
         assertThat(launchedIntent.getAction(), equalTo(Intent.ACTION_VIEW));
@@ -63,12 +61,12 @@ public class PushActionHandlerTest extends RobolectricGradleTestWrapper
     }
 
     @Test
-    public void handleActionLaunchesTextIntentForTextAction() throws Exception
-    {
+    public void handleActionLaunchesTextIntentForTextAction() throws Exception {
         Bundle arguments = new Bundle();
         arguments.putString(BundleKeys.BOOKING_PHONE, "1112223333");
         assertTrue(PushActionHandler.handleAction(mSpyContext,
-                PushActionConstants.ACTION_CONTACT_TEXT, arguments));
+                                                  PushActionConstants.ACTION_CONTACT_TEXT, arguments
+        ));
 
         final Intent launchedIntent = mShadowApplication.getNextStartedActivity();
         assertThat(launchedIntent.getAction(), equalTo(Intent.ACTION_VIEW));

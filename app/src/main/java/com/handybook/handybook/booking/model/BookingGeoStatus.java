@@ -7,8 +7,8 @@ import java.util.Date;
 
 /**
  */
-public class BookingGeoStatus implements Serializable
-{
+public class BookingGeoStatus implements Serializable {
+
     @SerializedName("status")
     private String mStatus;
 
@@ -30,68 +30,55 @@ public class BookingGeoStatus implements Serializable
     @SerializedName("cancellation_threshold")
     private String mCancelationThreshold;
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return mStatus;
     }
 
-    public void setStatus(final String status)
-    {
+    public void setStatus(final String status) {
         mStatus = status;
     }
 
-    public String getNoticeText()
-    {
+    public String getNoticeText() {
         return mNoticeText;
     }
 
-    public void setNoticeText(final String noticeText)
-    {
+    public void setNoticeText(final String noticeText) {
         mNoticeText = noticeText;
     }
 
-    public double getProLat()
-    {
+    public double getProLat() {
         return mProLat;
     }
 
-    public void setProLat(final double proLat)
-    {
+    public void setProLat(final double proLat) {
         mProLat = proLat;
     }
 
-    public Date getTimeStamp()
-    {
+    public Date getTimeStamp() {
         return mTimeStamp;
     }
 
-    public double getProLng()
-    {
+    public double getProLng() {
         return mProLng;
     }
 
-    public void setProLng(final double proLng)
-    {
+    public void setProLng(final double proLng) {
         mProLng = proLng;
     }
 
-    public boolean isInProgress()
-    {
+    public boolean isInProgress() {
         return mInProgress;
     }
 
-    public void setInProgress(final boolean inProgress)
-    {
+    public void setInProgress(final boolean inProgress) {
         mInProgress = inProgress;
     }
 
-    public String getCancelationThreshold()
-    {
+    public String getCancelationThreshold() {
         return mCancelationThreshold;
     }
 
-    public void setCancelationThreshold(final String cancelationThreshold)
-    {
+    public void setCancelationThreshold(final String cancelationThreshold) {
         mCancelationThreshold = cancelationThreshold;
     }
 }

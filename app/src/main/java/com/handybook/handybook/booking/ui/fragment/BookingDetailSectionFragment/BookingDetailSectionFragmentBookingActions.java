@@ -24,30 +24,26 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class BookingDetailSectionFragmentBookingActions
-        extends BookingDetailSectionFragment<BookingDetailSectionBookingActionsView>
-{
+        extends BookingDetailSectionFragment<BookingDetailSectionBookingActionsView> {
+
     @Inject
     ProTeamManager mProTeamManager;
 
     @Override
-    protected int getFragmentResourceId()
-    {
+    protected int getFragmentResourceId() {
         return R.layout.fragment_booking_detail_section_booking_actions;
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
-        if (getParentFragment() != null)
-        {
+        if (getParentFragment() != null) {
             ((BookingDetailFragment) getParentFragment()).removeUiBlockers();
         }
     }
 
     @Override
-    public void updateDisplay(Booking booking, User user)
-    {
+    public void updateDisplay(Booking booking, User user) {
         super.updateDisplay(booking, user);
         getSectionView().getEntryText().setVisibility(View.GONE);
         getSectionView().getEntryActionText().setVisibility(View.GONE);
@@ -56,22 +52,17 @@ public class BookingDetailSectionFragmentBookingActions
 
     //Setup the contact booking action buttons
     @Override
-    protected List<String> getActionButtonTypeList(Booking booking)
-    {
+    protected List<String> getActionButtonTypeList(Booking booking) {
         List<String> actionButtonTypes = new ArrayList<>();
-        if (!booking.isPast())
-        {
+        if (!booking.isPast()) {
             actionButtonTypes.add(BookingAction.ACTION_RESCHEDULE);
-            if (booking.canEditHours())
-            {
+            if (booking.canEditHours()) {
                 actionButtonTypes.add(BookingAction.ACTION_EDIT_HOURS);
             }
-            if (booking.isRecurring())
-            {
+            if (booking.isRecurring()) {
                 actionButtonTypes.add(BookingAction.ACTION_SKIP);
             }
-            else
-            {
+            else {
                 actionButtonTypes.add(BookingAction.ACTION_CANCEL);
             }
         }
@@ -79,10 +70,8 @@ public class BookingDetailSectionFragmentBookingActions
     }
 
     @Override
-    protected View.OnClickListener getOnClickListenerForAction(String actionButtonType)
-    {
-        switch (actionButtonType)
-        {
+    protected View.OnClickListener getOnClickListenerForAction(String actionButtonType) {
+        switch (actionButtonType) {
             case BookingAction.ACTION_SKIP:
                 return cancelClicked; // This is not a typo, had to change the label to skip :|
             case BookingAction.ACTION_CANCEL:
@@ -95,11 +84,9 @@ public class BookingDetailSectionFragmentBookingActions
         return null;
     }
 
-    private View.OnClickListener cancelClicked = new View.OnClickListener()
-    {
+    private View.OnClickListener cancelClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
+        public void onClick(final View v) {
             //log that this was clicked.
             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
                     BookingDetailsLog.EventType.SELECTED,
@@ -107,11 +94,9 @@ public class BookingDetailSectionFragmentBookingActions
             )));
 
             BookingDetailFragment parentFragment = (BookingDetailFragment) getParentFragment();
-            if (parentFragment != null)
-            {
+            if (parentFragment != null) {
                 Configuration configuration = parentFragment.getConfiguration();
-                if (configuration != null && configuration.isShowRescheduleFlowOnCancel())
-                {
+                if (configuration != null && configuration.isShowRescheduleFlowOnCancel()) {
                     //interrupt the cancelation process by asking whether the user wants to reschedule instead.
                     parentFragment.setRescheduleType(BookingDetailFragment.RescheduleType.FROM_CANCELATION);
                     bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
@@ -124,11 +109,9 @@ public class BookingDetailSectionFragmentBookingActions
         }
     };
 
-    private View.OnClickListener rescheduleClicked = new View.OnClickListener()
-    {
+    private View.OnClickListener rescheduleClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
+        public void onClick(final View v) {
             //log that this was clicked.
             bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
                     BookingDetailsLog.EventType.SELECTED,
@@ -137,8 +120,7 @@ public class BookingDetailSectionFragmentBookingActions
                     null
             )));
 
-            if (getParentFragment() != null)
-            {
+            if (getParentFragment() != null) {
                 ((BookingDetailFragment) getParentFragment()).showUiBlockers();
                 ((BookingDetailFragment) getParentFragment()).setRescheduleType(
                         BookingDetailFragment.RescheduleType.NORMAL);
@@ -147,11 +129,9 @@ public class BookingDetailSectionFragmentBookingActions
         }
     };
 
-    private View.OnClickListener editHoursClicked = new View.OnClickListener()
-    {
+    private View.OnClickListener editHoursClicked = new View.OnClickListener() {
         @Override
-        public void onClick(final View v)
-        {
+        public void onClick(final View v) {
             final Intent intent = new Intent(getActivity(), BookingEditHoursActivity.class);
             intent.putExtra(BundleKeys.BOOKING, booking);
             getParentFragment().startActivityForResult(intent, ActivityResult.BOOKING_UPDATED);

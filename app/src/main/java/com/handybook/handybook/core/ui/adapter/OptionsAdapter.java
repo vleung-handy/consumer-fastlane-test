@@ -9,37 +9,42 @@ import android.widget.TextView;
 import com.handybook.handybook.core.ui.view.antistaticspinnerwheel.adapters.ArrayWheelAdapter;
 import com.handybook.handybook.library.util.Utils;
 
-public final class OptionsAdapter<T> extends ArrayWheelAdapter<T>
-{
+public final class OptionsAdapter<T> extends ArrayWheelAdapter<T> {
+
     private static final int PADDING = 32;
 
     private int maxWidth;
     private int maxHeight;
     private int padding;
 
-    public OptionsAdapter(final Context context, final T items[], final int itemRes, final int textRes) {
+    public OptionsAdapter(
+            final Context context,
+            final T items[],
+            final int itemRes,
+            final int textRes
+    ) {
         super(context, items);
         this.setItemResource(itemRes);
         this.setItemTextResource(textRes);
 
         final View view = inflater.inflate(itemRes, null);
-        final TextView text = (TextView)view.findViewById(textRes);
+        final TextView text = (TextView) view.findViewById(textRes);
 
         final Paint paint = new Paint();
         paint.set(text.getPaint());
         paint.setTextSize(text.getTextSize());
 
         // set default width to length of textView using '10'
-        final int minWidth = (int)paint.measureText("10");
+        final int minWidth = (int) paint.measureText("10");
 
         for (final T item : items) {
-            maxWidth = Math.max(maxWidth, (int)paint.measureText(item.toString()));
+            maxWidth = Math.max(maxWidth, (int) paint.measureText(item.toString()));
             maxWidth = Math.max(maxWidth, minWidth);
         }
 
         padding = Utils.toDP(PADDING, context);
         maxWidth += padding;
-        maxHeight =  minWidth + padding;
+        maxHeight = minWidth + padding;
     }
 
     @Override

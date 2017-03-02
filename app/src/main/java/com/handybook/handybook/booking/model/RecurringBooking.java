@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Date;
 
-public class RecurringBooking implements Serializable
-{
+public class RecurringBooking implements Serializable {
+
     @SerializedName("id")
     private int mId;
     @SerializedName("hashed")
@@ -50,8 +50,7 @@ public class RecurringBooking implements Serializable
             final int frequencyValue,
             final String cancelUrl,
             final Booking.Address address
-    )
-    {
+    ) {
         mId = id;
         mHashed = hashed;
         mHours = hours;
@@ -64,45 +63,37 @@ public class RecurringBooking implements Serializable
         mAddress = address;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return mId;
     }
 
-    public String getHashed()
-    {
+    public String getHashed() {
         return mHashed;
     }
 
-    public float getHours()
-    {
+    public float getHours() {
         return mHours;
     }
 
-    public int getNextBookingId()
-    {
+    public int getNextBookingId() {
         return mNextBookingId;
     }
 
-    public Date getNextBookingDate()
-    {
+    public Date getNextBookingDate() {
         return mNextBookingDate;
     }
 
-    public String getFullAddress()
-    {
+    public String getFullAddress() {
         return mFullAddress;
     }
 
-    public String getFrequency()
-    {
+    public String getFrequency() {
         return mFrequency;
     }
 
     public int getFrequencyValue() { return mFrequencyValue; }
 
-    public String getCancelUrl()
-    {
+    public String getCancelUrl() {
         return mCancelUrl;
     }
 
@@ -114,23 +105,19 @@ public class RecurringBooking implements Serializable
 
     public void setAddress(final Booking.Address address) { mAddress = address; }
 
-    public String getServiceName()
-    {
+    public String getServiceName() {
         return mServiceName;
     }
 
-    public String getMachineName()
-    {
+    public String getMachineName() {
         return mMachineName;
     }
 
-    public Date getDateStart()
-    {
+    public Date getDateStart() {
         return mDateStart;
     }
 
-    public String getRecurringStringShort()
-    {
+    public String getRecurringStringShort() {
         return mRecurringStringShort;
     }
 }

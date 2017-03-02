@@ -4,18 +4,16 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class RecurringBookingsResponse
-{
+public class RecurringBookingsResponse {
+
     @SerializedName("recurring_bookings")
     private List<RecurringBooking> mRecurringBookings;
 
-    public RecurringBookingsResponse(final List<RecurringBooking> recurringBookings)
-    {
+    public RecurringBookingsResponse(final List<RecurringBooking> recurringBookings) {
         mRecurringBookings = recurringBookings;
     }
 
-    public List<RecurringBooking> getRecurringBookings()
-    {
+    public List<RecurringBooking> getRecurringBookings() {
         return mRecurringBookings;
     }
 }

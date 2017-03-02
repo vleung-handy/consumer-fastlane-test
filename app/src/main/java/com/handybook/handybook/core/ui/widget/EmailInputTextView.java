@@ -6,9 +6,7 @@ import android.util.AttributeSet;
 import com.handybook.handybook.library.ui.view.InputTextField;
 import com.handybook.handybook.library.util.Utils;
 
-
-public final class EmailInputTextView extends InputTextField
-{
+public final class EmailInputTextView extends InputTextField {
 
     public EmailInputTextView(final Context context) {
         super(context);
@@ -18,14 +16,13 @@ public final class EmailInputTextView extends InputTextField
         super(context, attrs);
     }
 
-    public EmailInputTextView(final Context context, final AttributeSet attrs, final  int defStyle) {
+    public EmailInputTextView(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
     }
 
     public final boolean validate() {
         final String email = this.getText().toString().trim();
-        if (email == null || !email.matches(Utils.EMAIL_VALIDATION_REGEX))
-        {
+        if (email == null || !email.matches(Utils.EMAIL_VALIDATION_REGEX)) {
             highlight();
             return false;
         }
@@ -34,7 +31,7 @@ public final class EmailInputTextView extends InputTextField
             return true;
         }
     }
-    
+
     public final String getEmail() {
         return this.getText().toString().trim();
     }

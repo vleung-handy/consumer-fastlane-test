@@ -1,4 +1,3 @@
-
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
@@ -44,8 +43,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
-{
+public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper {
+
     private BookingPaymentFragment mFragment;
 
     @Mock
@@ -72,14 +71,16 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     private ArgumentCaptor<Object> mCaptor;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
         when(mUserManager.getCurrentUser()).thenReturn(mMockUser);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{
+                0.0f,
+                0.0f
+        });
         when(mMockQuote.isAndroidPayEnabled()).thenReturn(true);
         when(mMockQuote.getAndroidPayCouponCode()).thenReturn("ANDROIDPAY");
         when(mMockQuote.getAndroidPayCouponValueFormatted()).thenReturn("$10");
@@ -92,8 +93,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
     @Test
     @Ignore
     // This test is flicky due to the google client code.
-    public void shouldGetStripeToken() throws Exception
-    {
+    public void shouldGetStripeToken() throws Exception {
         // We click here first so that GoogleApiClient has time to fail to connect :-O
         // Then we fill in the credit card details and actually check if we et back Strip token
         mFragment.mNextButton.performClick();
@@ -103,9 +103,9 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
         mFragment.mCvcText.setText("123");
         mFragment.mNextButton.performClick();
         AppAssertionUtils.assertBusPost(mFragment.bus, mCaptor,
-                instanceOf(StripeEvent.RequestCreateToken.class));
+                                        instanceOf(StripeEvent.RequestCreateToken.class)
+        );
     }
-
 
     /**
      *  cannot mock out any Google classes since they are final
@@ -113,8 +113,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
      *  so the AP tests are limited until we refactor the fragment code to be more modular
      */
     @Test
-    public void shouldShowAndroidPayOptionWhenShouldShowAndroidPay()
-    {
+    public void shouldShowAndroidPayOptionWhenShouldShowAndroidPay() {
         BookingPaymentFragment fragmentSpy = spy(mFragment);
         when(mUserManager.getCurrentUser()).thenReturn(null);
         BooleanResult booleanResult = new BooleanResult(new Status(0), true);
@@ -139,8 +138,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
 */
 
     @Test
-    public void shouldCompleteBookingAfterGettingStripeToken() throws Exception
-    {
+    public void shouldCompleteBookingAfterGettingStripeToken() throws Exception {
         when(mMockReceiveCreateTokenSuccessEvent.getToken().getId()).thenReturn("some_id");
         when(mMockTransaction.getZipCode()).thenReturn("10003");
 
@@ -148,13 +146,17 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper
 
         verify(mMockTransaction).setStripeToken(eq("some_id"));
 
-        verify(mDataManager).createBooking(eq(mMockTransaction),
-                mDataManagerCallbackCaptor.capture());
+        verify(mDataManager).createBooking(
+                eq(mMockTransaction),
+                mDataManagerCallbackCaptor.capture()
+        );
 
         mDataManagerCallbackCaptor.getValue().onSuccess(mCompleteTransaction);
 
         Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
-        assertThat(nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingFinalizeActivity.class.getName()));
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(BookingFinalizeActivity.class.getName())
+        );
     }
 }

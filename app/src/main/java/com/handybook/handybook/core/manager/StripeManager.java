@@ -11,33 +11,28 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-public class StripeManager
-{
+public class StripeManager {
+
     private Bus mBus;
     private Properties mConfig;
 
     @Inject
-    public StripeManager(final Bus bus, final Properties config)
-    {
+    public StripeManager(final Bus bus, final Properties config) {
         mBus = bus;
         mConfig = config;
         mBus.register(this);
     }
 
     @Subscribe
-    public void onRequestCreateToken(StripeEvent.RequestCreateToken event)
-    {
-        new Stripe().createToken(event.getCard(), event.getStripeKey(), new TokenCallback()
-        {
+    public void onRequestCreateToken(StripeEvent.RequestCreateToken event) {
+        new Stripe().createToken(event.getCard(), event.getStripeKey(), new TokenCallback() {
             @Override
-            public void onSuccess(final Token token)
-            {
+            public void onSuccess(final Token token) {
                 mBus.post(new StripeEvent.ReceiveCreateTokenSuccess(token));
             }
 
             @Override
-            public void onError(final Exception error)
-            {
+            public void onError(final Exception error) {
                 mBus.post(new StripeEvent.ReceiveCreateTokenError(error));
             }
         });

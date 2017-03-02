@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PlansFragment extends InjectedFragment
-{
+public class PlansFragment extends InjectedFragment {
+
     @Bind(R.id.plans_layout)
     LinearLayout mPlansLayout;
     @Bind(R.id.toolbar)
@@ -33,8 +33,7 @@ public class PlansFragment extends InjectedFragment
 
     private ArrayList<RecurringBooking> mPlans;
 
-    public static PlansFragment newInstance(ArrayList<RecurringBooking> plans)
-    {
+    public static PlansFragment newInstance(ArrayList<RecurringBooking> plans) {
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.RECURRING_PLANS, plans);
         PlansFragment fragment = new PlansFragment();
@@ -43,10 +42,10 @@ public class PlansFragment extends InjectedFragment
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPlans = (ArrayList<RecurringBooking>) getArguments().getSerializable(BundleKeys.RECURRING_PLANS);
+        mPlans
+                = (ArrayList<RecurringBooking>) getArguments().getSerializable(BundleKeys.RECURRING_PLANS);
     }
 
     @Override
@@ -54,8 +53,7 @@ public class PlansFragment extends InjectedFragment
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
-    )
-    {
+    ) {
         View view = LayoutInflater.from(getContext())
                                   .inflate(R.layout.fragment_plans, container, false);
         ButterKnife.bind(this, view);
@@ -64,23 +62,19 @@ public class PlansFragment extends InjectedFragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         setupDisplay();
         int[] ids = new int[mPlans.size()];
-        for (int i = 0; i < ids.length; ++i)
-        {
+        for (int i = 0; i < ids.length; ++i) {
             ids[i] = mPlans.get(i).getId();
         }
         bus.post(new LogEvent.AddLogEvent(new PlanSelectionLog.Shown(ids)));
     }
 
-    private void setupDisplay()
-    {
+    private void setupDisplay() {
         mPlansLayout.removeAllViews();
-        for (final RecurringBooking plan : mPlans)
-        {
+        for (final RecurringBooking plan : mPlans) {
             View view = LayoutInflater.from(getContext()).inflate(
                     R.layout.layout_cleaning_plan_item, mPlansLayout, false);
             view.setTag(plan);
@@ -91,11 +85,9 @@ public class PlansFragment extends InjectedFragment
 
             title.setText(StringUtils.capitalizeFirstCharacter(plan.getFrequency()));
             subTitle.setText(DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(plan.getNextBookingDate()));
-            view.setOnClickListener(new View.OnClickListener()
-            {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(final View v)
-                {
+                public void onClick(final View v) {
                     bus.post(new LogEvent.AddLogEvent(new PlanSelectionLog.PlanTapped(plan.getId())));
                     EditPlanFragment fragment = EditPlanFragment.newInstance(plan);
                     FragmentUtils.switchToFragment(PlansFragment.this, fragment, true);

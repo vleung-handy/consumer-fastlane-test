@@ -24,21 +24,19 @@ import static org.robolectric.Shadows.shadowOf;
 /**
  * A test for ActiveBookingFragment
  */
-public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
-{
+public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper {
+
     private ActiveBookingFragment mActiveFragment;
     private ActiveBookingFragment mNoProviderFragment;
     Booking mActiveBooking;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         setupActiveBooking();
         setupBookingNoProvider();
     }
 
-    private void setupActiveBooking() throws Exception
-    {
+    private void setupActiveBooking() throws Exception {
         String json = IOUtils.getJsonStringForTest("active_booking.json");
 
         mActiveBooking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
@@ -48,13 +46,12 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
         mActiveFragment = ActiveBookingFragment.newInstance(mActiveBooking);
     }
 
-    private void setupBookingNoProvider() throws Exception
-    {
+    private void setupBookingNoProvider() throws Exception {
         String json = IOUtils.getJsonStringForTest("active_booking_no_provider.json");
 
         Booking booking = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-                .create()
-                .fromJson(json, Booking.class);
+                                           .create()
+                                           .fromJson(json, Booking.class);
 
         mNoProviderFragment = ActiveBookingFragment.newInstance(booking);
     }
@@ -66,18 +63,17 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
      * @throws Exception
      */
     @Test
-    public void providerInfoShouldBeVisible() throws Exception
-    {
+    public void providerInfoShouldBeVisible() throws Exception {
 
         SupportFragmentTestUtil.startFragment(mActiveFragment);
 
         assertEquals(mActiveFragment.mProfileContainer.getVisibility(), View.VISIBLE);
-        assertEquals(((TextView) mActiveFragment.mProProfile.findViewById(R.id.mini_pro_profile_title)).getText(), "Marky S.");
+        assertEquals(((TextView) mActiveFragment.mProProfile.findViewById(R.id.mini_pro_profile_title))
+                             .getText(), "Marky S.");
         assertEquals(mActiveFragment.mTextCall.getVisibility(), View.VISIBLE);
         assertEquals(mActiveFragment.mTextText.getVisibility(), View.VISIBLE);
         assertEquals(mActiveFragment.mMapDivider.getVisibility(), View.VISIBLE);
     }
-
 
     /**
      * If there are no provider information with the active booking, then the provider views
@@ -86,13 +82,13 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
      * @throws Exception
      */
     @Test
-    public void providerInfoShouldBeGone() throws Exception
-    {
+    public void providerInfoShouldBeGone() throws Exception {
 
         SupportFragmentTestUtil.startFragment(mNoProviderFragment);
 
         assertEquals(mNoProviderFragment.mProfileContainer.getVisibility(), View.GONE);
-        assertEquals(((TextView) mNoProviderFragment.mProProfile.findViewById(R.id.mini_pro_profile_title)).getText(), "");
+        assertEquals(((TextView) mNoProviderFragment.mProProfile.findViewById(R.id.mini_pro_profile_title))
+                             .getText(), "");
         assertEquals(mNoProviderFragment.mTextCall.getVisibility(), View.GONE);
         assertEquals(mNoProviderFragment.mTextText.getVisibility(), View.GONE);
     }
@@ -103,31 +99,34 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
      * @throws Exception
      */
     @Test
-    public void shouldLaunchBookingActivity() throws Exception
-    {
+    public void shouldLaunchBookingActivity() throws Exception {
         SupportFragmentTestUtil.startFragment(mActiveFragment);
 
         mActiveFragment.mBookingItemContainer.performClick();
         ShadowActivity shadowActivity = shadowOf(mActiveFragment.getActivity());
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
-        assertEquals(BookingDetailActivity.class.getName(), shadowIntent.getIntentClass().getName());
+        assertEquals(
+                BookingDetailActivity.class.getName(),
+                shadowIntent.getIntentClass().getName()
+        );
 
         //when the provider cell is clicked it should also launch the bookings activity
         mActiveFragment.mProfileContainer.performClick();
         shadowActivity = shadowOf(mActiveFragment.getActivity());
         startedIntent = shadowActivity.getNextStartedActivity();
         shadowIntent = shadowOf(startedIntent);
-        assertEquals(BookingDetailActivity.class.getName(), shadowIntent.getIntentClass().getName());
+        assertEquals(
+                BookingDetailActivity.class.getName(),
+                shadowIntent.getIntentClass().getName()
+        );
     }
-
 
     /**
      * Since this is a valid booking, we want to see that all the booking fields are filled out.
      */
     @Test
-    public void testBookingInfoShown()
-    {
+    public void testBookingInfoShown() {
         SupportFragmentTestUtil.startFragment(mActiveFragment);
         assertEquals("Thursday, August 25", mActiveFragment.mTextBookingTitle.getText().toString());
         assertEquals(
@@ -140,8 +139,7 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
      * Test the status display, in this case, pro never arrived.
      */
     @Test
-    public void testMilestoneStatusText()
-    {
+    public void testMilestoneStatusText() {
         SupportFragmentTestUtil.startFragment(mActiveFragment);
 
         mActiveFragment.updateLocationStatus(mActiveBooking.getActiveBookingLocationStatus());
@@ -155,12 +153,12 @@ public class ActiveBookingFragmentTest extends RobolectricGradleTestWrapper
      * Test the status icon, in this case it should be the red drawable.
      */
     @Test
-    public void testMilestoneStatusIcon()
-    {
+    public void testMilestoneStatusIcon() {
         SupportFragmentTestUtil.startFragment(mActiveFragment);
 
         mActiveFragment.updateLocationStatus(mActiveBooking.getActiveBookingLocationStatus());
-        ShadowDrawable shadowDrawable = shadowOf(mActiveFragment.mTextMilestoneStatus.getCompoundDrawables()[0]);
+        ShadowDrawable shadowDrawable
+                = shadowOf(mActiveFragment.mTextMilestoneStatus.getCompoundDrawables()[0]);
         assertEquals(R.drawable.circle_red, shadowDrawable.getCreatedFromResId());
     }
 

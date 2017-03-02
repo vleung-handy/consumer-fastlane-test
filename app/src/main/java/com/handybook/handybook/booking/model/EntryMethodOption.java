@@ -7,8 +7,8 @@ import java.io.Serializable;
 /**
  * model from server that determines how to display an entry option to the user
  */
-public class EntryMethodOption implements Serializable, Option
-{
+public class EntryMethodOption implements Serializable, Option {
+
     @SerializedName("recommended")
     private boolean mRecommended;
     /**
@@ -37,36 +37,30 @@ public class EntryMethodOption implements Serializable, Option
     @SerializedName("input_form")
     private InputFormDefinition mInputFormDefinition;
 
-    public InputFormDefinition getInputFormDefinition()
-    {
+    public InputFormDefinition getInputFormDefinition() {
         return mInputFormDefinition;
     }
 
-    public boolean isRecommended()
-    {
+    public boolean isRecommended() {
         return mRecommended;
     }
 
     @Override
-    public boolean isDefault()
-    {
+    public boolean isDefault() {
         return mDefault;
     }
 
     @Override
-    public String getTitleText()
-    {
+    public String getTitleText() {
         return mTitleText;
     }
 
     @Override
-    public String getSubtitleText()
-    {
+    public String getSubtitleText() {
         return mSubtitleText;
     }
 
-    public String getMachineName()
-    {
+    public String getMachineName() {
         return mMachineName;
     }
 }

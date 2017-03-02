@@ -15,8 +15,8 @@ import com.handybook.handybook.core.ui.descriptor.ServiceDescriptor;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ServiceView extends FrameLayout
-{
+public class ServiceView extends FrameLayout {
+
     @Bind(R.id.icon)
     ImageView mIcon;
     @Bind(R.id.title)
@@ -24,29 +24,24 @@ public class ServiceView extends FrameLayout
     @Bind(R.id.subtitle)
     TextView mSubtitle;
 
-    public ServiceView(Context context)
-    {
+    public ServiceView(Context context) {
         super(context);
     }
 
-    public ServiceView(Context context, AttributeSet attrs)
-    {
+    public ServiceView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ServiceView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
+    public ServiceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ServiceView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
-    {
+    public ServiceView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void init(final ServiceDescriptor serviceDescriptor)
-    {
+    public void init(final ServiceDescriptor serviceDescriptor) {
         LayoutInflater.from(getContext()).inflate(R.layout.view_service, this);
         ButterKnife.bind(this);
 

@@ -23,8 +23,8 @@ import butterknife.OnClick;
  * dialog fragment that slides up from the bottom
  * is dismissable by clicking outside
  */
-public abstract class SlideUpDialogFragment extends DialogFragment
-{
+public abstract class SlideUpDialogFragment extends DialogFragment {
+
     /**
      * @param inflater
      * @param container
@@ -34,12 +34,12 @@ public abstract class SlideUpDialogFragment extends DialogFragment
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         Window window = dialog.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.getAttributes().windowAnimations = R.style.dialog_animation_slide_up_down_from_bottom;
+        window.getAttributes().windowAnimations
+                = R.style.dialog_animation_slide_up_down_from_bottom;
 
         /* TODO the line below won't actually work for now because we are making the layout full screen
          * as a hacky fix for the weird resize animation
@@ -63,24 +63,22 @@ public abstract class SlideUpDialogFragment extends DialogFragment
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
-    )
-    {
+    ) {
         View view = inflater.inflate(R.layout.fragment_dialog_slide_up, container, false);
-        LinearLayout contentLayout = (LinearLayout) view.findViewById(R.id.fragment_dialog_slide_up_content_layout);
+        LinearLayout contentLayout
+                = (LinearLayout) view.findViewById(R.id.fragment_dialog_slide_up_content_layout);
         contentLayout.addView(inflateContentView(inflater, container));
         return view;
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         Window window = getDialog().getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
@@ -101,8 +99,7 @@ public abstract class SlideUpDialogFragment extends DialogFragment
      * in the confirm claim dialog
      */
     @OnClick(R.id.fragment_dialog_slide_up_transparent_background_layout)
-    public void onTransparentBackgroundClicked()
-    {
+    public void onTransparentBackgroundClicked() {
         dismiss();
     }
 }

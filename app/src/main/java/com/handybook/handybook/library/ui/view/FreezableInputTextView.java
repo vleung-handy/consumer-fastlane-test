@@ -5,6 +5,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 
 public class FreezableInputTextView extends InputTextField {
+
     private int defaultInputType;
 
     public FreezableInputTextView(final Context context) {
@@ -17,8 +18,10 @@ public class FreezableInputTextView extends InputTextField {
         init();
     }
 
-    public FreezableInputTextView(final Context context, final AttributeSet attrs,
-                                  final int defStyle) {
+    public FreezableInputTextView(
+            final Context context, final AttributeSet attrs,
+            final int defStyle
+    ) {
         super(context, attrs, defStyle);
         init();
     }

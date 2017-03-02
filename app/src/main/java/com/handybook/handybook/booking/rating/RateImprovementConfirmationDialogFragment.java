@@ -20,8 +20,7 @@ import butterknife.OnClick;
 /**
  * Created by jtse on 4/8/16.
  */
-public class RateImprovementConfirmationDialogFragment extends BaseDialogFragment
-{
+public class RateImprovementConfirmationDialogFragment extends BaseDialogFragment {
 
     public static final String EXTRA_BOOKING_ID = "booking_id";
 
@@ -47,8 +46,7 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
 
     private int mBookingId;
 
-    public static RateImprovementConfirmationDialogFragment newInstance(final int bookingId)
-    {
+    public static RateImprovementConfirmationDialogFragment newInstance(final int bookingId) {
         final RateImprovementConfirmationDialogFragment fragment
                 = new RateImprovementConfirmationDialogFragment();
 
@@ -60,13 +58,11 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
         return fragment;
     }
 
-
     @Override
     public View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
-    )
-    {
+    ) {
 
         super.onCreateView(inflater, container, savedInstanceState);
 
@@ -79,7 +75,8 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
         mSkipButton.setVisibility(View.VISIBLE);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f
+        );
         mSkipButton.setLayoutParams(param);
         mSkipButton.setText(getString(R.string.need_help_question));
         mSubmitButton.setText(getString(R.string.close));
@@ -96,15 +93,13 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
     }
 
     @OnClick(R.id.skip_button)
-    public void needHelp()
-    {
+    public void needHelp() {
         startActivity(HelpActivity.DeepLink.PRO_ISSUES.getIntent(getActivity()));
         dismiss();
     }
 
     @OnClick(R.id.submit_button)
-    public void close()
-    {
+    public void close() {
         dismiss();
     }
 

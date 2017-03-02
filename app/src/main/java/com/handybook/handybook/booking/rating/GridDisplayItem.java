@@ -9,8 +9,8 @@ import java.io.Serializable;
  * <p>
  * Created by jtse on 3/31/16.
  */
-public class GridDisplayItem implements Serializable
-{
+public class GridDisplayItem implements Serializable {
+
     private Reason mReason;
 
     @DrawableRes
@@ -18,30 +18,25 @@ public class GridDisplayItem implements Serializable
 
     private boolean mSelected = false;
 
-    public GridDisplayItem(final Reason reason, final int drawableId, final boolean isSelected)
-    {
+    public GridDisplayItem(final Reason reason, final int drawableId, final boolean isSelected) {
         mReason = reason;
         mDrawableId = drawableId;
         mSelected = isSelected;
     }
 
-    public Reason getReason()
-    {
+    public Reason getReason() {
         return mReason;
     }
 
-    public int getDrawableId()
-    {
+    public int getDrawableId() {
         return mDrawableId;
     }
 
-    public boolean isSelected()
-    {
+    public boolean isSelected() {
         return mSelected;
     }
 
-    public void setSelected(final boolean selected)
-    {
+    public void setSelected(final boolean selected) {
         mSelected = selected;
     }
 }

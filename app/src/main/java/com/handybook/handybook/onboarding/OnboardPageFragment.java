@@ -15,8 +15,8 @@ import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class OnboardPageFragment extends BookingFlowFragment
-{
+public final class OnboardPageFragment extends BookingFlowFragment {
+
     static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
     static final String EXTRA_ANIMATE = "com.handy.handy.EXTRA_ANIMATE";
 
@@ -66,12 +66,14 @@ public final class OnboardPageFragment extends BookingFlowFragment
     public void onStart() {
         super.onStart();
 
-        if (page == 0) animateIcons();
+        if (page == 0) { animateIcons(); }
     }
 
     @Override
-    public final View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                                   final Bundle savedInstanceState) {
+    public final View onCreateView(
+            final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState
+    ) {
         int layout;
 
         switch (page) {
@@ -92,7 +94,7 @@ public final class OnboardPageFragment extends BookingFlowFragment
         }
 
         final View view = getActivity().getLayoutInflater()
-                .inflate(layout, container, false);
+                                       .inflate(layout, container, false);
 
         ButterKnife.bind(this, view);
 
@@ -115,7 +117,7 @@ public final class OnboardPageFragment extends BookingFlowFragment
     }
 
     void animate() {
-        if (!isVisible() || animated) return;
+        if (!isVisible() || animated) { return; }
 
         final Animation onboardAppear = AnimationUtils
                 .loadAnimation(getActivity(), R.anim.onboard_appear);
@@ -157,23 +159,29 @@ public final class OnboardPageFragment extends BookingFlowFragment
     }
 
     private void animateIcons() {
-        if (!isVisible() || animated) return;
+        if (!isVisible() || animated) { return; }
 
-        Animation onboardAppear = AnimationUtils.loadAnimation(getActivity(),
-                R.anim.onboard_appear_icons);
+        Animation onboardAppear = AnimationUtils.loadAnimation(
+                getActivity(),
+                R.anim.onboard_appear_icons
+        );
 
         onboardAppear.setStartOffset(250);
         onboardAppear.setFillAfter(true);
         cleanIcon.startAnimation(onboardAppear);
 
-        onboardAppear = AnimationUtils.loadAnimation(getActivity(),
-                R.anim.onboard_appear_icons);
+        onboardAppear = AnimationUtils.loadAnimation(
+                getActivity(),
+                R.anim.onboard_appear_icons
+        );
         onboardAppear.setStartOffset(450);
         onboardAppear.setFillAfter(true);
         handyIcon.startAnimation(onboardAppear);
 
-         onboardAppear = AnimationUtils.loadAnimation(getActivity(),
-                R.anim.onboard_appear_icons);
+        onboardAppear = AnimationUtils.loadAnimation(
+                getActivity(),
+                R.anim.onboard_appear_icons
+        );
         onboardAppear.setStartOffset(650);
         onboardAppear.setFillAfter(true);
         paintIcon.startAnimation(onboardAppear);
