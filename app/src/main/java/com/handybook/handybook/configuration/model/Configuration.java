@@ -55,6 +55,13 @@ public class Configuration implements Serializable {
     private boolean mDirectSmsToChatEnabled;
     @SerializedName("setting_favorite_pro_enabled")
     private boolean mSettingFavoriteProEnabled;
+
+    /**
+     * whether to show BookingDateFragmentV2 instead of BookingDateFragment
+     * we plan to remove this soon
+     */
+    @SerializedName("booking_date_time_input_screen_v2_enabled")
+    private boolean mBookingDateTimeInputScreenV2Enabled;
     /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
      * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
@@ -62,6 +69,10 @@ public class Configuration implements Serializable {
      */
     @SerializedName("booking_hours_clarification_experiment_enabled")
     private boolean mBookingHoursClarificationExperimentEnabled;
+
+    public boolean isBookingDateTimeInputScreenV2Enabled() {
+        return mBookingDateTimeInputScreenV2Enabled;
+    }
 
     public boolean isBookingHoursClarificationExperimentEnabled() {
         return mBookingHoursClarificationExperimentEnabled;

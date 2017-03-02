@@ -19,7 +19,6 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.contrib.PickerActions.setTime;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -56,8 +55,7 @@ public class BookingCreationForExistingUserTest {
         clickNextButton();
 
         //use default date at 9 am
-        ViewUtil.waitForViewVisible(R.id.date_picker, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        onView(withId(R.id.time_picker)).perform(setTime(9, 0));
+        AppInteractionUtil.inputBookingTime(9, 0);
         clickNextButton();
 
         //use default frequency
