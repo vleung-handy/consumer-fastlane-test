@@ -41,8 +41,9 @@ lane :release_candidate do |options|
   ensure_git_branch_clean_and_latest
   _, major, minor, _ = get_current_version.split(/([0-9]+)\.([0-9]+)\.([0-9]+)/)
   version_suffix = "#{major}.#{minor}.x"
-  sh('git checkout -b release_candidate_v' + version_suffix)
-  push_to_git_remote
+  release_candidate_branch_name = 'release_candidate_v' + version_suffix
+  sh('git checkout -b ' + release_candidate_branch_name)
+  sh('git push --set-upstream origin ' + release_candidate_branch_name)
 end
 
 lane :version_bump do |options|
