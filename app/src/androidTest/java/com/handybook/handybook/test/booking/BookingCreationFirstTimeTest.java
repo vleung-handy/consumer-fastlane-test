@@ -57,7 +57,7 @@ public class BookingCreationFirstTimeTest {
         clickNextButton();
 
         //use default date at 9 am
-        AppInteractionUtil.setBookingTimeFromEditBookingTimeButton(9, 0);
+        AppInteractionUtil.inputBookingTime(9, 0);
 
         clickNextButton();
 

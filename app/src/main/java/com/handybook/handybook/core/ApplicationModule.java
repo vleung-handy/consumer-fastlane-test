@@ -74,6 +74,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingCancelReasonFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingCancelWarningFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2;
 import com.handybook.handybook.booking.ui.fragment.BookingDateTimeInputFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
@@ -200,6 +201,7 @@ import retrofit.converter.GsonConverter;
         BookingLocationFragment.class,
         BookingOptionsFragment.class,
         BookingDateFragment.class,
+        BookingDateFragmentV2.class,
         BookingAddressFragment.class,
         BookingHeaderFragment.class,
         BookingPaymentFragment.class,
