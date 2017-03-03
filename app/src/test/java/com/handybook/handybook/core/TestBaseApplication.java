@@ -7,9 +7,8 @@ public class TestBaseApplication extends BaseApplication {
     public boolean mIsNewlyLaunched;
 
     @Override
-    protected void createObjectGraph() {
-        graph = ObjectGraph.create(new TestApplicationModule(this.getApplicationContext()));
-        graph.inject(this);
+    protected ObjectGraph createObjectGraph() {
+        return ObjectGraph.create(new TestApplicationModule(this.getApplicationContext()));
     }
 
     @Override

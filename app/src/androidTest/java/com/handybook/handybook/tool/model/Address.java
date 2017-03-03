@@ -1,4 +1,4 @@
-package com.handybook.handybook.test.model;
+package com.handybook.handybook.tool.model;
 
 public class Address {
 

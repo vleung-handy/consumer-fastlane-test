@@ -1,4 +1,4 @@
-package com.handybook.handybook.test.util;
+package com.handybook.handybook.tool.util;
 
 import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
@@ -11,7 +11,7 @@ import android.support.test.espresso.contrib.PickerActions;
 import android.view.View;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.test.model.TestUser;
+import com.handybook.handybook.tool.model.TestUser;
 
 import org.hamcrest.Matcher;
 

@@ -1,4 +1,4 @@
-package com.handybook.handybook.test.util;
+package com.handybook.handybook.tool.util;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

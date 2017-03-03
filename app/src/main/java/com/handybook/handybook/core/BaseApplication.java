@@ -69,7 +69,7 @@ public class BaseApplication extends MultiDexApplication {
     private static Tracker sTracker;
     //This is used for the application context
 
-    protected ObjectGraph graph;
+    private ObjectGraph mGraph;
     @Inject
     UserManager userManager;
     @Inject
@@ -133,7 +133,8 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        createObjectGraph();
+        mGraph = createObjectGraph();
+        inject(this);
         HandyLibrary.init(mRestAdapter, this, BuildConfig.FLAVOR.equals(FLAVOR_PROD));
         mApplicationStartTime = new Date();
 
@@ -261,13 +262,12 @@ public class BaseApplication extends MultiDexApplication {
         return options;
     }
 
-    protected void createObjectGraph() {
-        graph = ObjectGraph.create(new ApplicationModule(this));
-        inject(this);
+    protected ObjectGraph createObjectGraph() {
+        return ObjectGraph.create(new ApplicationModule(this));
     }
 
     public final void inject(final Object object) {
-        graph.inject(object);
+        mGraph.inject(object);
     }
 
     public final static BookingManager getBookingManager() {

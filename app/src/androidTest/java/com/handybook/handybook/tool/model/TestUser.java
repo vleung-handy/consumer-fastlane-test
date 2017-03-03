@@ -1,4 +1,4 @@
-package com.handybook.handybook.test.model;
+package com.handybook.handybook.tool.model;
 
 import com.stripe.android.model.Card;
 
