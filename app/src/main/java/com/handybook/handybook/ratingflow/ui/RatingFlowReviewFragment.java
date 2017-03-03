@@ -13,8 +13,7 @@ import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.view.LimitedEditText;
 import com.handybook.handybook.library.util.TextUtils;
 
@@ -109,27 +108,12 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
     void onSubmit() {
         final String review = mReviewTextField.getText().toString();
         if (!Strings.isNullOrEmpty(review)) {
-            showUiBlockers();
             dataManager.submitProRatingDetails(
                     Integer.parseInt(mBooking.getId()),
                     review,
-                    new FragmentSafeCallback<Void>(this) {
-                        @Override
-                        public void onCallbackSuccess(final Void response) {
-                            removeUiBlockers();
-                            finishStep();
-                        }
-
-                        @Override
-                        public void onCallbackError(DataManager.DataManagerError error) {
-                            removeUiBlockers();
-                            showToast(R.string.default_error_string);
-                        }
-                    }
+                    new VoidDataManagerCallback()
             );
         }
-        else {
-            showToast(R.string.default_error_string);
-        }
+        finishStep();
     }
 }

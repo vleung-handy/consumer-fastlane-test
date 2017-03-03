@@ -76,7 +76,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-
         final View view = inflater.inflate(
                 R.layout.fragment_rating_flow_feedback,
                 container,
@@ -116,6 +115,11 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         }
     }
 
+    @OnClick(R.id.rating_flow_skip_button)
+    public void onSkipClicked() {
+        getActivity().finish();
+    }
+
     void continueFeedbackFlow() {
         int nextStepOrdinal = mCurrentStep == null ? 0 : mCurrentStep.ordinal() + 1;
         if (nextStepOrdinal < Step.values().length) {
@@ -137,7 +141,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                 getChildFragmentManager()
                         .beginTransaction()
                         .disallowAddToBackStack()
-                        .setCustomAnimations(R.anim.fade_slide_in_right, R.anim.none)
+                        .setCustomAnimations(R.anim.fade_slide_in_right, R.anim.fade_slide_out_left)
                         .replace(R.id.rating_flow_feedback_content, fragment)
                         .commit();
             }

@@ -39,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/rating_flow_rate_prompt"
-                    style="@style/TextView.Large.Bold"
+                    style="@style/TextView.XLarge.Bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin_double"
@@ -95,7 +95,7 @@
                     android:padding="@dimen/default_padding_half"
                     android:textColorHint="@color/handy_tertiary_gray"
                     android:textCursorDrawable="@drawable/handy_cursor"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_medium"
                     android:visibility="gone"
                     tools:visibility="visible"
                     />

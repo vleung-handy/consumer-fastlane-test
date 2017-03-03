@@ -2,9 +2,11 @@ package com.handybook.handybook.ratingflow.ui;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.transition.AutoTransition;
+import android.transition.Fade;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -48,9 +50,10 @@ public class RatingFlowActivity extends BaseActivity {
         continueRatingFlow();
     }
 
-    // TODO: Solve edge case where data isn't ready by the time the step is ready to execute
     private synchronized void continueRatingFlow() {
+        // Expect this to stay null if data isn't available for the fragment.
         Fragment fragment = null;
+
         switch (mCurrentStep) {
             case RATE_TIP_STEP:
                 fragment = RatingFlowRateAndTipFragment.newInstance(mBooking);
@@ -64,31 +67,48 @@ public class RatingFlowActivity extends BaseActivity {
                     );
                 }
                 break;
+            case REFERRAL_STEP:
+                if (mReferralDescriptor != null) {
+                    fragment = RatingFlowReferralFragment.newInstance(mReferralDescriptor);
+                }
+                break;
             default:
                 finish();
                 return;
         }
-        if (fragment != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                fragment.setSharedElementEnterTransition(new AutoTransition().setInterpolator(
-                        new DecelerateInterpolator()));
-            }
+        displayFragmentOrSkip(fragment);
+    }
 
+    private void displayFragmentOrSkip(@Nullable final Fragment fragment) {
+        if (fragment != null) {
             final FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction()
                     .disallowAddToBackStack();
 
-            addSharedElements(fragmentTransaction);
+            addSharedElements(fragmentTransaction, fragment);
 
             fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
         }
+        else {
+            finishStep();
+        }
     }
 
-    private void addSharedElements(final FragmentTransaction fragmentTransaction) {
+    private void addSharedElements(
+            final FragmentTransaction fragmentTransaction,
+            final Fragment targetFragment
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (targetFragment instanceof RatingFlowReferralFragment) {
+                targetFragment.setEnterTransition(new Fade(Fade.IN));
+            }
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             final Fragment currentFragment
                     = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (currentFragment instanceof RatingFlowRateAndTipFragment) {
+            if (currentFragment instanceof RatingFlowRateAndTipFragment
+                && targetFragment instanceof RatingFlowFeedbackFragment) {
                 final View view = currentFragment.getView();
                 if (view == null) { return; }
                 final ImageView proImage
@@ -97,6 +117,8 @@ public class RatingFlowActivity extends BaseActivity {
                         = (RatingFlowFiveStarsView) view.findViewById(R.id.rating_flow_stars);
                 final View divider = view.findViewById(R.id.rating_flow_divider);
                 if (proImage == null || stars == null || divider == null) { return; }
+                targetFragment.setSharedElementEnterTransition(
+                        new AutoTransition().setInterpolator(new DecelerateInterpolator()));
                 fragmentTransaction.addSharedElement(
                         proImage,
                         getString(R.string.transition_pro_image)
