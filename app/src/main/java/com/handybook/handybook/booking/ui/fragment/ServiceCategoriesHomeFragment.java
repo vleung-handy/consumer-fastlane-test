@@ -152,6 +152,8 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
                     mEnvironmentModifier.getEnvironment()
             ));
             mEnvButton.setVisibility(View.VISIBLE);
+        } else {
+            mEnvButton.setVisibility(View.GONE);
         }
 
         return view;
