@@ -62,9 +62,8 @@ import retrofit.converter.GsonConverter;
 
 @Module(
         injects = {
-                BaseApplication.class,
-                // Do not add new class here. Put it into InjectionModule instead.
-},
+                CoreTestApplication.class,
+        },
         includes = {
                 InjectionModule.class,
                 HelpModule.class,
@@ -75,12 +74,12 @@ import retrofit.converter.GsonConverter;
                 RatingFlowModule.class,
         }
 )
-public final class ApplicationModule {
+public final class CoreTestApplicationModule {
 
     private final Context mContext;
     private final Properties mConfigs;
 
-    public ApplicationModule(final Context context) {
+    public CoreTestApplicationModule(final Context context) {
         mContext = context.getApplicationContext();
         mConfigs = PropertiesReader.getProperties(context, "config.properties");
     }
@@ -436,7 +435,7 @@ public final class ApplicationModule {
             final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
     ) {
-        return new ConfigurationManager(bus, defaultPreferencesManager, dataManager);
+        return new CoreTestConfigManager(bus, defaultPreferencesManager, dataManager);
     }
 
     @Provides

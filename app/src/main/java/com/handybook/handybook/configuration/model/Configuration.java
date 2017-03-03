@@ -70,6 +70,7 @@ public class Configuration implements Serializable {
     @SerializedName("booking_hours_clarification_experiment_enabled")
     private boolean mBookingHoursClarificationExperimentEnabled;
 
+    // Getters
     public boolean isBookingDateTimeInputScreenV2Enabled() {
         return mBookingDateTimeInputScreenV2Enabled;
     }
@@ -152,5 +153,14 @@ public class Configuration implements Serializable {
 
     public boolean isNewRatingFlowEnabled() {
         return false;
+    }
+
+    // Setters
+    public void setBottomNavEnabled(final boolean bottomNavEnabled) {
+        mBottomNavEnabled = bottomNavEnabled;
+    }
+
+    public void setHomeScreenV2Enabled(final boolean homeScreenV2Enabled) {
+        mHomeScreenV2Enabled = homeScreenV2Enabled;
     }
 }
