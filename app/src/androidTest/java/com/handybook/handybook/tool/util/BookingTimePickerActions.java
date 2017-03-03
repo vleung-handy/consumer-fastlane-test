@@ -1,4 +1,4 @@
-package com.handybook.handybook.test.util;
+package com.handybook.handybook.tool.util;
 
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;

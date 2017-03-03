@@ -48,7 +48,7 @@
 -dontwarn sun.misc.Unsafe
 
 #typed handy retrofitcallback
--keep class com.handybook.handybook.data.** { *; }
+-keep class com.handybook.handybook.tool.data.** { *; }
 
 -keep class com.google.android.gms.** { *; }
 -dontwarn com.google.android.gms.**

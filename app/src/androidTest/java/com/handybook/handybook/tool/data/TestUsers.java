@@ -1,7 +1,7 @@
-package com.handybook.handybook.test.data;
+package com.handybook.handybook.tool.data;
 
-import com.handybook.handybook.test.model.Address;
-import com.handybook.handybook.test.model.TestUser;
+import com.handybook.handybook.tool.model.Address;
+import com.handybook.handybook.tool.model.TestUser;
 import com.stripe.android.model.Card;
 
 import java.util.UUID;

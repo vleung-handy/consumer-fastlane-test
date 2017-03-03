@@ -1,12 +1,12 @@
-package com.handybook.handybook;
+package com.handybook.handybook.test;
 
 import android.support.test.runner.AndroidJUnit4;
 
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.test.LauncherActivityTestRule;
-import com.handybook.handybook.test.data.TestUsers;
-import com.handybook.handybook.test.model.TestUser;
-import com.handybook.handybook.test.util.AppInteractionUtil;
+import com.handybook.handybook.tool.data.TestUsers;
+import com.handybook.handybook.tool.model.TestUser;
+import com.handybook.handybook.tool.util.AppInteractionUtil;
+import com.handybook.handybook.tool.util.LauncherActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;

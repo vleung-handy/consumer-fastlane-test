@@ -4,9 +4,9 @@ import android.support.test.espresso.PerformException;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
-import com.handybook.handybook.test.LauncherActivityTestRule;
-import com.handybook.handybook.test.util.AppInteractionUtil;
-import com.handybook.handybook.test.util.TextViewUtil;
+import com.handybook.handybook.tool.util.AppInteractionUtil;
+import com.handybook.handybook.tool.util.LauncherActivityTestRule;
+import com.handybook.handybook.tool.util.TextViewUtil;
 
 import org.junit.Ignore;
 import org.junit.Rule;

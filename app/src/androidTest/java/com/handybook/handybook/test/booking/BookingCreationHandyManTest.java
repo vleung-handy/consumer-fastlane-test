@@ -7,11 +7,11 @@ import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.test.LauncherActivityTestRule;
-import com.handybook.handybook.test.data.TestUsers;
-import com.handybook.handybook.test.model.TestUser;
-import com.handybook.handybook.test.util.AppInteractionUtil;
-import com.handybook.handybook.test.util.ViewUtil;
+import com.handybook.handybook.tool.data.TestUsers;
+import com.handybook.handybook.tool.model.TestUser;
+import com.handybook.handybook.tool.util.AppInteractionUtil;
+import com.handybook.handybook.tool.util.LauncherActivityTestRule;
+import com.handybook.handybook.tool.util.ViewUtil;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;

@@ -1,4 +1,4 @@
-package com.handybook.handybook.test;
+package com.handybook.handybook.tool.util;
 
 import android.app.Activity;
 import android.content.Intent;
