@@ -86,7 +86,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     TextView mNotInZip;
     @Bind(R.id.fragment_service_categories_sign_in_text)
     TextView mSigninButton;
-    @Bind(R.id.env_button)
+    @Bind(R.id.fragment_service_categories_env_button)
     TextView mEnvButton;
 
     @Inject
