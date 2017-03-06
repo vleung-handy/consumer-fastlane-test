@@ -19,7 +19,7 @@
         >
 
         <TextView
-            android:id="@+id/env_button"
+            android:id="@+id/fragment_service_categories_env_button"
             style="@style/TextView.Large.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
