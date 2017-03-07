@@ -90,6 +90,7 @@
     <string name="apply">Apply</string>
     <string name="promo_code_opt">Promo Code (optional)</string>
     <string name="remove">Remove</string>
+    <string name="unfavorite">Unfavorite</string>
     <string name="promo_code">Promo Code</string>
     <string name="reschedule">Reschedule</string>
     <string name="reschedule_instead">Reschedule Instead?</string>
