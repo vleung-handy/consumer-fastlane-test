@@ -15,7 +15,7 @@ public class ProTeamActionPickerViewModel implements Serializable {
 
     public enum ActionType {
         FAVORITE(ProviderMatchPreference.FAVORITE, R.string.favorite),
-        UNFAVORITE(ProviderMatchPreference.PREFERRED, R.string.remove),
+        UNFAVORITE(ProviderMatchPreference.PREFERRED, R.string.unfavorite),
         BLOCK(ProviderMatchPreference.NEVER, R.string.block);
 
         private ProviderMatchPreference mMatchPreference;
