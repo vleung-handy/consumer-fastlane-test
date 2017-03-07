@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -18,11 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.login.LoginManager;
+import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
@@ -31,11 +36,14 @@ import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.activity.ZipActivity;
 import com.handybook.handybook.booking.ui.adapter.ServicesCategoryHomeAdapter;
+import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
@@ -78,11 +86,15 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     TextView mNotInZip;
     @Bind(R.id.fragment_service_categories_sign_in_text)
     TextView mSigninButton;
+    @Bind(R.id.fragment_service_categories_env_button)
+    TextView mEnvButton;
 
     @Inject
     UserManager mUserManager;
     @Inject
     SecurePreferencesManager mSecurePreferencesManager;
+    @Inject
+    EnvironmentModifier mEnvironmentModifier;
 
     private ServicesCategoryHomeAdapter mAdapter;
 
@@ -133,6 +145,17 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
 
         refreshZipLabel();
         updateSigninButtonDisplay();
+        // We will only enable environment modifier if this is a stage build
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) {
+            mEnvButton.setText(getString(
+                    R.string.environment_name,
+                    mEnvironmentModifier.getEnvironment()
+            ));
+            mEnvButton.setVisibility(View.VISIBLE);
+        } else {
+            mEnvButton.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
@@ -164,6 +187,41 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
                 new Intent(getActivity(), ZipActivity.class),
                 REQUEST_CODE_ZIP
         );
+    }
+
+    @OnClick(R.id.env_button)
+    public void onEnvButtonClicked() {
+        final EditText input = new EditText(getContext());
+        input.setText(mEnvironmentModifier.getEnvironment());
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.set_environment)
+                .setView(input)
+                .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // change the environment and update the menu text
+                        mEnvironmentModifier.setEnvironment(input.getText().toString());
+                        mEnvButton.setText(getString(
+                                R.string.environment_name,
+                                input.getText().toString()
+                        ));
+                        //Log user out
+                        mConfigurationManager.invalidateCache();
+                        mUserManager.setCurrentUser(null);
+                        //log out of Facebook also
+                        LoginManager.getInstance().logOut();
+                        Intent intent = new Intent(
+                                getContext(),
+                                SplashActivity.class
+                        );
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show();
     }
 
     @Override
