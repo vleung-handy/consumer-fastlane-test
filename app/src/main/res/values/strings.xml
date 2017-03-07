@@ -36,7 +36,8 @@
     <string name="pwd_length_error">Your password must be at least 8 characters.</string>
     <string name="info_updated">Your information has been updated.</string>
     <string name="env_format"
-            formatted="false">%s: v%s (%s)</string>
+            formatted="false"
+        >%s: v%s (%s)</string>
     <string name="upcoming">Upcoming</string>
     <string name="past">Past</string>
     <string name="hours">Hours</string>
@@ -489,7 +490,7 @@
     <string name="account.cancel_plan">Cancel Plan</string>
     <string name="account.next_cleaning">Next cleaning</string>
     <string name="account.promo_code_description">Apply a discount</string>
-    <string name="account.sign_out">Sign out</string>
+    <string name="account.sign_out">Sign Out</string>
     <string name="account.work_with_pros_you_love">Work with pros you love</string>
     <string name="account.choose_favorite_pro">Choose your Favorite Pro</string>
     <string name="sign_in">Sign In</string>
@@ -552,4 +553,8 @@
     <string name="transition_divider">divider</string>
     <string name="write_a_review_formatted">Write a public review for %1$s</string>
     <string name="rating_flow_feedback_hint">Amazing work on the kitchen!</string>
+    <string name="account_active_plans_saved_cleanings_title_template"><![CDATA[<strong>Saved cleanings: </strong>%s]]></string>
+    <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn more</a>]]></string>
+    <string name="account_active_plans_saved_cleanings_faq_url">https://handy.com/faq/subscription_credits</string>
 </resources>
+

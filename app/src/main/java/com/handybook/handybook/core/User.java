@@ -1,7 +1,6 @@
 package com.handybook.handybook.core;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.ExclusionStrategy;
@@ -76,6 +75,8 @@ public class User extends Observable {
     private boolean mRecurringCancellationsEnabled;
     @SerializedName("enable_recurring_cancellations_email_flow")
     private boolean mRecurringCancellationsEmailFlowEnabled;
+    @SerializedName("has_active_subscription")
+    private boolean mHasActiveSubscription;
 
     public User() {}
 
@@ -304,7 +305,11 @@ public class User extends Observable {
      * Returns true even if subscription credits are ZERO, this checks for absence check, not value
      */
     public boolean hasSubscriptionCreditsValue() {
-        return mCategorizedCredits != null && mCategorizedCredits.getSubscriptionCredits() != null;
+        return getCategorizedCredits().getSubscriptionCredits() > 0;
+    }
+
+    public boolean hasActiveSubscription() {
+        return mHasActiveSubscription;
     }
 
     static final class UserSerializer implements JsonSerializer<User> {
@@ -466,17 +471,20 @@ public class User extends Observable {
     public static class CategorizedCredits implements Serializable {
 
         @SerializedName("general")
-        private Integer mGeneralCredits;
+        private int mGeneralCredits;
         @SerializedName("subscription")
-        private Integer mSubscriptionCredits;
+        private int mSubscriptionCredits;
 
-        @Nullable
-        public Integer getGeneralCredits() {
+        public CategorizedCredits(final int generalCredits, final int subscriptionCredits) {
+            mGeneralCredits = generalCredits;
+            mSubscriptionCredits = subscriptionCredits;
+        }
+
+        public int getGeneralCredits() {
             return mGeneralCredits;
         }
 
-        @Nullable
-        public Integer getSubscriptionCredits() {
+        public int getSubscriptionCredits() {
             return mSubscriptionCredits;
         }
     }
