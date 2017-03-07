@@ -19,6 +19,18 @@
         >
 
         <TextView
+            android:id="@+id/fragment_service_categories_env_button"
+            style="@style/TextView.Large.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            tools:text="[s]"
+            tools:visibility="visible"
+            />
+
+        <TextView
             android:id="@+id/fragment_service_categories_sign_in_text"
             style="@style/TextView.Medium.Bold"
             android:layout_width="wrap_content"
@@ -27,6 +39,7 @@
             android:layout_marginRight="@dimen/default_margin"
             android:text="@string/sign_in"
             android:textColor="@color/white"
+            tools:visibility="visible"
             />
     </android.support.v7.widget.Toolbar>
 
