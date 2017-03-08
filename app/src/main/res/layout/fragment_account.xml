@@ -213,7 +213,7 @@
                         android:layout_marginBottom="12dp"
                         android:gravity="center_horizontal"
                         style="@style/TextView.Medium.Bold"
-                        android:text="@string/account_active_plans_saved_cleanings_title_template"
+                        tools:text="@string/account_active_plans_saved_cleanings_title_template"
                         />
 
                     <TextView
@@ -226,7 +226,7 @@
                         android:textColorLink="@color/handy_darkened_blue"
                         style="@style/TextView.Small"
                         android:autoLink="web"
-                        android:text="@string/account_active_plans_saved_cleanings_message_template"
+                        tools:text="@string/account_active_plans_saved_cleanings_message_template"
                         />
                 </LinearLayout>
 
