@@ -70,24 +70,24 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     private List<Service> mServices;
     private boolean mUsedCache;
 
-    @Bind(R.id.toolbar)
+    @Bind(R.id.fragment_service_categories_home_toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.services_home_list)
+    @Bind(R.id.fragment_service_categories_home_services_list)
     GridView mGridView;
-    @Bind(R.id.change_zip_layout)
-    View mChangeZipLayout;
-    @Bind(R.id.coupon_layout)
-    View mCouponLayout;
-    @Bind(R.id.promo_img)
+    @Bind(R.id.fragment_service_categories_home_change_zip_container)
+    ViewGroup mChangeZipContainer;
+    @Bind(R.id.fragment_service_categories_home_promo_container)
+    ViewGroup mPromoContainer;
+    @Bind(R.id.fragment_service_categories_home_promo_image)
     ImageView mPromoImage;
-    @Bind(R.id.promo_text)
+    @Bind(R.id.fragment_service_categories_home_promo_text)
     TextView mPromoText;
-    @Bind(R.id.not_in_zip)
+    @Bind(R.id.fragment_service_categories_home_not_in_zip)
     TextView mNotInZip;
-    @Bind(R.id.fragment_service_categories_sign_in_text)
-    TextView mSigninButton;
-    @Bind(R.id.fragment_service_categories_env_button)
-    TextView mEnvButton;
+    @Bind(R.id.fragment_service_categories_home_sign_in_text)
+    TextView mSignInLink;
+    @Bind(R.id.fragment_service_categories_home_env_button)
+    TextView mEnvLink;
 
     @Inject
     UserManager mUserManager;
@@ -147,13 +147,13 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         updateSigninButtonDisplay();
         // We will only enable environment modifier if this is a stage build
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) {
-            mEnvButton.setText(getString(
+            mEnvLink.setText(getString(
                     R.string.environment_name,
                     mEnvironmentModifier.getEnvironment()
             ));
-            mEnvButton.setVisibility(View.VISIBLE);
+            mEnvLink.setVisibility(View.VISIBLE);
         } else {
-            mEnvButton.setVisibility(View.GONE);
+            mEnvLink.setVisibility(View.GONE);
         }
 
         return view;
@@ -163,25 +163,25 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
      * If the user is already logged in, don't show the sign in button
      */
     private void updateSigninButtonDisplay() {
-        mSigninButton.setVisibility(mUserManager.isUserLoggedIn() ? View.GONE : View.VISIBLE);
+        mSignInLink.setVisibility(mUserManager.isUserLoggedIn() ? View.GONE : View.VISIBLE);
     }
 
     private void refreshZipLabel() {
         String zip = mDefaultPreferencesManager.getString(PrefsKey.ZIP);
         if (!TextUtils.isEmpty(zip)) {
             mNotInZip.setText(getString(R.string.not_in_zip, zip));
-            mChangeZipLayout.setVisibility(View.VISIBLE);
+            mChangeZipContainer.setVisibility(View.VISIBLE);
         }
     }
 
     //only enabled when bottom nav enabled
-    @OnClick(R.id.fragment_service_categories_sign_in_text)
+    @OnClick(R.id.fragment_service_categories_home_sign_in_text)
     public void onSignInTextClicked() {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
         getActivity().startActivity(intent);
     }
 
-    @OnClick(R.id.change_button)
+    @OnClick(R.id.fragment_service_categories_home_change_button)
     public void onChangeButtonClicked() {
         startActivityForResult(
                 new Intent(getActivity(), ZipActivity.class),
@@ -189,7 +189,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         );
     }
 
-    @OnClick(R.id.fragment_service_categories_env_button)
+    @OnClick(R.id.fragment_service_categories_home_env_button)
     public void onEnvButtonClicked() {
         final EditText input = new EditText(getContext());
         input.setText(mEnvironmentModifier.getEnvironment());
@@ -201,7 +201,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // change the environment and update the menu text
                         mEnvironmentModifier.setEnvironment(input.getText().toString());
-                        mEnvButton.setText(getString(
+                        mEnvLink.setText(getString(
                                 R.string.environment_name,
                                 input.getText().toString()
                         ));
@@ -367,10 +367,10 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
             );
 
             mPromoText.setText(text, TextView.BufferType.SPANNABLE);
-            mCouponLayout.setVisibility(View.VISIBLE);
+            mPromoContainer.setVisibility(View.VISIBLE);
         }
         else {
-            mCouponLayout.setVisibility(View.GONE);
+            mPromoContainer.setVisibility(View.GONE);
         }
     }
 
@@ -380,7 +380,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         showCouponAppliedNotificationIfNecessary();
     }
 
-    @OnClick(R.id.coupon_layout)
+    @OnClick(R.id.fragment_service_categories_home_promo_container)
     public void onCouponClick() {
         if (getActivity() instanceof MenuDrawerActivity) {
             ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
