@@ -24,6 +24,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.handybook.handybook.proteam.model.ProviderMatchPreference.NEVER;
+import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
+
 public class RatingFlowFeedbackFragment extends InjectedFragment {
 
     private static final int START_DELAY_MILLIS = 400;
@@ -174,7 +177,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     private boolean shouldDisplayStep(@NonNull final Step step) {
         switch (step) {
             case MATCH_PREFERENCE:
-                return mProRating >= GOOD_PRO_RATING;
+                return true;
             case IMPROVEMENT:
                 return mProRating < GOOD_PRO_RATING;
             case REVIEW:
@@ -188,7 +191,10 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     private RatingFlowFeedbackChildFragment createFragmentForStep(@NonNull Step step) {
         switch (step) {
             case MATCH_PREFERENCE:
-                return RatingFlowMatchPreferenceFragment.newInstance(mBooking.getProvider());
+                return RatingFlowMatchPreferenceFragment.newInstance(
+                        mBooking.getProvider(),
+                        mProRating >= GOOD_PRO_RATING ? PREFERRED : NEVER
+                );
             case IMPROVEMENT:
                 return RatingFlowImprovementFragment.newInstance(
                         Lists.newArrayList(mPrerateProInfo.getReasons()),

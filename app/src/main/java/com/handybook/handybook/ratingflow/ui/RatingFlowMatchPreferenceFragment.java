@@ -26,6 +26,9 @@ import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREF
 
 public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFragment {
 
+    private static final int NO_PREFERENCE_INDEX = -1;
+    private static final int POSITIVE_PREFERENCE_INDEX = 0;
+    private static final int NEGATIVE_PREFERENCE_INDEX = 1;
     @Inject
     HandyRetrofitService mService;
 
@@ -37,7 +40,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
         @Override
         public void onUpdate(final BookingOptionsView view) {
             mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
-            mSelectedPreference = mOptionIndex == 0 ? PREFERRED : NEVER;
+            mSelectedPreference = mOptionIndex == POSITIVE_PREFERENCE_INDEX ? PREFERRED : NEVER;
             setSubmissionEnabled(true);
         }
 
@@ -59,10 +62,14 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
     };
 
     @NonNull
-    public static RatingFlowMatchPreferenceFragment newInstance(@NonNull final Provider provider) {
+    public static RatingFlowMatchPreferenceFragment newInstance(
+            @NonNull final Provider provider,
+            @NonNull final ProviderMatchPreference defaultPreference
+    ) {
         final RatingFlowMatchPreferenceFragment fragment = new RatingFlowMatchPreferenceFragment();
         final Bundle arguments = new Bundle();
         arguments.putSerializable(BundleKeys.PROVIDER, provider);
+        arguments.putSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE, defaultPreference);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -71,14 +78,26 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProvider = (Provider) getArguments().getSerializable(BundleKeys.PROVIDER);
-        mOptionIndex = -1;
+        final ProviderMatchPreference defaultPreference = (ProviderMatchPreference)
+                getArguments().getSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE);
+        mOptionIndex = NO_PREFERENCE_INDEX;
+        if (defaultPreference != null) {
+            switch (defaultPreference) {
+                case PREFERRED:
+                    mOptionIndex = POSITIVE_PREFERENCE_INDEX;
+                    break;
+                case NEVER:
+                    mOptionIndex = NEGATIVE_PREFERENCE_INDEX;
+                    break;
+            }
+        }
     }
 
     @Override
     public void onViewCreated(
             final View view, @Nullable final Bundle savedInstanceState
     ) {
-        setSubmissionEnabled(false);
+        setSubmissionEnabled(mOptionIndex != NO_PREFERENCE_INDEX);
         mSectionContainer.removeAllViews();
         mSectionTitle.setText(getString(
                 R.string.would_you_like_to_work_with_x_again,
