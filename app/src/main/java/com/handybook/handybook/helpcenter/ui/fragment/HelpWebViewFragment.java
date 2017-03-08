@@ -3,6 +3,7 @@ package com.handybook.handybook.helpcenter.ui.fragment;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -37,9 +38,19 @@ public class HelpWebViewFragment extends InjectedFragment {
     private String mId;
     private String mLinkType;
 
+    @NonNull
     public static HelpWebViewFragment newInstance(final Bundle arguments) {
         final HelpWebViewFragment fragment = new HelpWebViewFragment();
         fragment.setArguments(arguments);
+        return fragment;
+    }
+
+    @NonNull
+    public static HelpWebViewFragment newInstance(@NonNull final String helpCenterUrl) {
+        final Bundle bundle = new Bundle();
+        bundle.putString(BundleKeys.HELP_CENTER_URL, helpCenterUrl);
+        final HelpWebViewFragment fragment = new HelpWebViewFragment();
+        fragment.setArguments(bundle);
         return fragment;
     }
 

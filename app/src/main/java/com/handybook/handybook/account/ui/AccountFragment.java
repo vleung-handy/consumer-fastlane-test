@@ -37,6 +37,7 @@ import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamEditFragment;
@@ -67,6 +68,13 @@ public class AccountFragment extends InjectedFragment {
     TextView mActivePlansText;
     @Bind(R.id.account_active_plans_layout)
     ViewGroup mActivePlansLayout;
+    @Bind(R.id.account_active_plans_saved_cleanings_container)
+    ViewGroup mSavedCleaningsContainer;
+    @Bind(R.id.account_active_plans_saved_cleanings_title)
+    TextView mSavedCleaningsTitle;
+    @Bind(R.id.account_active_plans_saved_cleanings_message)
+    TextView mSavedCleaningsMessage;
+
     @Bind(R.id.account_pro_team_subtext)
     TextView mProTeamSubtext;
     @Bind(R.id.account_history_help_layout)
@@ -79,8 +87,9 @@ public class AccountFragment extends InjectedFragment {
     private int mHorizontalProgressRequestCounter;
 
     private User mUser;
-    private ArrayList<RecurringBooking> mPlans;
+    private ArrayList<RecurringBooking> mPlans = new ArrayList<>();
 
+    @NonNull
     public static AccountFragment newInstance() {
         return new AccountFragment();
     }
@@ -132,7 +141,7 @@ public class AccountFragment extends InjectedFragment {
         this can be old, but we will request the most recent user data onResume
         and show an error if we are unable to get it
          */
-        updateCreditsView(mUser);
+        updateGeneralCreditsView(mUser);
     }
 
     @Override
@@ -145,24 +154,67 @@ public class AccountFragment extends InjectedFragment {
             @Override
             public void onCallbackSuccess(final RecurringBookingsResponse response) {
                 hideHorizontalProgressBarIfReady();
-                mPlans = new ArrayList<>(response.getRecurringBookings());
-                mActivePlansText.setText(getString(
-                        R.string.account_active_plans_formatted, mPlans.size()));
-                mActivePlansLayout.setEnabled(mPlans.size() != 0);
+                mPlans.clear();
+                mPlans.addAll(response.getRecurringBookings());
+                initPlanSection();
             }
 
             @Override
             public void onCallbackError(final DataManager.DataManagerError error) {
                 hideHorizontalProgressBarIfReady();
-                mActivePlansLayout.setEnabled(false);
+                mPlans.clear();
+                initPlanSection();
                 dataManagerErrorHandler.handleError(getActivity(), error);
             }
         });
     }
 
-    private void updateCreditsView(@NonNull User user) {
+    private void initPlanSection() {
+        mActivePlansText.setText(
+                getString(R.string.account_active_plans_formatted, mPlans.size())
+        );
+        if (mPlans.isEmpty()) {
+            mActivePlansLayout.setEnabled(false);
+        }
+        initSavedCleaningsSection();
+    }
+
+    private void initSavedCleaningsSection() {
+        if (mUser.hasActiveSubscription() || mUser.hasSubscriptionCreditsValue()) {
+            mSavedCleaningsContainer.setVisibility(View.VISIBLE);
+            // Title
+            String title = getString(
+                    R.string.account_active_plans_saved_cleanings_title_template,
+                    TextUtils.formatPriceCents(
+                            mUser.getCategorizedCredits().getSubscriptionCredits(),
+                            mUser.getCurrencyChar()
+                    )
+            );
+            mSavedCleaningsTitle.setText(TextUtils.fromHtml(title));
+            // Message
+            final String url = getString(R.string.account_active_plans_saved_cleanings_faq_url);
+            String message = getString(
+                    R.string.account_active_plans_saved_cleanings_message_template,
+                    url
+            );
+            mSavedCleaningsMessage.setText(TextUtils.fromHtml(message));
+            TextUtils.stripUnderlines(mSavedCleaningsMessage);
+            mSavedCleaningsMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    InjectedFragment fragment = HelpWebViewFragment.newInstance(url);
+                    FragmentUtils.switchToFragment(AccountFragment.this, fragment, true);
+                }
+            });
+        }
+        else {
+            mSavedCleaningsContainer.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateGeneralCreditsView(@NonNull User user) {
         mCreditsView.setCurrencySymbol(user.getCurrencyChar());
-        mCreditsView.setPriceCents(user.getCreditsCents());
+        mCreditsView.setPriceCents(user.getCategorizedCredits().getGeneralCredits());
     }
 
     @Override
@@ -194,7 +246,8 @@ public class AccountFragment extends InjectedFragment {
                     @Override
                     public void onCallbackSuccess(final User response) {
                         mUser = response;
-                        updateCreditsView(mUser);
+                        updateGeneralCreditsView(mUser);
+                        initPlanSection();
                         hideHorizontalProgressBarIfReady();
                     }
 

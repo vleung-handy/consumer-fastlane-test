@@ -2,9 +2,12 @@ package com.handybook.handybook.library.util;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.URLSpan;
 import android.widget.TextView;
@@ -284,6 +287,17 @@ public final class TextUtils {
         public final void updateDrawState(final TextPaint ds) {
             super.updateDrawState(ds);
             ds.setUnderlineText(false);
+        }
+    }
+
+    @NonNull
+    public static Spanned fromHtml(@NonNull final String text) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
+        }
+        else {
+            //noinspection deprecation
+            return Html.fromHtml(text);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.handybook.handybook.core;
 
+import android.support.annotation.NonNull;
+
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -12,6 +14,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,8 +29,8 @@ public class User extends Observable {
     private String mAuthToken;
     @SerializedName("id")
     private String mId;
-    @SerializedName("credits_cents")
-    private int mCreditsCents;
+    @SerializedName("categorized_credits")
+    private CategorizedCredits mCategorizedCredits;
     @SerializedName("first_name")
     private String mFirstName;
     @SerializedName("last_name")
@@ -72,6 +75,8 @@ public class User extends Observable {
     private boolean mRecurringCancellationsEnabled;
     @SerializedName("enable_recurring_cancellations_email_flow")
     private boolean mRecurringCancellationsEmailFlowEnabled;
+    @SerializedName("has_active_subscription")
+    private boolean mHasActiveSubscription;
 
     public User() {}
 
@@ -99,10 +104,6 @@ public class User extends Observable {
     public final void setId(final String id) {
         mId = id;
         triggerObservers();
-    }
-
-    public int getCreditsCents() {
-        return mCreditsCents;
     }
 
     public final String getFirstName() {
@@ -295,6 +296,25 @@ public class User extends Observable {
         return mStripeKey;
     }
 
+    @NonNull
+    public CategorizedCredits getCategorizedCredits() {
+        if (mCategorizedCredits == null) {
+            mCategorizedCredits = new CategorizedCredits();
+        }
+        return mCategorizedCredits;
+    }
+
+    /**
+     * Returns true even if subscription credits are ZERO, this checks for absence check, not value
+     */
+    public boolean hasSubscriptionCreditsValue() {
+        return getCategorizedCredits().getSubscriptionCredits() > 0;
+    }
+
+    public boolean hasActiveSubscription() {
+        return mHasActiveSubscription;
+    }
+
     static final class UserSerializer implements JsonSerializer<User> {
 
         @Override
@@ -305,7 +325,7 @@ public class User extends Observable {
             final JsonObject jsonObj = new JsonObject();
             jsonObj.add("auth_token", context.serialize(value.getAuthToken()));
             jsonObj.add("id", context.serialize(value.getId()));
-            jsonObj.add("credits_cents", context.serialize(value.getCreditsCents()));
+            jsonObj.add("categorized_credits", context.serialize(value.getCategorizedCredits()));
             jsonObj.add("first_name", context.serialize(value.getFirstName()));
             jsonObj.add("last_name", context.serialize(value.getLastName()));
             jsonObj.add("email", context.serialize(value.getEmail()));
@@ -447,6 +467,23 @@ public class User extends Observable {
 
         public final boolean isFacebookLogin() {
             return mIsFacebookLogin;
+        }
+    }
+
+
+    public static class CategorizedCredits implements Serializable {
+
+        @SerializedName("general")
+        private int mGeneralCredits;
+        @SerializedName("subscription")
+        private int mSubscriptionCredits;
+
+        public int getGeneralCredits() {
+            return mGeneralCredits;
+        }
+
+        public int getSubscriptionCredits() {
+            return mSubscriptionCredits;
         }
     }
 }
