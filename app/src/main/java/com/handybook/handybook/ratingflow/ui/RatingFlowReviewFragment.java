@@ -9,6 +9,7 @@ import android.view.View;
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.view.LimitedEditText;
@@ -65,7 +66,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
     @NonNull
     private LimitedEditText createReviewTextField() {
         final LimitedEditText editText = new LimitedEditText(getActivity());
-        editText.setHint(R.string.rating_flow_feedback_hint);
+        editText.setHint(R.string.rating_flow_review_hint);
         editText.setHintTextColor(mHintColor);
         editText.setBackground(null);
         editText.setTextColor(mBlackColor);
@@ -85,7 +86,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
         if (!Strings.isNullOrEmpty(review)) {
             dataManager.submitProRatingDetails(
                     Integer.parseInt(mBooking.getId()),
-                    review,
+                    new ReviewProRequest(review, null),
                     new VoidDataManagerCallback()
             );
         }

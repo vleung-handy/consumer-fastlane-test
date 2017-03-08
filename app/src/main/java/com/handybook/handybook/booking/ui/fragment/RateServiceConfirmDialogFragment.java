@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
@@ -183,7 +184,8 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
                 submitProgress.setVisibility(View.VISIBLE);
                 submitButton.setText(null);
 
-                dataManager.submitProRatingDetails(booking, positiveFeedback,
+                dataManager.submitProRatingDetails(booking,
+                                                   new ReviewProRequest(positiveFeedback, null),
                                                    new FragmentSafeCallback<Void>(
                                                            RateServiceConfirmDialogFragment.this) {
                                                        @Override

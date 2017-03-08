@@ -23,7 +23,12 @@ import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
 
+import static com.handybook.handybook.ratingflow.ui.RatingFlowReferralFragment.Mode.FEEDBACK;
+import static com.handybook.handybook.ratingflow.ui.RatingFlowReferralFragment.Mode.REFERRAL;
+
 public class RatingFlowActivity extends BaseActivity {
+
+    private static final int GOOD_PRO_RATING = 4;
 
     private static final int RATE_TIP_STEP = 0;
     private static final int FEEDBACK_STEP = 1;
@@ -69,7 +74,11 @@ public class RatingFlowActivity extends BaseActivity {
                 break;
             case REFERRAL_STEP:
                 if (mReferralDescriptor != null) {
-                    fragment = RatingFlowReferralFragment.newInstance(mReferralDescriptor);
+                    fragment = RatingFlowReferralFragment.newInstance(
+                            mBooking,
+                            mProRating < GOOD_PRO_RATING ? FEEDBACK : REFERRAL,
+                            mReferralDescriptor
+                    );
                 }
                 break;
             default:

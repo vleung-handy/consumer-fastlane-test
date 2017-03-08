@@ -15,6 +15,7 @@ import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.List;
 
+import butterknife.BindColor;
 import butterknife.BindDimen;
 import butterknife.ButterKnife;
 
@@ -24,6 +25,8 @@ public class TextOptionsLayout extends FlowLayout {
     int mDefaultPadding;
     @BindDimen(R.dimen.default_margin_quarter)
     int mDefaultMarginQuarter;
+    @BindColor(R.color.handy_text_black)
+    int mBlackColor;
     private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener;
 
     public TextOptionsLayout(
@@ -62,6 +65,7 @@ public class TextOptionsLayout extends FlowLayout {
         checkBox.setBackgroundResource(R.drawable.option_text_checkbox);
         checkBox.setGravity(Gravity.CENTER);
         checkBox.setButtonDrawable(null);
+        checkBox.setTextColor(mBlackColor);
         checkBox.setText(item.getReason().getValue());
         checkBox.setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
