@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingActionButtonType;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.view.BookingActionButton;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionView;
 import com.handybook.handybook.core.User;
@@ -24,6 +26,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.handybook.handybook.booking.constant.BookingAction.ACTION_CONTACT_PHONE;
+import static com.handybook.handybook.booking.constant.BookingAction.ACTION_CONTACT_TEXT;
 
 public abstract class BookingDetailSectionFragment<T extends BookingDetailSectionView>
         extends InjectedFragment {
@@ -116,6 +121,12 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
         }
         else {
             actionButtonLayout.setVisibility(View.VISIBLE);
+
+            Provider provider = booking.getProvider();
+            boolean phoneAvailable = provider != null && !TextUtils.isEmpty(provider.getPhone());
+            boolean inAppChatEnabled = booking.getChatOptions() != null &&
+                                       booking.getChatOptions().isDirectToInAppChat();
+
             for (String actionButtonType : actionButtonTypes) {
                 BookingActionButtonType bookingABT = Utils.getBookingActionButtonType(
                         actionButtonType);
@@ -137,6 +148,12 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
                 View.OnClickListener onClickListener
                         = getOnClickListenerForAction(actionButtonType);
                 bookingActionButton.init(actionButtonType, onClickListener);
+                if (ACTION_CONTACT_PHONE.equals(actionButtonType)) {
+                    bookingActionButton.setEnabled(phoneAvailable);
+                }
+                if (ACTION_CONTACT_TEXT.equals(actionButtonType)) {
+                    bookingActionButton.setEnabled(inAppChatEnabled || phoneAvailable);
+                }
             }
         }
     }

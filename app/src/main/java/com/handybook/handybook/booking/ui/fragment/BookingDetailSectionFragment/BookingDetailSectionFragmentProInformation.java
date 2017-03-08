@@ -287,13 +287,12 @@ public class BookingDetailSectionFragmentProInformation extends
     @Override
     protected List<String> getActionButtonTypeList(Booking booking) {
         List<String> actionButtonTypes = new ArrayList<>();
-        if (booking.hasAssignedProvider()) {
-            //Make sure it is not an empty phone number
-            if (validateProPhoneInformation(booking)) {
-                actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
-                actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
-            }
+
+        if (booking.getChatOptions() != null && booking.getChatOptions().isAllowChat()) {
+            actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
+            actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
         }
+
         return actionButtonTypes;
     }
 
