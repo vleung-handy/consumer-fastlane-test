@@ -69,6 +69,8 @@ public class Configuration implements Serializable {
      */
     @SerializedName("booking_hours_clarification_experiment_enabled")
     private boolean mBookingHoursClarificationExperimentEnabled;
+    @SerializedName("new_rating_flow_enabled")
+    private boolean mNewRatingFlowEnabled;
 
     // Getters
     public boolean isBookingDateTimeInputScreenV2Enabled() {
@@ -152,7 +154,7 @@ public class Configuration implements Serializable {
     }
 
     public boolean isNewRatingFlowEnabled() {
-        return false;
+        return mNewRatingFlowEnabled;
     }
 
     // Setters
