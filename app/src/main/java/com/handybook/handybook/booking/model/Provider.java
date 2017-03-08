@@ -32,8 +32,6 @@ public class Provider implements Serializable, Comparable<Provider> {
     private Integer mBookingCount;
     @SerializedName("profile_photo_url")
     private String mImageUrl;
-    @SerializedName("chat_enabled")
-    private boolean mChatEnabled;
     @SerializedName("is_favorite")
     private boolean mIsFavorite;
     @SerializedName("team_type")
@@ -94,8 +92,6 @@ public class Provider implements Serializable, Comparable<Provider> {
     final void setPhone(final String phone) {
         this.mPhone = phone;
     }
-
-    public boolean isChatEnabled() { return mChatEnabled; }
 
     public boolean isFavorite() { return mIsFavorite; }
 

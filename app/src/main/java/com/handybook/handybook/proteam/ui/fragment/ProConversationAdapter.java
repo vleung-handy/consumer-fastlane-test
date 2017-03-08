@@ -78,29 +78,25 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
             final List<Provider> preferredPros = mProTeamCategory.getPreferred();
             if (preferredPros != null) {
                 for (Provider eachPro : preferredPros) {
-                    if (eachPro.isChatEnabled()) {
-                        //we only want to show on the screen where chat is enabled.
-                        mProTeamProViewModels.add(ProTeamProViewModel.from(
-                                eachPro,
-                                ProviderMatchPreference.PREFERRED,
-                                false
-                        ));
-                        mChatEligibleMemberIds.add(eachPro.getLayerUserId());
-                    }
+                    //we only want to show on the screen where chat is enabled.
+                    mProTeamProViewModels.add(ProTeamProViewModel.from(
+                            eachPro,
+                            ProviderMatchPreference.PREFERRED,
+                            false
+                    ));
+                    mChatEligibleMemberIds.add(eachPro.getLayerUserId());
                 }
             }
             final List<Provider> indifferentPros = mProTeamCategory.getIndifferent();
             if (indifferentPros != null) {
                 for (Provider eachPro : indifferentPros) {
-                    if (eachPro.isChatEnabled()) {
-                        //we only want to show on the screen where chat is enabled.
-                        mProTeamProViewModels.add(ProTeamProViewModel.from(
-                                eachPro,
-                                ProviderMatchPreference.INDIFFERENT,
-                                false
-                        ));
-                        mChatEligibleMemberIds.add(eachPro.getLayerUserId());
-                    }
+                    //we only want to show on the screen where chat is enabled.
+                    mProTeamProViewModels.add(ProTeamProViewModel.from(
+                            eachPro,
+                            ProviderMatchPreference.INDIFFERENT,
+                            false
+                    ));
+                    mChatEligibleMemberIds.add(eachPro.getLayerUserId());
                 }
             }
         }

@@ -349,11 +349,11 @@ public class BookingDetailSectionFragmentProInformation extends
 
         @Override
         public void onClick(final View v) {
-            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
-                booking.getProvider() != null && booking.getProvider().isChatEnabled()) {
+            if (booking.getChatOptions() != null &&
+                booking.getChatOptions().isDirectToInAppChat()) {
+                progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                         EventContext.BOOKING_DETAILS, booking.getId(), ProContactedLog.CHAT)));
-                progressDialog.show();
                 HandyLibrary.getInstance()
                             .getHandyService()
                             .createConversation(
