@@ -47,6 +47,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper {
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
         when(mUserManager.getCurrentUser()).thenReturn(mMockUser);
+        when(mMockUser.getCategorizedCredits()).thenReturn(new User.CategorizedCredits());
 
         mFragment = UpdatePaymentFragment.newInstance();
     }
@@ -126,7 +127,6 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper {
     @Test
     public void shouldRequestUpdatePaymentInfoAfterObtainingStripeToken() throws Exception {
         SupportFragmentTestUtil.startFragment(mFragment, ProfileActivity.class);
-
         StripeEvent.ReceiveCreateTokenSuccess event =
                 new StripeEvent.ReceiveCreateTokenSuccess(mMockToken);
         mFragment.onReceiveCreateTokenSuccess(event);

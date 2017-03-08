@@ -214,7 +214,7 @@ public class AccountFragment extends InjectedFragment {
 
     private void updateGeneralCreditsView(@NonNull User user) {
         mCreditsView.setCurrencySymbol(user.getCurrencyChar());
-        mCreditsView.setPriceCents(mUser.getCategorizedCredits().getGeneralCredits());
+        mCreditsView.setPriceCents(user.getCategorizedCredits().getGeneralCredits());
     }
 
     @Override

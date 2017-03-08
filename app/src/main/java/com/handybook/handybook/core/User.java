@@ -298,6 +298,9 @@ public class User extends Observable {
 
     @NonNull
     public CategorizedCredits getCategorizedCredits() {
+        if (mCategorizedCredits == null) {
+            mCategorizedCredits = new CategorizedCredits();
+        }
         return mCategorizedCredits;
     }
 
@@ -474,11 +477,6 @@ public class User extends Observable {
         private int mGeneralCredits;
         @SerializedName("subscription")
         private int mSubscriptionCredits;
-
-        public CategorizedCredits(final int generalCredits, final int subscriptionCredits) {
-            mGeneralCredits = generalCredits;
-            mSubscriptionCredits = subscriptionCredits;
-        }
 
         public int getGeneralCredits() {
             return mGeneralCredits;
