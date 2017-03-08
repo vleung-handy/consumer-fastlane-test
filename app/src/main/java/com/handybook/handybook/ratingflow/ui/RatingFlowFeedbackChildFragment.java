@@ -1,6 +1,7 @@
 package com.handybook.handybook.ratingflow.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ public abstract class RatingFlowFeedbackChildFragment extends InjectedFragment {
 
     @Bind(R.id.rating_flow_section_title)
     TextView mSectionTitle;
+    @Bind(R.id.rating_flow_section_subtitle)
+    TextView mSectionSubtitle;
     @Bind(R.id.rating_flow_section_container)
     ViewGroup mSectionContainer;
 
@@ -51,6 +54,13 @@ public abstract class RatingFlowFeedbackChildFragment extends InjectedFragment {
         final RatingFlowFeedbackFragment parentFragment = getRatingFlowFeedbackFragment();
         if (parentFragment != null) {
             parentFragment.mNextButton.setEnabled(enabled);
+        }
+    }
+
+    protected void showFragment(@NonNull RatingFlowFeedbackChildFragment fragment) {
+        final RatingFlowFeedbackFragment parentFragment = getRatingFlowFeedbackFragment();
+        if (parentFragment != null) {
+            parentFragment.showFragment(fragment);
         }
     }
 

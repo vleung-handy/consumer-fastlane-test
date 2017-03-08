@@ -153,6 +153,7 @@
     <string name="none">None</string>
     <string name="enter_amount">Enter amount</string>
     <string name="press_back_again">Press back button again to exit</string>
+    <string name="select_all_that_apply">Select all that apply</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>

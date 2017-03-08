@@ -165,6 +165,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.16.1'
     compile 'com.airbnb:deeplinkdispatch:1.5.0'
     compile 'com.usebutton:android-sdk:5.0.1'
+    compile 'org.apmem.tools:layouts:1.10@aar'
 
     //user-tracking sdk that allows us to record the screen
     compile 'com.appsee:appsee-android:2.3'

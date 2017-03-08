@@ -3,9 +3,7 @@ package com.handybook.handybook.ratingflow.ui;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
@@ -22,8 +20,6 @@ import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.NEVER;
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
@@ -118,7 +114,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 userManager.getCurrentUser().getId(),
                 new ProTeamEditWrapper(
                         Lists.newArrayList(proTeamEdit),
-                        ProTeamEvent.Source.PRO_MANAGEMENT.toString()
+                        ProTeamEvent.Source.RATING_FLOW.toString()
                 ),
                 new VoidRetrofitCallback()
         );
