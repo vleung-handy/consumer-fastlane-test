@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.rating.GridDisplayItem;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.booking.rating.Reason;
 import com.handybook.handybook.booking.rating.Reasons;
+import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
+import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.ratingflow.ui.view.TextOptionsLayout;
@@ -25,7 +28,7 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
 
     private ArrayList<Reasons> mReasonsQueue;
     private List<GridDisplayItem> mDisplayItems;
-    private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener =
+    private CompoundButton.OnCheckedChangeListener mMultipleOptionsUpdateListener =
             new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(
@@ -35,6 +38,35 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
                     setSubmissionEnabled(hasSelectedItems());
                 }
             };
+    private BookingOptionsView.OnUpdatedListener mSingleOptionUpdateListener
+            = new BookingOptionsView.OnUpdatedListener() {
+        @Override
+        public void onUpdate(final BookingOptionsView view) {
+            setSubmissionEnabled(true);
+            mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
+            for (final GridDisplayItem displayItem : mDisplayItems) {
+                displayItem.setSelected(false);
+            }
+            mDisplayItems.get(mOptionIndex).setSelected(true);
+        }
+
+        @Override
+        public void onShowChildren(
+                final BookingOptionsView view,
+                final String[] items
+        ) {
+
+        }
+
+        @Override
+        public void onHideChildren(
+                final BookingOptionsView view,
+                final String[] items
+        ) {
+
+        }
+    };
+    private int mOptionIndex;
     private Reasons mReasons;
     private RateImprovementFeedback mImprovementFeedback;
 
@@ -59,6 +91,7 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
         mImprovementFeedback = (RateImprovementFeedback) getArguments()
                 .getSerializable(BundleKeys.IMPROVEMENT_FEEDBACK);
         mReasons = mReasonsQueue.remove(0);
+        mOptionIndex = -1;
     }
 
     @Override
@@ -66,8 +99,6 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
             final View view, @Nullable final Bundle savedInstanceState
     ) {
         mSectionTitle.setText(mReasons.getTitle());
-        mSectionSubtitle.setVisibility(View.VISIBLE);
-        mSectionSubtitle.setText(R.string.select_all_that_apply);
         initSelectionItems();
         setSubmissionEnabled(false);
     }
@@ -77,11 +108,38 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
         for (final Reason reason : mReasons.getReasons()) {
             mDisplayItems.add(new GridDisplayItem(reason, reason.getDrawableRes(), false));
         }
-        mSectionContainer.addView(new TextOptionsLayout(
-                getActivity(),
-                mDisplayItems,
-                mOnCheckedChangeListener
-        ));
+        if (mReasons.isTypeSingle()) {
+            final BookingOption options = new BookingOption();
+            options.setType(BookingOption.TYPE_OPTION);
+            options.setOptions(getDisplayNameItemValues());
+            options.setDefaultValue(String.valueOf(mOptionIndex));
+            final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
+                    getActivity(),
+                    R.layout.view_rating_select_option,
+                    options,
+                    mSingleOptionUpdateListener
+            );
+            optionsView.hideTitle();
+            optionsView.hideSeparator();
+            mSectionContainer.addView(optionsView);
+        }
+        else {
+            mSectionSubtitle.setVisibility(View.VISIBLE);
+            mSectionSubtitle.setText(R.string.select_all_that_apply);
+            mSectionContainer.addView(new TextOptionsLayout(
+                    getActivity(),
+                    mDisplayItems,
+                    mMultipleOptionsUpdateListener
+            ));
+        }
+    }
+
+    private String[] getDisplayNameItemValues() {
+        final String[] values = new String[mDisplayItems.size()];
+        for (int i = 0; i < mDisplayItems.size(); i++) {
+            values[i] = mDisplayItems.get(i).getReason().getValue();
+        }
+        return values;
     }
 
     private boolean hasSelectedItems() {

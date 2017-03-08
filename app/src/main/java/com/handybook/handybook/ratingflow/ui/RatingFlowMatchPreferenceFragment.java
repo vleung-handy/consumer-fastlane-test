@@ -85,10 +85,6 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 mProvider.getFirstName()
         ));
         final BookingOption options = new BookingOption();
-        options.setTitle(getString(
-                R.string.would_you_like_to_work_with_x_again,
-                mProvider.getFirstName()
-        ));
         options.setType(BookingOption.TYPE_OPTION);
         options.setOptions(new String[]{getString(R.string.yes), getString(R.string.no)});
         options.setDefaultValue(String.valueOf(mOptionIndex));
