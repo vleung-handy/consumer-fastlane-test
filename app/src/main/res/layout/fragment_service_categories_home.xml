@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +9,7 @@
     >
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/fragment_service_categories_home_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
@@ -19,7 +18,7 @@
         >
 
         <TextView
-            android:id="@+id/fragment_service_categories_env_button"
+            android:id="@+id/fragment_service_categories_home_env_button"
             style="@style/TextView.Large.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +30,7 @@
             />
 
         <TextView
-            android:id="@+id/fragment_service_categories_sign_in_text"
+            android:id="@+id/fragment_service_categories_home_sign_in_text"
             style="@style/TextView.Medium.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +51,7 @@
         >
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/fragment_service_categories_home_title"
             style="@style/TextView.XXLarge.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,18 +61,19 @@
             />
 
         <LinearLayout
-            android:id="@+id/change_zip_layout"
+            android:id="@+id/fragment_service_categories_home_change_zip_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
+            android:layout_below="@id/fragment_service_categories_home_title"
             android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/default_padding_half"
             android:visibility="gone"
             tools:visibility="visible"
+            android:orientation="horizontal"
             >
 
             <TextView
-                android:id="@+id/not_in_zip"
+                android:id="@+id/fragment_service_categories_home_not_in_zip"
                 style="@style/TextView.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                 />
 
             <TextView
-                android:id="@+id/change_button"
+                android:id="@+id/fragment_service_categories_home_change_button"
                 style="@style/TextView.Small.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
         />
 
     <GridView
-        android:id="@+id/services_home_list"
+        android:id="@+id/fragment_service_categories_home_services_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -120,7 +120,7 @@
         />
 
     <LinearLayout
-        android:id="@+id/coupon_layout"
+        android:id="@+id/fragment_service_categories_home_promo_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/black"
@@ -132,7 +132,7 @@
         >
 
         <ImageView
-            android:id="@+id/promo_img"
+            android:id="@+id/fragment_service_categories_home_promo_image"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:contentDescription="promotion"
@@ -140,7 +140,7 @@
             />
 
         <TextView
-            android:id="@+id/promo_text"
+            android:id="@+id/fragment_service_categories_home_promo_text"
             style="@style/TextView.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
