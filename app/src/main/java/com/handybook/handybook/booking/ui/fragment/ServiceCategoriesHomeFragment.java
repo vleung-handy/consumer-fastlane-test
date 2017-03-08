@@ -189,7 +189,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         );
     }
 
-    @OnClick(R.id.env_button)
+    @OnClick(R.id.fragment_service_categories_env_button)
     public void onEnvButtonClicked() {
         final EditText input = new EditText(getContext());
         input.setText(mEnvironmentModifier.getEnvironment());
