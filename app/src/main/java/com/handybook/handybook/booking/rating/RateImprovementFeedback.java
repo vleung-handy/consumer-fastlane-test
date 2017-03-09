@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.rating;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -29,7 +31,7 @@ public class RateImprovementFeedback implements Serializable {
     private HashMap<String, ArrayList<String>> mSelectedOptions;
     private String mBookingId;
 
-    public RateImprovementFeedback(final String bookingId) {
+    public RateImprovementFeedback(@NonNull final String bookingId) {
         mSelectedOptions = new HashMap<>();
         mBookingId = bookingId;
     }

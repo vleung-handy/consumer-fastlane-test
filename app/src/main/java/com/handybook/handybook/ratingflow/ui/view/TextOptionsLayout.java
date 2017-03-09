@@ -47,6 +47,7 @@ public class TextOptionsLayout extends FlowLayout {
         }
     }
 
+    @NonNull
     private CheckBox createTextCheckbox(final GridDisplayItem item) {
         final CheckBox checkBox = new CheckBox(getContext());
         final LayoutParams layoutParams = new LayoutParams(

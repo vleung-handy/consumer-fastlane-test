@@ -90,13 +90,20 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
                 .getSerializable(BundleKeys.PRO_RATING_REASONS_QUEUE);
         mImprovementFeedback = (RateImprovementFeedback) getArguments()
                 .getSerializable(BundleKeys.IMPROVEMENT_FEEDBACK);
+
+        // The purpose of this fragment is to process the first item in the reasons queue. Depending
+        // on what happens in this fragment, the queue may or may not increase in size. If the queue
+        // isn't empty when this fragment finishes, another fragment of the same type gets launched
+        // to process the remaining items in the queue.
         mReasons = mReasonsQueue.remove(0);
+
         mOptionIndex = -1;
     }
 
     @Override
     public void onViewCreated(
-            final View view, @Nullable final Bundle savedInstanceState
+            final View view,
+            @Nullable final Bundle savedInstanceState
     ) {
         mSectionTitle.setText(mReasons.getTitle());
         initSelectionItems();
