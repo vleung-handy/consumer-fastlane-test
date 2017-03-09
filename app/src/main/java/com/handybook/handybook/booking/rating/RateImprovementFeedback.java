@@ -1,10 +1,13 @@
 package com.handybook.handybook.booking.rating;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is the class that holds the user response/selections from PrerateProInfo. Here is a sample json:
@@ -28,12 +31,12 @@ public class RateImprovementFeedback implements Serializable {
     private HashMap<String, ArrayList<String>> mSelectedOptions;
     private String mBookingId;
 
-    public RateImprovementFeedback(String bookingId) {
+    public RateImprovementFeedback(@NonNull final String bookingId) {
         mSelectedOptions = new HashMap<>();
         mBookingId = bookingId;
     }
 
-    public void putAll(HashMap<String, ArrayList<String>> optionsToAdd) {
+    public void putAll(final Map<String, ArrayList<String>> optionsToAdd) {
         mSelectedOptions.putAll(optionsToAdd);
     }
 

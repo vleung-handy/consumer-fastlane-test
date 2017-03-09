@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
@@ -16,6 +15,7 @@ import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
+import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.model.request.CreateUserRequest;
 import com.handybook.handybook.core.model.request.UpdateUserRequest;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
@@ -209,7 +209,7 @@ public interface HandyRetrofitService {
 
     @POST("/bookings/{booking}/rating_flow")
     void submitProRatingDetails(
-            @Path("booking") int bookingId, @Body RateProRequest req,
+            @Path("booking") int bookingId, @Body ReviewProRequest req,
             HandyRetrofitCallback cb
     );
 
@@ -496,13 +496,4 @@ public interface HandyRetrofitService {
     @GET("/help/help_info")
     void getHelpCenterInfo(HandyRetrofitCallback cb);
 
-    final class RateProRequest {
-
-        @SerializedName("positive_feedback")
-        private String positiveFeedback;
-
-        RateProRequest(final String positiveFeedback) {
-            this.positiveFeedback = positiveFeedback;
-        }
-    }
 }

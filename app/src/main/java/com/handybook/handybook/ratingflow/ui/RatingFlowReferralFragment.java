@@ -9,14 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.common.base.Strings;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
@@ -45,16 +51,37 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     @Bind(R.id.rating_flow_referral_header_text)
     View mHeaderText;
     @Bind(R.id.rating_flow_referral_content)
-    View mContent;
+    View mReferralContent;
+    @Bind(R.id.rating_flow_referral_feedback_section)
+    View mFeedbackSection;
+    @Bind(R.id.rating_flow_referral_feedback_content)
+    View mFeedbackContent;
+    @Bind(R.id.rating_flow_referral_feedback_text)
+    EditText mFeedbackTextField;
+    @Bind(R.id.rating_flow_referral_help_button)
+    View mFeedbackHelpButton;
     @BindInt(R.integer.anim_duration_medium)
     int mMediumDuration;
 
+    private static final String EXTRA_MODE = "mode";
+    private Mode mMode;
+    private Booking mBooking;
+
+
+    enum Mode {
+        REFERRAL, FEEDBACK
+    }
+
     @NonNull
     public static RatingFlowReferralFragment newInstance(
+            @NonNull final Booking booking,
+            @NonNull final Mode mode,
             @NonNull final ReferralDescriptor referralDescriptor
     ) {
         final RatingFlowReferralFragment fragment = new RatingFlowReferralFragment();
         final Bundle arguments = new Bundle();
+        arguments.putParcelable(BundleKeys.BOOKING, booking);
+        arguments.putSerializable(EXTRA_MODE, mode);
         arguments.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
         fragment.setArguments(arguments);
         return fragment;
@@ -63,6 +90,8 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mMode = (Mode) getArguments().getSerializable(EXTRA_MODE);
         mReferralDescriptor = (ReferralDescriptor) getArguments()
                 .getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
         mReferralChannels = mReferralDescriptor
@@ -129,18 +158,21 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
                     @Override
                     public void onAnimationEnd(final Animation animation) {
-                        final Animation slideInAnimation = AnimationUtils.loadAnimation(
-                                getActivity(),
-                                R.anim.slide_in_right
-                        );
-                        slideInAnimation.setInterpolator(
-                                getActivity(),
-                                android.R.anim.overshoot_interpolator
-                        );
-                        slideInAnimation.setFillAfter(true);
-                        slideInAnimation.setFillEnabled(true);
-                        slideInAnimation.setDuration(mMediumDuration);
-                        mContent.startAnimation(slideInAnimation);
+                        if (mMode == Mode.REFERRAL) {
+                            mReferralContent.setVisibility(View.INVISIBLE);
+                            final Animation slideInAnimation = AnimationUtils.loadAnimation(
+                                    getActivity(),
+                                    R.anim.slide_in_right
+                            );
+                            slideInAnimation.setInterpolator(
+                                    getActivity(),
+                                    android.R.anim.overshoot_interpolator
+                            );
+                            slideInAnimation.setFillAfter(true);
+                            slideInAnimation.setFillEnabled(true);
+                            slideInAnimation.setDuration(mMediumDuration);
+                            mReferralContent.startAnimation(slideInAnimation);
+                        }
                     }
 
                     @Override
@@ -150,6 +182,10 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                 });
                 mHeaderIcon.startAnimation(fadeInAnimation);
                 mHeaderText.startAnimation(fadeInAnimation);
+                if (mMode == Mode.FEEDBACK) {
+                    mFeedbackSection.setVisibility(View.INVISIBLE);
+                    mFeedbackSection.startAnimation(fadeInAnimation);
+                }
             }
 
             @Override
@@ -200,6 +236,14 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
     @OnClick(R.id.rating_flow_next_button)
     public void onNextClicked() {
+        final String feedback = mFeedbackTextField.getText().toString();
+        if (!Strings.isNullOrEmpty(feedback)) {
+            dataManager.submitProRatingDetails(
+                    Integer.parseInt(mBooking.getId()),
+                    new ReviewProRequest(null, feedback),
+                    new VoidDataManagerCallback()
+            );
+        }
         if (getActivity() instanceof RatingFlowActivity) {
             ((RatingFlowActivity) getActivity()).finishStep();
         }
@@ -232,5 +276,13 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     mReferralDescriptor.getReceiverCouponAmount()
             )));
         }
+    }
+
+    @OnClick(R.id.rating_flow_referral_help_button)
+    public void onHelpClicked() {
+        mFeedbackHelpButton.setVisibility(View.GONE);
+        mFeedbackContent.setVisibility(View.VISIBLE);
+        mFeedbackTextField.requestFocus();
+        UiUtils.toggleKeyboard(getActivity());
     }
 }

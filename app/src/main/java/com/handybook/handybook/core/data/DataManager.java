@@ -39,6 +39,7 @@ import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
+import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.BlockedWrapper;
 import com.handybook.handybook.core.SuccessWrapper;
@@ -657,12 +658,13 @@ public class DataManager {
     }
 
     public void submitProRatingDetails(
-            final int bookingId, final String positiveFeedback,
+            final int bookingId,
+            @NonNull final ReviewProRequest reviewProRequest,
             final Callback<Void> cb
     ) {
         mService.submitProRatingDetails(
                 bookingId,
-                new HandyRetrofitService.RateProRequest(positiveFeedback),
+                reviewProRequest,
                 new HandyRetrofitCallback(cb) {
                     @Override
                     protected void success(final JSONObject response) {

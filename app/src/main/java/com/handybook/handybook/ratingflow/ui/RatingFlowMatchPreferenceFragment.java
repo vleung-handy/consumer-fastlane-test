@@ -3,10 +3,7 @@ package com.handybook.handybook.ratingflow.ui;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
@@ -24,21 +21,16 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.NEVER;
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
 
 public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFragment {
 
+    private static final int NO_PREFERENCE_INDEX = -1;
+    private static final int POSITIVE_PREFERENCE_INDEX = 0;
+    private static final int NEGATIVE_PREFERENCE_INDEX = 1;
     @Inject
     HandyRetrofitService mService;
-
-    @Bind(R.id.rating_flow_section_title)
-    TextView mSectionTitle;
-    @Bind(R.id.rating_flow_section_container)
-    ViewGroup mSectionContainer;
 
     private Provider mProvider;
     private int mOptionIndex;
@@ -48,8 +40,9 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
         @Override
         public void onUpdate(final BookingOptionsView view) {
             mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
-            mSelectedPreference = mOptionIndex == 0 ? PREFERRED : NEVER;
+            mSelectedPreference = mOptionIndex == POSITIVE_PREFERENCE_INDEX ? PREFERRED : NEVER;
             setSubmissionEnabled(true);
+            updateHelperText();
         }
 
         @Override
@@ -70,10 +63,14 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
     };
 
     @NonNull
-    public static RatingFlowMatchPreferenceFragment newInstance(@NonNull final Provider provider) {
+    public static RatingFlowMatchPreferenceFragment newInstance(
+            @NonNull final Provider provider,
+            @NonNull final ProviderMatchPreference defaultPreference
+    ) {
         final RatingFlowMatchPreferenceFragment fragment = new RatingFlowMatchPreferenceFragment();
         final Bundle arguments = new Bundle();
         arguments.putSerializable(BundleKeys.PROVIDER, provider);
+        arguments.putSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE, defaultPreference);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -82,41 +79,32 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProvider = (Provider) getArguments().getSerializable(BundleKeys.PROVIDER);
-        mOptionIndex = -1;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(
-            final LayoutInflater inflater,
-            @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState
-    ) {
-
-        final View view = inflater.inflate(
-                R.layout.fragment_rating_flow_generic,
-                container,
-                false
-        );
-        ButterKnife.bind(this, view);
-        return view;
+        final ProviderMatchPreference defaultPreference = (ProviderMatchPreference)
+                getArguments().getSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE);
+        mOptionIndex = NO_PREFERENCE_INDEX;
+        if (defaultPreference != null) {
+            switch (defaultPreference) {
+                case PREFERRED:
+                    mOptionIndex = POSITIVE_PREFERENCE_INDEX;
+                    break;
+                case NEVER:
+                    mOptionIndex = NEGATIVE_PREFERENCE_INDEX;
+                    break;
+            }
+        }
     }
 
     @Override
     public void onViewCreated(
             final View view, @Nullable final Bundle savedInstanceState
     ) {
-        setSubmissionEnabled(false);
+        setSubmissionEnabled(mOptionIndex != NO_PREFERENCE_INDEX);
         mSectionContainer.removeAllViews();
         mSectionTitle.setText(getString(
                 R.string.would_you_like_to_work_with_x_again,
                 mProvider.getFirstName()
         ));
         final BookingOption options = new BookingOption();
-        options.setTitle(getString(
-                R.string.would_you_like_to_work_with_x_again,
-                mProvider.getFirstName()
-        ));
         options.setType(BookingOption.TYPE_OPTION);
         options.setOptions(new String[]{getString(R.string.yes), getString(R.string.no)});
         options.setDefaultValue(String.valueOf(mOptionIndex));
@@ -129,6 +117,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
         optionsView.hideTitle();
         optionsView.hideSeparator();
         mSectionContainer.addView(optionsView);
+        updateHelperText();
     }
 
     @Override
@@ -142,10 +131,32 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 userManager.getCurrentUser().getId(),
                 new ProTeamEditWrapper(
                         Lists.newArrayList(proTeamEdit),
-                        ProTeamEvent.Source.PRO_MANAGEMENT.toString()
+                        ProTeamEvent.Source.RATING_FLOW.toString()
                 ),
                 new VoidRetrofitCallback()
         );
         finishStep();
+    }
+
+    private void updateHelperText() {
+        if (mOptionIndex == POSITIVE_PREFERENCE_INDEX) {
+            mSectionHelperText.setVisibility(View.VISIBLE);
+            mSectionHelperText.setText(
+                    getString(
+                            R.string.rating_flow_pro_team_addition_note_formatted,
+                            mProvider.getFirstName()
+                    ));
+        }
+        else if (mOptionIndex == NEGATIVE_PREFERENCE_INDEX) {
+            mSectionHelperText.setVisibility(View.VISIBLE);
+            mSectionHelperText.setText(
+                    getString(
+                            R.string.rating_flow_pro_team_block_note_formatted,
+                            mProvider.getFirstName()
+                    ));
+        }
+        else {
+            mSectionHelperText.setVisibility(View.GONE);
+        }
     }
 }

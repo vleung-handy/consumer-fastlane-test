@@ -11,9 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
+import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.squareup.picasso.Picasso;
@@ -22,13 +24,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.handybook.handybook.proteam.model.ProviderMatchPreference.NEVER;
+import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
+
 public class RatingFlowFeedbackFragment extends InjectedFragment {
 
     private static final int START_DELAY_MILLIS = 400;
+    private static final int GOOD_PRO_RATING = 4;
 
 
     private enum Step {
-        MATCH_PREFERENCE, REVIEW
+        MATCH_PREFERENCE, IMPROVEMENT, REVIEW
     }
 
 
@@ -117,37 +123,87 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
 
     @OnClick(R.id.rating_flow_skip_button)
     public void onSkipClicked() {
-        getActivity().finish();
+        continueFeedbackFlow();
     }
 
     void continueFeedbackFlow() {
-        int nextStepOrdinal = mCurrentStep == null ? 0 : mCurrentStep.ordinal() + 1;
-        if (nextStepOrdinal < Step.values().length) {
-            mCurrentStep = Step.values()[nextStepOrdinal];
-
-            Fragment fragment = null;
-            switch (mCurrentStep) {
-                case MATCH_PREFERENCE:
-                    mNextButton.setEnabled(false);
-                    fragment = RatingFlowMatchPreferenceFragment
-                            .newInstance(mBooking.getProvider());
-                    break;
-                case REVIEW:
-                    mNextButton.setEnabled(true);
-                    fragment = RatingFlowReviewFragment.newInstance(mBooking);
-            }
-
+        final Step nextStep = resolveNextStep();
+        if (nextStep != null) {
+            final RatingFlowFeedbackChildFragment fragment = createFragmentForStep(nextStep);
             if (fragment != null) {
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .disallowAddToBackStack()
-                        .setCustomAnimations(R.anim.fade_slide_in_right, R.anim.fade_slide_out_left)
-                        .replace(R.id.rating_flow_feedback_content, fragment)
-                        .commit();
+                showFragment(fragment);
+            }
+            else {
+                continueFeedbackFlow();
             }
         }
-        else if (getActivity() instanceof RatingFlowActivity) {
-            ((RatingFlowActivity) getActivity()).finishStep();
+        else {
+            if (getActivity() instanceof RatingFlowActivity) {
+                ((RatingFlowActivity) getActivity()).finishStep();
+            }
+        }
+    }
+
+    void showFragment(final RatingFlowFeedbackChildFragment fragment) {
+        getChildFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.fade_slide_in_right, R.anim.fade_slide_out_left)
+                .replace(R.id.rating_flow_feedback_content, fragment)
+                .commit();
+    }
+
+    // This method is recursive. It will keep resolving the next displayable step until it becomes
+    // null. This means that the flow is finished once it returns null. However, if the current step
+    // is null and this method gets called, it assigns the first step of the flow to the current
+    // step, assuming that the flow is just starting.
+    @Nullable
+    private Step resolveNextStep() {
+        if (mCurrentStep == null) {
+            mCurrentStep = Step.values()[0];
+        }
+        else {
+            final int nextStepOrdinal = mCurrentStep.ordinal() + 1;
+            if (nextStepOrdinal < Step.values().length) {
+                mCurrentStep = Step.values()[nextStepOrdinal];
+            }
+            else {
+                return (mCurrentStep = null);
+            }
+        }
+        return shouldDisplayStep(mCurrentStep) ? mCurrentStep : resolveNextStep();
+    }
+
+    private boolean shouldDisplayStep(@NonNull final Step step) {
+        switch (step) {
+            case MATCH_PREFERENCE:
+                return true;
+            case IMPROVEMENT:
+                return mProRating < GOOD_PRO_RATING;
+            case REVIEW:
+                return mProRating >= GOOD_PRO_RATING;
+            default:
+                return false;
+        }
+    }
+
+    @Nullable
+    private RatingFlowFeedbackChildFragment createFragmentForStep(@NonNull Step step) {
+        switch (step) {
+            case MATCH_PREFERENCE:
+                return RatingFlowMatchPreferenceFragment.newInstance(
+                        mBooking.getProvider(),
+                        mProRating >= GOOD_PRO_RATING ? PREFERRED : NEVER
+                );
+            case IMPROVEMENT:
+                return RatingFlowImprovementFragment.newInstance(
+                        Lists.newArrayList(mPrerateProInfo.getReasons()),
+                        new RateImprovementFeedback(mBooking.getId())
+                );
+            case REVIEW:
+                return RatingFlowReviewFragment.newInstance(mBooking);
+            default:
+                return null;
         }
     }
 }

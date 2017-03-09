@@ -3,32 +3,25 @@ package com.handybook.handybook.ratingflow.ui;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.InputFilter;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
-import com.handybook.handybook.library.ui.view.LimitedEditText;
 import com.handybook.handybook.library.util.TextUtils;
 
-import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.BindDimen;
-import butterknife.ButterKnife;
 
 public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
 
-    private LimitedEditText mReviewTextField;
-    @Bind(R.id.rating_flow_section_title)
-    TextView mSectionTitle;
-    @Bind(R.id.rating_flow_section_container)
-    ViewGroup mSectionContainer;
+    private EditText mReviewTextField;
     @BindColor(R.color.dark_grey_pressed)
     int mHintColor;
     @BindColor(R.color.black)
@@ -53,22 +46,6 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(
-            final LayoutInflater inflater,
-            @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState
-    ) {
-        final View view = inflater.inflate(
-                R.layout.fragment_rating_flow_generic,
-                container,
-                false
-        );
-        ButterKnife.bind(this, view);
-        return view;
-    }
-
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         setSubmissionEnabled(true);
@@ -77,6 +54,8 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
                 mBooking.getProvider().getFirstName()
         ));
         mSectionContainer.removeAllViews();
+        mSectionSubtitle.setVisibility(View.VISIBLE);
+        mSectionSubtitle.setText(R.string.rating_flow_review_note);
         mReviewTextField = createReviewTextField();
         mSectionContainer.addView(mReviewTextField);
     }
@@ -88,9 +67,9 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
     }
 
     @NonNull
-    private LimitedEditText createReviewTextField() {
-        final LimitedEditText editText = new LimitedEditText(getActivity());
-        editText.setHint(R.string.rating_flow_feedback_hint);
+    private EditText createReviewTextField() {
+        final EditText editText = new EditText(getActivity());
+        editText.setHint(R.string.rating_flow_review_hint);
         editText.setHintTextColor(mHintColor);
         editText.setBackground(null);
         editText.setTextColor(mBlackColor);
@@ -99,8 +78,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
                 getContext(),
                 com.handybook.handybook.library.util.TextUtils.Fonts.CIRCULAR_BOOK
         ));
-        editText.setMaxCharacters(140);
-        editText.setMaxLines(3);
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(140)});
         return editText;
     }
 
@@ -110,7 +88,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
         if (!Strings.isNullOrEmpty(review)) {
             dataManager.submitProRatingDetails(
                     Integer.parseInt(mBooking.getId()),
-                    review,
+                    new ReviewProRequest(review, null),
                     new VoidDataManagerCallback()
             );
         }

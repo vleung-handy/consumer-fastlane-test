@@ -13,16 +13,42 @@
         style="@style/TextView.Large.Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin"
         android:gravity="center"
-        android:padding="@dimen/default_padding"
         tools:text="Would you like to work with Jennifer again?"
+        />
+
+    <TextView
+        android:id="@+id/rating_flow_section_subtitle"
+        style="@style/TextView.Small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:text="Select all that apply"
+        tools:visibility="visible"
         />
 
     <FrameLayout
         android:id="@+id/rating_flow_section_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        />
+
+
+    <TextView
+        android:id="@+id/rating_flow_section_helper_text"
+        style="@style/TextView.XSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:gravity="center"
+        android:textColor="@color/handy_tertiary_gray"
+        android:visibility="gone"
+        tools:text="Select all that apply"
+        tools:visibility="visible"
         />
 
 </LinearLayout>

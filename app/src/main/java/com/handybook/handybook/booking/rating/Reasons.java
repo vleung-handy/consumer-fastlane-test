@@ -36,7 +36,10 @@ import java.util.Map;
  */
 public class Reasons implements Serializable {
 
+    public static final String TYPE_SINGLE = "single";
+
     private String mTitle;
+    private String mType;
     private List<Reason> mReasons;
 
     /**
@@ -64,7 +67,10 @@ public class Reasons implements Serializable {
             if ("title".equalsIgnoreCase(s)) {
                 mTitle = (String) mRawReasons.get(s);
             }
-            else if (!"type".equalsIgnoreCase(s)) {
+            else if ("type".equalsIgnoreCase(s)) {
+                mType = (String) mRawReasons.get(s);
+            }
+            else {
                 //Each reason can potentially have subreasons. Look above for the sample JSON, quality_of_service.
                 Object object = mRawReasons.get(s);
                 Reasons subReasons = null;
@@ -97,5 +103,9 @@ public class Reasons implements Serializable {
 
     public String getKey() {
         return mKey;
+    }
+
+    public boolean isTypeSingle() {
+        return mType != null && mType.equalsIgnoreCase(TYPE_SINGLE);
     }
 }
