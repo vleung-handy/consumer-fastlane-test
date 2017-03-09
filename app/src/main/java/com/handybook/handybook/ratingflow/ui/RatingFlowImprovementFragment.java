@@ -28,47 +28,52 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
 
     private ArrayList<Reasons> mReasonsQueue;
     private List<GridDisplayItem> mDisplayItems;
-    private CompoundButton.OnCheckedChangeListener mMultipleOptionsUpdateListener =
-            new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(
-                        final CompoundButton buttonView,
-                        final boolean isChecked
-                ) {
-                    setSubmissionEnabled(hasSelectedItems());
-                }
-            };
-    private BookingOptionsView.OnUpdatedListener mSingleOptionUpdateListener
-            = new BookingOptionsView.OnUpdatedListener() {
-        @Override
-        public void onUpdate(final BookingOptionsView view) {
-            setSubmissionEnabled(true);
-            mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
-            for (final GridDisplayItem displayItem : mDisplayItems) {
-                displayItem.setSelected(false);
-            }
-            mDisplayItems.get(mOptionIndex).setSelected(true);
-        }
-
-        @Override
-        public void onShowChildren(
-                final BookingOptionsView view,
-                final String[] items
-        ) {
-
-        }
-
-        @Override
-        public void onHideChildren(
-                final BookingOptionsView view,
-                final String[] items
-        ) {
-
-        }
-    };
+    private CompoundButton.OnCheckedChangeListener mMultipleOptionsUpdateListener;
+    private BookingOptionsView.OnUpdatedListener mSingleOptionUpdateListener;
     private int mOptionIndex;
     private Reasons mReasons;
     private RateImprovementFeedback mImprovementFeedback;
+
+    {
+        mMultipleOptionsUpdateListener =
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(
+                            final CompoundButton buttonView,
+                            final boolean isChecked
+                    ) {
+                        setSubmissionEnabled(hasSelectedItems());
+                    }
+                };
+        mSingleOptionUpdateListener
+                = new BookingOptionsView.OnUpdatedListener() {
+            @Override
+            public void onUpdate(final BookingOptionsView view) {
+                setSubmissionEnabled(true);
+                mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
+                for (final GridDisplayItem displayItem : mDisplayItems) {
+                    displayItem.setSelected(false);
+                }
+                mDisplayItems.get(mOptionIndex).setSelected(true);
+            }
+
+            @Override
+            public void onShowChildren(
+                    final BookingOptionsView view,
+                    final String[] items
+            ) {
+
+            }
+
+            @Override
+            public void onHideChildren(
+                    final BookingOptionsView view,
+                    final String[] items
+            ) {
+
+            }
+        };
+    }
 
     @NonNull
     public static RatingFlowImprovementFragment newInstance(
