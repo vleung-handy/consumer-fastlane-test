@@ -180,7 +180,7 @@
     <string name="edit">Edit</string>
     <string name="opt">(optional)</string>
     <string name="rating_tip_prompt">Leave a tip?</string>
-    <string name="would_you_like_to_work_with_x_again">Would you like to work with %1$s again?</string>
+    <string name="would_you_like_to_work_with_x_again">Would you like to work with %1$s\u00a0again?</string>
     <string name="leave_tip_prompt_formatted">Would you like to leave a tip for %1$s?</string>
     <string name="leave_a_tip">Leave a Tip</string>
     <string name="other_tip_amount">Other</string>
@@ -355,7 +355,7 @@
     <string name="scan_credit_card_button">Scan credit card</string>
     <string name="free_cleanings">Free Cleanings</string>
     <string name="referral_title">Earn free cleanings</string>
-    <string name="referral_dialog_title">Share the love</string>
+    <string name="referral_dialog_title">Share the Love</string>
     <string name="referral_subtitle_formatted">Get %1$s in credit when you send %2$s to a friend for their first booking.</string>
     <string name="referral_dialog_subtitle_formatted">Send\u00a0%1$s to your friends, and you\'ll earn\u00a0%2$s when they complete a\u00a0booking.</string>
     <string name="referral_copied_to_clipboard">Sharing link copied to clipboard</string>
@@ -555,13 +555,14 @@
     <string name="transition_pro_image">pro_image</string>
     <string name="transition_stars">stars</string>
     <string name="transition_divider">divider</string>
-    <string name="write_a_review_formatted">Write a public review for %1$s</string>
+    <string name="write_a_review_formatted">Write a public review for %1$s\'s profile.</string>
     <string name="rating_flow_review_hint">Write your review</string>
     <string name="rating_flow_feedback_hint">Write your feedback</string>
     <string name="rating_flow_help_prompt">Tell us what happened:</string>
     <string name="rating_flow_pro_team_addition_note_formatted">%1$s will be added to your Pro Team.</string>
     <string name="rating_flow_pro_team_block_note_formatted">%1$s will be blocked from your future bookings.</string>
     <string name="rating_flow_review_note">Helpful feedback is important for pros to grow their business. Your name will not be displayed with\u00a0the\u00a0review.</string>
+    <string name="rating_flow_post_feedback_message">Your feedback has been sent.</string>
 
     <string name="account_active_plans_saved_cleanings_title_template"><![CDATA[<strong>Saved cleanings: </strong>%s]]></string>
     <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn More</a>]]></string>

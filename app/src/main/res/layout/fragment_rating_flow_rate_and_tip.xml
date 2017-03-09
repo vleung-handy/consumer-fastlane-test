@@ -8,6 +8,7 @@
     >
 
     <ScrollView
+        android:id="@+id/rating_flow_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rating_flow_next_button"
@@ -39,7 +40,7 @@
 
                 <TextView
                     android:id="@+id/rating_flow_rate_prompt"
-                    style="@style/TextView.XLarge.Bold"
+                    style="@style/TextView.XLarge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin_double"
@@ -88,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:background="@null"
+                    android:background="@drawable/bg_edit_text"
                     android:gravity="center"
                     android:hint="@string/enter_amount"
                     android:inputType="number"
@@ -96,7 +97,7 @@
                     android:textColorHint="@color/handy_tertiary_gray"
                     android:textCursorDrawable="@drawable/handy_cursor"
                     android:textSize="@dimen/text_size_medium"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     tools:visibility="visible"
                     />
 

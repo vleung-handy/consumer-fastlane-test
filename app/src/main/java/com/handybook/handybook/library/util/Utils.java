@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.Time;
@@ -135,6 +136,19 @@ public final class Utils {
         final InputMethodManager imm
                 = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(view, 0);
+    }
+
+    public static void showSoftKeyboardWithDelay(
+            final FragmentActivity activity,
+            final View view,
+            final int delayMillis
+    ) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showSoftKeyboard(activity, view);
+            }
+        }, delayMillis);
     }
 
     public static void hideSoftKeyboard(FragmentActivity activity, View view) {

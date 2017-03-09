@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -22,10 +23,10 @@ import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
-import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
+import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
@@ -42,6 +43,8 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
 
+    @Bind(R.id.rating_flow_referral_scroll_view)
+    ScrollView mScrollView;
     @Bind(R.id.rating_flow_referral_subtitle)
     TextView mSubtitle;
     @Bind(R.id.rating_flow_referral_header)
@@ -243,7 +246,14 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     new ReviewProRequest(null, feedback),
                     new VoidDataManagerCallback()
             );
+            showToast(R.string.rating_flow_post_feedback_message);
         }
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ConfirmationSubmitted(
+                         Integer.parseInt(mBooking.getId()),
+                         Integer.parseInt(mBooking.getProvider().getId()),
+                         feedback
+                 ))
+        );
         if (getActivity() instanceof RatingFlowActivity) {
             ((RatingFlowActivity) getActivity()).finishStep();
         }
@@ -280,9 +290,52 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
     @OnClick(R.id.rating_flow_referral_help_button)
     public void onHelpClicked() {
-        mFeedbackHelpButton.setVisibility(View.GONE);
-        mFeedbackContent.setVisibility(View.VISIBLE);
-        mFeedbackTextField.requestFocus();
-        UiUtils.toggleKeyboard(getActivity());
+        final Animation fadeOutAnimation = AnimationUtils.loadAnimation(
+                getActivity(),
+                R.anim.fade_out
+        );
+        fadeOutAnimation.setFillAfter(true);
+        fadeOutAnimation.setFillEnabled(true);
+        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(final Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(final Animation animation) {
+                mFeedbackHelpButton.setVisibility(View.GONE);
+                mFeedbackContent.setVisibility(View.INVISIBLE);
+                final Animation fadeInAnimation = AnimationUtils.loadAnimation(
+                        getActivity(),
+                        R.anim.fade_in
+                );
+                fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(final Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(final Animation animation) {
+                        mFeedbackTextField.requestFocus();
+                        Utils.showSoftKeyboardWithDelay(getActivity(), mFeedbackTextField, 100);
+                        mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(final Animation animation) {
+
+                    }
+                });
+                mFeedbackContent.startAnimation(fadeInAnimation);
+            }
+
+            @Override
+            public void onAnimationRepeat(final Animation animation) {
+
+            }
+        });
+        mFeedbackHelpButton.startAnimation(fadeOutAnimation);
     }
 }

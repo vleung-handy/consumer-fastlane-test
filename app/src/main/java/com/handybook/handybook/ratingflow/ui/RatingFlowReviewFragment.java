@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.InputFilter;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 
@@ -28,6 +29,8 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
     int mBlackColor;
     @BindDimen(R.dimen.text_size_medium)
     float mMediumTextSize;
+    @BindDimen(R.dimen.default_padding)
+    int mDefaultPadding;
 
     private Booking mBooking;
 
@@ -54,16 +57,10 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
                 mBooking.getProvider().getFirstName()
         ));
         mSectionContainer.removeAllViews();
-        mSectionSubtitle.setVisibility(View.VISIBLE);
-        mSectionSubtitle.setText(R.string.rating_flow_review_note);
+        mSectionContainer.setBackgroundResource(R.drawable.border_grey_top);
+        setHelperText(getString(R.string.rating_flow_review_note));
         mReviewTextField = createReviewTextField();
         mSectionContainer.addView(mReviewTextField);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mReviewTextField.requestFocus();
     }
 
     @NonNull
@@ -79,6 +76,9 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
                 com.handybook.handybook.library.util.TextUtils.Fonts.CIRCULAR_BOOK
         ));
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(140)});
+        editText.setLines(5);
+        editText.setGravity(Gravity.TOP);
+        editText.setPadding(mDefaultPadding, mDefaultPadding, mDefaultPadding, mDefaultPadding);
         return editText;
     }
 

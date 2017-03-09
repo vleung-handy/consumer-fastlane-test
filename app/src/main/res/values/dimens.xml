@@ -132,10 +132,10 @@
     <dimen name="onboarding_logo_width">100dp</dimen>
 
     <!-- New Rating Flow -->
-    <dimen name="rating_flow.profile_image_size">68dp</dimen>
-    <dimen name="rating_flow.profile_image_size_small">54dp</dimen>
+    <dimen name="rating_flow.profile_image_size">72dp</dimen>
+    <dimen name="rating_flow.profile_image_size_small">56dp</dimen>
     <dimen name="rating_flow.star_size">28dp</dimen>
     <dimen name="rating_flow.star_size_small">20dp</dimen>
     <dimen name="rating_flow.star_margin">8dp</dimen>
-    <dimen name="rating_flow.star_margin_small">4dp</dimen>
+    <dimen name="rating_flow.star_margin_small">6dp</dimen>
 </resources>

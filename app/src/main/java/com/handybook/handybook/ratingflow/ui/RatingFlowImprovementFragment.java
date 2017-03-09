@@ -17,6 +17,8 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.ratingflow.ui.view.TextOptionsLayout;
 
 import java.util.ArrayList;
@@ -136,8 +138,7 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
             mSectionContainer.addView(optionsView);
         }
         else {
-            mSectionSubtitle.setVisibility(View.VISIBLE);
-            mSectionSubtitle.setText(R.string.select_all_that_apply);
+            setSubtitleText(getString(R.string.select_all_that_apply));
             mSectionContainer.addView(new TextOptionsLayout(
                     getActivity(),
                     mDisplayItems,
@@ -223,5 +224,9 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
                     mImprovementFeedback
             ));
         }
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.FeedbackSubmitted(
+                mReasons.getKey() != null ? mReasons.getKey() : "initial",
+                Integer.parseInt(mImprovementFeedback.getBookingId())
+        )));
     }
 }

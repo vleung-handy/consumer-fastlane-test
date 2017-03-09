@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -34,6 +35,9 @@ public class RatingFlowFiveStarsView extends LinearLayout {
             if (tag != null && tag instanceof Integer) {
                 final Integer indexSelected = (Integer) tag;
                 selectRating(indexSelected + 1);
+            }
+            for (final ImageView starView : mStarViews) {
+                starView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pulse));
             }
         }
     };

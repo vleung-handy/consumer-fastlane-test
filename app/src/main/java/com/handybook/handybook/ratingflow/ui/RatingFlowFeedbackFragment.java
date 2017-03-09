@@ -56,7 +56,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
             @NonNull final PrerateProInfo prerateProInfo,
             final int proRating
     ) {
-
         final RatingFlowFeedbackFragment fragment = new RatingFlowFeedbackFragment();
         final Bundle arguments = new Bundle();
         arguments.putParcelable(BundleKeys.BOOKING, booking);
@@ -192,7 +191,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         switch (step) {
             case MATCH_PREFERENCE:
                 return RatingFlowMatchPreferenceFragment.newInstance(
-                        mBooking.getProvider(),
+                        mBooking,
                         mProRating >= GOOD_PRO_RATING ? PREFERRED : NEVER
                 );
             case IMPROVEMENT:

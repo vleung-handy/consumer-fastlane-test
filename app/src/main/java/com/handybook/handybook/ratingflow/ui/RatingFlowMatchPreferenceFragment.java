@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
@@ -14,10 +15,12 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.data.VoidRetrofitCallback;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.ratingflow.RatingFlowLog;
 
 import javax.inject.Inject;
 
@@ -32,6 +35,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
     @Inject
     HandyRetrofitService mService;
 
+    private Booking mBooking;
     private Provider mProvider;
     private int mOptionIndex;
     private ProviderMatchPreference mSelectedPreference;
@@ -64,12 +68,12 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
 
     @NonNull
     public static RatingFlowMatchPreferenceFragment newInstance(
-            @NonNull final Provider provider,
+            @NonNull final Booking booking,
             @NonNull final ProviderMatchPreference defaultPreference
     ) {
         final RatingFlowMatchPreferenceFragment fragment = new RatingFlowMatchPreferenceFragment();
         final Bundle arguments = new Bundle();
-        arguments.putSerializable(BundleKeys.PROVIDER, provider);
+        arguments.putParcelable(BundleKeys.BOOKING, booking);
         arguments.putSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE, defaultPreference);
         fragment.setArguments(arguments);
         return fragment;
@@ -78,7 +82,8 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProvider = (Provider) getArguments().getSerializable(BundleKeys.PROVIDER);
+        mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+        mProvider = mBooking.getProvider();
         final ProviderMatchPreference defaultPreference = (ProviderMatchPreference)
                 getArguments().getSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE);
         mOptionIndex = NO_PREFERENCE_INDEX;
@@ -135,28 +140,29 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 ),
                 new VoidRetrofitCallback()
         );
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceSubmitted(
+                mSelectedPreference == PREFERRED,
+                Integer.parseInt(mBooking.getId()),
+                Integer.parseInt(mProvider.getId())
+        )));
         finishStep();
     }
 
     private void updateHelperText() {
         if (mOptionIndex == POSITIVE_PREFERENCE_INDEX) {
-            mSectionHelperText.setVisibility(View.VISIBLE);
-            mSectionHelperText.setText(
-                    getString(
-                            R.string.rating_flow_pro_team_addition_note_formatted,
-                            mProvider.getFirstName()
-                    ));
+            setHelperText(getString(
+                    R.string.rating_flow_pro_team_addition_note_formatted,
+                    mProvider.getFirstName()
+            ));
         }
         else if (mOptionIndex == NEGATIVE_PREFERENCE_INDEX) {
-            mSectionHelperText.setVisibility(View.VISIBLE);
-            mSectionHelperText.setText(
-                    getString(
-                            R.string.rating_flow_pro_team_block_note_formatted,
-                            mProvider.getFirstName()
-                    ));
+            setHelperText(getString(
+                    R.string.rating_flow_pro_team_block_note_formatted,
+                    mProvider.getFirstName()
+            ));
         }
         else {
-            mSectionHelperText.setVisibility(View.GONE);
+            setHelperText(null);
         }
     }
 }
