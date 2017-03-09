@@ -191,7 +191,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         switch (step) {
             case MATCH_PREFERENCE:
                 return RatingFlowMatchPreferenceFragment.newInstance(
-                        mBooking.getProvider(),
+                        mBooking,
                         mProRating >= GOOD_PRO_RATING ? PREFERRED : NEVER
                 );
             case IMPROVEMENT:

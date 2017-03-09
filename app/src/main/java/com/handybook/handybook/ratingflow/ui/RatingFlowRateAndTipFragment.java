@@ -9,8 +9,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +28,9 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
 import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -74,30 +74,8 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
             if (mOther.equalsIgnoreCase(view.getCurrentValue())) {
                 mCustomTip.setText(null);
                 mCustomTip.setGravity(Gravity.LEFT);
-                final Animation fadeInAnimation = AnimationUtils.loadAnimation(
-                        getActivity(),
-                        R.anim.fade_in
-                );
-                fadeInAnimation.setFillAfter(false);
-                fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(final Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(final Animation animation) {
-                        mCustomTip.setVisibility(View.VISIBLE);
-                        mCustomTip.requestFocus();
-                        Utils.showSoftKeyboardWithDelay(getActivity(), mCustomTip, 100);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(final Animation animation) {
-
-                    }
-                });
-                mCustomTip.startAnimation(fadeInAnimation);
+                mCustomTip.setVisibility(View.VISIBLE);
+                mCustomTip.clearFocus();
             }
             else {
                 mCustomTip.setVisibility(View.INVISIBLE);
@@ -164,15 +142,33 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
                             ((RatingFlowActivity) getActivity())
                                     .finishStepWithProRating(mSelectedRating);
                         }
+                        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RatingSuccess(
+                                mSelectedRating,
+                                tipAmountCents,
+                                Integer.parseInt(mBooking.getId()),
+                                Integer.parseInt(mBooking.getProvider().getId())
+                        )));
                     }
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
                         removeUiBlockers();
                         showToast(R.string.default_error_string);
+                        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RatingError(
+                                mSelectedRating,
+                                tipAmountCents,
+                                Integer.parseInt(mBooking.getId()),
+                                Integer.parseInt(mBooking.getProvider().getId())
+                        )));
                     }
                 }
         );
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RatingSubmitted(
+                mSelectedRating,
+                tipAmountCents,
+                Integer.parseInt(mBooking.getId()),
+                Integer.parseInt(mBooking.getProvider().getId())
+        )));
     }
 
     @NonNull

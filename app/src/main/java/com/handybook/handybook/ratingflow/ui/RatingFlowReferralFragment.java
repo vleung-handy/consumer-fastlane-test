@@ -26,6 +26,7 @@ import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
+import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
@@ -247,6 +248,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
             );
             showToast(R.string.rating_flow_post_feedback_message);
         }
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ConfirmationSubmitted(
+                         Integer.parseInt(mBooking.getId()),
+                         Integer.parseInt(mBooking.getProvider().getId()),
+                         feedback
+                 ))
+        );
         if (getActivity() instanceof RatingFlowActivity) {
             ((RatingFlowActivity) getActivity()).finishStep();
         }
