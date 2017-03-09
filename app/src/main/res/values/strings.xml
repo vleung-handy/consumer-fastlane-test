@@ -555,7 +555,7 @@
     <string name="write_a_review_formatted">Write a public review for %1$s</string>
     <string name="rating_flow_feedback_hint">Amazing work on the kitchen!</string>
     <string name="account_active_plans_saved_cleanings_title_template"><![CDATA[<strong>Saved cleanings: </strong>%s]]></string>
-    <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn more</a>]]></string>
+    <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn More</a>]]></string>
     <string name="account_active_plans_saved_cleanings_faq_url">https://handy.com/faq/subscription_credits</string>
     <string name="environment_name">[Ns: %1$s]</string>
 </resources>
