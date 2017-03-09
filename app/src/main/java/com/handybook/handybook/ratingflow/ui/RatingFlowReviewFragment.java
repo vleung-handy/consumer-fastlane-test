@@ -53,6 +53,8 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
                 mBooking.getProvider().getFirstName()
         ));
         mSectionContainer.removeAllViews();
+        mSectionSubtitle.setVisibility(View.VISIBLE);
+        mSectionSubtitle.setText(R.string.rating_flow_review_note);
         mReviewTextField = createReviewTextField();
         mSectionContainer.addView(mReviewTextField);
     }

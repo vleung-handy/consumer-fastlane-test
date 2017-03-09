@@ -23,6 +23,8 @@ public abstract class RatingFlowFeedbackChildFragment extends InjectedFragment {
     TextView mSectionSubtitle;
     @Bind(R.id.rating_flow_section_container)
     ViewGroup mSectionContainer;
+    @Bind(R.id.rating_flow_section_helper_text)
+    TextView mSectionHelperText;
 
     @Nullable
     @Override

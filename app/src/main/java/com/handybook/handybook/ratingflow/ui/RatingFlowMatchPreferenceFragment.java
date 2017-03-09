@@ -42,6 +42,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
             mOptionIndex = ((BookingOptionsSelectView) view).getCurrentIndex();
             mSelectedPreference = mOptionIndex == POSITIVE_PREFERENCE_INDEX ? PREFERRED : NEVER;
             setSubmissionEnabled(true);
+            updateHelperText();
         }
 
         @Override
@@ -116,6 +117,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
         optionsView.hideTitle();
         optionsView.hideSeparator();
         mSectionContainer.addView(optionsView);
+        updateHelperText();
     }
 
     @Override
@@ -134,5 +136,27 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 new VoidRetrofitCallback()
         );
         finishStep();
+    }
+
+    private void updateHelperText() {
+        if (mOptionIndex == POSITIVE_PREFERENCE_INDEX) {
+            mSectionHelperText.setVisibility(View.VISIBLE);
+            mSectionHelperText.setText(
+                    getString(
+                            R.string.rating_flow_pro_team_addition_note_formatted,
+                            mProvider.getFirstName()
+                    ));
+        }
+        else if (mOptionIndex == NEGATIVE_PREFERENCE_INDEX) {
+            mSectionHelperText.setVisibility(View.VISIBLE);
+            mSectionHelperText.setText(
+                    getString(
+                            R.string.rating_flow_pro_team_block_note_formatted,
+                            mProvider.getFirstName()
+                    ));
+        }
+        else {
+            mSectionHelperText.setVisibility(View.GONE);
+        }
     }
 }
