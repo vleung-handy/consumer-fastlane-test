@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -72,12 +74,33 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
             if (mOther.equalsIgnoreCase(view.getCurrentValue())) {
                 mCustomTip.setText(null);
                 mCustomTip.setGravity(Gravity.LEFT);
-                mCustomTip.setVisibility(View.VISIBLE);
-                mCustomTip.requestFocus();
-                Utils.showSoftKeyboard(getActivity(), mCustomTip);
+                final Animation fadeInAnimation = AnimationUtils.loadAnimation(
+                        getActivity(),
+                        R.anim.fade_in
+                );
+                fadeInAnimation.setFillAfter(false);
+                fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(final Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(final Animation animation) {
+                        mCustomTip.setVisibility(View.VISIBLE);
+                        mCustomTip.requestFocus();
+                        Utils.showSoftKeyboardWithDelay(getActivity(), mCustomTip, 100);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(final Animation animation) {
+
+                    }
+                });
+                mCustomTip.startAnimation(fadeInAnimation);
             }
             else {
-                mCustomTip.setVisibility(View.GONE);
+                mCustomTip.setVisibility(View.INVISIBLE);
                 Utils.hideSoftKeyboard(getActivity(), mCustomTip);
             }
         }
@@ -126,6 +149,7 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
             showToast(R.string.invalid_tip_amount);
             return;
         }
+        Utils.hideSoftKeyboard(getActivity(), mCustomTip);
         showUiBlockers();
         dataManager.ratePro(
                 Integer.parseInt(mBooking.getId()),
@@ -258,8 +282,7 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
 
     @Nullable
     private Integer getTipAmountCents() {
-        if (mTipSection.getVisibility() != View.VISIBLE)
-        {
+        if (mTipSection.getVisibility() != View.VISIBLE) {
             return 0;
         }
         Integer tipAmount = null;

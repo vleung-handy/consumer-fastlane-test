@@ -56,7 +56,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
             @NonNull final PrerateProInfo prerateProInfo,
             final int proRating
     ) {
-
         final RatingFlowFeedbackFragment fragment = new RatingFlowFeedbackFragment();
         final Bundle arguments = new Bundle();
         arguments.putParcelable(BundleKeys.BOOKING, booking);

@@ -22,7 +22,7 @@
             android:layout_width="@dimen/rating_flow.profile_image_size_small"
             android:layout_height="@dimen/rating_flow.profile_image_size_small"
             android:layout_marginBottom="@dimen/default_margin_half"
-            android:layout_marginTop="@dimen/default_margin_double"
+            android:layout_marginTop="@dimen/default_margin_3x"
             android:transitionName="@string/transition_pro_image"
             tools:src="@drawable/img_pro_placeholder"
             />
@@ -73,6 +73,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:text="@string/skip"
-        android:textColor="@color/handy_tertiary_gray"
+        android:textColor="@color/handy_dark_divider_line"
         />
 </RelativeLayout>

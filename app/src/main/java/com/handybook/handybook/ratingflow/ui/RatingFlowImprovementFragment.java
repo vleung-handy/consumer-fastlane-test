@@ -136,8 +136,7 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
             mSectionContainer.addView(optionsView);
         }
         else {
-            mSectionSubtitle.setVisibility(View.VISIBLE);
-            mSectionSubtitle.setText(R.string.select_all_that_apply);
+            setSubtitleText(getString(R.string.select_all_that_apply));
             mSectionContainer.addView(new TextOptionsLayout(
                     getActivity(),
                     mDisplayItems,

@@ -25,6 +25,8 @@ public abstract class RatingFlowFeedbackChildFragment extends InjectedFragment {
     ViewGroup mSectionContainer;
     @Bind(R.id.rating_flow_section_helper_text)
     TextView mSectionHelperText;
+    @Bind(R.id.rating_flow_section_helper_container)
+    ViewGroup mSectionHelperContainer;
 
     @Nullable
     @Override
@@ -63,6 +65,26 @@ public abstract class RatingFlowFeedbackChildFragment extends InjectedFragment {
         final RatingFlowFeedbackFragment parentFragment = getRatingFlowFeedbackFragment();
         if (parentFragment != null) {
             parentFragment.showFragment(fragment);
+        }
+    }
+
+    protected void setSubtitleText(@Nullable final String text) {
+        if (text != null) {
+            mSectionSubtitle.setVisibility(View.VISIBLE);
+            mSectionSubtitle.setText(text);
+        }
+        else {
+            mSectionSubtitle.setVisibility(View.GONE);
+        }
+    }
+
+    protected void setHelperText(@Nullable final String text) {
+        if (text != null) {
+            mSectionHelperContainer.setVisibility(View.VISIBLE);
+            mSectionHelperText.setText(text);
+        }
+        else {
+            mSectionHelperContainer.setVisibility(View.GONE);
         }
     }
 

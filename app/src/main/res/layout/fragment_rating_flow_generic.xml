@@ -5,14 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/default_padding"
+    android:paddingTop="@dimen/default_padding_half"
     >
 
     <TextView
         android:id="@+id/rating_flow_section_title"
-        style="@style/TextView.Large.Bold"
+        style="@style/TextView.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin_double"
+        android:layout_marginLeft="@dimen/default_margin_double"
+        android:layout_marginRight="@dimen/default_margin_double"
+        android:layout_marginStart="@dimen/default_margin_double"
         android:layout_marginTop="@dimen/default_margin"
         android:gravity="center"
         tools:text="Would you like to work with Jennifer again?"
@@ -23,6 +27,10 @@
         style="@style/TextView.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin_double"
+        android:layout_marginLeft="@dimen/default_margin_double"
+        android:layout_marginRight="@dimen/default_margin_double"
+        android:layout_marginStart="@dimen/default_margin_double"
         android:layout_marginTop="@dimen/default_margin_half"
         android:gravity="center"
         android:visibility="gone"
@@ -35,20 +43,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
+        android:padding="@dimen/default_padding"
         />
 
-
-    <TextView
-        android:id="@+id/rating_flow_section_helper_text"
-        style="@style/TextView.XSmall"
+    <LinearLayout
+        android:id="@+id/rating_flow_section_helper_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin_double"
+        android:layout_marginLeft="@dimen/default_margin_double"
+        android:layout_marginRight="@dimen/default_margin_double"
+        android:layout_marginStart="@dimen/default_margin_double"
         android:layout_marginTop="@dimen/default_margin"
-        android:gravity="center"
-        android:textColor="@color/handy_tertiary_gray"
+        android:orientation="vertical"
         android:visibility="gone"
-        tools:text="Select all that apply"
         tools:visibility="visible"
-        />
+        >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/handy_bg"
+            />
+
+        <TextView
+            android:id="@+id/rating_flow_section_helper_text"
+            style="@style/TextView.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:gravity="center"
+            android:textColor="@color/handy_tertiary_gray"
+            tools:text="Please be nice."
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

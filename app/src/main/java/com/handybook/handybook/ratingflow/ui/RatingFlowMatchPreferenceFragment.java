@@ -140,23 +140,19 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
 
     private void updateHelperText() {
         if (mOptionIndex == POSITIVE_PREFERENCE_INDEX) {
-            mSectionHelperText.setVisibility(View.VISIBLE);
-            mSectionHelperText.setText(
-                    getString(
-                            R.string.rating_flow_pro_team_addition_note_formatted,
-                            mProvider.getFirstName()
-                    ));
+            setHelperText(getString(
+                    R.string.rating_flow_pro_team_addition_note_formatted,
+                    mProvider.getFirstName()
+            ));
         }
         else if (mOptionIndex == NEGATIVE_PREFERENCE_INDEX) {
-            mSectionHelperText.setVisibility(View.VISIBLE);
-            mSectionHelperText.setText(
-                    getString(
-                            R.string.rating_flow_pro_team_block_note_formatted,
-                            mProvider.getFirstName()
-                    ));
+            setHelperText(getString(
+                    R.string.rating_flow_pro_team_block_note_formatted,
+                    mProvider.getFirstName()
+            ));
         }
         else {
-            mSectionHelperText.setVisibility(View.GONE);
+            setHelperText(null);
         }
     }
 }

@@ -7,6 +7,7 @@
     >
 
     <ScrollView
+        android:id="@+id/rating_flow_referral_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rating_flow_next_button"
@@ -45,7 +46,7 @@
 
                 <TextView
                     android:id="@+id/rating_flow_referral_header_text"
-                    style="@style/TextView.XLarge.Bold"
+                    style="@style/TextView.XLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/default_padding"
@@ -61,7 +62,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/horizontal_divider_height"
-                android:animateLayoutChanges="true"
                 android:orientation="vertical"
                 android:visibility="gone"
                 tools:visibility="visible"
@@ -104,8 +104,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/horizontal_divider_height"
                         android:background="@color/white"
+                        android:gravity="top"
                         android:hint="@string/rating_flow_feedback_hint"
                         android:inputType="textMultiLine"
+                        android:lines="5"
                         android:padding="@dimen/default_padding"
                         android:textColorHint="@color/dark_grey_pressed"
                         />
@@ -116,11 +118,7 @@
                 android:id="@+id/rating_flow_referral_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin_double"
+                android:layout_margin="@dimen/default_margin"
                 android:background="@drawable/bg_rounded_white"
                 android:orientation="vertical"
                 android:visibility="gone"

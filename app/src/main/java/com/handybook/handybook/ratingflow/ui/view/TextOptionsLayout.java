@@ -1,6 +1,7 @@
 package com.handybook.handybook.ratingflow.ui.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -26,7 +27,9 @@ public class TextOptionsLayout extends FlowLayout {
     @BindDimen(R.dimen.default_margin_quarter)
     int mDefaultMarginQuarter;
     @BindColor(R.color.handy_text_black)
-    int mBlackColor;
+    int mBlackCheckedColor;
+    @BindColor(R.color.black_pressed)
+    int mBlackUncheckedColor;
     private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener;
 
     public TextOptionsLayout(
@@ -66,7 +69,10 @@ public class TextOptionsLayout extends FlowLayout {
         checkBox.setBackgroundResource(R.drawable.option_text_checkbox);
         checkBox.setGravity(Gravity.CENTER);
         checkBox.setButtonDrawable(null);
-        checkBox.setTextColor(mBlackColor);
+        checkBox.setTextColor(new ColorStateList(new int[][]{
+                new int[]{android.R.attr.state_checked},
+                new int[]{-android.R.attr.state_checked}
+        }, new int[]{mBlackCheckedColor, mBlackUncheckedColor}));
         checkBox.setText(item.getReason().getValue());
         checkBox.setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
