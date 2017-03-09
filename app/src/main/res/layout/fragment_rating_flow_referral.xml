@@ -97,7 +97,7 @@
                         android:textColor="@color/handy_text_black"
                         />
 
-                    <com.handybook.handybook.library.ui.view.LimitedEditText
+                    <EditText
                         android:id="@+id/rating_flow_referral_feedback_text"
                         style="@style/TextView.Medium"
                         android:layout_width="match_parent"
@@ -105,6 +105,7 @@
                         android:layout_marginTop="@dimen/horizontal_divider_height"
                         android:background="@color/white"
                         android:hint="@string/rating_flow_feedback_hint"
+                        android:inputType="textMultiLine"
                         android:padding="@dimen/default_padding"
                         android:textColorHint="@color/dark_grey_pressed"
                         />

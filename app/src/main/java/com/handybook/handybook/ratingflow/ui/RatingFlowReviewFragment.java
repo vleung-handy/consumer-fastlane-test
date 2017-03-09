@@ -3,8 +3,10 @@ package com.handybook.handybook.ratingflow.ui;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.InputFilter;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.EditText;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
@@ -12,7 +14,6 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
-import com.handybook.handybook.library.ui.view.LimitedEditText;
 import com.handybook.handybook.library.util.TextUtils;
 
 import butterknife.BindColor;
@@ -20,7 +21,7 @@ import butterknife.BindDimen;
 
 public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
 
-    private LimitedEditText mReviewTextField;
+    private EditText mReviewTextField;
     @BindColor(R.color.dark_grey_pressed)
     int mHintColor;
     @BindColor(R.color.black)
@@ -66,8 +67,8 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
     }
 
     @NonNull
-    private LimitedEditText createReviewTextField() {
-        final LimitedEditText editText = new LimitedEditText(getActivity());
+    private EditText createReviewTextField() {
+        final EditText editText = new EditText(getActivity());
         editText.setHint(R.string.rating_flow_review_hint);
         editText.setHintTextColor(mHintColor);
         editText.setBackground(null);
@@ -77,8 +78,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
                 getContext(),
                 com.handybook.handybook.library.util.TextUtils.Fonts.CIRCULAR_BOOK
         ));
-        editText.setMaxCharacters(140);
-        editText.setMaxLines(3);
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(140)});
         return editText;
     }
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -19,7 +20,6 @@ import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.library.ui.view.LimitedEditText;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.UiUtils;
@@ -57,7 +57,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     @Bind(R.id.rating_flow_referral_feedback_content)
     View mFeedbackContent;
     @Bind(R.id.rating_flow_referral_feedback_text)
-    LimitedEditText mFeedbackTextField;
+    EditText mFeedbackTextField;
     @Bind(R.id.rating_flow_referral_help_button)
     View mFeedbackHelpButton;
     @BindInt(R.integer.anim_duration_medium)
@@ -130,8 +130,6 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         mSubtitle.setText(getString(R.string.referral_dialog_subtitle_formatted,
                                     formattedReceiverCouponAmount, formattedSenderCreditAmount
         ));
-        mFeedbackTextField.setMaxCharacters(140);
-        mFeedbackTextField.setMaxLines(3);
         startAnimations();
     }
 
