@@ -52,46 +52,36 @@ end
 
 lane :version_bump do |options|
   ensure_git_branch_clean_and_latest
-  version_bump_type = options[:version_bump_type]
+  version_bump_type = options[:type]
 
-  valid_bump_types = ["major", "minor", "patch", "skip"]
+  valid_version_bump_types = ["major", "minor", "patch"]
 
-  valid = false
-  valid_bump_types.each do |type|
-    valid = type == version_bump_type
-    break if valid
-  end
-
-  if !valid
-    exit_with_error(error_message: "Must pass version_bump_type (i.e. fastlane version_bump version_bump_type:[major|minor|patch])")
+  unless valid_version_bump_types.include?(version_bump_type)
+    exit_with_error(error_message: "Must specify version bump type (i.e. fastlane version_bump type:[#{valid_version_bump_types.join('|')}])")
   end
 
   if version_bump_type == "patch"
     ensure_git_branch_release_candidate
   end
 
-  requires_git_push = false
-
-  version_number = nil
-  if version_bump_type != "skip"
-    version_number = bump_version(version_bump_type: version_bump_type)
-    requires_git_push = true
-  end
+  version_number = increase_version_number(type: version_bump_type)
 
   # Remove all tags not on remote
   sh("git tag -l | xargs git tag -d")
   sh("git fetch --tags")
 
-  if !version_number.nil? && !git_tag_exists(tag: version_number)
-    add_git_tag(tag: "v#{version_number}")
-    requires_git_push = true
+  version_tag = "v#{version_number}"
+  if git_tag_exists(tag: version_tag)
+    UI.error("Unable to add tag #{version_tag}")
+  else
+    add_git_tag(tag: version_tag)
   end
 
-  push_to_git_remote if requires_git_push
+  push_git_tags
 end
 
-private_lane :bump_version do |options|
-  version_bump_type = options[:version_bump_type]
+private_lane :increase_version_number do |options|
+  version_bump_type = options[:type]
   old_version = get_current_version
   _, major, minor, patch = old_version.split(/([0-9]+)\.([0-9]+)\.([0-9]+)/)
   case version_bump_type
