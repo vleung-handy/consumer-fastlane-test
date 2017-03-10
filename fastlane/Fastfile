@@ -7,6 +7,7 @@ default_platform :android
 
 before_all do
   ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+  ENV["GITHUB_URL"] = "https://api.github.com/repos/handybook/android-consumer"
 end
 
 lane :clean do
@@ -70,14 +71,14 @@ lane :version_bump do |options|
   sh("git tag -l | xargs git tag -d")
   sh("git fetch --tags")
 
-  version_tag = "v#{version_number}"
-  if git_tag_exists(tag: version_tag)
-    UI.error("Unable to add tag #{version_tag}")
-  else
-    add_git_tag(tag: version_tag)
+  if version_bump_type == "patch"
+    version_tag = "v#{version_number}"
+    if git_tag_exists(tag: version_tag)
+      UI.error("Unable to add tag #{version_tag}")
+    else
+      create_release(tag: version_tag)
+    end
   end
-
-  push_git_tags
 end
 
 private_lane :increase_version_number do |options|
@@ -102,6 +103,20 @@ private_lane :increase_version_number do |options|
   new_version
 end
 
+private_lane :create_release do |options|
+  version_tag = options[:tag]
+  data = {
+    tag_name:         version_tag,
+    target_commitish: branch_name,
+    name:             version_tag,
+    body:             "Release #{version_tag}",
+    prerelease:       true,
+  }
+
+  url = "#{ENV["GITHUB_URL"]}/releases?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
+  sh("curl -s -S -X POST -H 'Content-Type: application/json' -d '#{JSON.generate(data)}' #{url} > /dev/null")
+end
+
 private_lane :get_current_version do
   sh('cat ../app/build.gradle | sed -n -E "s/^.*\versionName[[:space:]]+\'(.*)\'.*$/\1/p"').strip
 end
@@ -119,7 +134,7 @@ private_lane :ensure_git_branch_clean_and_latest do |options|
 end
 
 private_lane :branch_name do
-  sh('git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3')
+  sh('git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3').strip
 end
 
 private_lane :exit_with_error do |options|
