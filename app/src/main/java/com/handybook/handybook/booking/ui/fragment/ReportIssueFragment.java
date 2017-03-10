@@ -30,7 +30,9 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
 import com.handybook.handybook.logger.handylogger.model.booking.IssueResolutionLog;
+import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
@@ -62,8 +64,8 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     private View.OnClickListener mCallButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
-                    mBooking.getId(), IssueResolutionLog.ProContacted.PHONE)));
+            bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                    EventContext.ISSUE_RESOLUTION, mBooking.getId(), ProContactedLog.PHONE)));
             final String phone = mBooking.getProvider().getPhone();
             Intent intent =
                     new Intent(
@@ -79,8 +81,8 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
             if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
                 mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
                 progressDialog.show();
-                bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
-                        mBooking.getId(), IssueResolutionLog.ProContacted.CHAT)));
+                bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                        EventContext.ISSUE_RESOLUTION, mBooking.getId(), ProContactedLog.CHAT)));
                 HandyLibrary.getInstance()
                             .getHandyService()
                             .createConversation(
@@ -91,9 +93,10 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                             );
             }
             else {
-                bus.post(new LogEvent.AddLogEvent(new IssueResolutionLog.ProContacted(
+                bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                        EventContext.ISSUE_RESOLUTION,
                         mBooking.getId(),
-                        IssueResolutionLog.ProContacted.SMS
+                        ProContactedLog.SMS
                 )));
                 final String phone = mBooking.getProvider().getPhone();
                 Intent intent =

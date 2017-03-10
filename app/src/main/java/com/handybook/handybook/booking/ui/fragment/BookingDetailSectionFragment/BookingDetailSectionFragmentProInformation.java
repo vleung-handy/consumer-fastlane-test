@@ -25,6 +25,8 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
+import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
@@ -328,6 +330,9 @@ public class BookingDetailSectionFragmentProInformation extends
         @Override
         public void onClick(final View v) {
             if (validateProPhoneInformation(booking)) {
+                bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                        EventContext.BOOKING_DETAILS, booking.getId(), ProContactedLog.PHONE)));
+
                 BookingUtil.callPhoneNumber(
                         booking.getProvider().getPhone(),
                         BookingDetailSectionFragmentProInformation.this.getActivity()
@@ -345,6 +350,8 @@ public class BookingDetailSectionFragmentProInformation extends
         public void onClick(final View v) {
             if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
                 booking.getProvider() != null && booking.getProvider().isChatEnabled()) {
+                bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                        EventContext.BOOKING_DETAILS, booking.getId(), ProContactedLog.CHAT)));
                 progressDialog.show();
                 HandyLibrary.getInstance()
                             .getHandyService()
@@ -357,6 +364,8 @@ public class BookingDetailSectionFragmentProInformation extends
                             );
             }
             else if (validateProPhoneInformation(booking)) {
+                bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                        EventContext.BOOKING_DETAILS, booking.getId(), ProContactedLog.SMS)));
                 BookingUtil.textPhoneNumber(
                         booking.getProvider().getPhone(),
                         BookingDetailSectionFragmentProInformation.this.getActivity()

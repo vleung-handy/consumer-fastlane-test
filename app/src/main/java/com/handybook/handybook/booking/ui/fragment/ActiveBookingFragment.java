@@ -49,6 +49,8 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.PlayServicesUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
+import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
+import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
@@ -692,8 +694,11 @@ public class ActiveBookingFragment extends InjectedFragment
 
     @OnClick(R.id.active_booking_call)
     public void callClicked() {
-        bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
-                mBooking.getId(), ActiveBookingLog.BookingProContactedLog.PHONE)));
+        bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                EventContext.ACTIVE_BOOKING,
+                mBooking.getId(),
+                ProContactedLog.PHONE
+        )));
         BookingUtil.callPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
     }
 
@@ -702,8 +707,11 @@ public class ActiveBookingFragment extends InjectedFragment
         if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
             mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
             progressDialog.show();
-            bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
-                    mBooking.getId(), ActiveBookingLog.BookingProContactedLog.CHAT)));
+            bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                    EventContext.ACTIVE_BOOKING,
+                    mBooking.getId(),
+                    ProContactedLog.CHAT
+            )));
             HandyLibrary.getInstance()
                         .getHandyService()
                         .createConversation(
@@ -714,8 +722,8 @@ public class ActiveBookingFragment extends InjectedFragment
                         );
         }
         else {
-            bus.post(new LogEvent.AddLogEvent(new ActiveBookingLog.BookingProContactedLog(
-                    mBooking.getId(), ActiveBookingLog.BookingProContactedLog.SMS)));
+            bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                    EventContext.ACTIVE_BOOKING, mBooking.getId(), ProContactedLog.SMS)));
             BookingUtil.textPhoneNumber(mBooking.getProvider().getPhone(), this.getActivity());
         }
     }
