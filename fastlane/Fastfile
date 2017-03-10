@@ -9,6 +9,10 @@ before_all do
   ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
 end
 
+lane :clean do
+  gradle(task: "clean")
+end
+
 lane :beta do
   ensure_git_branch_release_candidate
   ensure_git_branch_clean_and_latest
