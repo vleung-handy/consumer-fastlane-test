@@ -31,8 +31,33 @@ lane :beta do
   )
 end
 
+lane :applause do |options|
+  ensure_git_branch_release_candidate
+  ensure_git_branch_clean_and_latest
+
+  namespace = options[:namespace]
+  if namespace.nil?
+    exit_with_error(error_message: 'Must specify namespace (e.g. fastlane applause namespace:applause-android)')
+  end
+
+  # Set namespace override
+  sh("cd ..")
+  sh("./scripts/override environment=#{namespace}")
+  sh('cd fastlane')
+
+  gradle(task: "assembleStageRelease")
+
+  # Remove namespace override
+  sh("cd ..")
+  sh("./scripts/kill-override")
+  sh('cd fastlane')
+
+  # TODO: Upload asset to Github release
+end
+
 lane :playstore do
   ensure_git_branch_release_candidate
+  ensure_git_branch_clean_and_latest
 
   gradle(task: "assembleProdRelease")
 
