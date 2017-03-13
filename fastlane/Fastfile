@@ -134,6 +134,7 @@ private_lane :increase_version_number do |options|
   sh("sed -i '' -E 's/#{old_version}/#{new_version}/g' ../app/build.gradle")
   version_bump_message = "Bumped up version to #{new_version}"
   git_commit(path: './app/build.gradle', message: version_bump_message)
+  push_to_git_remote
   UI.success(version_bump_message)
   new_version
 end
