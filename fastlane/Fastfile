@@ -7,7 +7,8 @@ default_platform :android
 
 before_all do
   ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
-  ENV["GITHUB_URL"] = "https://api.github.com/repos/handybook/android-consumer"
+  ENV["GITHUB_API_URL"] = "https://api.github.com/repos/handybook/android-consumer"
+  ENV["GITHUB_URL"] = "https://github.com/handybook/android-consumer"
 end
 
 lane :clean do
@@ -36,32 +37,34 @@ lane :applause do |options|
   ensure_git_branch_clean_and_latest
 
   namespace = options[:namespace]
-  if namespace.nil?
+  unless namespace
     exit_with_error(error_message: 'Must specify namespace (e.g. fastlane applause namespace:applause-android)')
   end
 
   # Set namespace override
-  sh("cd ..")
-  sh("./scripts/override environment=#{namespace}")
-  sh('cd fastlane')
+  sh("cd ..; ./scripts/override environment=#{namespace}")
 
   gradle(task: "assembleStageRelease")
 
   # Remove namespace override
-  sh("cd ..")
-  sh("./scripts/kill-override")
-  sh('cd fastlane')
+  sh("cd ..; ./scripts/kill-override")
 
   apk_dir = '../app/build/outputs/apk'
   apk_name = Dir.entries(apk_dir).select{ |entry| entry.start_with?('handy-stage-release') }.first
   unless apk_name
     exit_with_error(error_message: "APK not found")
   end
+  tag_name = "v#{get_current_version}"
   upload_asset_github(
-    tag:          "v#{get_current_version}",
+    tag:          tag_name,
     path:         "#{apk_dir}/#{apk_name}",
-    name:         "applause-#{apk_name}",
+    name:         "#{namespace}-#{apk_name}",
     content_type: "application/vnd.android.package-archive"
+  )
+
+  slack(
+    message: "New Applause Android build uploaded to Github! #{ENV["GITHUB_URL"]}/releases/tag/#{tag_name}",
+    channel: "applause-testing"
   )
 end
 
@@ -149,7 +152,7 @@ private_lane :create_release do |options|
     prerelease:       true,
   }
 
-  url = "#{ENV["GITHUB_URL"]}/releases?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
+  url = "#{ENV["GITHUB_API_URL"]}/releases?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
   sh("curl -s -S -X POST -H 'Content-Type: application/json' -d '#{JSON.generate(data)}' #{url} > /dev/null")
 end
 
@@ -160,14 +163,14 @@ private_lane :upload_asset_github do |options|
   content_type = options[:content_type]
 
   # Get upload URL
-  url = "#{ENV["GITHUB_URL"]}/releases/tags/#{tag_name}?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
+  url = "#{ENV["GITHUB_API_URL"]}/releases/tags/#{tag_name}?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
   raw_response = sh("curl -s -S -X GET -H 'Content-Type: application/json' #{url}", log: false)
   response = JSON.parse(raw_response, symbolize_names: true)
   upload_url = response[:upload_url]
   upload_url = upload_url.split(/\{\?.*\}/)[0] if upload_url # removes query spec (e.g. "{?name, label}" ) from the URL
 
   unless upload_url
-    exit_with_error("Upload URL not found for release #{tag_name}")
+    exit_with_error(error_message: "Upload URL not found for release #{tag_name}")
   end
 
   url = "#{upload_url}?name=#{file_name}"
