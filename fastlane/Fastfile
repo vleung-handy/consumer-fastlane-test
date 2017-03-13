@@ -52,7 +52,17 @@ lane :applause do |options|
   sh("./scripts/kill-override")
   sh('cd fastlane')
 
-  # TODO: Upload asset to Github release
+  apk_dir = '../app/build/outputs/apk'
+  apk_name = Dir.entries(apk_dir).select{ |entry| entry.start_with?('handy-stage-release') }.first
+  unless apk_name
+    exit_with_error(error_message: "APK not found")
+  end
+  upload_asset_github(
+    tag:          "v#{get_current_version}",
+    path:         "#{apk_dir}/#{apk_name}",
+    name:         "applause-#{apk_name}",
+    content_type: "application/vnd.android.package-archive"
+  )
 end
 
 lane :playstore do
@@ -140,6 +150,32 @@ private_lane :create_release do |options|
 
   url = "#{ENV["GITHUB_URL"]}/releases?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
   sh("curl -s -S -X POST -H 'Content-Type: application/json' -d '#{JSON.generate(data)}' #{url} > /dev/null")
+end
+
+private_lane :upload_asset_github do |options|
+  tag_name     = options[:tag]
+  file_path    = options[:path]
+  file_name    = options[:name]
+  content_type = options[:content_type]
+
+  # Get upload URL
+  url = "#{ENV["GITHUB_URL"]}/releases/tags/#{tag_name}?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
+  raw_response = sh("curl -s -S -X GET -H 'Content-Type: application/json' #{url}", log: false)
+  response = JSON.parse(raw_response, symbolize_names: true)
+  upload_url = response[:upload_url]
+  upload_url = upload_url.split(/\{\?.*\}/)[0] if upload_url # removes query spec (e.g. "{?name, label}" ) from the URL
+
+  unless upload_url
+    exit_with_error("Upload URL not found for release #{tag_name}")
+  end
+
+  url = "#{upload_url}?name=#{file_name}"
+  sh("curl -s -S -X POST"\
+     " -H 'Authorization: token #{ENV["GITHUB_ACCESS_TOKEN"]}'"\
+     " -H 'Content-Type: #{content_type}'"\
+     " --data-binary @#{file_path}"\
+     " #{url}", log: false)
+  UI.success("Upload success!")
 end
 
 private_lane :get_current_version do
