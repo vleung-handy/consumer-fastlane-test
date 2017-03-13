@@ -7,7 +7,7 @@
     android:background="@color/divider_gray"
     >
 
-    <com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarousel
+    <com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView
         android:id="@+id/pro_referral_carousel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

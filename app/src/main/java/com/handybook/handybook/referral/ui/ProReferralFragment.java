@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.proteamcarousel.ProCarouselVM;
-import com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarousel;
+import com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class ProReferralFragment extends InjectedFragment {
 
     @Bind(R.id.pro_referral_carousel)
-    ProTeamCarousel mCarousel;
+    ProTeamCarouselView mCarousel;
 
     @Nullable
     @Override

@@ -3,7 +3,7 @@ package com.handybook.handybook.library.ui.view.proteamcarousel;
 import java.io.Serializable;
 
 /**
- * A model to use with the {@link ProTeamCarousel}
+ * A model to use with the {@link ProTeamCarouselView}
  */
 public class ProCarouselVM implements Serializable {
 

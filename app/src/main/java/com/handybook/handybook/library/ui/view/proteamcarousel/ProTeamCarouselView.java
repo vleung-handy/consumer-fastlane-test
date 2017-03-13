@@ -20,7 +20,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProTeamCarousel extends RelativeLayout implements CarouselVH.RecommendClickListener {
+public class ProTeamCarouselView extends RelativeLayout
+        implements CarouselVH.RecommendClickListener {
 
     @Bind(R.id.carousel_recycler_view)
     RecyclerView mRecyclerView;
@@ -29,17 +30,17 @@ public class ProTeamCarousel extends RelativeLayout implements CarouselVH.Recomm
     private CarouselVH.RecommendClickListener mRecommendClickListener;
     private CarouselRecyclerAdapter mCarouselRecyclerAdapter;
 
-    public ProTeamCarousel(final Context context) {
+    public ProTeamCarouselView(final Context context) {
         super(context);
         init();
     }
 
-    public ProTeamCarousel(final Context context, final AttributeSet attrs) {
+    public ProTeamCarouselView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ProTeamCarousel(
+    public ProTeamCarouselView(
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr
