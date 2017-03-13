@@ -7,6 +7,12 @@ default_platform :android
 
 before_all do
   ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+  ENV["GITHUB_API_URL"] = "https://api.github.com/repos/handybook/android-consumer"
+  ENV["GITHUB_URL"] = "https://github.com/handybook/android-consumer"
+end
+
+lane :clean do
+  gradle(task: "clean")
 end
 
 lane :beta do
@@ -26,8 +32,45 @@ lane :beta do
   )
 end
 
+lane :applause do |options|
+  ensure_git_branch_release_candidate
+  ensure_git_branch_clean_and_latest
+
+  namespace = options[:namespace]
+  unless namespace
+    exit_with_error(error_message: 'Must specify namespace (e.g. fastlane applause namespace:applause-android)')
+  end
+
+  # Set namespace override
+  sh("cd ..; ./scripts/override environment=#{namespace}")
+
+  gradle(task: "assembleStageRelease")
+
+  # Remove namespace override
+  sh("cd ..; ./scripts/kill-override")
+
+  apk_dir = '../app/build/outputs/apk'
+  apk_name = Dir.entries(apk_dir).select{ |entry| entry.start_with?('handy-stage-release') }.first
+  unless apk_name
+    exit_with_error(error_message: "APK not found")
+  end
+  tag_name = "v#{get_current_version}"
+  upload_asset_github(
+    tag:          tag_name,
+    path:         "#{apk_dir}/#{apk_name}",
+    name:         "#{namespace}-#{apk_name}",
+    content_type: "application/vnd.android.package-archive"
+  )
+
+  slack(
+    message: "New Applause Android build uploaded to Github! #{ENV["GITHUB_URL"]}/releases/tag/#{tag_name}",
+    channel: "applause-testing"
+  )
+end
+
 lane :playstore do
   ensure_git_branch_release_candidate
+  ensure_git_branch_clean_and_latest
 
   gradle(task: "assembleProdRelease")
 
@@ -48,48 +91,36 @@ end
 
 lane :version_bump do |options|
   ensure_git_branch_clean_and_latest
-  version_bump_type = options[:version_bump_type]
+  version_bump_type = options[:type]
 
-  valid_bump_types = ["major", "minor", "patch", "skip"]
+  valid_version_bump_types = ["major", "minor", "patch"]
 
-  valid = false
-  valid_bump_types.each do |type|
-    valid = type == version_bump_type
-    break if valid
-  end
-
-  error_message = "Must pass a version_bump_type value (e.g. fastlane [lane] version_bump_type:minor)"
-  if !valid
-    UI.error(error_message)
-    raise error_message
+  unless valid_version_bump_types.include?(version_bump_type)
+    exit_with_error(error_message: "Must specify version bump type (i.e. fastlane version_bump type:[#{valid_version_bump_types.join('|')}])")
   end
 
   if version_bump_type == "patch"
     ensure_git_branch_release_candidate
   end
 
-  requires_git_push = false
-
-  version_number = nil
-  if version_bump_type != "skip"
-    version_number = bump_version(version_bump_type: version_bump_type)
-    requires_git_push = true
-  end
+  version_number = increase_version_number(type: version_bump_type)
 
   # Remove all tags not on remote
   sh("git tag -l | xargs git tag -d")
   sh("git fetch --tags")
 
-  if !version_number.nil? && !git_tag_exists(tag: version_number)
-    add_git_tag(tag: "v#{version_number}")
-    requires_git_push = true
+  if version_bump_type == "patch"
+    version_tag = "v#{version_number}"
+    if git_tag_exists(tag: version_tag)
+      UI.error("Unable to add tag #{version_tag}")
+    else
+      create_release(tag: version_tag)
+    end
   end
-
-  push_to_git_remote if requires_git_push
 end
 
-private_lane :bump_version do |options|
-  version_bump_type = options[:version_bump_type]
+private_lane :increase_version_number do |options|
+  version_bump_type = options[:type]
   old_version = get_current_version
   _, major, minor, patch = old_version.split(/([0-9]+)\.([0-9]+)\.([0-9]+)/)
   case version_bump_type
@@ -100,14 +131,55 @@ private_lane :bump_version do |options|
   when 'patch'
     patch = patch.to_i + 1
   else
-    raise_error(error_message: "Unrecognized version_bump_type: " + version_bump_type)
+    exit_with_error(error_message: "Unrecognized version_bump_type: " + version_bump_type)
   end
   new_version = "#{major}.#{minor}.#{patch}"
   sh("sed -i '' -E 's/#{old_version}/#{new_version}/g' ../app/build.gradle")
   version_bump_message = "Bumped up version to #{new_version}"
   git_commit(path: './app/build.gradle', message: version_bump_message)
+  push_to_git_remote
   UI.success(version_bump_message)
   new_version
+end
+
+private_lane :create_release do |options|
+  version_tag = options[:tag]
+  data = {
+    tag_name:         version_tag,
+    target_commitish: branch_name,
+    name:             version_tag,
+    body:             "Release #{version_tag}",
+    prerelease:       true,
+  }
+
+  url = "#{ENV["GITHUB_API_URL"]}/releases?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
+  sh("curl -s -S -X POST -H 'Content-Type: application/json' -d '#{JSON.generate(data)}' #{url} > /dev/null")
+end
+
+private_lane :upload_asset_github do |options|
+  tag_name     = options[:tag]
+  file_path    = options[:path]
+  file_name    = options[:name]
+  content_type = options[:content_type]
+
+  # Get upload URL
+  url = "#{ENV["GITHUB_API_URL"]}/releases/tags/#{tag_name}?access_token=#{ENV["GITHUB_ACCESS_TOKEN"]}"
+  raw_response = sh("curl -s -S -X GET -H 'Content-Type: application/json' #{url}", log: false)
+  response = JSON.parse(raw_response, symbolize_names: true)
+  upload_url = response[:upload_url]
+  upload_url = upload_url.split(/\{\?.*\}/)[0] if upload_url # removes query spec (e.g. "{?name, label}" ) from the URL
+
+  unless upload_url
+    exit_with_error(error_message: "Upload URL not found for release #{tag_name}")
+  end
+
+  url = "#{upload_url}?name=#{file_name}"
+  sh("curl -s -S -X POST"\
+     " -H 'Authorization: token #{ENV["GITHUB_ACCESS_TOKEN"]}'"\
+     " -H 'Content-Type: #{content_type}'"\
+     " --data-binary @#{file_path}"\
+     " #{url}", log: false)
+  UI.success("Upload success!")
 end
 
 private_lane :get_current_version do
@@ -117,7 +189,7 @@ end
 private_lane :ensure_git_branch_release_candidate do
   release_candidate_branch_pattern = /release_candidate_v[0-9]+\.[0-9]+\.x/
   if release_candidate_branch_pattern.match(branch_name).nil?
-    raise_error(error_message: "Current branch must be a release candidate branch (e.g. release_candidate_v1.29.x)")
+    exit_with_error(error_message: "Current branch must be a release candidate branch (e.g. release_candidate_v1.29.x)")
   end
 end
 
@@ -127,10 +199,10 @@ private_lane :ensure_git_branch_clean_and_latest do |options|
 end
 
 private_lane :branch_name do
-  sh('git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3')
+  sh('git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3').strip
 end
 
-private_lane :raise_error do |options|
+private_lane :exit_with_error do |options|
   UI.error(options[:error_message])
-  raise(options[:error_message])
+  exit
 end
