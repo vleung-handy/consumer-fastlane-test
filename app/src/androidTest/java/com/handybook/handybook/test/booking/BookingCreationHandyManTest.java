@@ -50,6 +50,7 @@ public class BookingCreationHandyManTest {
         //select the handyman service
         Matcher<View> handymanRecyclerViewItemMatcher =
                 withChild(withChild(withChild(withChild(withText("Handyman")))));
+        // TODO: figure out why this line keeps on failing (100% reproducible locally)
         onView(withId(R.id.recycler_view)).perform(
                 RecyclerViewActions.actionOnItem(
                         handymanRecyclerViewItemMatcher,

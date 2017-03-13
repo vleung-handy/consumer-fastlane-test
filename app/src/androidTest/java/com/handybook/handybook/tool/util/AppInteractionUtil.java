@@ -58,7 +58,10 @@ public class AppInteractionUtil {
          */
         try
         {
-            ViewUtil.waitForViewVisible(R.id.booking_edit_time_button, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+            ViewUtil.waitForViewVisible(
+                    R.id.booking_edit_time_button,
+                    ViewUtil.SHORT_MAX_WAIT_TIME_MS
+            );
         }
         catch (Exception e)
         {
