@@ -25,7 +25,7 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
-import com.handybook.handybook.referral.proteam.ProTeamCarouselFragment;
+import com.handybook.handybook.referral.ui.ProReferralFragment;
 import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.shared.layer.LayerConstants;
 import com.handybook.shared.layer.LayerHelper;
@@ -203,7 +203,7 @@ public class BottomNavActivity extends BaseActivity {
                 break;
             case R.id.gift:
                 if (mConfigurationManager.getPersistentConfiguration().isShareProEnabled()) {
-                    fragment = ProTeamCarouselFragment.newInstance(null);
+                    fragment = new ProReferralFragment();
                 }
                 else {
                     fragment = ReferralFragment.newInstance(null);

@@ -1,4 +1,4 @@
-package com.handybook.handybook.referral.proteam;
+package com.handybook.handybook.library.ui.view.proteamcarousel;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +28,11 @@ public class CarouselRecyclerAdapter extends RecyclerView.Adapter<CarouselVH> {
         View view = LayoutInflater.from(parent.getContext())
                                   .inflate(R.layout.carousel_item, parent, false);
         return new CarouselVH(view, mRecommendClickListener);
+    }
+
+    public void setProCarouselVMs(final List<ProCarouselVM> proCarouselVMs) {
+        mProCarouselVMs = proCarouselVMs;
+        notifyDataSetChanged();
     }
 
     @Override

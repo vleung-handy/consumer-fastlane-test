@@ -1,4 +1,4 @@
-package com.handybook.handybook.referral.proteam;
+package com.handybook.handybook.library.ui.view.proteamcarousel;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

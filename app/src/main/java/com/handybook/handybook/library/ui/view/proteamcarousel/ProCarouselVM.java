@@ -1,9 +1,9 @@
-package com.handybook.handybook.referral.proteam;
+package com.handybook.handybook.library.ui.view.proteamcarousel;
 
 import java.io.Serializable;
 
 /**
- * A model to use with the {@link ProTeamCarouselFragment}
+ * A model to use with the {@link ProTeamCarousel}
  */
 public class ProCarouselVM implements Serializable {
 
