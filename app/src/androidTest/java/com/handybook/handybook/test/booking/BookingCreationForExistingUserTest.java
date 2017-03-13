@@ -42,6 +42,7 @@ public class BookingCreationForExistingUserTest {
 
         //create a home cleaning - assuming that is at position 0
         //(don't know how to cleanly query nested item)
+        // TODO: figure out why this line keeps on failing (100% reproducible locally)
         onView(withId(R.id.recycler_view)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, AppInteractionUtil.recyclerClick()));
 

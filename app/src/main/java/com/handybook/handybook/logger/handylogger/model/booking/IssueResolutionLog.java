@@ -1,7 +1,5 @@
 package com.handybook.handybook.logger.handylogger.model.booking;
 
-import android.support.annotation.StringDef;
-
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
@@ -27,29 +25,6 @@ public class IssueResolutionLog extends EventLog {
         public ReportIssueOpened(String bookingId, String lastStatusShown) {
             super(EVENT_TYPE, bookingId);
             mLastStatusShown = lastStatusShown;
-        }
-    }
-
-
-    public static class ProContacted extends IssueResolutionLog {
-
-        private static final String EVENT_TYPE = "booking_pro_contacted";
-
-        public static final String PHONE = "phone";
-        public static final String SMS = "sms";
-        public static final String CHAT = "chat";
-
-
-        @StringDef({PHONE, SMS, CHAT})
-        public @interface Type {}
-
-
-        @SerializedName("pro_contact_type")
-        private String mContactType;
-
-        public ProContacted(final String bookingId, @Type final String contactType) {
-            super(EVENT_TYPE, bookingId);
-            mContactType = contactType;
         }
     }
 
