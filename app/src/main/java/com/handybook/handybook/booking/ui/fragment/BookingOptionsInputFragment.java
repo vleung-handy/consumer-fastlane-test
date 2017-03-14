@@ -39,21 +39,16 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
 
     public static final String TAG = BookingOptionsInputFragment.class.getName();
     public static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
-    public static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     public static final String EXTRA_CHILD_DISPLAY_MAP = "com.handy.handy.EXTRA_CHILD_DISPLAY_MAP";
-    public static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
-    public static final String EXTRA_IS_POST = "com.handy.handy.EXTRA_IS_POST";
     private static final int SERVICE_ID_CLEANING = 3;
 
     static final String STATE_CHILD_DISPLAY_MAP = "STATE_CHILD_DISPLAY_MAP";
     static final String STATE_OPTION_INDEX_MAP = "STATE_OPTION_INDEX_MAP";
 
     protected ArrayList<BookingOption> options;
-    protected ArrayList<BookingOption> postOptions;
     protected HashMap<String, Boolean> childDisplayMap;
     protected HashMap<String, Integer> optionIndexMap;
     protected HashMap<String, BookingOptionsView> optionsViewMap;
-    protected boolean isPost;
 
     @Bind(R.id.booking_options_input)
     protected LinearLayout optionsLayout;
@@ -62,19 +57,13 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
 
     public static BookingOptionsInputFragment newInstance(
             final ArrayList<BookingOption> options,
-            final int page,
-            final HashMap<String, Boolean> childDisplayMap,
-            final ArrayList<BookingOption> postOptions,
-            final boolean isPost
+            final HashMap<String, Boolean> childDisplayMap
     ) {
         final BookingOptionsInputFragment fragment = new BookingOptionsInputFragment();
         final Bundle args = new Bundle();
 
         args.putParcelableArrayList(EXTRA_OPTIONS, options);
-        args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
         args.putSerializable(EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
-        args.putInt(EXTRA_PAGE, page);
-        args.putBoolean(EXTRA_IS_POST, isPost);
         fragment.setArguments(args);
 
         return fragment;
@@ -120,8 +109,6 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
 
         options = getArguments().getParcelableArrayList(EXTRA_OPTIONS);
         childDisplayMap = (HashMap) getArguments().getSerializable(EXTRA_CHILD_DISPLAY_MAP);
-        postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
-        isPost = getArguments().getBoolean(EXTRA_IS_POST);
         displayOptions();
 
         return view;
@@ -138,8 +125,6 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
         optionsViewMap = new HashMap<>();
         optionsLayout.removeAllViews();
 
-        final ArrayList<BookingOption> displayOptions = new ArrayList<>();
-
         if (childDisplayMap == null) {
             childDisplayMap = new HashMap<>();
 
@@ -152,21 +137,7 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
             }
         }
 
-        if (!isPost && postOptions == null) {
-            postOptions = new ArrayList<>();
-
-            for (final BookingOption option : options) {
-                if (option.isPost()) {
-                    postOptions.add(option);
-                }
-            }
-        }
-
-        for (final BookingOption option : options) {
-            if (isPost || !option.isPost()) {
-                displayOptions.add(option);
-            }
-        }
+        final ArrayList<BookingOption> displayOptions = options;
 
         int pos = 0;
         int previousOrFirstPage = 0; //used to determine if transitioning into new page

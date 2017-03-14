@@ -51,7 +51,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_OPTIONS;
-import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_PAGE;
 
 public class BookingFlowFragment extends InjectedFragment {
 
@@ -142,7 +141,6 @@ public class BookingFlowFragment extends InjectedFragment {
                                 EXTRA_OPTIONS,
                                 new ArrayList<>(bookingOptions)
                         );
-                        intent.putExtra(EXTRA_PAGE, 0);
                         startActivity(intent);
                     }
 

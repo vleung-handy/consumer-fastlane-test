@@ -38,9 +38,7 @@ import butterknife.OnClick;
 
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment.EXTRA_PAGE;
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_CHILD_DISPLAY_MAP;
-import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_IS_POST;
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_OPTIONS;
-import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_POST_OPTIONS;
 
 /**
  * NOTE: this is for the consolidated quote flow experiment
@@ -76,19 +74,13 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
 
     public static BookingGetQuoteFragment newInstance(
             final ArrayList<BookingOption> options,
-            final int page,
-            final HashMap<String, Boolean> childDisplayMap,
-            final ArrayList<BookingOption> postOptions,
-            final boolean isPost
+            final HashMap<String, Boolean> childDisplayMap
     ) {
         final BookingGetQuoteFragment fragment = new BookingGetQuoteFragment();
         final Bundle args = new Bundle();
 
         args.putParcelableArrayList(EXTRA_OPTIONS, options);
-        args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
         args.putSerializable(EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
-        args.putInt(EXTRA_PAGE, page);
-        args.putBoolean(EXTRA_IS_POST, isPost);
         fragment.setArguments(args);
 
         return fragment;
@@ -146,21 +138,13 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
             return;
         }
 
-        final ArrayList<BookingOption> postOptions
-                = args.getParcelableArrayList(EXTRA_POST_OPTIONS);
-
         final HashMap<String, Boolean> childDisplayMap
                 = (HashMap) args.getSerializable(EXTRA_CHILD_DISPLAY_MAP);
-
-        final boolean isPost = args.getBoolean(EXTRA_IS_POST, false);
 
         BookingOptionsInputFragment bookingOptionsInputFragment
                 = BookingOptionsInputFragment.newInstance(
                 options,
-                page,
-                childDisplayMap,
-                postOptions,
-                isPost
+                childDisplayMap
         );
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(
