@@ -35,11 +35,9 @@ import butterknife.ButterKnife;
  * NOTE: almost entirely copied from {@link BookingOptionsFragment}
  * for purpose of consolidated booking experiment
  *
- * NOT doing a complete refactor at this point as it is too risky
- * note that {@link BookingOptionsFragment} was not saving the state of the options selected,
- * and since this is almost a full copy, this will not either.
+ * NOT doing a complete refactor or consolidation at this point as it is too risky
  *
- * differences: no toolbar, next button, or next listener. also modified instructions text.
+ * differences: no toolbar, next button, or next listener. also modified instructions text, quick-fix for saving state
  *
  */
 public class BookingOptionsInputFragment extends BookingFlowFragment {
@@ -372,9 +370,19 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
                 = bookingManager.getCurrentRequest().getOptions();
 
         if (view instanceof BookingOptionsIndexView) {
-            int currentIndex = ((BookingOptionsIndexView) view).getCurrentIndex();
+            BookingOptionsIndexView indexView = (BookingOptionsIndexView) view;
+            int currentIndex = indexView.getCurrentIndex();
+            String requestOptionValue;
+
+            //If booking option is type quantity then return the value, otherwise return index
+            if (BookingOption.TYPE_QUANTITY.equals(option.getType())) {
+                requestOptionValue = indexView.getCurrentValue();
+            } else {
+                requestOptionValue = Integer.toString(currentIndex);
+            }
+
             //Both the requestion options and option index map uses the current Index
-            requestOptions.put(option.getUniq(), Integer.toString(currentIndex));
+            requestOptions.put(option.getUniq(), requestOptionValue);
             optionIndexMap.put(option.getUniq(), currentIndex);
         }
         else {
