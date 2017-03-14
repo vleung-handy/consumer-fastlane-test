@@ -19,6 +19,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.ui.widget.EmailInputTextView;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
@@ -50,8 +51,6 @@ import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFra
 public class BookingGetQuoteFragment extends BookingFlowFragment implements
         BookingDateTimeInputFragment.OnSelectedDateTimeUpdatedListener {
 
-    private static final String DEFAULT_DATE_DISPLAY_PATTERN = "EEE, MMM d";
-
     @Bind(R.id.booking_zipcode_input_text)
     ZipCodeInputTextView mZipCodeInputTextView;
 
@@ -64,7 +63,7 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
     @Bind(R.id.booking_email_input_container)
     ViewGroup mBookingEmailInputContainer;
 
-    @Bind(R.id.next_button)
+    @Bind(R.id.fragment_booking_get_quote_next_button)
     Button mNextButton;
 
     @Bind(R.id.toolbar)
@@ -220,7 +219,7 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
         BookingDateTimeInputFragment bookingDateTimeInputFragment
                 = BookingDateTimeInputFragment.newInstance(
                 startDateTime,
-                DEFAULT_DATE_DISPLAY_PATTERN
+                DateTimeUtils.DEFAULT_DATE_DISPLAY_PATTERN
         );
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(
@@ -239,7 +238,7 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
                 && mEmailInputTextView.validate();
     }
 
-    @OnClick(R.id.next_button)
+    @OnClick(R.id.fragment_booking_get_quote_next_button)
     public void onNextButtonClicked() {
         if (!areAllInputsValid()) {
             showToast(getString(R.string.invalid_inputs));
@@ -262,22 +261,22 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
         }
 
         //booking date time already set into booking request from the update listener. just log stuff
-        String formattedStartDateForApi =
-                BookingRequest.BookingRequestApiSerializer.getFormattedBookingStartDate(
-                        currentBookingRequest);
+        String formattedStartDateForApi = BookingRequest.BookingRequestApiSerializer
+                .getFormattedBookingStartDate(currentBookingRequest);
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerSubmittedLog(
                 formattedStartDateForApi)));
 
         //set zip code
-        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSubmittedLog(
-                mZipCodeInputTextView.getZipCode())));
         currentBookingRequest.setZipCode(mZipCodeInputTextView.getZipCode());
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSubmittedLog(
+                mZipCodeInputTextView.getZipCode()
+        )));
 
         //set email
+        currentBookingRequest.setEmail(mEmailInputTextView.getEmail());
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.EmailCollectedLog(
                 mEmailInputTextView.getEmail()
         )));
-        currentBookingRequest.setEmail(mEmailInputTextView.getEmail());
 
         continueBookingFlow();
     }

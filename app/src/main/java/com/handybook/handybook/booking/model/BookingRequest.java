@@ -195,18 +195,20 @@ public class BookingRequest extends Observable {
      * @return
      */
     public final String toJson() {
-        final Gson gson = new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
-                                           .setExclusionStrategies(getExclusionStrategy())
-                                           .registerTypeAdapter(
-                                                   BookingRequest.class,
-                                                   new BookingRequestLocalStorageSerializer()
-                                           ).create();
+        final Gson gson = new GsonBuilder()
+                .setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                .setExclusionStrategies(getExclusionStrategy())
+                .registerTypeAdapter(
+                        BookingRequest.class,
+                        new BookingRequestLocalStorageSerializer()
+                ).create();
 
         return gson.toJson(this);
     }
 
     public static BookingRequest fromJson(final String json) {
-        return new GsonBuilder().setDateFormat(UNIVERSAL_DATE_FORMAT).create()
+        return new GsonBuilder().setDateFormat(UNIVERSAL_DATE_FORMAT)
+                                .create()
                                 .fromJson(json, BookingRequest.class);
     }
 
@@ -248,8 +250,6 @@ public class BookingRequest extends Observable {
             jsonObj.add(KEY_ENTERED_CODE, context.serialize(value.getPromoCode()));
             jsonObj.add(KEY_ANDROID_PROMO_TYPE, context.serialize(value.getPromoType()));
             jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));
-            // jsonObj.add("mobile", context.serialize(1)); //If this doesn't break things delete it.
-            // Doesn't seem to be used fo anything useful on the backend and it is defaulted to true
             return jsonObj;
         }
     }
@@ -298,8 +298,6 @@ public class BookingRequest extends Observable {
             jsonObj.add(KEY_ENTERED_CODE, context.serialize(value.getPromoCode()));
             jsonObj.add(KEY_ANDROID_PROMO_TYPE, context.serialize(value.getPromoType()));
             jsonObj.add(KEY_COUPON, context.serialize(value.getCoupon()));
-            // jsonObj.add("mobile", context.serialize(1)); //If this doesn't break things delete it.
-            // Doesn't seem to be used fo anything useful on the backend and it is defaulted to true
             return jsonObj;
         }
     }

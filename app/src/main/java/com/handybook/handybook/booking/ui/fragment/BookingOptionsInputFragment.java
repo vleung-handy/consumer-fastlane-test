@@ -65,6 +65,57 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
     @Bind(R.id.booking_options_input_instructions)
     protected TextView mInstructionsText;
 
+    protected final View.OnClickListener nextClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingServiceDetailsSubmittedLog()));
+
+            final ArrayList<BookingOption> nextOptions = new ArrayList<>();
+            for (final BookingOption option : options) {
+                if (isPost || (option.getPage() > page && !option.isPost())) {
+                    nextOptions.add(option);
+                }
+                if (!Strings.isNullOrEmpty(option.getType()) && option.getType().equals("text")) {
+                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingCommentsSubmittedLog()));
+                }
+            }
+            if (nextOptions.size() < 1 ||
+                nextOptions.get(nextOptions.size() - 1).getPage() <= page) {
+                if (isPost) {
+                    continueBookingFlow();
+                    return;
+                }
+
+                final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
+                intent.putParcelableArrayListExtra(
+                        BundleKeys.POST_OPTIONS,
+                        new ArrayList<>(postOptions)
+                );
+                startActivity(intent);
+            }
+            else {
+                final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                intent.putParcelableArrayListExtra(
+                        BookingOptionsActivity.EXTRA_OPTIONS,
+                        new ArrayList<>(nextOptions)
+                );
+
+                intent.putParcelableArrayListExtra(
+                        BookingOptionsActivity.EXTRA_POST_OPTIONS,
+                        new ArrayList<>(postOptions)
+                );
+
+                if (isPost) {
+                    intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
+                }
+
+                intent.putExtra(BookingOptionsActivity.EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
+                intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, nextOptions.get(0).getPage());
+                startActivity(intent);
+            }
+        }
+    };
+
     public static BookingOptionsInputFragment newInstance(
             final ArrayList<BookingOption> options,
             final int page,
@@ -106,12 +157,13 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_options_input,
-                                               container,
-                                               false
-                                       );
+        final View view = getActivity()
+                .getLayoutInflater()
+                .inflate(
+                        R.layout.fragment_booking_options_input,
+                        container,
+                        false
+                );
 
         ButterKnife.bind(this, view);
 
@@ -180,105 +232,108 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
             switch (option.getType()) {
                 case "quantity":
                 case "option_picker": {
-                    optionsView = new BookingOptionsSpinnerView(getActivity(), option,
-                                                                new BookingOptionsView.OnUpdatedListener() {
-                                                                    @Override
-                                                                    public void onUpdate(final BookingOptionsView view) {
-                                                                        handleOptionUpdate(
-                                                                                view,
-                                                                                option
-                                                                        );
-                                                                    }
+                    optionsView = new BookingOptionsSpinnerView(
+                            getActivity(), option,
+                            new BookingOptionsView.OnUpdatedListener() {
+                                @Override
+                                public void onUpdate(final BookingOptionsView view) {
+                                    handleOptionUpdate(
+                                            view,
+                                            option
+                                    );
+                                }
 
-                                                                    @Override
-                                                                    public void onShowChildren(
-                                                                            final BookingOptionsView view,
-                                                                            final String[] items
-                                                                    ) {
-                                                                        handleChildViews(
-                                                                                items,
-                                                                                true
-                                                                        );
-                                                                    }
+                                @Override
+                                public void onShowChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                ) {
+                                    handleChildViews(
+                                            items,
+                                            true
+                                    );
+                                }
 
-                                                                    @Override
-                                                                    public void onHideChildren(
-                                                                            final BookingOptionsView view,
-                                                                            final String[] items
-                                                                    ) {
-                                                                        handleChildViews(
-                                                                                items,
-                                                                                false
-                                                                        );
-                                                                    }
-                                                                }
+                                @Override
+                                public void onHideChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                ) {
+                                    handleChildViews(
+                                            items,
+                                            false
+                                    );
+                                }
+                            }
                     );
                     break;
                 }
                 case "option": {
-                    optionsView = new BookingOptionsSelectView(getActivity(), option,
-                                                               new BookingOptionsView.OnUpdatedListener() {
-                                                                   @Override
-                                                                   public void onUpdate(final BookingOptionsView view) {
-                                                                       handleOptionUpdate(
-                                                                               view,
-                                                                               option
-                                                                       );
-                                                                   }
+                    optionsView = new BookingOptionsSelectView(
+                            getActivity(), option,
+                            new BookingOptionsView.OnUpdatedListener() {
+                                @Override
+                                public void onUpdate(final BookingOptionsView view) {
+                                    handleOptionUpdate(
+                                            view,
+                                            option
+                                    );
+                                }
 
-                                                                   @Override
-                                                                   public void onShowChildren(
-                                                                           final BookingOptionsView view,
-                                                                           final String[] items
-                                                                   ) {
-                                                                       handleChildViews(
-                                                                               items,
-                                                                               true
-                                                                       );
-                                                                   }
+                                @Override
+                                public void onShowChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                ) {
+                                    handleChildViews(
+                                            items,
+                                            true
+                                    );
+                                }
 
-                                                                   @Override
-                                                                   public void onHideChildren(
-                                                                           final BookingOptionsView view,
-                                                                           final String[] items
-                                                                   ) {
-                                                                       handleChildViews(
-                                                                               items,
-                                                                               false
-                                                                       );
-                                                                   }
-                                                               }
+                                @Override
+                                public void onHideChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                ) {
+                                    handleChildViews(
+                                            items,
+                                            false
+                                    );
+                                }
+                            }
                     );
                     break;
 
                 }
                 case "text": {
-                    optionsView = new BookingOptionsTextView(getActivity(), option,
-                                                             new BookingOptionsView.OnUpdatedListener() {
-                                                                 @Override
-                                                                 public void onUpdate(final BookingOptionsView view) {
-                                                                     handleOptionUpdate(
-                                                                             view,
-                                                                             option
-                                                                     );
-                                                                 }
+                    optionsView = new BookingOptionsTextView(
+                            getActivity(), option,
+                            new BookingOptionsView.OnUpdatedListener() {
+                                @Override
+                                public void onUpdate(final BookingOptionsView view) {
+                                    handleOptionUpdate(
+                                            view,
+                                            option
+                                    );
+                                }
 
-                                                                 @Override
-                                                                 public void onShowChildren(
-                                                                         final BookingOptionsView view,
-                                                                         final String[] items
-                                                                 ) {
-                                                                     handleChildViews(items, true);
-                                                                 }
+                                @Override
+                                public void onShowChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                ) {
+                                    handleChildViews(items, true);
+                                }
 
-                                                                 @Override
-                                                                 public void onHideChildren(
-                                                                         final BookingOptionsView view,
-                                                                         final String[] items
-                                                                 ) {
-                                                                     handleChildViews(items, false);
-                                                                 }
-                                                             }
+                                @Override
+                                public void onHideChildren(
+                                        final BookingOptionsView view,
+                                        final String[] items
+                                ) {
+                                    handleChildViews(items, false);
+                                }
+                            }
                     );
                     break;
 
@@ -298,7 +353,8 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
                 }
                 else {
                     try {
-                        index = Integer.parseInt(currentBookingRequestOptions.get(option.getUniq()));
+                        index
+                                = Integer.parseInt(currentBookingRequestOptions.get(option.getUniq()));
                     }
                     catch (Exception e) {
                         Crashlytics.logException(e);
@@ -313,7 +369,8 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
                 }
             }
             else if (optionsView instanceof BookingOptionsTextView) {
-                ((BookingOptionsTextView) optionsView).setValue(currentBookingRequestOptions.get(option.getUniq()));
+                ((BookingOptionsTextView) optionsView).setValue(currentBookingRequestOptions.get(
+                        option.getUniq()));
             }
 
             if (pos >= pageOptions.size() - 1) {
@@ -377,7 +434,8 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
             //If booking option is type quantity then return the value, otherwise return index
             if (BookingOption.TYPE_QUANTITY.equals(option.getType())) {
                 requestOptionValue = indexView.getCurrentValue();
-            } else {
+            }
+            else {
                 requestOptionValue = Integer.toString(currentIndex);
             }
 
@@ -391,55 +449,4 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
 
         bookingManager.getCurrentRequest().setOptions(requestOptions);
     }
-
-    protected final View.OnClickListener nextClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingServiceDetailsSubmittedLog()));
-
-            final ArrayList<BookingOption> nextOptions = new ArrayList<>();
-            for (final BookingOption option : options) {
-                if (isPost || (option.getPage() > page && !option.isPost())) {
-                    nextOptions.add(option);
-                }
-                if (!Strings.isNullOrEmpty(option.getType()) && option.getType().equals("text")) {
-                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingCommentsSubmittedLog()));
-                }
-            }
-            if (nextOptions.size() < 1 ||
-                nextOptions.get(nextOptions.size() - 1).getPage() <= page) {
-                if (isPost) {
-                    continueBookingFlow();
-                    return;
-                }
-
-                final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
-                intent.putParcelableArrayListExtra(
-                        BundleKeys.POST_OPTIONS,
-                        new ArrayList<>(postOptions)
-                );
-                startActivity(intent);
-            }
-            else {
-                final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
-                intent.putParcelableArrayListExtra(
-                        BookingOptionsActivity.EXTRA_OPTIONS,
-                        new ArrayList<>(nextOptions)
-                );
-
-                intent.putParcelableArrayListExtra(
-                        BookingOptionsActivity.EXTRA_POST_OPTIONS,
-                        new ArrayList<>(postOptions)
-                );
-
-                if (isPost) {
-                    intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
-                }
-
-                intent.putExtra(BookingOptionsActivity.EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
-                intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, nextOptions.get(0).getPage());
-                startActivity(intent);
-            }
-        }
-    };
 }

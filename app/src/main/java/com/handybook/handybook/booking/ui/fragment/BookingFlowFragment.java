@@ -111,12 +111,10 @@ public class BookingFlowFragment extends InjectedFragment {
         if (config.isConsolidateBookingGetQuoteFlowExperimentEnabled()) {
             startConsolidatedGetQuoteFlow();
         }
-        else if (config.isOnboardingV2Enabled() && !TextUtils.isBlank(zip))
-        {
+        else if (config.isOnboardingV2Enabled() && !TextUtils.isBlank(zip)) {
             validateZipAndProceed(zip);
         }
-        else
-        {
+        else {
             final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
             startActivity(intent);
         }
@@ -128,7 +126,8 @@ public class BookingFlowFragment extends InjectedFragment {
         final User user = userManager.getCurrentUser();
         final String userId = user != null ? user.getId() : null;
         dataManager.getQuoteOptions(
-                request.getServiceId(), userId,
+                request.getServiceId(),
+                userId,
                 new FragmentSafeCallback<BookingOptionsWrapper>(BookingFlowFragment.this) {
                     @Override
                     public void onCallbackSuccess(final BookingOptionsWrapper options) {
@@ -162,11 +161,13 @@ public class BookingFlowFragment extends InjectedFragment {
      * updates the current booking request with the given ZipValidationResponse
      * @param response
      */
-    private void updateCurrentBookingRequest(@Nullable ZipValidationResponse response)
-    {
-        if(response == null) return; //if the response is not present, don't override these with null
-        bookingManager.getCurrentRequest().setZipCode(response.getZipArea() == null ?
-                                                      null : response.getZipArea().getZip());
+    private void updateCurrentBookingRequest(@Nullable ZipValidationResponse response) {
+        if (response == null) {
+            return; //if the response is not present, don't override these with null
+        }
+        bookingManager.getCurrentRequest().setZipCode(
+                response.getZipArea() == null ?
+                null : response.getZipArea().getZip());
         bookingManager.getCurrentRequest().setZipArea(response.getZipArea());
         bookingManager.getCurrentRequest().setTimeZone(response.getTimeZone());
     }
@@ -292,8 +293,10 @@ public class BookingFlowFragment extends InjectedFragment {
                 request.setEmail(user.getEmail());
             }
         }
-        else if (!(this instanceof BookingGetQuoteFragment) //login is handled after quote response which tells us if user exists
-                && !hasStoredEmailAndZip() && !(this instanceof LoginFragment)) {
+        else if (!(this instanceof BookingGetQuoteFragment
+                   //login is handled after quote response which tells us if user exists
+                   || this instanceof LoginFragment
+                   || hasStoredEmailAndZip())) {
             //if we are not in the new onboarding flow (i.e., we don't have zip & email stored),
             //then we should prompt the user to login.
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -645,12 +648,8 @@ public class BookingFlowFragment extends InjectedFragment {
                     error.getMessage()
             )));
         }
-        /**
-         * this is gross, but
-         * see documentation for DataManagerError.getErrorCode for explanation
-         */
-        if(error.getErrorCode() != null
-        && error.getErrorCode() == 401 && !(this instanceof LoginFragment))
+
+        if(isErrorCausedByLoginRequired(error) && !(this instanceof LoginFragment))
         {
             String email = bookingManager.getCurrentRequest() == null ?
                            null : bookingManager.getCurrentRequest().getEmail();
@@ -674,18 +673,27 @@ public class BookingFlowFragment extends InjectedFragment {
      * @param error
      * @return
      */
-    private boolean isErrorCausedByInvalidZip(final DataManager.DataManagerError error)
-    {
-        if(error == null || error.getInvalidInputs() == null) return false;
-        for(int i = 0; i<error.getInvalidInputs().length; i++)
-        {
+    private boolean isErrorCausedByInvalidZip(final DataManager.DataManagerError error) {
+        if (error == null || error.getInvalidInputs() == null) { return false; }
+        for (int i = 0; i < error.getInvalidInputs().length; i++) {
             String invalidInput = error.getInvalidInputs()[i];
-            if("zipcode".equalsIgnoreCase(invalidInput))
-            {
+            if ("zipcode".equalsIgnoreCase(invalidInput)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * this is gross, but
+     * see documentation for DataManagerError.getErrorCode for explanation
+     */
+    private boolean isErrorCausedByLoginRequired(final DataManager.DataManagerError error) {
+        /*
+        error.getErrorCode() refers to the payload "code": 401, not the HTTP code
+         */
+        return error.getErrorCode() != null
+               && error.getErrorCode() == 401;
     }
 
     private boolean isErrorCausedByInvalidCoupon(final DataManager.DataManagerError error) {
@@ -717,7 +725,8 @@ public class BookingFlowFragment extends InjectedFragment {
             because that would make this more confusing
             */
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(
-                    zipValidationResponse.getZipArea().getZip())));
+                    zipValidationResponse.getZipArea().getZip()
+            )));
         }
         updateCurrentBookingRequest(zipValidationResponse);
 

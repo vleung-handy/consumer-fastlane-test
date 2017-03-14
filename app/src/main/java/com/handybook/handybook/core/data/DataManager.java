@@ -1089,17 +1089,17 @@ public class DataManager {
          * see documentation for getErrorCode
          */
         private Integer mErrorCode = null;
-        private final Type type;
-        private String message = null;
-        private String[] invalidInputs;
+        private final Type mType;
+        private String mMessage = null;
+        private String[] mInvalidInputs;
 
         public DataManagerError(final Type type) {
-            this.type = type;
+            this.mType = type;
         }
 
         public DataManagerError(final Type type, final String message) {
             this(type);
-            this.message = message;
+            mMessage = message;
         }
 
         public DataManagerError(@Nullable final Integer errorCode, final Type type, final String message) {
@@ -1121,19 +1121,19 @@ public class DataManager {
         }
 
         public final String[] getInvalidInputs() {
-            return invalidInputs;
+            return mInvalidInputs;
         }
 
         final void setInvalidInputs(final String[] inputs) {
-            this.invalidInputs = inputs;
+            mInvalidInputs = inputs;
         }
 
         public String getMessage() {
-            return message;
+            return mMessage;
         }
 
         public Type getType() {
-            return type;
+            return mType;
         }
     }
 }

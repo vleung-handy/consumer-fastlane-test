@@ -6,7 +6,7 @@
     >
 
     <Button
-        android:id="@+id/next_button"
+        android:id="@+id/fragment_booking_get_quote_next_button"
         style="@style/Button.Green"
         android:layout_alignParentBottom="true"
         android:text="@string/next"
@@ -19,7 +19,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/next_button"
+        android:layout_above="@id/fragment_booking_get_quote_next_button"
         android:layout_below="@id/toolbar"
         >
 

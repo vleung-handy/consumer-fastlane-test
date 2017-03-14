@@ -50,11 +50,6 @@ public final class BookingDateFragmentV2 extends BookingFlowFragment implements 
     static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
 
-    /**
-     * not using device defaults because the format is too long
-     */
-    private static final String DEFAULT_DATE_DISPLAY_PATTERN = "EEE, MMM d";
-
     @Bind(R.id.next_button)
     Button mNextButton;
 
@@ -266,7 +261,8 @@ public final class BookingDateFragmentV2 extends BookingFlowFragment implements 
         final Calendar startDateTime = getInitialStartDateTimeWithTimeZone();
         BookingDateTimeInputFragment bookingDateTimeInputFragment = BookingDateTimeInputFragment.newInstance(
                 startDateTime,
-                DEFAULT_DATE_DISPLAY_PATTERN
+                DateTimeUtils.DEFAULT_DATE_DISPLAY_PATTERN
+                //not using device defaults because the format is too long
         );
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.booking_date_time_input_fragment_container, bookingDateTimeInputFragment,

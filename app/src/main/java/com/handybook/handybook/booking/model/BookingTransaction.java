@@ -307,7 +307,9 @@ public class BookingTransaction extends Observable {
     }
 
     public static BookingTransaction fromJson(final String json) {
-        return new GsonBuilder().setDateFormat(DateTimeUtils.UNIVERSAL_DATE_FORMAT).create()
+        return new GsonBuilder().setDateFormat(
+                DateTimeUtils.UNIVERSAL_DATE_FORMAT)
+                                .create()
                                 .fromJson(json, BookingTransaction.class);
     }
 
