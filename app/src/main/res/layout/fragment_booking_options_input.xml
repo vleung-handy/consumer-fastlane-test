@@ -13,7 +13,7 @@
         android:layout_marginBottom="16dp"
         android:paddingLeft="@dimen/default_margin"
         android:paddingRight="@dimen/default_margin"
-        android:text="@string/tell_us_job"
+        android:text="@string/fragment_booking_options_input_instructions_noncleaning_service"
         android:gravity="center"
         style="@style/TextView" />
 

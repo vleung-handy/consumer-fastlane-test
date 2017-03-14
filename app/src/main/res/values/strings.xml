@@ -53,7 +53,8 @@
     <string name="details">Details</string>
     <string name="tell_us_job">Got it! Tell us about the job</string>
     <string name="tell_us_place">Tell us about your place</string>
-    <string name="fragment_booking_options_input_instructions">Tell us about the job</string>
+    <string name="fragment_booking_options_input_instructions_cleaning_service">What is the size of your home?</string>
+    <string name="fragment_booking_options_input_instructions_noncleaning_service">Tell us about the job</string>
     <string name="comments">Comments</string>
     <string name="time">Time</string>
     <string name="when_come">When would you like us to come?</string>
@@ -549,7 +550,7 @@
     <string name="fragment_dialog_booking_time_input_title">Select a Time</string>
     <string name="invalid_inputs">Invalid input</string>
     <string name="booking_date_time_input_prompt">When would you like us to start?</string>
-    <string name="email_input_prompt">What\'s your email?</string>
+    <string name="email_input_prompt">What is your email?</string>
 
     <!-- New Rating Flow -->
     <string name="rate_your_pro">Rate Your Pro</string>

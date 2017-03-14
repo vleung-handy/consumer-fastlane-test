@@ -48,6 +48,7 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
     public static final String EXTRA_CHILD_DISPLAY_MAP = "com.handy.handy.EXTRA_CHILD_DISPLAY_MAP";
     public static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
     public static final String EXTRA_IS_POST = "com.handy.handy.EXTRA_IS_POST";
+    private static final int SERVICE_ID_CLEANING = 3;
 
     static final String STATE_CHILD_DISPLAY_MAP = "STATE_CHILD_DISPLAY_MAP";
     static final String STATE_OPTION_INDEX_MAP = "STATE_OPTION_INDEX_MAP";
@@ -170,8 +171,11 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
         if (page != 0) {
             mInstructionsText.setVisibility(View.GONE);
         }
-        else if (bookingManager.getCurrentRequest().getServiceId() == 3) {
-            mInstructionsText.setText(getString(R.string.fragment_booking_options_input_instructions));
+        else if (bookingManager.getCurrentRequest().getServiceId() == SERVICE_ID_CLEANING) {
+            mInstructionsText.setText(getString(R.string.fragment_booking_options_input_instructions_cleaning_service));
+        }
+        else {
+            mInstructionsText.setText(getString(R.string.fragment_booking_options_input_instructions_noncleaning_service));
         }
 
         options = getArguments().getParcelableArrayList(EXTRA_OPTIONS);
