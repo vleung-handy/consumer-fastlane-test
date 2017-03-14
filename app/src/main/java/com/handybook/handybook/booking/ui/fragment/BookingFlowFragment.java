@@ -292,7 +292,7 @@ public class BookingFlowFragment extends InjectedFragment {
                 request.setEmail(user.getEmail());
             }
         }
-        else if (!mConfigurationManager.getPersistentConfiguration().isConsolidateBookingGetQuoteFlowExperimentEnabled()
+        else if (!(this instanceof BookingGetQuoteFragment) //login is handled after quote response which tells us if user exists
                 && !hasStoredEmailAndZip() && !(this instanceof LoginFragment)) {
             //if we are not in the new onboarding flow (i.e., we don't have zip & email stored),
             //then we should prompt the user to login.
