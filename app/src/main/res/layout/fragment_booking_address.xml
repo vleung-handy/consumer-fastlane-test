@@ -33,12 +33,19 @@
                 android:layout_below="@id/booking_address_info_header_layout"
                 style="@style/EditText.FullName"
                 />
+            <FrameLayout
+                android:id="@+id/booking_address_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/booking_address_fullname"
+                />
 
             <LinearLayout
                 android:id="@+id/booking_address_phone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/booking_address_fullname"
+                android:layout_below="@id/booking_address_fragment_container"
+                android:layout_marginTop="@dimen/default_margin"
                 >
 
                 <TextView
@@ -60,19 +67,6 @@
                     />
 
             </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/booking_address_fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/booking_address_phone_layout"
-                />
-            <View
-                android:id="@+id/booking_address_empty_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/booking_address_fragment_container"
-                android:layout_marginTop="@dimen/default_margin" />
 
         </RelativeLayout>
 
