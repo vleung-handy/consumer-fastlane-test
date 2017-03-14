@@ -1,6 +1,5 @@
 package com.handybook.handybook.booking.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
-import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.view.BookingOptionsIndexView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsTextView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
-import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
@@ -58,64 +53,12 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
     protected HashMap<String, Boolean> childDisplayMap;
     protected HashMap<String, Integer> optionIndexMap;
     protected HashMap<String, BookingOptionsView> optionsViewMap;
-    private int page;
     protected boolean isPost;
 
     @Bind(R.id.booking_options_input)
     protected LinearLayout optionsLayout;
     @Bind(R.id.booking_options_input_instructions)
     protected TextView mInstructionsText;
-
-    protected final View.OnClickListener nextClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingServiceDetailsSubmittedLog()));
-
-            final ArrayList<BookingOption> nextOptions = new ArrayList<>();
-            for (final BookingOption option : options) {
-                if (isPost || (option.getPage() > page && !option.isPost())) {
-                    nextOptions.add(option);
-                }
-                if (!Strings.isNullOrEmpty(option.getType()) && option.getType().equals("text")) {
-                    bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingCommentsSubmittedLog()));
-                }
-            }
-            if (nextOptions.size() < 1 ||
-                nextOptions.get(nextOptions.size() - 1).getPage() <= page) {
-                if (isPost) {
-                    continueBookingFlow();
-                    return;
-                }
-
-                final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
-                intent.putParcelableArrayListExtra(
-                        BundleKeys.POST_OPTIONS,
-                        new ArrayList<>(postOptions)
-                );
-                startActivity(intent);
-            }
-            else {
-                final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
-                intent.putParcelableArrayListExtra(
-                        BookingOptionsActivity.EXTRA_OPTIONS,
-                        new ArrayList<>(nextOptions)
-                );
-
-                intent.putParcelableArrayListExtra(
-                        BookingOptionsActivity.EXTRA_POST_OPTIONS,
-                        new ArrayList<>(postOptions)
-                );
-
-                if (isPost) {
-                    intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
-                }
-
-                intent.putExtra(BookingOptionsActivity.EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
-                intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, nextOptions.get(0).getPage());
-                startActivity(intent);
-            }
-        }
-    };
 
     public static BookingOptionsInputFragment newInstance(
             final ArrayList<BookingOption> options,
@@ -168,10 +111,7 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
 
         ButterKnife.bind(this, view);
 
-        if (page != 0) {
-            mInstructionsText.setVisibility(View.GONE);
-        }
-        else if (bookingManager.getCurrentRequest().getServiceId() == SERVICE_ID_CLEANING) {
+        if (bookingManager.getCurrentRequest().getServiceId() == SERVICE_ID_CLEANING) {
             mInstructionsText.setText(getString(R.string.fragment_booking_options_input_instructions_cleaning_service));
         }
         else {
@@ -179,7 +119,6 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
         }
 
         options = getArguments().getParcelableArrayList(EXTRA_OPTIONS);
-        page = getArguments().getInt(EXTRA_PAGE);
         childDisplayMap = (HashMap) getArguments().getSerializable(EXTRA_CHILD_DISPLAY_MAP);
         postOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
         isPost = getArguments().getBoolean(EXTRA_IS_POST);
@@ -199,7 +138,7 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
         optionsViewMap = new HashMap<>();
         optionsLayout.removeAllViews();
 
-        final ArrayList<BookingOption> pageOptions = new ArrayList<>();
+        final ArrayList<BookingOption> displayOptions = new ArrayList<>();
 
         if (childDisplayMap == null) {
             childDisplayMap = new HashMap<>();
@@ -224,13 +163,14 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
         }
 
         for (final BookingOption option : options) {
-            if (isPost || (option.getPage() == page && !option.isPost())) {
-                pageOptions.add(option);
+            if (isPost || !option.isPost()) {
+                displayOptions.add(option);
             }
         }
 
         int pos = 0;
-        for (final BookingOption option : pageOptions) {
+        int previousOrFirstPage = 0; //used to determine if transitioning into new page
+        for (final BookingOption option : displayOptions) {
             final BookingOptionsView optionsView;
 
             switch (option.getType()) {
@@ -377,27 +317,35 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
                         option.getUniq()));
             }
 
-            if (pos >= pageOptions.size() - 1) {
+            if (pos >= displayOptions.size() - 1) {
                 optionsView.hideSeparator();
             }
 
-            if (pageOptions.size() == 1 && option.getType().equals("text")) {
-                setToolbarTitle(getString(R.string.comments));
+            if (displayOptions.size() == 1 && option.getType().equals("text")) {
                 optionsLayout.setBackgroundColor(0);
                 ((BookingOptionsTextView) optionsView).enableSingleMode();
-
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingCommentsShownLog()));
             }
-            else if (pageOptions.size() == 1 && option.getType().equals("option")
+            else if (displayOptions.size() == 1 && option.getType().equals("option")
                      && option.getTitle().contains("professional")) {
                 mInstructionsText.setText(option.getTitle());
                 mInstructionsText.setVisibility(View.VISIBLE);
-                setToolbarTitle(getString(R.string.request_pro));
                 ((BookingOptionsIndexView) optionsView).hideTitle();
 
                 bus.post(new LogEvent.AddLogEvent(new BookingRequestProLog.BookingRequestProShownLog()));
             }
 
+            //add spacing if new page detected
+            if(option.getPage() > previousOrFirstPage)
+            {
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                int margin = getResources().getDimensionPixelSize(R.dimen.default_margin);
+                layoutParams.setMargins(0, margin, 0, 0);
+                optionsView.setLayoutParams(layoutParams);
+            }
             optionsLayout.addView(optionsView, pos++);
             optionsViewMap.put(option.getUniq(), optionsView);
 
@@ -405,6 +353,7 @@ public class BookingOptionsInputFragment extends BookingFlowFragment {
             if (diplayOption != null && !diplayOption) {
                 optionsView.setVisibility(View.GONE);
             }
+            previousOrFirstPage = option.getPage();
         }
     }
 

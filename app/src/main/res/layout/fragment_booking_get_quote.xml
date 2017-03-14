@@ -62,7 +62,6 @@
                 android:padding="@dimen/default_padding"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/default_margin"
                 android:gravity="center"
                 android:text="@string/booking_date_time_input_prompt"
                 />
