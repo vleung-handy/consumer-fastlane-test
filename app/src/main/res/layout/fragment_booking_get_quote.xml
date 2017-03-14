@@ -3,6 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/handy_bg"
+                android:id="@+id/fragment_booking_get_quote_container"
     >
 
     <Button

@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -45,18 +46,7 @@ public class BookingCreationForExistingUserTest {
         onView(withId(R.id.recycler_view)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, AppInteractionUtil.recyclerClick()));
 
-        //enter zip code
-        ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        clickNextButton();
-
-        //use default beds + baths
-        //wait for network
-        ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        clickNextButton();
-
-        //use default date at 9 am
-        AppInteractionUtil.inputBookingTime(9, 0);
-        clickNextButton();
+        testGetQuoteFlow(testUser);
 
         //use default frequency
         ViewUtil.waitForTextVisible(R.string.how_often, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
@@ -105,6 +95,43 @@ public class BookingCreationForExistingUserTest {
 
         //wait for booking details page
         ViewUtil.waitForViewVisible(R.id.booking_detail_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+    }
+
+    private void testGetQuoteFlow(TestUser testUser)
+    {
+        try {
+            //check if the consolidated flow is enabled
+            ViewUtil.waitForViewVisible(R.id.fragment_booking_get_quote_container, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        }
+        catch (Exception e)
+        {
+            //enter zip code
+            ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+            clickNextButton();
+
+            //use default beds + baths
+            //wait for network
+            ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+            clickNextButton();
+
+            //use default date at 9 am
+            AppInteractionUtil.inputBookingTime(9, 0);
+            clickNextButton();
+            return;
+        }
+
+        //test consolidated flow
+
+        //expecting zip and email to be pre-filled
+
+        //use default beds + baths
+        ViewUtil.waitForViewVisible(R.id.booking_options_input, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+
+        //use default date at 9 am
+        onView(withId(R.id.booking_edit_time_button)).perform(scrollTo());
+        AppInteractionUtil.inputBookingTime(9, 0);
+
+        onView(withId(R.id.fragment_booking_get_quote_next_button)).perform(click());
     }
 
     private void clickNextButton() {
