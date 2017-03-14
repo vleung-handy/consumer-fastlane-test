@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.proteamcarousel.ProCarouselVM;
 import com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView;
+import com.handybook.handybook.referral.model.ReferralDescriptor;
+import com.handybook.handybook.referral.model.ReferralResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,35 @@ public class ProReferralFragment extends InjectedFragment {
 
     @Bind(R.id.pro_referral_carousel)
     ProTeamCarouselView mCarousel;
+
+    private ReferralDescriptor mReferralDescriptor;
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        fetchData();
+    }
+
+    private void onDataReceived(ReferralDescriptor referral) {
+        mReferralDescriptor = referral;
+
+        //DO MORE THINGS TO populate the
+    }
+
+    private void fetchData() {
+        dataManager.requestPrepareProReferrals(new FragmentSafeCallback<ReferralResponse>(this) {
+            @Override
+            public void onCallbackSuccess(final ReferralResponse response) {
+                onDataReceived(response.getReferralDescriptor());
+            }
+
+            @Override
+            public void onCallbackError(final DataManager.DataManagerError error) {
+                dataManagerErrorHandler.handleError(ProReferralFragment.this.getActivity(), error);
+            }
+        });
+    }
 
     @Nullable
     @Override

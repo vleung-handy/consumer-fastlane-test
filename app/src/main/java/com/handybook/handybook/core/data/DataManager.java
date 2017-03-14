@@ -845,6 +845,10 @@ public class DataManager {
         mService.requestPrepareReferrals("", new ReferralResponseHandyRetrofitCallback(cb));
     }
 
+    public void requestPrepareProReferrals(final Callback<ReferralResponse> cb) {
+        mService.requestPrepareProReferrals("", new ReferralResponseHandyRetrofitCallback(cb));
+    }
+
     public void requestConfirmReferral(final String guid, final Callback<Void> cb) {
         mService.requestConfirmReferral(guid, new EmptyHandyRetroFitCallback(cb));
     }

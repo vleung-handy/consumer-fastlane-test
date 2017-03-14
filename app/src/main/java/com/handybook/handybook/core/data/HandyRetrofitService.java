@@ -461,6 +461,9 @@ public interface HandyRetrofitService {
     @POST("/referrals/prepare")
     void requestPrepareReferrals(@Body String empty, HandyRetrofitCallback cb);
 
+    @POST("/referrals/prepare?proteam=true")
+    void requestPrepareProReferrals(@Body String empty, HandyRetrofitCallback cb);
+
     @FormUrlEncoded
     @POST("/referrals/confirm")
     void requestConfirmReferral(@Field("post_guid") String guid, HandyRetrofitCallback cb);
