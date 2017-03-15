@@ -174,7 +174,8 @@ public final class BookingLocationFragment extends BookingFlowFragment
                             }
 
                             @Override
-                            public void onCallbackError(final DataManager.DataManagerError error) {
+                            public void onCallbackError(final DataManager.DataManagerError error)
+                            {
                                 String zipCode = mZipCodeInputTextView.getZipCode();
                                 if (!Strings.isNullOrEmpty(zipCode)) {
                                     bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipErrorLog(

@@ -200,7 +200,7 @@ public final class ApplicationModule {
                                         )
                                         .registerTypeAdapter(
                                                 BookingRequest.class,
-                                                new BookingRequest.BookingRequestSerializer()
+                                                new BookingRequest.BookingRequestApiSerializer()
                                         )
                                         .setExclusionStrategies(
                                                 BookingQuote
