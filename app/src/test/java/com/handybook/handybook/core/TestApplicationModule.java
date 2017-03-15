@@ -113,6 +113,7 @@ import com.handybook.handybook.referral.ui.RedemptionFragment;
 import com.handybook.handybook.referral.ui.RedemptionSignUpFragment;
 import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.handybook.referral.ui.ReferralFragmentTest;
+import com.handybook.handybook.referral.ui.ReferralV2Fragment;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Bus;
 
@@ -177,6 +178,7 @@ import static org.mockito.Mockito.when;
         UpdatePaymentFragmentTest.class,
         ServiceCategoriesFragmentTest.class,
         ReferralFragment.class,
+        ReferralV2Fragment.class,
         ProReferralFragment.class,
         ReferralFragmentTest.class,
         RedemptionActivity.class,

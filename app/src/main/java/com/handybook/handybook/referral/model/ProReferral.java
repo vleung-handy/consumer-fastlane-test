@@ -17,6 +17,9 @@ public class ProReferral implements Serializable {
     @SerializedName("provider")
     private Provider mProvider;
 
+    @SerializedName("referral_button_text")
+    private String mReferralButtonText;
+
     @SerializedName("referral_info")
     private ReferralChannels mReferralInfo;
 
@@ -26,5 +29,9 @@ public class ProReferral implements Serializable {
 
     public ReferralChannels getReferralInfo() {
         return mReferralInfo;
+    }
+
+    public String getReferralButtonText() {
+        return mReferralButtonText;
     }
 }

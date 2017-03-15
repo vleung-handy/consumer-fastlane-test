@@ -67,7 +67,7 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper {
 
     @Before
     public void setUp() throws Exception {
-        mFragment = (ReferralFragment) ReferralFragment.newInstance(null);
+        mFragment = (ReferralFragment) ReferralFragment.newInstance(null, null, false);
         SupportFragmentTestUtil.startFragment(mFragment);
         initMocks(this);
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())

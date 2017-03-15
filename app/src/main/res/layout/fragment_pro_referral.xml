@@ -37,7 +37,7 @@
         android:id="@+id/pro_referral_carousel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin_double"
+        android:layout_marginTop="@dimen/default_margin"
         />
 
     <!--Space filler so the banner can be sticky to the bottom-->

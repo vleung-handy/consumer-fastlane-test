@@ -75,11 +75,18 @@ public class ReferralFragment extends InjectedFragment {
     private ReferralChannels mReferralChannels;
     private boolean mIsReferralInfoFresh = false;
     private String mSource;
+    private boolean mHideToolbar;
 
-    public static Fragment newInstance(final @Nullable String source) {
+    public static Fragment newInstance(
+            @Nullable final ReferralDescriptor referralDescriptor,
+            @Nullable final String source,
+            final boolean hideToolbar
+    ) {
         ReferralFragment fragment = new ReferralFragment();
         Bundle args = new Bundle();
+        args.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
         args.putString(BundleKeys.REFERRAL_PAGE_SOURCE, source);
+        args.putBoolean(BundleKeys.REFERRAL_HIDE_TOOLBAR, hideToolbar);
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,6 +95,9 @@ public class ReferralFragment extends InjectedFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSource = getArguments().getString(BundleKeys.REFERRAL_PAGE_SOURCE);
+        mReferralDescriptor
+                = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
+        mHideToolbar = getArguments().getBoolean(BundleKeys.REFERRAL_HIDE_TOOLBAR);
     }
 
     @Override
@@ -101,13 +111,19 @@ public class ReferralFragment extends InjectedFragment {
                                 ? View.VISIBLE
                                 : View.GONE);
 
-        setupToolbar(mToolbar, getString(R.string.free_cleanings));
-        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+        //this fragment can sometimes be embedded in a container that already has a toolbar.
+        if (!mHideToolbar) {
+            setupToolbar(mToolbar, getString(R.string.free_cleanings));
+            if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
+                mToolbar.setNavigationIcon(R.drawable.ic_menu);
+                ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
+            }
+            else {
+                mToolbar.setNavigationIcon(null);
+            }
         }
         else {
-            mToolbar.setNavigationIcon(null);
+            mToolbar.setVisibility(View.GONE);
         }
         return view;
     }
@@ -116,8 +132,15 @@ public class ReferralFragment extends InjectedFragment {
     public void onResume() {
         super.onResume();
         mBus.post(new LogEvent.AddLogEvent(new ReferralLog.ReferralOpenLog()));
-        if (!mIsReferralInfoFresh) {
-            requestPrepareReferrals();
+
+        //if we already have this, don't need to request
+        if (mReferralDescriptor == null) {
+            if (!mIsReferralInfoFresh) {
+                requestPrepareReferrals();
+            }
+        }
+        else {
+            onReferralDescriptorReceived(mReferralDescriptor);
         }
     }
 
@@ -179,7 +202,11 @@ public class ReferralFragment extends InjectedFragment {
             return;
         }
         mIsReferralInfoFresh = true;
-        mReferralDescriptor = event.getReferralResponse().getReferralDescriptor();
+        onReferralDescriptorReceived(event.getReferralResponse().getReferralDescriptor());
+    }
+
+    public void onReferralDescriptorReceived(ReferralDescriptor referralDescriptor) {
+        mReferralDescriptor = referralDescriptor;
         mReferralChannels = mReferralDescriptor.getReferralChannelsForSource(
                 ReferralDescriptor.SOURCE_REFERRAL_PAGE
         );
