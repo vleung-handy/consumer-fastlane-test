@@ -841,8 +841,26 @@ public class DataManager {
         });
     }
 
-    public void requestPrepareReferrals(final Callback<ReferralResponse> cb) {
-        mService.requestPrepareReferrals("", new ReferralResponseHandyRetrofitCallback(cb));
+    public void requestPrepareReferrals(
+            boolean includeProteam,
+            final Callback<ReferralResponse> cb
+    ) {
+        if (includeProteam) {
+            mService.requestPrepareReferrals(
+                    "",
+                    true,
+                    new ReferralResponseHandyRetrofitCallback(cb)
+            );
+        }
+        else {
+            //the API can't elegantly handle proteam=false parameter. Must do a request such that
+            //the parameter doesn't exist.
+            mService.requestPrepareReferrals(
+                    "",
+                    null,
+                    new ReferralResponseHandyRetrofitCallback(cb)
+            );
+        }
     }
 
     public void requestConfirmReferral(final String guid, final Callback<Void> cb) {

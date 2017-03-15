@@ -1,5 +1,9 @@
 package com.handybook.handybook.library.ui.view.proteamcarousel;
 
+import android.support.annotation.NonNull;
+
+import com.handybook.handybook.referral.model.ProReferral;
+
 import java.io.Serializable;
 
 /**
@@ -38,5 +42,20 @@ public class ProCarouselVM implements Serializable {
 
     public String getDisplayName() {
         return mDisplayName;
+    }
+
+    public static ProCarouselVM fromProReferral(@NonNull final ProReferral proReferral) {
+        if (proReferral.getProvider() == null) {
+            return null;
+        }
+
+        ProCarouselVM model = new ProCarouselVM(
+                proReferral.getProvider().getImageUrl(),
+                String.valueOf(proReferral.getProvider().getBookingCount()),
+                String.valueOf(proReferral.getProvider().getAverageRating()),
+                proReferral.getProvider().getName()
+        );
+
+        return model;
     }
 }

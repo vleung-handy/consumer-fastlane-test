@@ -574,5 +574,9 @@
     <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn More</a>]]></string>
     <string name="account_active_plans_saved_cleanings_faq_url">https://handy.com/faq/subscription_credits</string>
     <string name="environment_name">[Ns: %1$s]</string>
+    <string name="pro_referral_title">Recommend Your Pro</string>
+    <string name="pro_referral_subtitle">Get $%$1s when your friend books with your pro. Plus, your pro gets $$ too!</string>
+    <string name="pro_referral_share_link">Or share your link:</string>
+    <string name="share">Share</string>
 </resources>
 
