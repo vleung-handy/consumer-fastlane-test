@@ -53,7 +53,7 @@ public class ReviewAppBannerFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        View view = inflater.inflate(R.layout.review_app_banner_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_review_app_banner, container, false);
         ButterKnife.bind(this, view);
         return view;
     }

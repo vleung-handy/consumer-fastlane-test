@@ -1,6 +1,5 @@
 package com.handybook.handybook.logger.handylogger.model;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
@@ -36,24 +35,24 @@ public abstract class ReviewAppPromptLog extends EventLog {
 
     public static class PromptId {
 
-        public static final int APP_ENJOYMENT_QUESTION = 1;
-        public static final int REVIEW_APP_IN_STORE_DIRECTIVE = 2;
+        public static final String APP_ENJOYMENT_QUESTION = "1";
+        public static final String REVIEW_APP_IN_STORE_DIRECTIVE = "2";
     }
 
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({
-                    APP_ENJOYMENT_QUESTION,
-                    REVIEW_APP_IN_STORE_DIRECTIVE
-            })
+    @StringDef({
+                       APP_ENJOYMENT_QUESTION,
+                       REVIEW_APP_IN_STORE_DIRECTIVE
+               })
     @interface AppRatingPromptId {
     }
 
 
     @SerializedName("prompt_number")
-    private final int mPromptId;
+    private final String mPromptId;
 
-    public ReviewAppPromptLog(final String eventType, @AppRatingPromptId final int promptId) {
+    public ReviewAppPromptLog(final String eventType, @AppRatingPromptId final String promptId) {
         super(eventType, EVENT_CONTEXT);
         mPromptId = promptId;
     }
@@ -66,7 +65,7 @@ public abstract class ReviewAppPromptLog extends EventLog {
         private static final String EVENT_TYPE = "prompt_shown";
 
         public Shown(
-                @AppRatingPromptId int promptId
+                @AppRatingPromptId String promptId
         ) {
             super(EVENT_TYPE, promptId);
         }
@@ -81,7 +80,7 @@ public abstract class ReviewAppPromptLog extends EventLog {
         private final String mAnswer;
 
         public AnswerSubmitted(
-                @AppRatingPromptId final int promptId,
+                @AppRatingPromptId final String promptId,
                 @AppRatingPromptAnswer final String answer
         ) {
             super(EVENT_TYPE, promptId);

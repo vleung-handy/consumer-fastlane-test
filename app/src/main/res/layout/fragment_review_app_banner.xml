@@ -10,6 +10,7 @@
               android:paddingTop="@dimen/default_padding"
               android:animateLayoutChanges="true"
               android:visibility="gone"
+              tools:visibility="visible"
     >
 
     <TextView
@@ -24,7 +25,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_marginBottom="@dimen/default_margin_half"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
         android:orientation="horizontal"
         >
 

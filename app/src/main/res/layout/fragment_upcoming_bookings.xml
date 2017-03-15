@@ -81,7 +81,6 @@
                         android:id="@+id/fragment_upcoming_bookings_review_app_banner_fragment_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/default_margin_half"
                         android:visibility="gone"
                         />
 

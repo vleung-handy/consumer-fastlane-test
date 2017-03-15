@@ -487,7 +487,9 @@ public class UpcomingBookingsFragment extends InjectedFragment
         }
         else
         {
-            //don't want this to show while upcoming bookings fragment is still loading
+            /*
+            don't want the review app banner to show while upcoming bookings fragment is still loading
+             */
             mReviewAppBannerFragmentContainer.setVisibility(View.GONE);
         }
     }
