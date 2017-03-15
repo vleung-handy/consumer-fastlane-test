@@ -15,11 +15,7 @@ public class ReferralActivity extends MenuDrawerActivity {
 
     @Override
     protected Fragment createFragment() {
-        return ReferralFragment.newInstance(
-                null,
-                getIntent().getStringExtra(BundleKeys.REFERRAL_PAGE_SOURCE),
-                false
-        );
+        return ReferralFragment.newInstance(getIntent().getStringExtra(BundleKeys.REFERRAL_PAGE_SOURCE));
     }
 
     @Override

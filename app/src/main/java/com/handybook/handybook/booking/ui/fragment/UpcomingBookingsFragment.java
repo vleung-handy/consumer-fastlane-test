@@ -191,11 +191,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
             public void onClick(final View v) {
                 bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareBannerTappedLog()));
                 Fragment fragment
-                        = ReferralFragment.newInstance(
-                        null,
-                        ShareModalLog.SRC_UPCOMING_BOOKINGS,
-                        false
-                );
+                        = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
                 FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
             }
         });
@@ -255,11 +251,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
     @OnClick(R.id.bookings_share_button)
     public void onShareButtonClicked() {
         bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareMenuPressedLog()));
-        Fragment fragment = ReferralFragment.newInstance(
-                null,
-                ShareModalLog.SRC_UPCOMING_BOOKINGS,
-                false
-        );
+        Fragment fragment = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
         FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
     }
 

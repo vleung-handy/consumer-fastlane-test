@@ -112,7 +112,7 @@ public class ReferralV2Fragment extends InjectedFragment {
 
     private void fetchData() {
         progressDialog.show();
-        dataManager.requestPrepareProReferrals(new FragmentSafeCallback<ReferralResponse>(this) {
+        dataManager.requestPrepareReferrals(true, new FragmentSafeCallback<ReferralResponse>(this) {
             @Override
             public void onCallbackSuccess(final ReferralResponse response) {
                 progressDialog.dismiss();

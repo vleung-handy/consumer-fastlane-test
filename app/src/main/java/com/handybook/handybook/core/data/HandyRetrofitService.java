@@ -459,10 +459,11 @@ public interface HandyRetrofitService {
     void createHelpCase(@Body TypedInput body, HandyRetrofitCallback cb);
 
     @POST("/referrals/prepare")
-    void requestPrepareReferrals(@Body String empty, HandyRetrofitCallback cb);
-
-    @POST("/referrals/prepare?proteam=true")
-    void requestPrepareProReferrals(@Body String empty, HandyRetrofitCallback cb);
+    void requestPrepareReferrals(
+            @Body String empty,
+            @Query("proteam") boolean proteam,
+            HandyRetrofitCallback cb
+    );
 
     @FormUrlEncoded
     @POST("/referrals/confirm")

@@ -206,7 +206,7 @@ public class BottomNavActivity extends BaseActivity {
                     fragment = new ReferralV2Fragment();
                 }
                 else {
-                    fragment = ReferralFragment.newInstance(null, null, false);
+                    fragment = ReferralFragment.newInstance(null);
                 }
                 break;
             case R.id.account:

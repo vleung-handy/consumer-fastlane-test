@@ -77,6 +77,10 @@ public class ReferralFragment extends InjectedFragment {
     private String mSource;
     private boolean mHideToolbar;
 
+    public static Fragment newInstance(final @Nullable String source) {
+        return newInstance(null, source, false);
+    }
+
     public static Fragment newInstance(
             @Nullable final ReferralDescriptor referralDescriptor,
             @Nullable final String source,

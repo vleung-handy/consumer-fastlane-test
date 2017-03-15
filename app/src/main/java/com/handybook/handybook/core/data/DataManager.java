@@ -841,12 +841,15 @@ public class DataManager {
         });
     }
 
-    public void requestPrepareReferrals(final Callback<ReferralResponse> cb) {
-        mService.requestPrepareReferrals("", new ReferralResponseHandyRetrofitCallback(cb));
-    }
-
-    public void requestPrepareProReferrals(final Callback<ReferralResponse> cb) {
-        mService.requestPrepareProReferrals("", new ReferralResponseHandyRetrofitCallback(cb));
+    public void requestPrepareReferrals(
+            boolean includeProteam,
+            final Callback<ReferralResponse> cb
+    ) {
+        mService.requestPrepareReferrals(
+                "",
+                includeProteam,
+                new ReferralResponseHandyRetrofitCallback(cb)
+        );
     }
 
     public void requestConfirmReferral(final String guid, final Callback<Void> cb) {
