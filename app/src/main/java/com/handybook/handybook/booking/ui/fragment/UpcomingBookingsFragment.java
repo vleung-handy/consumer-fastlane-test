@@ -58,7 +58,7 @@ import butterknife.OnClick;
  * bookings.
  */
 public class UpcomingBookingsFragment extends InjectedFragment
-        implements SwipeRefreshLayout.OnRefreshListener {
+        implements SwipeRefreshLayout.OnRefreshListener{
 
     public static final String mOverlayFragmentTag
             = ServiceCategoriesOverlayFragment.class.getSimpleName();
@@ -499,7 +499,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
      */
     private void initReviewAppBannerFragment()
     {
-        ReviewAppBannerFragment reviewAppBannerFragment = new ReviewAppBannerFragment();
+        ReviewAppBannerFragment reviewAppBannerFragment = ReviewAppBannerFragment.newInstance();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(
                 R.id.fragment_upcoming_bookings_review_app_banner_fragment_container,
@@ -629,5 +629,4 @@ public class UpcomingBookingsFragment extends InjectedFragment
     public void onRefresh() {
         loadBookings();
     }
-
 }

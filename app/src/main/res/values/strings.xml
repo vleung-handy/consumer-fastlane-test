@@ -580,7 +580,7 @@
     <string name="share">Share</string>
 
     <!--banner that prompts user to rate the app in the play store-->
-    <string name="review_app_banner_enjoyment_question_prompt_title">Are you enjoying the app?</string>
+    <string name="review_app_banner_enjoyment_question_prompt_title">Are you enjoying the Handy app?</string>
     <string name="review_app_banner_enjoyment_question_prompt_negative_button">Not Really</string>
     <string name="review_app_banner_enjoyment_question_prompt_positive_button">Yes!</string>
     <string name="review_app_banner_review_directive_prompt_title">Please review us on the Play Store</string>

@@ -8,10 +8,15 @@
               android:orientation="vertical"
               android:paddingBottom="@dimen/default_padding_half"
               android:paddingTop="@dimen/default_padding"
+              android:layout_marginBottom="@dimen/default_margin_half"
               android:animateLayoutChanges="true"
               android:visibility="gone"
               tools:visibility="visible"
     >
+    <!--TODO the marginBottom ideally should NOT be in this layout because it may not always be needed!
+    only putting it here as a hack because it is the simplest way to add a margin. putting it
+    in the fragment container will cause complications because the review app fragment
+    is encapsulating the show/hide logic and has no access to the container. refactor this!-->
 
     <TextView
         android:id="@+id/review_app_banner_title"

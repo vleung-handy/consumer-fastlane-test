@@ -47,6 +47,10 @@ public class ReviewAppBannerFragment extends InjectedFragment {
     @Inject
     ReviewAppManager mReviewAppManager;
 
+    public static ReviewAppBannerFragment newInstance() {
+        return new ReviewAppBannerFragment();
+    }
+
     @Override
     public View onCreateView(
             final LayoutInflater inflater,
@@ -62,16 +66,14 @@ public class ReviewAppBannerFragment extends InjectedFragment {
         if (getView() == null) {
             return; //prevent IDE from complaining
         }
-        if(visible)
-        {
+        if (visible) {
             /*
             when this prompt is set to visible we want the initial prompt state to show
              */
             showAppEnjoymentQuestionPrompt();
             getView().setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             getView().setVisibility(View.GONE);
         }
     }
