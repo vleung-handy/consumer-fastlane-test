@@ -83,7 +83,6 @@ public class BookingCreationHandyManTest {
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
         onView(withId(R.id.edit_text)).perform(typeText("blah blah"));
-        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         //select time to be 0700
@@ -96,7 +95,6 @@ public class BookingCreationHandyManTest {
                 R.id.autocomplete_address_text_street,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
-        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         //use previous credit card
@@ -104,7 +102,6 @@ public class BookingCreationHandyManTest {
                 R.id.payment_fragment_terms_of_use_text,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
-        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         /*post-confirmation pages*/
