@@ -461,7 +461,7 @@ public interface HandyRetrofitService {
     @POST("/referrals/prepare")
     void requestPrepareReferrals(
             @Body String empty,
-            @Query("proteam") boolean proteam,
+            @Query("proteam") Boolean proteam,
             HandyRetrofitCallback cb
     );
 
