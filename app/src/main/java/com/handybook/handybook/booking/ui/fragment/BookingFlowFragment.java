@@ -428,8 +428,7 @@ public class BookingFlowFragment extends InjectedFragment {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
                             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
                         }
-                        else if (BookingFlowFragment.this instanceof BookingDateFragment
-                                 || BookingFlowFragment.this instanceof BookingDateFragmentV2) {
+                        else if (BookingFlowFragment.this instanceof BookingDateFragmentV2) {
                             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date.getTime());
                             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
                         }

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
@@ -27,29 +26,14 @@ public final class BookingDateActivity extends MenuDrawerActivity {
 
             final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
 
-            //config will be removed soon
-            if(mConfigurationManager.getPersistentConfiguration().isBookingDateTimeInputScreenV2Enabled())
-            {
-                return BookingDateFragmentV2.newInstance(rescheduleBooking, notice, type, providerId);
-            }
-            else
-            {
-                return BookingDateFragment.newInstance(rescheduleBooking, notice, type, providerId);
-            }
+            return BookingDateFragmentV2.newInstance(rescheduleBooking, notice, type, providerId);
         }
 
         final ArrayList<BookingOption> postOptions
                 = getIntent().getParcelableArrayListExtra(BundleKeys.POST_OPTIONS);
 
         //config will be removed soon
-        if(mConfigurationManager.getPersistentConfiguration().isBookingDateTimeInputScreenV2Enabled())
-        {
-            return BookingDateFragmentV2.newInstance(postOptions);
-        }
-        else
-        {
-            return BookingDateFragment.newInstance(postOptions);
-        }
+        return BookingDateFragmentV2.newInstance(postOptions);
     }
 
     @Override

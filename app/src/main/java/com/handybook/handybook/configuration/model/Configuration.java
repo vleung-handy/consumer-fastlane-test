@@ -57,12 +57,6 @@ public class Configuration implements Serializable {
     private boolean mSettingFavoriteProEnabled;
 
     /**
-     * whether to show BookingDateFragmentV2 instead of BookingDateFragment
-     * we plan to remove this soon
-     */
-    @SerializedName("booking_date_time_input_screen_v2_enabled")
-    private boolean mBookingDateTimeInputScreenV2Enabled;
-    /**
      * used to determine whether we should hide the hours field from the booking flow screens, and
      * whether we should show something like "Up to 3 hours" rather than "3 hours" or the end time
      * in the booking details and upcoming/past booking views
@@ -74,10 +68,6 @@ public class Configuration implements Serializable {
 
     @SerializedName("consolidated_quote_flow_enabled")
     private boolean mConsolidateBookingGetQuoteFlowExperimentEnabled;
-
-    public boolean isBookingDateTimeInputScreenV2Enabled() {
-        return mBookingDateTimeInputScreenV2Enabled;
-    }
 
     public boolean isConsolidateBookingGetQuoteFlowExperimentEnabled() {
         return mConsolidateBookingGetQuoteFlowExperimentEnabled;
