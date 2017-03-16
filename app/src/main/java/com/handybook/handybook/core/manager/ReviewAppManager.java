@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.PrefsKey;
-import com.handybook.handybook.library.util.NetworkUtil;
+import com.handybook.handybook.library.util.NetworkUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +37,7 @@ public class ReviewAppManager {
                && reviewAppBannerConfig.isEnabled()
                && !wasAppReviewed()
                && hasMinDelayPassedSinceAppReviewLastDeclined()
-               && NetworkUtil.isConnectedToInternet(mContext);
+               && NetworkUtils.isConnectedToInternet(mContext);
     }
 
     public void updateReviewAppBannerDeclinedTime() {

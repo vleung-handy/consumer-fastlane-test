@@ -485,8 +485,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
             insertShareBannerView();
             mReviewAppBannerFragmentContainer.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             /*
             don't want the review app banner to show while upcoming bookings fragment is still loading
              */

@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
-public class NetworkUtil {
+public class NetworkUtils {
 
     public static boolean isConnectedToInternet(@NonNull Context context) {
         ConnectivityManager connectivityManager
