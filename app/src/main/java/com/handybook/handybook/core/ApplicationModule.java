@@ -26,6 +26,7 @@ import com.handybook.handybook.core.manager.AppBlockManager;
 import com.handybook.handybook.core.manager.AppseeManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.FileManager;
+import com.handybook.handybook.core.manager.ReviewAppManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.manager.SessionManager;
@@ -276,6 +277,15 @@ public final class ApplicationModule {
                  "app_see_key"
                                                                         : "app_see_key_internal");
         return new AppseeManager(appseeApiKey, configurationManager, fileManager);
+    }
+
+    @Provides
+    @Singleton
+    final ReviewAppManager provideReviewAppManager(
+            final ConfigurationManager configurationManager,
+            final DefaultPreferencesManager defaultPreferencesManager
+    ) {
+        return new ReviewAppManager(mContext, configurationManager, defaultPreferencesManager);
     }
 
     @Provides
