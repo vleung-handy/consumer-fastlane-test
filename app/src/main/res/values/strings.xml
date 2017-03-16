@@ -576,6 +576,7 @@
     <string name="pro_referral_subtitle">Get %1$s when your friend books with your pro. Plus, your pro gets $$ too!</string>
     <string name="pro_referral_share_link">Or share your link:</string>
     <string name="pro_referral_not_yet_rated">Not yet rated</string>
+    <string name="pro_referral_recommend">Recommend</string>
     <string name="share">Share</string>
 </resources>
 

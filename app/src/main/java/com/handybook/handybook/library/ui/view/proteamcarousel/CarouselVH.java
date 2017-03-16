@@ -66,11 +66,13 @@ public class CarouselVH extends RecyclerView.ViewHolder {
         }
 
         mRating.setText(rating);
-        String jobCount = mJobCount.getResources()
-                                   .getQuantityString(R.plurals.jobs_count,
-                                                      profile.getJobCount(),
-                                                      profile.getJobCount()
-                                   );
+        String jobCount = mJobCount
+                .getResources()
+                .getQuantityString(
+                        R.plurals.jobs_count,
+                        profile.getJobCount(),
+                        profile.getJobCount()
+                );
         mJobCount.setText(jobCount);
 
         Picasso.with(mImage.getContext())
@@ -78,7 +80,9 @@ public class CarouselVH extends RecyclerView.ViewHolder {
                .placeholder(R.drawable.img_pro_placeholder)
                .into(mImage);
 
-        mButton.setText(profile.getButtonText());
+        if (!TextUtils.isBlank(profile.getButtonText())) {
+            mButton.setText(profile.getButtonText());
+        }
     }
 
     @OnClick(R.id.carousel_button)

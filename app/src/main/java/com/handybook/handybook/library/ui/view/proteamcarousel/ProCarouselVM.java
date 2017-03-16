@@ -1,6 +1,7 @@
 package com.handybook.handybook.library.ui.view.proteamcarousel;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.handybook.handybook.referral.model.ProReferral;
 
@@ -47,6 +48,7 @@ public class ProCarouselVM implements Serializable {
         return mDisplayName;
     }
 
+    @Nullable
     public String getButtonText() {
         return mButtonText;
     }

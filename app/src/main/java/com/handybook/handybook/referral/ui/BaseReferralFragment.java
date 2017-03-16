@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.handybook.handybook.R;
@@ -37,26 +38,25 @@ public abstract class BaseReferralFragment extends InjectedFragment {
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
-        if (requestCode == ActivityResult.PICK_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK && intent != null) {
-                final String resolvedChannel =
-                        ReferralIntentUtil.addReferralIntentExtras(
-                                getActivity(),
-                                intent,
-                                getReferralChannels()
-                        );
-                final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
-                if (ValidationUtils.isNullOrEmpty(extraText)) {
-                    intent.putExtra(Intent.EXTRA_TEXT, getCouponCode());
-                }
-                launchShareIntent(intent, resolvedChannel);
+        if (requestCode == ActivityResult.PICK_ACTIVITY && resultCode == Activity.RESULT_OK &&
+            intent != null) {
+            final String resolvedChannel =
+                    ReferralIntentUtil.addReferralIntentExtras(
+                            getActivity(),
+                            intent,
+                            getReferralChannels()
+                    );
+            final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (ValidationUtils.isNullOrEmpty(extraText)) {
+                intent.putExtra(Intent.EXTRA_TEXT, getCouponCode());
             }
+            launchShareIntent(intent, resolvedChannel);
         }
         super.onActivityResult(requestCode, resultCode, intent);
     }
 
     protected void launchShareIntent(
-            final Intent intent,
+            @NonNull final Intent intent,
             @Nullable @ReferralChannels.Channel final String channel
     ) {
         onLaunchShareIntent();

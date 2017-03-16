@@ -140,7 +140,7 @@
     <dimen name="rating_flow.star_margin_small">6dp</dimen>
 
 
-    <dimen name="pro_referral_carousel_item_width">275dp</dimen>
+    <dimen name="pro_referral.carousel_item_width">275dp</dimen>
     <dimen name="pro_referral.profile_image_size">96dp</dimen>
     <dimen name="pro_referral.heart_container_size">28dp</dimen>
     <dimen name="pro_referral.heart_image_size">18dp</dimen>
