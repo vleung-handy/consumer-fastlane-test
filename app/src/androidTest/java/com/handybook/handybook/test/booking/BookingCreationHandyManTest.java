@@ -63,34 +63,6 @@ public class BookingCreationHandyManTest {
         ViewUtil.waitForViewVisibility(matchingItemsMatcher, true, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(matchingItemsMatcher).perform(click());
 
-        //enter zip code
-        ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        clickNextButton();
-
-        //wait for network and select blinds option
-        ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        Matcher<View> blindsOptionsSpinnerMatcher = allOf(
-                withId(R.id.options_spinner),
-                withParent(withParent(withParent(
-                        withChild(withText("Blinds")))))
-        );
-        onView(blindsOptionsSpinnerMatcher).perform(scrollTo(), swipeLeft());
-        clickNextButton();
-
-        //wait for network
-        ViewUtil.waitForViewVisibility(
-                withText(R.string.comments),
-                true,
-                ViewUtil.SHORT_MAX_WAIT_TIME_MS
-        );
-        onView(withId(R.id.edit_text)).perform(typeText("blah blah"));
-        clickNextButton();
-
-        //select time to be 0700
-        AppInteractionUtil.inputBookingTime(7, 0);
-
-        clickNextButton();
-
         testGetQuoteFlow();
 
         //use previous address
@@ -125,7 +97,8 @@ public class BookingCreationHandyManTest {
     private void testGetQuoteFlow()
     {
         try {
-            //check if the consolidated flow is enabled
+            //check if the consolidated flow is enabled. If this scully experiment is not enabled
+            // Do it previously
             ViewUtil.waitForViewVisible(R.id.fragment_booking_get_quote_container, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         }
         catch (Exception e)
@@ -151,7 +124,6 @@ public class BookingCreationHandyManTest {
                     ViewUtil.SHORT_MAX_WAIT_TIME_MS
             );
             onView(withId(R.id.edit_text)).perform(typeText("blah blah"));
-            Espresso.closeSoftKeyboard();
             clickNextButton();
 
             //select time to be 0700
