@@ -70,7 +70,7 @@ public class ReferralsManager {
                 PrefsKey.REFERRAL_DIALOG_LAST_REQUESTED_TIME_MS,
                 System.currentTimeMillis()
         );
-        mDataManager.requestPrepareReferrals(new DataManager.Callback<ReferralResponse>() {
+        mDataManager.requestPrepareReferrals(false, new DataManager.Callback<ReferralResponse>() {
             @Override
             public void onSuccess(final ReferralResponse response) {
                 mBus.post(new ReferralsEvent.ReceivePrepareReferralsSuccess(

@@ -161,6 +161,10 @@
             android:screenOrientation="portrait"
             />
         <activity
+            android:name=".booking.ui.activity.BookingGetQuoteActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name=".booking.ui.activity.BookingAddressActivity"
             android:screenOrientation="portrait"
             />

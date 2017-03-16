@@ -1,16 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/divider_gray"
+    android:paddingTop="@dimen/default_padding"
     >
+
+    <TextView
+        android:id="@+id/pro_referral_title"
+        style="@style/TextView.XLarge.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/pro_referral_title"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        />
+
+    <TextView
+        android:id="@+id/pro_referral_subtitle"
+        style="@style/TextView.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        tools:text="@string/pro_referral_subtitle"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        />
 
     <com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView
         android:id="@+id/pro_referral_carousel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/default_margin"
         />
-</RelativeLayout>
+
+    <!--Space filler so the banner can be sticky to the bottom-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/pro_referral_text_share_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/pro_referral_share_link"
+            style="@style/TextView.Bold"
+            />
+
+        <TextView
+            android:id="@+id/pro_referral_share_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/pro_referral_text_share_link"
+            tools:text="handy.com/annmarie123"
+            android:layout_marginTop="@dimen/default_margin_half"
+            android:textColor="@color/handy_tertiary_gray"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            style="@style/Button.Link"
+            android:textAllCaps="false"
+            />
+    </RelativeLayout>
+</LinearLayout>

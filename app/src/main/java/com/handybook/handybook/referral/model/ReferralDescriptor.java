@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.List;
 
 /**
  * Holds ReferralChannels objects for each supported source where in-app sharing could exist which
@@ -37,6 +38,8 @@ public class ReferralDescriptor implements Serializable {
     private ReferralChannels mConfirmationPageChannels;
     @SerializedName(SOURCE_HIGH_RATING_MODAL)
     private ReferralChannels mHighRatingModalChannels;
+    @SerializedName("pro_referral_info")
+    private List<ProReferral> mProReferralInfo;
 
     public int getSenderCreditAmount() {
         return mSenderCreditAmount;
@@ -48,6 +51,10 @@ public class ReferralDescriptor implements Serializable {
 
     public String getCouponCode() {
         return mCouponCode;
+    }
+
+    public List<ProReferral> getProReferralInfo() {
+        return mProReferralInfo;
     }
 
     @Retention(RetentionPolicy.SOURCE)

@@ -168,6 +168,7 @@ public class RatingFlowActivity extends BaseActivity {
                 }
         );
         mDataManager.requestPrepareReferrals(
+                false,
                 new ActivitySafeCallback<ReferralResponse, BaseActivity>(this) {
                     @Override
                     public void onCallbackSuccess(final ReferralResponse response) {

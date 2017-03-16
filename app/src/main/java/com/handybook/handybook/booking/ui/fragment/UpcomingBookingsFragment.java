@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.core.ui.view.BookingListItem;
 import com.handybook.handybook.core.ui.view.ExpandableCleaningPlan;
 import com.handybook.handybook.core.ui.view.NoBookingsView;
@@ -55,7 +58,7 @@ import butterknife.OnClick;
  * bookings.
  */
 public class UpcomingBookingsFragment extends InjectedFragment
-        implements SwipeRefreshLayout.OnRefreshListener {
+        implements SwipeRefreshLayout.OnRefreshListener{
 
     public static final String mOverlayFragmentTag
             = ServiceCategoriesOverlayFragment.class.getSimpleName();
@@ -102,6 +105,9 @@ public class UpcomingBookingsFragment extends InjectedFragment
 
     @Bind(R.id.bookings_share_button)
     View mShareMenuItem;
+
+    @Bind(R.id.fragment_upcoming_bookings_review_app_banner_fragment_container)
+    FrameLayout mReviewAppBannerFragmentContainer;
 
     private List<Booking> mBookings;
     private List<RecurringBooking> mRecurringBookings;
@@ -195,6 +201,8 @@ public class UpcomingBookingsFragment extends InjectedFragment
                 FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
             }
         });
+
+        initReviewAppBannerFragment();
 
         return view;
     }
@@ -475,7 +483,29 @@ public class UpcomingBookingsFragment extends InjectedFragment
             }
 
             insertShareBannerView();
+            mReviewAppBannerFragmentContainer.setVisibility(View.VISIBLE);
         }
+        else {
+            /*
+            don't want the review app banner to show while upcoming bookings fragment is still loading
+             */
+            mReviewAppBannerFragmentContainer.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * init the review app banner fragment. it will handle everything related to the banner
+     */
+    private void initReviewAppBannerFragment()
+    {
+        ReviewAppBannerFragment reviewAppBannerFragment = ReviewAppBannerFragment.newInstance();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(
+                R.id.fragment_upcoming_bookings_review_app_banner_fragment_container,
+                reviewAppBannerFragment,
+                ReviewAppBannerFragment.TAG
+        );
+        transaction.commit();
     }
 
     /**
@@ -598,5 +628,4 @@ public class UpcomingBookingsFragment extends InjectedFragment
     public void onRefresh() {
         loadBookings();
     }
-
 }
