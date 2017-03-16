@@ -1103,34 +1103,55 @@ public class DataManager {
 
     public static class DataManagerError {
 
-        private final Type type;
-        private final String message;
-        private String[] invalidInputs;
+        /**
+         * see documentation for getErrorCode
+         */
+        private Integer mErrorCode = null;
+        private final Type mType;
+        private String mMessage = null;
+        private String[] mInvalidInputs;
 
         public DataManagerError(final Type type) {
-            this.type = type;
-            this.message = null;
+            this.mType = type;
         }
 
         public DataManagerError(final Type type, final String message) {
-            this.type = type;
-            this.message = message;
+            this(type);
+            mMessage = message;
         }
 
-        final String[] getInvalidInputs() {
-            return invalidInputs;
+        public DataManagerError(@Nullable final Integer errorCode, final Type type, final String message) {
+            this(type, message);
+            mErrorCode = errorCode;
+        }
+
+        /**
+         * NOTE: this is super gross
+         * the server sometimes returns an http status 200 payload that contains
+         * "error": true which this client interprets as an errored response,
+         * and also "code": 401 which we have to handle like http 401
+         * because the api is currently sending http status 200 for all error responses anyway
+         * and it wants to remain consistent
+         */
+        @Nullable
+        public Integer getErrorCode() {
+            return mErrorCode;
+        }
+
+        public final String[] getInvalidInputs() {
+            return mInvalidInputs;
         }
 
         final void setInvalidInputs(final String[] inputs) {
-            this.invalidInputs = inputs;
+            mInvalidInputs = inputs;
         }
 
         public String getMessage() {
-            return message;
+            return mMessage;
         }
 
         public Type getType() {
-            return type;
+            return mType;
         }
     }
 }

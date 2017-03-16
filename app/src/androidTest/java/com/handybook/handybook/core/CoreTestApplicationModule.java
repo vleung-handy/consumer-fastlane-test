@@ -26,6 +26,7 @@ import com.handybook.handybook.core.manager.AppBlockManager;
 import com.handybook.handybook.core.manager.AppseeManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.FileManager;
+import com.handybook.handybook.core.manager.ReviewAppManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.manager.SessionManager;
@@ -199,7 +200,7 @@ public final class CoreTestApplicationModule {
                                         )
                                         .registerTypeAdapter(
                                                 BookingRequest.class,
-                                                new BookingRequest.BookingRequestSerializer()
+                                                new BookingRequest.BookingRequestApiSerializer()
                                         )
                                         .setExclusionStrategies(
                                                 BookingQuote
@@ -245,6 +246,15 @@ public final class CoreTestApplicationModule {
     @Singleton
     final SessionManager provideSessionCacheManager() {
         return new SessionManager();
+    }
+
+    @Provides
+    @Singleton
+    final ReviewAppManager provideReviewAppManager(
+            final ConfigurationManager configurationManager,
+            final DefaultPreferencesManager defaultPreferencesManager
+    ) {
+        return new ReviewAppManager(mContext, configurationManager, defaultPreferencesManager);
     }
 
     @Provides

@@ -11,6 +11,7 @@ import com.handybook.handybook.tool.data.TestUsers;
 import com.handybook.handybook.tool.model.TestUser;
 import com.handybook.handybook.tool.util.AppInteractionUtil;
 import com.handybook.handybook.tool.util.LauncherActivityTestRule;
+import com.handybook.handybook.tool.util.TextViewUtil;
 import com.handybook.handybook.tool.util.ViewUtil;
 
 import org.hamcrest.Matcher;
@@ -62,34 +63,7 @@ public class BookingCreationHandyManTest {
         ViewUtil.waitForViewVisibility(matchingItemsMatcher, true, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(matchingItemsMatcher).perform(click());
 
-        //enter zip code
-        ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        clickNextButton();
-
-        //wait for network and select blinds option
-        ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        Matcher<View> blindsOptionsSpinnerMatcher = allOf(
-                withId(R.id.options_spinner),
-                withParent(withParent(withParent(
-                        withChild(withText("Blinds")))))
-        );
-        onView(blindsOptionsSpinnerMatcher).perform(scrollTo(), swipeLeft());
-        clickNextButton();
-
-        //wait for network
-        ViewUtil.waitForViewVisibility(
-                withText(R.string.comments),
-                true,
-                ViewUtil.SHORT_MAX_WAIT_TIME_MS
-        );
-        onView(withId(R.id.edit_text)).perform(typeText("blah blah"));
-        Espresso.closeSoftKeyboard();
-        clickNextButton();
-
-        //select time to be 0700
-        AppInteractionUtil.inputBookingTime(7, 0);
-
-        clickNextButton();
+        testGetQuoteFlow();
 
         //use previous address
         ViewUtil.waitForViewVisible(
@@ -120,6 +94,70 @@ public class BookingCreationHandyManTest {
 
         //wait for booking details page
         ViewUtil.waitForViewVisible(R.id.booking_detail_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+    }
+
+    private void testGetQuoteFlow()
+    {
+        try {
+            //check if the consolidated flow is enabled
+            ViewUtil.waitForViewVisible(R.id.fragment_booking_get_quote_container, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        }
+        catch (Exception e)
+        {
+            //enter zip code
+            ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+            clickNextButton();
+
+            //wait for network and select blinds option
+            ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+            Matcher<View> blindsOptionsSpinnerMatcher = allOf(
+                    withId(R.id.options_spinner),
+                    withParent(withParent(withParent(
+                            withChild(withText("Blinds")))))
+            );
+            onView(blindsOptionsSpinnerMatcher).perform(scrollTo(), swipeLeft());
+            clickNextButton();
+
+            //wait for network
+            ViewUtil.waitForViewVisibility(
+                    withText(R.string.comments),
+                    true,
+                    ViewUtil.SHORT_MAX_WAIT_TIME_MS
+            );
+            onView(withId(R.id.edit_text)).perform(typeText("blah blah"));
+            Espresso.closeSoftKeyboard();
+            clickNextButton();
+
+            //select time to be 0700
+            AppInteractionUtil.inputBookingTime(7, 0);
+
+            clickNextButton();
+            return;
+        }
+
+        //test consolidated flow
+
+        //expecting zip and email to be pre-filled for this user
+
+        //select blinds
+        ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        Matcher<View> blindsOptionsSpinnerMatcher = allOf(
+                withId(R.id.options_spinner),
+                withParent(withParent(withParent(
+                        withChild(withText("Blinds")))))
+        );
+        onView(blindsOptionsSpinnerMatcher).perform(scrollTo(), swipeLeft());
+
+        //fill out comments
+        onView(withId(R.id.edit_text)).perform(scrollTo());
+        TextViewUtil.updateEditTextView(R.id.edit_text, "blah blah");
+        Espresso.closeSoftKeyboard();
+
+        //select time to be 0700
+        onView(withId(R.id.booking_edit_time_button)).perform(scrollTo());
+        AppInteractionUtil.inputBookingTime(7, 0);
+
+        onView(withId(R.id.fragment_booking_get_quote_next_button)).perform(click());
     }
 
     private void clickNextButton() {

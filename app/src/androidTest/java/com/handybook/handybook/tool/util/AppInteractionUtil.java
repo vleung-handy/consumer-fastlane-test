@@ -71,7 +71,7 @@ public class AppInteractionUtil {
         }
 
         //don't want to catch any exceptions for the logic below because an exception would be a true test failure
-        onView(withId(R.id.booking_edit_time_button)).perform(click());
+        onView(withId(R.id.booking_edit_time_button)).perform(scrollTo(), click());
         onView(withId(R.id.fragment_dialog_booking_time_input_picker)).perform(
                 BookingTimePickerActions.setTime(hourOfDay, minuteOfHour));
         onView(withId(R.id.fragment_dialog_booking_time_input_save_button)).perform(click());

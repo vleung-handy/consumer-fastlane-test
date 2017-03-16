@@ -3,6 +3,7 @@ package com.handybook.handybook.core.data;
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -47,8 +48,19 @@ public abstract class HandyRetrofitCallback implements retrofit.Callback<Respons
             final DataManager.DataManagerError err;
             final JSONArray messages = obj.optJSONArray("messages");
 
+            Integer errorCode = null;
+            if(obj.has("code"))
+            {
+                try {
+                    errorCode = obj.getInt("code");
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             if (messages != null && messages.length() > 0) {
                 err = new DataManager.DataManagerError(
+                        errorCode,
                         DataManager.Type.CLIENT,
                         messages.isNull(0) ? null : messages.optString(0)
                 );
@@ -91,6 +103,7 @@ public abstract class HandyRetrofitCallback implements retrofit.Callback<Respons
                             if (restError != null && (messages = restError.messages) != null &&
                                 messages.length > 0) {
                                 err = new DataManager.DataManagerError(
+                                        restError.mErrorCode,
                                         DataManager.Type.CLIENT,
                                         messages[0]
                                 );
@@ -119,6 +132,8 @@ public abstract class HandyRetrofitCallback implements retrofit.Callback<Respons
 
     private final class RestError {
 
+        @SerializedName("code")
+        private Integer mErrorCode;
         @SerializedName("messages")
         private String[] messages;
         @SerializedName("invalid_inputs")

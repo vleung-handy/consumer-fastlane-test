@@ -1,5 +1,7 @@
 package com.handybook.handybook.configuration.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
@@ -71,13 +73,26 @@ public class Configuration implements Serializable {
     private boolean mBookingHoursClarificationExperimentEnabled;
     @SerializedName("new_rating_flow_enabled")
     private boolean mNewRatingFlowEnabled;
+    @SerializedName("rate_app_banner")
+    private ReviewAppBanner mReviewAppBanner;
 
-    // Getters
+    @SerializedName("consolidated_quote_flow_enabled")
+    private boolean mConsolidateBookingGetQuoteFlowExperimentEnabled;
+
+    public ReviewAppBanner getReviewAppBanner() {
+        return mReviewAppBanner;
+    }
+
     public boolean isBookingDateTimeInputScreenV2Enabled() {
         return mBookingDateTimeInputScreenV2Enabled;
     }
 
-    public boolean isBookingHoursClarificationExperimentEnabled() {
+    public boolean isConsolidateBookingGetQuoteFlowExperimentEnabled() {
+        return mConsolidateBookingGetQuoteFlowExperimentEnabled;
+    }
+
+    public boolean isBookingHoursClarificationExperimentEnabled()
+    {
         return mBookingHoursClarificationExperimentEnabled;
     }
 
@@ -164,5 +179,26 @@ public class Configuration implements Serializable {
 
     public void setHomeScreenV2Enabled(final boolean homeScreenV2Enabled) {
         mHomeScreenV2Enabled = homeScreenV2Enabled;
+    }
+
+    public static class ReviewAppBanner implements Serializable {
+
+        @SerializedName("enabled")
+        private boolean mEnabled;
+        /**
+         * number of days to wait after the user declines the rate app banner before
+         * re-displaying it
+         */
+        @SerializedName("display_delay_days_after_declined")
+        private Integer mDisplayDelayDaysAfterDeclined;
+
+        @Nullable
+        public Integer getDisplayDelayDaysAfterDeclined() {
+            return mDisplayDelayDaysAfterDeclined;
+        }
+
+        public boolean isEnabled() {
+            return mEnabled;
+        }
     }
 }
