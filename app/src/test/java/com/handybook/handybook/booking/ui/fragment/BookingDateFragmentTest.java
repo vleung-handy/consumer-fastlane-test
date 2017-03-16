@@ -38,13 +38,9 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
 
-/**
- * BookingDateFragment and BookingDateFragmentV2 will be consolidated soon
- * so this will be consolidated with BookingDateFragmentTest
- */
-public class BookingDateFragmentV2Test extends RobolectricGradleTestWrapper {
+public class BookingDateFragmentTest extends RobolectricGradleTestWrapper {
 
-    private BookingDateFragmentV2 mFragment;
+    private BookingDateFragment mFragment;
     @Mock
     private BookingRequest mMockRequest;
     @Mock
@@ -69,7 +65,7 @@ public class BookingDateFragmentV2Test extends RobolectricGradleTestWrapper {
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockBookingQuote);
         when(mMockBookingQuote.getAddress()).thenReturn(mock(BookingQuote.Address.class));
 
-        mFragment = BookingDateFragmentV2.newInstance(new ArrayList<BookingOption>());
+        mFragment = BookingDateFragment.newInstance(new ArrayList<BookingOption>());
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 

@@ -42,7 +42,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingDateFragmentV2 extends BookingFlowFragment implements BookingDateTimeInputFragment.OnSelectedDateTimeUpdatedListener {
+public final class BookingDateFragment extends BookingFlowFragment implements BookingDateTimeInputFragment.OnSelectedDateTimeUpdatedListener {
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
@@ -139,21 +139,21 @@ public final class BookingDateFragmentV2 extends BookingFlowFragment implements 
     private BookingDetailFragment.RescheduleType mRescheduleType;
     private String mProviderId;
 
-    public static BookingDateFragmentV2 newInstance(final ArrayList<BookingOption> postOptions) {
-        final BookingDateFragmentV2 fragment = new BookingDateFragmentV2();
+    public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
+        final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
         args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static BookingDateFragmentV2 newInstance(
+    public static BookingDateFragment newInstance(
             final Booking rescheduleBooking,
             final String notice,
             BookingDetailFragment.RescheduleType type,
             final String providerId
     ) {
-        final BookingDateFragmentV2 fragment = new BookingDateFragmentV2();
+        final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
         args.putString(EXTRA_RESCHEDULE_NOTICE, notice);
