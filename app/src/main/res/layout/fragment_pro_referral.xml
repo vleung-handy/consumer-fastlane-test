@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/divider_gray"
+    android:background="@color/handy_background_gray"
     android:paddingTop="@dimen/default_padding"
+    android:paddingBottom="@dimen/default_padding_eighth"
     >
 
     <TextView
@@ -16,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_gravity="center_horizontal"
-        android:text="@string/pro_referral_title"
+        tools:text="Recommend your Pros"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginLeft="@dimen/default_margin"
         />
@@ -33,25 +34,28 @@
         android:layout_marginLeft="@dimen/default_margin"
         />
 
-    <com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView
-        android:id="@+id/pro_referral_carousel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        />
-
     <!--Space filler so the banner can be sticky to the bottom-->
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
         android:layout_weight="1"
-        />
+        >
+
+        <com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView
+            android:id="@+id/pro_referral_carousel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding_half"
+        android:paddingBottom="@dimen/default_padding_half"
         android:background="@color/white"
         >
 
@@ -71,11 +75,13 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/pro_referral_text_share_link"
             tools:text="handy.com/annmarie123"
-            android:layout_marginTop="@dimen/default_margin_half"
+            android:layout_marginTop="@dimen/default_margin_quarter"
             android:textColor="@color/handy_tertiary_gray"
+            android:clickable="true"
             />
 
         <Button
+            android:id="@+id/pro_referral_share_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/share"
@@ -83,6 +89,7 @@
             android:layout_centerVertical="true"
             style="@style/Button.Link"
             android:textAllCaps="false"
+            android:gravity="right|center_vertical"
             />
     </RelativeLayout>
 </LinearLayout>

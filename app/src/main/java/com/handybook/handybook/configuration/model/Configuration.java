@@ -165,9 +165,4 @@ public class Configuration implements Serializable {
     public void setHomeScreenV2Enabled(final boolean homeScreenV2Enabled) {
         mHomeScreenV2Enabled = homeScreenV2Enabled;
     }
-
-    public boolean isShareProEnabled() {
-        //hard coding this to false so the new referral screen will never appear
-        return false;
-    }
 }

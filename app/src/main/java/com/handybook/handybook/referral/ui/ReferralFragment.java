@@ -1,11 +1,6 @@
 package com.handybook.handybook.referral.ui;
 
-import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,14 +13,11 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
-import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
@@ -45,10 +37,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ReferralFragment extends InjectedFragment {
+public class ReferralFragment extends BaseReferralFragment {
 
-    private static final String BASE_REFERRAL_URL = "handy.com/r/";
-    private static final String BASE_REFERRAL_URL_SCHEME = "https://";
     private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{
             "handy-referrals@handy.com"
     };
@@ -164,39 +154,8 @@ public class ReferralFragment extends InjectedFragment {
         ));
     }
 
-    @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
-        if (requestCode == ActivityResult.PICK_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK && intent != null) {
-                final String resolvedChannel =
-                        ReferralIntentUtil.addReferralIntentExtras(
-                                getActivity(),
-                                intent,
-                                mReferralChannels
-                        );
-                final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
-                if (ValidationUtils.isNullOrEmpty(extraText)) {
-                    intent.putExtra(Intent.EXTRA_TEXT, mReferralDescriptor.getCouponCode());
-                }
-                launchShareIntent(intent, resolvedChannel);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, intent);
-    }
 
-    private void launchShareIntent(
-            final Intent intent,
-            @Nullable @ReferralChannels.Channel final String channel
-    ) {
-        mIsReferralInfoFresh = false;
-        if (channel != null) {
-            final ReferralInfo referralInfo = mReferralChannels.getReferralInfoForChannel(channel);
-            if (referralInfo != null) {
-                bus.post(new ReferralsEvent.RequestConfirmReferral(referralInfo.getGuid()));
-            }
-        }
-        Utils.safeLaunchIntent(intent, getActivity());
-    }
+
 
     @Subscribe
     public void onReceivePrepareReferralsSuccess(
@@ -253,16 +212,7 @@ public class ReferralFragment extends InjectedFragment {
 
     @OnClick(R.id.fragment_referral_cta_more)
     public void onOtherShareCtaClicked() {
-        final Intent dummyIntent = new Intent();
-        dummyIntent.setAction(Intent.ACTION_SEND);
-        dummyIntent.setType(ReferralIntentUtil.MIME_TYPE_PLAIN_TEXT);
-
-        final Intent activityPickerIntent = new Intent();
-        activityPickerIntent.setAction(Intent.ACTION_PICK_ACTIVITY);
-        activityPickerIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.share_using));
-        activityPickerIntent.putExtra(Intent.EXTRA_INTENT, dummyIntent);
-        startActivityForResult(activityPickerIntent, ActivityResult.PICK_ACTIVITY);
-
+        launchGenericShareIntent();
         sendShareButtonTappedLog("", ReferralChannels.CHANNEL_OTHER);
     }
 
@@ -305,15 +255,7 @@ public class ReferralFragment extends InjectedFragment {
 
     @OnClick(R.id.fragment_referral_share_url)
     public void onShareUrlClick() {
-        ClipboardManager clipboard = (ClipboardManager)
-                getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        final String sharingLink = BASE_REFERRAL_URL_SCHEME + BASE_REFERRAL_URL +
-                                   mReferralDescriptor.getCouponCode();
-        Uri copyUri = Uri.parse(sharingLink);
-        ClipData clip = ClipData.newUri(getActivity().getContentResolver(), "URI", copyUri);
-        clipboard.setPrimaryClip(clip);
-        showToast(R.string.referral_copied_to_clipboard);
-
+        shareUrlClicked(mReferralDescriptor.getCouponCode());
         sendShareButtonTappedLog("", ReferralChannels.CHANNEL_OTHER);
     }
 
@@ -350,5 +292,25 @@ public class ReferralFragment extends InjectedFragment {
                     mReferralDescriptor.getReceiverCouponAmount()
             )));
         }
+    }
+
+    @Override
+    protected ReferralChannels getReferralChannels() {
+        return mReferralChannels;
+    }
+
+    @Override
+    protected String getCouponCode() {
+        return mReferralDescriptor.getCouponCode();
+    }
+
+    @Override
+    protected void onLaunchShareIntent() {
+        mIsReferralInfoFresh = false;
+    }
+
+    @Override
+    protected ReferralInfo getReferralInfo(@ReferralChannels.Channel final String channel) {
+        return mReferralChannels.getReferralInfoForChannel(channel);
     }
 }
