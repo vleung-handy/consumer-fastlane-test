@@ -91,6 +91,7 @@ import com.handybook.handybook.core.manager.AppseeManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManagerTest;
 import com.handybook.handybook.core.manager.FileManager;
+import com.handybook.handybook.core.manager.ReviewAppManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.manager.StripeManager;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
@@ -98,6 +99,7 @@ import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivityTest;
 import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.core.ui.fragment.HelpCenterTest;
+import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
@@ -226,6 +228,7 @@ import static org.mockito.Mockito.when;
         BookingHeaderFragmentTest.class,
         BookingDateTimeInputFragment.class,
         BookingTimeInputDialogFragment.class,
+        ReviewAppBannerFragment.class,
 }, library = true)
 public class TestApplicationModule {
 
@@ -239,6 +242,12 @@ public class TestApplicationModule {
     @Singleton
     final Properties providerProperties() {
         return mock(Properties.class);
+    }
+
+    @Provides
+    @Singleton
+    final ReviewAppManager provideReviewAppManager() {
+        return mock(ReviewAppManager.class);
     }
 
     @Provides

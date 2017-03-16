@@ -120,6 +120,7 @@ import com.handybook.handybook.core.ui.activity.WebViewActivity;
 import com.handybook.handybook.core.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
+import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
@@ -271,5 +272,6 @@ import dagger.Module;
                 BookingGetQuoteActivity.class,
                 BookingGetQuoteFragment.class,
                 BookingOptionsInputFragment.class,
+                ReviewAppBannerFragment.class,
         })
 public final class InjectionModule {}
