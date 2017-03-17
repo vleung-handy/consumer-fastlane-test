@@ -1,5 +1,6 @@
 package com.handybook.handybook.test.booking;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -150,6 +151,7 @@ public class BookingCreationFirstTimeTest {
     }
 
     private void clickNextButton() {
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.next_button)).perform(click());
     }
 }

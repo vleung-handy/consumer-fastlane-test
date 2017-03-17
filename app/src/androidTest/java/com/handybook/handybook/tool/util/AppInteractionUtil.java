@@ -8,6 +8,7 @@ import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.espresso.contrib.PickerActions;
+import android.util.Log;
 import android.view.View;
 
 import com.handybook.handybook.R;
@@ -151,6 +152,13 @@ public class AppInteractionUtil {
     public static void waitForServiceCategoriesPage() {
         //would rather wait for service recyclerview but it's flaky
         ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
+        //Has to do with the recycler_view not really displayed yet. Not sure how to fix it.
+        //But sleeping for 750ms works for now
+        try {
+            Thread.sleep(750);
+        } catch(Exception e){
+            Log.e(AppInteractionUtil.class.getSimpleName(), e.getStackTrace().toString());
+        }
     }
 
     public static void waitForOnboardZipPage() {
