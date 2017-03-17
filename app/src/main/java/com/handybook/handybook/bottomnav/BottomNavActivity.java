@@ -14,7 +14,6 @@ import android.view.View;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
-import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
@@ -193,12 +192,7 @@ public class BottomNavActivity extends BaseActivity {
                 fragment = ProTeamConversationsFragment.newInstance();
                 break;
             case R.id.add_booking:
-                if (mConfigurationManager.getPersistentConfiguration().isHomeScreenV2Enabled()) {
-                    fragment = ServiceCategoriesHomeFragment.newInstance();
-                }
-                else {
-                    fragment = ServiceCategoriesFragment.newInstance(null, null);
-                }
+                fragment = ServiceCategoriesHomeFragment.newInstance();
                 break;
             case R.id.gift:
                 fragment = ReferralV2Fragment.newInstance(null);

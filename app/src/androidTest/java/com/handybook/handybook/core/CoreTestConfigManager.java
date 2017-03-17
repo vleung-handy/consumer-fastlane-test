@@ -26,8 +26,6 @@ public class CoreTestConfigManager extends ConfigurationManager {
         Configuration config = super.getPersistentConfiguration();
 
         // Override the config here
-        config.setBottomNavEnabled(false);
-        config.setHomeScreenV2Enabled(false);
 
         return config;
     }
