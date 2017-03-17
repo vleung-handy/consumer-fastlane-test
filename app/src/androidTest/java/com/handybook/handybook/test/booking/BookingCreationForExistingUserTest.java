@@ -72,7 +72,6 @@ public class BookingCreationForExistingUserTest {
                 R.id.autocomplete_address_text_street,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
-        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         //use previous credit card
@@ -80,7 +79,6 @@ public class BookingCreationForExistingUserTest {
                 R.id.payment_fragment_credit_card_info_container,
                 ViewUtil.SHORT_MAX_WAIT_TIME_MS
         );
-        Espresso.closeSoftKeyboard();
         clickNextButton();
 
         /*post-confirmation pages*/
@@ -132,10 +130,11 @@ public class BookingCreationForExistingUserTest {
         onView(withId(R.id.booking_edit_time_button)).perform(scrollTo());
         AppInteractionUtil.inputBookingTime(9, 0);
 
-        onView(withId(R.id.fragment_booking_get_quote_next_button)).perform(click());
+        onView(withId(R.id.fragment_booking_get_quote_next_button)).perform(scrollTo(), click());
     }
 
     private void clickNextButton() {
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.next_button)).perform(click());
     }
 }

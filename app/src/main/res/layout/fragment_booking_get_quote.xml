@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/handy_bg"
-                android:id="@+id/fragment_booking_get_quote_container"
+<LinearLayout android:id="@+id/fragment_booking_get_quote_container"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/handy_bg"
+              android:orientation="vertical"
     >
-
-    <Button
-        android:id="@+id/fragment_booking_get_quote_next_button"
-        style="@style/Button.Green"
-        android:layout_alignParentBottom="true"
-        android:text="@string/next"
-        />
 
     <include
         layout="@layout/toolbar"
@@ -19,51 +13,59 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/fragment_booking_get_quote_next_button"
-        android:layout_below="@id/toolbar"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/default_margin"
             >
 
-            <!--zip code input-->
-            <TextView
-                style="@style/TextView"
+            <!--zipcode input. in container for easy hiding/showing-->
+            <LinearLayout
+                android:id="@+id/booking_zipcode_input_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin_half"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/default_padding"
-                android:text="@string/where_located_simple"
-                />
+                android:orientation="vertical"
+                >
+                <!--zip code input-->
+                <TextView
+                    style="@style/TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/default_padding"
+                    android:text="@string/where_located_simple"
+                    />
 
-            <com.handybook.handybook.core.ui.widget.ZipCodeInputTextView
-                android:id="@+id/booking_zipcode_input_text"
-                style="@style/EditText.Last.ZipCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                <com.handybook.handybook.core.ui.widget.ZipCodeInputTextView
+                    android:id="@+id/booking_zipcode_input_text"
+                    style="@style/EditText.Last.ZipCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
 
             <!--options input-->
             <FrameLayout
-                android:layout_marginTop="@dimen/default_margin_half"
                 android:id="@+id/booking_options_input_fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_half"
                 />
 
             <!--date time input-->
             <TextView
-                android:layout_marginTop="@dimen/default_margin_half"
-                android:padding="@dimen/default_padding"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_half"
                 android:gravity="center"
+                android:padding="@dimen/default_padding"
                 android:text="@string/booking_date_time_input_prompt"
                 />
 
@@ -75,11 +77,11 @@
 
             <!--email input. in container for easy hiding/showing-->
             <LinearLayout
-                android:layout_marginTop="@dimen/default_margin_half"
                 android:id="@+id/booking_email_input_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_half"
                 android:orientation="vertical"
                 >
 
@@ -100,9 +102,22 @@
                     />
             </LinearLayout>
 
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:id="@+id/fragment_booking_get_quote_next_button"
+                style="@style/Button.Green"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/next"
+                />
+
         </LinearLayout>
 
 
     </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>
