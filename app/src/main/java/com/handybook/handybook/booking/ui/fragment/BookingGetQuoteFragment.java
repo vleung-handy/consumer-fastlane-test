@@ -181,6 +181,10 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
             }
         }
 
+        /*
+        always set this even if visibility gone for easy value retrieval later
+        (we won't have to check for visibility)
+         */
         mZipCodeInputTextView.setText(zipCode);
         if(TextUtils.isBlank(zipCode) || !mZipCodeInputTextView.validate())
         {
