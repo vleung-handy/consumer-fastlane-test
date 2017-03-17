@@ -1,6 +1,7 @@
 package com.handybook.handybook.configuration.model;
 
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -165,5 +166,10 @@ public class Configuration implements Serializable {
         public boolean isEnabled() {
             return mEnabled;
         }
+    }
+
+    @VisibleForTesting
+    public void setOnboardingV2Enabled(final boolean onboardingV2Enabled) {
+        mOnboardingV2Enabled = onboardingV2Enabled;
     }
 }

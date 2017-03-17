@@ -3,7 +3,7 @@ package com.handybook.handybook.tool.user;
 import android.support.test.espresso.Espresso;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.tool.data.TestUsers;
 import com.handybook.handybook.tool.model.TestUser;
 import com.handybook.handybook.tool.util.AppInteractionUtil;
@@ -18,7 +18,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class PasswordUpdateTest {
 
@@ -26,8 +25,8 @@ public class PasswordUpdateTest {
     private static final String NEW_PASSWORD = "newpassword";
 
     @Rule
-    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<SplashActivity> mActivityRule =
+            new LauncherActivityTestRule<>(SplashActivity.class);
 
     @Test
     public void testUpdatePassword() {
@@ -35,11 +34,8 @@ public class PasswordUpdateTest {
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();
 
-        //Go to My Account - assuming that is at position 5
-        //(don't know how to cleanly query nested item)
-        AppInteractionUtil.openDrawer();
-        ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        onView(withText(R.string.account)).perform(click());
+        //navigate to account page
+        onView(withId(R.id.account)).perform(click());
 
         // Click into password page
         ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
@@ -58,6 +54,7 @@ public class PasswordUpdateTest {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.profile_password_update_button)).perform(click());
 
+        //this is flaky
         ViewUtil.waitForToastMessageVisibility(
                 R.string.info_updated,
                 true,
@@ -73,7 +70,7 @@ public class PasswordUpdateTest {
 
         // Confirm that login with the new password works
         pressBack();
-        pressBack();
+
         AppInteractionUtil.logOutAndPassOnboarding();
         TEST_USER.setPassword(NEW_PASSWORD);
         AppInteractionUtil.logIn(TEST_USER);
