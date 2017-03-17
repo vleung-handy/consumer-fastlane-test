@@ -6,16 +6,24 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.ActivityResult;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.StringUtils;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.library.util.ValidationUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
+import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.ReferralChannels;
+import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
@@ -23,6 +31,17 @@ public abstract class BaseReferralFragment extends InjectedFragment {
 
     public static final String BASE_REFERRAL_URL = "handy.com/r/";
     public static final String BASE_REFERRAL_URL_SCHEME = "https://";
+
+    protected ReferralDescriptor mReferralDescriptor;
+    protected String mSource;
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSource = getArguments().getString(BundleKeys.REFERRAL_PAGE_SOURCE);
+        mReferralDescriptor
+                = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
+    }
 
     protected void launchGenericShareIntent() {
         final Intent dummyIntent = new Intent();
@@ -33,6 +52,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
         activityPickerIntent.setAction(Intent.ACTION_PICK_ACTIVITY);
         activityPickerIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.share_using));
         activityPickerIntent.putExtra(Intent.EXTRA_INTENT, dummyIntent);
+        sendShareButtonTappedLog();
         startActivityForResult(activityPickerIntent, ActivityResult.PICK_ACTIVITY);
     }
 
@@ -64,9 +84,90 @@ public abstract class BaseReferralFragment extends InjectedFragment {
             final ReferralInfo referralInfo = getReferralInfo(channel);
             if (referralInfo != null) {
                 bus.post(new ReferralsEvent.RequestConfirmReferral(referralInfo.getGuid()));
+                sendShareMethodSelectedLog(referralInfo.getGuid(), channel);
             }
         }
         Utils.safeLaunchIntent(intent, getActivity());
+    }
+
+    /**
+     * This logs the generic share clicked, the action that launches the default android share intent
+     */
+    protected void sendShareButtonTappedLog() {
+        if (mReferralDescriptor != null) {
+            String couponCode
+                    = StringUtils.replaceWithEmptyIfNull(mReferralDescriptor.getCouponCode());
+
+            if (TextUtils.isBlank(getProviderId())) {
+                bus.post(new LogEvent.AddLogEvent(new NativeShareLog(
+                        EventType.SHARE_BUTTON_TAPPED,
+                        ReferralChannels.CHANNEL_OTHER,
+                        "",
+                        couponCode,
+                        mSource,
+                        mReferralDescriptor.getSenderCreditAmount(),
+                        mReferralDescriptor.getReceiverCouponAmount()
+                )));
+            }
+            else {
+                //this was a tapping of the share button for a specific pro member, log that
+                //pro member's information
+                bus.post(new LogEvent.AddLogEvent(new NativeShareLog.NativeShareProLog(
+                        EventType.SHARE_BUTTON_TAPPED,
+                        getProviderId(),
+                        ReferralChannels.CHANNEL_OTHER,
+                        "",
+                        couponCode,
+                        mSource,
+                        mReferralDescriptor.getSenderCreditAmount(),
+                        mReferralDescriptor.getReceiverCouponAmount()
+                )));
+            }
+        }
+    }
+
+    /**
+     * Log the specific type of medium that was selected.
+     * @param guid
+     * @param referralMedium
+     *
+     * */
+    protected void sendShareMethodSelectedLog(
+            final String guid,
+            final String referralMedium
+    ) {
+        if (mReferralDescriptor != null) {
+            String couponCode
+                    = StringUtils.replaceWithEmptyIfNull(mReferralDescriptor.getCouponCode());
+            String identifier = StringUtils.replaceWithEmptyIfNull(guid);
+
+            if (TextUtils.isBlank(getProviderId())) {
+                bus.post(new LogEvent.AddLogEvent(new NativeShareLog(
+                        EventType.SHARE_METHOD_SELECTED,
+                        referralMedium,
+                        identifier,
+                        couponCode,
+                        mSource,
+                        mReferralDescriptor.getSenderCreditAmount(),
+                        mReferralDescriptor.getReceiverCouponAmount()
+                )));
+            }
+            else {
+                //this was a tapping of the share button for a specific pro member, log that
+                //pro member's information
+                bus.post(new LogEvent.AddLogEvent(new NativeShareLog.NativeShareProLog(
+                        EventType.SHARE_METHOD_SELECTED,
+                        getProviderId(),
+                        referralMedium,
+                        identifier,
+                        couponCode,
+                        mSource,
+                        mReferralDescriptor.getSenderCreditAmount(),
+                        mReferralDescriptor.getReceiverCouponAmount()
+                )));
+            }
+
+        }
     }
 
     protected void shareUrlClicked(String couponCode) {
@@ -78,6 +179,9 @@ public abstract class BaseReferralFragment extends InjectedFragment {
         clipboard.setPrimaryClip(clip);
         showToast(R.string.referral_copied_to_clipboard);
     }
+
+    @Nullable
+    protected abstract String getProviderId();
 
     protected abstract ReferralChannels getReferralChannels();
 

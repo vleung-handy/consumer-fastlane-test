@@ -16,22 +16,15 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
-import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.ValidationUtils;
-import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
-import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-
-import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,9 +35,6 @@ public class ReferralFragment extends BaseReferralFragment {
     private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{
             "handy-referrals@handy.com"
     };
-
-    @Inject
-    Bus mBus;
 
     @Bind(R.id.fragment_referral_content)
     View mReferralContent;
@@ -61,10 +51,8 @@ public class ReferralFragment extends BaseReferralFragment {
     @Bind(R.id.fragment_referral_snowview)
     SnowView mSnowView;
 
-    private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
     private boolean mIsReferralInfoFresh = false;
-    private String mSource;
     private boolean mHideToolbar;
 
     public static Fragment newInstance(final @Nullable String source) {
@@ -88,9 +76,6 @@ public class ReferralFragment extends BaseReferralFragment {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSource = getArguments().getString(BundleKeys.REFERRAL_PAGE_SOURCE);
-        mReferralDescriptor
-                = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
         mHideToolbar = getArguments().getBoolean(BundleKeys.REFERRAL_HIDE_TOOLBAR);
     }
 
@@ -125,8 +110,6 @@ public class ReferralFragment extends BaseReferralFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mBus.post(new LogEvent.AddLogEvent(new ReferralLog.ReferralOpenLog()));
-
         //if we already have this, don't need to request
         if (mReferralDescriptor == null) {
             if (!mIsReferralInfoFresh) {
@@ -213,7 +196,6 @@ public class ReferralFragment extends BaseReferralFragment {
     @OnClick(R.id.fragment_referral_cta_more)
     public void onOtherShareCtaClicked() {
         launchGenericShareIntent();
-        sendShareButtonTappedLog("", ReferralChannels.CHANNEL_OTHER);
     }
 
     @OnClick(R.id.fragment_referral_button_sms)
@@ -226,8 +208,6 @@ public class ReferralFragment extends BaseReferralFragment {
                     smsReferralInfo
             );
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
-
-            sendShareButtonTappedLog(smsReferralInfo.getGuid(), ReferralChannels.CHANNEL_SMS);
         }
         else {
             Crashlytics.logException(new Exception("SMS referral info is null"));
@@ -245,8 +225,6 @@ public class ReferralFragment extends BaseReferralFragment {
             emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
             emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
-
-            sendShareButtonTappedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
         }
         else {
             Crashlytics.logException(new Exception("Email referral info is null"));
@@ -256,7 +234,7 @@ public class ReferralFragment extends BaseReferralFragment {
     @OnClick(R.id.fragment_referral_share_url)
     public void onShareUrlClick() {
         shareUrlClicked(mReferralDescriptor.getCouponCode());
-        sendShareButtonTappedLog("", ReferralChannels.CHANNEL_OTHER);
+        sendShareButtonTappedLog();
     }
 
     private void showErrorLayout(String errorMessage) {
@@ -277,21 +255,9 @@ public class ReferralFragment extends BaseReferralFragment {
         }
     }
 
-    private void sendShareButtonTappedLog(final String guid, final String referralMedium) {
-        if (mReferralDescriptor != null) {
-            String couponCode
-                    = StringUtils.replaceWithEmptyIfNull(mReferralDescriptor.getCouponCode());
-            String identifier = StringUtils.replaceWithEmptyIfNull(guid);
-
-            mBus.post(new LogEvent.AddLogEvent(new ShareModalLog.NativeShareTappedLog(
-                    referralMedium,
-                    identifier,
-                    couponCode,
-                    mSource,
-                    mReferralDescriptor.getSenderCreditAmount(),
-                    mReferralDescriptor.getReceiverCouponAmount()
-            )));
-        }
+    @Override
+    protected String getProviderId() {
+        return null;
     }
 
     @Override

@@ -42,13 +42,16 @@ public class ProReferralFragment extends BaseReferralFragment {
     @Bind(R.id.pro_referral_share_link)
     TextView mShareUrl;
 
-    private ReferralDescriptor mReferralDescriptor;
     private List<ProCarouselVM> mCarouselVMs;
     private ProReferral mSelectedPro;
 
-    public static ProReferralFragment newInstance(ReferralDescriptor referralDescriptor) {
+    public static ProReferralFragment newInstance(
+            ReferralDescriptor referralDescriptor,
+            String source
+    ) {
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
+        args.putString(BundleKeys.REFERRAL_PAGE_SOURCE, source);
         ProReferralFragment fragment = new ProReferralFragment();
         fragment.setArguments(args);
         return fragment;
@@ -63,9 +66,6 @@ public class ProReferralFragment extends BaseReferralFragment {
     ) {
         View view = inflater.inflate(R.layout.fragment_pro_referral, container, false);
         ButterKnife.bind(this, view);
-
-        mReferralDescriptor
-                = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
 
         mCarouselVMs = new ArrayList<>();
         for (ProReferral pr : mReferralDescriptor.getProReferralInfo()) {
@@ -115,6 +115,14 @@ public class ProReferralFragment extends BaseReferralFragment {
     @OnClick(R.id.pro_referral_share_link)
     public void onShareUrlClick() {
         shareUrlClicked(mReferralDescriptor.getCouponCode());
+    }
+
+    @Nullable
+    @Override
+    protected String getProviderId() {
+        return mSelectedPro == null || mSelectedPro.getProvider() == null
+               ? null
+               : mSelectedPro.getProvider().getId();
     }
 
     /**
