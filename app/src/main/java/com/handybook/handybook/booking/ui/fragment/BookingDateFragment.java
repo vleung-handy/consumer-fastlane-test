@@ -224,7 +224,7 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
             final Bundle savedInstanceState
     ) {
         final View view = getActivity().getLayoutInflater()
-                                       .inflate(R.layout.fragment_booking_date_v2, container, false);
+                                       .inflate(R.layout.fragment_booking_date, container, false);
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.time));

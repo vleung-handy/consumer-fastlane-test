@@ -7,7 +7,6 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
-import android.support.test.espresso.contrib.PickerActions;
 import android.view.View;
 
 import com.handybook.handybook.R;
@@ -52,25 +51,10 @@ public class AppInteractionUtil {
 
     public static void inputBookingTime(int hourOfDay, int minuteOfHour)
     {
-        /*
-        quick-fix to account for BookingDateFragment and BookingDateFragmentV2
-        which one to show is driven by config param (don't know how to easily retrieve it here)
-         */
-        try
-        {
-            ViewUtil.waitForViewVisible(
-                    R.id.booking_edit_time_button,
-                    ViewUtil.SHORT_MAX_WAIT_TIME_MS
-            );
-        }
-        catch (Exception e)
-        {
-            ViewUtil.waitForViewVisible(R.id.time_picker, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-            onView(withId(R.id.time_picker)).perform(PickerActions.setTime(hourOfDay, minuteOfHour));
-            return;
-        }
-
-        //don't want to catch any exceptions for the logic below because an exception would be a true test failure
+        ViewUtil.waitForViewVisible(
+                R.id.booking_edit_time_button,
+                ViewUtil.SHORT_MAX_WAIT_TIME_MS
+        );
         onView(withId(R.id.booking_edit_time_button)).perform(scrollTo(), click());
         onView(withId(R.id.fragment_dialog_booking_time_input_picker)).perform(
                 BookingTimePickerActions.setTime(hourOfDay, minuteOfHour));
