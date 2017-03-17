@@ -130,7 +130,7 @@ public class BookingCreationForExistingUserTest {
         onView(withId(R.id.booking_edit_time_button)).perform(scrollTo());
         AppInteractionUtil.inputBookingTime(9, 0);
 
-        onView(withId(R.id.fragment_booking_get_quote_next_button)).perform(click());
+        onView(withId(R.id.fragment_booking_get_quote_next_button)).perform(scrollTo(), click());
     }
 
     private void clickNextButton() {

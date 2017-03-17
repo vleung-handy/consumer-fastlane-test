@@ -303,7 +303,7 @@ public class BookingFlowFragment extends InjectedFragment {
             startActivity(intent);
             return;
         }
-        else if (hasStoredEmail()) {
+        else if (TextUtils.isBlank(request.getEmail()) && hasStoredEmail()) {
             request.setEmail(mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null));
         }
         disableInputs();

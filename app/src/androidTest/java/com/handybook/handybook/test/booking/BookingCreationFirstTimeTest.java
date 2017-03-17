@@ -147,7 +147,7 @@ public class BookingCreationFirstTimeTest {
         onView(withId(R.id.booking_email_input)).perform(scrollTo());
         TextViewUtil.updateEditTextView(R.id.booking_email_input, testUser.getEmail());
 
-        onView(withId(R.id.fragment_booking_get_quote_next_button)).perform(click());
+        onView(withId(R.id.fragment_booking_get_quote_next_button)).perform(scrollTo(), click());
     }
 
     private void clickNextButton() {
