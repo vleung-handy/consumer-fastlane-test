@@ -43,8 +43,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentTest;
-import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2;
-import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2Test;
 import com.handybook.handybook.booking.ui.fragment.BookingDateTimeInputFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragmentTest;
@@ -155,9 +153,7 @@ import static org.mockito.Mockito.when;
         BookingOptionsFragmentTest.class,
         BookingDateActivity.class,
         BookingDateFragment.class,
-        BookingDateFragmentV2.class,
         BookingDateFragmentTest.class,
-        BookingDateFragmentV2Test.class,
         BookingRecurrenceActivity.class,
         BookingRecurrenceFragment.class,
         BookingRecurrenceFragmentTest.class,
