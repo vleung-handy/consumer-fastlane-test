@@ -1,21 +1,23 @@
 package com.handybook.handybook.logger.handylogger.model.user;
 
+import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
+import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
 
 public abstract class ReferralLog extends EventLog {
 
-    private static final String EVENT_CONTEXT = "referral";
-
     public ReferralLog(final String eventType) {
-        super(eventType, EVENT_CONTEXT);
+        super(eventType, EventContext.NATIVE_SHARE);
     }
 
     public static class ReferralOpenLog extends ReferralLog {
 
-        private static final String EVENT_TYPE = "open";
+        @SerializedName("page")
+        private String mPage = "referral";
 
         public ReferralOpenLog() {
-            super(EVENT_TYPE);
+            super(EventType.NAVIGATION);
         }
     }
 }
