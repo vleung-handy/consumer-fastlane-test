@@ -201,9 +201,4 @@ public class Configuration implements Serializable {
             return mEnabled;
         }
     }
-
-    public boolean isShareProEnabled() {
-        //hard coding this to false so the new referral screen will never appear
-        return false;
-    }
 }

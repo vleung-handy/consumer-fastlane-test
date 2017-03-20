@@ -108,6 +108,7 @@ import com.handybook.handybook.logger.handylogger.EventLogManagerTest;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
+import com.handybook.handybook.referral.ui.BaseReferralFragment;
 import com.handybook.handybook.referral.ui.ProReferralFragment;
 import com.handybook.handybook.referral.ui.RedemptionActivity;
 import com.handybook.handybook.referral.ui.RedemptionEmailSignUpFragment;
@@ -182,6 +183,7 @@ import static org.mockito.Mockito.when;
         ReferralFragment.class,
         ReferralV2Fragment.class,
         ProReferralFragment.class,
+        BaseReferralFragment.class,
         ReferralFragmentTest.class,
         RedemptionActivity.class,
         RedemptionFragment.class,
