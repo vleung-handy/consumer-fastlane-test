@@ -68,6 +68,8 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
                     ),
                     mBooking.getAddress().getAddress1(),
                     mBooking.getAddress().getAddress2(),
+                    mAutoCompleteFragment.getCity(),
+                    mAutoCompleteFragment.getState(),
                     mConfigurationManager.getCachedConfiguration()
             );
 
@@ -75,6 +77,8 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
         }
         else {
             mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                    null,
+                    null,
                     null,
                     null,
                     null,
@@ -92,9 +96,10 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
 
     private void sendEditAddressRequest() {
         EditAddressRequest bookingEditAddressRequest = new EditAddressRequest(
-                mAutoCompleteFragment.mStreet.getAddress(),
-                mAutoCompleteFragment.mOther.getText().toString(),
-                mZipCodeInputTextView.getZipCode()
+                mAutoCompleteFragment.getStreet(),
+                mAutoCompleteFragment.getApt(),
+                mZipCodeInputTextView.getZipCode(),
+                mAutoCompleteFragment.getCity()
         );
         showUiBlockers();
         bus.post(new BookingEditEvent.RequestEditBookingAddress(

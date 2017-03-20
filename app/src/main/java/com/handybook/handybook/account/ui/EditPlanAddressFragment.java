@@ -34,6 +34,8 @@ public final class EditPlanAddressFragment extends InjectedFragment {
     StreetAddressInputTextView mStreetAddressText;
     @Bind(R.id.plan_address_apt_addr_text)
     EditText mAptAddressText;
+    @Bind(R.id.plan_address_city_text)
+    EditText mCityText;
     @Bind(R.id.plan_address_zip_text)
     ZipCodeInputTextView mZipCodeText;
 
@@ -71,6 +73,7 @@ public final class EditPlanAddressFragment extends InjectedFragment {
             mStreetAddressText.setText(mPlan.getAddress().getAddress1());
             mAptAddressText.setText(mPlan.getAddress().getAddress2());
             mZipCodeText.setText(mPlan.getAddress().getZip());
+            mCityText.setText(mPlan.getAddress().getCity());
         }
 
         return view;
@@ -95,7 +98,8 @@ public final class EditPlanAddressFragment extends InjectedFragment {
         final EditAddressRequest request = new EditAddressRequest(
                 mStreetAddressText.getAddress(),
                 mAptAddressText.getText().toString(),
-                mZipCodeText.getZipCode()
+                mZipCodeText.getZipCode(),
+                mCityText.getText().toString()
         );
         showUiBlockers();
         UiUtils.dismissKeyboard(getActivity());

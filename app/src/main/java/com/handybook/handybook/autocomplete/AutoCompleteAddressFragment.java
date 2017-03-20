@@ -41,18 +41,23 @@ import rx.functions.Func1;
  */
 public class AutoCompleteAddressFragment extends InjectedFragment {
 
-    private static final int DELAY = 500;
+    private static final int DEBOUNCE_DELAY = 250;
     //the delay before we fire a request to address autocomplete
     private static final String KEY_FILTER = "filter";
     private static final String KEY_ADDR1 = "address1";
     private static final String KEY_ADDR2 = "address2";
+    private static final String KEY_CITY = "city";
+    private static final String KEY_STATE = "state";
     private static final String KEY_CONFIGURATION = "configuration";
 
     @Bind(R.id.autocomplete_address_text_street)
-    public StreetAddressInputTextView mStreet;
-
+    private StreetAddressInputTextView mStreet;
     @Bind(R.id.autocomplete_address_text_other)
-    public EditText mOther;
+    private EditText mApt;
+    @Bind(R.id.autocomplete_address_text_city)
+    private EditText mCity;
+    @Bind(R.id.autocomplete_address_text_state)
+    private EditText mState;
 
     @Inject
     AddressAutoCompleteManager mAutoCompleteManager;
@@ -66,16 +71,21 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
     ZipValidationResponse.ZipArea mZipFilter = null;
     Configuration mConfiguration;
 
+    @NonNull
     public static AutoCompleteAddressFragment newInstance(
             final ZipValidationResponse.ZipArea filter,
             final String address1,
             final String address2,
+            final String city,
+            final String state,
             final Configuration config
     ) {
         Bundle args = new Bundle();
         args.putSerializable(KEY_FILTER, filter);
         args.putString(KEY_ADDR1, address1);
         args.putString(KEY_ADDR2, address2);
+        args.putString(KEY_CITY, city);
+        args.putString(KEY_STATE, state);
         args.putSerializable(KEY_CONFIGURATION, config);
 
         AutoCompleteAddressFragment fragment = new AutoCompleteAddressFragment();
@@ -96,7 +106,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
         if (getArguments() != null) {
             mZipFilter = (ZipValidationResponse.ZipArea) getArguments().getSerializable(KEY_FILTER);
             mStreet.setText(getArguments().getString(KEY_ADDR1));
-            mOther.setText(getArguments().getString(KEY_ADDR2));
+            mApt.setText(getArguments().getString(KEY_ADDR2));
             mConfiguration = (Configuration) getArguments().getSerializable(KEY_CONFIGURATION);
         }
 
@@ -130,35 +140,56 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
         return view;
     }
 
+    @NonNull
+    public String getStreet() {
+        return mStreet.getAddress();
+    }
+
+    @NonNull
+    public String getApt() {
+        return mApt.getText().toString();
+    }
+
+    @NonNull
+    public String getCity() {
+        return mCity.getText().toString();
+    }
+
+    @NonNull
+    public String getState() {
+        return mState.getText().toString();
+    }
+
     private void subscribe() {
-        mSubscription = RxTextView.textChanges(mStreet)
-                                  .debounce(DELAY, TimeUnit.MILLISECONDS)
-                                  .skip(1)
-                                  .flatMap(new Func1<CharSequence, Observable<List<String>>>() {
-                                      @Override
-                                      public Observable<List<String>> call(CharSequence charSequence) {
-                                          return Observable.just(makeApiCall(charSequence.toString()));
-                                      }
-                                  })
-                                  .observeOn(AndroidSchedulers.mainThread())
-                                  .subscribe(new Subscriber<List<String>>() {
-                                      @Override
-                                      public void onCompleted() {
-                                      }
+        mSubscription = RxTextView
+                .textChanges(mStreet)
+                .debounce(DEBOUNCE_DELAY, TimeUnit.MILLISECONDS)
+                .skip(1)
+                .flatMap(new Func1<CharSequence, Observable<List<String>>>() {
+                    @Override
+                    public Observable<List<String>> call(CharSequence charSequence) {
+                        return Observable.just(makeApiCall(charSequence.toString()));
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<String>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-                                      @Override
-                                      public void onError(final Throwable e) {
-                                          //sometimes, we get an RetrofitError: thread interrupted, in which
-                                          //case this stream terminates. Fail silently and resubscribe.
-                                          mListPopupWindow.dismiss();
-                                          subscribe();
-                                      }
+                    @Override
+                    public void onError(final Throwable e) {
+                        //sometimes, we get an RetrofitError: thread interrupted, in which
+                        //case this stream terminates. Fail silently and resubscribe.
+                        mListPopupWindow.dismiss();
+                        subscribe();
+                    }
 
-                                      @Override
-                                      public void onNext(@NonNull final List<String> strings) {
-                                          onAutoCompleteResultsReceived(strings);
-                                      }
-                                  });
+                    @Override
+                    public void onNext(@NonNull final List<String> strings) {
+                        onAutoCompleteResultsReceived(strings);
+                    }
+                });
     }
 
     @VisibleForTesting

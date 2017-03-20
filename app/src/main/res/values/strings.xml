@@ -50,6 +50,7 @@
     <string name="where_located">Okay, where are you located?</string>
     <string name="where_located_simple">Where are you located?</string>
     <string name="zip_code">ZIP Code</string>
+    <string name="city">City</string>
     <string name="details">Details</string>
     <string name="tell_us_job">Got it! Tell us about the job</string>
     <string name="tell_us_place">Tell us about your place</string>

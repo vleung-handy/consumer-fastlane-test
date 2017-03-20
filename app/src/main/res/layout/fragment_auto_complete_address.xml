@@ -1,25 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/addr_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     >
 
-    <com.handybook.handybook.core.ui.widget.StreetAddressInputTextView
-        android:id="@+id/autocomplete_address_text_street"
-        android:width="0dp"
-        android:layout_weight="2"
-        android:dropDownWidth="match_parent"
-        style="@style/EditText.StreetAddress"
-        />
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
 
-    <EditText
-        android:id="@+id/autocomplete_address_text_other"
-        android:width="0dp"
-        android:layout_weight="3"
-        style="@style/EditText.OtherAddress"
-        />
+        <com.handybook.handybook.core.ui.widget.StreetAddressInputTextView
+            android:id="@+id/autocomplete_address_text_street"
+            style="@style/EditText.StreetAddress"
+            android:layout_weight="2"
+            android:width="0dp"
+            android:dropDownWidth="match_parent"
+            />
 
+        <EditText
+            android:id="@+id/autocomplete_address_text_other"
+            style="@style/EditText.OtherAddress"
+            android:layout_weight="3"
+            android:width="0dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <com.handybook.handybook.core.ui.widget.StreetAddressInputTextView
+            android:id="@+id/autocomplete_address_text_city"
+            style="@style/EditText.City"
+            android:layout_weight="2"
+            android:width="0dp"
+            android:dropDownWidth="match_parent"
+            />
+
+        <EditText
+            android:id="@+id/autocomplete_address_text_state"
+            style="@style/EditText.State"
+            android:layout_weight="3"
+            android:width="0dp"
+            />
+
+    </LinearLayout>
 </LinearLayout>
