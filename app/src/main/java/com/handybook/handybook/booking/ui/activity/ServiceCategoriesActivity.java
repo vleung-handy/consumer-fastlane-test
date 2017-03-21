@@ -41,7 +41,7 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity {
         String promoCode = bundleOrUrlParam(DeepLinkParams.PROMO_CODE);
 
         Configuration configuration = mConfigurationManager.getPersistentConfiguration();
-        if (configuration.isBottomNavEnabled() && configuration.isHomeScreenV2Enabled()) {
+        if (configuration.isBottomNavEnabled()) {
             return ServiceCategoriesHomeFragment.newInstance(serviceId, promoCode);
         }
 

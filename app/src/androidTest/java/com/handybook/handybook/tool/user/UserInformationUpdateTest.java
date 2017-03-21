@@ -1,7 +1,7 @@
 package com.handybook.handybook.tool.user;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.tool.data.TestUsers;
 import com.handybook.handybook.tool.model.TestUser;
 import com.handybook.handybook.tool.util.AppInteractionUtil;
@@ -13,9 +13,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class UserInformationUpdateTest {
 
@@ -27,8 +27,8 @@ public class UserInformationUpdateTest {
     private static final String NEW_PHONE_FORMATTED = "(901) 334-5567";
 
     @Rule
-    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<SplashActivity> mActivityRule =
+            new LauncherActivityTestRule<>(SplashActivity.class);
 
     @Test
     public void testUpdateInformation() {
@@ -36,11 +36,8 @@ public class UserInformationUpdateTest {
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();
 
-        //Go to My Account - assuming that is at position 5
-        //(don't know how to cleanly query nested item)
-        AppInteractionUtil.openDrawer();
-        ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        onView(withText(R.string.account)).perform(click());
+        //navigate to account page
+        onView(withId(R.id.account)).perform(click());
 
         // Click into contact info page
         ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
@@ -57,6 +54,7 @@ public class UserInformationUpdateTest {
         TextViewUtil.updateEditTextView(R.id.contact_phone_text, NEW_PHONE);
         onView(withId(R.id.contact_update_button)).perform(click());
 
+        //this is flaky
         ViewUtil.waitForToastMessageVisibility(
                 R.string.info_updated,
                 true,
@@ -71,13 +69,11 @@ public class UserInformationUpdateTest {
         );
 
         // Go somewhere else(Make a Booking, in this case) and come back to profile screen
-        ViewUtil.waitForViewVisible(R.id.contact_name_text, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        AppInteractionUtil.openDrawer();
-        ViewUtil.waitForTextVisible(R.string.make_a_booking, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        onView(withText(R.string.make_a_booking)).perform(click());
-        AppInteractionUtil.openDrawer();
-        ViewUtil.waitForTextVisible(R.string.account, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
-        onView(withText(R.string.account)).perform(click());
+        pressBack();
+
+        onView(withId(R.id.bookings)).perform(click());
+
+        onView(withId(R.id.account)).perform(click());
 
         // Click into contact info page
         ViewUtil.waitForTextNotVisible(R.string.loading, ViewUtil.LONG_MAX_WAIT_TIME_MS);
