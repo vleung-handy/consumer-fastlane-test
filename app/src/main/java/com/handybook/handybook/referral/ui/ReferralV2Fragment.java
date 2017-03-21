@@ -12,6 +12,8 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
 
@@ -28,10 +30,19 @@ public class ReferralV2Fragment extends InjectedFragment {
     public static final String EXTRA_REQUEST_COMPLETED = "request-completed";
 
     private ReferralDescriptor mReferralDescriptor;
+    private String mSource;
     private boolean mRequestCompleted = false;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
+    public static ReferralV2Fragment newInstance(String source) {
+        Bundle args = new Bundle();
+        args.putString(BundleKeys.REFERRAL_PAGE_SOURCE, source);
+        ReferralV2Fragment fragment = new ReferralV2Fragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -61,6 +72,8 @@ public class ReferralV2Fragment extends InjectedFragment {
 
         setupToolbar(mToolbar, getString(R.string.free_cleanings));
         mToolbar.setNavigationIcon(null);
+
+        bus.post(new LogEvent.AddLogEvent(new ReferralLog.ReferralOpenLog()));
         return view;
     }
 
@@ -95,7 +108,8 @@ public class ReferralV2Fragment extends InjectedFragment {
                 .beginTransaction()
                 .replace(
                         R.id.referral_v2_main,
-                        ProReferralFragment.newInstance(mReferralDescriptor)
+                        ProReferralFragment.newInstance(mReferralDescriptor, mSource),
+                        ProReferralFragment.class.getName()
                 )
                 .commit();
     }
@@ -105,7 +119,8 @@ public class ReferralV2Fragment extends InjectedFragment {
                 .beginTransaction()
                 .replace(
                         R.id.referral_v2_main,
-                        ReferralFragment.newInstance(mReferralDescriptor, null, true)
+                        ReferralFragment.newInstance(mReferralDescriptor, mSource, true),
+                        ProReferralFragment.class.getName()
                 )
                 .commit();
     }

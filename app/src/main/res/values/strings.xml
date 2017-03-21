@@ -358,7 +358,7 @@
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
     <string name="scan_credit_card_button">Scan credit card</string>
-    <string name="free_cleanings">Free Cleanings</string>
+    <string name="free_cleanings">Get Free Cleanings</string>
     <string name="referral_title">Earn free cleanings</string>
     <string name="referral_dialog_title">Share the Love</string>
     <string name="referral_subtitle_formatted">Get %1$s in credit when you send %2$s to a friend for their first booking.</string>
@@ -576,9 +576,15 @@
     <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn More</a>]]></string>
     <string name="account_active_plans_saved_cleanings_faq_url">https://handy.com/faq/subscription_credits</string>
     <string name="environment_name">[Ns: %1$s]</string>
-    <string name="pro_referral_title">Recommend Your Pro</string>
-    <string name="pro_referral_subtitle">Get $%$1s when your friend books with your pro. Plus, your pro gets $$ too!</string>
+    <plurals name="pro_referral_title">
+        <item quantity="one">Recommend Your Pro</item>
+        <item quantity="other">Recommend Your Pros</item>
+    </plurals>
+
+    <string name="pro_referral_subtitle">Get %1$s when your friend books with your pro. Plus, your pro gets $$ too!</string>
     <string name="pro_referral_share_link">Or share your link:</string>
+    <string name="pro_referral_not_yet_rated">Not yet rated</string>
+    <string name="pro_referral_recommend">Recommend</string>
     <string name="share">Share</string>
 
     <!--banner that prompts user to rate the app in the play store-->

@@ -10,7 +10,6 @@ import android.support.v7.widget.SnapHelper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.handybook.handybook.R;
 
@@ -66,14 +65,6 @@ public class ProTeamCarouselView extends RelativeLayout
                 this
         );
         mRecyclerView.setAdapter(mCarouselRecyclerAdapter);
-
-        if (mProfiles.size() <= 1) {
-            mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        }
-        else {
-            mRecyclerView.setOverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS);
-        }
-
     }
 
     public void bind(
@@ -83,6 +74,13 @@ public class ProTeamCarouselView extends RelativeLayout
         mProfiles = models;
         mRecommendClickListener = recommendClickListener;
         mCarouselRecyclerAdapter.setProCarouselVMs(mProfiles);
+
+        if (mProfiles.size() <= 1) {
+            mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        }
+        else {
+            mRecyclerView.setOverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS);
+        }
     }
 
     @Override
@@ -91,11 +89,5 @@ public class ProTeamCarouselView extends RelativeLayout
         if (mRecommendClickListener != null) {
             mRecommendClickListener.onRecommendClick(pro);
         }
-
-        Toast.makeText(
-                getContext(),
-                "Recommend click for pro: " + pro.getDisplayName(),
-                Toast.LENGTH_SHORT
-        ).show();
     }
 }

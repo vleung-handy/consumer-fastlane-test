@@ -45,6 +45,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.referral.ui.ReferralFragment;
+import com.handybook.handybook.referral.ui.ReferralV2Fragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -197,7 +198,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
             public void onClick(final View v) {
                 bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareBannerTappedLog()));
                 Fragment fragment
-                        = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
+                        = ReferralV2Fragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
                 FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
             }
         });

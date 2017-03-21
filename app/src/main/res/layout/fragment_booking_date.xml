@@ -2,12 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/handy_bg">
+                android:background="@color/handy_bg"
+    >
 
     <Button
         android:id="@+id/next_button"
+        style="@style/Button.Green"
         android:text="@string/next"
-        style="@style/Button.Green" />
+        />
 
     <include
         layout="@layout/toolbar"
@@ -23,62 +25,64 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/ContentLayout.NoBottom">
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="0dp"
+            >
 
             <TextView
                 android:id="@+id/location_text"
+                style="@style/TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
                 android:gravity="center"
                 android:text="@string/when_come"
-                style="@style/TextView" />
+                />
 
-            <DatePicker
-                android:id="@+id/date_picker"
-                android:datePickerMode="spinner"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:id="@+id/booking_date_time_input_fragment_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/location_text"
-                android:calendarViewShown="false"
-                android:layout_centerHorizontal="true" />
-
-            <com.handybook.handybook.core.ui.view.GroovedTimePicker
-                android:id="@+id/time_picker"
-                android:timePickerMode="spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/date_picker"
-                android:layout_centerHorizontal="true"/>
-
+                android:layout_marginTop="@dimen/default_margin"
+                />
 
             <TextView
                 android:id="@+id/reschedule_cancel_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/reschedule_cancel_booking"
-                android:visibility="gone"
-                android:textColor="@color/handy_blue"
-                android:layout_below="@id/time_picker"
-                android:gravity="center"
-                android:clickable="true"
+                android:layout_below="@id/booking_date_time_input_fragment_container"
                 android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="@string/reschedule_cancel_booking"
+                android:textColor="@color/handy_blue"
+                android:visibility="gone"
                 />
 
             <TextView
                 android:id="@+id/notice_text"
+                style="@style/TextView.XSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/reschedule_cancel_text"
-                android:gravity="center"
                 android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:gravity="center"
                 android:text="notice"
                 android:visibility="gone"
-                style="@style/TextView.XSmall" />
+                />
 
             <View
-                android:layout_below="@id/notice_text"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/default_margin"
+                android:layout_below="@id/notice_text"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
                 />
 
         </RelativeLayout>

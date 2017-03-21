@@ -43,8 +43,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingAddressFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingAddressFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentTest;
-import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2;
-import com.handybook.handybook.booking.ui.fragment.BookingDateFragmentV2Test;
 import com.handybook.handybook.booking.ui.fragment.BookingDateTimeInputFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragmentTest;
@@ -108,6 +106,7 @@ import com.handybook.handybook.logger.handylogger.EventLogManagerTest;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
+import com.handybook.handybook.referral.ui.BaseReferralFragment;
 import com.handybook.handybook.referral.ui.ProReferralFragment;
 import com.handybook.handybook.referral.ui.RedemptionActivity;
 import com.handybook.handybook.referral.ui.RedemptionEmailSignUpFragment;
@@ -154,9 +153,7 @@ import static org.mockito.Mockito.when;
         BookingOptionsFragmentTest.class,
         BookingDateActivity.class,
         BookingDateFragment.class,
-        BookingDateFragmentV2.class,
         BookingDateFragmentTest.class,
-        BookingDateFragmentV2Test.class,
         BookingRecurrenceActivity.class,
         BookingRecurrenceFragment.class,
         BookingRecurrenceFragmentTest.class,
@@ -182,6 +179,7 @@ import static org.mockito.Mockito.when;
         ReferralFragment.class,
         ReferralV2Fragment.class,
         ProReferralFragment.class,
+        BaseReferralFragment.class,
         ReferralFragmentTest.class,
         RedemptionActivity.class,
         RedemptionFragment.class,
