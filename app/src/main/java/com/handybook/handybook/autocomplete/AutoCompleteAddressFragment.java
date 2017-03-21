@@ -15,6 +15,8 @@ import android.widget.EditText;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.configuration.model.Configuration;
+import com.handybook.handybook.core.ui.widget.CityInputTextView;
+import com.handybook.handybook.core.ui.widget.StateInputTextView;
 import com.handybook.handybook.core.ui.widget.StreetAddressInputTextView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.UiUtils;
@@ -55,9 +57,9 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
     @Bind(R.id.autocomplete_address_text_other)
     EditText mApt;
     @Bind(R.id.autocomplete_address_text_city)
-    EditText mCity;
+    CityInputTextView mCity;
     @Bind(R.id.autocomplete_address_text_state)
-    EditText mState;
+    StateInputTextView mState;
 
     @Inject
     AddressAutoCompleteManager mAutoCompleteManager;
@@ -107,6 +109,8 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
             mZipFilter = (ZipValidationResponse.ZipArea) getArguments().getSerializable(KEY_FILTER);
             mStreet.setText(getArguments().getString(KEY_ADDR1));
             mApt.setText(getArguments().getString(KEY_ADDR2));
+            mCity.setText(getArguments().getString(KEY_CITY));
+            mState.setText(getArguments().getString(KEY_STATE));
             mConfiguration = (Configuration) getArguments().getSerializable(KEY_CONFIGURATION);
         }
 
@@ -151,12 +155,12 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
 
     @NonNull
     public String getCity() {
-        return mCity.getText().toString();
+        return mCity.getCity();
     }
 
     @NonNull
     public String getState() {
-        return mState.getText().toString();
+        return mState.getState();
     }
 
     private void subscribe() {

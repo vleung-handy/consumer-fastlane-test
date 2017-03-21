@@ -68,8 +68,8 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
                     ),
                     mBooking.getAddress().getAddress1(),
                     mBooking.getAddress().getAddress2(),
-                    mAutoCompleteFragment.getCity(),
-                    mAutoCompleteFragment.getState(),
+                    mBooking.getAddress().getCity(),
+                    mBooking.getAddress().getState(),
                     mConfigurationManager.getCachedConfiguration()
             );
 

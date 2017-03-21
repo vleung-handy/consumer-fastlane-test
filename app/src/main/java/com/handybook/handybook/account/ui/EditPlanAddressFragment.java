@@ -18,6 +18,8 @@ import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.ui.widget.CityInputTextView;
+import com.handybook.handybook.core.ui.widget.StateInputTextView;
 import com.handybook.handybook.core.ui.widget.StreetAddressInputTextView;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
@@ -36,11 +38,11 @@ public final class EditPlanAddressFragment extends InjectedFragment {
     @Bind(R.id.plan_address_apt_addr_text)
     EditText mAptAddressText;
     @Bind(R.id.plan_address_city_text)
-    EditText mCityText;
+    CityInputTextView mCityText;
+    @Bind(R.id.plan_address_state_text)
+    StateInputTextView mStateText;
     @Bind(R.id.plan_address_zip_text)
     ZipCodeInputTextView mZipCodeText;
-    @Bind(R.id.plan_address_state_text)
-    EditText mStateText;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -104,8 +106,8 @@ public final class EditPlanAddressFragment extends InjectedFragment {
                 mStreetAddressText.getAddress(),
                 mAptAddressText.getText().toString(),
                 mZipCodeText.getZipCode(),
-                mCityText.getText().toString(),
-                mStateText.getText().toString()
+                mCityText.getCity(),
+                mStateText.getState()
         );
         showUiBlockers();
         UiUtils.dismissKeyboard(getActivity());

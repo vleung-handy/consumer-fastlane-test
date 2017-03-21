@@ -51,7 +51,7 @@
                 android:orientation="horizontal"
                 >
 
-                <TextView
+                <com.handybook.handybook.core.ui.widget.CityInputTextView
                     android:id="@+id/plan_address_city_text"
                     style="@style/EditText.City"
                     android:layout_width="0dp"
@@ -59,7 +59,7 @@
                     android:layout_weight="4"
                     />
 
-                <com.handybook.handybook.core.ui.widget.ZipCodeInputTextView
+                <com.handybook.handybook.core.ui.widget.StateInputTextView
                     android:id="@+id/plan_address_state_text"
                     style="@style/EditText.State"
                     android:layout_width="0dp"
