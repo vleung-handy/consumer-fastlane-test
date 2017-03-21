@@ -42,6 +42,8 @@
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/default_padding"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         >
 
         <LinearLayout
@@ -49,27 +51,18 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
+            android:paddingTop="@dimen/default_padding_double"
             >
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin_half"
                 >
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/referral_image_height"
-                    android:background="@color/handy_background_blue"
-                    />
-
                 <ImageView
                     android:id="@+id/fragment_referral_image"
-                    android:layout_width="@dimen/referral_image_width"
-                    android:layout_height="@dimen/referral_image_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:src="@drawable/img_referral_couch"
+                    android:src="@drawable/img_referral_main"
                     />
                 <com.handybook.handybook.library.ui.view.snowflake.SnowView
                     android:id="@+id/fragment_referral_snowview"
@@ -84,6 +77,7 @@
                 android:layout_marginEnd="@dimen/default_margin_double"
                 android:layout_marginStart="@dimen/default_margin_double"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/default_padding"
                 >
 
                 <TextView
@@ -92,7 +86,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin_quarter"
-                    android:layout_marginTop="@dimen/default_margin"
                     android:gravity="center_horizontal"
                     tools:text="Earn free cleanings"
                     />
@@ -104,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:lineSpacingMultiplier="1"
-                    tools:text="Sharing is caring, and when you share Handy with a friend, they get $XX off their first booking, and you earn $YY once their first booking is done."
+                    tools:text="Give $$ and get $$ for each friend that completes a booking."
                     />
 
                 <com.handybook.handybook.booking.ui.view.BookingActionButton
@@ -130,36 +123,6 @@
                     android:drawableStart="@drawable/ic_referral_sms_white"
                     android:text="@string/fragment_referral_sms_invite"
                     />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin_half"
-                    android:background="@drawable/bg_rectangle_dotted_white"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/default_padding"
-                    >
-
-                    <TextView
-                        style="@style/TextView.Medium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/default_margin_half"
-                        android:layout_marginRight="@dimen/default_margin_half"
-                        android:text="@string/fragment_referral_copy_invite"
-                        android:textColor="@color/light_grey"
-                        android:textIsSelectable="false"
-                        />
-
-                    <TextView
-                        android:id="@+id/fragment_referral_share_url"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        tools:text="handy.com/annmarie?someextrastuff=whatever_but_long"
-                        />
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/fragment_referral_cta_more"
