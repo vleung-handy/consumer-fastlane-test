@@ -99,7 +99,8 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
                 mAutoCompleteFragment.getStreet(),
                 mAutoCompleteFragment.getApt(),
                 mZipCodeInputTextView.getZipCode(),
-                mAutoCompleteFragment.getCity()
+                mAutoCompleteFragment.getCity(),
+                mAutoCompleteFragment.getState()
         );
         showUiBlockers();
         bus.post(new BookingEditEvent.RequestEditBookingAddress(

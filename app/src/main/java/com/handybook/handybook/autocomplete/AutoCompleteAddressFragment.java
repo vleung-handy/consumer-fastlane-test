@@ -124,13 +124,12 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
                     bus.post(new LogEvent.AddLogEvent(
                             new AddressAutocompleteLog.AddressAutocompleteItemTappedLog(prediction)
                     ));
-
                     mStreet.setText(prediction);
                     mStreet.setSelection(mStreet.getText().length());
+                    mCity.setText(mPredictions.get(position).getCity());
+                    mState.setText(mPredictions.get(position).getState());
                     mListPopupWindow.dismiss();
                     hideKeyboard();
-
-                    //skipping the first element fired, because it is triggered by the "setText" above.
                     subscribe();
                 }
             });
@@ -164,7 +163,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
         mSubscription = RxTextView
                 .textChanges(mStreet)
                 .debounce(DEBOUNCE_DELAY, TimeUnit.MILLISECONDS)
-                .skip(1)
+                .skip(1) // Skipping the first element fired, because it is triggered by the "setText" above.
                 .flatMap(new Func1<CharSequence, Observable<List<String>>>() {
                     @Override
                     public Observable<List<String>> call(CharSequence charSequence) {

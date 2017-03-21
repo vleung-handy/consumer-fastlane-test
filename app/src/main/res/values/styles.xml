@@ -405,7 +405,7 @@
     <style name="EditText.State">
         <item name="android:inputType">textPostalAddress</item>
         <item name="android:singleLine">true</item>
-        <item name="android:hint">@string/city</item>
+        <item name="android:hint">@string/state</item>
         <item name="android:maxLength">100</item>
     </style>
 

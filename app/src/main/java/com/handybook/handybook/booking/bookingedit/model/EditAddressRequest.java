@@ -14,17 +14,21 @@ public class EditAddressRequest {
     private String mZipcode;
     @SerializedName("city")
     private String mCity;
+    @SerializedName("state")
+    private final String mState;
 
     public EditAddressRequest(
             final String address1,
             final String address2,
             final String zipcode,
-            final String city
+            final String city,
+            final String state
     ) {
         mAddress1 = address1;
         mAddress2 = address2;
         mZipcode = zipcode;
         mCity = city;
+        mState = state;
     }
 
     @Nullable
@@ -45,6 +49,11 @@ public class EditAddressRequest {
     @Nullable
     public String getCity() {
         return mCity;
+    }
+
+    @Nullable
+    public String getState() {
+        return mState;
     }
 
 }

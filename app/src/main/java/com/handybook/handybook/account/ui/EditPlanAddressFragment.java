@@ -3,6 +3,7 @@ package com.handybook.handybook.account.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,12 +39,15 @@ public final class EditPlanAddressFragment extends InjectedFragment {
     EditText mCityText;
     @Bind(R.id.plan_address_zip_text)
     ZipCodeInputTextView mZipCodeText;
+    @Bind(R.id.plan_address_state_text)
+    EditText mStateText;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
     private RecurringBooking mPlan;
 
+    @NonNull
     public static EditPlanAddressFragment newInstance(RecurringBooking plan) {
         final EditPlanAddressFragment fragment = new EditPlanAddressFragment();
         final Bundle args = new Bundle();
@@ -74,6 +78,7 @@ public final class EditPlanAddressFragment extends InjectedFragment {
             mAptAddressText.setText(mPlan.getAddress().getAddress2());
             mZipCodeText.setText(mPlan.getAddress().getZip());
             mCityText.setText(mPlan.getAddress().getCity());
+            mStateText.setText(mPlan.getAddress().getState());
         }
 
         return view;
@@ -99,7 +104,8 @@ public final class EditPlanAddressFragment extends InjectedFragment {
                 mStreetAddressText.getAddress(),
                 mAptAddressText.getText().toString(),
                 mZipCodeText.getZipCode(),
-                mCityText.getText().toString()
+                mCityText.getText().toString(),
+                mStateText.getText().toString()
         );
         showUiBlockers();
         UiUtils.dismissKeyboard(getActivity());
