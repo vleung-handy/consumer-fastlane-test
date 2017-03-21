@@ -41,7 +41,9 @@ public class AppInteractionUtil {
      */
     public static void logOutAndPassOnboarding() {
         //log out if necessary
-        //open nav drawer to log out if necessary
+
+        //make sure we are past the loading screen
+        ViewUtil.waitForViewVisible(R.id.fragment_container, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
 
         // Skip 'share the love' if it shows up
         dismissShareTheLoveIfNeeded();
@@ -61,7 +63,7 @@ public class AppInteractionUtil {
 
         if(ViewUtil.isViewDisplayed(R.id.fragment_service_categories_home_sign_in_text))
         {
-            //we are already signed out
+            //we are already signed out and on services page
             return;
         }
         //we are signed in
