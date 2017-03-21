@@ -37,7 +37,8 @@ android {
         versionName '1.43.0'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
-        testInstrumentationRunner "com.handybook.handybook.core.CoreTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //can't use CoreTestRunner for now because it prevents animations from being disabled on AWS
     }
     buildTypes {
         release {
