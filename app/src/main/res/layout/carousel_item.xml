@@ -7,8 +7,8 @@
     android:layout_margin="@dimen/default_margin"
     android:background="@drawable/bg_rounded_white"
     android:paddingBottom="@dimen/default_padding"
-    android:paddingLeft="@dimen/default_padding_double"
-    android:paddingRight="@dimen/default_padding_double"
+    android:paddingLeft="@dimen/pro_referral.carousel_item_padding"
+    android:paddingRight="@dimen/pro_referral.carousel_item_padding"
     android:paddingTop="@dimen/default_padding"
     >
 

@@ -3,15 +3,11 @@ package com.handybook.handybook.library.ui.view.proteamcarousel;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.library.ui.view.ViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +16,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ProTeamCarouselView extends RelativeLayout
-        implements CarouselVH.RecommendClickListener {
+        implements CarouselPagerAdapter.RecommendClickListener {
 
-    @Bind(R.id.carousel_recycler_view)
-    RecyclerView mRecyclerView;
+    @Bind(R.id.carousel_pager)
+    ViewPager mViewPager;
 
     private List<ProCarouselVM> mProfiles;
-    private CarouselVH.RecommendClickListener mRecommendClickListener;
-    private CarouselRecyclerAdapter mCarouselRecyclerAdapter;
+    private CarouselPagerAdapter.RecommendClickListener mRecommendClickListener;
+    private CarouselPagerAdapter mCarouselRecyclerAdapter;
 
     public ProTeamCarouselView(final Context context) {
         super(context);
@@ -52,35 +48,25 @@ public class ProTeamCarouselView extends RelativeLayout
         inflate(getContext(), R.layout.pro_team_carousel, this);
         ButterKnife.bind(this);
 
-        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(mRecyclerView);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerView.setLayoutManager(layoutManager);
-
         mProfiles = new ArrayList<>();
-        mCarouselRecyclerAdapter = new CarouselRecyclerAdapter(
+        mCarouselRecyclerAdapter = new CarouselPagerAdapter(
+                getContext(),
                 mProfiles,
                 this
         );
-        mRecyclerView.setAdapter(mCarouselRecyclerAdapter);
+        mViewPager.setAdapter(mCarouselRecyclerAdapter);
+        mViewPager.setClipToPadding(false);
+        mViewPager.setPageMargin((int) getResources().getDimension(R.dimen.default_margin_half));
+
     }
 
     public void bind(
             @NonNull final List<ProCarouselVM> models,
-            @Nullable final CarouselVH.RecommendClickListener recommendClickListener
+            @Nullable final CarouselPagerAdapter.RecommendClickListener recommendClickListener
     ) {
         mProfiles = models;
         mRecommendClickListener = recommendClickListener;
         mCarouselRecyclerAdapter.setProCarouselVMs(mProfiles);
-
-        if (mProfiles.size() <= 1) {
-            mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        }
-        else {
-            mRecyclerView.setOverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS);
-        }
     }
 
     @Override

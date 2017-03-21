@@ -2,10 +2,12 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/carousel_recycler_view"
+    <com.handybook.handybook.library.ui.view.ViewPager
+        android:id="@+id/carousel_pager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:paddingLeft="@dimen/default_padding_double"
+        android:paddingRight="@dimen/default_padding_double"
         />
 </merge>
