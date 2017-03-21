@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.PromoCode;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.data.DataManager;
@@ -184,17 +183,8 @@ public final class PromosFragment extends BookingFlowFragment {
 
                         bookingManager.setPromoTabCoupon(code.getCode());
 
-                        Intent intent;
-                        if (mConfigurationManager.getPersistentConfiguration()
-                                                 .isBottomNavEnabled()) {
-                            //launch bottom nav activity and select services tab
-                            intent = new Intent(getActivity(), BottomNavActivity.class);
-                            intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
-                        }
-                        else {
-                            //launch service categories activity which extends menu drawer activity
-                            intent = new Intent(getActivity(), ServiceCategoriesActivity.class);
-                        }
+                        Intent intent = new Intent(getActivity(), BottomNavActivity.class);
+                        intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
 
                         intent.addFlags(
                                 Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

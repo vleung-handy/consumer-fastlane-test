@@ -73,8 +73,6 @@ import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelecti
 import com.handybook.handybook.booking.ui.fragment.OnboardingTest;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
-import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
-import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialogFragment;
@@ -144,7 +142,6 @@ import static org.mockito.Mockito.when;
         BookingEditExtrasActivity.class,
         BookingEditExtrasFragment.class,
         ServiceCategoriesActivity.class,
-        ServiceCategoriesFragment.class,
         BookingLocationActivity.class,
         BookingLocationFragment.class,
         BookingLocationFragmentTest.class,
@@ -175,7 +172,6 @@ import static org.mockito.Mockito.when;
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,
         UpdatePaymentFragmentTest.class,
-        ServiceCategoriesFragmentTest.class,
         ReferralFragment.class,
         ReferralV2Fragment.class,
         ProReferralFragment.class,

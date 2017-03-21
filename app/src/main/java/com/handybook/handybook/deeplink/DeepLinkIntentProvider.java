@@ -100,8 +100,7 @@ public class DeepLinkIntentProvider {
                       DEEP_LINK_NEW_BASE_URL + "bookings"
               })
     public static Intent getMyBookingsIntent(Context context) {
-        if (isUserLoggedIn() &&
-            sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
+        if (isUserLoggedIn()) {
             return createBottomNavActivityIntent(context, MainNavTab.BOOKINGS);
         }
         else {
@@ -138,8 +137,7 @@ public class DeepLinkIntentProvider {
                       DEEP_LINK_BASE_URL + "account"
               })
     public static Intent getAccountIntent(Context context) {
-        if (isUserLoggedIn() &&
-            sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
+        if (isUserLoggedIn()) {
             return createBottomNavActivityIntent(context, MainNavTab.ACCOUNT);
         }
         else {
@@ -161,8 +159,7 @@ public class DeepLinkIntentProvider {
               })
     public static Intent getProTeamIntent(Context context) {
         //TODO need to handle case in which user not logged in
-        if (isUserLoggedIn() &&
-            sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
+        if (isUserLoggedIn()) {
             return createBottomNavActivityIntent(context, MainNavTab.MESSAGES);
         }
         else {
@@ -176,8 +173,7 @@ public class DeepLinkIntentProvider {
               })
     public static Intent getReferralIntent(Context context) {
         //TODO need to handle case in which user not logged in
-        if (isUserLoggedIn() &&
-            sConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
+        if (isUserLoggedIn()) {
             return createBottomNavActivityIntent(context, MainNavTab.SHARE);
         }
         else {

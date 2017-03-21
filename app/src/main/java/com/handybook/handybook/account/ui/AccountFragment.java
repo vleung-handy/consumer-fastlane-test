@@ -29,7 +29,6 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.UserDataManager;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.core.ui.view.PriceView;
@@ -111,15 +110,9 @@ public class AccountFragment extends InjectedFragment {
 
         setupToolbar(mToolbar, getString(R.string.account));
 
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            mToolbar.setNavigationIcon(null);
-            //if bottom nav is enabled, show
-            mHistoryHelpLayout.setVisibility(View.VISIBLE);
-        }
-        else if (getActivity() instanceof MenuDrawerActivity) {
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
+        mToolbar.setNavigationIcon(null);
+        //if bottom nav is enabled, show
+        mHistoryHelpLayout.setVisibility(View.VISIBLE);
 
         if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled()) {
             mProTeamSubtext.setText(R.string.account_choose_favorite_pro);

@@ -78,11 +78,6 @@ public class HelpWebViewFragment extends InjectedFragment {
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.help));
-        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
-            && getActivity() instanceof MenuDrawerActivity) {
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
 
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity()) {
             @Override

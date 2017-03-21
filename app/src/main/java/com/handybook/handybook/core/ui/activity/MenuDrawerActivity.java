@@ -53,7 +53,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * eventually switch to BottomNavActivity
+ * TODO this is currently being extended by a lot of activities
+ * but we no longer need menu drawer functionality; need to refactor
  */
 public abstract class MenuDrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -160,8 +161,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 if (event != null) {
                     checkLayerInitiation();
                     refreshMenu();
-                    setDrawerDisabled(mConfigurationManager.getPersistentConfiguration()
-                                                           .isBottomNavEnabled());
+                    setDrawerDisabled(true);
                 }
             }
         };
@@ -390,13 +390,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
      * the Menu Drawer screen, or the new bottom nav screen.
      */
     private void goToNewHomeScreen() {
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            startActivity(new Intent(this, BottomNavActivity.class));
-            finish();
-        }
-        else {
-            navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
-        }
+        startActivity(new Intent(this, BottomNavActivity.class));
+        finish();
     }
 
     private boolean isOnboardingV2Showing() {
