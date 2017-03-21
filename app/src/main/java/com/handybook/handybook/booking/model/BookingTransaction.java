@@ -34,6 +34,10 @@ public class BookingTransaction extends Observable {
     private String mAddress1;
     @SerializedName("address2")
     private String mAddress2;
+    @SerializedName("city")
+    private String mCity;
+    @SerializedName("state")
+    private String mState;
     @SerializedName("phone")
     private String mPhone;
     @SerializedName("zipcode")
@@ -163,6 +167,24 @@ public class BookingTransaction extends Observable {
 
     public void setAddress2(final String address2) {
         mAddress2 = address2;
+        triggerObservers();
+    }
+
+    final String getCity() {
+        return mCity;
+    }
+
+    public void setCity(final String city) {
+        mCity = city;
+        triggerObservers();
+    }
+
+    final String getState() {
+        return mState;
+    }
+
+    public void setState(final String state) {
+        mState = state;
         triggerObservers();
     }
 

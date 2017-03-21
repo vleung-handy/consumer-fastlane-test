@@ -51,13 +51,13 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
     private static final String KEY_CONFIGURATION = "configuration";
 
     @Bind(R.id.autocomplete_address_text_street)
-    private StreetAddressInputTextView mStreet;
+    StreetAddressInputTextView mStreet;
     @Bind(R.id.autocomplete_address_text_other)
-    private EditText mApt;
+    EditText mApt;
     @Bind(R.id.autocomplete_address_text_city)
-    private EditText mCity;
+    EditText mCity;
     @Bind(R.id.autocomplete_address_text_state)
-    private EditText mState;
+    EditText mState;
 
     @Inject
     AddressAutoCompleteManager mAutoCompleteManager;
