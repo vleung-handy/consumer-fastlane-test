@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.widget.MenuButton;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
@@ -57,7 +56,6 @@ public final class HelpBannerView extends InjectedRelativeLayout {
                 layoutForRoot();
                 backImage.setVisibility(View.GONE);
                 menuButtonLayout.setVisibility(View.VISIBLE);
-                ((MenuDrawerActivity) getContext()).setDrawerDisabled(false);
             }
             break;
 
@@ -68,7 +66,6 @@ public final class HelpBannerView extends InjectedRelativeLayout {
                 backImage.setVisibility(View.VISIBLE);
 
                 menuButtonLayout.setVisibility(View.GONE);
-                ((MenuDrawerActivity) getContext()).setDrawerDisabled(true);
 
             }
             break;
@@ -78,7 +75,6 @@ public final class HelpBannerView extends InjectedRelativeLayout {
                 backImage.setVisibility(View.VISIBLE);
 
                 menuButtonLayout.setVisibility(View.GONE);
-                ((MenuDrawerActivity) getContext()).setDrawerDisabled(true);
             }
             break;
 
@@ -87,7 +83,6 @@ public final class HelpBannerView extends InjectedRelativeLayout {
                 backImage.setVisibility(View.VISIBLE);
 
                 menuButtonLayout.setVisibility(View.GONE);
-                ((MenuDrawerActivity) getContext()).setDrawerDisabled(true);
             }
             break;
         }

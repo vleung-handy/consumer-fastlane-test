@@ -1,7 +1,6 @@
 package com.handybook.handybook.referral.ui;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -9,12 +8,6 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
 public class RedemptionActivity extends MenuDrawerActivity {
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setDrawerDisabled(true);
-    }
 
     @Override
     protected Fragment createFragment() {

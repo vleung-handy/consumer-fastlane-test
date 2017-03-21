@@ -98,6 +98,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_drawer);
         ButterKnife.bind(this);
+        setDrawerDisabled(true); //always disable menu drawer because bottom nav permanently on
         if (requiresUser() && !mUserManager.isUserLoggedIn()) {
             navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
             finish();
@@ -161,7 +162,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 if (event != null) {
                     checkLayerInitiation();
                     refreshMenu();
-                    setDrawerDisabled(true);
                 }
             }
         };
@@ -239,7 +239,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         MenuDrawerActivity.this.finish();
     }
 
-    public final void setDrawerDisabled(final boolean disableDrawer) {
+    private void setDrawerDisabled(final boolean disableDrawer) {
         if (disableDrawer) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
