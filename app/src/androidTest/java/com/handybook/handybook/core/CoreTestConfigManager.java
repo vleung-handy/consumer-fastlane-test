@@ -37,10 +37,4 @@ public class CoreTestConfigManager extends ConfigurationManager {
     public void onRequestConfiguration(final ConfigurationEvent.RequestConfiguration event) {
         super.onRequestConfiguration(event);
     }
-
-    @Subscribe
-    @Override
-    public void onRefreshConfiguration(final ConfigurationEvent.RefreshConfiguration event) {
-        super.onRefreshConfiguration(event);
-    }
 }

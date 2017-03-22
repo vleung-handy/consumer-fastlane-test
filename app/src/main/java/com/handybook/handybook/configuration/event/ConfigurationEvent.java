@@ -29,7 +29,4 @@ public class ConfigurationEvent {
             this.error = error;
         }
     }
-
-
-    public static class RefreshConfiguration {}
 }
