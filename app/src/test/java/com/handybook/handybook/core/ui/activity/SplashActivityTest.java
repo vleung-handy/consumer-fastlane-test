@@ -2,8 +2,9 @@ package com.handybook.handybook.core.ui.activity;
 
 import android.content.Intent;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.TestBaseApplication;
@@ -91,7 +92,18 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper {
         Intent nextStartedActivity = shadowOf(activityController.get()).getNextStartedActivity();
         assertThat(
                 nextStartedActivity.getComponent().getClassName(),
-                equalTo(BookingsActivity.class.getName())
+                equalTo(BottomNavActivity.class.getName())
+        );
+
+        ActivityController<BottomNavActivity> bottomNavActivityController =
+                Robolectric.buildActivity(BottomNavActivity.class).withIntent(nextStartedActivity);
+        bottomNavActivityController.create().start();
+
+        assertThat(
+                bottomNavActivityController
+                        .get()
+                        .findViewById(R.id.fragment_upcoming_bookings_coordinator_layout) != null,
+                equalTo(true)
         );
     }
 }
