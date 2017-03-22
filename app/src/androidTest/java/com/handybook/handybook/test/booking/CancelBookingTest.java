@@ -1,7 +1,7 @@
 package com.handybook.handybook.test.booking;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.tool.data.TestUsers;
 import com.handybook.handybook.tool.model.TestUser;
 import com.handybook.handybook.tool.util.AppInteractionUtil;
@@ -18,13 +18,12 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class CancelBookingTest {
 
     @Rule
-    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<SplashActivity> mActivityRule =
+            new LauncherActivityTestRule<>(SplashActivity.class);
 
     /**
      * this user has only one upcoming booking
@@ -38,11 +37,7 @@ public class CancelBookingTest {
         AppInteractionUtil.waitForServiceCategoriesPage();
 
         //Go to My Bookings
-        AppInteractionUtil.openDrawer();
-
-        //the "my bookings" nav seems to be added async
-        ViewUtil.waitForTextVisible(R.string.my_bookings, ViewUtil.LONG_MAX_WAIT_TIME_MS);
-        onView(withText(R.string.my_bookings)).perform(click());
+        onView(withId(R.id.bookings)).perform(click());
 
         // Tap on the (only) booking
         ViewUtil.waitForViewVisible(

@@ -99,11 +99,6 @@
     <dimen name="dot_size">16dp</dimen>
     <dimen name="report_issue_button_width">224dp</dimen>
 
-
-    <!-- Referral -->
-    <dimen name="referral_image_height">184dp</dimen>
-    <dimen name="referral_image_width">248dp</dimen>
-
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="active_booking_map_height">200dp</dimen>
     <dimen name="active_booking_error_message_padding">16dp</dimen>
@@ -140,9 +135,5 @@
     <dimen name="rating_flow.star_margin_small">6dp</dimen>
 
 
-    <dimen name="pro_referral.carousel_item_width">275dp</dimen>
-    <dimen name="pro_referral.profile_image_size">96dp</dimen>
-    <dimen name="pro_referral.heart_container_size">28dp</dimen>
-    <dimen name="pro_referral.heart_image_size">18dp</dimen>
 
 </resources>

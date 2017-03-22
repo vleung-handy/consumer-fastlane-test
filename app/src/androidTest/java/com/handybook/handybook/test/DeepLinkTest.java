@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.tool.data.TestUsers;
 import com.handybook.handybook.tool.model.TestUser;
 import com.handybook.handybook.tool.util.AppInteractionUtil;
@@ -19,8 +19,8 @@ import java.io.IOException;
 public class DeepLinkTest {
 
     @Rule
-    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<SplashActivity> mActivityRule =
+            new LauncherActivityTestRule<>(SplashActivity.class);
 
     private static final TestUser TEST_USER = TestUsers.LOGIN;
 
@@ -29,8 +29,6 @@ public class DeepLinkTest {
         AppInteractionUtil.logOutAndPassOnboarding();
         AppInteractionUtil.logIn(TEST_USER);
         AppInteractionUtil.waitForServiceCategoriesPage();
-
-        ViewUtil.waitForViewVisible(R.id.recycler_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
 
         Uri uri;
         Intent deepLinkIntent;

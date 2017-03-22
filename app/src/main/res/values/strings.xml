@@ -361,7 +361,7 @@
     <string name="free_cleanings">Get Free Cleanings</string>
     <string name="referral_title">Earn free cleanings</string>
     <string name="referral_dialog_title">Share the Love</string>
-    <string name="referral_subtitle_formatted">Get %1$s in credit when you send %2$s to a friend for their first booking.</string>
+    <string name="referral_subtitle_formatted">Give %1$s and get %2$s for each friend that completes a booking.</string>
     <string name="referral_dialog_subtitle_formatted">Send\u00a0%1$s to your friends, and you\'ll earn\u00a0%2$s when they complete a\u00a0booking.</string>
     <string name="referral_copied_to_clipboard">Sharing link copied to clipboard</string>
     <string name="redemption_title_formatted">%1$s sent you %2$s!</string>

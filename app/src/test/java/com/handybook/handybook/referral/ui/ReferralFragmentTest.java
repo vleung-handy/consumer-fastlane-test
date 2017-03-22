@@ -116,7 +116,6 @@ public class ReferralFragmentTest extends RobolectricGradleTestWrapper {
                 mFragment.mSubtitle.getText().toString(),
                 equalTo("Give your friends $30 off their first Handy booking, and you get $20!")
         );
-        assertThat(mFragment.mShareUrl.getText().toString(), equalTo("ABC123"));
     }
 
     @Test

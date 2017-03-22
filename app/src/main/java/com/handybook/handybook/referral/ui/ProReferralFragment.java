@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselVH;
+import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselPagerAdapter;
 import com.handybook.handybook.library.ui.view.proteamcarousel.ProCarouselVM;
 import com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView;
 import com.handybook.handybook.library.util.TextUtils;
@@ -86,7 +86,7 @@ public class ProReferralFragment extends BaseReferralFragment {
                 mCarouselVMs.size()
         ));
         mSubtitle.setText(getString(R.string.pro_referral_subtitle, formattedSenderCreditAmount));
-        mCarousel.bind(mCarouselVMs, new CarouselVH.RecommendClickListener() {
+        mCarousel.bind(mCarouselVMs, new CarouselPagerAdapter.RecommendClickListener() {
             @Override
             public void onRecommendClick(final ProCarouselVM pro) {
                 int idx = mCarouselVMs.indexOf(pro);

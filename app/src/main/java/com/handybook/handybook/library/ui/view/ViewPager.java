@@ -14,6 +14,11 @@ public class ViewPager extends android.support.v4.view.ViewPager {
         super(context, attrs);
     }
 
+    /**
+     * This allows the view pager to wrap its height
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
     @Override
     protected void onMeasure(final int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

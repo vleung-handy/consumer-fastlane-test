@@ -1,11 +1,9 @@
 package com.handybook.handybook.test.booking;
 
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.tool.data.TestUsers;
 import com.handybook.handybook.tool.model.TestUser;
 import com.handybook.handybook.tool.util.AppInteractionUtil;
@@ -15,7 +13,6 @@ import com.handybook.handybook.tool.util.ViewUtil;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -24,12 +21,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 //note that animations should be disabled on the device running these tests
-@RunWith(AndroidJUnit4.class)
 public class BookingCreationForExistingUserTest {
 
     @Rule
-    public LauncherActivityTestRule<ServiceCategoriesActivity> mActivityRule =
-            new LauncherActivityTestRule<>(ServiceCategoriesActivity.class);
+    public LauncherActivityTestRule<SplashActivity> mActivityRule =
+            new LauncherActivityTestRule<>(SplashActivity.class);
 
     /**
      * basic test for ensuring that an existing user can create a cleaning booking with default values
@@ -41,11 +37,7 @@ public class BookingCreationForExistingUserTest {
         AppInteractionUtil.logIn(testUser);
         AppInteractionUtil.waitForServiceCategoriesPage();
 
-        //create a home cleaning - assuming that is at position 0
-        //(don't know how to cleanly query nested item)
-        // TODO: figure out why this line keeps on failing (100% reproducible locally)
-        onView(withId(R.id.recycler_view)).perform(
-                RecyclerViewActions.actionOnItemAtPosition(0, AppInteractionUtil.recyclerClick()));
+        AppInteractionUtil.clickHomeCleaningServiceCategory();
 
         testGetQuoteFlow(testUser);
 
