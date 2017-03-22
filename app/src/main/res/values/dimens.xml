@@ -99,11 +99,6 @@
     <dimen name="dot_size">16dp</dimen>
     <dimen name="report_issue_button_width">224dp</dimen>
 
-
-    <!-- Referral -->
-    <dimen name="referral_image_height">184dp</dimen>
-    <dimen name="referral_image_width">248dp</dimen>
-
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="active_booking_map_height">200dp</dimen>
     <dimen name="active_booking_error_message_padding">16dp</dimen>

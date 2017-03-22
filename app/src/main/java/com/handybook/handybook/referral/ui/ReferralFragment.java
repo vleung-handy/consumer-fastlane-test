@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -42,10 +41,6 @@ public class ReferralFragment extends BaseReferralFragment {
     TextView mTitle;
     @Bind(R.id.fragment_referral_subtitle)
     TextView mSubtitle;
-    @Bind(R.id.fragment_referral_share_url)
-    TextView mShareUrl;
-    @Bind(R.id.fragment_referral_image)
-    ImageView mImage;
     @Bind(R.id.fragment_referral_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.fragment_referral_snowview)
@@ -174,11 +169,9 @@ public class ReferralFragment extends BaseReferralFragment {
                 currencyChar,
                 null
         );
-        final String sharingLink = BASE_REFERRAL_URL + mReferralDescriptor.getCouponCode();
-        mShareUrl.setText(sharingLink);
         mTitle.setText(getString(R.string.referral_title));
         mSubtitle.setText(getString(R.string.referral_subtitle_formatted,
-                                    formattedSenderCreditAmount, formattedReceiverCouponAmount
+                                    formattedReceiverCouponAmount, formattedSenderCreditAmount
         ));
     }
 
@@ -229,12 +222,6 @@ public class ReferralFragment extends BaseReferralFragment {
         else {
             Crashlytics.logException(new Exception("Email referral info is null"));
         }
-    }
-
-    @OnClick(R.id.fragment_referral_share_url)
-    public void onShareUrlClick() {
-        shareUrlClicked(mReferralDescriptor.getCouponCode());
-        sendShareButtonTappedLog();
     }
 
     private void showErrorLayout(String errorMessage) {
