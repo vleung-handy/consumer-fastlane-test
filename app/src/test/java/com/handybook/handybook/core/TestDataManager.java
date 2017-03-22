@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.core.data.HandyRetrofitService;
+import com.handybook.handybook.referral.model.ReferralResponse;
 import com.handybook.handybook.testutil.ModelFactory;
 
 public class TestDataManager extends DataManager {
@@ -72,5 +73,12 @@ public class TestDataManager extends DataManager {
             final Callback<BookingQuote> cb
     ) {
         cb.onError(new DataManagerError(Type.NETWORK, "Got 500"));
+    }
+
+    public void requestPrepareReferrals(
+            final boolean includeProteam,
+            final Callback<ReferralResponse> cb
+    ) {
+        cb.onSuccess(new ReferralResponse());
     }
 }
