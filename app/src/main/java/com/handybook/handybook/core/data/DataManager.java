@@ -877,8 +877,10 @@ public class DataManager {
         );
     }
 
-    public void requestConfiguration(final Callback<Configuration> cb) {
-        mService.requestConfiguration(
+    public void requestConfiguration(final String installationId,
+                                     final String sessionId,
+                                     final Callback<Configuration> cb) {
+        mService.requestConfiguration(installationId, sessionId,
                 new ConfigurationHandyRetrofitCallback(cb));
     }
 
