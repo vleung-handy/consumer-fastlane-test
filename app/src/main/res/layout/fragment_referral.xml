@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
-            android:paddingTop="@dimen/default_padding_double"
+            android:paddingTop="@dimen/default_padding_4x"
             >
             <FrameLayout
                 android:layout_width="match_parent"
