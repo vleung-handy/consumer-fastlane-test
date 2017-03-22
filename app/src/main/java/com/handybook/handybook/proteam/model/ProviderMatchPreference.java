@@ -28,13 +28,12 @@ public enum ProviderMatchPreference {
     }
 
     /**
-     * @param preference ProviderMatchPrefference to be converted to it's String represenation
-     * @return String representation of provided provider match preferrence or a
-     * representation of INDIFFERENT type ('indifferent')
+     * @param preference ProviderMatchPreference to be converted to its String representation
+     * @return String representation of provided provider match preference or null
      */
-    @NonNull
+    @Nullable
     public static String asString(@Nullable ProviderMatchPreference preference) {
-        return preference == null ? INDIFFERENT.toString() : preference.toString();
+        return preference == null ? null : preference.toString();
     }
 
     /**
