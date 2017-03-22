@@ -12,7 +12,6 @@ import android.widget.EditText;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.model.RecurringPlanWrapper;
-import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
@@ -128,7 +127,6 @@ public final class EditPlanAddressFragment extends InjectedFragment {
                     }
                 }
         );
-        bus.post(new BookingEditEvent.RequestEditBookingAddress(mPlan.getId(), request));
     }
 
     private boolean validateFields() {
