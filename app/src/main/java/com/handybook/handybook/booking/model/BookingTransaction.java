@@ -384,6 +384,8 @@ public class BookingTransaction extends Observable {
             jsonObj.add("last_name", context.serialize(value.getLastName()));
             jsonObj.add("address1", context.serialize(value.getAddress1()));
             jsonObj.add("address2", context.serialize(value.getAddress2()));
+            jsonObj.add("city", context.serialize(value.getCity()));
+            jsonObj.add("state", context.serialize(value.getState()));
             jsonObj.add("phone", context.serialize(value.getPhone()));
             jsonObj.add("zipcode", context.serialize(value.getZipCode()));
             jsonObj.add("email", context.serialize(value.getEmail()));
