@@ -406,7 +406,9 @@ public interface HandyRetrofitService {
     );
 
     @GET("/configuration")
-    void requestConfiguration(HandyRetrofitCallback cb);
+    void requestConfiguration(@Query("installation_id") String installationId,
+                              @Query("session_id") String sessionId,
+                              HandyRetrofitCallback cb);
 
     // Notification Feed
     @GET("/users/{user_id}/notifications")

@@ -11,6 +11,7 @@ import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.logger.handylogger.model.Session;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -52,7 +53,10 @@ public class ConfigurationManager {
             mBus.post(new ConfigurationEvent.ReceiveConfigurationSuccess(cachedConfiguration));
         }
         else {
-            mDataManager.requestConfiguration(new DataManager.Callback<Configuration>() {
+            String installationId = mDefaultPreferencesManager.getInstallationId();
+            String sessionId = String.valueOf(Session.getInstance(mDefaultPreferencesManager).getId());
+
+            mDataManager.requestConfiguration(installationId, sessionId, new DataManager.Callback<Configuration>() {
                 @Override
                 public void onSuccess(final Configuration configuration) {
                     setCachedConfiguration(configuration);
@@ -65,20 +69,6 @@ public class ConfigurationManager {
                 }
             });
         }
-    }
-
-    @Subscribe
-    public void onRefreshConfiguration(final ConfigurationEvent.RefreshConfiguration event) {
-        mDataManager.requestConfiguration(new DataManager.Callback<Configuration>() {
-            @Override
-            public void onSuccess(final Configuration configuration) {
-                setCachedConfiguration(configuration);
-            }
-
-            @Override
-            public void onError(final DataManager.DataManagerError error) {
-            }
-        });
     }
 
     public void invalidateCache() {
