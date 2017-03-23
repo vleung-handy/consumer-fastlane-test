@@ -496,6 +496,13 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
+    @GET("/users/{user_id}/recommended_pros")
+    void getRecommendedProviders(
+            @Path("user_id") String userId,
+            @Query("booking_id") String bookingId,
+            HandyRetrofitCallback cb
+    );
+
     @POST("/events")
     void postLogs(@Body JsonObject eventLogBundle, HandyRetrofitCallback cb);
 

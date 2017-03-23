@@ -54,6 +54,7 @@ import com.handybook.handybook.notifications.model.HandyNotification;
 import com.handybook.handybook.promos.persistent.PersistentPromo;
 import com.handybook.handybook.promos.splash.SplashPromo;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
 
@@ -877,11 +878,14 @@ public class DataManager {
         );
     }
 
-    public void requestConfiguration(final String installationId,
-                                     final String sessionId,
-                                     final Callback<Configuration> cb) {
+    public void requestConfiguration(
+            final String installationId,
+            final String sessionId,
+            final Callback<Configuration> cb
+    ) {
         mService.requestConfiguration(installationId, sessionId,
-                new ConfigurationHandyRetrofitCallback(cb));
+                                      new ConfigurationHandyRetrofitCallback(cb)
+        );
     }
 
     public void getRecurringBookings(final Callback<RecurringBookingsResponse> cb) {
@@ -1037,6 +1041,18 @@ public class DataManager {
         );
     }
 
+    public void getRecommendedProviders(
+            final String userId,
+            final String bookingId,
+            final Callback<RecommendedProvidersWrapper> cb
+    ) {
+        mService.getRecommendedProviders(
+                userId,
+                bookingId,
+                new RecommendedProvidersHandyRetrofitCallback(cb)
+        );
+    }
+
     public void getHelpCenterInfo(final Callback<HelpCenterResponse> cb) {
         mService.getHelpCenterInfo(new HelpCenterResponseHandyRetrofitCallback(cb));
     }
@@ -1122,7 +1138,11 @@ public class DataManager {
             mMessage = message;
         }
 
-        public DataManagerError(@Nullable final Integer errorCode, final Type type, final String message) {
+        public DataManagerError(
+                @Nullable final Integer errorCode,
+                final Type type,
+                final String message
+        ) {
             this(type, message);
             mErrorCode = errorCode;
         }
