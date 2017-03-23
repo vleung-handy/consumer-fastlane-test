@@ -159,6 +159,7 @@
     <string name="select_all_that_apply">Select all that apply</string>
     <string name="complete">Complete</string>
     <string name="still_need_help">Still need help?</string>
+    <string name="done">Done</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>
@@ -563,12 +564,12 @@
     <string name="transition_divider">divider</string>
     <string name="write_a_review_formatted">Write a public review for %1$s\'s profile.</string>
     <string name="rating_flow_review_hint">Write your review</string>
-    <string name="rating_flow_feedback_hint">Write your feedback</string>
-    <string name="rating_flow_help_prompt">Tell us what happened:</string>
+    <string name="rating_flow_feedback_hint">Enter your message</string>
+    <string name="rating_flow_help_prompt">Tell Handy what happened:</string>
     <string name="rating_flow_pro_team_addition_note_formatted">%1$s will be added to your Pro Team.</string>
     <string name="rating_flow_pro_team_block_note_formatted">%1$s will be blocked from your future bookings.</string>
     <string name="rating_flow_review_note">Helpful feedback is important for pros to grow their business. Your name will not be displayed with\u00a0the\u00a0review.</string>
-    <string name="rating_flow_post_feedback_message">Your feedback has been sent.</string>
+    <string name="rating_flow_post_feedback_message">Your message has been sent to Handy</string>
 
     <string name="account_active_plans_saved_cleanings_title_template"><![CDATA[<strong>Saved cleanings: </strong>%s]]></string>
     <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn More</a>]]></string>

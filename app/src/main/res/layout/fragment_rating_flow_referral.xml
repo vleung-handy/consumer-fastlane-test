@@ -10,7 +10,6 @@
         android:id="@+id/rating_flow_referral_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/rating_flow_next_button"
         android:background="@color/handy_bg"
         >
 
@@ -77,41 +76,6 @@
                     android:text="@string/still_need_help"
                     android:textColor="@color/handy_tertiary_gray"
                     />
-
-                <LinearLayout
-                    android:id="@+id/rating_flow_referral_feedback_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    >
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/background_list_entry"
-                        android:gravity="center"
-                        android:padding="@dimen/default_padding"
-                        android:text="@string/rating_flow_help_prompt"
-                        android:textColor="@color/handy_text_black"
-                        />
-
-                    <EditText
-                        android:id="@+id/rating_flow_referral_feedback_text"
-                        style="@style/TextView.Medium"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/horizontal_divider_height"
-                        android:background="@color/white"
-                        android:gravity="top"
-                        android:hint="@string/rating_flow_feedback_hint"
-                        android:inputType="textMultiLine"
-                        android:lines="5"
-                        android:padding="@dimen/default_padding"
-                        android:textColorHint="@color/dark_grey_pressed"
-                        />
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -217,11 +181,14 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/rating_flow_next_button"
-        style="@style/Button.Green"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/rating_flow_done_button"
+        style="@style/TextView.NavbarAction"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/complete"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/done"
+        android:textColor="@color/handy_tertiary_gray"
         />
 </RelativeLayout>

@@ -132,18 +132,14 @@ public class RatingFlowLog extends EventLog {
         private int mBookingId;
         @SerializedName("provider_id")
         private int mProviderId;
-        @SerializedName("feedback_string")
-        private String mFeedback;
 
         public ConfirmationSubmitted(
                 final int bookingId,
-                final int providerId,
-                final String feedback
+                final int providerId
         ) {
             super(EVENT_TYPE);
             mBookingId = bookingId;
             mProviderId = providerId;
-            mFeedback = feedback;
         }
     }
 }

@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
@@ -57,12 +58,6 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     View mReferralContent;
     @Bind(R.id.rating_flow_referral_feedback_section)
     View mFeedbackSection;
-    @Bind(R.id.rating_flow_referral_feedback_content)
-    View mFeedbackContent;
-    @Bind(R.id.rating_flow_referral_feedback_text)
-    EditText mFeedbackTextField;
-    @Bind(R.id.rating_flow_referral_help_button)
-    View mFeedbackHelpButton;
     @BindInt(R.integer.anim_duration_medium)
     int mMediumDuration;
 
@@ -237,21 +232,11 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         }
     }
 
-    @OnClick(R.id.rating_flow_next_button)
-    public void onNextClicked() {
-        final String feedback = mFeedbackTextField.getText().toString();
-        if (!Strings.isNullOrEmpty(feedback)) {
-            dataManager.submitProRatingDetails(
-                    Integer.parseInt(mBooking.getId()),
-                    new ReviewProRequest(null, feedback),
-                    new VoidDataManagerCallback()
-            );
-            showToast(R.string.rating_flow_post_feedback_message);
-        }
+    @OnClick(R.id.rating_flow_done_button)
+    public void onDoneClicked() {
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ConfirmationSubmitted(
                          Integer.parseInt(mBooking.getId()),
-                         Integer.parseInt(mBooking.getProvider().getId()),
-                         feedback
+                         Integer.parseInt(mBooking.getProvider().getId())
                  ))
         );
         if (getActivity() instanceof RatingFlowActivity) {
@@ -290,52 +275,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
     @OnClick(R.id.rating_flow_referral_help_button)
     public void onHelpClicked() {
-        final Animation fadeOutAnimation = AnimationUtils.loadAnimation(
-                getActivity(),
-                R.anim.fade_out
-        );
-        fadeOutAnimation.setFillAfter(true);
-        fadeOutAnimation.setFillEnabled(true);
-        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(final Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(final Animation animation) {
-                mFeedbackHelpButton.setVisibility(View.GONE);
-                mFeedbackContent.setVisibility(View.INVISIBLE);
-                final Animation fadeInAnimation = AnimationUtils.loadAnimation(
-                        getActivity(),
-                        R.anim.fade_in
-                );
-                fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(final Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(final Animation animation) {
-                        mFeedbackTextField.requestFocus();
-                        Utils.showSoftKeyboardWithDelay(getActivity(), mFeedbackTextField, 100);
-                        mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(final Animation animation) {
-
-                    }
-                });
-                mFeedbackContent.startAnimation(fadeInAnimation);
-            }
-
-            @Override
-            public void onAnimationRepeat(final Animation animation) {
-
-            }
-        });
-        mFeedbackHelpButton.startAnimation(fadeOutAnimation);
+        if (getFragmentManager().findFragmentByTag(RatingFlowHelpDialogFragment.TAG) == null) {
+            FragmentUtils.safeLaunchDialogFragment(
+                    RatingFlowHelpDialogFragment.newInstance(mBooking),
+                    this,
+                    RatingFlowHelpDialogFragment.TAG
+            );
+        }
     }
 }
