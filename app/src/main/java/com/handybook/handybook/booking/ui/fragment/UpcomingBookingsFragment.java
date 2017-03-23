@@ -104,9 +104,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
     @Bind(R.id.fetch_error_view)
     ViewGroup mFetchErrorView;
 
-    @Bind(R.id.bookings_share_button)
-    View mShareMenuItem;
-
     @Bind(R.id.fragment_upcoming_bookings_review_app_banner_fragment_container)
     FrameLayout mReviewAppBannerFragmentContainer;
 
@@ -172,7 +169,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
 
         setupToolbar(mToolbar, getString(R.string.my_bookings));
         mToolbar.setNavigationIcon(null);
-        mShareMenuItem.setVisibility(View.GONE);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -239,13 +235,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
                            .addToBackStack(null)
                            .commit();
         }
-    }
-
-    @OnClick(R.id.bookings_share_button)
-    public void onShareButtonClicked() {
-        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareMenuPressedLog()));
-        Fragment fragment = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
-        FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
     }
 
     @OnClick(R.id.try_again_button)

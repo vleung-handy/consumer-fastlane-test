@@ -111,8 +111,6 @@ public class AccountFragment extends InjectedFragment {
         setupToolbar(mToolbar, getString(R.string.account));
 
         mToolbar.setNavigationIcon(null);
-        //if bottom nav is enabled, show
-        mHistoryHelpLayout.setVisibility(View.VISIBLE);
 
         if (mConfigurationManager.getPersistentConfiguration().isSettingFavoriteProEnabled()) {
             mProTeamSubtext.setText(R.string.account_choose_favorite_pro);
