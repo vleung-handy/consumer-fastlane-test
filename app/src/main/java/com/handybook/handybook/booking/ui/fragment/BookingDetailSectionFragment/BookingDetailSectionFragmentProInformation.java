@@ -126,6 +126,7 @@ public class BookingDetailSectionFragmentProInformation extends
             || category.getPreferred().isEmpty()
             || booking.getProvider() == null
             || booking.getProvider().getId() == null
+            || booking.isPast()
             || Utils.containsProvider(category.getPreferred(), booking.getProvider().getId())) {
             getSectionView().showPreferDifferentProLayout(false);
         }
