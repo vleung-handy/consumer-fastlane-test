@@ -43,7 +43,7 @@ public class AppInteractionUtil {
         //log out if necessary
 
         //make sure we are past the loading screen
-        ViewUtil.waitForViewVisible(R.id.fragment_container, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(R.id.fragment_container, ViewUtil.LONG_MAX_WAIT_TIME_MS);
 
         // Skip 'share the love' if it shows up
         dismissShareTheLoveIfNeeded();
