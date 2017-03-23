@@ -88,6 +88,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 getArguments().getSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE);
         mOptionIndex = NO_PREFERENCE_INDEX;
         if (defaultPreference != null) {
+            mSelectedPreference = defaultPreference;
             switch (defaultPreference) {
                 case PREFERRED:
                     mOptionIndex = POSITIVE_PREFERENCE_INDEX;
