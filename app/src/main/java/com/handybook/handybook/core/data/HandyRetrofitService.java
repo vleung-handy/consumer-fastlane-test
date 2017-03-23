@@ -254,6 +254,10 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
+    /**
+     * @deprecated use /recurring_bookings/{recurring_id}/edit_frequency instead
+     */
+    @Deprecated
     @POST("/bookings/{booking}/edit_frequency")
     void updateBookingFrequency(
             @Path("booking") int bookingId,

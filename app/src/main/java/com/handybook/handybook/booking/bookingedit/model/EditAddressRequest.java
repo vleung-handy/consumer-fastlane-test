@@ -7,13 +7,13 @@ import com.google.gson.annotations.SerializedName;
 public class EditAddressRequest {
 
     @SerializedName("address1")
-    private String mAddress1;
+    private final String mAddress1;
     @SerializedName("address2")
-    private String mAddress2;
+    private final String mAddress2;
     @SerializedName("zipcode")
-    private String mZipcode;
+    private final String mZipcode;
     @SerializedName("city")
-    private String mCity;
+    private final String mCity;
     @SerializedName("state")
     private final String mState;
 

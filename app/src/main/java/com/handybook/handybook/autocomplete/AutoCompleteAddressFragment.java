@@ -43,7 +43,7 @@ import rx.functions.Func1;
  */
 public class AutoCompleteAddressFragment extends InjectedFragment {
 
-    private static final int DEBOUNCE_DELAY = 250;
+    private static final int DEBOUNCE_DELAY_MS = 250;
     //the delay before we fire a request to address autocomplete
     private static final String KEY_FILTER = "filter";
     private static final String KEY_ADDR1 = "address1";
@@ -123,15 +123,16 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     mSubscription.unsubscribe();
-
-                    String prediction = mPredictions.get(position).getAddress();
-                    bus.post(new LogEvent.AddLogEvent(
-                            new AddressAutocompleteLog.AddressAutocompleteItemTappedLog(prediction)
-                    ));
-                    setStreet(prediction);
+                    final PlacePrediction placePrediction = mPredictions.get(position);
+                    setStreet(placePrediction.getAddress());
+                    setCity(placePrediction.getCity());
+                    setState(placePrediction.getState());
                     mStreet.setSelection(mStreet.getText().length());
-                    setCity(mPredictions.get(position).getCity());
-                    setState(mPredictions.get(position).getState());
+                    bus.post(new LogEvent.AddLogEvent(
+                            new AddressAutocompleteLog.AddressAutocompleteItemTappedLog(
+                                    placePrediction.getAddress()
+                            )
+                    ));
                     mListPopupWindow.dismiss();
                     hideKeyboard();
                     subscribe();
@@ -182,7 +183,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
     private void subscribe() {
         mSubscription = RxTextView
                 .textChanges(mStreet)
-                .debounce(DEBOUNCE_DELAY, TimeUnit.MILLISECONDS)
+                .debounce(DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS)
                 .skip(1) // Skipping the first element fired, because it is triggered by the "setText" above.
                 .flatMap(new Func1<CharSequence, Observable<List<String>>>() {
                     @Override
