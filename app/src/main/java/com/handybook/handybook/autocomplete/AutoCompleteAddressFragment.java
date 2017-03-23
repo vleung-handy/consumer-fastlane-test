@@ -107,10 +107,10 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
 
         if (getArguments() != null) {
             mZipFilter = (ZipValidationResponse.ZipArea) getArguments().getSerializable(KEY_FILTER);
-            mStreet.setText(getArguments().getString(KEY_ADDR1));
-            mApt.setText(getArguments().getString(KEY_ADDR2));
-            mCity.setText(getArguments().getString(KEY_CITY));
-            mState.setText(getArguments().getString(KEY_STATE));
+            setStreet(getArguments().getString(KEY_ADDR1));
+            setApt(getArguments().getString(KEY_ADDR2));
+            setCity(getArguments().getString(KEY_CITY));
+            setState(getArguments().getString(KEY_STATE));
             mConfiguration = (Configuration) getArguments().getSerializable(KEY_CONFIGURATION);
         }
 
@@ -128,10 +128,10 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
                     bus.post(new LogEvent.AddLogEvent(
                             new AddressAutocompleteLog.AddressAutocompleteItemTappedLog(prediction)
                     ));
-                    mStreet.setText(prediction);
+                    setStreet(prediction);
                     mStreet.setSelection(mStreet.getText().length());
-                    mCity.setText(mPredictions.get(position).getCity());
-                    mState.setText(mPredictions.get(position).getState());
+                    setCity(mPredictions.get(position).getCity());
+                    setState(mPredictions.get(position).getState());
                     mListPopupWindow.dismiss();
                     hideKeyboard();
                     subscribe();
@@ -143,9 +143,17 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
         return view;
     }
 
+    public void setStreet(final String street) {
+        mStreet.setText(street);
+    }
+
     @NonNull
     public String getStreet() {
         return mStreet.getAddress();
+    }
+
+    public void setApt(final String apt) {
+        mApt.setText(apt);
     }
 
     @NonNull
@@ -153,9 +161,17 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
         return mApt.getText().toString();
     }
 
+    public void setCity(final String city) {
+        mCity.setText(city);
+    }
+
     @NonNull
     public String getCity() {
         return mCity.getCity();
+    }
+
+    public void setState(final String state) {
+        mState.setText(state);
     }
 
     @NonNull
@@ -247,5 +263,12 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
         if (!mStreet.validate()) { validate = false; }
 
         return validate;
+    }
+
+    public void clear() {
+        setStreet(null);
+        setApt(null);
+        setCity(null);
+        setState(null);
     }
 }

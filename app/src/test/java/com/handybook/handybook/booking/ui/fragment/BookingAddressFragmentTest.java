@@ -61,7 +61,7 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper {
     @Test
     public void shouldLaunchBookingPaymentActivity() throws Exception {
         mFragment.mTextFullName.setText("John Doe");
-        mFragment.mAutoCompleteFragment.mStreet.setText("123 Handy St");
+        mFragment.mAutoCompleteFragment.setStreet("123 Handy St");
         mFragment.mTextPhone.setText("1111111111");
 
         mFragment.mButtonNext.performClick();
