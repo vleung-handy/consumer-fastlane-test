@@ -108,6 +108,7 @@ import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.referral.ui.BaseReferralFragment;
 import com.handybook.handybook.referral.ui.ProReferralFragment;
+import com.handybook.handybook.referral.ui.ProReferralFragmentTest;
 import com.handybook.handybook.referral.ui.RedemptionActivity;
 import com.handybook.handybook.referral.ui.RedemptionEmailSignUpFragment;
 import com.handybook.handybook.referral.ui.RedemptionFragment;
@@ -115,6 +116,7 @@ import com.handybook.handybook.referral.ui.RedemptionSignUpFragment;
 import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.handybook.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.referral.ui.ReferralV2Fragment;
+import com.handybook.handybook.referral.ui.ReferralV2FragmentTest;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.otto.Bus;
 
@@ -181,6 +183,8 @@ import static org.mockito.Mockito.when;
         ProReferralFragment.class,
         BaseReferralFragment.class,
         ReferralFragmentTest.class,
+        ReferralV2FragmentTest.class,
+        ProReferralFragmentTest.class,
         RedemptionActivity.class,
         RedemptionFragment.class,
         RedemptionSignUpFragment.class,

@@ -129,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:paddingBottom="@dimen/default_margin_4x"
+                    android:paddingBottom="@dimen/default_padding"
                     android:paddingTop="@dimen/default_margin"
                     android:text="@string/fragment_referral_more_ways_to_share"
                     android:textAllCaps="false"

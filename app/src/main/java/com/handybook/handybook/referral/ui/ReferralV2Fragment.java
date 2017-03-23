@@ -104,30 +104,42 @@ public class ReferralV2Fragment extends InjectedFragment {
     }
 
     private void showProTeamReferral() {
-        getChildFragmentManager()
-                .beginTransaction()
-                .replace(
-                        R.id.referral_v2_main,
-                        ProReferralFragment.newInstance(mReferralDescriptor, mSource),
-                        ProReferralFragment.class.getName()
-                )
-                .commit();
+        if (getChildFragmentManager().findFragmentByTag(ProReferralFragment.class.getName()) ==
+            null) {
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .replace(
+                            R.id.referral_v2_main,
+                            ProReferralFragment.newInstance(mReferralDescriptor, mSource),
+                            ProReferralFragment.class.getName()
+                    )
+                    .commit();
+        }
+
     }
 
     private void showLegacyReferral() {
-        getChildFragmentManager()
-                .beginTransaction()
-                .replace(
-                        R.id.referral_v2_main,
-                        ReferralFragment.newInstance(mReferralDescriptor, mSource, true),
-                        ProReferralFragment.class.getName()
-                )
-                .commit();
+        if (getChildFragmentManager().findFragmentByTag(ReferralFragment.class.getName()) == null) {
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .replace(
+                            R.id.referral_v2_main,
+                            ReferralFragment.newInstance(mReferralDescriptor, mSource, true),
+                            ReferralFragment.class.getName()
+                    )
+                    .commit();
+        }
     }
 
     private void fetchData() {
         progressDialog.show();
-        dataManager.requestPrepareReferrals(true, new FragmentSafeCallback<ReferralResponse>(this) {
+
+        //NOTE: TODO: JIA: -- hardcoding this to false for now, so we can always hit the legacy
+        //endpoint. The feature is not ready for testing yet, so only turn on when ready.
+        boolean enableProReferral = false;
+        dataManager.requestPrepareReferrals(
+                enableProReferral,
+                new FragmentSafeCallback<ReferralResponse>(this) {
             @Override
             public void onCallbackSuccess(final ReferralResponse response) {
                 progressDialog.dismiss();
