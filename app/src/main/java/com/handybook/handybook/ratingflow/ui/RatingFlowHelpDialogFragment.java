@@ -19,6 +19,8 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.fragment.SlideUpDialogFragment;
+import com.handybook.handybook.library.util.UiUtils;
+import com.handybook.handybook.library.util.Utils;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;

@@ -9,24 +9,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.rating.ReviewProRequest;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.data.VoidDataManagerCallback;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.HandyRetrofitCallback;
+import com.handybook.handybook.core.data.HandyRetrofitService;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselPagerAdapter;
+import com.handybook.handybook.library.ui.view.proteamcarousel.ProCarouselVM;
+import com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.model.ProTeamEdit;
+import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.ReferralChannels;
@@ -34,12 +45,22 @@ import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.BindInt;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RatingFlowReferralFragment extends InjectedFragment {
+
+    @Inject
+    HandyRetrofitService mService;
 
     private ReferralDescriptor mReferralDescriptor;
     private ReferralChannels mReferralChannels;
@@ -54,10 +75,20 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     View mHeaderIcon;
     @Bind(R.id.rating_flow_referral_header_text)
     View mHeaderText;
+    @Bind(R.id.rating_flow_referral_header_divider)
+    View mHeaderDivider;
     @Bind(R.id.rating_flow_referral_content)
     View mReferralContent;
-    @Bind(R.id.rating_flow_referral_feedback_section)
-    View mFeedbackSection;
+    @Bind(R.id.rating_flow_referral_help_button)
+    View mHelpButton;
+    @Bind(R.id.referral_flow_pro_team_section)
+    ViewGroup mProTeamSection;
+    @Bind(R.id.referral_flow_pro_team_carousel)
+    ProTeamCarouselView mProTeamCarousel;
+
+    private List<ProCarouselVM> mProTeamCarouselViewModels;
+    private ArrayList<Provider> mRecommendedProviders;
+
     @BindInt(R.integer.anim_duration_medium)
     int mMediumDuration;
 
@@ -129,9 +160,99 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                                     formattedReceiverCouponAmount, formattedSenderCreditAmount
         ));
         startAnimations();
+        //        initProTeamCarousel();
+        dataManager.getRecommendedProviders(
+                userManager.getCurrentUser().getId(),
+                mBooking.getId(),
+                new DataManager.Callback<RecommendedProvidersWrapper>() {
+                    @Override
+                    public void onSuccess(final RecommendedProvidersWrapper response) {
+                        mRecommendedProviders = response.getRecommendedProviders();
+                        initProTeamCarousel();
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error) {
+
+                    }
+                }
+        );
+    }
+
+    private void initProTeamCarousel() {
+        if (mRecommendedProviders == null || mRecommendedProviders.isEmpty()) { return; }
+
+        mProTeamSection.setVisibility(View.VISIBLE);
+
+        mProTeamCarouselViewModels = new ArrayList<>();
+        for (final Provider provider : mRecommendedProviders) {
+            final ProCarouselVM viewModel = ProCarouselVM.fromProvider(
+                    provider,
+                    getString(R.string.add_to_pro_team)
+            );
+            viewModel.setIsProTeam(false);
+            mProTeamCarouselViewModels.add(viewModel);
+        }
+        mProTeamCarousel.bind(
+                mProTeamCarouselViewModels,
+                new CarouselPagerAdapter.ActionListener() {
+                    @Override
+                    public void onPrimaryButtonClick(final ProCarouselVM pro, final View button) {
+                        addToProTeam(pro, (Button) button);
+                    }
+                }
+        );
+    }
+
+    private void addToProTeam(final ProCarouselVM viewModel, final Button button) {
+        final int index = mProTeamCarouselViewModels.indexOf(viewModel);
+        final Provider provider = mRecommendedProviders.get(index);
+
+        button.setText(R.string.adding);
+        button.setClickable(false);
+
+        final ProTeamEdit proTeamEdit = new ProTeamEdit(ProviderMatchPreference.PREFERRED);
+        proTeamEdit.addId(
+                Integer.parseInt(provider.getId()),
+                provider.getCategoryType()
+        );
+        final FragmentSafeCallback<Void> editProTeamCallback =
+                new FragmentSafeCallback<Void>(this) {
+                    @Override
+                    public void onCallbackSuccess(final Void response) {
+                        viewModel.setActionable(false);
+                        viewModel.setButtonText(getString(R.string.added));
+                        button.setText(R.string.added);
+                        button.setEnabled(false);
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        button.setText(R.string.add_to_pro_team);
+                        button.setClickable(true);
+                    }
+                };
+        mService.editProTeam(
+                userManager.getCurrentUser().getId(),
+                new ProTeamEditWrapper(
+                        Lists.newArrayList(proTeamEdit),
+                        ProTeamEvent.Source.RATING_FLOW.toString()
+                ),
+                new HandyRetrofitCallback(editProTeamCallback) {
+                    @Override
+                    protected void success(final JSONObject response) {
+                        editProTeamCallback.onSuccess(null);
+                    }
+                }
+        );
     }
 
     private void startAnimations() {
+        if (mMode == Mode.FEEDBACK) {
+            mHelpButton.setVisibility(View.INVISIBLE);
+            mHeaderDivider.setVisibility(View.INVISIBLE);
+        }
+
         final Animation slideDownAnimation
                 = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_from_top);
         slideDownAnimation.setDuration(mMediumDuration);
@@ -181,8 +302,8 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                 mHeaderIcon.startAnimation(fadeInAnimation);
                 mHeaderText.startAnimation(fadeInAnimation);
                 if (mMode == Mode.FEEDBACK) {
-                    mFeedbackSection.setVisibility(View.INVISIBLE);
-                    mFeedbackSection.startAnimation(fadeInAnimation);
+                    mHelpButton.startAnimation(fadeInAnimation);
+                    mHeaderDivider.startAnimation(fadeInAnimation);
                 }
             }
 

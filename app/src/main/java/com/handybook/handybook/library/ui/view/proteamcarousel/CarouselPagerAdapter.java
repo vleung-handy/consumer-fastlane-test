@@ -14,6 +14,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.TextUtils;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -21,22 +22,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CarouselPagerAdapter extends PagerAdapter {
 
     private List<ProCarouselVM> mProCarouselVMs;
-    private RecommendClickListener mRecommendClickListener;
+    private ActionListener mActionListener;
     private Context mContext;
 
 
-    public interface RecommendClickListener {
+    public interface ActionListener {
 
-        void onRecommendClick(ProCarouselVM pro);
+        void onPrimaryButtonClick(ProCarouselVM pro, View button);
     }
 
     public CarouselPagerAdapter(
             @NonNull Context context,
             @NonNull List<ProCarouselVM> proCarouselVMs,
-            @NonNull RecommendClickListener listener
+            @NonNull ActionListener listener
     ) {
         mProCarouselVMs = proCarouselVMs;
-        mRecommendClickListener = listener;
+        mActionListener = listener;
         mContext = context;
     }
 
@@ -44,7 +45,7 @@ public class CarouselPagerAdapter extends PagerAdapter {
     public Object instantiateItem(final ViewGroup container, final int position) {
 
         View itemView = LayoutInflater.from(mContext)
-                                      .inflate(R.layout.carousel_item, container, false);
+                                      .inflate(R.layout.pro_team_carousel_item, container, false);
         final ProCarouselVM profile = mProCarouselVMs.get(position);
 
         FrameLayout heartContainer
@@ -57,26 +58,30 @@ public class CarouselPagerAdapter extends PagerAdapter {
                 = (CircleImageView) itemView.findViewById(R.id.carousel_profile_image);
         Button mButton = (Button) itemView.findViewById(R.id.carousel_button);
 
-        heartContainer.setVisibility(View.VISIBLE);
-        ratingContainer.setVisibility(View.VISIBLE);
-        name.setText(profile.getDisplayName());
-        String ratingString;
-        if (TextUtils.isBlank(profile.getAverageRating())) {
-            ratingString = rating.getResources().getString(R.string.pro_referral_not_yet_rated);
+        heartContainer.setVisibility(profile.isProTeam() ? View.VISIBLE : View.GONE);
+        if (profile.getJobCount() > 0 && profile.getAverageRating() > 0.f) {
+
+            ratingContainer.setVisibility(View.VISIBLE);
+
+            final String jobCountString = jobCount
+                    .getResources()
+                    .getQuantityString(
+                            R.plurals.jobs_count,
+                            profile.getJobCount(),
+                            profile.getJobCount()
+                    );
+            jobCount.setText(jobCountString);
+
+            final DecimalFormat format = new DecimalFormat();
+            format.setMinimumFractionDigits(1);
+            format.setMaximumFractionDigits(1);
+            rating.setText(format.format(profile.getAverageRating()));
         }
         else {
-            ratingString = profile.getAverageRating();
+            ratingContainer.setVisibility(View.INVISIBLE);
         }
 
-        rating.setText(ratingString);
-        String jobCountString = jobCount
-                .getResources()
-                .getQuantityString(
-                        R.plurals.jobs_count,
-                        profile.getJobCount(),
-                        profile.getJobCount()
-                );
-        jobCount.setText(jobCountString);
+        name.setText(profile.getDisplayName());
 
         Picasso.with(image.getContext())
                .load(profile.getImageUrl())
@@ -87,10 +92,12 @@ public class CarouselPagerAdapter extends PagerAdapter {
             mButton.setText(profile.getButtonText());
         }
 
+        mButton.setEnabled(profile.isActionable());
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                mRecommendClickListener.onRecommendClick(profile);
+                mActionListener.onPrimaryButtonClick(profile, view);
             }
         });
 

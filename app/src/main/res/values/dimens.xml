@@ -30,6 +30,7 @@
     <dimen name="negative_default_padding">-16dp</dimen>
     <dimen name="default_padding_medium">24dp</dimen>
     <dimen name="default_padding_double">32dp</dimen>
+    <dimen name="default_padding_3x">48dp</dimen>
     <dimen name="default_padding_4x">64dp</dimen>
     <dimen name="default_padding_half">8dp</dimen>
     <dimen name="default_text_size">16sp</dimen>
@@ -75,11 +76,14 @@
     <dimen name="pro_team_card_min_height">72dp</dimen>
 
     <!-- Mini Pro Profiles -->
+    <dimen name="mini_pro_profile_image_size_large">72dp</dimen>
     <dimen name="mini_pro_profile_star_size_small">12dp</dimen>
     <dimen name="mini_pro_profile_image_size">56dp</dimen>
     <dimen name="mini_pro_profile_pro_team_indicator_size">12dp</dimen>
     <dimen name="mini_pro_profile_pro_team_indicator_size_small">8dp</dimen>
+    <dimen name="mini_pro_profile_pro_team_indicator_container_size">20dp</dimen>
     <dimen name="mini_pro_profile_pro_team_indicator_container_size_small">14dp</dimen>
+    <dimen name="mini_pro_profile_card_width">200dp</dimen>
 
     <dimen name="booking_list_item_height">80dp</dimen>
     <dimen name="pro_team_average_rating_star_margin">5dp</dimen>

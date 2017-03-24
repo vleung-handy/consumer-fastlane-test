@@ -160,6 +160,9 @@
     <string name="complete">Complete</string>
     <string name="still_need_help">Still need help?</string>
     <string name="done">Done</string>
+    <string name="add_to_pro_team">Add to Pro Team</string>
+    <string name="adding">Adding…</string>
+    <string name="added">Added</string>
 
     <plurals name="hour">
         <item quantity="one">hour</item>
@@ -570,6 +573,8 @@
     <string name="rating_flow_pro_team_block_note_formatted">%1$s will be blocked from your future bookings.</string>
     <string name="rating_flow_review_note">Helpful feedback is important for pros to grow their business. Your name will not be displayed with\u00a0the\u00a0review.</string>
     <string name="rating_flow_post_feedback_message">Your message has been sent to Handy</string>
+    <string name="rating_flow_recommended_pros_title">Request great pros for next time!</string>
+    <string name="rating_flow_recommended_pros_subtitle">Add them to your Pro Team.</string>
 
     <string name="account_active_plans_saved_cleanings_title_template"><![CDATA[<strong>Saved cleanings: </strong>%s]]></string>
     <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn More</a>]]></string>
@@ -582,7 +587,6 @@
 
     <string name="pro_referral_subtitle">Get %1$s when your friend books with your pro. Plus, your pro gets $$ too!</string>
     <string name="pro_referral_share_link">Or share your link:</string>
-    <string name="pro_referral_not_yet_rated">Not yet rated</string>
     <string name="pro_referral_recommend">Recommend</string>
     <string name="share">Share</string>
 

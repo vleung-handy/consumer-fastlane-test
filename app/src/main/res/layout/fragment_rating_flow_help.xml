@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:focusableInTouchMode="true"
               android:orientation="vertical"
               android:paddingTop="@dimen/default_padding_half"
     >
 
     <TextView
-        style="@style/TextView.Small"
+        style="@style/TextView.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/default_padding"
@@ -21,7 +22,7 @@
 
     <EditText
         android:id="@+id/rating_flow_help_text"
-        style="@style/TextView.Small"
+        style="@style/TextView.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/horizontal_divider_height"
@@ -29,7 +30,7 @@
         android:gravity="top"
         android:hint="@string/rating_flow_feedback_hint"
         android:inputType="textMultiLine"
-        android:lines="6"
+        android:lines="5"
         android:padding="@dimen/default_padding"
         android:textColorHint="@color/dark_grey_pressed"
         />

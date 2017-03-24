@@ -2,11 +2,4 @@
 <resources>
     <dimen name="active_booking_map_height">300dp</dimen>
     <dimen name="active_booking_error_message_padding">32dp</dimen>
-
-
-    <dimen name="pro_referral.carousel_item_width">275dp</dimen>
-    <dimen name="pro_referral.carousel_item_padding">32dp</dimen>
-    <dimen name="pro_referral.profile_image_size">96dp</dimen>
-    <dimen name="pro_referral.heart_container_size">28dp</dimen>
-    <dimen name="pro_referral.heart_image_size">18dp</dimen>
 </resources>
