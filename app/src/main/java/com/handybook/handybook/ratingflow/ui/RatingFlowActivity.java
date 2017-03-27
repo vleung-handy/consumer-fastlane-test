@@ -209,7 +209,7 @@ public class RatingFlowActivity extends BaseActivity {
     private void fetchRecommendedProviders() {
         mDataManager.getRecommendedProviders(
                 mUserManager.getCurrentUser().getId(),
-                mBooking.getId(),
+                mBooking.getService().getId(),
                 new ActivitySafeCallback<RecommendedProvidersWrapper, RatingFlowActivity>(this) {
                     @Override
                     public void onCallbackSuccess(final RecommendedProvidersWrapper response) {

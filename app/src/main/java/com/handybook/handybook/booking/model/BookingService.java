@@ -69,4 +69,7 @@ public class BookingService implements Parcelable {
         }
     };
 
+    public int getId() {
+        return mId;
+    }
 }

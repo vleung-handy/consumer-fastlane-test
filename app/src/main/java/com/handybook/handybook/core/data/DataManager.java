@@ -1043,12 +1043,12 @@ public class DataManager {
 
     public void getRecommendedProviders(
             final String userId,
-            final String bookingId,
+            final int serviceId,
             final Callback<RecommendedProvidersWrapper> cb
     ) {
         mService.getRecommendedProviders(
                 userId,
-                bookingId,
+                serviceId,
                 new RecommendedProvidersHandyRetrofitCallback(cb)
         );
     }

@@ -499,7 +499,7 @@ public interface HandyRetrofitService {
     @GET("/users/{user_id}/recommended_pros")
     void getRecommendedProviders(
             @Path("user_id") String userId,
-            @Query("booking_id") String bookingId,
+            @Query("service_id") int serviceId,
             HandyRetrofitCallback cb
     );
 

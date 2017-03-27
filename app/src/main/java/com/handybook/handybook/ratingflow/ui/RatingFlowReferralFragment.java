@@ -181,7 +181,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
             showUiBlockers();
             dataManager.getRecommendedProviders(
                     userManager.getCurrentUser().getId(),
-                    mBooking.getId(),
+                    mBooking.getService().getId(),
                     new FragmentSafeCallback<RecommendedProvidersWrapper>(this) {
                         @Override
                         public void onCallbackSuccess(final RecommendedProvidersWrapper response) {
