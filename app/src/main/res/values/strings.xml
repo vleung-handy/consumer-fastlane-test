@@ -575,6 +575,7 @@
     <string name="rating_flow_post_feedback_message">Your message has been sent to Handy</string>
     <string name="rating_flow_recommended_pros_title">Request great pros for next time!</string>
     <string name="rating_flow_recommended_pros_subtitle">Add them to your Pro Team.</string>
+    <string name="rating_flow_recommended_pros_loading">Loading recommended pros for next time…</string>
 
     <string name="account_active_plans_saved_cleanings_title_template"><![CDATA[<strong>Saved cleanings: </strong>%s]]></string>
     <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn More</a>]]></string>

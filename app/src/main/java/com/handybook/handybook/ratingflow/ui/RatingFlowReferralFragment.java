@@ -62,8 +62,13 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     @Inject
     HandyRetrofitService mService;
 
+    @Nullable
     private ReferralDescriptor mReferralDescriptor;
+    @Nullable
     private ReferralChannels mReferralChannels;
+    @Nullable
+    private ArrayList<Provider> mRecommendedProviders;
+    private List<ProCarouselVM> mProTeamCarouselViewModels;
 
     @Bind(R.id.rating_flow_referral_scroll_view)
     ScrollView mScrollView;
@@ -86,9 +91,6 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     @Bind(R.id.referral_flow_pro_team_carousel)
     ProTeamCarouselView mProTeamCarousel;
 
-    private List<ProCarouselVM> mProTeamCarouselViewModels;
-    private ArrayList<Provider> mRecommendedProviders;
-
     @BindInt(R.integer.anim_duration_medium)
     int mMediumDuration;
 
@@ -105,13 +107,15 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     public static RatingFlowReferralFragment newInstance(
             @NonNull final Booking booking,
             @NonNull final Mode mode,
-            @NonNull final ReferralDescriptor referralDescriptor
+            @Nullable final ReferralDescriptor referralDescriptor,
+            @Nullable final ArrayList<Provider> recommendedProviders
     ) {
         final RatingFlowReferralFragment fragment = new RatingFlowReferralFragment();
         final Bundle arguments = new Bundle();
         arguments.putParcelable(BundleKeys.BOOKING, booking);
         arguments.putSerializable(EXTRA_MODE, mode);
         arguments.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
+        arguments.putSerializable(BundleKeys.RECOMMENDED_PROVIDERS, recommendedProviders);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -123,8 +127,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         mMode = (Mode) getArguments().getSerializable(EXTRA_MODE);
         mReferralDescriptor = (ReferralDescriptor) getArguments()
                 .getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
-        mReferralChannels = mReferralDescriptor
-                .getReferralChannelsForSource(ReferralDescriptor.SOURCE_HIGH_RATING_MODAL);
+        if (mReferralDescriptor != null) {
+            mReferralChannels = mReferralDescriptor
+                    .getReferralChannelsForSource(ReferralDescriptor.SOURCE_HIGH_RATING_MODAL);
+        }
+        mRecommendedProviders = (ArrayList<Provider>) getArguments()
+                .getSerializable(BundleKeys.RECOMMENDED_PROVIDERS);
     }
 
     @Nullable
@@ -145,6 +153,13 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        initReferralContent();
+        initProTeamCarousel();
+        startAnimations();
+    }
+
+    private void initReferralContent() {
+        if (mReferralDescriptor == null) { return; }
         final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
         final String formattedReceiverCouponAmount = TextUtils.formatPrice(
                 mReferralDescriptor.getReceiverCouponAmount(),
@@ -159,27 +174,30 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         mSubtitle.setText(getString(R.string.referral_dialog_subtitle_formatted,
                                     formattedReceiverCouponAmount, formattedSenderCreditAmount
         ));
-        startAnimations();
-        //        initProTeamCarousel();
-        dataManager.getRecommendedProviders(
-                userManager.getCurrentUser().getId(),
-                mBooking.getId(),
-                new DataManager.Callback<RecommendedProvidersWrapper>() {
-                    @Override
-                    public void onSuccess(final RecommendedProvidersWrapper response) {
-                        mRecommendedProviders = response.getRecommendedProviders();
-                        initProTeamCarousel();
-                    }
-
-                    @Override
-                    public void onError(final DataManager.DataManagerError error) {
-
-                    }
-                }
-        );
     }
 
     private void initProTeamCarousel() {
+        if (mRecommendedProviders == null && mMode == Mode.FEEDBACK) {
+            showUiBlockers();
+            dataManager.getRecommendedProviders(
+                    userManager.getCurrentUser().getId(),
+                    mBooking.getId(),
+                    new FragmentSafeCallback<RecommendedProvidersWrapper>(this) {
+                        @Override
+                        public void onCallbackSuccess(final RecommendedProvidersWrapper response) {
+                            mRecommendedProviders = response.getRecommendedProviders();
+                            initProTeamCarousel();
+                            removeUiBlockers();
+                        }
+
+                        @Override
+                        public void onCallbackError(final DataManager.DataManagerError error) {
+                            removeUiBlockers();
+                        }
+                    }
+            );
+        }
+
         if (mRecommendedProviders == null || mRecommendedProviders.isEmpty()) { return; }
 
         mProTeamSection.setVisibility(View.VISIBLE);
@@ -277,7 +295,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
                     @Override
                     public void onAnimationEnd(final Animation animation) {
-                        if (mMode == Mode.REFERRAL) {
+                        if (mMode == Mode.REFERRAL && mReferralDescriptor != null) {
                             mReferralContent.setVisibility(View.INVISIBLE);
                             final Animation slideInAnimation = AnimationUtils.loadAnimation(
                                     getActivity(),
