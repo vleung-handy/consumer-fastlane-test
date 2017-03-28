@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.io.Serializable;
 
@@ -35,6 +36,8 @@ public class Provider implements Serializable {
     private boolean mIsFavorite;
     @SerializedName("team_type")
     private ProTeamCategoryType mCategoryType;
+    @SerializedName("match_preference")
+    private ProviderMatchPreference mMatchPreference;
     @SerializedName("layer_user_id")
     private String mLayerUserId;
 
@@ -128,6 +131,11 @@ public class Provider implements Serializable {
 
     public String getImageUrl() {
         return mImageUrl;
+    }
+
+    @Nullable
+    public ProviderMatchPreference getMatchPreference() {
+        return mMatchPreference;
     }
 
     public static final int PROVIDER_STATUS_ASSIGNED = 3;
