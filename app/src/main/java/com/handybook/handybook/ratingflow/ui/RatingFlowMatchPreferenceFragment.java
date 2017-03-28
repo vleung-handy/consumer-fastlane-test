@@ -138,7 +138,8 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
     }
 
     private void updateHelperText() {
-        if (mOptionIndex == POSITIVE_PREFERENCE_INDEX) {
+        if (mOptionIndex == POSITIVE_PREFERENCE_INDEX
+                && mProvider.getMatchPreference() != PREFERRED) {
             setHelperText(getString(
                     R.string.rating_flow_pro_team_addition_note_formatted,
                     mProvider.getFirstName()
