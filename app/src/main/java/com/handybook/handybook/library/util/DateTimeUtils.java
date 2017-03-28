@@ -23,6 +23,9 @@ public class DateTimeUtils {
     public final static SimpleDateFormat SHORT_DAY_MONTH_DATE_AT_TIME_FORMATTER =
             new SimpleDateFormat("EEE, MMM d '@' h:mm a");
 
+    public final static SimpleDateFormat YEAR_MONTH_DATE_FORMATTER =
+            new SimpleDateFormat("yyyy-MM-dd");
+
     public final static SimpleDateFormat MONTH_DATE_FORMATTER =
             new SimpleDateFormat("MMMM d", Locale.getDefault());
 

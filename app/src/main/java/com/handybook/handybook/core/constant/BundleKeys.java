@@ -59,4 +59,6 @@ public class BundleKeys {
     public static final String PRO_RATING_REASONS_QUEUE = "pro_rating_reasons_queue";
     public static final String IMPROVEMENT_FEEDBACK = "improvement_feedback";
     public static final String RECOMMENDED_PROVIDERS = "recommended_providers";
+    public static final String PRO_AVAILABILITY = "pro_availability";
+
 }
