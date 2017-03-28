@@ -9,29 +9,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.rating.ReviewProRequest;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.data.VoidDataManagerCallback;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.HandyRetrofitCallback;
+import com.handybook.handybook.core.data.HandyRetrofitService;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselPagerAdapter;
+import com.handybook.handybook.library.ui.view.proteamcarousel.ProCarouselVM;
+import com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.model.ProTeamEdit;
+import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.BindInt;
@@ -40,8 +59,16 @@ import butterknife.OnClick;
 
 public class RatingFlowReferralFragment extends InjectedFragment {
 
+    @Inject
+    HandyRetrofitService mService;
+
+    @Nullable
     private ReferralDescriptor mReferralDescriptor;
+    @Nullable
     private ReferralChannels mReferralChannels;
+    @Nullable
+    private ArrayList<Provider> mRecommendedProviders;
+    private List<ProCarouselVM> mProTeamCarouselViewModels;
 
     @Bind(R.id.rating_flow_referral_scroll_view)
     ScrollView mScrollView;
@@ -53,16 +80,17 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     View mHeaderIcon;
     @Bind(R.id.rating_flow_referral_header_text)
     View mHeaderText;
+    @Bind(R.id.rating_flow_referral_header_divider)
+    View mHeaderDivider;
     @Bind(R.id.rating_flow_referral_content)
     View mReferralContent;
-    @Bind(R.id.rating_flow_referral_feedback_section)
-    View mFeedbackSection;
-    @Bind(R.id.rating_flow_referral_feedback_content)
-    View mFeedbackContent;
-    @Bind(R.id.rating_flow_referral_feedback_text)
-    EditText mFeedbackTextField;
     @Bind(R.id.rating_flow_referral_help_button)
-    View mFeedbackHelpButton;
+    View mHelpButton;
+    @Bind(R.id.referral_flow_pro_team_section)
+    ViewGroup mProTeamSection;
+    @Bind(R.id.referral_flow_pro_team_carousel)
+    ProTeamCarouselView mProTeamCarousel;
+
     @BindInt(R.integer.anim_duration_medium)
     int mMediumDuration;
 
@@ -79,13 +107,15 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     public static RatingFlowReferralFragment newInstance(
             @NonNull final Booking booking,
             @NonNull final Mode mode,
-            @NonNull final ReferralDescriptor referralDescriptor
+            @Nullable final ReferralDescriptor referralDescriptor,
+            @Nullable final ArrayList<Provider> recommendedProviders
     ) {
         final RatingFlowReferralFragment fragment = new RatingFlowReferralFragment();
         final Bundle arguments = new Bundle();
         arguments.putParcelable(BundleKeys.BOOKING, booking);
         arguments.putSerializable(EXTRA_MODE, mode);
         arguments.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
+        arguments.putSerializable(BundleKeys.RECOMMENDED_PROVIDERS, recommendedProviders);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -97,8 +127,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         mMode = (Mode) getArguments().getSerializable(EXTRA_MODE);
         mReferralDescriptor = (ReferralDescriptor) getArguments()
                 .getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
-        mReferralChannels = mReferralDescriptor
-                .getReferralChannelsForSource(ReferralDescriptor.SOURCE_HIGH_RATING_MODAL);
+        if (mReferralDescriptor != null) {
+            mReferralChannels = mReferralDescriptor
+                    .getReferralChannelsForSource(ReferralDescriptor.SOURCE_HIGH_RATING_MODAL);
+        }
+        mRecommendedProviders = (ArrayList<Provider>) getArguments()
+                .getSerializable(BundleKeys.RECOMMENDED_PROVIDERS);
     }
 
     @Nullable
@@ -119,6 +153,13 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        initReferralContent();
+        initProTeamCarousel();
+        startAnimations();
+    }
+
+    private void initReferralContent() {
+        if (mReferralDescriptor == null) { return; }
         final String currencyChar = userManager.getCurrentUser().getCurrencyChar();
         final String formattedReceiverCouponAmount = TextUtils.formatPrice(
                 mReferralDescriptor.getReceiverCouponAmount(),
@@ -133,10 +174,103 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         mSubtitle.setText(getString(R.string.referral_dialog_subtitle_formatted,
                                     formattedReceiverCouponAmount, formattedSenderCreditAmount
         ));
-        startAnimations();
+    }
+
+    private void initProTeamCarousel() {
+        if (mRecommendedProviders == null && mMode == Mode.FEEDBACK) {
+            showUiBlockers();
+            dataManager.getRecommendedProviders(
+                    userManager.getCurrentUser().getId(),
+                    mBooking.getService().getId(),
+                    new FragmentSafeCallback<RecommendedProvidersWrapper>(this) {
+                        @Override
+                        public void onCallbackSuccess(final RecommendedProvidersWrapper response) {
+                            mRecommendedProviders = response.getRecommendedProviders();
+                            initProTeamCarousel();
+                            removeUiBlockers();
+                        }
+
+                        @Override
+                        public void onCallbackError(final DataManager.DataManagerError error) {
+                            removeUiBlockers();
+                        }
+                    }
+            );
+        }
+
+        if (mRecommendedProviders == null || mRecommendedProviders.isEmpty()) { return; }
+
+        mProTeamSection.setVisibility(View.VISIBLE);
+
+        mProTeamCarouselViewModels = new ArrayList<>();
+        for (final Provider provider : mRecommendedProviders) {
+            final ProCarouselVM viewModel = ProCarouselVM.fromProvider(
+                    provider,
+                    getString(R.string.add_to_pro_team)
+            );
+            viewModel.setIsProTeam(false);
+            mProTeamCarouselViewModels.add(viewModel);
+        }
+        mProTeamCarousel.bind(
+                mProTeamCarouselViewModels,
+                new CarouselPagerAdapter.ActionListener() {
+                    @Override
+                    public void onPrimaryButtonClick(final ProCarouselVM pro, final View button) {
+                        addToProTeam(pro, (Button) button);
+                    }
+                }
+        );
+    }
+
+    private void addToProTeam(final ProCarouselVM viewModel, final Button button) {
+        final int index = mProTeamCarouselViewModels.indexOf(viewModel);
+        final Provider provider = mRecommendedProviders.get(index);
+
+        button.setText(R.string.adding);
+        button.setClickable(false);
+
+        final ProTeamEdit proTeamEdit = new ProTeamEdit(ProviderMatchPreference.PREFERRED);
+        proTeamEdit.addId(
+                Integer.parseInt(provider.getId()),
+                provider.getCategoryType()
+        );
+        final FragmentSafeCallback<Void> editProTeamCallback =
+                new FragmentSafeCallback<Void>(this) {
+                    @Override
+                    public void onCallbackSuccess(final Void response) {
+                        viewModel.setActionable(false);
+                        viewModel.setButtonText(getString(R.string.added));
+                        button.setText(R.string.added);
+                        button.setEnabled(false);
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        button.setText(R.string.add_to_pro_team);
+                        button.setClickable(true);
+                    }
+                };
+        mService.editProTeam(
+                userManager.getCurrentUser().getId(),
+                new ProTeamEditWrapper(
+                        Lists.newArrayList(proTeamEdit),
+                        ProTeamEvent.Source.RATING_FLOW.toString()
+                ),
+                new HandyRetrofitCallback(editProTeamCallback) {
+                    @Override
+                    protected void success(final JSONObject response) {
+                        editProTeamCallback.onSuccess(null);
+                    }
+                }
+        );
     }
 
     private void startAnimations() {
+        if (mMode == Mode.FEEDBACK) {
+            mHelpButton.setVisibility(View.INVISIBLE);
+            mHeaderDivider.setVisibility(View.INVISIBLE);
+        }
+
         final Animation slideDownAnimation
                 = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_down_from_top);
         slideDownAnimation.setDuration(mMediumDuration);
@@ -161,7 +295,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
                     @Override
                     public void onAnimationEnd(final Animation animation) {
-                        if (mMode == Mode.REFERRAL) {
+                        if (mMode == Mode.REFERRAL && mReferralDescriptor != null) {
                             mReferralContent.setVisibility(View.INVISIBLE);
                             final Animation slideInAnimation = AnimationUtils.loadAnimation(
                                     getActivity(),
@@ -186,8 +320,8 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                 mHeaderIcon.startAnimation(fadeInAnimation);
                 mHeaderText.startAnimation(fadeInAnimation);
                 if (mMode == Mode.FEEDBACK) {
-                    mFeedbackSection.setVisibility(View.INVISIBLE);
-                    mFeedbackSection.startAnimation(fadeInAnimation);
+                    mHelpButton.startAnimation(fadeInAnimation);
+                    mHeaderDivider.startAnimation(fadeInAnimation);
                 }
             }
 
@@ -237,21 +371,11 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         }
     }
 
-    @OnClick(R.id.rating_flow_next_button)
-    public void onNextClicked() {
-        final String feedback = mFeedbackTextField.getText().toString();
-        if (!Strings.isNullOrEmpty(feedback)) {
-            dataManager.submitProRatingDetails(
-                    Integer.parseInt(mBooking.getId()),
-                    new ReviewProRequest(null, feedback),
-                    new VoidDataManagerCallback()
-            );
-            showToast(R.string.rating_flow_post_feedback_message);
-        }
+    @OnClick(R.id.rating_flow_done_button)
+    public void onDoneClicked() {
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ConfirmationSubmitted(
                          Integer.parseInt(mBooking.getId()),
-                         Integer.parseInt(mBooking.getProvider().getId()),
-                         feedback
+                         Integer.parseInt(mBooking.getProvider().getId())
                  ))
         );
         if (getActivity() instanceof RatingFlowActivity) {
@@ -290,52 +414,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
     @OnClick(R.id.rating_flow_referral_help_button)
     public void onHelpClicked() {
-        final Animation fadeOutAnimation = AnimationUtils.loadAnimation(
-                getActivity(),
-                R.anim.fade_out
-        );
-        fadeOutAnimation.setFillAfter(true);
-        fadeOutAnimation.setFillEnabled(true);
-        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(final Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(final Animation animation) {
-                mFeedbackHelpButton.setVisibility(View.GONE);
-                mFeedbackContent.setVisibility(View.INVISIBLE);
-                final Animation fadeInAnimation = AnimationUtils.loadAnimation(
-                        getActivity(),
-                        R.anim.fade_in
-                );
-                fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(final Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(final Animation animation) {
-                        mFeedbackTextField.requestFocus();
-                        Utils.showSoftKeyboardWithDelay(getActivity(), mFeedbackTextField, 100);
-                        mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(final Animation animation) {
-
-                    }
-                });
-                mFeedbackContent.startAnimation(fadeInAnimation);
-            }
-
-            @Override
-            public void onAnimationRepeat(final Animation animation) {
-
-            }
-        });
-        mFeedbackHelpButton.startAnimation(fadeOutAnimation);
+        if (getFragmentManager().findFragmentByTag(RatingFlowHelpDialogFragment.TAG) == null) {
+            FragmentUtils.safeLaunchDialogFragment(
+                    RatingFlowHelpDialogFragment.newInstance(mBooking),
+                    this,
+                    RatingFlowHelpDialogFragment.TAG
+            );
+        }
     }
 }

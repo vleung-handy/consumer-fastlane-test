@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:focusableInTouchMode="true"
+              android:orientation="vertical"
+              android:paddingTop="@dimen/default_padding_half"
+    >
+
+    <TextView
+        style="@style/TextView.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:paddingStart="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding"
+        android:text="@string/rating_flow_help_prompt"
+        android:textColor="@color/handy_text_black"
+        />
+
+    <EditText
+        android:id="@+id/rating_flow_help_text"
+        style="@style/TextView.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/horizontal_divider_height"
+        android:background="@color/white"
+        android:gravity="top"
+        android:hint="@string/rating_flow_feedback_hint"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:padding="@dimen/default_padding"
+        android:textColorHint="@color/dark_grey_pressed"
+        />
+
+    <Button
+        android:id="@+id/rating_flow_help_submit"
+        style="@style/Button.Green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/send"
+        />
+</LinearLayout>

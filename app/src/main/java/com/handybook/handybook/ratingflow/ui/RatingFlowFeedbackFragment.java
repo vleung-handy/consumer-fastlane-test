@@ -18,7 +18,10 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,7 +34,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
 
     private static final int START_DELAY_MILLIS = 400;
     private static final int GOOD_PRO_RATING = 4;
-
 
     private enum Step {
         MATCH_PREFERENCE, IMPROVEMENT, REVIEW
@@ -141,6 +143,13 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                 ((RatingFlowActivity) getActivity()).finishStep();
             }
         }
+    }
+
+    void continueFeedbackFlowWithProTeamEditRequest(final ProTeamEdit proTeamEdit) {
+        if (getActivity() instanceof RatingFlowActivity) {
+            ((RatingFlowActivity) getActivity()).requestProTeamEdit(proTeamEdit);
+        }
+        continueFeedbackFlow();
     }
 
     void showFragment(final RatingFlowFeedbackChildFragment fragment) {

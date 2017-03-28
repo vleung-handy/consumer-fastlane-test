@@ -2,6 +2,7 @@ package com.handybook.handybook.ratingflow;
 
 import com.handybook.handybook.ratingflow.ui.RatingFlowActivity;
 import com.handybook.handybook.ratingflow.ui.RatingFlowFeedbackFragment;
+import com.handybook.handybook.ratingflow.ui.RatingFlowHelpDialogFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowImprovementFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowMatchPreferenceFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowRateAndTipFragment;
@@ -21,6 +22,7 @@ import dagger.Module;
                 RatingFlowReviewFragment.class,
                 RatingFlowReferralFragment.class,
                 RatingFlowImprovementFragment.class,
+                RatingFlowHelpDialogFragment.class,
         })
 public class RatingFlowModule {
 }

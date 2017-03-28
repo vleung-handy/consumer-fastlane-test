@@ -27,6 +27,7 @@ import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.notifications.model.HandyNotification;
 import com.handybook.handybook.promos.persistent.PersistentPromo;
 import com.handybook.handybook.promos.splash.SplashPromo;
+import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
 
@@ -260,6 +261,15 @@ class BookingLocationStatusHandyRetrofitCallback
         extends TypedHandyRetrofitCallback<Booking.LocationStatus> {
 
     BookingLocationStatusHandyRetrofitCallback(final DataManager.Callback callback) {
+        super(callback);
+    }
+}
+
+
+class RecommendedProvidersHandyRetrofitCallback
+        extends TypedHandyRetrofitCallback<RecommendedProvidersWrapper> {
+
+    RecommendedProvidersHandyRetrofitCallback(final DataManager.Callback callback) {
         super(callback);
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.handybook.handybook.R;
@@ -16,13 +17,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ProTeamCarouselView extends RelativeLayout
-        implements CarouselPagerAdapter.RecommendClickListener {
+        implements CarouselPagerAdapter.ActionListener {
 
     @Bind(R.id.carousel_pager)
     ViewPager mViewPager;
 
     private List<ProCarouselVM> mProfiles;
-    private CarouselPagerAdapter.RecommendClickListener mRecommendClickListener;
+    private CarouselPagerAdapter.ActionListener mActionListener;
     private CarouselPagerAdapter mCarouselRecyclerAdapter;
 
     public ProTeamCarouselView(final Context context) {
@@ -56,24 +57,27 @@ public class ProTeamCarouselView extends RelativeLayout
         );
         mViewPager.setAdapter(mCarouselRecyclerAdapter);
         mViewPager.setClipToPadding(false);
-        mViewPager.setPageMargin((int) getResources().getDimension(R.dimen.default_margin_half));
 
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int cardWidth = getResources().getDimensionPixelSize(R.dimen.mini_pro_profile_card_width);
+        int excessMargin = (int) ((float) (screenWidth - cardWidth) / 2);
+        mViewPager.setPageMargin(-excessMargin);
     }
 
     public void bind(
             @NonNull final List<ProCarouselVM> models,
-            @Nullable final CarouselPagerAdapter.RecommendClickListener recommendClickListener
+            @Nullable final CarouselPagerAdapter.ActionListener actionListener
     ) {
         mProfiles = models;
-        mRecommendClickListener = recommendClickListener;
+        mActionListener = actionListener;
         mCarouselRecyclerAdapter.setProCarouselVMs(mProfiles);
     }
 
     @Override
-    public void onRecommendClick(@NonNull final ProCarouselVM pro) {
+    public void onPrimaryButtonClick(@NonNull final ProCarouselVM pro, final View button) {
         //relay it to the parent fragment if it cares about the data.
-        if (mRecommendClickListener != null) {
-            mRecommendClickListener.onRecommendClick(pro);
+        if (mActionListener != null) {
+            mActionListener.onPrimaryButtonClick(pro, button);
         }
     }
 }

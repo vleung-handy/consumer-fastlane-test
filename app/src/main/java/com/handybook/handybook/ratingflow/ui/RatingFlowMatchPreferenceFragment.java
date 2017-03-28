@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
@@ -14,11 +13,8 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.HandyRetrofitService;
-import com.handybook.handybook.core.data.VoidRetrofitCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
-import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 
@@ -133,20 +129,12 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 Integer.parseInt(mProvider.getId()),
                 mProvider.getCategoryType()
         );
-        mService.editProTeam(
-                userManager.getCurrentUser().getId(),
-                new ProTeamEditWrapper(
-                        Lists.newArrayList(proTeamEdit),
-                        ProTeamEvent.Source.RATING_FLOW.toString()
-                ),
-                new VoidRetrofitCallback()
-        );
+        finishStepWithProTeamEditRequest(proTeamEdit);
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceSubmitted(
                 mSelectedPreference == PREFERRED,
                 Integer.parseInt(mBooking.getId()),
                 Integer.parseInt(mProvider.getId())
         )));
-        finishStep();
     }
 
     private void updateHelperText() {

@@ -13,22 +13,38 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.HandyRetrofitService;
+import com.handybook.handybook.core.data.VoidRetrofitCallback;
 import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.model.ProTeamEdit;
+import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import static com.handybook.handybook.ratingflow.ui.RatingFlowReferralFragment.Mode.FEEDBACK;
 import static com.handybook.handybook.ratingflow.ui.RatingFlowReferralFragment.Mode.REFERRAL;
 
 public class RatingFlowActivity extends BaseActivity {
 
-    private static final int GOOD_PRO_RATING = 4;
+    @Inject
+    HandyRetrofitService mService;
+
+    private static final int EXCELLENT_PRO_RATING = 5;
 
     private static final int RATE_TIP_STEP = 0;
     private static final int FEEDBACK_STEP = 1;
@@ -40,6 +56,9 @@ public class RatingFlowActivity extends BaseActivity {
     private int mCurrentStep;
     private boolean mBackPressed;
     private int mProRating;
+    private ProviderMatchPreference mSelectedPreference;
+    private ArrayList<Provider> mRecommendedProviders;
+    private boolean mIsFetchingRecommendedProviders = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -47,7 +66,8 @@ public class RatingFlowActivity extends BaseActivity {
         mBooking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
         setContentView(R.layout.activity_rating_flow);
         startRatingFlow();
-        fetchData();
+        fetchPrerateInfo();
+        fetchReferralInfo();
     }
 
     private void startRatingFlow() {
@@ -73,13 +93,12 @@ public class RatingFlowActivity extends BaseActivity {
                 }
                 break;
             case REFERRAL_STEP:
-                if (mReferralDescriptor != null) {
-                    fragment = RatingFlowReferralFragment.newInstance(
-                            mBooking,
-                            mProRating < GOOD_PRO_RATING ? FEEDBACK : REFERRAL,
-                            mReferralDescriptor
-                    );
-                }
+                fragment = RatingFlowReferralFragment.newInstance(
+                        mBooking,
+                        shouldShowRecommendedProviders() ? FEEDBACK : REFERRAL,
+                        mReferralDescriptor,
+                        mRecommendedProviders
+                );
                 break;
             default:
                 finish();
@@ -143,6 +162,7 @@ public class RatingFlowActivity extends BaseActivity {
 
     public void finishStepWithProRating(final int proRating) {
         mProRating = proRating;
+        fetchRecommendedProvidersIfNecessary();
         finishStep();
     }
 
@@ -151,7 +171,24 @@ public class RatingFlowActivity extends BaseActivity {
         continueRatingFlow();
     }
 
-    private void fetchData() {
+    private void fetchReferralInfo() {
+        mDataManager.requestPrepareReferrals(
+                false,
+                new ActivitySafeCallback<ReferralResponse, BaseActivity>(this) {
+                    @Override
+                    public void onCallbackSuccess(final ReferralResponse response) {
+                        mReferralDescriptor = response.getReferralDescriptor();
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        // do nothing
+                    }
+                }
+        );
+    }
+
+    private void fetchPrerateInfo() {
         mDataManager.requestPrerateProInfo(
                 mBooking.getId(),
                 new ActivitySafeCallback<PrerateProInfo, BaseActivity>(this) {
@@ -167,19 +204,51 @@ public class RatingFlowActivity extends BaseActivity {
                     }
                 }
         );
-        mDataManager.requestPrepareReferrals(
-                false,
-                new ActivitySafeCallback<ReferralResponse, BaseActivity>(this) {
+    }
+
+    private void fetchRecommendedProviders() {
+        mDataManager.getRecommendedProviders(
+                mUserManager.getCurrentUser().getId(),
+                mBooking.getService().getId(),
+                new ActivitySafeCallback<RecommendedProvidersWrapper, RatingFlowActivity>(this) {
                     @Override
-                    public void onCallbackSuccess(final ReferralResponse response) {
-                        mReferralDescriptor = response.getReferralDescriptor();
+                    public void onCallbackSuccess(final RecommendedProvidersWrapper response) {
+                        mRecommendedProviders = response.getRecommendedProviders();
                     }
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
                         // do nothing
                     }
-                });
+                }
+        );
+    }
+
+    void requestProTeamEdit(final ProTeamEdit proTeamEdit) {
+        mSelectedPreference = proTeamEdit.getMatchPreference();
+        mService.editProTeam(
+                mUserManager.getCurrentUser().getId(),
+                new ProTeamEditWrapper(
+                        Lists.newArrayList(proTeamEdit),
+                        ProTeamEvent.Source.RATING_FLOW.toString()
+                ),
+                new VoidRetrofitCallback()
+        );
+        fetchRecommendedProvidersIfNecessary();
+    }
+
+    private synchronized void fetchRecommendedProvidersIfNecessary() {
+        if (mRecommendedProviders == null
+            && !mIsFetchingRecommendedProviders
+            && shouldShowRecommendedProviders()) {
+            fetchRecommendedProviders();
+            mIsFetchingRecommendedProviders = true;
+        }
+    }
+
+    private boolean shouldShowRecommendedProviders() {
+        return (mProRating > 0 && mProRating < EXCELLENT_PRO_RATING)
+               || mSelectedPreference == ProviderMatchPreference.NEVER;
     }
 
     @Override

@@ -47,4 +47,8 @@ public class ProTeamEdit {
         }
         mHandymenIds.add(id);
     }
+
+    public ProviderMatchPreference getMatchPreference() {
+        return mMatchPreference;
+    }
 }

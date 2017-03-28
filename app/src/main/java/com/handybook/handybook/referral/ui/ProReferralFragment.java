@@ -86,9 +86,9 @@ public class ProReferralFragment extends BaseReferralFragment {
                 mCarouselVMs.size()
         ));
         mSubtitle.setText(getString(R.string.pro_referral_subtitle, formattedSenderCreditAmount));
-        mCarousel.bind(mCarouselVMs, new CarouselPagerAdapter.RecommendClickListener() {
+        mCarousel.bind(mCarouselVMs, new CarouselPagerAdapter.ActionListener() {
             @Override
-            public void onRecommendClick(final ProCarouselVM pro) {
+            public void onPrimaryButtonClick(final ProCarouselVM pro, final View button) {
                 int idx = mCarouselVMs.indexOf(pro);
                 mSelectedPro = mReferralDescriptor.getProReferralInfo().get(idx);
                 launchGenericShareIntent();
