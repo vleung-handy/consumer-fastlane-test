@@ -177,6 +177,14 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     }
 
     private void initProTeamCarousel() {
+        if (mRecommendedProviders != null) {
+            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RecommendedProvidersShown(
+                    mRecommendedProviders,
+                    userManager.getCurrentUser().getId(),
+                    mBooking.getId()
+            )));
+        }
+
         if (mRecommendedProviders == null && mMode == Mode.FEEDBACK) {
             showUiBlockers();
             dataManager.getRecommendedProviders(
@@ -242,6 +250,10 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                         viewModel.setButtonText(getString(R.string.added));
                         button.setText(R.string.added);
                         button.setEnabled(false);
+                        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProviderAdded(
+                                userManager.getCurrentUser().getId(),
+                                provider.getId()
+                        )));
                     }
 
                     @Override
