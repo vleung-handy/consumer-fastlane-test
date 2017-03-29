@@ -101,7 +101,7 @@ public class Booking implements Parcelable {
     @SerializedName("provider_assignment_state")
     private ProviderAssignmentInfo mProviderAssignmentInfo;
     @SerializedName("show_payment_section")
-    private boolean mIsShowPaymentSection;
+    private boolean mShouldShowPaymentSection;
 
     public ProviderAssignmentInfo getProviderAssignmentInfo() {
         return mProviderAssignmentInfo;
@@ -186,8 +186,8 @@ public class Booking implements Parcelable {
         return mServiceMachineName;
     }
 
-    public boolean isShowPaymentSection() {
-        return mIsShowPaymentSection;
+    public boolean shouldShowPaymentSection() {
+        return mShouldShowPaymentSection;
     }
 
     //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table,

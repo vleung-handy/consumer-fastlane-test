@@ -299,7 +299,7 @@ public final class BookingDetailFragment extends InjectedFragment
         );
 
         //Only show the payment section if we're suppose to
-        if((mBooking != null && mBooking.isShowPaymentSection())) {
+        if ((mBooking != null && mBooking.shouldShowPaymentSection())) {
             sections.add(new BookingDetailSectionFragmentPayment());
         }
 
