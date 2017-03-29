@@ -11,6 +11,19 @@ before_all do
   ENV["GITHUB_URL"] = "https://github.com/handybook/android-consumer"
 end
 
+lane :release do
+  ensure_git_branch_release_candidate
+  ensure_git_branch_clean_and_latest
+
+  gradle(task: "clean")
+  gradle(task: "assembleProdRelease")
+
+  beta(skip_build: true)
+  playstore(skip_build: true)
+
+  # TODO: Upload assets to Github
+end
+
 lane :beta do |options|
   ensure_git_branch_release_candidate
   ensure_git_branch_clean_and_latest
