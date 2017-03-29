@@ -275,7 +275,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         }
         final User user = userManager.getCurrentUser();
         final User.CreditCard card = user != null ? user.getCreditCard() : null;
-        if ((card != null && !android.text.TextUtils.isEmpty(card.getLast4()))
+        if (card != null && !android.text.TextUtils.isEmpty(card.getLast4())
             && (savedInstanceState == null || mUseExistingCard)
             && !user.isUsingAndroidPay()) {
             mUseExistingCard = true;
