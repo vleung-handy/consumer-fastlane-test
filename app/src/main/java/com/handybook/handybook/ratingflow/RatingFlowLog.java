@@ -1,7 +1,13 @@
 package com.handybook.handybook.ratingflow;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RatingFlowLog extends EventLog {
 
@@ -139,6 +145,53 @@ public class RatingFlowLog extends EventLog {
         ) {
             super(EVENT_TYPE);
             mBookingId = bookingId;
+            mProviderId = providerId;
+        }
+    }
+
+
+    public static class RecommendedProvidersShown extends RatingFlowLog {
+
+        @SerializedName("provider_ids")
+        private ArrayList<String> mProviderIds;
+        @SerializedName("num_pros")
+        private int mNumberOfProviders;
+        @SerializedName("user_id")
+        private String mUserId;
+        @SerializedName("booking_id")
+        private String mBookingId;
+
+        public static final String EVENT_TYPE = "recommended_pros_shown";
+
+        public RecommendedProvidersShown(
+                @NonNull final List<Provider> recommendedProviders,
+                final String userId,
+                final String bookingId
+        ) {
+            super(EVENT_TYPE);
+            mProviderIds = new ArrayList<>();
+            for (final Provider recommendedProvider : recommendedProviders) {
+                mProviderIds.add(recommendedProvider.getId());
+            }
+            mNumberOfProviders = recommendedProviders.size();
+            mUserId = userId;
+            mBookingId = bookingId;
+        }
+    }
+
+
+    public static class ProviderAdded extends RatingFlowLog {
+
+        public static final String EVENT_TYPE = "provider_added";
+
+        @SerializedName("user_id")
+        private String mUserId;
+        @SerializedName("provider_id")
+        private String mProviderId;
+
+        public ProviderAdded(final String userId, final String providerId) {
+            super(EVENT_TYPE);
+            mUserId = userId;
             mProviderId = providerId;
         }
     }
