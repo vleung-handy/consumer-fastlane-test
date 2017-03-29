@@ -22,6 +22,7 @@ import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.model.response.HelpCenterResponse;
+import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.notifications.model.HandyNotification;
@@ -270,6 +271,15 @@ class RecommendedProvidersHandyRetrofitCallback
         extends TypedHandyRetrofitCallback<RecommendedProvidersWrapper> {
 
     RecommendedProvidersHandyRetrofitCallback(final DataManager.Callback callback) {
+        super(callback);
+    }
+}
+
+
+class ProAvailabilityCallback
+        extends TypedHandyRetrofitCallback<ProAvailabilityResponse> {
+
+    ProAvailabilityCallback(final DataManager.Callback callback) {
         super(callback);
     }
 }

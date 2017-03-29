@@ -120,11 +120,7 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         mProAvailability = (ProAvailabilityResponse)
                 args.getSerializable(BundleKeys.PRO_AVAILABILITY);
         if (mProAvailability != null) {
-            mAvailableDay = mProAvailability.findAvailableDay(
-                    mSelectedDateTime.get(Calendar.YEAR),
-                    mSelectedDateTime.get(Calendar.MONTH),
-                    mSelectedDateTime.get(Calendar.DAY_OF_MONTH)
-            );
+            mAvailableDay = mProAvailability.findFirstAvailableDay();
             resetSelectedTime();
         }
         mEditTimeButtonFormatter = android.text.format.DateFormat.getTimeFormat(getContext());

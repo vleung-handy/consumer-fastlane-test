@@ -19,16 +19,16 @@ public class ProAvailabilityResponse implements Serializable {
 
     @SerializedName("time_zone")
     private String mTimZone;
-    @SerializedName("start_time_stride")
-    private int mStartTimeStride;
+    @SerializedName("start_time_increment")
+    private int mStartTimeIncrement;
     @SerializedName("availability")
     private List<AvailableDay> mAvailableDays;
 
     public ProAvailabilityResponse(
-            String timZone, int startTimeStride, List<AvailableDay> availableDays
+            String timZone, int startTimeIncrement, List<AvailableDay> availableDays
     ) {
         mTimZone = timZone;
-        mStartTimeStride = startTimeStride;
+        mStartTimeIncrement = startTimeIncrement;
         mAvailableDays = availableDays;
     }
 
@@ -38,13 +38,21 @@ public class ProAvailabilityResponse implements Serializable {
     }
 
     @NonNull
-    public int getStartTimeStride() {
-        return mStartTimeStride;
+    public int getStartTimeIncrement() {
+        return mStartTimeIncrement;
     }
 
     @NonNull
     public List<AvailableDay> getAvailableDays() {
         return mAvailableDays;
+    }
+
+    @Nullable
+    public AvailableDay findFirstAvailableDay() {
+        if (getAvailableDays().size() > 0) {
+            return getAvailableDays().get(0);
+        }
+        return null;
     }
 
     @Nullable
@@ -63,10 +71,6 @@ public class ProAvailabilityResponse implements Serializable {
             catch (ParseException e) {
                 Crashlytics.log(e.getMessage());
             }
-
-        }
-        if (getAvailableDays().size() > 0) {
-            return getAvailableDays().get(0);
         }
         return null;
     }
@@ -75,7 +79,7 @@ public class ProAvailabilityResponse implements Serializable {
 
         @SerializedName("date")
         private String mDate;
-        @SerializedName("start_time_intervals")
+        @SerializedName("start_times")
         private List<ProTimeInterval> mTimeIntervals;
 
         public AvailableDay(
