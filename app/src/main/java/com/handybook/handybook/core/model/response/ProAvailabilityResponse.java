@@ -1,11 +1,19 @@
 package com.handybook.handybook.core.model.response;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.core.model.ProTimeInterval;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static com.handybook.handybook.library.util.DateTimeUtils.YEAR_MONTH_DATE_FORMATTER;
 
 public class ProAvailabilityResponse implements Serializable {
 
@@ -14,71 +22,77 @@ public class ProAvailabilityResponse implements Serializable {
     @SerializedName("start_time_stride")
     private int mStartTimeStride;
     @SerializedName("availability")
-    private List<Availability> mAvailabilities;
+    private List<AvailableDay> mAvailableDays;
 
     public ProAvailabilityResponse(
-            String timZone, int startTimeStride, List<Availability> availabilities
+            String timZone, int startTimeStride, List<AvailableDay> availableDays
     ) {
         mTimZone = timZone;
         mStartTimeStride = startTimeStride;
-        mAvailabilities = availabilities;
+        mAvailableDays = availableDays;
     }
 
+    @NonNull
     public String getTimZone() {
         return mTimZone;
     }
 
+    @NonNull
     public int getStartTimeStride() {
         return mStartTimeStride;
     }
 
     @NonNull
-    public List<Availability> getAvailabilities() {
-        return mAvailabilities;
+    public List<AvailableDay> getAvailableDays() {
+        return mAvailableDays;
     }
 
-    public static class Availability implements Serializable {
+    @Nullable
+    public AvailableDay findAvailableDay(int year, int monthOfYear, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        for (AvailableDay day : getAvailableDays()) {
+            try {
+                Date date = YEAR_MONTH_DATE_FORMATTER.parse(day.getDate());
+                calendar.setTime(date);
+                if (calendar.get(Calendar.YEAR) == year &&
+                    calendar.get(Calendar.MONTH) == monthOfYear &&
+                    calendar.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
+                    return day;
+                }
+            }
+            catch (ParseException e) {
+                Crashlytics.log(e.getMessage());
+            }
+
+        }
+        if (getAvailableDays().size() > 0) {
+            return getAvailableDays().get(0);
+        }
+        return null;
+    }
+
+    public static class AvailableDay implements Serializable {
 
         @SerializedName("date")
         private String mDate;
         @SerializedName("start_time_intervals")
-        private List<TimeInterval> mTimeIntervals;
+        private List<ProTimeInterval> mTimeIntervals;
 
-        public Availability(
-                final String date, final List<TimeInterval> timeIntervals
+        public AvailableDay(
+                final String date, final List<ProTimeInterval> timeIntervals
         ) {
             mDate = date;
             mTimeIntervals = timeIntervals;
         }
 
+        @NonNull
         public String getDate() {
             return mDate;
         }
 
-        public List<TimeInterval> getTimeIntervals() {
+        @NonNull
+        public List<ProTimeInterval> getTimeIntervals() {
             return mTimeIntervals;
-        }
-    }
-
-
-    public static class TimeInterval implements Serializable {
-
-        @SerializedName("interval_start")
-        private String mIntervalStart;
-        @SerializedName("interval_end")
-        private String mIntervalEnd;
-
-        public TimeInterval(final String intervalStart, final String intervalEnd) {
-            mIntervalStart = intervalStart;
-            mIntervalEnd = intervalEnd;
-        }
-
-        public String getIntervalStart() {
-            return mIntervalStart;
-        }
-
-        public String getIntervalEnd() {
-            return mIntervalEnd;
         }
     }
 }

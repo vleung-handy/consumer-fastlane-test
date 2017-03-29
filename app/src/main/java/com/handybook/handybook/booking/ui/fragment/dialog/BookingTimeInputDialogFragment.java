@@ -11,10 +11,13 @@ import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.ui.view.SingleSpinnerTimePicker;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.handybook.handybook.library.ui.view.SingleSpinnerTimePicker.TimeInterval;
 
 /**
  * dialog fragment specifically to input booking time
@@ -24,26 +27,21 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
     public static final String TAG = BookingTimeInputDialogFragment.class.getName();
     private static final String BUNDLE_KEY_SELECTED_MINUTE_OF_DAY
             = "BUNDLE_KEY_SELECTED_MINUTE_OF_DAY";
+    private static final String BUNDLE_KEY_SELECTED_MINUTE_INTERVAL
+            = "BUNDLE_KEY_SELECTED_MINUTE_INTERVAL";
     private static final String BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN
             = "BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN";
-
-    private static int TIME_PICKER_MINUTE_INTERVAL = 30;
-
-    /**
-     * would be nice if server sent us this
-     *
-     */
-    private static int MIN_HOUR_OF_DAY = 7;
-    private static int MIN_MINUTE_OF_MIN_HOUR_OF_DAY = 0;
-    private static int MAX_HOUR_OF_DAY = 21;
-    private static int MAX_MINUTE_OF_MAX_HOUR_OF_DAY = 0;
+    private static final String BUNDLE_KEY_TIME_INTERVALS
+            = "BUNDLE_KEY_TIME_INTERVALS";
 
     @Bind(R.id.fragment_dialog_booking_time_input_picker)
     SingleSpinnerTimePicker mSingleSpinnerTimePicker;
 
     public static BookingTimeInputDialogFragment newInstance(
             int minuteOfDay,
-            @NonNull DateFormat timePickerDisplayFormat
+            int minuteInterval,
+            @NonNull DateFormat timePickerDisplayFormat,
+            @NonNull ArrayList<TimeInterval> timeIntervals
     ) {
         BookingTimeInputDialogFragment bookingTimeInputDialogFragment =
                 new BookingTimeInputDialogFragment();
@@ -51,7 +49,9 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
 
         Bundle bundle = new Bundle();
         bundle.putInt(BUNDLE_KEY_SELECTED_MINUTE_OF_DAY, minuteOfDay);
+        bundle.putInt(BUNDLE_KEY_SELECTED_MINUTE_INTERVAL, minuteInterval);
         bundle.putSerializable(BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN, timePickerDisplayFormat);
+        bundle.putSerializable(BUNDLE_KEY_TIME_INTERVALS, timeIntervals);
         bookingTimeInputDialogFragment.setArguments(bundle);
         return bookingTimeInputDialogFragment;
     }
@@ -72,18 +72,13 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
         ButterKnife.bind(this, view);
 
         int minuteOfDay = getArguments().getInt(BUNDLE_KEY_SELECTED_MINUTE_OF_DAY);
+        int minuteInterval = getArguments().getInt(BUNDLE_KEY_SELECTED_MINUTE_INTERVAL);
         DateFormat timePickerDisplayFormat
-                = (DateFormat) getArguments().getSerializable(
-                BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN);
+                = (DateFormat) getArguments().getSerializable(BUNDLE_KEY_TIME_PICKER_DISPLAY_PATTERN);
+        ArrayList<TimeInterval> intervals
+                = (ArrayList<TimeInterval>) getArguments().getSerializable(BUNDLE_KEY_TIME_INTERVALS);
 
-        mSingleSpinnerTimePicker.initialize(
-                MIN_HOUR_OF_DAY,
-                MIN_MINUTE_OF_MIN_HOUR_OF_DAY,
-                MAX_HOUR_OF_DAY,
-                MAX_MINUTE_OF_MAX_HOUR_OF_DAY,
-                TIME_PICKER_MINUTE_INTERVAL,
-                timePickerDisplayFormat
-        );
+        mSingleSpinnerTimePicker.initialize(intervals, minuteInterval, timePickerDisplayFormat);
         mSingleSpinnerTimePicker.setSelectedHourAndMinute(minuteOfDay);
 
         return view;
