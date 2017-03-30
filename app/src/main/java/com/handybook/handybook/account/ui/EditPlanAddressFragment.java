@@ -3,6 +3,7 @@ package com.handybook.handybook.account.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,13 @@ import android.widget.EditText;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.model.RecurringPlanWrapper;
-import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.ui.widget.CityInputTextView;
+import com.handybook.handybook.core.ui.widget.StateInputTextView;
 import com.handybook.handybook.core.ui.widget.StreetAddressInputTextView;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
@@ -34,6 +36,10 @@ public final class EditPlanAddressFragment extends InjectedFragment {
     StreetAddressInputTextView mStreetAddressText;
     @Bind(R.id.plan_address_apt_addr_text)
     EditText mAptAddressText;
+    @Bind(R.id.plan_address_city_text)
+    CityInputTextView mCityText;
+    @Bind(R.id.plan_address_state_text)
+    StateInputTextView mStateText;
     @Bind(R.id.plan_address_zip_text)
     ZipCodeInputTextView mZipCodeText;
 
@@ -42,6 +48,7 @@ public final class EditPlanAddressFragment extends InjectedFragment {
 
     private RecurringBooking mPlan;
 
+    @NonNull
     public static EditPlanAddressFragment newInstance(RecurringBooking plan) {
         final EditPlanAddressFragment fragment = new EditPlanAddressFragment();
         final Bundle args = new Bundle();
@@ -71,6 +78,8 @@ public final class EditPlanAddressFragment extends InjectedFragment {
             mStreetAddressText.setText(mPlan.getAddress().getAddress1());
             mAptAddressText.setText(mPlan.getAddress().getAddress2());
             mZipCodeText.setText(mPlan.getAddress().getZip());
+            mCityText.setText(mPlan.getAddress().getCity());
+            mStateText.setText(mPlan.getAddress().getState());
         }
 
         return view;
@@ -95,7 +104,9 @@ public final class EditPlanAddressFragment extends InjectedFragment {
         final EditAddressRequest request = new EditAddressRequest(
                 mStreetAddressText.getAddress(),
                 mAptAddressText.getText().toString(),
-                mZipCodeText.getZipCode()
+                mZipCodeText.getZipCode(),
+                mCityText.getCity(),
+                mStateText.getState()
         );
         showUiBlockers();
         UiUtils.dismissKeyboard(getActivity());
@@ -116,7 +127,6 @@ public final class EditPlanAddressFragment extends InjectedFragment {
                     }
                 }
         );
-        bus.post(new BookingEditEvent.RequestEditBookingAddress(mPlan.getId(), request));
     }
 
     private boolean validateFields() {

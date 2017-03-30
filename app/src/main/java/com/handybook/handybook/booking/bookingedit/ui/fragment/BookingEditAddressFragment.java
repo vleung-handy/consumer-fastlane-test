@@ -59,42 +59,46 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_edit_address_title));
 
-        if (mBooking.getAddress() != null) {
+        final Booking.Address address = mBooking.getAddress();
+        if (address != null) {
             mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                     new ZipValidationResponse.ZipArea(
-                            mBooking.getAddress().getCity(),
-                            mBooking.getAddress().getState(),
-                            mBooking.getAddress().getZip()
+                            address.getCity(),
+                            address.getState(),
+                            address.getZip()
                     ),
-                    mBooking.getAddress().getAddress1(),
-                    mBooking.getAddress().getAddress2(),
+                    address.getAddress1(),
+                    address.getAddress2(),
+                    address.getCity(),
+                    address.getState(),
                     mConfigurationManager.getCachedConfiguration()
             );
-
-            mZipCodeInputTextView.setText(mBooking.getAddress().getZip());
+            mZipCodeInputTextView.setText(address.getZip());
         }
         else {
             mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                     null,
                     null,
                     null,
+                    null,
+                    null,
                     mConfigurationManager.getCachedConfiguration()
             );
         }
-
         getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.edit_booking_address_fragment_container, mAutoCompleteFragment)
                 .commitAllowingStateLoss();
-
         return view;
     }
 
     private void sendEditAddressRequest() {
         EditAddressRequest bookingEditAddressRequest = new EditAddressRequest(
-                mAutoCompleteFragment.mStreet.getAddress(),
-                mAutoCompleteFragment.mOther.getText().toString(),
-                mZipCodeInputTextView.getZipCode()
+                mAutoCompleteFragment.getStreet(),
+                mAutoCompleteFragment.getApt(),
+                mZipCodeInputTextView.getZipCode(),
+                mAutoCompleteFragment.getCity(),
+                mAutoCompleteFragment.getState()
         );
         showUiBlockers();
         bus.post(new BookingEditEvent.RequestEditBookingAddress(

@@ -88,6 +88,8 @@ public final class BookingAddressFragment extends BookingFlowFragment {
                         filter,
                         addr.getAddress1(),
                         addr.getAddress2(),
+                        addr.getCity(),
+                        addr.getState(),
                         mConfigurationManager.getCachedConfiguration()
                 );
             }
@@ -101,6 +103,8 @@ public final class BookingAddressFragment extends BookingFlowFragment {
         if (mAutoCompleteFragment == null) {
             mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                     filter,
+                    null,
+                    null,
                     null,
                     null,
                     mConfigurationManager.getCachedConfiguration()
@@ -129,8 +133,10 @@ public final class BookingAddressFragment extends BookingFlowFragment {
 
                 bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingAddressSubmittedLog()));
                 final BookingTransaction transaction = bookingManager.getCurrentTransaction();
-                transaction.setAddress1(mAutoCompleteFragment.mStreet.getAddress());
-                transaction.setAddress2(mAutoCompleteFragment.mOther.getText().toString());
+                transaction.setAddress1(mAutoCompleteFragment.getStreet());
+                transaction.setAddress2(mAutoCompleteFragment.getApt());
+                transaction.setCity(mAutoCompleteFragment.getCity());
+                transaction.setState(mAutoCompleteFragment.getState());
                 transaction.setFirstName(mTextFullName.getFirstName());
                 transaction.setLastName(mTextFullName.getLastName());
                 transaction.setPhone(mTextPhone.getPhoneNumber());

@@ -227,22 +227,12 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
-    /**
-     *
-     * @param bookingId
-     * @param cb
-     */
     @GET("/bookings/{bookingId}/edit_entry_info")
     void getEntryMethodsInfo(
             @Path("bookingId") String bookingId,
             HandyRetrofitCallback cb
     );
 
-    /**
-     * @param bookingId
-     * @param bookingEditEntryInformationRequest
-     * @param cb
-     */
     @POST("/bookings/{booking}/entry_info")
     void updateBookingEntryInformation(
             @Path("booking") String bookingId,
@@ -265,11 +255,9 @@ public interface HandyRetrofitService {
     );
 
     /**
-     * @param bookingId
-     * @param bookingEditFrequencyRequest
-     * @param cb
-     * @deprecated Use /recurring_bookings/{recurring_id}/edit_frequency instead.
+     * @deprecated use /recurring_bookings/{recurring_id}/edit_frequency instead
      */
+    @Deprecated
     @POST("/bookings/{booking}/edit_frequency")
     void updateBookingFrequency(
             @Path("booking") int bookingId,
@@ -278,10 +266,9 @@ public interface HandyRetrofitService {
     );
 
     /**
-     * @param bookingId
-     * @param cb
      * @deprecated use /recurring_bookings/{recurring_id}/edit_frequency instead
      */
+    @Deprecated
     @GET("/bookings/{booking}/edit_frequency")
     void getBookingPricesForFrequencies(
             @Path("booking") int bookingId,

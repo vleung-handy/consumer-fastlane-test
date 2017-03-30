@@ -50,6 +50,8 @@
     <string name="where_located">Okay, where are you located?</string>
     <string name="where_located_simple">Where are you located?</string>
     <string name="zip_code">ZIP Code</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
     <string name="details">Details</string>
     <string name="tell_us_job">Got it! Tell us about the job</string>
     <string name="tell_us_place">Tell us about your place</string>
@@ -202,7 +204,7 @@
     <string name="booking_detail_pro_assignment_pending_title">You\'re all set!</string>
     <string name="booking_detail_pro_assignment_pending_text">Prefer working with specific pros?</string>
     <string name="manage_pro_team">Manage Pro Team</string>
-    <string name="blank_string"></string>
+    <string name="blank_string"/>
     <string name="call">Call</string>
     <string name="text">Text</string>
     <string name="booking_number">Booking #%s</string>
@@ -531,7 +533,7 @@
     <string name="notifications_num_more">+%1$d more</string>
     <string name="notifications_new_messages">%1$d new messages</string>
     <string name="push_notification_no_content_title">New message (tap to sync)</string>
-    <string name="new_conversation_text">Start a new conversation...</string>
+    <string name="new_conversation_text">Start a new conversation…</string>
     <string name="reschedule_title">Select a booking to reschedule</string>
     <string name="reschedule_try_again">There was an issue rescheduling, please try again.</string>
     <string name="reschedule_select_booking">Please select a booking to reschedule</string>

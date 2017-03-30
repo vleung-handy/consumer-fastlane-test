@@ -1,6 +1,7 @@
 package com.handybook.handybook.core;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.ExclusionStrategy;
@@ -367,17 +368,34 @@ public class User extends Observable {
         private String mAddress1;
         @SerializedName("address2")
         private String mAddress2;
+        @SerializedName("city")
+        private String mCity;
+        @SerializedName("state")
+        private String mState;
 
+        @Nullable
         public final String getZip() {
             return mZip;
         }
 
+        @Nullable
         public final String getAddress1() {
             return mAddress1;
         }
 
+        @Nullable
         public final String getAddress2() {
             return mAddress2;
+        }
+
+        @Nullable
+        public String getCity() {
+            return mCity;
+        }
+
+        @Nullable
+        public String getState() {
+            return mState;
         }
     }
 
