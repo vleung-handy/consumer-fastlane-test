@@ -26,6 +26,7 @@ import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActiv
 import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialogFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
@@ -42,7 +43,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingDateFragment extends BookingFlowFragment implements BookingDateTimeInputFragment.OnSelectedDateTimeUpdatedListener {
+public final class BookingDateFragment extends BookingFlowFragment
+        implements BookingDateTimeInputFragment.OnSelectedDateTimeUpdatedListener {
+
     static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
@@ -69,6 +72,7 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
 
     private ArrayList<BookingOption> mBookingOptions;
     private Booking mRescheduleBooking;
+    private ProAvailabilityResponse mProAvailability;
     private final View.OnClickListener nextClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View view) {
@@ -104,9 +108,10 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
                     Date dateStart = bookingRequest.getStartDate();
                     String timezone = bookingRequest.getTimeZone();
                     if (dateStart != null && !Strings.isNullOrEmpty(timezone)) {
-                        String dateString = DateTimeUtils.formatDate(dateStart,
-                                                                     DateTimeUtils.UNIVERSAL_DATE_FORMAT,
-                                                                     timezone
+                        String dateString = DateTimeUtils.formatDate(
+                                dateStart,
+                                DateTimeUtils.UNIVERSAL_DATE_FORMAT,
+                                timezone
                         );
                         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerSubmittedLog(
                                 dateString)));
@@ -151,7 +156,8 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
             final Booking rescheduleBooking,
             final String notice,
             BookingDetailFragment.RescheduleType type,
-            final String providerId
+            final String providerId,
+            final ProAvailabilityResponse availabilityResponse
     ) {
         final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
@@ -159,6 +165,7 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
         args.putString(EXTRA_RESCHEDULE_NOTICE, notice);
         args.putSerializable(EXTRA_RESCHEDULE_TYPE, type);
         args.putString(EXTRA_PROVIDER_ID, providerId);
+        args.putSerializable(BundleKeys.PRO_AVAILABILITY, availabilityResponse);
         fragment.setArguments(args);
         return fragment;
     }
@@ -179,6 +186,9 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
 
             mRescheduleType = (BookingDetailFragment.RescheduleType)
                     getArguments().getSerializable(EXTRA_RESCHEDULE_TYPE);
+
+            mProAvailability = (ProAvailabilityResponse)
+                    getArguments().getSerializable(BundleKeys.PRO_AVAILABILITY);
         }
         else {
             mBookingOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
@@ -230,7 +240,8 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
         setupToolbar(mToolbar, getString(R.string.time));
 
         if (mRescheduleBooking != null) {
-            if (mRescheduleType != null && mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CANCELATION) {
+            if (mRescheduleType != null &&
+                mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CANCELATION) {
                 //this is the reschedule flow from cancelation
                 //log that we are here.
                 bus.post(new LogEvent.AddLogEvent(
@@ -259,10 +270,12 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
 
     private void initializeDateTimeInput() {
         final Calendar startDateTime = getInitialStartDateTimeWithTimeZone();
-        BookingDateTimeInputFragment bookingDateTimeInputFragment = BookingDateTimeInputFragment.newInstance(
+        BookingDateTimeInputFragment bookingDateTimeInputFragment
+                = BookingDateTimeInputFragment.newInstance(
                 startDateTime,
-                DateTimeUtils.DEFAULT_DATE_DISPLAY_PATTERN
+                DateTimeUtils.DEFAULT_DATE_DISPLAY_PATTERN,
                 //not using device defaults because the format is too long
+                mProAvailability
         );
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.booking_date_time_input_fragment_container, bookingDateTimeInputFragment,
@@ -345,7 +358,8 @@ public final class BookingDateFragment extends BookingFlowFragment implements Bo
     private void updateBookingRequestDateTime(final Date selectedDateTime) {
         if (mRescheduleBooking != null) {
             mRescheduleDate = selectedDateTime;
-        } else {
+        }
+        else {
             final BookingRequest request = bookingManager.getCurrentRequest();
             if (request != null) {
                 request.setStartDate(selectedDateTime);

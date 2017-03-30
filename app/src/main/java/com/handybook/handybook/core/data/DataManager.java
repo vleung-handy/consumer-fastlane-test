@@ -47,6 +47,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.model.request.CreateUserRequest;
 import com.handybook.handybook.core.model.request.UpdateUserRequest;
 import com.handybook.handybook.core.model.response.HelpCenterResponse;
+import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
@@ -1050,6 +1051,18 @@ public class DataManager {
                 userId,
                 serviceId,
                 new RecommendedProvidersHandyRetrofitCallback(cb)
+        );
+    }
+
+    public void getProviderAvailability(
+            final String providerId,
+            final float durationHour,
+            final Callback<ProAvailabilityResponse> cb
+    ) {
+        mService.getProviderAvailability(
+                providerId,
+                durationHour,
+                new ProAvailabilityCallback(cb)
         );
     }
 

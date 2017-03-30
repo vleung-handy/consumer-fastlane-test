@@ -27,6 +27,7 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.manager.SessionManager;
+import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -81,6 +82,8 @@ public class ProMessagesActivity extends MessagesListActivity {
     private ProgressDialog mProgressDialog;
     private Service mCleaningService;
     private int mAttachmentViewItemHeight;
+
+    private ProAvailabilityResponse mProAvailabilityResponse;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -356,8 +359,11 @@ public class ProMessagesActivity extends MessagesListActivity {
                     );
                 }
                 else {
-                    mDataManager.getPreRescheduleInfo(
-                            mBooking.getId(), new PreRescheduleCallback(ProMessagesActivity.this));
+                    mDataManager.getProviderAvailability(
+                            mProViewModel.getProviderId(),
+                            mBooking.getHours(),
+                            new ProAvailabilityCallback(ProMessagesActivity.this)
+                    );
                 }
             }
         });
@@ -393,6 +399,17 @@ public class ProMessagesActivity extends MessagesListActivity {
         Toast.makeText(this, R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
     }
 
+    public void onReceivedAvailabilitySuccess(ProAvailabilityResponse proAvailabilityResponse) {
+        mProAvailabilityResponse = proAvailabilityResponse;
+        mDataManager.getPreRescheduleInfo(
+                mBooking.getId(), new PreRescheduleCallback(ProMessagesActivity.this));
+    }
+
+    public void onReceivedAvailabilityError() {
+        mProgressDialog.dismiss();
+        Toast.makeText(this, R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
+    }
+
     public void onReceivePreRescheduleInfoSuccess(String notice) {
         mProgressDialog.dismiss();
 
@@ -407,6 +424,7 @@ public class ProMessagesActivity extends MessagesListActivity {
         intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
         intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.FROM_CHAT);
         intent.putExtra(BundleKeys.PROVIDER_ID, mProViewModel.getProviderId());
+        intent.putExtra(BundleKeys.PRO_AVAILABILITY, mProAvailabilityResponse);
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }
 
@@ -466,6 +484,25 @@ public class ProMessagesActivity extends MessagesListActivity {
         @Override
         public void onCallbackSuccess(final String response) {
             mActivityWeakReference.get().onReceivePreRescheduleInfoSuccess(response);
+        }
+
+        @Override
+        public void onCallbackError(final DataManager.DataManagerError error) {
+            mActivityWeakReference.get().onRescheduleRequestError();
+        }
+    }
+
+
+    private static class ProAvailabilityCallback
+            extends ActivitySafeCallback<ProAvailabilityResponse, ProMessagesActivity> {
+
+        public ProAvailabilityCallback(ProMessagesActivity activity) {
+            super(activity);
+        }
+
+        @Override
+        public void onCallbackSuccess(final ProAvailabilityResponse response) {
+            mActivityWeakReference.get().onReceivedAvailabilitySuccess(response);
         }
 
         @Override

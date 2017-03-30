@@ -490,6 +490,15 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
+    @GET("/providers/{provider_id}/availability")
+    void getProviderAvailability(
+            @Path("provider_id") String providerId,
+            @Query("duration") float durationHour,
+            HandyRetrofitCallback cb
+    );
+
+
+
     @POST("/events")
     void postLogs(@Body JsonObject eventLogBundle, HandyRetrofitCallback cb);
 

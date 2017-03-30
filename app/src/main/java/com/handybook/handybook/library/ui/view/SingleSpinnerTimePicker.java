@@ -6,8 +6,14 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.NumberPicker;
 
+import com.handybook.handybook.library.util.DateTimeUtils;
+
+import java.io.Serializable;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,25 +46,16 @@ public class SingleSpinnerTimePicker extends NumberPicker {
 
     /**
      * Assumes that all of the given params are within the noted ranges
-     *
-     * @see Adapter
+     * @param intervals sorted blocks of time intervals
+     * @param minuteInterval >=1. the minute interval between each time option
+     * @param timeFormatter the time format used for the display values
      */
     public void initialize(
-            int minHourOfDay,
-            int minMinuteOfMinHour,
-            int maxHourOfDay,
-            int maxMinuteOfMaxHour,
+            @NonNull List<TimeInterval> intervals,
             int minuteInterval,
             @NonNull DateFormat timeFormatter
     ) {
-        mAdapter = new Adapter(
-                minHourOfDay,
-                minMinuteOfMinHour,
-                maxHourOfDay,
-                maxMinuteOfMaxHour,
-                minuteInterval,
-                timeFormatter
-        );
+        mAdapter = new Adapter(intervals, minuteInterval, timeFormatter);
 
         setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
         setDisplayedValues(mAdapter.getDisplayValues());
@@ -84,62 +81,60 @@ public class SingleSpinnerTimePicker extends NumberPicker {
                ((int) TimeUnit.HOURS.toMinutes(1));
     }
 
-    class Adapter extends BaseDataAdapter<String, Integer> {
+    private static class Adapter extends BaseDataAdapter<String, Integer> {
 
-        private String[] mDisplayValues;
-
-        private final int mMinMinuteOfDay;
-        private final int mMaxMinuteOfDay;
-        private final int mMinuteInterval;
+        private List<String> mDisplayValues;
+        private List<Integer> mUnderlyingValues;
 
         /**
          * Assumes that all of the given params are within the noted ranges
          *
-         * @param minHourOfDay [0-23] used to determine what the min time value should be
-         * @param minMinuteOfMinHour [0-59] used to determine what the min time value should be
-         * @param maxHourOfDay [0-23] used to determine what the max time value should be
-         * @param maxMinuteOfMaxHour [0-59] used to determine what the max time value should be
+         * @param timeIntervals sorted blocks of time intervals
          * @param minuteInterval >=1. the minute interval between each time option
          * @param timeFormatter the time format used for the display values
          */
         Adapter(
-                int minHourOfDay,
-                int minMinuteOfMinHour,
-                int maxHourOfDay,
-                int maxMinuteOfMaxHour,
+                @NonNull List<TimeInterval> timeIntervals,
                 int minuteInterval,
                 @NonNull DateFormat timeFormatter
         ) {
-            mMaxMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(maxHourOfDay) + maxMinuteOfMaxHour;
-            mMinMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(minHourOfDay) + minMinuteOfMinHour;
-            mMinuteInterval = minuteInterval;
-
-            int minutesBetween = mMaxMinuteOfDay - mMinMinuteOfDay;
-            int totalNumValues = minutesBetween / minuteInterval + 1;
-
+            mDisplayValues = new ArrayList<>();
+            mUnderlyingValues = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(timeFormatter.getTimeZone());
-            calendar.set(Calendar.HOUR_OF_DAY, minHourOfDay);
-            calendar.set(Calendar.MINUTE, minMinuteOfMinHour);
-            mDisplayValues = new String[totalNumValues];
-            for (int i = 0; i < totalNumValues; i++) {
-                String displayString = timeFormatter.format(calendar.getTime()).toLowerCase();
-                //SimpleDateFormat apparently doesn't allow us to specify lowercase am/pm
 
-                mDisplayValues[i] = displayString;
-                calendar.add(Calendar.MINUTE, minuteInterval);
+            for (TimeInterval interval : timeIntervals) {
+                int endMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(interval.getEndHourOfDay())
+                                     + interval.getEndMinuteOfEndHour();
+                int startMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(interval.getStartHourOfDay())
+                                       + interval.getEndMinuteOfEndHour();
+
+                int minutesBetween = endMinuteOfDay - startMinuteOfDay;
+                int totalNumValues = minutesBetween / minuteInterval + 1;
+
+                calendar.setTimeZone(timeFormatter.getTimeZone());
+                calendar.set(Calendar.HOUR_OF_DAY, interval.getStartHourOfDay());
+                calendar.set(Calendar.MINUTE, interval.getStartMinuteOfStartHour());
+                for (int i = 0; i < totalNumValues; i++) {
+                    String displayString = timeFormatter.format(calendar.getTime()).toLowerCase();
+                    //SimpleDateFormat apparently doesn't allow us to specify lowercase am/pm
+
+                    mDisplayValues.add(displayString);
+                    mUnderlyingValues.add(calendar.get(Calendar.MINUTE) +
+                                          calendar.get(Calendar.HOUR_OF_DAY) *
+                                          DateTimeUtils.MINUTES_IN_HOUR);
+                    calendar.add(Calendar.MINUTE, minuteInterval);
+                }
             }
-
         }
 
         @Override
         public String[] getDisplayValues() {
-            return mDisplayValues;
+            return mDisplayValues.toArray(new String[mDisplayValues.size()]);
         }
 
         @Override
         public int getNumItems() {
-            return mDisplayValues.length;
+            return mDisplayValues.size();
         }
 
         /**
@@ -148,7 +143,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
         @Override
         public Integer getUnderlyingValueAtIndex(final int index) {
             if (!isIndexValid(index)) { return null; }
-            return mMinMinuteOfDay + (index * mMinuteInterval);
+            return mUnderlyingValues.get(index);
         }
 
         /**
@@ -163,8 +158,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
         public Integer getCalculatedIndexForUnderlyingValue(Integer minuteOfDay) {
             if (minuteOfDay == null) { return null; }
 
-            int minutesPastMinMinute = minuteOfDay - mMinMinuteOfDay;
-            int index = minutesPastMinMinute / mMinuteInterval;
+            int index = Collections.binarySearch(mUnderlyingValues, minuteOfDay);
             return isIndexValid(index) ? index : null;
         }
     }
@@ -197,6 +191,43 @@ public class SingleSpinnerTimePicker extends NumberPicker {
 
         boolean isItemEnabled(int index) {
             return true;
+        }
+    }
+
+
+    public static class TimeInterval implements Serializable {
+
+        private int mStartHourOfDay;
+        private int mStartMinuteOfStartHour;
+        private int mEndHourOfDay;
+        private int mEndMinuteOfEndHour;
+
+        public TimeInterval(
+                final int startHourOfDay,
+                final int startMinuteOfStartHour,
+                final int endHourOfDay,
+                final int endMinuteOfEndHour
+        ) {
+            this.mStartHourOfDay = startHourOfDay;
+            this.mStartMinuteOfStartHour = startMinuteOfStartHour;
+            this.mEndHourOfDay = endHourOfDay;
+            this.mEndMinuteOfEndHour = endMinuteOfEndHour;
+        }
+
+        public int getStartHourOfDay() {
+            return mStartHourOfDay;
+        }
+
+        public int getStartMinuteOfStartHour() {
+            return mStartMinuteOfStartHour;
+        }
+
+        public int getEndHourOfDay() {
+            return mEndHourOfDay;
+        }
+
+        public int getEndMinuteOfEndHour() {
+            return mEndMinuteOfEndHour;
         }
     }
 }

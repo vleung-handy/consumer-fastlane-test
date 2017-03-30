@@ -8,6 +8,7 @@ import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.fragment.BookingDateFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
 import java.util.ArrayList;
@@ -26,7 +27,16 @@ public final class BookingDateActivity extends MenuDrawerActivity {
 
             final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
 
-            return BookingDateFragment.newInstance(rescheduleBooking, notice, type, providerId);
+            final ProAvailabilityResponse availabilityResponse = (ProAvailabilityResponse)
+                    getIntent().getSerializableExtra(BundleKeys.PRO_AVAILABILITY);
+
+            return BookingDateFragment.newInstance(
+                    rescheduleBooking,
+                    notice,
+                    type,
+                    providerId,
+                    availabilityResponse
+            );
         }
 
         final ArrayList<BookingOption> postOptions
