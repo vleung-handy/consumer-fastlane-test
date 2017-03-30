@@ -60,7 +60,7 @@ public class BookingDateTimeInputFragment extends InjectedFragment
     Button mBookingEditTimeButton;
     private DatePickerDialog mDatePickerDialog;
     private ProAvailabilityResponse mProAvailability;
-    private ProAvailabilityResponse.AvailableDay mAvailableDay;
+    private ProAvailabilityResponse.AvailableDay mCurrentSelectedAvailableDay;
     private Calendar mSelectedDateTime;
 
     public static final String BUNDLE_KEY_START_DATE_TIME = "BUNDLE_KEY_START_DATE_TIME";
@@ -120,7 +120,7 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         mProAvailability = (ProAvailabilityResponse)
                 args.getSerializable(BundleKeys.PRO_AVAILABILITY);
         if (mProAvailability != null) {
-            mAvailableDay = mProAvailability.findFirstAvailableDay();
+            mCurrentSelectedAvailableDay = mProAvailability.findFirstAvailableDay();
             resetSelectedTime();
         }
         mEditTimeButtonFormatter = android.text.format.DateFormat.getTimeFormat(getContext());
@@ -145,6 +145,7 @@ public class BookingDateTimeInputFragment extends InjectedFragment
                 mSelectedDateTime.get(Calendar.DAY_OF_MONTH)
         );
         mDatePickerDialog.setAccentColor(ContextCompat.getColor(getContext(), R.color.handy_blue));
+        mDatePickerDialog.setVersion(DatePickerDialog.Version.VERSION_2);
 
         final Calendar day = Calendar.getInstance();
         day.setTimeZone(mSelectedDateTime.getTimeZone());
@@ -219,20 +220,22 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         //SimpleDateFormat apparently doesn't allow us to specify lowercase am/pm
     }
 
+    // Generate time intervals for time picker based on currently selected day.
+    // Time intervals is full day if pro schedule is unavailable.
     private ArrayList<TimeInterval> generateTimeIntervals() {
         ArrayList<TimeInterval> intervals = new ArrayList<>();
 
-        if (mProAvailability != null && mAvailableDay != null) {
+        if (mProAvailability != null && mCurrentSelectedAvailableDay != null) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(TimeZone.getTimeZone(mProAvailability.getTimZone()));
-            for (ProTimeInterval interval : mAvailableDay.getTimeIntervals()) {
+            calendar.setTimeZone(TimeZone.getTimeZone(mProAvailability.getTimeZone()));
+            for (ProTimeInterval interval : mCurrentSelectedAvailableDay.getTimeIntervals()) {
                 try {
                     Date startDate
                             = DateTimeUtils.UNIVERSAL_YEAR_MONTH_DAY_TIME_FORMATTER.parse(
-                            interval.getIntervalStart());
+                            interval.getIntervalStartTime());
                     Date endDate
                             = DateTimeUtils.UNIVERSAL_YEAR_MONTH_DAY_TIME_FORMATTER.parse(
-                            interval.getIntervalEnd());
+                            interval.getIntervalEndTime());
                     calendar.setTime(startDate);
                     int startHourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
                     int startMinuteOfStartHour = calendar.get(Calendar.MINUTE);
@@ -268,13 +271,15 @@ public class BookingDateTimeInputFragment extends InjectedFragment
                 mSelectedDateTime);
     }
 
+    // Reset mSelectedDateTime to the first time slot available based on pro schedule for that day.
     private void resetSelectedTime() {
-        if (mAvailableDay == null) { return; }
-        List<ProTimeInterval> intervals = mAvailableDay.getTimeIntervals();
+        if (mCurrentSelectedAvailableDay == null) { return; }
+        List<ProTimeInterval> intervals = mCurrentSelectedAvailableDay.getTimeIntervals();
         if (intervals.size() == 0) { return; }
         ProTimeInterval interval = intervals.get(0);
         try {
-            Date date = UNIVERSAL_YEAR_MONTH_DAY_TIME_FORMATTER.parse(interval.getIntervalStart());
+            Date date
+                    = UNIVERSAL_YEAR_MONTH_DAY_TIME_FORMATTER.parse(interval.getIntervalStartTime());
             mSelectedDateTime.setTime(date);
         }
         catch (ParseException e) {
@@ -301,7 +306,8 @@ public class BookingDateTimeInputFragment extends InjectedFragment
         mSelectedDateTime.set(Calendar.MONTH, monthOfYear);
         mSelectedDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         if (mProAvailability != null) {
-            mAvailableDay = mProAvailability.findAvailableDay(year, monthOfYear, dayOfMonth);
+            mCurrentSelectedAvailableDay =
+                    mProAvailability.findAvailableDay(year, monthOfYear, dayOfMonth);
         }
         resetSelectedTime();
         updateDateTimeDisplay();

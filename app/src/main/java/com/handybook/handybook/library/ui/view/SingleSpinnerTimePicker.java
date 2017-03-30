@@ -102,17 +102,17 @@ public class SingleSpinnerTimePicker extends NumberPicker {
             Calendar calendar = Calendar.getInstance();
 
             for (TimeInterval interval : timeIntervals) {
-                int endMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(interval.endHourOfDay) +
-                                     interval.endMinuteOfEndHour;
-                int startMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(interval.startHourOfDay) +
-                                       interval.startMinuteOfStartHour;
+                int endMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(interval.getEndHourOfDay())
+                                     + interval.getEndMinuteOfEndHour();
+                int startMinuteOfDay = (int) TimeUnit.HOURS.toMinutes(interval.getStartHourOfDay())
+                                       + interval.getEndMinuteOfEndHour();
 
                 int minutesBetween = endMinuteOfDay - startMinuteOfDay;
                 int totalNumValues = minutesBetween / minuteInterval + 1;
 
                 calendar.setTimeZone(timeFormatter.getTimeZone());
-                calendar.set(Calendar.HOUR_OF_DAY, interval.startHourOfDay);
-                calendar.set(Calendar.MINUTE, interval.startMinuteOfStartHour);
+                calendar.set(Calendar.HOUR_OF_DAY, interval.getStartHourOfDay());
+                calendar.set(Calendar.MINUTE, interval.getStartMinuteOfStartHour());
                 for (int i = 0; i < totalNumValues; i++) {
                     String displayString = timeFormatter.format(calendar.getTime()).toLowerCase();
                     //SimpleDateFormat apparently doesn't allow us to specify lowercase am/pm
@@ -196,10 +196,10 @@ public class SingleSpinnerTimePicker extends NumberPicker {
 
     public static class TimeInterval implements Serializable {
 
-        public int startHourOfDay;
-        public int startMinuteOfStartHour;
-        public int endHourOfDay;
-        public int endMinuteOfEndHour;
+        private int mStartHourOfDay;
+        private int mStartMinuteOfStartHour;
+        private int mEndHourOfDay;
+        private int mEndMinuteOfEndHour;
 
         public TimeInterval(
                 final int startHourOfDay,
@@ -207,10 +207,26 @@ public class SingleSpinnerTimePicker extends NumberPicker {
                 final int endHourOfDay,
                 final int endMinuteOfEndHour
         ) {
-            this.startHourOfDay = startHourOfDay;
-            this.startMinuteOfStartHour = startMinuteOfStartHour;
-            this.endHourOfDay = endHourOfDay;
-            this.endMinuteOfEndHour = endMinuteOfEndHour;
+            this.mStartHourOfDay = startHourOfDay;
+            this.mStartMinuteOfStartHour = startMinuteOfStartHour;
+            this.mEndHourOfDay = endHourOfDay;
+            this.mEndMinuteOfEndHour = endMinuteOfEndHour;
+        }
+
+        public int getStartHourOfDay() {
+            return mStartHourOfDay;
+        }
+
+        public int getStartMinuteOfStartHour() {
+            return mStartMinuteOfStartHour;
+        }
+
+        public int getEndHourOfDay() {
+            return mEndHourOfDay;
+        }
+
+        public int getEndMinuteOfEndHour() {
+            return mEndMinuteOfEndHour;
         }
     }
 }

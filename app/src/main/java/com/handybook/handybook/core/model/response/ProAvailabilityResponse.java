@@ -18,28 +18,28 @@ import static com.handybook.handybook.library.util.DateTimeUtils.YEAR_MONTH_DATE
 public class ProAvailabilityResponse implements Serializable {
 
     @SerializedName("time_zone")
-    private String mTimZone;
+    private String mTimeZone;
     @SerializedName("start_time_increment")
-    private int mStartTimeIncrement;
+    private int mStartTimeIncrementMinutes;
     @SerializedName("availability")
     private List<AvailableDay> mAvailableDays;
 
     public ProAvailabilityResponse(
-            String timZone, int startTimeIncrement, List<AvailableDay> availableDays
+            String timeZone, int startTimeIncrementMinutes, List<AvailableDay> availableDays
     ) {
-        mTimZone = timZone;
-        mStartTimeIncrement = startTimeIncrement;
+        mTimeZone = timeZone;
+        mStartTimeIncrementMinutes = startTimeIncrementMinutes;
         mAvailableDays = availableDays;
     }
 
     @NonNull
-    public String getTimZone() {
-        return mTimZone;
+    public String getTimeZone() {
+        return mTimeZone;
     }
 
     @NonNull
-    public int getStartTimeIncrement() {
-        return mStartTimeIncrement;
+    public int getStartTimeIncrementMinutes() {
+        return mStartTimeIncrementMinutes;
     }
 
     @NonNull
@@ -55,6 +55,7 @@ public class ProAvailabilityResponse implements Serializable {
         return null;
     }
 
+    // This method assume the year, monthOfYear, and dayOfMonth are the same time zone as mTimeZone.
     @Nullable
     public AvailableDay findAvailableDay(int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();

@@ -17,6 +17,11 @@ public class DateTimeUtils {
     public final static int SECONDS_IN_MINUTE = 60;
     public final static int MINUTES_IN_HOUR = 60;
 
+    public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
+    public final static String SCHEDULE_DATE_TIME_FORMAT_NO_TIMEZONE = "yyyy-MM-dd'T'HH:mm";
+    public final static String DEFAULT_DATE_DISPLAY_PATTERN = "EEE, MMM d";
+    public final static String YEAR_MONTH_DATE_FORMAT = "yyyy-MM-dd";
+
     public final static SimpleDateFormat CLOCK_FORMATTER_12HR =
             new SimpleDateFormat("h:mm a", Locale.getDefault());
 
@@ -24,7 +29,7 @@ public class DateTimeUtils {
             new SimpleDateFormat("EEE, MMM d '@' h:mm a");
 
     public final static SimpleDateFormat YEAR_MONTH_DATE_FORMATTER =
-            new SimpleDateFormat("yyyy-MM-dd");
+            new SimpleDateFormat(YEAR_MONTH_DATE_FORMAT, Locale.getDefault());
 
     public final static SimpleDateFormat MONTH_DATE_FORMATTER =
             new SimpleDateFormat("MMMM d", Locale.getDefault());
@@ -58,10 +63,6 @@ public class DateTimeUtils {
             new SimpleDateFormat("h:mmaaa", Locale.getDefault());
 
     public final static int HOURS_IN_DAY = 24;
-
-    public final static String UNIVERSAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-    public final static String SCHEDULE_DATE_TIME_FORMAT_NO_TIMEZONE = "yyyy-MM-dd'T'HH:mm";
-    public final static String DEFAULT_DATE_DISPLAY_PATTERN = "EEE, MMM d";
 
     /**
      * Takes in a date, format, and time zone. It will convert the given date into a string in the

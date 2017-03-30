@@ -10,22 +10,22 @@ public class ProTimeInterval implements Serializable {
 
     // Expected format: "2017-03-27T11:00:00Z"
     @SerializedName("interval_start")
-    private String mIntervalStart;
+    private String mIntervalStartTime;
     @SerializedName("interval_end")
-    private String mIntervalEnd;
+    private String mIntervalEndTime;
 
-    public ProTimeInterval(final String intervalStart, final String intervalEnd) {
-        mIntervalStart = intervalStart;
-        mIntervalEnd = intervalEnd;
+    public ProTimeInterval(final String intervalStartTime, final String intervalEndTime) {
+        mIntervalStartTime = intervalStartTime;
+        mIntervalEndTime = intervalEndTime;
     }
 
     @NonNull
-    public String getIntervalStart() {
-        return mIntervalStart;
+    public String getIntervalStartTime() {
+        return mIntervalStartTime;
     }
 
     @NonNull
-    public String getIntervalEnd() {
-        return mIntervalEnd;
+    public String getIntervalEndTime() {
+        return mIntervalEndTime;
     }
 }

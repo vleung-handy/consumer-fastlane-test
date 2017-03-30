@@ -493,7 +493,7 @@ public interface HandyRetrofitService {
     @GET("/providers/{provider_id}/availability")
     void getProviderAvailability(
             @Path("provider_id") String providerId,
-            @Query("duration") double duration,
+            @Query("duration") float durationHour,
             HandyRetrofitCallback cb
     );
 
