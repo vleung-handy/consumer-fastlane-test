@@ -42,7 +42,7 @@ public final class BookingAddressFragment extends BookingFlowFragment {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    private AutoCompleteAddressFragment mAutoCompleteFragment;
+    AutoCompleteAddressFragment mAutoCompleteFragment;
     private static final String AC_FRAG_TAG = AutoCompleteAddressFragment.class.getName();
 
     public static BookingAddressFragment newInstance() {
