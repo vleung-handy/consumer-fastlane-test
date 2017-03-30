@@ -28,6 +28,11 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper {
 
+    private static final String BOOKING_ID = "12345";
+
+    private static final String ADDRESS_STREET = "1 Test Drive";
+    private static final String ADDRESS_ZIP = "10001";
+
     private BookingEditAddressFragment mFragment;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Booking mBooking;
@@ -39,9 +44,9 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        when(mBookingAddress.getAddress1()).thenReturn("1 Test Drive");
-        when(mBookingAddress.getZip()).thenReturn("10001");
-        when(mBooking.getId()).thenReturn("12345");
+        when(mBookingAddress.getAddress1()).thenReturn(ADDRESS_STREET);
+        when(mBookingAddress.getZip()).thenReturn(ADDRESS_ZIP);
+        when(mBooking.getId()).thenReturn(BOOKING_ID);
         when(mBooking.getAddress()).thenReturn(mBookingAddress);
         mFragment = BookingEditAddressFragment.newInstance(mBooking);
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
@@ -51,14 +56,14 @@ public class BookingEditAddressFragmentTest extends RobolectricGradleTestWrapper
     public void shouldNotRequestEditAddressWhenInputInvalidAndSubmitButtonPressed() throws
             Exception {
         reset(mFragment.bus);
-        mFragment.mAutoCompleteFragment.mStreet.setText("");
+        mFragment.mAutoCompleteFragment.clear();
         mFragment.onNextButtonClick();
         verifyZeroInteractions(mFragment.bus);
     }
 
     @Test
     public void shouldRequestEditAddressWhenSubmitButtonPressed() throws Exception {
-        mFragment.mAutoCompleteFragment.mStreet.setText("2 Test Drive");
+        mFragment.mAutoCompleteFragment.setStreet(ADDRESS_STREET);
         mFragment.onNextButtonClick();
         AppAssertionUtils.assertBusPost(
                 mFragment.bus,

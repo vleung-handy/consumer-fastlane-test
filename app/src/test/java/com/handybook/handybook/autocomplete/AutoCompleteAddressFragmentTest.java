@@ -32,12 +32,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrapper {
 
     private static final String ADDRESS_LINE_1 = "1720 77th Street";
+    private static final String ADDRESS_LINE_2 = "APT 6";
+    private static final String ADDRESS_CITY = "New York";
+    private static final String ADDRESS_STATE = "NY";
 
     private AutoCompleteAddressFragment mFragment;
 
     @Inject
     AddressAutoCompleteManager mDataManager;
-
     @Before
     public void setUp() throws Exception {
         ShadowLog.stream = System.out;
@@ -56,7 +58,14 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
 
         Configuration config = mock(Configuration.class);
         when(config.isAddressAutoCompleteEnabled()).thenReturn(true);
-        mFragment = AutoCompleteAddressFragment.newInstance(null, ADDRESS_LINE_1, "", config);
+        mFragment = AutoCompleteAddressFragment.newInstance(
+                null,
+                ADDRESS_LINE_1,
+                ADDRESS_LINE_2,
+                ADDRESS_CITY,
+                ADDRESS_STATE,
+                config
+        );
 
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
