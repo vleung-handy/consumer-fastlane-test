@@ -16,6 +16,7 @@ import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 import com.squareup.otto.Subscribe;
 
@@ -32,6 +33,8 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
     Toolbar mToolbar;
 
     private Booking mBooking;
+    private static final String AC_FRAG_TAG = AutoCompleteAddressFragment.class.getName();
+
 
     AutoCompleteAddressFragment mAutoCompleteFragment;
 
@@ -59,35 +62,46 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_edit_address_title));
 
+        mAutoCompleteFragment
+                = (AutoCompleteAddressFragment) getChildFragmentManager().findFragmentByTag(
+                AC_FRAG_TAG);
+
         final Booking.Address address = mBooking.getAddress();
-        if (address != null) {
-            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
-                    new ZipValidationResponse.ZipArea(
-                            address.getCity(),
-                            address.getState(),
-                            address.getZip()
-                    ),
-                    address.getAddress1(),
-                    address.getAddress2(),
-                    address.getCity(),
-                    address.getState(),
-                    mConfigurationManager.getCachedConfiguration()
-            );
-            mZipCodeInputTextView.setText(address.getZip());
+        if (mAutoCompleteFragment == null) {
+            if (address != null) {
+                mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                        new ZipValidationResponse.ZipArea(
+                                address.getCity(),
+                                address.getState(),
+                                address.getZip()
+                        ),
+                        address.getAddress1(),
+                        address.getAddress2(),
+                        address.getCity(),
+                        address.getState(),
+                        mConfigurationManager.getCachedConfiguration()
+                );
+                mZipCodeInputTextView.setText(address.getZip());
+            }
+            else {
+                mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        mConfigurationManager.getCachedConfiguration()
+                );
+            }
         }
-        else {
-            mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    mConfigurationManager.getCachedConfiguration()
-            );
-        }
+
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.edit_booking_address_fragment_container, mAutoCompleteFragment)
+                .replace(
+                        R.id.edit_booking_address_fragment_container,
+                        mAutoCompleteFragment,
+                        AC_FRAG_TAG
+                )
                 .commitAllowingStateLoss();
         return view;
     }
@@ -122,6 +136,9 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
     public final void onReceiveEditBookingAddressSuccess(BookingEditEvent.ReceiveEditBookingAddressSuccess event) {
         removeUiBlockers();
         showToast(getString(R.string.updated_booking_address));
+
+        //save the new zip in to shared prefs for the user going forward.
+        mDefaultPreferencesManager.setString(PrefsKey.ZIP, mZipCodeInputTextView.getZipCode());
 
         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();

@@ -36,7 +36,6 @@
                 android:id="@+id/zip_text"
                 android:layout_width="match_parent"
                 style="@style/EditText.Last.ZipCode"
-                android:enabled="false"
                 />
         </LinearLayout>
 
