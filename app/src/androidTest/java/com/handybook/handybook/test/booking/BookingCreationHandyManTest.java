@@ -126,7 +126,7 @@ public class BookingCreationHandyManTest {
         //expecting zip and email to be pre-filled for this user
 
         //select blinds
-        ViewUtil.waitForViewVisible(R.id.options_layout, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+        ViewUtil.waitForViewVisible(R.id.booking_options_input, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         Matcher<View> blindsOptionsSpinnerMatcher = allOf(
                 withId(R.id.options_spinner),
                 withParent(withParent(withParent(
