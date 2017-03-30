@@ -304,13 +304,13 @@
     <string name="furniture_assembly">Furniture assembly</string>
     <string name="furniture_assembly_service_description">We\'ll get your stuff made in no time.</string>
     <string name="moving_help">Moving help</string>
-    <string name="moving_help_service_description">We’ll bring the muscle to pack and load. Van not included. </string>
+    <string name="moving_help_service_description">We’ll bring the muscle to pack and load. Van not included.</string>
     <string name="tv_mounting">TV mounting</string>
-    <string name="tv_mounting_service_description">Take your binge-watching  set-up to the next level.</string>
+    <string name="tv_mounting_service_description">Take your binge-watching set-up to the next level.</string>
     <string name="window_treatments">Window treatments</string>
     <string name="window_treatments_service_description">Soften up your space with curtains, shades, or blinds.</string>
     <string name="knobs_locks"><![CDATA[Knobs & locks]]></string>
-    <string name="knobs_locks_service_description">From doorknobs to deadlocks, we’ll help secure your home. </string>
+    <string name="knobs_locks_service_description">From doorknobs to deadlocks, we’ll help secure your home.</string>
     <string name="other_handyman">Other handyman service</string>
     <string name="other_handyman_service_description">Have something more specific in mind? Tell us!</string>
     <string name="drains">Drains</string>
