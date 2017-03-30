@@ -96,9 +96,10 @@ lane :playstore do |options|
     exit_with_error(error_message: "APK not found")
   end
   supply(
-    track:    'alpha',
-    apk:      "#{apk_dir}/#{apk_name}",
-    json_key: 'fastlane/playstore_access_key.json'
+    track:        'alpha',
+    apk:          "#{apk_dir}/#{apk_name}",
+    package_name: 'com.handy.handy.prod',
+    json_key:     'fastlane/playstore_access_key.json'
   )
 
   slack(
