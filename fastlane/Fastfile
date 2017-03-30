@@ -11,14 +11,27 @@ before_all do
   ENV["GITHUB_URL"] = "https://github.com/handybook/android-consumer"
 end
 
-lane :clean do
-  gradle(task: "clean")
-end
-
-lane :beta do
+lane :release do
   ensure_git_branch_release_candidate
   ensure_git_branch_clean_and_latest
+
+  gradle(task: "clean")
   gradle(task: "assembleProdRelease")
+
+  beta(skip_build: true)
+  playstore(skip_build: true)
+
+  # TODO: Upload assets to Github
+end
+
+lane :beta do |options|
+  ensure_git_branch_release_candidate
+  ensure_git_branch_clean_and_latest
+
+  if !options[:skip_build]
+    gradle(task: "clean")
+    gradle(task: "assembleProdRelease")
+  end
 
   crashlytics(
     api_token: ENV["CRASHLYTICS_API_TOKEN"],
@@ -68,15 +81,30 @@ lane :applause do |options|
   )
 end
 
-lane :playstore do
+lane :playstore do |options|
   ensure_git_branch_release_candidate
   ensure_git_branch_clean_and_latest
 
-  gradle(task: "assembleProdRelease")
+  if !options[:skip_build]
+    gradle(task: "clean")
+    gradle(task: "assembleProdRelease")
+  end
 
-  # TODO: Implement Play Store upload
+  apk_dir = '../app/build/outputs/apk'
+  apk_name = Dir.entries(apk_dir).select{ |entry| entry.start_with?('handy-prod-release') }.first
+  unless apk_name
+    exit_with_error(error_message: "APK not found")
+  end
+  supply(
+    track:    'alpha',
+    apk:      "#{apk_dir}/#{apk_name}",
+    json_key: 'playstore_access_key.json'
+  )
 
-  # TODO; Implement Slack ping
+  slack(
+    message: "New Android build uploaded to Play Store alpha channel!",
+    channel: "eng-android"
+  )
 end
 
 lane :release_candidate do |options|
