@@ -46,8 +46,9 @@ public class SingleSpinnerTimePicker extends NumberPicker {
 
     /**
      * Assumes that all of the given params are within the noted ranges
-     *
-     * @see Adapter
+     * @param intervals sorted blocks of time intervals
+     * @param minuteInterval >=1. the minute interval between each time option
+     * @param timeFormatter the time format used for the display values
      */
     public void initialize(
             @NonNull List<TimeInterval> intervals,
@@ -88,7 +89,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
         /**
          * Assumes that all of the given params are within the noted ranges
          *
-         * @param timeIntervals blocks of time intervals
+         * @param timeIntervals sorted blocks of time intervals
          * @param minuteInterval >=1. the minute interval between each time option
          * @param timeFormatter the time format used for the display values
          */
