@@ -42,7 +42,8 @@ public final class BookingAddressFragment extends BookingFlowFragment {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    AutoCompleteAddressFragment mAutoCompleteFragment;
+    private AutoCompleteAddressFragment mAutoCompleteFragment;
+    private static final String AC_FRAG_TAG = AutoCompleteAddressFragment.class.getName();
 
     public static BookingAddressFragment newInstance() {
         return new BookingAddressFragment();
@@ -76,6 +77,9 @@ public final class BookingAddressFragment extends BookingFlowFragment {
             filter = bookingManager.getCurrentRequest().getZipArea();
         }
         final User user = userManager.getCurrentUser();
+        mAutoCompleteFragment
+                = (AutoCompleteAddressFragment) getChildFragmentManager().findFragmentByTag(
+                AC_FRAG_TAG);
         if (user != null) {
             mTextFullName.setText(user.getFirstName() + " " + user.getLastName());
             mTextPhone.setCountryCode(user.getPhonePrefix());
@@ -83,7 +87,7 @@ public final class BookingAddressFragment extends BookingFlowFragment {
             mTextPhonePrefix.setText(user.getPhonePrefix());
 
             final User.Address addr = user.getAddress();
-            if (addr != null) {
+            if (addr != null && mAutoCompleteFragment == null) {
                 mAutoCompleteFragment = AutoCompleteAddressFragment.newInstance(
                         filter,
                         addr.getAddress1(),
@@ -112,7 +116,11 @@ public final class BookingAddressFragment extends BookingFlowFragment {
         }
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.booking_address_fragment_container, mAutoCompleteFragment)
+                .replace(
+                        R.id.booking_address_fragment_container,
+                        mAutoCompleteFragment,
+                        AC_FRAG_TAG
+                )
                 .commitAllowingStateLoss();
         mButtonNext.setOnClickListener(nextClicked);
         return view;
