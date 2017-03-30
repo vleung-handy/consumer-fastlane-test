@@ -90,15 +90,15 @@ lane :playstore do |options|
     gradle(task: "assembleProdRelease")
   end
 
-  apk_dir = '../app/build/outputs/apk'
-  apk_name = Dir.entries(apk_dir).select{ |entry| entry.start_with?('handy-prod-release') }.first
+  apk_dir = 'app/build/outputs/apk'
+  apk_name = Dir.entries("../#{apk_dir}").select{ |entry| entry.start_with?('handy-prod-release') }.first
   unless apk_name
     exit_with_error(error_message: "APK not found")
   end
   supply(
     track:    'alpha',
     apk:      "#{apk_dir}/#{apk_name}",
-    json_key: 'playstore_access_key.json'
+    json_key: 'fastlane/playstore_access_key.json'
   )
 
   slack(
