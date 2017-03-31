@@ -289,16 +289,23 @@ public final class BookingDetailFragment extends InjectedFragment
 
     //Section fragments to display, In display order
     protected List<BookingDetailSectionFragment> constructSectionFragments() {
-        return Lists.newArrayList(
+        List<BookingDetailSectionFragment> sections = Lists.newArrayList(
                 new BookingDetailSectionFragmentProInformation(),
                 new BookingDetailSectionFragmentLaundry(),
                 new BookingDetailSectionFragmentEntryInformation(),
                 new BookingDetailSectionFragmentPreferences(),
                 new BookingDetailSectionFragmentExtras(),
-                new BookingDetailSectionFragmentAddress(),
-                new BookingDetailSectionFragmentPayment(),
-                new BookingDetailSectionFragmentBookingActions()
+                new BookingDetailSectionFragmentAddress()
         );
+
+        //Only show the payment section if we're suppose to
+        if (mBooking != null && mBooking.shouldShowPaymentSection()) {
+            sections.add(new BookingDetailSectionFragmentPayment());
+        }
+
+        sections.add(new BookingDetailSectionFragmentBookingActions());
+
+        return sections;
     }
 
     private void addSectionFragments() {
