@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
@@ -30,7 +31,6 @@ import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
@@ -69,10 +69,10 @@ public class ProTeamEditFragment extends InjectedFragment implements
 
     private ProTeam mProTeam;
     private TabAdapter mTabAdapter;
-    private HashSet<ProTeamPro> mCleanersToAdd = new HashSet<>();
-    private HashSet<ProTeamPro> mCleanersToRemove = new HashSet<>();
-    private HashSet<ProTeamPro> mHandymenToAdd = new HashSet<>();
-    private HashSet<ProTeamPro> mHandymenToRemove = new HashSet<>();
+    private HashSet<Provider> mCleanersToAdd = new HashSet<>();
+    private HashSet<Provider> mCleanersToRemove = new HashSet<>();
+    private HashSet<Provider> mHandymenToAdd = new HashSet<>();
+    private HashSet<Provider> mHandymenToRemove = new HashSet<>();
     private ProTeamProListFragment mProTeamListFragment;
 
     public static ProTeamEditFragment newInstance() {
@@ -262,11 +262,11 @@ public class ProTeamEditFragment extends InjectedFragment implements
      */
     @Override
     public void onProRemovalRequested(
-            final ProTeamPro proTeamPro,
+            final Provider proTeamPro,
             final ProviderMatchPreference providerMatchPreference
     ) {
         final ProTeamActionPickerViewModel viewModel = new ProTeamActionPickerViewModel(
-                proTeamPro.getId(),
+                Integer.parseInt(proTeamPro.getId()),
                 proTeamPro.getCategoryType(),
                 proTeamPro.getImageUrl(),
                 getString(R.string.block_formatted, proTeamPro.getName()),
@@ -315,7 +315,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
 
     @Override
     public void onProCheckboxStateChanged(
-            @NonNull final ProTeamPro proTeamPro,
+            @NonNull final Provider proTeamPro,
             final boolean isChecked
     ) {
         if (isChecked) {

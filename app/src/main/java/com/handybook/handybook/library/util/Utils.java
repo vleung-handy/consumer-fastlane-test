@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.constant.BookingActionButtonType;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -162,11 +162,11 @@ public final class Utils {
     }
 
     public static boolean containsProvider(
-            @NonNull List<ProTeamPro> providers,
+            @NonNull List<Provider> providers,
             @NonNull String id
     ) {
-        for (ProTeamPro p : providers) {
-            if (id.equals(Integer.toString(p.getId()))) {
+        for (Provider p : providers) {
+            if (id.equals(Integer.toString(Integer.parseInt(p.getId())))) {
                 return true;
             }
         }

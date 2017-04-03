@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.RequestCode;
@@ -32,7 +33,6 @@ import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
@@ -68,7 +68,7 @@ public class NewProTeamProListFragment extends InjectedFragment {
     private NewProTeamCategoryAdapter.ActionCallbacks mProTeamActionCallbacks =
             new NewProTeamCategoryAdapter.ActionCallbacks() {
                 @Override
-                public void onHeartClick(final ProTeamPro proTeamPro) {
+                public void onHeartClick(final Provider proTeamPro) {
                     String title;
                     String subtitle = null;
                     List<ActionType> actionTypes = new ArrayList<>();
@@ -82,7 +82,7 @@ public class NewProTeamProListFragment extends InjectedFragment {
                     }
                     else {
                         title = getString(R.string.set_as_favorite_formatted, proTeamPro.getName());
-                        final ProTeamPro favoritePro = mProTeamCategory.getFavoritePro();
+                        final Provider favoritePro = mProTeamCategory.getFavoritePro();
                         if (favoritePro != null) {
                             subtitle = getString(
                                     R.string.auto_remove_as_favorite_warning_formatted,
@@ -93,7 +93,7 @@ public class NewProTeamProListFragment extends InjectedFragment {
                     }
 
                     launchProTeamActionPicker(new ProTeamActionPickerViewModel(
-                            proTeamPro.getId(),
+                            Integer.parseInt(proTeamPro.getId()),
                             proTeamPro.getCategoryType(), proTeamPro.getImageUrl(),
                             title,
                             subtitle,
@@ -102,9 +102,9 @@ public class NewProTeamProListFragment extends InjectedFragment {
                 }
 
                 @Override
-                public void onLongClick(final ProTeamPro proTeamPro) {
+                public void onLongClick(final Provider proTeamPro) {
                     launchProTeamActionPicker(new ProTeamActionPickerViewModel(
-                            proTeamPro.getId(),
+                            Integer.parseInt(proTeamPro.getId()),
                             proTeamPro.getCategoryType(), proTeamPro.getImageUrl(),
                             getString(R.string.block_formatted, proTeamPro.getName()),
                             null,

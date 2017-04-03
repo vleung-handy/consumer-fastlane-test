@@ -12,9 +12,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.ui.view.MiniProProfile;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.ui.view.ProTeamSectionListHeaderView;
 
 import java.util.ArrayList;
@@ -46,12 +46,13 @@ public class NewProTeamCategoryAdapter
         if (proTeamCategory != null
             && proTeamCategory.getPreferred() != null
             && !proTeamCategory.getPreferred().isEmpty()) {
-            final ProTeamPro favoritePro = proTeamCategory.getFavoritePro();
+            final Provider favoritePro = proTeamCategory.getFavoritePro();
             mItems.add(mContext.getString(R.string.favorite_pro));
             mItems.add(favoritePro);
             mItems.add(mContext.getString(R.string.pro_team));
 
-            final List<ProTeamPro> preferredPros = new ArrayList<>();
+            final List<com.handybook.handybook.booking.model.Provider> preferredPros
+                    = new ArrayList<>();
             if (proTeamCategory.getPreferred() != null) {
                 preferredPros.addAll(proTeamCategory.getPreferred());
             }
@@ -181,7 +182,7 @@ public class NewProTeamCategoryAdapter
         void bind(final Object item) {
             ButterKnife.bind(this, itemView);
             if (item != null) {
-                final ProTeamPro pro = (ProTeamPro) item;
+                final Provider pro = (Provider) item;
                 showActiveState(pro);
                 mProTeamProCardHolder.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
@@ -202,19 +203,19 @@ public class NewProTeamCategoryAdapter
             }
         }
 
-        private void showActiveState(final ProTeamPro pro) {
+        private void showActiveState(final Provider pro) {
             mEmptyStateHolder.setVisibility(View.GONE);
             mProTeamProCardHolder.setVisibility(View.VISIBLE);
             initHeartIcon(pro);
             initProProfile(pro);
         }
 
-        private void initHeartIcon(final ProTeamPro pro) {
+        private void initHeartIcon(final Provider pro) {
             mHeartIcon.setChecked(pro.isFavorite());
             mHeartIcon.setClickable(false);
         }
 
-        private void initProProfile(final ProTeamPro pro) {
+        private void initProProfile(final Provider pro) {
             mProProfile.setTitle(pro.getName());
             mProProfile.setRatingAndJobsCount(pro.getAverageRating(), pro.getBookingCount());
             mProProfile.setProTeamIndicatorEnabled(false);
@@ -239,8 +240,8 @@ public class NewProTeamCategoryAdapter
 
     public interface ActionCallbacks {
 
-        void onHeartClick(final ProTeamPro proTeamPro);
+        void onHeartClick(final Provider proTeamPro);
 
-        void onLongClick(final ProTeamPro proTeamPro);
+        void onLongClick(final Provider proTeamPro);
     }
 }

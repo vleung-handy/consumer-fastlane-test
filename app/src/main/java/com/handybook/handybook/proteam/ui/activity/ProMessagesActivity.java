@@ -11,6 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingRequest;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.reschedule.RescheduleUpcomingActivity;
@@ -34,7 +35,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.ui.view.ConversationTipsView;
 import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
@@ -201,7 +201,7 @@ public class ProMessagesActivity extends MessagesListActivity {
     public void onProTeamReceived(ProTeam proTeam) {
         if (proTeam != null && proTeam.getAllCategories() != null) {
             if (proTeam.getAllCategories().getPreferred() != null) {
-                for (final ProTeamPro preferred : proTeam.getAllCategories().getPreferred()) {
+                for (final Provider preferred : proTeam.getAllCategories().getPreferred()) {
                     if (preferred.isChatEnabled()
                         && containsId(
                             mConversation.getParticipants(),
@@ -217,7 +217,7 @@ public class ProMessagesActivity extends MessagesListActivity {
             }
 
             if (proTeam.getAllCategories().getIndifferent() != null) {
-                for (final ProTeamPro indifferent : proTeam.getAllCategories().getIndifferent()) {
+                for (final Provider indifferent : proTeam.getAllCategories().getIndifferent()) {
                     if (indifferent.isChatEnabled()
                         && containsId(
                             mConversation.getParticipants(),

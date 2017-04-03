@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.model;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.common.base.Strings;
@@ -9,8 +10,9 @@ import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class Provider implements Serializable {
+public class Provider implements Serializable, Comparable<Provider> {
 
     @SerializedName("status")
     private int mStatus;
@@ -40,6 +42,8 @@ public class Provider implements Serializable {
     private ProviderMatchPreference mMatchPreference;
     @SerializedName("layer_user_id")
     private String mLayerUserId;
+    @SerializedName("last_seen_at")
+    private Date mLastSeenAt;
 
     public Provider(
             final int status,
@@ -140,4 +144,12 @@ public class Provider implements Serializable {
 
     public static final int PROVIDER_STATUS_ASSIGNED = 3;
     //TODO: Not sure what this is, just conjecturing based on code
+
+    @Override
+    public int compareTo(@NonNull final Provider otherPro) {
+        if (mLastSeenAt == null && otherPro.mLastSeenAt == null) { return 0; }
+        if (otherPro.mLastSeenAt == null) { return 1; }
+        if (mLastSeenAt == null) { return -1; }
+        return otherPro.mLastSeenAt.compareTo(mLastSeenAt);
+    }
 }

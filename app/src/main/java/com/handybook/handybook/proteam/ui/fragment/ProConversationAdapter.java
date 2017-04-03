@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.library.ui.viewholder.SingleViewHolder;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.layer.LayerHelper;
@@ -75,9 +75,9 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
         mChatEligibleMemberIds = new ArrayList<>();
 
         if (mProTeamCategory != null) {
-            final List<ProTeamPro> preferredPros = mProTeamCategory.getPreferred();
+            final List<Provider> preferredPros = mProTeamCategory.getPreferred();
             if (preferredPros != null) {
-                for (ProTeamPro eachPro : preferredPros) {
+                for (Provider eachPro : preferredPros) {
                     if (eachPro.isChatEnabled()) {
                         //we only want to show on the screen where chat is enabled.
                         mProTeamProViewModels.add(ProTeamProViewModel.from(
@@ -89,9 +89,9 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
                     }
                 }
             }
-            final List<ProTeamPro> indifferentPros = mProTeamCategory.getIndifferent();
+            final List<Provider> indifferentPros = mProTeamCategory.getIndifferent();
             if (indifferentPros != null) {
-                for (ProTeamPro eachPro : indifferentPros) {
+                for (Provider eachPro : indifferentPros) {
                     if (eachPro.isChatEnabled()) {
                         //we only want to show on the screen where chat is enabled.
                         mProTeamProViewModels.add(ProTeamProViewModel.from(

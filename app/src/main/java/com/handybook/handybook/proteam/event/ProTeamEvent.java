@@ -3,13 +3,13 @@ package com.handybook.handybook.proteam.event;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.util.ArrayList;
@@ -56,12 +56,17 @@ public abstract class ProTeamEvent {
         private Source mSource;
 
         public RequestProTeamEdit(
-                @NonNull final ProTeamPro proTeamPro,
+                @NonNull final Provider proTeamPro,
                 @NonNull final ProTeamCategoryType proTeamCategoryType,
                 @NonNull final ProviderMatchPreference providerMatchPreference,
                 @NonNull final Source source
         ) {
-            this(proTeamPro.getId(), proTeamCategoryType, providerMatchPreference, source);
+            this(
+                    Integer.parseInt(proTeamPro.getId()),
+                    proTeamCategoryType,
+                    providerMatchPreference,
+                    source
+            );
         }
 
         public RequestProTeamEdit(
@@ -78,10 +83,10 @@ public abstract class ProTeamEvent {
         }
 
         public RequestProTeamEdit(
-                @Nullable final Set<ProTeamPro> cleaningProsToAdd,
-                @Nullable final Set<ProTeamPro> handymenProsToAdd,
-                @Nullable final Set<ProTeamPro> cleaningProsToRemove,
-                @Nullable final Set<ProTeamPro> handymenProsToRemove,
+                @Nullable final Set<Provider> cleaningProsToAdd,
+                @Nullable final Set<Provider> handymenProsToAdd,
+                @Nullable final Set<Provider> cleaningProsToRemove,
+                @Nullable final Set<Provider> handymenProsToRemove,
                 @NonNull final Source source
         ) {
             mProTeamEdits = new ArrayList<>();
@@ -114,14 +119,14 @@ public abstract class ProTeamEvent {
         }
 
         private void addProTeamEdit(
-                @Nullable final Set<ProTeamPro> proTeamPros,
+                @Nullable final Set<Provider> proTeamPros,
                 @NonNull final ProTeamCategoryType proTeamCategoryType,
                 @NonNull final ProviderMatchPreference providerMatchPreference
         ) {
             final ProTeamEdit proTeamEdit = new ProTeamEdit(providerMatchPreference);
             if (proTeamPros != null && !proTeamPros.isEmpty()) {
-                for (ProTeamPro ePro : proTeamPros) {
-                    proTeamEdit.addId(ePro.getId(), proTeamCategoryType);
+                for (Provider ePro : proTeamPros) {
+                    proTeamEdit.addId(Integer.parseInt(ePro.getId()), proTeamCategoryType);
                 }
                 mProTeamEdits.add(proTeamEdit);
             }

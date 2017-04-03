@@ -114,7 +114,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder {
             mServiceTypeIndicator.setVisibility(View.GONE);
         }
 
-        if (Integer.toString(proTeamProViewModel.getProTeamPro().getId()).equals(mProviderId)) {
+        if (proTeamProViewModel.getProTeamPro().getId().equals(mProviderId)) {
             mTextCurrent.setVisibility(View.VISIBLE);
         }
         else {
