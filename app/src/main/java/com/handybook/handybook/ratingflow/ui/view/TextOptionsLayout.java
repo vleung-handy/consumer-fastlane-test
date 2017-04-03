@@ -68,7 +68,7 @@ public class TextOptionsLayout extends FlowLayout {
         checkBox.setPadding(mDefaultPadding, mDefaultPadding, mDefaultPadding, mDefaultPadding);
         checkBox.setBackgroundResource(R.drawable.option_text_checkbox);
         checkBox.setGravity(Gravity.CENTER);
-        checkBox.setButtonDrawable(null);
+        checkBox.setButtonDrawable(R.color.transparent);
         checkBox.setTextColor(new ColorStateList(new int[][]{
                 new int[]{android.R.attr.state_checked},
                 new int[]{-android.R.attr.state_checked}
