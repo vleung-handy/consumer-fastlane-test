@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -13,6 +14,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +36,14 @@ import com.handybook.handybook.booking.ui.view.ServiceView;
 import com.handybook.handybook.core.ui.descriptor.ServiceCategoryDescriptor;
 import com.handybook.handybook.core.ui.descriptor.ServiceDescriptor;
 import com.handybook.handybook.library.util.AnimationUtil;
+import com.handybook.handybook.library.util.TransitionListenerAdapter;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 
 public final class ServicesFragment extends BookingFlowFragment {
 
@@ -66,6 +72,7 @@ public final class ServicesFragment extends BookingFlowFragment {
     LinearLayout mListWrapper;
 
     Interpolator mInterpolator;
+    private boolean mHasInComingEnterTransition;
 
     public static ServicesFragment newInstance(final Service service) {
         final ServicesFragment fragment = new ServicesFragment();
@@ -90,8 +97,10 @@ public final class ServicesFragment extends BookingFlowFragment {
         }
 
         mInterpolator = new LinearOutSlowInInterpolator();
+        determineHasIncomingEnterTransition();
     }
 
+    @SuppressWarnings("NewApi")
     @Override
     public final View onCreateView(
             final LayoutInflater inflater, final ViewGroup container,
@@ -111,6 +120,21 @@ public final class ServicesFragment extends BookingFlowFragment {
                 getActivity().onBackPressed();
             }
         });
+
+        if (shouldShowFancyAnimations()) {
+            //there is an existing transition, then alter that to use the arc motion transition
+            Transition transition = TransitionInflater
+                    .from(getActivity())
+                    .inflateTransition(R.transition.changebounds_with_arcmotion);
+
+            getActivity().getWindow().setSharedElementEnterTransition(transition);
+            transition.addListener(new TransitionListenerAdapter() {
+                @Override
+                public void onTransitionEnd(final Transition transition) {
+                    revealHeader();
+                }
+            });
+        }
 
         return view;
     }
@@ -135,7 +159,7 @@ public final class ServicesFragment extends BookingFlowFragment {
     }
 
     private void initStatusBar(ServiceCategoryDescriptor descriptor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
             getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(
                     getContext(),
                     descriptor.getColorDark()
@@ -143,10 +167,31 @@ public final class ServicesFragment extends BookingFlowFragment {
         }
     }
 
+    /**
+     * Determines whether or not there is an enter transition associated with this fragment. This
+     * must be done onCreate()
+     * @return
+     */
+    @TargetApi(LOLLIPOP)
+    private void determineHasIncomingEnterTransition() {
+        mHasInComingEnterTransition = getActivity().getWindow().getSharedElementEnterTransition() !=
+                                      null;
+    }
+
+    /**
+     * We should only show fancy animations if both the SDK supports it, and that
+     * we are moving forward in the flow. If we are coming "back" into this activity, no need
+     * for animations.
+     * @return
+     */
+    private boolean shouldShowFancyAnimations() {
+        return Build.VERSION.SDK_INT >= LOLLIPOP && mHasInComingEnterTransition;
+    }
+
     private void initHeader(ServiceCategoryDescriptor descriptor) {
         mTitle.setText(descriptor.getTitle());
         mSubtitle.setText(descriptor.getSlogan());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (shouldShowFancyAnimations()) {
             mHeader.setBackgroundResource(descriptor.getBackground());
         }
         else {
@@ -157,8 +202,9 @@ public final class ServicesFragment extends BookingFlowFragment {
         }
     }
 
+    @SuppressWarnings("NewApi")
     public void revealHeader() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (shouldShowFancyAnimations()) {
             AnimationUtil.revealView(
                     mHeader,
                     mIcon,
@@ -283,7 +329,7 @@ public final class ServicesFragment extends BookingFlowFragment {
     }
 
     private void forceRippleAnimation() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
             Drawable background = mHeader.getBackground();
             if (background instanceof RippleDrawable) {
                 int[] iconCoordinates = new int[2];
@@ -321,13 +367,13 @@ public final class ServicesFragment extends BookingFlowFragment {
         super.onActivityCreated(savedInstanceState);
         ServiceView lastViewAdded = null;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (shouldShowFancyAnimations()) {
             mListWrapper.setAlpha(0);
         }
         for (final Service service : mService.getChildServices()) {
             ServiceView serviceView = new ServiceView(getActivity());
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (shouldShowFancyAnimations()) {
                 //if this is lollipop or higher, we'll set it up for some fancy animations
                 serviceView.setAlpha(0);
                 serviceView.setScaleX(0);
