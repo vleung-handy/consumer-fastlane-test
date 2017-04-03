@@ -3,14 +3,14 @@ package com.handybook.handybook.proteam.viewmodel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.layer.sdk.messaging.Conversation;
 
 public class ProTeamProViewModel {
 
-    private final ProTeamPro mProTeamPro;
+    private final Provider mProTeamPro;
     private final ProviderMatchPreference mProviderMatchPreference;
     private final String mTitle;
     private final Float mAverageRating;
@@ -22,7 +22,7 @@ public class ProTeamProViewModel {
     private boolean mIsFavorite;
 
     private ProTeamProViewModel(
-            @NonNull final ProTeamPro proTeamPro,
+            @NonNull final Provider proTeamPro,
             @NonNull final ProviderMatchPreference providerMatchPreference,
             final boolean shouldShowHandymanIndicators
     ) {
@@ -39,7 +39,7 @@ public class ProTeamProViewModel {
     }
 
     public static ProTeamProViewModel from(
-            @NonNull final ProTeamPro proTeamPro,
+            @NonNull final Provider proTeamPro,
             @NonNull final ProviderMatchPreference providerMatchPreference,
             final boolean shouldShowHandymanIndicators
     ) {
@@ -55,7 +55,7 @@ public class ProTeamProViewModel {
     }
 
     @NonNull
-    public ProTeamPro getProTeamPro() {
+    public Provider getProTeamPro() {
         return mProTeamPro;
     }
 
@@ -95,9 +95,9 @@ public class ProTeamProViewModel {
 
     public interface OnInteractionListener {
 
-        void onLongClick(ProTeamPro proTeamPro, ProviderMatchPreference providerMatchPreference);
+        void onLongClick(Provider proTeamPro, ProviderMatchPreference providerMatchPreference);
 
-        void onCheckedChanged(ProTeamPro proTeamPro, boolean checked);
+        void onCheckedChanged(Provider proTeamPro, boolean checked);
     }
 
     public Conversation getConversation() {

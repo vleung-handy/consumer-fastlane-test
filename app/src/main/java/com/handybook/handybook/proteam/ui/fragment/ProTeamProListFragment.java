@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -24,7 +25,6 @@ import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.holder.ProTeamFacebookHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.squareup.otto.Subscribe;
@@ -70,7 +70,7 @@ public class ProTeamProListFragment extends InjectedFragment {
         mOnInteractionListener = new ProTeamProViewModel.OnInteractionListener() {
             @Override
             public void onLongClick(
-                    final ProTeamPro proTeamPro,
+                    final Provider proTeamPro,
                     final ProviderMatchPreference providerMatchPreference
             ) {
                 if (mOnProInteraction == null) {
@@ -80,7 +80,7 @@ public class ProTeamProListFragment extends InjectedFragment {
             }
 
             @Override
-            public void onCheckedChanged(final ProTeamPro proTeamPro, final boolean checked) {
+            public void onCheckedChanged(final Provider proTeamPro, final boolean checked) {
                 if (mOnProInteraction == null) {
                     return;
                 }
@@ -253,12 +253,12 @@ public class ProTeamProListFragment extends InjectedFragment {
     public interface OnProInteraction {
 
         void onProRemovalRequested(
-                ProTeamPro proTeamPro,
+                Provider proTeamPro,
                 ProviderMatchPreference providerMatchPreference
         );
 
         void onProCheckboxStateChanged(
-                ProTeamPro proTeamPro,
+                Provider proTeamPro,
                 boolean state
         );
 

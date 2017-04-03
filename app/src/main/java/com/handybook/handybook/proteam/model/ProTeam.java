@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class ProTeam implements Parcelable {
     ) {
         final ProTeamCategory category = getCategory(proTeamCategoryType);
         if (category != null) {
-            List<ProTeamPro> proTeamPros = category.get(preference);
+            List<Provider> proTeamPros = category.get(preference);
             if (proTeamPros != null) {
                 return proTeamPros.size();
             }
@@ -102,8 +103,8 @@ public class ProTeam implements Parcelable {
         if (mAllCategories != null) {
             return mAllCategories;
         }
-        final List<ProTeamPro> preferredPros = new ArrayList<>();
-        final List<ProTeamPro> indifferentPros = new ArrayList<>();
+        final List<Provider> preferredPros = new ArrayList<>();
+        final List<Provider> indifferentPros = new ArrayList<>();
         if (mCleaning != null) {
             mergeList(preferredPros, mCleaning.getPreferred());
             mergeList(indifferentPros, mCleaning.getIndifferent());
@@ -122,8 +123,8 @@ public class ProTeam implements Parcelable {
     }
 
     private void mergeList(
-            @NonNull final List<ProTeamPro> to,
-            @Nullable final List<ProTeamPro> from
+            @NonNull final List<Provider> to,
+            @Nullable final List<Provider> from
     ) {
         if (from != null) {
             to.addAll(from);
@@ -137,27 +138,27 @@ public class ProTeam implements Parcelable {
     public static class ProTeamCategory implements Parcelable {
 
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_PREFERRED)
-        private List<ProTeamPro> mPreferred;
+        private List<Provider> mPreferred;
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_INDIFFERENT)
-        private List<ProTeamPro> mIndifferent;
+        private List<Provider> mIndifferent;
         @SerializedName(ProviderMatchPreference.Constants.STRING_VALUE_NEVER)
-        private List<ProTeamPro> mNever;
+        private List<Provider> mNever;
 
         ProTeamCategory() { }
 
         ProTeamCategory(Parcel in) {
             mPreferred = new ArrayList<>();
-            in.readList(mPreferred, ProTeamPro.class.getClassLoader());
+            in.readList(mPreferred, Provider.class.getClassLoader());
             mIndifferent = new ArrayList<>();
-            in.readList(mIndifferent, ProTeamPro.class.getClassLoader());
+            in.readList(mIndifferent, Provider.class.getClassLoader());
             mNever = new ArrayList<>();
-            in.readList(mNever, ProTeamPro.class.getClassLoader());
+            in.readList(mNever, Provider.class.getClassLoader());
         }
 
-        public void filterFavorPros(@NonNull final List<ProTeamPro> pros) {
+        public void filterFavorPros(@NonNull final List<Provider> pros) {
             Set<Integer> ids = new HashSet<>();
-            for (ProTeamPro pro : pros) {
-                ids.add(pro.getId());
+            for (Provider pro : pros) {
+                ids.add(Integer.parseInt(pro.getId()));
             }
             filterFavorPros(ids);
         }
@@ -165,8 +166,8 @@ public class ProTeam implements Parcelable {
         public void filterFavorPros(@NonNull final Set<Integer> ids) {
             // Filtering mPreferred
             if (mPreferred != null) {
-                List<ProTeamPro> preferred = new ArrayList<>();
-                for (ProTeamPro pro : mPreferred) {
+                List<Provider> preferred = new ArrayList<>();
+                for (Provider pro : mPreferred) {
                     if (ids.contains(pro.getId())) {
                         preferred.add(pro);
                     }
@@ -176,8 +177,8 @@ public class ProTeam implements Parcelable {
 
             // Filtering mIndifferent
             if (mIndifferent != null) {
-                List<ProTeamPro> indifferent = new ArrayList<>();
-                for (ProTeamPro pro : mIndifferent) {
+                List<Provider> indifferent = new ArrayList<>();
+                for (Provider pro : mIndifferent) {
                     if (ids.contains(pro.getId())) {
                         indifferent.add(pro);
                     }
@@ -187,8 +188,8 @@ public class ProTeam implements Parcelable {
 
             // Filtering mNever
             if (mNever != null) {
-                List<ProTeamPro> never = new ArrayList<>();
-                for (ProTeamPro pro : mNever) {
+                List<Provider> never = new ArrayList<>();
+                for (Provider pro : mNever) {
                     if (ids.contains(pro.getId())) {
                         never.add(pro);
                     }
@@ -210,22 +211,22 @@ public class ProTeam implements Parcelable {
         };
 
         @Nullable
-        public List<ProTeamPro> getPreferred() {
+        public List<Provider> getPreferred() {
             return mPreferred;
         }
 
         @Nullable
-        public List<ProTeamPro> getIndifferent() {
+        public List<Provider> getIndifferent() {
             return mIndifferent;
         }
 
         @Nullable
-        public List<ProTeamPro> getNever() {
+        public List<Provider> getNever() {
             return mNever;
         }
 
         @Nullable
-        public List<ProTeamPro> get(@NonNull ProviderMatchPreference providerMatchPreference) {
+        public List<Provider> get(@NonNull ProviderMatchPreference providerMatchPreference) {
             switch (providerMatchPreference) {
                 case INDIFFERENT:
                     return getIndifferent();
@@ -257,8 +258,8 @@ public class ProTeam implements Parcelable {
         }
 
         @Nullable
-        public ProTeamPro getFavoritePro() {
-            for (final ProTeamPro proTeamPro : mPreferred) {
+        public Provider getFavoritePro() {
+            for (final Provider proTeamPro : mPreferred) {
                 if (proTeamPro.isFavorite()) {
                     return proTeamPro;
                 }
@@ -276,7 +277,7 @@ public class ProTeam implements Parcelable {
 
             public Builder withPreference(
                     @NonNull final ProviderMatchPreference preference,
-                    @Nullable List<ProTeamPro> pros
+                    @Nullable List<Provider> pros
             ) {
                 switch (preference) {
                     case PREFERRED:

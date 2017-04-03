@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
@@ -27,7 +28,6 @@ import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
@@ -201,7 +201,7 @@ public class BookingProTeamConversationsFragment extends InjectedFragment
     private void startMessagesActivity(
             final Uri conversationId,
             final String title,
-            final ProTeamPro mPro
+            final Provider mPro
     ) {
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, conversationId);

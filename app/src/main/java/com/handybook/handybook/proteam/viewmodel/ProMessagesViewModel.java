@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 
 import java.io.Serializable;
 
@@ -17,19 +16,9 @@ public class ProMessagesViewModel implements Serializable {
     private final ProTeamCategoryType mProTeamCategoryType;
     private final boolean mIsFavorite;
 
-    public ProMessagesViewModel(@NonNull final ProTeamPro pro) {
-        this(
-                String.valueOf(pro.getId()),
-                pro.getName(),
-                pro.getImageUrl(),
-                pro.getCategoryType(),
-                pro.isFavorite()
-        );
-    }
-
     public ProMessagesViewModel(@NonNull final Provider pro) {
         this(
-                pro.getId(),
+                String.valueOf(pro.getId()),
                 pro.getName(),
                 pro.getImageUrl(),
                 pro.getCategoryType(),

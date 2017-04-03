@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
@@ -33,7 +34,6 @@ import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
@@ -209,7 +209,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     private void startMessagesActivity(
             final Uri conversationId,
             final String title,
-            final ProTeamPro mPro,
+            final Provider mPro,
             final ProviderMatchPreference preference
     ) {
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);

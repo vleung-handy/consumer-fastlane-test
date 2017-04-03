@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.proteam.holder.ProTeamFacebookHolder;
 import com.handybook.handybook.proteam.holder.ProTeamProHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.model.ProTeamPro;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
@@ -86,9 +86,9 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private void initProTeamProViewModels() {
         mProTeamProViewModels = new ArrayList<>();
         if (mProTeamCategory != null) {
-            final List<ProTeamPro> preferredPros = mProTeamCategory.getPreferred();
+            final List<Provider> preferredPros = mProTeamCategory.getPreferred();
             if (preferredPros != null) {
-                for (ProTeamPro eachPro : preferredPros) {
+                for (Provider eachPro : preferredPros) {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
                             ProviderMatchPreference.PREFERRED,
@@ -96,9 +96,9 @@ public class ProTeamCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ));
                 }
             }
-            final List<ProTeamPro> indifferentPros = mProTeamCategory.getIndifferent();
+            final List<Provider> indifferentPros = mProTeamCategory.getIndifferent();
             if (indifferentPros != null) {
-                for (ProTeamPro eachPro : indifferentPros) {
+                for (Provider eachPro : indifferentPros) {
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
                             ProviderMatchPreference.INDIFFERENT,
