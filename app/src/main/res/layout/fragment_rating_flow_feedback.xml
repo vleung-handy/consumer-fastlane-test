@@ -9,52 +9,75 @@
     android:orientation="vertical"
     >
 
-    <LinearLayout
-        android:id="@+id/rating_flow_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/rating_flow_pro_image"
-            android:layout_width="@dimen/rating_flow.profile_image_size_small"
-            android:layout_height="@dimen/rating_flow.profile_image_size_small"
-            android:layout_marginBottom="@dimen/default_margin_half"
-            android:layout_marginTop="@dimen/default_margin_3x"
-            android:transitionName="@string/transition_pro_image"
-            tools:src="@drawable/img_pro_placeholder"
-            />
-
-        <com.handybook.handybook.ratingflow.ui.RatingFlowFiveStarsView
-            android:id="@+id/rating_flow_stars"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin_double"
-            android:transitionName="@string/transition_stars"
-            app:starHeight="@dimen/rating_flow.star_size_small"
-            app:starMargin="@dimen/rating_flow.star_margin_small"
-            app:starWidth="@dimen/rating_flow.star_size_small"
-            />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/rating_flow_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/default_margin_quarter"
-        android:layout_below="@+id/rating_flow_header"
-        android:background="@color/handy_bg"
-        android:transitionName="@string/transition_divider"
-        />
-
-    <FrameLayout
-        android:id="@+id/rating_flow_feedback_content"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rating_flow_next_button"
-        android:layout_below="@+id/rating_flow_divider"
-        />
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:id="@+id/rating_flow_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/rating_flow_pro_image"
+                    android:layout_width="@dimen/rating_flow.profile_image_size_small"
+                    android:layout_height="@dimen/rating_flow.profile_image_size_small"
+                    android:layout_marginBottom="@dimen/default_margin_half"
+                    android:layout_marginTop="@dimen/default_margin_3x"
+                    android:transitionName="@string/transition_pro_image"
+                    tools:src="@drawable/img_pro_placeholder"
+                    />
+
+                <com.handybook.handybook.ratingflow.ui.RatingFlowFiveStarsView
+                    android:id="@+id/rating_flow_stars"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin_double"
+                    android:transitionName="@string/transition_stars"
+                    app:starHeight="@dimen/rating_flow.star_size_small"
+                    app:starMargin="@dimen/rating_flow.star_margin_small"
+                    app:starWidth="@dimen/rating_flow.star_size_small"
+                    />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/rating_flow_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/default_margin_quarter"
+                android:layout_below="@id/rating_flow_header"
+                android:background="@color/handy_bg"
+                android:transitionName="@string/transition_divider"
+                />
+
+            <FrameLayout
+                android:id="@+id/rating_flow_feedback_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rating_flow_divider"
+                />
+
+            <TextView
+                android:id="@+id/rating_flow_skip_button"
+                style="@style/TextView.NavbarAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="@string/skip"
+                android:textColor="@color/handy_dark_divider_line"
+                />
+        </RelativeLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/rating_flow_next_button"
@@ -63,16 +86,5 @@
         android:layout_height="wrap_content"
         android:enabled="false"
         android:text="@string/next"
-        />
-
-    <TextView
-        android:id="@+id/rating_flow_skip_button"
-        style="@style/TextView.NavbarAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/skip"
-        android:textColor="@color/handy_dark_divider_line"
         />
 </RelativeLayout>
