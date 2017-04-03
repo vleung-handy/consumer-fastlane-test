@@ -1,6 +1,4 @@
-import org.gradle.logging.StyledTextOutputFactory
-
-import static org.gradle.logging.StyledTextOutput.Style
+//import static org.gradle.logging.StyledTextOutput.Style
 
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
@@ -96,9 +94,9 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '25.1.0'
-    googlePlayServicesVersion = '9.6.1'
-    firebaseVersion = '9.6.1'
+    supportLibraryVersion = '25.3.1'
+    googlePlayServicesVersion = '10.2.1'
+    firebaseVersion = '10.2.1'
 }
 
 
@@ -233,8 +231,8 @@ def computeVersionCode(versionName) {
         def (major, minor, patch) = identifiers.collect { it.toInteger() }
         def versionCode = (major * 1000000) + (minor * 10000) + (patch * 100)
 
-        def out = services.get(StyledTextOutputFactory).create("debug")
-        out.withStyle(Style.Info).println("\nBuilding version ${versionName} (${versionCode})\n")
+        def out = services.create("debug")
+        out.println("\nBuilding version ${versionName} (${versionCode})\n")
         return versionCode
     } else {
         throw new InvalidUserDataException("Illegal version name ${versionName}")
