@@ -167,18 +167,22 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipShownLog()));
         final User user = userManager.getCurrentUser();
         final User.Address address;
-        String zipCode;
-        if (user != null && (address = user.getAddress()) != null) {
-            zipCode = address.getZip();
+        String zipCode = null;
+        if (bookingRequest != null
+            && !TextUtils.isBlank(bookingRequest.getZipCode())) {
+            //populate zip from current booking request if present
+            zipCode = bookingManager.getCurrentRequest().getZipCode();
         }
-        else {
-            if (bookingRequest != null
-                && !TextUtils.isBlank(bookingRequest.getZipCode())) {
-                zipCode = bookingManager.getCurrentRequest().getZipCode();
-            }
-            else {
-                zipCode = mDefaultPreferencesManager.getString(PrefsKey.ZIP);
-            }
+        else if (!TextUtils.isBlank(mDefaultPreferencesManager.getString(PrefsKey.ZIP))) {
+            /*
+             otherwise populate zip from prefs
+             this is the value that is displayed on the home screen
+             */
+            zipCode = mDefaultPreferencesManager.getString(PrefsKey.ZIP);
+        }
+        else if (user != null && (address = user.getAddress()) != null) {
+            //otherwise populate zip from user address
+            zipCode = address.getZip();
         }
 
         /*
@@ -186,13 +190,12 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
         (we won't have to check for visibility)
          */
         mZipCodeInputTextView.setText(zipCode);
-        if(TextUtils.isBlank(zipCode) || !mZipCodeInputTextView.validate())
-        {
+
+        if (TextUtils.isBlank(zipCode) || !mZipCodeInputTextView.validate()) {
             //if we could not resolve a valid zip code, show the zipcode input
             mBookingZipcodeInputContainer.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             //if we already have a valid zip code, don't show the zipcode input to the user
             mBookingZipcodeInputContainer.setVisibility(View.GONE);
         }
