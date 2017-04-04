@@ -95,7 +95,7 @@ public class ProAvailabilityResponse implements Serializable {
             return mDate;
         }
 
-        @NonNull
+        @Nullable
         public List<ProTimeInterval> getTimeIntervals() {
             return mTimeIntervals;
         }
