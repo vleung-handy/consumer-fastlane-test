@@ -21,8 +21,6 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,7 +34,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     private static final int GOOD_PRO_RATING = 4;
 
     private enum Step {
-        MATCH_PREFERENCE, IMPROVEMENT, REVIEW
+        MATCH_PREFERENCE, IMPROVEMENT, REVIEW_OR_SHARE_PROVIDER
     }
 
 
@@ -188,7 +186,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                 return true;
             case IMPROVEMENT:
                 return mProRating < GOOD_PRO_RATING;
-            case REVIEW:
+            case REVIEW_OR_SHARE_PROVIDER:
                 return mProRating >= GOOD_PRO_RATING;
             default:
                 return false;
@@ -208,8 +206,19 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                         Lists.newArrayList(mPrerateProInfo.getReasons()),
                         new RateImprovementFeedback(mBooking.getId())
                 );
-            case REVIEW:
+            case REVIEW_OR_SHARE_PROVIDER:
+
+                //TODO: JIA: for now, always return the review flow...., when feature is ready,
+                //wrap this into the below if statement.
                 return RatingFlowReviewFragment.newInstance(mBooking);
+
+            //                if (mPrerateProInfo.getProReferralInfo() == null) {
+            //                    //if there are no specific pro referral information, just do the reviews
+            //                    return RatingFlowReviewFragment.newInstance(mBooking);
+            //                } else {
+            //                    return RatingFlowShareProFragment.newInstance(mPrerateProInfo.getProReferralInfo());
+            //                }
+
             default:
                 return null;
         }
