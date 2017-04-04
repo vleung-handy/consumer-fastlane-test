@@ -64,7 +64,8 @@ public class AutoCompleteAddressFragmentTest extends RobolectricGradleTestWrappe
                 ADDRESS_LINE_2,
                 ADDRESS_CITY,
                 ADDRESS_STATE,
-                config
+                config,
+                false
         );
 
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);

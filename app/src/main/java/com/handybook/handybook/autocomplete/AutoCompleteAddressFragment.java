@@ -50,6 +50,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
     private static final String KEY_ADDR2 = "address2";
     private static final String KEY_CITY = "city";
     private static final String KEY_STATE = "state";
+    private static final String KEY_SHOW_CITY_STATE = "show-city-state";
     private static final String KEY_CONFIGURATION = "configuration";
 
     @Bind(R.id.autocomplete_address_text_street)
@@ -60,6 +61,8 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
     CityInputTextView mCity;
     @Bind(R.id.autocomplete_address_text_state)
     StateInputTextView mState;
+    @Bind(R.id.autocomplete_address_city_state_container)
+    ViewGroup mCityStateContainer;
 
     @Inject
     AddressAutoCompleteManager mAutoCompleteManager;
@@ -80,7 +83,8 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
             final String address2,
             final String city,
             final String state,
-            final Configuration config
+            final Configuration config,
+            final boolean shouldShowCityAndState
     ) {
         Bundle args = new Bundle();
         args.putSerializable(KEY_FILTER, filter);
@@ -89,6 +93,7 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
         args.putString(KEY_CITY, city);
         args.putString(KEY_STATE, state);
         args.putSerializable(KEY_CONFIGURATION, config);
+        args.putBoolean(KEY_SHOW_CITY_STATE, shouldShowCityAndState);
 
         AutoCompleteAddressFragment fragment = new AutoCompleteAddressFragment();
         fragment.setArguments(args);
@@ -109,8 +114,14 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
             mZipFilter = (ZipValidationResponse.ZipArea) getArguments().getSerializable(KEY_FILTER);
             setStreet(getArguments().getString(KEY_ADDR1));
             setApt(getArguments().getString(KEY_ADDR2));
-            setCity(getArguments().getString(KEY_CITY));
-            setState(getArguments().getString(KEY_STATE));
+            if (getArguments().getBoolean(KEY_SHOW_CITY_STATE)) {
+                mCityStateContainer.setVisibility(View.VISIBLE);
+                setCity(getArguments().getString(KEY_CITY));
+                setState(getArguments().getString(KEY_STATE));
+            }
+            else {
+                mCityStateContainer.setVisibility(View.GONE);
+            }
             mConfiguration = (Configuration) getArguments().getSerializable(KEY_CONFIGURATION);
         }
 
