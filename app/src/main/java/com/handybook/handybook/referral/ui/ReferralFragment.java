@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.ValidationUtils;
@@ -88,13 +87,7 @@ public class ReferralFragment extends BaseReferralFragment {
         //this fragment can sometimes be embedded in a container that already has a toolbar.
         if (!mHideToolbar) {
             setupToolbar(mToolbar, getString(R.string.free_cleanings));
-            if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-                mToolbar.setNavigationIcon(R.drawable.ic_menu);
-                ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-            }
-            else {
-                mToolbar.setNavigationIcon(null);
-            }
+            mToolbar.setNavigationIcon(null);
         }
         else {
             mToolbar.setVisibility(View.GONE);

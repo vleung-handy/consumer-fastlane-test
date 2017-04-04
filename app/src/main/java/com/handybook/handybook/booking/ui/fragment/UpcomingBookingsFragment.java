@@ -104,9 +104,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
     @Bind(R.id.fetch_error_view)
     ViewGroup mFetchErrorView;
 
-    @Bind(R.id.bookings_share_button)
-    View mShareMenuItem;
-
     @Bind(R.id.fragment_upcoming_bookings_review_app_banner_fragment_container)
     FrameLayout mReviewAppBannerFragmentContainer;
 
@@ -171,13 +168,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.my_bookings));
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            mToolbar.setNavigationIcon(null);
-            mShareMenuItem.setVisibility(View.GONE);
-        }
-        else if (getActivity() instanceof MenuDrawerActivity) {
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
+        mToolbar.setNavigationIcon(null);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -216,17 +207,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
         mServiceRequestCompleted = true;
         mServices = event.getServices();
 
-        //If this is bottom nav, don't show FAB
-        if (mServices != null &&
-            !mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            if (ViewCompat.isAttachedToWindow(mAddBookingButton)) {
-                UiUtils.revealView(mAddBookingButton);
-            }
-            else {
-                mAddBookingButton.setVisibility(View.VISIBLE);
-            }
-        }
-
         setupBookingsView();
     }
 
@@ -255,13 +235,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
                            .addToBackStack(null)
                            .commit();
         }
-    }
-
-    @OnClick(R.id.bookings_share_button)
-    public void onShareButtonClicked() {
-        bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareMenuPressedLog()));
-        Fragment fragment = ReferralFragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
-        FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
     }
 
     @OnClick(R.id.try_again_button)
@@ -606,23 +579,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
                                                 24, getResources().getDisplayMetrics()
                 )
         );
-
-        //If this is bottom nav, don't bother with the on back stack change lister
-        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            getActivity().getSupportFragmentManager()
-                         .addOnBackStackChangedListener(mOnBackStackChangedListener);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        //If this is bottom nav, don't bother with the on back stack change lister
-        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            getActivity().getSupportFragmentManager()
-                         .removeOnBackStackChangedListener(mOnBackStackChangedListener);
-        }
     }
 
     @Override

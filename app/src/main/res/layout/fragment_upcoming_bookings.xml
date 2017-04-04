@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_upcoming_bookings_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".booking.ui.activity.BookingsActivity"
@@ -26,16 +27,6 @@
             app:titleTextAppearance="@style/Toolbar.TitleText"
             >
 
-            <ImageButton
-                android:id="@+id/bookings_share_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/cd_share_icon"
-                android:padding="@dimen/default_padding"
-                android:src="@drawable/ic_nav_gift_white"
-                />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

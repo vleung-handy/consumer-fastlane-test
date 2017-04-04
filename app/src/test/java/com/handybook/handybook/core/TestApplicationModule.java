@@ -73,11 +73,10 @@ import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelecti
 import com.handybook.handybook.booking.ui.fragment.OnboardingTest;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
-import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
-import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialogFragment;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
@@ -146,7 +145,6 @@ import static org.mockito.Mockito.when;
         BookingEditExtrasActivity.class,
         BookingEditExtrasFragment.class,
         ServiceCategoriesActivity.class,
-        ServiceCategoriesFragment.class,
         BookingLocationActivity.class,
         BookingLocationFragment.class,
         BookingLocationFragmentTest.class,
@@ -177,7 +175,6 @@ import static org.mockito.Mockito.when;
         UpdatePaymentActivity.class,
         UpdatePaymentFragment.class,
         UpdatePaymentFragmentTest.class,
-        ServiceCategoriesFragmentTest.class,
         ReferralFragment.class,
         ReferralV2Fragment.class,
         ProReferralFragment.class,
@@ -231,6 +228,7 @@ import static org.mockito.Mockito.when;
         BookingDateTimeInputFragment.class,
         BookingTimeInputDialogFragment.class,
         ReviewAppBannerFragment.class,
+        BottomNavActivity.class,
 }, library = true)
 public class TestApplicationModule {
 

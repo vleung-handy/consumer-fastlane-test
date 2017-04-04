@@ -21,7 +21,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.RequestCode;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
@@ -270,18 +269,8 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Override
     public void onResume() {
         super.onResume();
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            setupToolbar(mToolbar, getString(R.string.messages));
-        }
-        else {
-            setupToolbar(mToolbar, getString(R.string.pro_team));
-        }
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            mToolbar.setNavigationIcon(null);
-        }
-        else if (getActivity() instanceof MenuDrawerActivity) {
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
+        setupToolbar(mToolbar, getString(R.string.messages));
+        mToolbar.setNavigationIcon(null);
         if (mProTeam == null) {
             requestProTeam();
         }

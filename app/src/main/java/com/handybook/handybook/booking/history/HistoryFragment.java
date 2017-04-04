@@ -21,7 +21,6 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
@@ -76,10 +75,7 @@ public class HistoryFragment extends InjectedFragment
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.history));
-        if (!mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()
-            && getActivity() instanceof MenuDrawerActivity) {
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
+
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.handy_service_handyman,

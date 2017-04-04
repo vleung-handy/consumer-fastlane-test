@@ -97,7 +97,6 @@ import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
 import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
-import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
@@ -140,14 +139,12 @@ import dagger.Module;
         complete = false,
         injects = {
                 SplashActivity.class,
-                ServiceCategoriesFragment.class,
                 LoginFragment.class,
                 UpcomingBookingsFragment.class,
                 HistoryFragment.class,
                 ActiveBookingFragment.class,
                 AutoCompleteAddressFragment.class,
                 BookingDetailFragment.class,
-                ServiceCategoriesFragment.class,
                 ServicesFragment.class,
                 BookingLocationFragment.class,
                 BookingOptionsFragment.class,

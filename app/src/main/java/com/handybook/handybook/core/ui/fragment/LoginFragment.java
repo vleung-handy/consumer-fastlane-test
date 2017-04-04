@@ -503,36 +503,22 @@ public final class LoginFragment extends BookingFlowFragment {
         progressDialog.dismiss();
         enableInputs();
 
-        //TODO refactor
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            //in case bottom nav config flag gets set to true after LoginFragment
-            // already instantiated by LoginActivity
-            // (which is currently a MenuDrawerActivity)
-            //TODO consolidate this logic
-            Intent intent;
-            if (mDestinationClass != null) {
-                //destination class could be BookingDetailActivity
-                intent = new Intent(getActivity(), mDestinationClass);
-                intent.putExtras(mDestinationExtras);
-            }
-            else {
-                intent = new Intent(getActivity(), BottomNavActivity.class);
-                intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
-            }
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().startActivity(intent);
-        }
-        else if (hasStoredZip()) {
-            //This is a case of login from Onboarding v2 -- whether it's a successful login from
-            //onboarding, or from the booking process, we direct the user to the home page for a
-            //clean start.
-            bookingManager.clear();
-            goToHomePage();
+        //in case bottom nav config flag gets set to true after LoginFragment
+        // already instantiated by LoginActivity
+        // (which is currently a MenuDrawerActivity)
+        //TODO consolidate this logic
+        Intent intent;
+        if (mDestinationClass != null) {
+            //destination class could be BookingDetailActivity
+            intent = new Intent(getActivity(), mDestinationClass);
+            intent.putExtras(mDestinationExtras);
         }
         else {
-            //go to the legacy homepage
-            goToHomePage();
+            intent = new Intent(getActivity(), BottomNavActivity.class);
+            intent.putExtra(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.SERVICES);
         }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        getActivity().startActivity(intent);
 
         //finish, so use cannot hit back and get to login again.
         getActivity().finish();

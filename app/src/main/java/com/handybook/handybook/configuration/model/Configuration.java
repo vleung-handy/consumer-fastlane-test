@@ -103,11 +103,6 @@ public class Configuration implements Serializable {
         return mAddressAutoCompleteEnabled;
     }
 
-    public boolean isBottomNavEnabled() {
-        //bottom nav should be permanently on. will remove the bottom nav config and old menu drawer code separately
-        return true;
-    }
-
     public String toJson() {
         return new GsonBuilder().setDateFormat(DATE_FORMAT).create().toJson(this);
     }

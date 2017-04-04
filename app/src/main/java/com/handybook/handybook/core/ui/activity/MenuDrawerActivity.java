@@ -53,7 +53,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * eventually switch to BottomNavActivity
+ * TODO this is currently being extended by a lot of activities
+ * but we no longer need menu drawer functionality; need to refactor
  */
 public abstract class MenuDrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -97,6 +98,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_drawer);
         ButterKnife.bind(this);
+        setDrawerDisabled(true); //always disable menu drawer because bottom nav permanently on
         if (requiresUser() && !mUserManager.isUserLoggedIn()) {
             navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
             finish();
@@ -160,8 +162,6 @@ public abstract class MenuDrawerActivity extends BaseActivity
                 if (event != null) {
                     checkLayerInitiation();
                     refreshMenu();
-                    setDrawerDisabled(mConfigurationManager.getPersistentConfiguration()
-                                                           .isBottomNavEnabled());
                 }
             }
         };
@@ -239,7 +239,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         MenuDrawerActivity.this.finish();
     }
 
-    public final void setDrawerDisabled(final boolean disableDrawer) {
+    private void setDrawerDisabled(final boolean disableDrawer) {
         if (disableDrawer) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
@@ -390,13 +390,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
      * the Menu Drawer screen, or the new bottom nav screen.
      */
     private void goToNewHomeScreen() {
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            startActivity(new Intent(this, BottomNavActivity.class));
-            finish();
-        }
-        else {
-            navigateToActivity(ServiceCategoriesActivity.class, R.id.nav_menu_home);
-        }
+        startActivity(new Intent(this, BottomNavActivity.class));
+        finish();
     }
 
     private boolean isOnboardingV2Showing() {

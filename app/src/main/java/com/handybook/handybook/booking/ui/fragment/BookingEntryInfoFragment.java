@@ -20,11 +20,9 @@ import com.handybook.handybook.booking.model.EntryMethodOption;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingConfirmationLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
@@ -96,13 +94,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         //we don't allow the user to go back to the previous screen.
         setupToolbar(mToolbar, getString(R.string.confirmation));
 
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            mToolbar.setNavigationIcon(null);
-        }
-        else if (getActivity() instanceof MenuDrawerActivity) {
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
+        mToolbar.setNavigationIcon(null);
 
         EntryMethodsInfo entryMethodsInfo = (EntryMethodsInfo) getArguments()
                 .getSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO);
@@ -238,13 +230,7 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     private void showBookings() {
         bookingManager.clearAll();
 
-        Intent intent;
-        if (mConfigurationManager.getPersistentConfiguration().isBottomNavEnabled()) {
-            intent = new Intent(getActivity(), BottomNavActivity.class);
-        }
-        else {
-            intent = new Intent(getActivity(), BookingsActivity.class);
-        }
+        Intent intent = new Intent(getActivity(), BottomNavActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
@@ -122,17 +121,9 @@ public class SplashActivity extends BaseActivity {
             startActivity(intent);
             unregisterAndFinish();
         }
-        else if (user != null && config.isBottomNavEnabled()) {
+        else if (user != null) {
             //TODO investigate  <-- @Xi what is it that we need to investigate?
             final Intent intent = new Intent(this, BottomNavActivity.class);
-            startActivity(intent);
-            unregisterAndFinish();
-        }
-        else if (user != null
-                 && user.getAnalytics() != null
-                 && user.getAnalytics().getUpcomingBookings() > 0
-                 && ((BaseApplication) getApplication()).isNewlyLaunched()) {
-            final Intent intent = new Intent(this, BookingsActivity.class);
             startActivity(intent);
             unregisterAndFinish();
         }
