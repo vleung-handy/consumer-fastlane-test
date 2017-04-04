@@ -17,6 +17,10 @@ public class ProReferral implements Serializable {
     @SerializedName("provider")
     private Provider mProvider;
 
+    //TODO: JIA: Ankit to add these
+    private String mTitle;
+    private String mSubTitle;
+
     @SerializedName("referral_button_text")
     private String mReferralButtonText;
 
@@ -33,5 +37,13 @@ public class ProReferral implements Serializable {
 
     public String getReferralButtonText() {
         return mReferralButtonText;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public String getSubTitle() {
+        return mSubTitle;
     }
 }

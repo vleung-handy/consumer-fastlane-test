@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.referral.model.ProReferral;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -56,6 +57,12 @@ public class PrerateProInfo implements Serializable {
     private ProviderMatchPreference mProviderMatchPreference;
 
     /**
+     * The presence of this info suggests that we can sharethis specific pro
+     */
+    @SerializedName("pro_referral_info")
+    private ProReferral mProReferralInfo;
+
+    /**
      * This is tricky as hell. Do a request on a browser to prerate_pro_info to see how the response looks like.
      */
     @SerializedName("reasons")
@@ -80,6 +87,11 @@ public class PrerateProInfo implements Serializable {
 
     public boolean isCleaning() {
         return mIsCleaning;
+    }
+
+    @Nullable
+    public ProReferral getProReferralInfo() {
+        return mProReferralInfo;
     }
 
     @Nullable

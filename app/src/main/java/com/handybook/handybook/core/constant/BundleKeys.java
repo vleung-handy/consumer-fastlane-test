@@ -39,6 +39,7 @@ public class BundleKeys {
     public static final String REFERRAL_PAGE_SOURCE = "referral_page_source";
     public static final String REFERRAL_HIDE_TOOLBAR = "referral_hide_toolbar";
     public static final String REFERRAL_DESCRIPTOR = "referral_descriptor";
+    public static final String PRO_REFERRAL = "pro_referral";
     public static final String RESCHEDULE_ALL = "reschedule_all";
     public static final String RESCHEDULE_BOOKING = "reschedule_booking";
     public static final String RESCHEDULE_NEW_DATE = "reschedule_new_date";
