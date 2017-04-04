@@ -225,7 +225,10 @@ public class BookingDateTimeInputFragment extends InjectedFragment
     private ArrayList<TimeInterval> generateTimeIntervals() {
         ArrayList<TimeInterval> intervals = new ArrayList<>();
 
-        if (mProAvailability != null && mCurrentSelectedAvailableDay != null) {
+        if (mProAvailability != null &&
+            mCurrentSelectedAvailableDay != null &&
+            mCurrentSelectedAvailableDay.getTimeIntervals() != null &&
+            mCurrentSelectedAvailableDay.getTimeIntervals().size() > 0) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeZone(TimeZone.getTimeZone(mProAvailability.getTimeZone()));
             for (ProTimeInterval interval : mCurrentSelectedAvailableDay.getTimeIntervals()) {
@@ -275,7 +278,7 @@ public class BookingDateTimeInputFragment extends InjectedFragment
     private void resetSelectedTime() {
         if (mCurrentSelectedAvailableDay == null) { return; }
         List<ProTimeInterval> intervals = mCurrentSelectedAvailableDay.getTimeIntervals();
-        if (intervals.size() == 0) { return; }
+        if (intervals == null || intervals.size() == 0) { return; }
         ProTimeInterval interval = intervals.get(0);
         try {
             Date date
