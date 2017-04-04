@@ -38,6 +38,7 @@ import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.shared.core.HandyLibrary;
+import com.squareup.leakcanary.LeakCanary;
 import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
@@ -132,6 +133,14 @@ public class BaseApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        //This leak canary line must be the first thing to run.
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+
         sInstance = this;
         mGraph = createObjectGraph();
         inject(this);
