@@ -253,10 +253,19 @@ public final class BookingDateFragment extends BookingFlowFragment
                 mRescheduleCancelText.setVisibility(View.VISIBLE);
             }
             else {
+                String locationText;
+                //If it's a reschedule from chat, display a different message
+                if (mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT) {
+                    locationText = getString(R.string.when_pro, mRescheduleBooking.getProvider().getFirstName());
+                }
+                else {
+                    locationText = getString(R.string.when_come);
+                }
                 setToolbarTitle(getString(R.string.reschedule));
-                mLocationText.setText(getString(R.string.when_come));
+                mLocationText.setText(locationText);
                 mRescheduleCancelText.setVisibility(View.GONE);
             }
+
             mNextButton.setText(getString(R.string.reschedule));
             if (mNotice != null) {
                 mNoticeTextView.setText(mNotice);

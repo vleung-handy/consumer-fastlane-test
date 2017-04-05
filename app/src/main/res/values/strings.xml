@@ -59,6 +59,7 @@
     <string name="fragment_booking_options_input_instructions_noncleaning_service">Tell us about the job</string>
     <string name="comments">Comments</string>
     <string name="time">Time</string>
+    <string name="when_pro">Select a time from %s\'s availability.</string>
     <string name="when_come">When would you like us to come?</string>
     <string name="request_pro">Request Pro</string>
     <string name="street_addr">Street Address</string>
