@@ -255,7 +255,8 @@ public final class BookingDateFragment extends BookingFlowFragment
             else {
                 String locationText;
                 //If it's a reschedule from chat, display a different message
-                if (mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT) {
+                if (mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT &&
+                    mRescheduleBooking.getProvider() != null) {
                     locationText = getString(R.string.when_pro_formatted, mRescheduleBooking.getProvider().getFirstName());
                 }
                 else {
