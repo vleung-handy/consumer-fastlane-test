@@ -266,7 +266,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                 userManager.getCurrentUser().getId(),
                 new ProTeamEditWrapper(
                         Lists.newArrayList(proTeamEdit),
-                        ProTeamEvent.Source.RATING_FLOW.toString()
+                        ProTeamEvent.Source.LOW_RATING_FLOW.toString()
                 ),
                 new HandyRetrofitCallback(editProTeamCallback) {
                     @Override
