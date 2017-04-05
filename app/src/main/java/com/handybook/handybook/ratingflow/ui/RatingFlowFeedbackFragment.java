@@ -19,6 +19,8 @@ import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -32,6 +34,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
 
     private static final int START_DELAY_MILLIS = 400;
     private static final int GOOD_PRO_RATING = 4;
+
 
     private enum Step {
         MATCH_PREFERENCE, IMPROVEMENT, REVIEW_OR_SHARE_PROVIDER
@@ -47,19 +50,23 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
 
     private Booking mBooking;
     private PrerateProInfo mPrerateProInfo;
+    private ReferralDescriptor mReferralDescriptor;
     private int mProRating;
+    private ProviderMatchPreference mSelectedPreference;
     private Step mCurrentStep;
 
     @NonNull
     public static RatingFlowFeedbackFragment newInstance(
             @NonNull final Booking booking,
             @NonNull final PrerateProInfo prerateProInfo,
+            @NonNull final ReferralDescriptor referralDescriptor,
             final int proRating
     ) {
         final RatingFlowFeedbackFragment fragment = new RatingFlowFeedbackFragment();
         final Bundle arguments = new Bundle();
         arguments.putParcelable(BundleKeys.BOOKING, booking);
         arguments.putSerializable(BundleKeys.PRERATE_PRO_INFO, prerateProInfo);
+        arguments.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
         arguments.putInt(BundleKeys.PRO_RATING, proRating);
         fragment.setArguments(arguments);
         return fragment;
@@ -71,6 +78,9 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         mPrerateProInfo =
                 (PrerateProInfo) getArguments().getSerializable(BundleKeys.PRERATE_PRO_INFO);
+        mReferralDescriptor =
+                (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
+
         mProRating = getArguments().getInt(BundleKeys.PRO_RATING);
     }
 
@@ -116,6 +126,12 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         final Fragment fragment
                 = getChildFragmentManager().findFragmentById(R.id.rating_flow_feedback_content);
         if (fragment != null && fragment instanceof RatingFlowFeedbackChildFragment) {
+
+            if (fragment instanceof RatingFlowMatchPreferenceFragment) {
+                mSelectedPreference
+                        = ((RatingFlowMatchPreferenceFragment) fragment).getSelectedPreference();
+            }
+
             ((RatingFlowFeedbackChildFragment) fragment).onSubmit();
         }
     }
@@ -130,6 +146,13 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         if (nextStep != null) {
             final RatingFlowFeedbackChildFragment fragment = createFragmentForStep(nextStep);
             if (fragment != null) {
+
+                if (fragment instanceof RatingFlowShareProFragment) {
+                    mNextButton.setVisibility(View.GONE);
+                }
+                else {
+                    mNextButton.setVisibility(View.VISIBLE);
+                }
                 showFragment(fragment);
             }
             else {
@@ -207,18 +230,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                         new RateImprovementFeedback(mBooking.getId())
                 );
             case REVIEW_OR_SHARE_PROVIDER:
-
-                //TODO: JIA: for now, always return the review flow...., when feature is ready,
-                //wrap this into the below if statement.
                 return RatingFlowReviewFragment.newInstance(mBooking);
-
-            //                if (mPrerateProInfo.getProReferralInfo() == null) {
-            //                    //if there are no specific pro referral information, just do the reviews
-            //                    return RatingFlowReviewFragment.newInstance(mBooking);
-            //                } else {
-            //                    return RatingFlowShareProFragment.newInstance(mPrerateProInfo.getProReferralInfo());
-            //                }
-
             default:
                 return null;
         }

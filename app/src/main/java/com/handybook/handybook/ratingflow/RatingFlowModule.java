@@ -8,6 +8,7 @@ import com.handybook.handybook.ratingflow.ui.RatingFlowMatchPreferenceFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowRateAndTipFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowReferralFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowReviewFragment;
+import com.handybook.handybook.ratingflow.ui.RatingFlowShareProFragment;
 
 import dagger.Module;
 
@@ -23,6 +24,7 @@ import dagger.Module;
                 RatingFlowReferralFragment.class,
                 RatingFlowImprovementFragment.class,
                 RatingFlowHelpDialogFragment.class,
+                RatingFlowShareProFragment.class,
         })
 public class RatingFlowModule {
 }

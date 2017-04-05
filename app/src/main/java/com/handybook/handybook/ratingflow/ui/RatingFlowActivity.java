@@ -88,6 +88,7 @@ public class RatingFlowActivity extends BaseActivity {
                     fragment = RatingFlowFeedbackFragment.newInstance(
                             mBooking,
                             mPrerateProInfo,
+                            mReferralDescriptor,
                             mProRating
                     );
                 }
@@ -196,6 +197,14 @@ public class RatingFlowActivity extends BaseActivity {
                     @Override
                     public void onCallbackSuccess(final PrerateProInfo prerateProInfo) {
                         mPrerateProInfo = prerateProInfo;
+
+                        //if provider information is not there, then we can put it there.
+                        if (mPrerateProInfo.getProReferralInfo() != null
+                            && mPrerateProInfo.getProReferralInfo().getProvider() == null
+                            && mBooking.getProvider() != null) {
+                            mPrerateProInfo.getProReferralInfo()
+                                           .setProvider(mBooking.getProvider());
+                        }
                     }
 
                     @Override

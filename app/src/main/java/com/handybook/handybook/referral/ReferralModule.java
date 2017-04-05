@@ -12,6 +12,7 @@ import com.handybook.handybook.referral.ui.RedemptionSignUpFragment;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.handybook.referral.ui.ReferralV2Fragment;
+import com.handybook.handybook.referral.ui.SimpleProReferralFragment;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
@@ -32,6 +33,7 @@ import dagger.Provides;
                 BaseReferralFragment.class,
                 ReferralV2Fragment.class,
                 ProReferralFragment.class,
+                SimpleProReferralFragment.class,
         })
 public final class ReferralModule {
 
