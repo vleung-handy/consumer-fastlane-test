@@ -84,6 +84,8 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     View mHeaderDivider;
     @Bind(R.id.rating_flow_referral_content)
     View mReferralContent;
+    @Bind(R.id.rating_flow_review_section)
+    View mReviewSection;
     @Bind(R.id.rating_flow_referral_help_button)
     View mHelpButton;
     @Bind(R.id.referral_flow_pro_team_section)
@@ -97,10 +99,11 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     private static final String EXTRA_MODE = "mode";
     private Mode mMode;
     private Booking mBooking;
+    private RatingFlowReviewFragment mReviewFragment;
 
 
     enum Mode {
-        REFERRAL, FEEDBACK
+        REFERRAL, FEEDBACK, REVIEW
     }
 
     @NonNull
@@ -148,6 +151,24 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                 false
         );
         ButterKnife.bind(this, view);
+
+        if (mMode == Mode.REVIEW) {
+            //setup the review fragment to be displayed later.
+            mReviewFragment
+                    = (RatingFlowReviewFragment) getChildFragmentManager().findFragmentByTag(
+                    RatingFlowReviewFragment.class.getName());
+            if (mReviewFragment == null) {
+                mReviewFragment = RatingFlowReviewFragment.newInstance(mBooking);
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .add(
+                                R.id.rating_flow_review_section,
+                                mReviewFragment,
+                                RatingFlowReviewFragment.class.getName()
+                        ).commit();
+            }
+        }
+
         return view;
     }
 
@@ -308,19 +329,10 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     @Override
                     public void onAnimationEnd(final Animation animation) {
                         if (mMode == Mode.REFERRAL && mReferralDescriptor != null) {
-                            mReferralContent.setVisibility(View.INVISIBLE);
-                            final Animation slideInAnimation = AnimationUtils.loadAnimation(
-                                    getActivity(),
-                                    R.anim.slide_in_right
-                            );
-                            slideInAnimation.setInterpolator(
-                                    getActivity(),
-                                    android.R.anim.overshoot_interpolator
-                            );
-                            slideInAnimation.setFillAfter(true);
-                            slideInAnimation.setFillEnabled(true);
-                            slideInAnimation.setDuration(mMediumDuration);
-                            mReferralContent.startAnimation(slideInAnimation);
+                            animateContentIn(mReferralContent);
+                        }
+                        else {
+                            animateContentIn(mReviewSection);
                         }
                     }
 
@@ -343,6 +355,22 @@ public class RatingFlowReferralFragment extends InjectedFragment {
             }
         });
         mHeader.startAnimation(slideDownAnimation);
+    }
+
+    private void animateContentIn(View view) {
+        view.setVisibility(View.INVISIBLE);
+        final Animation slideInAnimation = AnimationUtils.loadAnimation(
+                getActivity(),
+                R.anim.slide_in_right
+        );
+        slideInAnimation.setInterpolator(
+                getActivity(),
+                android.R.anim.overshoot_interpolator
+        );
+        slideInAnimation.setFillAfter(true);
+        slideInAnimation.setFillEnabled(true);
+        slideInAnimation.setDuration(mMediumDuration);
+        view.startAnimation(slideInAnimation);
     }
 
     @OnClick(R.id.rating_flow_referral_email_button)
@@ -391,6 +419,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                  ))
         );
         if (getActivity() instanceof RatingFlowActivity) {
+
+            if (mMode == Mode.REVIEW && mReviewFragment != null) {
+                //save the review
+                mReviewFragment.onSubmit();
+            }
+
             ((RatingFlowActivity) getActivity()).finishStep();
         }
     }

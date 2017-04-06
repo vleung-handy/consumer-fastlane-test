@@ -235,4 +235,13 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                 return null;
         }
     }
+
+    /**
+     * Returns the fragment that is active on the screen.
+     * @return
+     */
+    @Nullable
+    public Fragment getActiveFragment() {
+        return getChildFragmentManager().findFragmentById(R.id.rating_flow_feedback_content);
+    }
 }
