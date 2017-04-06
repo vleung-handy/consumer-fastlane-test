@@ -133,12 +133,8 @@ public class ReferralV2Fragment extends InjectedFragment {
 
     private void fetchData() {
         progressDialog.show();
-
-        //NOTE: TODO: JIA: -- hardcoding this to false for now, so we can always hit the legacy
-        //endpoint. The feature is not ready for testing yet, so only turn on when ready.
-        boolean enableProReferral = false;
         dataManager.requestPrepareReferrals(
-                enableProReferral,
+                true,
                 new FragmentSafeCallback<ReferralResponse>(this) {
             @Override
             public void onCallbackSuccess(final ReferralResponse response) {
