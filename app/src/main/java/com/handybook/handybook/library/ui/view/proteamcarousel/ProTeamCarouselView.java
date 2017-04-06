@@ -58,10 +58,11 @@ public class ProTeamCarouselView extends RelativeLayout
         mViewPager.setAdapter(mCarouselRecyclerAdapter);
         mViewPager.setClipToPadding(false);
 
-        int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        int cardWidth = getResources().getDimensionPixelSize(R.dimen.mini_pro_profile_card_width);
-        int excessMargin = (int) ((float) (screenWidth - cardWidth) / 2);
-        mViewPager.setPageMargin(-excessMargin);
+        //Potentially might need to make padding flexible and configurable for different use cases
+        //of this carousel.
+        int padding = getResources().getDimensionPixelSize(R.dimen.default_padding_4x);
+        mViewPager.setPadding(padding, 0, padding, 0);
+        mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.default_margin_double));
     }
 
     public void bind(
