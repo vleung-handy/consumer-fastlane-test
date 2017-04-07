@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
+import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
+import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,4 +197,64 @@ public class RatingFlowLog extends EventLog {
             mProviderId = providerId;
         }
     }
+
+
+    public static class ReferralPageShown extends RatingFlowLog {
+
+        public static final String EVENT_TYPE = "referral_page_shown";
+
+        public ReferralPageShown() {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class ShareButtonTapped extends ShareModalLog {
+
+        public ShareButtonTapped(
+                final String referralMedium,
+                final String referralIdentifier,
+                final String couponCode,
+                final String ctaSource,
+                final int senderOfferAmount,
+                final int receiverOfferAmount
+        ) {
+            super(
+                    EVENT_CONTEXT,
+                    referralMedium,
+                    referralIdentifier,
+                    couponCode,
+                    ctaSource,
+                    senderOfferAmount,
+                    receiverOfferAmount
+            );
+        }
+    }
+
+
+    public static class ShareMethodSelected extends NativeShareLog {
+
+        public static final String EVENT_TYPE = "share_method_selected";
+
+        public ShareMethodSelected(
+                final String referralMedium,
+                final String referralIdentifier,
+                final String couponCode,
+                final String ctaSource,
+                final int senderOfferAmount,
+                final int receiverOfferAmount
+        ) {
+            super(
+                    EVENT_TYPE,
+                    EVENT_CONTEXT,
+                    referralMedium,
+                    referralIdentifier,
+                    couponCode,
+                    ctaSource,
+                    senderOfferAmount,
+                    receiverOfferAmount
+            );
+        }
+    }
+
 }

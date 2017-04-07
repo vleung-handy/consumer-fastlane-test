@@ -3,26 +3,26 @@ package com.handybook.handybook.referral.ui;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.referral.model.ProReferral;
 import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
-import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,6 +68,9 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
         mProReferral = (ProReferral) getArguments().getSerializable(BundleKeys.PRO_REFERRAL);
         mReferralDescriptor
                 = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
+
+        Log.d("logging", "onCreate: ReferralPageShown");
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageShown()));
     }
 
     @Nullable
@@ -96,41 +99,12 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
 
     @OnClick(R.id.simple_pro_button_sms)
     public void onTextButtonClicked() {
-        final ReferralInfo smsReferralInfo =
-                mProReferral.getReferralInfo()
-                            .getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
-        if (smsReferralInfo != null) {
-            final Intent smsReferralIntent = ReferralIntentUtil.getSmsReferralIntent(
-                    getActivity(),
-                    smsReferralInfo
-            );
-            launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
-        }
-        else {
-            Crashlytics.logException(new Exception("SMS referral info is null"));
-        }
+        shareSmsClicked();
     }
 
     @OnClick(R.id.simple_pro_button_email)
     public void onEmailButtonClicked() {
-        final ReferralInfo emailReferralInfo =
-                mProReferral.getReferralInfo()
-                            .getReferralInfoForChannel(ReferralChannels.CHANNEL_EMAIL);
-        if (emailReferralInfo != null) {
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            emailIntent.setType("plain/text");
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
-            emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
-            emailIntent.putExtra(
-                    Intent.EXTRA_BCC,
-                    getResources().getStringArray(R.array.referral_email_bcc_array)
-            );
-            launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
-            sendShareButtonTappedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
-        }
-        else {
-            Crashlytics.logException(new Exception("Email referral info is null"));
-        }
+        shareEmailClicked();
     }
 
     /**
@@ -152,6 +126,39 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
     @OnClick(R.id.simple_pro_more)
     public void moreWaysToShare() {
         launchGenericShareIntent();
+    }
+
+    /**
+     * This needs to override the base method so that we can log differently. This will be called
+     * after a launchGenericShareIntent is triggered
+     *
+     * @param guid
+     * @param referralMedium
+     */
+    @Override
+    protected void sendShareButtonTappedLog(final String guid, final String referralMedium) {
+        Log.d("logging", "shareButtonTapped: ");
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareButtonTapped(
+                referralMedium,
+                guid,
+                getCouponCode(),
+                null,
+                mReferralDescriptor.getSenderCreditAmount(),
+                mReferralDescriptor.getReceiverCouponAmount()
+        )));
+    }
+
+    @Override
+    protected void sendShareMethodSelectedLog(final String guid, final String referralMedium) {
+        Log.d("logging", "shareMethodSelected: ");
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareMethodSelected(
+                referralMedium,
+                guid,
+                getCouponCode(),
+                null,
+                mReferralDescriptor.getSenderCreditAmount(),
+                mReferralDescriptor.getReceiverCouponAmount()
+        )));
     }
 
     @Nullable
