@@ -78,7 +78,7 @@ public class BottomNavActivity extends BaseActivity {
             @Override
             public void onReceive(final Context context, final Intent intent) {
                 if (!isProChatCurrentlySelected && mBottomNavigationView != null) {
-                    //                    mBottomNavigationView.showChatIndicator(true);
+                    mBottomNavigationView.showChatIndicator(true);
                 }
             }
         };
@@ -166,7 +166,7 @@ public class BottomNavActivity extends BaseActivity {
                 break;
             case R.id.messages:
                 isProChatCurrentlySelected = true;
-                //                mBottomNavigationView.showChatIndicator(false);
+                mBottomNavigationView.showChatIndicator(false);
                 fragment = ProTeamConversationsFragment.newInstance();
                 break;
             case R.id.add_booking:

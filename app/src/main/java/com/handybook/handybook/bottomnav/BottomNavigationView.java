@@ -105,6 +105,9 @@ public class BottomNavigationView extends FrameLayout {
     private OnNavigationItemSelectedListener mSelectedListener;
     private OnNavigationItemReselectedListener mReselectedListener;
 
+    //Handy chat indicator index
+    private int mChatIndicatorIndex;
+
     public BottomNavigationView(Context context) {
         this(context, null);
     }
@@ -136,22 +139,21 @@ public class BottomNavigationView extends FrameLayout {
         // Custom attributes
         TintTypedArray a = TintTypedArray.obtainStyledAttributes(context,
                                                                  attrs,
-                                                                 R.styleable.BottomNavigationView,
+                                                                 R.styleable.HandyBottomNavigationView,
                                                                  defStyleAttr,
                                                                  R.style.Widget_Design_BottomNavigationView
         );
-
-        if (a.hasValue(R.styleable.BottomNavigationView_itemIconTint)) {
+        if (a.hasValue(R.styleable.HandyBottomNavigationView_itemIconTint)) {
             mMenuView.setIconTintList(
-                    a.getColorStateList(R.styleable.BottomNavigationView_itemIconTint));
+                    a.getColorStateList(R.styleable.HandyBottomNavigationView_itemIconTint));
         }
         else {
             mMenuView.setIconTintList(
                     createDefaultColorStateList(android.R.attr.textColorSecondary));
         }
-        if (a.hasValue(R.styleable.BottomNavigationView_itemTextColor)) {
+        if (a.hasValue(R.styleable.HandyBottomNavigationView_itemTextColor)) {
             mMenuView.setItemTextColor(
-                    a.getColorStateList(R.styleable.BottomNavigationView_itemTextColor));
+                    a.getColorStateList(R.styleable.HandyBottomNavigationView_itemTextColor));
         }
         else {
             mMenuView.setItemTextColor(
@@ -162,12 +164,26 @@ public class BottomNavigationView extends FrameLayout {
                     R.styleable.BottomNavigationView_elevation, 0));
         }
 
-        int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
+        int itemBackground = a.getResourceId(
+                R.styleable.HandyBottomNavigationView_itemBackground,
+                0
+        );
+
         mMenuView.setItemBackgroundRes(itemBackground);
 
-        if (a.hasValue(R.styleable.BottomNavigationView_menu)) {
-            inflateMenu(a.getResourceId(R.styleable.BottomNavigationView_menu, 0));
+        if (a.hasValue(R.styleable.HandyBottomNavigationView_menu)) {
+            inflateMenu(a.getResourceId(
+                    R.styleable.HandyBottomNavigationView_menu,
+                    0
+            ));
         }
+
+        //Get the chat indicator index in the bottom nav
+        mChatIndicatorIndex = a.getInteger(
+                R.styleable.HandyBottomNavigationView_chatIndicatorIndex,
+                -1
+        );
+
         a.recycle();
 
         addView(mMenuView, params);
@@ -442,6 +458,17 @@ public class BottomNavigationView extends FrameLayout {
         super.onRestoreInstanceState(savedState.getSuperState());
         mMenu.restorePresenterStates(savedState.menuPresenterState);
     }
+
+    /**
+     * Handy Custom method
+     * @param showIndicator true to show chat indicator, false to hide
+     */
+    public void showChatIndicator(boolean showIndicator) {
+        if (mChatIndicatorIndex > -1 && mMenuView != null) {
+            mMenuView.showIndicator(showIndicator, mChatIndicatorIndex);
+        }
+    }
+
 
     static class SavedState extends AbsSavedState {
 

@@ -16,6 +16,7 @@ import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,6 +48,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     private ColorStateList mIconTint;
 
+    // Handy: This is a custom handy indicator used for when there is chat messages
+    private final View mIndicator;
+
     public BottomNavigationItemView(@NonNull Context context) {
         this(context, null);
     }
@@ -67,11 +71,19 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         mScaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
         mScaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
 
-        LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
+        LayoutInflater.from(context)
+                      .inflate(
+                              com.handybook.handybook.R.layout.layout_bottom_navigation_item,
+                              this,
+                              true
+                      );
         setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
         mIcon = (ImageView) findViewById(R.id.icon);
         mSmallLabel = (TextView) findViewById(R.id.smallLabel);
         mLargeLabel = (TextView) findViewById(R.id.largeLabel);
+
+        // Handy Code
+        mIndicator = findViewById(com.handybook.handybook.R.id.indicator);
     }
 
     @Override
@@ -242,5 +254,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         Drawable backgroundDrawable = background == 0
                                       ? null : ContextCompat.getDrawable(getContext(), background);
         ViewCompat.setBackground(this, backgroundDrawable);
+    }
+
+    public void showIndicator(boolean showIndicator) {
+        mIndicator.setVisibility(showIndicator ? View.VISIBLE : View.GONE);
     }
 }
