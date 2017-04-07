@@ -18,15 +18,23 @@ package com.handybook.handybook.bottomnav;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+import android.support.v4.view.AbsSavedState;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -87,15 +95,15 @@ public class BottomNavigationView extends FrameLayout {
     private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
     private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
+    private static final int MENU_PRESENTER_ID = 1;
+
     private final MenuBuilder mMenu;
     private final BottomNavigationMenuView mMenuView;
     private final BottomNavigationPresenter mPresenter = new BottomNavigationPresenter();
     private MenuInflater mMenuInflater;
 
-    //Handy chat indicator index
-    private int mChatIndicatorIndex;
-
-    private OnNavigationItemSelectedListener mListener;
+    private OnNavigationItemSelectedListener mSelectedListener;
+    private OnNavigationItemReselectedListener mReselectedListener;
 
     public BottomNavigationView(Context context) {
         this(context, null);
@@ -103,25 +111,6 @@ public class BottomNavigationView extends FrameLayout {
 
     public BottomNavigationView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-    }
-
-    static class ThemeUtils {
-
-        private static final int[] APPCOMPAT_CHECK_ATTRS = {
-                android.support.v7.appcompat.R.attr.colorPrimary
-        };
-
-        static void checkAppCompatTheme(Context context) {
-            TypedArray a = context.obtainStyledAttributes(APPCOMPAT_CHECK_ATTRS);
-            final boolean failed = !a.hasValue(0);
-            if (a != null) {
-                a.recycle();
-            }
-            if (failed) {
-                throw new IllegalArgumentException("You need to use a Theme.AppCompat theme "
-                                                   + "(or descendant) with the design library.");
-            }
-        }
     }
 
     public BottomNavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -139,49 +128,45 @@ public class BottomNavigationView extends FrameLayout {
         mMenuView.setLayoutParams(params);
 
         mPresenter.setBottomNavigationMenuView(mMenuView);
+        mPresenter.setId(MENU_PRESENTER_ID);
         mMenuView.setPresenter(mPresenter);
         mMenu.addMenuPresenter(mPresenter);
         mPresenter.initForMenu(getContext(), mMenu);
 
         // Custom attributes
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.HandyBottomNavigationView,
-                0, 0
-        );
-        if (a.hasValue(R.styleable.HandyBottomNavigationView_itemIconTint)) {
-            mMenuView.setIconTintList(
-                    a.getColorStateList(R.styleable.HandyBottomNavigationView_itemIconTint));
-        }
-        else {
-            mMenuView.setIconTintList(
-                    createDefaultColorStateList(android.R.attr.textColorSecondary));
-        }
-        if (a.hasValue(R.styleable.HandyBottomNavigationView_itemTextColor)) {
-            mMenuView.setItemTextColor(
-                    a.getColorStateList(R.styleable.HandyBottomNavigationView_itemTextColor));
-        }
-        else {
-            mMenuView.setItemTextColor(
-                    createDefaultColorStateList(android.R.attr.textColorSecondary));
-        }
-        int itemBackground = a.getResourceId(
-                R.styleable.HandyBottomNavigationView_itemBackground,
-                0
-        );
-        //Get the chat indicator index in the bottom nav
-        mChatIndicatorIndex = a.getInteger(
-                R.styleable.HandyBottomNavigationView_chatIndicatorIndex,
-                -1
+        TintTypedArray a = TintTypedArray.obtainStyledAttributes(context,
+                                                                 attrs,
+                                                                 R.styleable.BottomNavigationView,
+                                                                 defStyleAttr,
+                                                                 R.style.Widget_Design_BottomNavigationView
         );
 
+        if (a.hasValue(R.styleable.BottomNavigationView_itemIconTint)) {
+            mMenuView.setIconTintList(
+                    a.getColorStateList(R.styleable.BottomNavigationView_itemIconTint));
+        }
+        else {
+            mMenuView.setIconTintList(
+                    createDefaultColorStateList(android.R.attr.textColorSecondary));
+        }
+        if (a.hasValue(R.styleable.BottomNavigationView_itemTextColor)) {
+            mMenuView.setItemTextColor(
+                    a.getColorStateList(R.styleable.BottomNavigationView_itemTextColor));
+        }
+        else {
+            mMenuView.setItemTextColor(
+                    createDefaultColorStateList(android.R.attr.textColorSecondary));
+        }
+        if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
+            ViewCompat.setElevation(this, a.getDimensionPixelSize(
+                    R.styleable.BottomNavigationView_elevation, 0));
+        }
+
+        int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
         mMenuView.setItemBackgroundRes(itemBackground);
 
-        if (a.hasValue(R.styleable.HandyBottomNavigationView_menu)) {
-            inflateMenu(a.getResourceId(
-                    R.styleable.HandyBottomNavigationView_menu,
-                    0
-            ));
+        if (a.hasValue(R.styleable.BottomNavigationView_menu)) {
+            inflateMenu(a.getResourceId(R.styleable.BottomNavigationView_menu, 0));
         }
         a.recycle();
 
@@ -193,7 +178,12 @@ public class BottomNavigationView extends FrameLayout {
         mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                return mListener != null && !mListener.onNavigationItemSelected(item);
+                if (mReselectedListener != null && item.getItemId() == getSelectedItemId()) {
+                    mReselectedListener.onNavigationItemReselected(item);
+                    return true; // item is already selected
+                }
+                return mSelectedListener != null
+                       && !mSelectedListener.onNavigationItemSelected(item);
             }
 
             @Override
@@ -202,24 +192,32 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     /**
-     * Set a listener that will be notified when a bottom navigation item is selected.
+     * Set a listener that will be notified when a bottom navigation item is selected. This listener
+     * will also be notified when the currently selected item is reselected, unless an
+     * {@link OnNavigationItemReselectedListener} has also been set.
      *
      * @param listener The listener to notify
+     *
+     * @see #setOnNavigationItemReselectedListener(OnNavigationItemReselectedListener)
      */
     public void setOnNavigationItemSelectedListener(
             @Nullable OnNavigationItemSelectedListener listener
     ) {
-        mListener = listener;
+        mSelectedListener = listener;
     }
 
     /**
-     * Handy Custom method
-     * @param showIndicator true to show chat indicator, false to hide
+     * Set a listener that will be notified when the currently selected bottom navigation item is
+     * reselected. This does not require an {@link OnNavigationItemSelectedListener} to be set.
+     *
+     * @param listener The listener to notify
+     *
+     * @see #setOnNavigationItemSelectedListener(OnNavigationItemSelectedListener)
      */
-    public void showChatIndicator(boolean showIndicator) {
-        if (mChatIndicatorIndex > -1 && mMenuView != null) {
-            mMenuView.showIndicator(showIndicator, mChatIndicatorIndex);
-        }
+    public void setOnNavigationItemReselectedListener(
+            @Nullable OnNavigationItemReselectedListener listener
+    ) {
+        mReselectedListener = listener;
     }
 
     /**
@@ -325,7 +323,33 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     /**
-     * Listener for handling events on bottom navigation items.
+     * Returns the currently selected menu item ID, or zero if there is no menu.
+     *
+     * @see #setSelectedItemId(int)
+     */
+    @IdRes
+    public int getSelectedItemId() {
+        return mMenuView.getSelectedItemId();
+    }
+
+    /**
+     * Set the selected menu item ID. This behaves the same as tapping on an item.
+     *
+     * @param itemId The menu item ID. If no item has this ID, the current selection is unchanged.
+     *
+     * @see #getSelectedItemId()
+     */
+    public void setSelectedItemId(@IdRes int itemId) {
+        MenuItem item = mMenu.findItem(itemId);
+        if (item != null) {
+            if (!mMenu.performItemAction(item, mPresenter, 0)) {
+                item.setChecked(true);
+            }
+        }
+    }
+
+    /**
+     * Listener for handling selection events on bottom navigation items.
      */
     public interface OnNavigationItemSelectedListener {
 
@@ -341,17 +365,28 @@ public class BottomNavigationView extends FrameLayout {
         boolean onNavigationItemSelected(@NonNull MenuItem item);
     }
 
+
+    /**
+     * Listener for handling reselection events on bottom navigation items.
+     */
+    public interface OnNavigationItemReselectedListener {
+
+        /**
+         * Called when the currently selected item in the bottom navigation menu is selected again.
+         *
+         * @param item The selected item
+         */
+        void onNavigationItemReselected(@NonNull MenuItem item);
+    }
+
     private void addCompatibilityTopDivider(Context context) {
         View divider = new View(context);
         divider.setBackgroundColor(
-                ContextCompat.getColor(
-                        context,
-                        android.support.design.R.color.design_bottom_navigation_shadow_color
-                ));
+                ContextCompat.getColor(context, R.color.design_bottom_navigation_shadow_color));
         FrameLayout.LayoutParams dividerParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 getResources().getDimensionPixelSize(
-                        android.support.design.R.dimen.design_bottom_navigation_shadow_height)
+                        R.dimen.design_bottom_navigation_shadow_height)
         );
         divider.setLayoutParams(dividerParams);
         addView(divider);
@@ -386,5 +421,62 @@ public class BottomNavigationView extends FrameLayout {
                 colorPrimary,
                 defaultColor
         });
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.menuPresenterState = new Bundle();
+        mMenu.savePresenterStates(savedState.menuPresenterState);
+        return savedState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        mMenu.restorePresenterStates(savedState.menuPresenterState);
+    }
+
+    static class SavedState extends AbsSavedState {
+
+        Bundle menuPresenterState;
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        public SavedState(Parcel source, ClassLoader loader) {
+            super(source, loader);
+            readFromParcel(source, loader);
+        }
+
+        @Override
+        public void writeToParcel(@NonNull Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeBundle(menuPresenterState);
+        }
+
+        private void readFromParcel(Parcel in, ClassLoader loader) {
+            menuPresenterState = in.readBundle(loader);
+        }
+
+        public static final Creator<SavedState> CREATOR =
+                ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<SavedState>() {
+                    @Override
+                    public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+                        return new SavedState(in, loader);
+                    }
+
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                });
     }
 }
