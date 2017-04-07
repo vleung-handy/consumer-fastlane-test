@@ -96,7 +96,7 @@ public class RatingFlowActivity extends BaseActivity {
             case REFERRAL_STEP:
                 fragment = RatingFlowReferralFragment.newInstance(
                         mBooking,
-                        shouldShowRecommendedProviders() ? FEEDBACK : REFERRAL,
+                        getReferralMode(),
                         mReferralDescriptor,
                         mRecommendedProviders
                 );
@@ -106,6 +106,24 @@ public class RatingFlowActivity extends BaseActivity {
                 return;
         }
         displayFragmentOrSkip(fragment);
+    }
+
+    /**
+     * Determines which "mode" the RatingFlowReferralFragment should be going into.
+     * @return
+     */
+    private RatingFlowReferralFragment.Mode getReferralMode() {
+        Fragment activeFragment
+                = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (activeFragment instanceof RatingFlowFeedbackFragment) {
+            if (((RatingFlowFeedbackFragment) activeFragment).getActiveFragment() instanceof RatingFlowShareProFragment) {
+                //if we're currently at the step displaying RatingFlowShareProFragment,
+                //then the next step has to be to the RatingFlowReferralFragment with mode = REVIEW
+                return RatingFlowReferralFragment.Mode.REVIEW;
+            }
+        }
+
+        return shouldShowRecommendedProviders() ? FEEDBACK : REFERRAL;
     }
 
     private void displayFragmentOrSkip(@Nullable final Fragment fragment) {

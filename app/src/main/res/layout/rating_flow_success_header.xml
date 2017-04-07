@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/rating_flow_referral_header"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:paddingTop="@dimen/default_padding_3x"
+    >
+
+    <CheckBox
+        android:id="@+id/rating_flow_referral_header_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/option_checkbox"
+        android:button="@null"
+        android:checked="true"
+        android:gravity="center"
+        android:padding="@dimen/icon_padding"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/rating_flow_referral_header_text"
+        style="@style/TextView.XLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding"
+        android:text="@string/thanks_for_feedback"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        />
+
+    <View
+        android:id="@+id/rating_flow_referral_header_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/handy_bg"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/rating_flow_referral_help_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_list_entry"
+        android:gravity="center"
+        android:padding="@dimen/default_padding"
+        android:text="@string/still_need_help"
+        android:textColor="@color/handy_tertiary_gray"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+
+</LinearLayout>
