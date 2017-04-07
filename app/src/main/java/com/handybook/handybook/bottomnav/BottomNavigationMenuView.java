@@ -52,7 +52,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     private final BottomNavigationAnimationHelperBase mAnimationHelper;
     private final Pools.Pool<BottomNavigationItemView> mItemPool = new Pools.SynchronizedPool<>(5);
 
-    private boolean mShiftingMode = true;
+    private boolean mShiftingMode = false;
 
     private BottomNavigationItemView[] mButtons;
     private int mSelectedItemId = 0;
@@ -276,7 +276,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             return;
         }
         mButtons = new BottomNavigationItemView[mMenu.size()];
-        mShiftingMode = mMenu.size() > 3;
+        //        mShiftingMode = mMenu.size() > 3;
         for (int i = 0; i < mMenu.size(); i++) {
             mPresenter.setUpdateSuspended(true);
             mMenu.getItem(i).setCheckable(true);
