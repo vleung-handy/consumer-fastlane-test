@@ -1,25 +1,17 @@
 package com.handybook.handybook.ratingflow.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.library.util.Utils;
-import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.ProReferral;
-import com.handybook.handybook.referral.model.ReferralChannels;
-import com.handybook.handybook.referral.model.ReferralInfo;
-import com.handybook.handybook.referral.util.ReferralIntentUtil;
-
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import com.handybook.handybook.referral.model.ReferralDescriptor;
+import com.handybook.handybook.referral.ui.SimpleProReferralFragment;
 
 /**
  * This is the fragment that is used during the rating flow. Displays information so user can
@@ -28,13 +20,16 @@ import butterknife.OnClick;
 public class RatingFlowShareProFragment extends RatingFlowFeedbackChildFragment {
 
     private ProReferral mProReferral;
+    private ReferralDescriptor mReferralDescriptor;
 
     public static RatingFlowShareProFragment newInstance(
-            @NonNull final ProReferral proReferral
+            @NonNull final ProReferral proReferral,
+            @NonNull final ReferralDescriptor referralDescriptor
     ) {
 
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.PRO_REFERRAL, proReferral);
+        args.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
 
         RatingFlowShareProFragment fragment = new RatingFlowShareProFragment();
         fragment.setArguments(args);
@@ -45,82 +40,59 @@ public class RatingFlowShareProFragment extends RatingFlowFeedbackChildFragment 
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProReferral = (ProReferral) getArguments().getSerializable(BundleKeys.PRO_REFERRAL);
+        mReferralDescriptor
+                = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(
-            final LayoutInflater inflater,
-            @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState
+    public void onViewCreated(
+            final View view, @Nullable final Bundle savedInstanceState
     ) {
+        super.onViewCreated(view, savedInstanceState);
+        adjustIrrelevantViews();
 
-        View view = inflater.inflate(R.layout.fragment_rating_flow_share_pro, container, false);
+        SimpleProReferralFragment
+                frag = (SimpleProReferralFragment) getChildFragmentManager().findFragmentByTag(
+                SimpleProReferralFragment.class.getName());
+        if (frag == null) {
+            frag = SimpleProReferralFragment.newInstance(mProReferral, mReferralDescriptor);
 
-        ButterKnife.bind(this, view);
-        return view;
+            getChildFragmentManager().beginTransaction()
+                                     .add(
+                                             R.id.rating_flow_section_container,
+                                             frag,
+                                             SimpleProReferralFragment.class.getName()
+                                     )
+                                     .commit();
+        }
+    }
+
+    /**
+     * Since this must inherit from {@link RatingFlowFeedbackChildFragment},
+     * and that it contains some template views that isn't needed here, those will be
+     * toggled View.GONE.
+     *
+     * For the views that we do need, we need to adjust some properties to make it fit the screen.
+     */
+    private void adjustIrrelevantViews() {
+        mSectionTitle.setVisibility(View.GONE);
+        mSectionSubtitle.setVisibility(View.GONE);
+        mSectionHelperContainer.setVisibility(View.GONE);
+
+        ViewGroup.LayoutParams layoutParams = mSectionContainer.getLayoutParams();
+
+        LinearLayout.LayoutParams newParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        newParams.setMargins(0, 0, 0, 0);
+        mSectionContainer.setLayoutParams(newParams);
+        mSectionContainer.setPadding(0, 0, 0, 0);
+        mSectionContainer.requestLayout();
     }
 
     @Override
     protected void onSubmit() {
-        //TODO: JIA: implement this
-    }
-
-    @OnClick(R.id.rating_flow_referral_email_button)
-    public void onEmailButtonClicked() {
-        final ReferralInfo emailReferralInfo =
-                mProReferral.getReferralInfo()
-                            .getReferralInfoForChannel(ReferralChannels.CHANNEL_EMAIL);
-        if (emailReferralInfo != null) {
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            emailIntent.setType("plain/text");
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
-            emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
-            emailIntent.putExtra(
-                    Intent.EXTRA_BCC,
-                    getResources().getStringArray(R.array.referral_email_bcc_array)
-            );
-            launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
-            sendShareButtonTappedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
-        }
-        else {
-            Crashlytics.logException(new Exception("Email referral info is null"));
-        }
-    }
-
-    @OnClick(R.id.rating_flow_referral_text_button)
-    public void onTextButtonClicked() {
-        final ReferralInfo smsReferralInfo =
-                mProReferral.getReferralInfo()
-                            .getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
-        if (smsReferralInfo != null) {
-            final Intent smsReferralIntent = ReferralIntentUtil.getSmsReferralIntent(
-                    getActivity(),
-                    smsReferralInfo
-            );
-            launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
-            sendShareButtonTappedLog(smsReferralInfo.getGuid(), ReferralChannels.CHANNEL_SMS);
-        }
-        else {
-            Crashlytics.logException(new Exception("SMS referral info is null"));
-        }
-    }
-
-    private void sendShareButtonTappedLog(final String guid, final String referralMedium) {
-        //TODO: JIA: implement this
-    }
-
-    private void launchShareIntent(
-            final Intent intent,
-            @Nullable @ReferralChannels.Channel final String channel
-    ) {
-        if (channel != null) {
-            final ReferralInfo referralInfo = mProReferral.getReferralInfo()
-                                                          .getReferralInfoForChannel(channel);
-            if (referralInfo != null) {
-                bus.post(new ReferralsEvent.RequestConfirmReferral(referralInfo.getGuid()));
-            }
-        }
-        Utils.safeLaunchIntent(intent, getActivity());
+        finishStep();
     }
 }

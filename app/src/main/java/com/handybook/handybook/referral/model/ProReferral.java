@@ -1,5 +1,7 @@
 package com.handybook.handybook.referral.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.Provider;
 
@@ -17,9 +19,14 @@ public class ProReferral implements Serializable {
     @SerializedName("provider")
     private Provider mProvider;
 
-    //TODO: JIA: Ankit to add these
-    private String mTitle;
+    @SerializedName("header")
+    private String mHeader;
+
+    @SerializedName("subtitle")
     private String mSubTitle;
+
+    @SerializedName("share_url")
+    private String mShareUrl;
 
     @SerializedName("referral_button_text")
     private String mReferralButtonText;
@@ -31,6 +38,10 @@ public class ProReferral implements Serializable {
         return mProvider;
     }
 
+    public void setProvider(final Provider provider) {
+        mProvider = provider;
+    }
+
     public ReferralChannels getReferralInfo() {
         return mReferralInfo;
     }
@@ -39,11 +50,17 @@ public class ProReferral implements Serializable {
         return mReferralButtonText;
     }
 
-    public String getTitle() {
-        return mTitle;
+    public String getHeader() {
+        return mHeader;
     }
 
     public String getSubTitle() {
         return mSubTitle;
     }
+
+    @Nullable
+    public String getShareUrl() {
+        return mShareUrl;
+    }
+
 }

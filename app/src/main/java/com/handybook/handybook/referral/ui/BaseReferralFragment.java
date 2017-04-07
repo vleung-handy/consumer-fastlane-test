@@ -52,7 +52,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
         activityPickerIntent.setAction(Intent.ACTION_PICK_ACTIVITY);
         activityPickerIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.share_using));
         activityPickerIntent.putExtra(Intent.EXTRA_INTENT, dummyIntent);
-        sendShareButtonTappedLog();
+        sendShareButtonTappedLog("", ReferralChannels.CHANNEL_OTHER);
         startActivityForResult(activityPickerIntent, ActivityResult.PICK_ACTIVITY);
     }
 
@@ -93,7 +93,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
     /**
      * This logs the generic share clicked, the action that launches the default android share intent
      */
-    protected void sendShareButtonTappedLog() {
+    protected void sendShareButtonTappedLog(final String guid, final String referralMedium) {
         if (mReferralDescriptor != null) {
             String couponCode
                     = StringUtils.replaceWithEmptyIfNull(mReferralDescriptor.getCouponCode());
@@ -101,8 +101,8 @@ public abstract class BaseReferralFragment extends InjectedFragment {
             if (TextUtils.isBlank(getProviderId())) {
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog(
                         EventType.SHARE_BUTTON_TAPPED,
-                        ReferralChannels.CHANNEL_OTHER,
-                        "",
+                        referralMedium,
+                        guid,
                         couponCode,
                         mSource,
                         mReferralDescriptor.getSenderCreditAmount(),
@@ -115,8 +115,8 @@ public abstract class BaseReferralFragment extends InjectedFragment {
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog.NativeShareProLog(
                         EventType.SHARE_BUTTON_TAPPED,
                         getProviderId(),
-                        ReferralChannels.CHANNEL_OTHER,
-                        "",
+                        referralMedium,
+                        guid,
                         couponCode,
                         mSource,
                         mReferralDescriptor.getSenderCreditAmount(),

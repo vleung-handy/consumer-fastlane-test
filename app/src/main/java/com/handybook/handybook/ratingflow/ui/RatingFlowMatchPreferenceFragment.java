@@ -137,6 +137,10 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
         )));
     }
 
+    public ProviderMatchPreference getSelectedPreference() {
+        return mSelectedPreference;
+    }
+
     private void updateHelperText() {
         if (mOptionIndex == POSITIVE_PREFERENCE_INDEX
                 && mProvider.getMatchPreference() != PREFERRED) {
