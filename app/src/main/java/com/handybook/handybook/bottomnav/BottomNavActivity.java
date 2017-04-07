@@ -20,7 +20,6 @@ import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
@@ -56,25 +55,11 @@ public class BottomNavActivity extends BaseActivity {
     //This is used for the Handy pro chat indicator
     private boolean isProChatCurrentlySelected;
 
-    // This is used to select the right tab when coming back from saveInstanceState
-    @IdRes
-    private int mCurrentSelectedTabId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_nav);
         ButterKnife.bind(this);
-
-        // Currently, performClick() is the only way to select the menu item for now. MenuItem.setChecked() doesn't work as expected.
-        // We must call performClick() before setOnNavigationItemSelectedListener() so it only highlights the menu item.
-        if (savedInstanceState != null) {
-            mCurrentSelectedTabId = savedInstanceState.getInt(BundleKeys.TAB_ID, -1);
-            View view = mBottomNavigationView.findViewById(mCurrentSelectedTabId);
-            if (view != null) {
-                view.performClick();
-            }
-        }
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -133,13 +118,6 @@ public class BottomNavActivity extends BaseActivity {
         mBus.unregister(this);
         unregisterReceiver(mChatNotificationReceiver);
         super.onPause();
-    }
-
-    @Override
-    protected void onSaveInstanceState(final Bundle outState) {
-        // Saving the id of current selected bottom tab.
-        outState.putInt(BundleKeys.TAB_ID, mCurrentSelectedTabId);
-        super.onSaveInstanceState(outState);
     }
 
     private void navigateToMainNavTab(@Nullable Intent intent) {
@@ -205,7 +183,6 @@ public class BottomNavActivity extends BaseActivity {
         if (fragment == null) { return false; }
 
         FragmentUtils.switchToFragment(BottomNavActivity.this, fragment, false);
-        mCurrentSelectedTabId = item.getItemId();
 
         return true;
     }
