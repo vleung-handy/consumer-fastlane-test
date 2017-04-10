@@ -32,7 +32,6 @@ import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
@@ -330,6 +329,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     public void onAnimationEnd(final Animation animation) {
                         if (mMode == Mode.REFERRAL && mReferralDescriptor != null) {
                             animateContentIn(mReferralContent);
+
+                            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
+                                    RatingFlowLog.EVENT_TYPE_SHOWN,
+                                    null
+                            )));
+
                         }
                         else {
                             animateContentIn(mReviewSection);
@@ -387,7 +392,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     getResources().getStringArray(R.array.referral_email_bcc_array)
             );
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
-            sendShareButtonTappedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
+            sendShareMethodSelectedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
         }
         else {
             Crashlytics.logException(new Exception("Email referral info is null"));
@@ -404,7 +409,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     smsReferralInfo
             );
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
-            sendShareButtonTappedLog(smsReferralInfo.getGuid(), ReferralChannels.CHANNEL_SMS);
+            sendShareMethodSelectedLog(smsReferralInfo.getGuid(), ReferralChannels.CHANNEL_SMS);
         }
         else {
             Crashlytics.logException(new Exception("SMS referral info is null"));
@@ -416,6 +421,11 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ConfirmationSubmitted(
                          Integer.parseInt(mBooking.getId()),
                          Integer.parseInt(mBooking.getProvider().getId())
+                 ))
+        );
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
+                         RatingFlowLog.EVENT_TYPE_SUBMITTED,
+                         null
                  ))
         );
         if (getActivity() instanceof RatingFlowActivity) {
@@ -442,12 +452,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         Utils.safeLaunchIntent(intent, getActivity());
     }
 
-    private void sendShareButtonTappedLog(final String guid, final String referralMedium) {
+    private void sendShareMethodSelectedLog(final String guid, final String referralMedium) {
         if (mReferralDescriptor != null) {
             String couponCode = StringUtils.replaceWithEmptyIfNull(
                     mReferralDescriptor.getCouponCode());
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
-            bus.post(new LogEvent.AddLogEvent(new ShareModalLog.PostRatingShareButtonTappedLog(
+            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareMethodSelected(
                     referralMedium,
                     identifier,
                     couponCode,

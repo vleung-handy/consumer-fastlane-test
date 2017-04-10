@@ -104,6 +104,12 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
         // to process the remaining items in the queue.
         mReasons = mReasonsQueue.remove(0);
 
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.LowRatingReasonsLog(
+                RatingFlowLog.EVENT_TYPE_SHOWN,
+                mReasons.getKey() != null ? mReasons.getKey() : "initial",
+                Integer.parseInt(mImprovementFeedback.getBookingId())
+        )));
+
         mOptionIndex = -1;
     }
 
@@ -224,7 +230,17 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
                     mImprovementFeedback
             ));
         }
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.FeedbackSubmitted(
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.LowRatingReasonsLog(
+                RatingFlowLog.EVENT_TYPE_SUBMITTED,
+                mReasons.getKey() != null ? mReasons.getKey() : "initial",
+                Integer.parseInt(mImprovementFeedback.getBookingId())
+        )));
+    }
+
+    @Override
+    void onSkip() {
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.LowRatingReasonsLog(
+                RatingFlowLog.EVENT_TYPE_SKIPPED,
                 mReasons.getKey() != null ? mReasons.getKey() : "initial",
                 Integer.parseInt(mImprovementFeedback.getBookingId())
         )));

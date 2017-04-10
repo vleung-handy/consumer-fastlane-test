@@ -5,7 +5,6 @@ import android.support.annotation.StringDef;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
-import static com.handybook.handybook.logger.handylogger.model.booking.EventContext.NATIVE_SHARE;
 import static com.handybook.handybook.logger.handylogger.model.booking.EventType.SHARE_BUTTON_TAPPED;
 import static com.handybook.handybook.logger.handylogger.model.booking.EventType.SHARE_METHOD_SELECTED;
 
@@ -52,26 +51,6 @@ public class NativeShareLog extends EventLog {
         );
     }
 
-    public NativeShareLog(
-            @EventType final String eventType,
-            final String referralMedium,
-            final String referralIdentifier,
-            final String couponCode,
-            final String ctaSource,
-            final int senderOfferAmount,
-            final int receiverOfferAmount
-    ) {
-        super(eventType, NATIVE_SHARE);
-        init(
-                referralMedium,
-                referralIdentifier,
-                couponCode,
-                ctaSource,
-                senderOfferAmount,
-                receiverOfferAmount
-        );
-    }
-
     private void init(
             final String referralMedium,
             final String referralIdentifier,
@@ -102,6 +81,7 @@ public class NativeShareLog extends EventLog {
 
         public NativeShareProLog(
                 @EventType final String eventType,
+                final String eventContext,
                 final String providerId,
                 final String referralMedium,
                 final String referralIdentifier,
@@ -112,6 +92,7 @@ public class NativeShareLog extends EventLog {
         ) {
             super(
                     eventType,
+                    eventContext,
                     referralMedium,
                     referralIdentifier,
                     couponCode,

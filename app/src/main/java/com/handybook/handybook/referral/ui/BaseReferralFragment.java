@@ -28,6 +28,8 @@ import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
+import static com.handybook.handybook.logger.handylogger.model.booking.EventContext.NATIVE_SHARE;
+
 public abstract class BaseReferralFragment extends InjectedFragment {
 
     public static final String BASE_REFERRAL_URL = "handy.com/r/";
@@ -136,6 +138,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
             if (TextUtils.isBlank(getProviderId())) {
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog(
                         EventType.SHARE_BUTTON_TAPPED,
+                        NATIVE_SHARE,
                         referralMedium,
                         guid,
                         couponCode,
@@ -149,6 +152,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
                 //pro member's information
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog.NativeShareProLog(
                         EventType.SHARE_BUTTON_TAPPED,
+                        NATIVE_SHARE,
                         getProviderId(),
                         referralMedium,
                         guid,
@@ -179,6 +183,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
             if (TextUtils.isBlank(getProviderId())) {
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog(
                         EventType.SHARE_METHOD_SELECTED,
+                        NATIVE_SHARE,
                         referralMedium,
                         identifier,
                         couponCode,
@@ -192,6 +197,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
                 //pro member's information
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog.NativeShareProLog(
                         EventType.SHARE_METHOD_SELECTED,
+                        NATIVE_SHARE,
                         getProviderId(),
                         referralMedium,
                         identifier,

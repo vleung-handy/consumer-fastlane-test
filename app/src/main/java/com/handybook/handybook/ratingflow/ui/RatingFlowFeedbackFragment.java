@@ -138,6 +138,11 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
 
     @OnClick(R.id.rating_flow_skip_button)
     public void onSkipClicked() {
+        Fragment activeFragment = getActiveFragment();
+        if (activeFragment != null && activeFragment instanceof RatingFlowFeedbackChildFragment) {
+            ((RatingFlowFeedbackChildFragment) activeFragment).onSkip();
+        }
+
         continueFeedbackFlow();
     }
 

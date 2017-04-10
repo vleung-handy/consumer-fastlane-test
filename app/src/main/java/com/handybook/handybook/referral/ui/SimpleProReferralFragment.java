@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -46,16 +46,19 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
     @Bind(R.id.simple_pro_copy_container)
     LinearLayout mCopyContainer;
 
+    private Provider mProvider;
     private ProReferral mProReferral;
 
     public static SimpleProReferralFragment newInstance(
             @NonNull final ProReferral proReferral,
-            @NonNull final ReferralDescriptor referralDescriptor
+            @NonNull final ReferralDescriptor referralDescriptor,
+            @NonNull final Provider provider
     ) {
 
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.PRO_REFERRAL, proReferral);
         args.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
+        args.putSerializable(BundleKeys.PROVIDER, provider);
 
         SimpleProReferralFragment fragment = new SimpleProReferralFragment();
         fragment.setArguments(args);
@@ -68,9 +71,7 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
         mProReferral = (ProReferral) getArguments().getSerializable(BundleKeys.PRO_REFERRAL);
         mReferralDescriptor
                 = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
-
-        Log.d("logging", "onCreate: ReferralPageShown");
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageShown()));
+        mProvider = (Provider) getArguments().getSerializable(BundleKeys.PROVIDER);
     }
 
     @Nullable
@@ -137,8 +138,8 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
      */
     @Override
     protected void sendShareButtonTappedLog(final String guid, final String referralMedium) {
-        Log.d("logging", "shareButtonTapped: ");
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareButtonTapped(
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareButtonForProTapped(
+                mProvider.getId(),
                 referralMedium,
                 guid,
                 getCouponCode(),
@@ -150,8 +151,8 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
 
     @Override
     protected void sendShareMethodSelectedLog(final String guid, final String referralMedium) {
-        Log.d("logging", "shareMethodSelected: ");
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareMethodSelected(
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareMethodForProSelected(
+                mProvider.getId(),
                 referralMedium,
                 guid,
                 getCouponCode(),
