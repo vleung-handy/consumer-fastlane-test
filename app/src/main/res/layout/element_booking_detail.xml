@@ -96,6 +96,17 @@
             android:orientation="vertical"
             >
 
+            <com.handybook.handybook.booking.ui.view.ProBusyView
+                android:id="@+id/booking_detail_pro_busy_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="@dimen/default_padding"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -218,5 +229,4 @@
         </LinearLayout>
 
     </ScrollView>
-
 </com.handybook.handybook.booking.ui.view.BookingDetailView>

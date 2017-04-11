@@ -66,7 +66,9 @@ public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper {
 
         //we only test the clicking of the bookings if the above test passes
         if (fragment.mBookingsContainer.getChildCount() == childCount) {
-            fragment.mBookingsContainer.getChildAt(0).performClick();
+            fragment.mBookingsContainer.getChildAt(0)
+                                       .findViewById(R.id.booking_item_container)
+                                       .performClick();
             Fragment current = TestUtils.getScreenFragment(fragment.getFragmentManager());
             assertTrue(current instanceof BookingDetailFragment);
         }

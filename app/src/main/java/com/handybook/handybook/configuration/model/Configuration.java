@@ -66,6 +66,11 @@ public class Configuration implements Serializable {
     @SerializedName("consolidated_quote_flow_enabled")
     private boolean mConsolidateBookingGetQuoteFlowExperimentEnabled;
 
+    @SerializedName("provider_requests_response_enabled")
+    private boolean mProviderRequestsResponseEnabled;
+
+
+
     public ReviewAppBanner getReviewAppBanner() {
         return mReviewAppBanner;
     }
@@ -140,6 +145,10 @@ public class Configuration implements Serializable {
 
     public boolean isNewRatingFlowEnabled() {
         return mNewRatingFlowEnabled;
+    }
+
+    public boolean isProviderRequestsResponseEnabled() {
+        return false;
     }
 
     public static class ReviewAppBanner implements Serializable {

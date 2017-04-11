@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.manager;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -25,6 +26,7 @@ import com.handybook.handybook.core.event.BookingFlowClearedEvent;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
+import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -55,6 +57,44 @@ public class BookingManager implements Observer {
         mDataManager = dataManager;
         mBus = bus;
         mBus.register(this);
+    }
+
+    public void rescheduleBookingWithProAvailability(
+            @NonNull final String providerId,
+            @NonNull final Booking booking
+    ) {
+        DataManager.Callback<ProAvailabilityResponse> proAvailabilityCallback
+                = new DataManager.Callback<ProAvailabilityResponse>() {
+            @Override
+            public void onSuccess(final ProAvailabilityResponse proAvailability) {
+                mDataManager.getPreRescheduleInfo(
+                        booking.getId(),
+                        new DataManager.Callback<String>() {
+                            @Override
+                            public void onSuccess(final String notice) {
+                                mBus.post(new BookingEvent.RescheduleBookingWithProAvailabilitySuccess(
+                                        booking,
+                                        proAvailability,
+                                        notice
+                                ));
+                            }
+
+                            @Override
+                            public void onError(final DataManager.DataManagerError error) {
+                                mBus.post(new BookingEvent.RescheduleBookingWithProAvailabilityError(
+                                        error));
+                            }
+                        }
+                );
+            }
+            @Override
+            public void onError(final DataManager.DataManagerError error) {
+                mBus.post(new BookingEvent.RescheduleBookingWithProAvailabilityError(error));
+            }
+        };
+
+        mDataManager
+                .getProviderAvailability(providerId, booking.getHours(), proAvailabilityCallback);
     }
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers
