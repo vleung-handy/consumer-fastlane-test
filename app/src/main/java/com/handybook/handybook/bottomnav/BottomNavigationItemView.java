@@ -2,11 +2,14 @@ package com.handybook.handybook.bottomnav;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.PointerIconCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
@@ -18,24 +21,35 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 /**
  * this is mostly copied from android.support.design.internal.BottomNavigationItemView
  */
+@RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationItemView extends FrameLayout implements MenuView.ItemView {
-
     public static final int INVALID_ITEM_POSITION = -1;
 
     private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
+    private final int mDefaultMargin;
+    private final int mShiftAmount;
+    private final float mScaleUpFactor;
+    private final float mScaleDownFactor;
+
+    private boolean mShiftingMode;
+
     private ImageView mIcon;
-    private final TextView mLabel;
-    //This is a custom handy indicator used for when there is chat messages
-    private final View mIndicator;
+    private final TextView mSmallLabel;
+    private final TextView mLargeLabel;
     private int mItemPosition = INVALID_ITEM_POSITION;
 
     private MenuItemImpl mItemData;
 
     private ColorStateList mIconTint;
+
+    // Handy: This is a custom handy indicator used for when there is chat messages
+    private final View mIndicator;
 
     public BottomNavigationItemView(@NonNull Context context) {
         this(context, null);
@@ -47,6 +61,15 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        final Resources res = getResources();
+        int inactiveLabelSize =
+                res.getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size);
+        int activeLabelSize = res.getDimensionPixelSize(
+                R.dimen.design_bottom_navigation_active_text_size);
+        mDefaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
+        mShiftAmount = inactiveLabelSize - activeLabelSize;
+        mScaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
+        mScaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
 
         LayoutInflater.from(context)
                       .inflate(
@@ -54,9 +77,12 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
                               this,
                               true
                       );
-        setBackgroundResource(com.handybook.handybook.R.drawable.background_bottom_nav_item);
+        setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
         mIcon = (ImageView) findViewById(R.id.icon);
-        mLabel = (TextView) findViewById(com.handybook.handybook.R.id.bottom_nav_item_label);
+        mSmallLabel = (TextView) findViewById(R.id.smallLabel);
+        mLargeLabel = (TextView) findViewById(R.id.largeLabel);
+
+        // Handy Code
         mIndicator = findViewById(com.handybook.handybook.R.id.indicator);
     }
 
@@ -79,6 +105,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         return mItemPosition;
     }
 
+    public void setShiftingMode(boolean enabled) {
+        mShiftingMode = enabled;
+    }
+
     @Override
     public MenuItemImpl getItemData() {
         return mItemData;
@@ -86,7 +116,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     @Override
     public void setTitle(CharSequence title) {
-        mLabel.setText(title);
+        mSmallLabel.setText(title);
+        mLargeLabel.setText(title);
+        setContentDescription(title);
     }
 
     @Override
@@ -96,12 +128,59 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     @Override
     public void setChecked(boolean checked) {
-        mItemData.setChecked(checked);
-        ViewCompat.setPivotX(mLabel, mLabel.getWidth() / 2);
-        ViewCompat.setPivotY(mLabel, mLabel.getBaseline());
-        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-        iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
-        mIcon.setLayoutParams(iconParams);
+        ViewCompat.setPivotX(mLargeLabel, mLargeLabel.getWidth() / 2);
+        ViewCompat.setPivotY(mLargeLabel, mLargeLabel.getBaseline());
+        ViewCompat.setPivotX(mSmallLabel, mSmallLabel.getWidth() / 2);
+        ViewCompat.setPivotY(mSmallLabel, mSmallLabel.getBaseline());
+        if (mShiftingMode) {
+            if (checked) {
+                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+                iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+                iconParams.topMargin = mDefaultMargin;
+                mIcon.setLayoutParams(iconParams);
+                mLargeLabel.setVisibility(VISIBLE);
+                ViewCompat.setScaleX(mLargeLabel, 1f);
+                ViewCompat.setScaleY(mLargeLabel, 1f);
+            }
+            else {
+                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+                iconParams.gravity = Gravity.CENTER;
+                iconParams.topMargin = mDefaultMargin;
+                mIcon.setLayoutParams(iconParams);
+                mLargeLabel.setVisibility(INVISIBLE);
+                ViewCompat.setScaleX(mLargeLabel, 0.5f);
+                ViewCompat.setScaleY(mLargeLabel, 0.5f);
+            }
+            mSmallLabel.setVisibility(INVISIBLE);
+        }
+        else {
+            if (checked) {
+                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+                iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+                iconParams.topMargin = mDefaultMargin + mShiftAmount;
+                mIcon.setLayoutParams(iconParams);
+                mLargeLabel.setVisibility(VISIBLE);
+                mSmallLabel.setVisibility(INVISIBLE);
+
+                ViewCompat.setScaleX(mLargeLabel, 1f);
+                ViewCompat.setScaleY(mLargeLabel, 1f);
+                ViewCompat.setScaleX(mSmallLabel, mScaleUpFactor);
+                ViewCompat.setScaleY(mSmallLabel, mScaleUpFactor);
+            }
+            else {
+                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+                iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+                iconParams.topMargin = mDefaultMargin;
+                mIcon.setLayoutParams(iconParams);
+                mLargeLabel.setVisibility(INVISIBLE);
+                mSmallLabel.setVisibility(VISIBLE);
+
+                ViewCompat.setScaleX(mLargeLabel, mScaleDownFactor);
+                ViewCompat.setScaleY(mLargeLabel, mScaleDownFactor);
+                ViewCompat.setScaleX(mSmallLabel, 1f);
+                ViewCompat.setScaleY(mSmallLabel, 1f);
+            }
+        }
 
         refreshDrawableState();
     }
@@ -109,8 +188,20 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        mLabel.setEnabled(enabled);
+        mSmallLabel.setEnabled(enabled);
+        mLargeLabel.setEnabled(enabled);
         mIcon.setEnabled(enabled);
+
+        if (enabled) {
+            ViewCompat.setPointerIcon(
+                    this,
+                    PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND)
+            );
+        }
+        else {
+            ViewCompat.setPointerIcon(this, null);
+        }
+
     }
 
     @Override
@@ -155,7 +246,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     }
 
     public void setTextColor(ColorStateList color) {
-        mLabel.setTextColor(color);
+        mSmallLabel.setTextColor(color);
+        mLargeLabel.setTextColor(color);
     }
 
     public void setItemBackground(int background) {
