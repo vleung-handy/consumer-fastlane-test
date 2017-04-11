@@ -151,13 +151,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         if (nextStep != null) {
             final RatingFlowFeedbackChildFragment fragment = createFragmentForStep(nextStep);
             if (fragment != null) {
-
-                if (fragment instanceof RatingFlowShareProFragment) {
-                    mNextButton.setVisibility(View.GONE);
-                }
-                else {
-                    mNextButton.setVisibility(View.VISIBLE);
-                }
                 showFragment(fragment);
             }
             else {

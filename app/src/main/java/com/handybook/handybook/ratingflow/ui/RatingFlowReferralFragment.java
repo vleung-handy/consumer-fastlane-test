@@ -135,12 +135,6 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         }
         mRecommendedProviders = (ArrayList<Provider>) getArguments()
                 .getSerializable(BundleKeys.RECOMMENDED_PROVIDERS);
-
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
-                RatingFlowLog.EVENT_TYPE_SHOWN,
-                null
-        )));
-
     }
 
     @Nullable
@@ -203,14 +197,6 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     }
 
     private void initProTeamCarousel() {
-        if (mRecommendedProviders != null) {
-            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RecommendedProvidersShown(
-                    mRecommendedProviders,
-                    userManager.getCurrentUser().getId(),
-                    mBooking.getId()
-            )));
-        }
-
         if (mRecommendedProviders == null && mMode == Mode.FEEDBACK) {
             showUiBlockers();
             dataManager.getRecommendedProviders(
@@ -233,6 +219,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         }
 
         if (mRecommendedProviders == null || mRecommendedProviders.isEmpty()) { return; }
+
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RecommendedProvidersShown(
+                mRecommendedProviders,
+                userManager.getCurrentUser().getId(),
+                mBooking.getId()
+        )));
 
         mProTeamSection.setVisibility(View.VISIBLE);
 
@@ -333,8 +325,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
                     @Override
                     public void onAnimationEnd(final Animation animation) {
-                        if (mMode == Mode.REFERRAL && mReferralDescriptor != null) {
+                        if (shouldShowReferralContent()) {
                             animateContentIn(mReferralContent);
+                            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
+                                    RatingFlowLog.EVENT_TYPE_SHOWN,
+                                    null
+                            )));
                         }
                         else {
                             animateContentIn(mReviewSection);
@@ -360,6 +356,10 @@ public class RatingFlowReferralFragment extends InjectedFragment {
             }
         });
         mHeader.startAnimation(slideDownAnimation);
+    }
+
+    private boolean shouldShowReferralContent() {
+        return mMode == Mode.REFERRAL && mReferralDescriptor != null;
     }
 
     private void animateContentIn(View view) {
@@ -423,11 +423,16 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                          Integer.parseInt(mBooking.getProvider().getId())
                  ))
         );
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
-                         RatingFlowLog.EVENT_TYPE_SUBMITTED,
-                         null
-                 ))
-        );
+
+        if (shouldShowReferralContent()) {
+            //if the referral content is being displayed, then we want to log accordingly.
+            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
+                             RatingFlowLog.EVENT_TYPE_SUBMITTED,
+                             null
+                     ))
+            );
+        }
+
         if (getActivity() instanceof RatingFlowActivity) {
 
             if (mMode == Mode.REVIEW && mReviewFragment != null) {
