@@ -163,10 +163,8 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
                     }
                 }
         );
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RatingSubmitted(
-                mSelectedRating,
-                tipAmountCents,
-                Integer.parseInt(mBooking.getId()),
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RatingAndTipLog(
+                RatingFlowLog.EVENT_TYPE_SUBMITTED,
                 Integer.parseInt(mBooking.getProvider().getId())
         )));
     }
@@ -184,6 +182,11 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RatingAndTipLog(
+                RatingFlowLog.EVENT_TYPE_SHOWN,
+                Integer.parseInt(mBooking.getProvider().getId())
+        )));
     }
 
     @Nullable

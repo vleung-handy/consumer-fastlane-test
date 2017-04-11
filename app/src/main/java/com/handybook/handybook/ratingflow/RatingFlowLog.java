@@ -53,22 +53,6 @@ public class RatingFlowLog extends EventLog {
         }
     }
 
-
-    public static class RatingSubmitted extends RatingLog {
-
-        private static final String EVENT_TYPE = "rating_submitted";
-
-        public RatingSubmitted(
-                final int rating,
-                final int tipAmount,
-                final int bookingId,
-                final int providerId
-        ) {
-            super(EVENT_TYPE, rating, tipAmount, bookingId, providerId);
-        }
-    }
-
-
     public static class RatingSuccess extends RatingLog {
 
         private static final String EVENT_TYPE = "rating_success";
@@ -99,7 +83,7 @@ public class RatingFlowLog extends EventLog {
     }
 
 
-    public static class ProPreferenceSubmitted extends RatingFlowLog {
+    public static class ProPreferenceLog extends RatingFlowLog {
 
         private static final String EVENT_TYPE = "pro_preference_page_";
 
@@ -110,7 +94,7 @@ public class RatingFlowLog extends EventLog {
         @SerializedName("provider_id")
         private int mProviderId;
 
-        public ProPreferenceSubmitted(
+        public ProPreferenceLog(
                 @EventTypePostfix final String eventTypePostfix,
                 final boolean optedIn,
                 final int bookingId,
@@ -228,11 +212,28 @@ public class RatingFlowLog extends EventLog {
     }
 
 
+    public static class RatingAndTipLog extends RatingFlowLog {
+
+        public static final String EVENT_TYPE = "rating_and_tip_page_";
+
+        @SerializedName("provider_id")
+        private Integer mProviderId;
+
+        public RatingAndTipLog(
+                @EventTypePostfix final String eventTypePostfix,
+                @Nullable final Integer providerId
+        ) {
+            super(EVENT_TYPE + eventTypePostfix);
+            mProviderId = providerId;
+        }
+    }
+
+
     public static class ReferralPageLog extends RatingFlowLog {
 
         public static final String EVENT_TYPE = "referral_page_";
 
-        @SerializedName("provider_id")
+        @SerializedName("provider_ids")
         private List<Integer> mProviderIds;
 
         public ReferralPageLog(
@@ -246,10 +247,17 @@ public class RatingFlowLog extends EventLog {
     }
 
 
+    public static class CxFeedbackLog extends RatingFlowLog {
+
+        public static final String EVENT_TYPE = "cx_feedback_page_";
+
+        public CxFeedbackLog(@EventTypePostfix final String eventTypePostfix) {
+            super(EVENT_TYPE + eventTypePostfix);
+        }
+    }
+
+
     public static class ShareButtonForProTapped extends NativeShareLog.NativeShareProLog {
-
-        private static final String EVENT_TYPE = "share_button_tapped";
-
         public ShareButtonForProTapped(
                 final String providerId,
                 final String referralMedium,

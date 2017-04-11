@@ -235,7 +235,21 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                         new RateImprovementFeedback(mBooking.getId())
                 );
             case REVIEW_OR_SHARE_PROVIDER:
-                return RatingFlowReviewFragment.newInstance(mBooking);
+                if (mPrerateProInfo.getProReferralInfo() == null ||
+                    mSelectedPreference != PREFERRED) {
+                    return RatingFlowReviewFragment.newInstance(mBooking);
+                }
+                else {
+                    //should be here only when it's a high rating, has pro information, and user
+                    //elected to work with pro again.
+                    return RatingFlowShareProFragment.newInstance(
+                            mPrerateProInfo.getProReferralInfo(),
+                            mReferralDescriptor,
+                            mBooking.getProvider()
+                    );
+                }
+
+
             default:
                 return null;
         }

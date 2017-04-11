@@ -95,7 +95,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
             }
         }
 
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceSubmitted(
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceLog(
                 RatingFlowLog.EVENT_TYPE_SHOWN,
                 false,
                 Integer.parseInt(mBooking.getId()),
@@ -137,7 +137,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 mProvider.getCategoryType()
         );
         finishStepWithProTeamEditRequest(proTeamEdit);
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceSubmitted(
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceLog(
                 RatingFlowLog.EVENT_TYPE_SUBMITTED,
                 mSelectedPreference == PREFERRED,
                 Integer.parseInt(mBooking.getId()),
@@ -147,7 +147,7 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
 
     @Override
     void onSkip() {
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceSubmitted(
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceLog(
                 RatingFlowLog.EVENT_TYPE_SKIPPED,
                 false,
                 Integer.parseInt(mBooking.getId()),

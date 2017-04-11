@@ -19,8 +19,9 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.fragment.SlideUpDialogFragment;
-import com.handybook.handybook.library.util.UiUtils;
-import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.ratingflow.RatingFlowLog;
+import com.squareup.otto.Bus;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -35,9 +36,13 @@ public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
     @Inject
     DataManager mDataManager;
 
+    @Inject
+    Bus mBus;
+
     @Bind(R.id.rating_flow_help_text)
     EditText mHelpTextField;
 
+    private boolean mSubmitted;
     private Booking mBooking;
 
     public static RatingFlowHelpDialogFragment newInstance(@Nonnull final Booking booking) {
@@ -53,6 +58,8 @@ public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getActivity().getApplication()).inject(this);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+
+        mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(RatingFlowLog.EVENT_TYPE_SHOWN)));
     }
 
     @NonNull
@@ -79,6 +86,7 @@ public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
     void onSubmit() {
         final String message = mHelpTextField.getText().toString();
         if (!Strings.isNullOrEmpty(message)) {
+            mSubmitted = true;
             mDataManager.submitProRatingDetails(
                     Integer.parseInt(mBooking.getId()),
                     new ReviewProRequest(null, message),
@@ -90,6 +98,22 @@ public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
                     Toast.LENGTH_LONG
             ).show();
         }
+
         dismiss();
+    }
+
+    /**
+     * Whenever this dialog is dismissed (whether it's through a submission or a cancel, it'll call
+     * this same dismiss method.
+     */
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        if (mSubmitted) {
+            mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(RatingFlowLog.EVENT_TYPE_SUBMITTED)));
+        }
+        else {
+            mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(RatingFlowLog.EVENT_TYPE_SKIPPED)));
+        }
     }
 }

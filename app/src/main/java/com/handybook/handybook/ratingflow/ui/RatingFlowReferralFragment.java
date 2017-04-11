@@ -135,6 +135,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         }
         mRecommendedProviders = (ArrayList<Provider>) getArguments()
                 .getSerializable(BundleKeys.RECOMMENDED_PROVIDERS);
+
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
+                RatingFlowLog.EVENT_TYPE_SHOWN,
+                null
+        )));
+
     }
 
     @Nullable
@@ -329,12 +335,6 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     public void onAnimationEnd(final Animation animation) {
                         if (mMode == Mode.REFERRAL && mReferralDescriptor != null) {
                             animateContentIn(mReferralContent);
-
-                            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
-                                    RatingFlowLog.EVENT_TYPE_SHOWN,
-                                    null
-                            )));
-
                         }
                         else {
                             animateContentIn(mReviewSection);
