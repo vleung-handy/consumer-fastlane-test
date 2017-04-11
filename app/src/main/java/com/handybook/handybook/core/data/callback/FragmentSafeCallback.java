@@ -31,6 +31,8 @@ public abstract class FragmentSafeCallback<T> extends CancellableCallback<T> {
                && mFragmentWeakReference.get() != null
                && mFragmentWeakReference.get().getActivity() != null
                && !mFragmentWeakReference.get().isDetached()
-               && mFragmentWeakReference.get().isAdded();
+               && mFragmentWeakReference.get().isAdded()
+               && mFragmentWeakReference.get().isResumed()
+               && !mFragmentWeakReference.get().isRemoving();
     }
 }

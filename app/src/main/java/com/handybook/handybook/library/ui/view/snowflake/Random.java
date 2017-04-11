@@ -15,6 +15,9 @@ class Random {
     }
 
     public int getRandom(int upper) {
+        if (upper <= 0) {
+            return 0;
+        }
         return RANDOM.nextInt(upper);
     }
 
