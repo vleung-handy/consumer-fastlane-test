@@ -31,7 +31,7 @@ public class NativeShareLog extends EventLog {
     @interface EventType {}
 
     public NativeShareLog(
-            final String eventType,
+            @EventType final String eventType,
             final String eventContext,
             final String referralMedium,
             final String referralIdentifier,

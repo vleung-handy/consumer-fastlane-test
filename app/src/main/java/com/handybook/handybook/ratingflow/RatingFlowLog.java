@@ -310,8 +310,6 @@ public class RatingFlowLog extends EventLog {
 
     public static class ShareMethodSelected extends NativeShareLog {
 
-        public static final String EVENT_TYPE = "share_method_selected";
-
         public ShareMethodSelected(
                 final String referralMedium,
                 final String referralIdentifier,
@@ -321,7 +319,7 @@ public class RatingFlowLog extends EventLog {
                 final int receiverOfferAmount
         ) {
             super(
-                    EVENT_TYPE,
+                    EventType.SHARE_METHOD_SELECTED,
                     EVENT_CONTEXT,
                     referralMedium,
                     referralIdentifier,
