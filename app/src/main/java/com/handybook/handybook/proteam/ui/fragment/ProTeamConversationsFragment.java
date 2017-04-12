@@ -175,10 +175,10 @@ public class ProTeamConversationsFragment extends InjectedFragment
                         mSelectedProTeamMember = mAdapter.getItem(pos);
                         Conversation conversation = mAdapter.getItem(pos).getConversation();
 
-                        String providerId = String.valueOf(mSelectedProTeamMember.getProTeamPro()
-                                                                                 .getId());
-                        String conversationId = conversation == null ? null : conversation.getId()
-                                                                                          .toString();
+                        String providerId =
+                                String.valueOf(mSelectedProTeamMember.getProTeamPro().getId());
+                        String conversationId =
+                                conversation == null ? null : conversation.getId().toString();
                         bus.post(new LogEvent.AddLogEvent(new ChatLog.ConversationSelectedLog(
                                 providerId,
                                 conversationId

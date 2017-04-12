@@ -279,7 +279,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
         FragmentUtils.safeLaunchDialogFragment(dialogFragment, getActivity(), null);
 
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.BlockProvider.Tapped(
-                String.valueOf(proTeamPro.getId()),
+                proTeamPro.getId(),
                 providerMatchPreference,
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
@@ -343,7 +343,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
             }
         }
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.EnableButtonTapped(
-                String.valueOf(proTeamPro.getId()),
+                proTeamPro.getId(),
                 isChecked,
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
