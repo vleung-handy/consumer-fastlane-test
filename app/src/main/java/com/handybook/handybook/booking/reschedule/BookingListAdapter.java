@@ -13,7 +13,6 @@ public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder> 
 
     private List<Booking> mUpcomingBookings;
     private View.OnClickListener mClickListener;
-
     /**
      * used by list item views to determine how to display the subtitle
      */
@@ -37,14 +36,16 @@ public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder> 
                 parent.getContext(),
                 null,
                 null,
-                mIsBookingHoursClarificationExperimentEnabled
+                null,
+                mIsBookingHoursClarificationExperimentEnabled,
+                false
         );
 
         item.setLayoutParams(new RecyclerView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
-        item.setClickListener(mClickListener);
+        item.setClickListener(mClickListener, null);
         return new BookingItemHolder(item);
     }
 

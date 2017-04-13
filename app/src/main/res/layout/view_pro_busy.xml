@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <FrameLayout
+        android:id="@+id/pro_busy_profile_image_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin_half"
+        android:layout_marginRight="@dimen/default_margin_half"
+        android:paddingBottom="@dimen/default_padding_half"
+        android:paddingTop="@dimen/default_padding_half"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pro_busy_profile_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            tools:src="@drawable/img_pro_placeholder"
+            />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="right"
+            android:background="@drawable/bg_circle_white"
+            android:cropToPadding="false"
+            android:padding="3dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_heart_small"
+            />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/default_margin_half"
+        android:layout_marginStart="@dimen/default_margin_half"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/pro_busy_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            tools:text="Jonathan P. is busy at this time but sent you some alternatives"
+            />
+
+        <TextView
+            android:id="@+id/pro_busy_availability_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8sp"
+            android:text="@string/view_availability"
+            android:textColor="@color/handy_darkened_blue"
+            android:textSize="@dimen/text_size_small"
+            />
+
+    </LinearLayout>
+</LinearLayout>

@@ -114,16 +114,19 @@ public class RescheduleUpcomingActivity extends BaseActivity {
         mProgressDialog.dismiss();
         mBookings = bookings;
 
-        mAdapter = new BookingListAdapter(mBookings, new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                //before we advance to the reschedule flow, we first must grab the pre-reschedule info
-                mSelectedBooking = ((BookingListItem) v).getBooking();
-                getPreRescheduleInfo();
-            }
-        },
-                                          mConfigurationManager.getPersistentConfiguration()
-                                                               .isBookingHoursClarificationExperimentEnabled()
+        mAdapter = new BookingListAdapter(
+                mBookings,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        //before we advance to the reschedule flow, we first must grab the pre-reschedule info
+                        mSelectedBooking = ((BookingListItem) v.getParent()
+                                                               .getParent()).getBooking();
+                        getPreRescheduleInfo();
+                    }
+                },
+                mConfigurationManager.getPersistentConfiguration()
+                                     .isBookingHoursClarificationExperimentEnabled()
         );
         mRecyclerView.setAdapter(mAdapter);
     }

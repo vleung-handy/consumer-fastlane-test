@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingRequest;
@@ -43,6 +44,7 @@ import com.handybook.shared.layer.ui.MessagesListActivity;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -130,6 +132,14 @@ public class ProMessagesActivity extends MessagesListActivity {
     protected void onResume() {
         super.onResume();
         mSessionManager.markActivity();
+        mBus.register(this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        mBus.unregister(this);
+        super.onPause();
     }
 
     @Override
@@ -359,11 +369,11 @@ public class ProMessagesActivity extends MessagesListActivity {
                     );
                 }
                 else {
-                    mDataManager.getProviderAvailability(
+                    mBookingManager.rescheduleBookingWithProAvailability(
                             mProViewModel.getProviderId(),
-                            mBooking.getHours(),
-                            new ProAvailabilityCallback(ProMessagesActivity.this)
+                            mBooking
                     );
+
                 }
             }
         });
@@ -433,6 +443,17 @@ public class ProMessagesActivity extends MessagesListActivity {
         Toast.makeText(this, R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
     }
 
+    @Subscribe
+    public void onRescheduleWithAvailabilitySuccess(BookingEvent.RescheduleBookingWithProAvailabilitySuccess success) {
+        mProAvailabilityResponse = success.getProAvailability();
+        onReceivePreRescheduleInfoSuccess(success.getNotice());
+    }
+
+    @Subscribe
+    public void onRescheduleWithAvailabilityError(BookingEvent.RescheduleBookingWithProAvailabilityError error) {
+        onRescheduleRequestError();
+    }
+
     public static class ProTeamCallback implements DataManager.Callback<ProTeamWrapper> {
 
         private WeakReference<ProMessagesActivity> mActivityRef;
@@ -484,25 +505,6 @@ public class ProMessagesActivity extends MessagesListActivity {
         @Override
         public void onCallbackSuccess(final String response) {
             mActivityWeakReference.get().onReceivePreRescheduleInfoSuccess(response);
-        }
-
-        @Override
-        public void onCallbackError(final DataManager.DataManagerError error) {
-            mActivityWeakReference.get().onRescheduleRequestError();
-        }
-    }
-
-
-    private static class ProAvailabilityCallback
-            extends ActivitySafeCallback<ProAvailabilityResponse, ProMessagesActivity> {
-
-        public ProAvailabilityCallback(ProMessagesActivity activity) {
-            super(activity);
-        }
-
-        @Override
-        public void onCallbackSuccess(final ProAvailabilityResponse response) {
-            mActivityWeakReference.get().onReceivedAvailabilitySuccess(response);
         }
 
         @Override

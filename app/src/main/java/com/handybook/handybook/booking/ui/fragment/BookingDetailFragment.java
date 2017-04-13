@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.PopupMenu;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -20,6 +22,7 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.JobStatus;
+import com.handybook.handybook.booking.model.ProviderRequest;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
@@ -34,6 +37,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentPreferences;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformation;
 import com.handybook.handybook.booking.ui.view.BookingDetailView;
+import com.handybook.handybook.booking.ui.view.ProBusyView;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.ActivityResult;
@@ -42,6 +46,9 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
+import com.handybook.handybook.logger.handylogger.model.booking.ViewAvailabilityLog;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
@@ -75,6 +82,8 @@ public final class BookingDetailFragment extends InjectedFragment
 
     private ProTeam.ProTeamCategory mCategory;
 
+    @Bind(R.id.booking_detail_pro_busy_view)
+    ProBusyView mProBusyView;
     @Bind(R.id.booking_detail_view)
     BookingDetailView mBookingDetailView;
     @Bind(R.id.nav_help)
@@ -134,6 +143,50 @@ public final class BookingDetailFragment extends InjectedFragment
             setupForBooking(mBooking);
         }
         return view;
+    }
+
+    @Override
+    public void onViewCreated(
+            final View view, @Nullable final Bundle savedInstanceState
+    ) {
+        if (mBooking == null) { return; }
+
+        boolean enableProAvailableBanner =
+                mConfigurationManager.getPersistentConfiguration()
+                                     .isProviderRequestsResponseEnabled();
+        final ProviderRequest providerRequest = mBooking.getProviderRequest();
+        if (enableProAvailableBanner && providerRequest != null &&
+            providerRequest.getProvider() != null) {
+            mProBusyView.setVisibility(View.VISIBLE);
+            mProBusyView.setDisplay(
+                    providerRequest.getProvider().getImageUrl(),
+                    providerRequest.getProvider().getFirstNameAndLastInitial(),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View v) {
+                            progressDialog.show();
+                            bus.post(new LogEvent.AddLogEvent(new ViewAvailabilityLog(
+                                    EventContext.BOOKING_DETAILS,
+                                    mBooking.getId(),
+                                    userManager.getCurrentUser().getId(),
+                                    providerRequest.getProvider().getId(),
+                                    getString(
+                                            R.string.pro_is_busy_formatted,
+                                            providerRequest.getProvider()
+                                                           .getFirstNameAndLastInitial()
+                                    )
+                            )));
+                            bookingManager.rescheduleBookingWithProAvailability(
+                                    providerRequest.getProvider().getId(),
+                                    mBooking
+                            );
+                        }
+                    }
+            );
+        }
+        else {
+            mProBusyView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -441,6 +494,7 @@ public final class BookingDetailFragment extends InjectedFragment
         getArguments().putParcelable(BundleKeys.BOOKING, event.booking);
         setUpdatedBookingResult();
         setupForBooking(event.booking);
+        setProBusyViewVisibility();
     }
 
     @Subscribe
@@ -498,6 +552,28 @@ public final class BookingDetailFragment extends InjectedFragment
         return true;
     }
 
+    @Subscribe
+    public void onRescheduleWithAvailabilitySuccess(BookingEvent.RescheduleBookingWithProAvailabilitySuccess success) {
+        progressDialog.dismiss();
+
+        final Intent intent = new Intent(getContext(), BookingDateActivity.class);
+        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
+        intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, success.getNotice());
+        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, RescheduleType.FROM_PRO_BANNER);
+        intent.putExtra(
+                BundleKeys.PROVIDER_ID,
+                mBooking.getProviderRequest().getProvider().getId()
+        );
+        intent.putExtra(BundleKeys.PRO_AVAILABILITY, success.getProAvailability());
+        startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+    }
+
+    @Subscribe
+    public void onRescheduleWithAvailabilityError(BookingEvent.RescheduleBookingWithProAvailabilityError error) {
+        progressDialog.dismiss();
+        Toast.makeText(getContext(), R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
+    }
+
     public Configuration getConfiguration() {
         return mConfiguration;
     }
@@ -507,6 +583,18 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     public enum RescheduleType {
-        NORMAL, FROM_CANCELATION, FROM_CHAT
+        NORMAL, FROM_CANCELATION, FROM_CHAT, FROM_PRO_BANNER
+    }
+
+    private void setProBusyViewVisibility() {
+        if (mConfigurationManager.getPersistentConfiguration().isProviderRequestsResponseEnabled()
+            && mBooking != null
+            && mBooking.getProviderRequest() != null
+            && mBooking.getProviderRequest().getProvider() != null) {
+            mProBusyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mProBusyView.setVisibility(View.GONE);
+        }
     }
 }
