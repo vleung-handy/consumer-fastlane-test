@@ -1,13 +1,21 @@
 package com.handybook.handybook.ratingflow;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
+import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SHOWN;
+import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SKIPPED;
+import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SUBMITTED;
 
 public class RatingFlowLog extends EventLog {
 
@@ -16,6 +24,9 @@ public class RatingFlowLog extends EventLog {
     private RatingFlowLog(final String eventType) {
         super(eventType, EVENT_CONTEXT);
     }
+
+    @StringDef({EVENT_TYPE_SHOWN, EVENT_TYPE_SUBMITTED, EVENT_TYPE_SKIPPED})
+    @interface EventTypePostfix {}
 
     private static class RatingLog extends RatingFlowLog {
 
@@ -42,22 +53,6 @@ public class RatingFlowLog extends EventLog {
             mProviderId = providerId;
         }
     }
-
-
-    public static class RatingSubmitted extends RatingLog {
-
-        private static final String EVENT_TYPE = "rating_submitted";
-
-        public RatingSubmitted(
-                final int rating,
-                final int tipAmount,
-                final int bookingId,
-                final int providerId
-        ) {
-            super(EVENT_TYPE, rating, tipAmount, bookingId, providerId);
-        }
-    }
-
 
     public static class RatingSuccess extends RatingLog {
 
@@ -89,9 +84,9 @@ public class RatingFlowLog extends EventLog {
     }
 
 
-    public static class ProPreferenceSubmitted extends RatingFlowLog {
+    public static class ProPreferenceLog extends RatingFlowLog {
 
-        private static final String EVENT_TYPE = "pro_preference_submitted";
+        private static final String EVENT_TYPE = "pro_preference_page_";
 
         @SerializedName("keep_working")
         private boolean mOptedIn;
@@ -100,12 +95,13 @@ public class RatingFlowLog extends EventLog {
         @SerializedName("provider_id")
         private int mProviderId;
 
-        public ProPreferenceSubmitted(
+        public ProPreferenceLog(
+                @EventTypePostfix final String eventTypePostfix,
                 final boolean optedIn,
                 final int bookingId,
                 final int providerId
         ) {
-            super(EVENT_TYPE);
+            super(EVENT_TYPE + eventTypePostfix);
             mOptedIn = optedIn;
             mBookingId = bookingId;
             mProviderId = providerId;
@@ -113,22 +109,42 @@ public class RatingFlowLog extends EventLog {
     }
 
 
-    public static class FeedbackSubmitted extends RatingFlowLog {
+    public static class LowRatingReasonsLog extends RatingFlowLog {
 
-        private static final String EVENT_TYPE = "pro_preference_submitted";
+        private static final String EVENT_TYPE = "low_rating_reason_page_";
 
         @SerializedName("page")
         private String mPage;
         @SerializedName("booking_id")
         private int mBookingId;
 
-        public FeedbackSubmitted(final String page, final int bookingId) {
-            super(EVENT_TYPE);
+        public LowRatingReasonsLog(
+                @EventTypePostfix final String eventTypePostfix,
+                final String page,
+                final int bookingId
+        ) {
+            super(EVENT_TYPE + eventTypePostfix);
             mPage = page;
             mBookingId = bookingId;
         }
     }
 
+
+    public static class ProfileReviewLog extends RatingFlowLog {
+
+        private static final String EVENT_TYPE = "profile_review_page_";
+
+        @SerializedName("provider_id")
+        private Integer mProviderId;
+
+        public ProfileReviewLog(
+                @EventTypePostfix final String eventTypePostfix,
+                final Integer providerId
+        ) {
+            super(EVENT_TYPE + eventTypePostfix);
+            mProviderId = providerId;
+        }
+    }
 
     public static class ConfirmationSubmitted extends RatingFlowLog {
 
@@ -195,4 +211,125 @@ public class RatingFlowLog extends EventLog {
             mProviderId = providerId;
         }
     }
+
+
+    public static class RatingAndTipLog extends RatingFlowLog {
+
+        public static final String EVENT_TYPE = "rating_and_tip_page_";
+
+        @SerializedName("provider_id")
+        private Integer mProviderId;
+
+        public RatingAndTipLog(
+                @EventTypePostfix final String eventTypePostfix,
+                @Nullable final Integer providerId
+        ) {
+            super(EVENT_TYPE + eventTypePostfix);
+            mProviderId = providerId;
+        }
+    }
+
+
+    public static class ReferralPageLog extends RatingFlowLog {
+
+        public static final String EVENT_TYPE = "referral_page_";
+
+        @SerializedName("provider_ids")
+        private List<Integer> mProviderIds;
+
+        public ReferralPageLog(
+                @EventTypePostfix final String eventTypePostfix,
+                @Nullable final List<Integer> providerIds
+        ) {
+            super(EVENT_TYPE + eventTypePostfix);
+
+            mProviderIds = providerIds;
+        }
+    }
+
+
+    public static class CxFeedbackLog extends RatingFlowLog {
+
+        public static final String EVENT_TYPE = "cx_feedback_page_";
+
+        public CxFeedbackLog(@EventTypePostfix final String eventTypePostfix) {
+            super(EVENT_TYPE + eventTypePostfix);
+        }
+    }
+
+
+    public static class ShareButtonForProTapped extends NativeShareLog.NativeShareProLog {
+        public ShareButtonForProTapped(
+                final String providerId,
+                final String referralMedium,
+                final String referralIdentifier,
+                final String couponCode,
+                final String ctaSource,
+                final int senderOfferAmount,
+                final int receiverOfferAmount
+        ) {
+            super(
+                    EventType.SHARE_BUTTON_TAPPED,
+                    EVENT_CONTEXT,
+                    providerId,
+                    referralMedium,
+                    referralIdentifier,
+                    couponCode,
+                    ctaSource,
+                    senderOfferAmount,
+                    receiverOfferAmount
+            );
+        }
+    }
+
+
+    public static class ShareMethodForProSelected extends NativeShareLog.NativeShareProLog {
+
+        public ShareMethodForProSelected(
+                final String providerId,
+                final String referralMedium,
+                final String referralIdentifier,
+                final String couponCode,
+                final String ctaSource,
+                final int senderOfferAmount,
+                final int receiverOfferAmount
+        ) {
+            super(
+                    EventType.SHARE_METHOD_SELECTED,
+                    EVENT_CONTEXT,
+                    providerId,
+                    referralMedium,
+                    referralIdentifier,
+                    couponCode,
+                    ctaSource,
+                    senderOfferAmount,
+                    receiverOfferAmount
+            );
+        }
+    }
+
+
+    public static class ShareMethodSelected extends NativeShareLog {
+
+        public ShareMethodSelected(
+                final String referralMedium,
+                final String referralIdentifier,
+                final String couponCode,
+                final String ctaSource,
+                final int senderOfferAmount,
+                final int receiverOfferAmount
+        ) {
+            super(
+                    EventType.SHARE_METHOD_SELECTED,
+                    EVENT_CONTEXT,
+                    referralMedium,
+                    referralIdentifier,
+                    couponCode,
+                    ctaSource,
+                    senderOfferAmount,
+                    receiverOfferAmount
+            );
+        }
+    }
+
 }

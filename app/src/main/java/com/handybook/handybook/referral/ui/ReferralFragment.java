@@ -1,6 +1,5 @@
 package com.handybook.handybook.referral.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.view.snowflake.SnowView;
@@ -21,7 +19,6 @@ import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
-import com.handybook.handybook.referral.util.ReferralIntentUtil;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -29,10 +26,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ReferralFragment extends BaseReferralFragment {
-
-    private static final String[] REFERRALS_EMAIL_BCC_ARRAY = new String[]{
-            "handy-referrals@handy.com"
-    };
 
     @Bind(R.id.fragment_referral_content)
     View mReferralContent;
@@ -186,35 +179,12 @@ public class ReferralFragment extends BaseReferralFragment {
 
     @OnClick(R.id.fragment_referral_button_sms)
     public void onSmsShareButtonClicked() {
-        final ReferralInfo smsReferralInfo =
-                mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_SMS);
-        if (smsReferralInfo != null) {
-            final Intent smsReferralIntent = ReferralIntentUtil.getSmsReferralIntent(
-                    getActivity(),
-                    smsReferralInfo
-            );
-            launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
-        }
-        else {
-            Crashlytics.logException(new Exception("SMS referral info is null"));
-        }
+        shareSmsClicked();
     }
 
     @OnClick(R.id.fragment_referral_button_email)
     public void onEmailShareButtonClicked() {
-        final ReferralInfo emailReferralInfo =
-                mReferralChannels.getReferralInfoForChannel(ReferralChannels.CHANNEL_EMAIL);
-        if (emailReferralInfo != null) {
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            emailIntent.setType("plain/text");
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
-            emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
-            emailIntent.putExtra(Intent.EXTRA_BCC, REFERRALS_EMAIL_BCC_ARRAY);
-            launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
-        }
-        else {
-            Crashlytics.logException(new Exception("Email referral info is null"));
-        }
+        shareEmailClicked();
     }
 
     private void showErrorLayout(String errorMessage) {

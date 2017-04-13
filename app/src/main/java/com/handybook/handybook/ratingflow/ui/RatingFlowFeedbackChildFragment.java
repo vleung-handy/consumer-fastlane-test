@@ -13,8 +13,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -49,6 +47,8 @@ public abstract class RatingFlowFeedbackChildFragment extends InjectedFragment {
     }
 
     abstract void onSubmit();
+
+    abstract void onSkip();
 
     protected void finishStep() {
         final RatingFlowFeedbackFragment parentFragment = getRatingFlowFeedbackFragment();

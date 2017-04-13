@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
@@ -26,6 +27,8 @@ import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
+
+import static com.handybook.handybook.logger.handylogger.model.booking.EventContext.NATIVE_SHARE;
 
 public abstract class BaseReferralFragment extends InjectedFragment {
 
@@ -75,7 +78,41 @@ public abstract class BaseReferralFragment extends InjectedFragment {
         super.onActivityResult(requestCode, resultCode, intent);
     }
 
-    protected void launchShareIntent(
+    protected void shareEmailClicked() {
+        final ReferralInfo emailReferralInfo =
+                getReferralInfo(ReferralChannels.CHANNEL_EMAIL);
+        if (emailReferralInfo != null) {
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setType("plain/text");
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailReferralInfo.getSubject());
+            emailIntent.putExtra(Intent.EXTRA_TEXT, emailReferralInfo.getMessage());
+            emailIntent.putExtra(
+                    Intent.EXTRA_BCC,
+                    getResources().getStringArray(R.array.referral_email_bcc_array)
+            );
+            launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
+        }
+        else {
+            Crashlytics.logException(new Exception("Email referral info is null"));
+        }
+    }
+
+    protected void shareSmsClicked() {
+        final ReferralInfo smsReferralInfo =
+                getReferralInfo(ReferralChannels.CHANNEL_SMS);
+        if (smsReferralInfo != null) {
+            final Intent smsReferralIntent = ReferralIntentUtil.getSmsReferralIntent(
+                    getActivity(),
+                    smsReferralInfo
+            );
+            launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
+        }
+        else {
+            Crashlytics.logException(new Exception("SMS referral info is null"));
+        }
+    }
+
+    private void launchShareIntent(
             @NonNull final Intent intent,
             @Nullable @ReferralChannels.Channel final String channel
     ) {
@@ -101,6 +138,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
             if (TextUtils.isBlank(getProviderId())) {
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog(
                         EventType.SHARE_BUTTON_TAPPED,
+                        NATIVE_SHARE,
                         referralMedium,
                         guid,
                         couponCode,
@@ -114,6 +152,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
                 //pro member's information
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog.NativeShareProLog(
                         EventType.SHARE_BUTTON_TAPPED,
+                        NATIVE_SHARE,
                         getProviderId(),
                         referralMedium,
                         guid,
@@ -144,6 +183,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
             if (TextUtils.isBlank(getProviderId())) {
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog(
                         EventType.SHARE_METHOD_SELECTED,
+                        NATIVE_SHARE,
                         referralMedium,
                         identifier,
                         couponCode,
@@ -157,6 +197,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
                 //pro member's information
                 bus.post(new LogEvent.AddLogEvent(new NativeShareLog.NativeShareProLog(
                         EventType.SHARE_METHOD_SELECTED,
+                        NATIVE_SHARE,
                         getProviderId(),
                         referralMedium,
                         identifier,

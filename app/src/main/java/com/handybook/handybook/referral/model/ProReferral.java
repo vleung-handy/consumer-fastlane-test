@@ -34,6 +34,7 @@ public class ProReferral implements Serializable {
     @SerializedName("referral_info")
     private ReferralChannels mReferralInfo;
 
+    @Nullable
     public Provider getProvider() {
         return mProvider;
     }

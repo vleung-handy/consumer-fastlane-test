@@ -2,6 +2,7 @@ package com.handybook.handybook.ratingflow.ui;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -112,6 +113,7 @@ public class RatingFlowActivity extends BaseActivity {
      * Determines which "mode" the RatingFlowReferralFragment should be going into.
      * @return
      */
+    @NonNull
     private RatingFlowReferralFragment.Mode getReferralMode() {
         Fragment activeFragment
                 = getSupportFragmentManager().findFragmentById(R.id.fragment_container);

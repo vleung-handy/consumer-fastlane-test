@@ -14,6 +14,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
@@ -94,6 +95,13 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                     break;
             }
         }
+
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceLog(
+                EventType.EVENT_TYPE_SHOWN,
+                false,
+                Integer.parseInt(mBooking.getId()),
+                Integer.parseInt(mProvider.getId())
+        )));
     }
 
     @Override
@@ -130,8 +138,19 @@ public class RatingFlowMatchPreferenceFragment extends RatingFlowFeedbackChildFr
                 mProvider.getCategoryType()
         );
         finishStepWithProTeamEditRequest(proTeamEdit);
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceSubmitted(
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceLog(
+                EventType.EVENT_TYPE_SUBMITTED,
                 mSelectedPreference == PREFERRED,
+                Integer.parseInt(mBooking.getId()),
+                Integer.parseInt(mProvider.getId())
+        )));
+    }
+
+    @Override
+    void onSkip() {
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProPreferenceLog(
+                EventType.EVENT_TYPE_SKIPPED,
+                false,
                 Integer.parseInt(mBooking.getId()),
                 Integer.parseInt(mProvider.getId())
         )));
