@@ -11,6 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.referral.model.ProReferral;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
@@ -53,7 +54,7 @@ public class RatingFlowShareProFragment extends RatingFlowFeedbackChildFragment 
         mProvider = (Provider) getArguments().getSerializable(BundleKeys.PROVIDER);
 
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
-                RatingFlowLog.EVENT_TYPE_SHOWN,
+                EventType.EVENT_TYPE_SHOWN,
                 Arrays.asList(Integer.parseInt(mProvider.getId()))
         )));
     }
@@ -111,7 +112,7 @@ public class RatingFlowShareProFragment extends RatingFlowFeedbackChildFragment 
     protected void onSubmit() {
 
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
-                RatingFlowLog.EVENT_TYPE_SUBMITTED,
+                EventType.EVENT_TYPE_SUBMITTED,
                 Arrays.asList(Integer.parseInt(mProvider.getId()))
         )));
 
@@ -121,7 +122,7 @@ public class RatingFlowShareProFragment extends RatingFlowFeedbackChildFragment 
     @Override
     void onSkip() {
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
-                RatingFlowLog.EVENT_TYPE_SKIPPED,
+                EventType.EVENT_TYPE_SKIPPED,
                 Arrays.asList(Integer.parseInt(mProvider.getId()))
         )));
     }

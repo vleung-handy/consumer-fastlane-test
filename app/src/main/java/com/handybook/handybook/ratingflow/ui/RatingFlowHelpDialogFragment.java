@@ -20,6 +20,7 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.fragment.SlideUpDialogFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.squareup.otto.Bus;
 
@@ -59,7 +60,7 @@ public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
         ((BaseApplication) getActivity().getApplication()).inject(this);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
 
-        mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(RatingFlowLog.EVENT_TYPE_SHOWN)));
+        mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(EventType.EVENT_TYPE_SHOWN)));
     }
 
     @NonNull
@@ -110,10 +111,10 @@ public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
     public void dismiss() {
         super.dismiss();
         if (mSubmitted) {
-            mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(RatingFlowLog.EVENT_TYPE_SUBMITTED)));
+            mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(EventType.EVENT_TYPE_SUBMITTED)));
         }
         else {
-            mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(RatingFlowLog.EVENT_TYPE_SKIPPED)));
+            mBus.post(new LogEvent.AddLogEvent(new RatingFlowLog.CxFeedbackLog(EventType.EVENT_TYPE_SKIPPED)));
         }
     }
 }

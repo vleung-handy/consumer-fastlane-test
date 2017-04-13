@@ -13,12 +13,13 @@ import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SHOWN;
+import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SKIPPED;
+import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SUBMITTED;
+
 public class RatingFlowLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "rating_flow";
-    public static final String EVENT_TYPE_SUBMITTED = "submitted";
-    public static final String EVENT_TYPE_SHOWN = "shown";
-    public static final String EVENT_TYPE_SKIPPED = "skipped";
 
     private RatingFlowLog(final String eventType) {
         super(eventType, EVENT_CONTEXT);

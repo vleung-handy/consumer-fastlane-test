@@ -17,6 +17,7 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 
 import butterknife.BindColor;
@@ -51,7 +52,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
 
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProfileReviewLog(
-                RatingFlowLog.EVENT_TYPE_SHOWN,
+                EventType.EVENT_TYPE_SHOWN,
                 Integer.parseInt(mBooking.getProvider().getId())
         )));
     }
@@ -101,7 +102,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
         }
 
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProfileReviewLog(
-                RatingFlowLog.EVENT_TYPE_SUBMITTED,
+                EventType.EVENT_TYPE_SUBMITTED,
                 Integer.parseInt(mBooking.getProvider().getId())
         )));
 
@@ -111,7 +112,7 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
     @Override
     void onSkip() {
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ProfileReviewLog(
-                RatingFlowLog.EVENT_TYPE_SKIPPED,
+                EventType.EVENT_TYPE_SKIPPED,
                 Integer.parseInt(mBooking.getProvider().getId())
         )));
     }

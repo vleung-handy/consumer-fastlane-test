@@ -32,6 +32,7 @@ import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
@@ -328,7 +329,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                         if (shouldShowReferralContent()) {
                             animateContentIn(mReferralContent);
                             bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
-                                    RatingFlowLog.EVENT_TYPE_SHOWN,
+                                    EventType.EVENT_TYPE_SHOWN,
                                     null
                             )));
                         }
@@ -427,8 +428,8 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         if (shouldShowReferralContent()) {
             //if the referral content is being displayed, then we want to log accordingly.
             bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
-                             RatingFlowLog.EVENT_TYPE_SUBMITTED,
-                             null
+                    EventType.EVENT_TYPE_SUBMITTED,
+                    null
                      ))
             );
         }
