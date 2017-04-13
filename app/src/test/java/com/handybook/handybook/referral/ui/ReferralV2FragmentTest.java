@@ -89,6 +89,15 @@ public class ReferralV2FragmentTest extends RobolectricGradleTestWrapper {
     @Test
     public void testRedirectionToReferralFragment() {
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
+
+        when(mMockReferralResponse.getReferralDescriptor()).thenReturn(mMockReferralDescriptor);
+        when(mMockReferralDescriptor.getProReferralInfo()).thenReturn(null);
+
+        SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
+        verify(mDataManager).requestPrepareReferrals(anyBoolean(), mCallbackCaptor.capture());
+
+        mCallbackCaptor.getValue().onCallbackSuccess(mMockReferralResponse);
+
         Assert.assertNotNull(mFragment.getChildFragmentManager()
                                       .findFragmentByTag(ReferralFragment.class.getName()));
     }
