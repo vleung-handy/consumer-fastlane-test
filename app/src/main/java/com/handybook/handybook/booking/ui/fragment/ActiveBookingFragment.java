@@ -87,10 +87,10 @@ public class ActiveBookingFragment extends InjectedFragment
     @Bind(R.id.active_booking_provider_profile)
     MiniProProfile mProProfile;
 
-    @Bind(R.id.text_booking_title)
+    @Bind(R.id.booking_item_title)
     TextView mTextBookingTitle;
 
-    @Bind(R.id.text_booking_subtitle)
+    @Bind(R.id.booking_item_subtitle)
     TextView mTextBookingSubtitle;
 
     @Bind(R.id.active_booking_profile_container)

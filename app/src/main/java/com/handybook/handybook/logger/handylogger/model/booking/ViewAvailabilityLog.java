@@ -5,8 +5,6 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import static com.handybook.handybook.logger.handylogger.model.booking.EventType.VIEW_AVAILABILITY_SELECTED;
 
-/**
- */
 public class ViewAvailabilityLog extends EventLog {
 
     @SerializedName("booking_id")

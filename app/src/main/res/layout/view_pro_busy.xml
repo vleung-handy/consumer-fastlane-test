@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     >
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/pro_busy_profile_image_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,24 +24,18 @@
             tools:src="@drawable/img_pro_placeholder"
             />
 
-        <FrameLayout
-            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_container_size_small"
-            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_container_size_small"
-            android:layout_alignEnd="@id/pro_busy_profile_image"
-            android:layout_alignRight="@id/pro_busy_profile_image"
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="right"
             android:background="@drawable/bg_circle_white"
-            >
+            android:cropToPadding="false"
+            android:padding="3dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_heart_small"
+            />
 
-            <ImageView
-                android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size_small"
-                android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size_small"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_heart_small"
-                />
-
-        </FrameLayout>
-
-    </RelativeLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

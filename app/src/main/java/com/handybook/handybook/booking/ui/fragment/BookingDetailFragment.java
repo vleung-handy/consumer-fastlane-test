@@ -170,8 +170,11 @@ public final class BookingDetailFragment extends InjectedFragment
                                     mBooking.getId(),
                                     userManager.getCurrentUser().getId(),
                                     providerRequest.getProvider().getId(),
-                                    providerRequest.getProvider().getFirstNameAndLastInitial() +
-                                    " " + getString(R.string.pro_is_busy)
+                                    getString(
+                                            R.string.pro_is_busy_formatted,
+                                            providerRequest.getProvider()
+                                                           .getFirstNameAndLastInitial()
+                                    )
                             )));
                             bookingManager.rescheduleBookingWithProAvailability(
                                     providerRequest.getProvider().getId(),

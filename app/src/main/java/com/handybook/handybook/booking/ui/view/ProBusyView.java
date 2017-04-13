@@ -66,7 +66,10 @@ public class ProBusyView extends FrameLayout {
                .placeholder(R.drawable.img_pro_placeholder)
                .noFade()
                .into(mProfileImage);
-        String message = "<b>" + proName + "</b> " + getResources().getString(R.string.pro_is_busy);
+        String message = getResources().getString(
+                R.string.pro_is_busy_formatted,
+                "<b>" + proName + "</b> "
+        );
         mProBusyText.setText(Html.fromHtml(message));
         mAvailabilityText.setOnClickListener(onAvailabilityClicked);
     }

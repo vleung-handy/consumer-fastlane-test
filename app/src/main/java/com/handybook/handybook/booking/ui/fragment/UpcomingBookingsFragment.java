@@ -332,8 +332,11 @@ public class UpcomingBookingsFragment extends InjectedFragment
                                         booking.getId(),
                                         userManager.getCurrentUser().getId(),
                                         providerRequest.getProvider().getId(),
-                                        providerRequest.getProvider().getFirstNameAndLastInitial() +
-                                        " " + getString(R.string.pro_is_busy)
+                                        getString(
+                                                R.string.pro_is_busy_formatted,
+                                                providerRequest.getProvider()
+                                                               .getFirstNameAndLastInitial()
+                                        )
                                 )));
 
                                 progressDialog.show();

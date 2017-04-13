@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.model.ProviderRequest;
 import com.handybook.handybook.booking.ui.view.ProBusyView;
 import com.handybook.handybook.booking.util.BookingUtil;
 
@@ -20,11 +19,11 @@ public class BookingListItem extends FrameLayout {
 
     private Booking mBooking;
 
-    @Bind(R.id.image_icon)
+    @Bind(R.id.booking_item_image_icon)
     ImageView mImageIcon;
-    @Bind(R.id.text_booking_title)
+    @Bind(R.id.booking_item_title)
     TextView mTextBookingTitle;
-    @Bind(R.id.text_booking_subtitle)
+    @Bind(R.id.booking_item_subtitle)
     TextView mTextBookingSubtitle;
     @Bind(R.id.booking_item_pro_busy_banner)
     ProBusyView mProBusyView;
@@ -112,14 +111,14 @@ public class BookingListItem extends FrameLayout {
     }
 
     private void setProBusyBanner() {
-        if (mBooking == null) { return; }
-        final ProviderRequest providerRequest = mBooking.getProviderRequest();
-        if (mIsProviderRequestsResponseEnabled && providerRequest != null &&
-            providerRequest.getProvider() != null) {
+        if (mIsProviderRequestsResponseEnabled &&
+            mBooking != null &&
+            mBooking.getProviderRequest() != null &&
+            mBooking.getProviderRequest().getProvider() != null) {
             mProBusyView.setVisibility(VISIBLE);
             mProBusyView.setDisplay(
-                    providerRequest.getProvider().getImageUrl(),
-                    providerRequest.getProvider().getFirstNameAndLastInitial(),
+                    mBooking.getProviderRequest().getProvider().getImageUrl(),
+                    mBooking.getProviderRequest().getProvider().getFirstNameAndLastInitial(),
                     mBannerOnClickListener
             );
         }

@@ -44,7 +44,7 @@ public class CancelBookingTest {
                 R.id.booking_item_container,
                 ViewUtil.LONG_MAX_WAIT_TIME_MS
         );
-        onView(withId(R.id.text_booking_title)).check(matches(isDisplayed())); // Check if booking row is there
+        onView(withId(R.id.booking_item_title)).check(matches(isDisplayed())); // Check if booking row is there
         onView(withId(R.id.booking_item_container)).perform(click());
 
         // Click on cancel booking
