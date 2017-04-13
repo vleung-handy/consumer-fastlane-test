@@ -601,5 +601,6 @@
     <string name="review_app_banner_review_directive_prompt_title">Please review us on the Play Store</string>
     <string name="review_app_banner_review_directive_prompt_negative_button">Not Now</string>
     <string name="review_app_banner_review_directive_prompt_positive_button">Yes, I\'ll Review</string>
+    <string name="booking_subscription_trial_cta">Can I try a cleaning before signing up?</string>
 </resources>
 

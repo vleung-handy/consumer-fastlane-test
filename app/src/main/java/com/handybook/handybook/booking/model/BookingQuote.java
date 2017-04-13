@@ -33,6 +33,7 @@ import static com.handybook.handybook.booking.model.subscription.SubscriptionFre
 import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.MONTHLY_PRICE;
 import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.WEEKLY_PRICE;
 
+@SuppressWarnings("SSBasedInspection")
 public class BookingQuote extends Observable {
 
     public static final String KEY_ID = "id";

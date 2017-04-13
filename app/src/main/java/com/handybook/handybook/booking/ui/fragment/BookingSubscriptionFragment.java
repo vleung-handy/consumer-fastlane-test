@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
@@ -47,6 +50,12 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     Button nextButton;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.booking_scrollview)
+    ScrollView mScrollView;
+    @Bind(R.id.booking_subscription_trial_cta)
+    TextView mTrialCta;
+    @Bind(R.id.booking_subscription_trial_container)
+    LinearLayout mTrialContainer;
 
     private BookingTransaction mBookingTransaction;
     protected BookingOptionsSelectView mSubscriptionOptionsView;
@@ -83,7 +92,42 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
         createFrequencyView();
         createSubscriptionOptions();
+        initTrial();
         return view;
+    }
+
+    private void initTrial() {
+        mTrialContainer.setVisibility(View.GONE);
+        if (true) {
+            // Fill trial with stuff
+            BookingOption bookingOption = new BookingOption();
+            bookingOption.setType(BookingOption.TYPE_OPTION);
+            bookingOption.setOptionsRightTitleText();
+            bookingOption.setOptionsRightSubText({"dasdsadsad"});
+            bookingOption.setOptions({"asdasdasdasd"});
+
+            mSubscriptionOptionsView = new BookingOptionsSelectView(
+                    getActivity(),
+                    bookingOption,
+                    null
+            );
+            updateSubscriptionOptions();
+            mTrialContainer.addView(mSubscriptionOptionsView, 1);
+
+        }
+    }
+
+    @OnClick(R.id.booking_subscription_trial_cta)
+    public void onTrialCtaClicked() {
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialCtaClickedLog()));
+        mTrialContainer.setVisibility(View.VISIBLE);
+        mTrialCta.setVisibility(View.GONE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mScrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        }, 50);
     }
 
     @OnClick(R.id.next_button)
