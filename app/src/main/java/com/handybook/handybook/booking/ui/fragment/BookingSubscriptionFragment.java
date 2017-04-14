@@ -102,16 +102,15 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
             // Fill trial with stuff
             BookingOption bookingOption = new BookingOption();
             bookingOption.setType(BookingOption.TYPE_OPTION);
-            bookingOption.setOptionsRightTitleText();
-            bookingOption.setOptionsRightSubText({"dasdsadsad"});
-            bookingOption.setOptions({"asdasdasdasd"});
+            bookingOption.setOptionsRightTitleText(new String[]{"Title"});
+            bookingOption.setOptionsRightSubText(new String[]{"Substring"});
+            bookingOption.setOptions(new String[]{"Option"});
 
             mSubscriptionOptionsView = new BookingOptionsSelectView(
                     getActivity(),
                     bookingOption,
                     null
             );
-            updateSubscriptionOptions();
             mTrialContainer.addView(mSubscriptionOptionsView, 1);
 
         }

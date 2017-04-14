@@ -102,6 +102,8 @@
                 android:layout_marginTop="@dimen/default_margin_half"
                 android:paddingBottom="@dimen/default_padding"
                 android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible"
                 >
 
                 <TextView
