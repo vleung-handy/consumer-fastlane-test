@@ -53,7 +53,6 @@ public class BundleKeys {
     public static final String UPDATED_BOOKING = "updated_booking";
     public static final String USER_ID = "user_id";
     public static final String ZIP = "zip";
-    public static final String TAB_ID = "tab_id";
     public static final String PRO_MESSAGES_VIEW_MODEL = "pro_messages_view_model";
     public static final String PRO_RATING = "pro_rating";
     public static final String PROVIDER = "provider";

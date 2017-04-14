@@ -48,8 +48,8 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.PlayServicesUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
-import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
 import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
@@ -87,10 +87,10 @@ public class ActiveBookingFragment extends InjectedFragment
     @Bind(R.id.active_booking_provider_profile)
     MiniProProfile mProProfile;
 
-    @Bind(R.id.text_booking_title)
+    @Bind(R.id.booking_item_title)
     TextView mTextBookingTitle;
 
-    @Bind(R.id.text_booking_subtitle)
+    @Bind(R.id.booking_item_subtitle)
     TextView mTextBookingSubtitle;
 
     @Bind(R.id.active_booking_profile_container)

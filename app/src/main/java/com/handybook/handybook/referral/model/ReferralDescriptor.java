@@ -30,6 +30,9 @@ public class ReferralDescriptor implements Serializable {
     private int mReceiverCouponAmount;
     @SerializedName("coupon_code")
     private String mCouponCode;
+    @SerializedName("pro_referral_info")
+    private List<ProReferral> mProReferralInfo;
+
     @SerializedName(SOURCE_REFERRAL_PAGE)
     private ReferralChannels mReferralPageChannels;
     @SerializedName(SOURCE_PROFILE_PAGE)
@@ -38,8 +41,6 @@ public class ReferralDescriptor implements Serializable {
     private ReferralChannels mConfirmationPageChannels;
     @SerializedName(SOURCE_HIGH_RATING_MODAL)
     private ReferralChannels mHighRatingModalChannels;
-    @SerializedName("pro_referral_info")
-    private List<ProReferral> mProReferralInfo;
 
     public int getSenderCreditAmount() {
         return mSenderCreditAmount;

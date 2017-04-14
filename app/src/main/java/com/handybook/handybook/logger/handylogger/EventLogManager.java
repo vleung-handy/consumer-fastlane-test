@@ -113,11 +113,9 @@ public class EventLogManager {
             String logString = log.getEventName() + ": " + eventLogJson.toString();
             Crashlytics.log(logString);
 
-            if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
-                //Mixpanel tracking info in NOR-1016
-                addMixPanelProperties(eventLogJson, eventLog);
-                mMixpanel.track(eventLog.getEventType(), eventLogJson);
-            }
+            //Mixpanel tracking info in NOR-1016
+            addMixPanelProperties(eventLogJson, eventLog);
+            mMixpanel.track(eventLog.getEventType(), eventLogJson);
         }
         catch (JsonParseException | JSONException e) {
             Crashlytics.logException(e);
@@ -309,6 +307,11 @@ public class EventLogManager {
         //This is jsut in case there's an invalid json file for some reason
         File invalidFile = null;
 
+        //since we're sending all the logs, might as well flush the mix panel logs too
+        if (mMixpanel != null) {
+            mMixpanel.flush();
+        }
+
         try {
             File[] files = mFileManager.getLogFileList();
             if (files == null) {
@@ -385,8 +388,6 @@ public class EventLogManager {
 
     // This should be called from BaseApplication after
     public void initMixPanel() {
-        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) { return; }
-
         //Set up mix panel
         String mixPanelProperty = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)
                                   ? "mixpanel_api_key"

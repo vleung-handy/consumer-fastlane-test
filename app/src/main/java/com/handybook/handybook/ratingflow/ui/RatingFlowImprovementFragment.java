@@ -18,6 +18,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.ratingflow.ui.view.TextOptionsLayout;
 
@@ -103,6 +104,12 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
         // isn't empty when this fragment finishes, another fragment of the same type gets launched
         // to process the remaining items in the queue.
         mReasons = mReasonsQueue.remove(0);
+
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.LowRatingReasonsLog(
+                EventType.EVENT_TYPE_SHOWN,
+                mReasons.getKey() != null ? mReasons.getKey() : "initial",
+                Integer.parseInt(mImprovementFeedback.getBookingId())
+        )));
 
         mOptionIndex = -1;
     }
@@ -224,7 +231,17 @@ public class RatingFlowImprovementFragment extends RatingFlowFeedbackChildFragme
                     mImprovementFeedback
             ));
         }
-        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.FeedbackSubmitted(
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.LowRatingReasonsLog(
+                EventType.EVENT_TYPE_SUBMITTED,
+                mReasons.getKey() != null ? mReasons.getKey() : "initial",
+                Integer.parseInt(mImprovementFeedback.getBookingId())
+        )));
+    }
+
+    @Override
+    void onSkip() {
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.LowRatingReasonsLog(
+                EventType.EVENT_TYPE_SKIPPED,
                 mReasons.getKey() != null ? mReasons.getKey() : "initial",
                 Integer.parseInt(mImprovementFeedback.getBookingId())
         )));

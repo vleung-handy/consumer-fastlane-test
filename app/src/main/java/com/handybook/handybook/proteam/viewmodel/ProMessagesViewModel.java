@@ -18,7 +18,7 @@ public class ProMessagesViewModel implements Serializable {
 
     public ProMessagesViewModel(@NonNull final Provider pro) {
         this(
-                String.valueOf(pro.getId()),
+                pro.getId(),
                 pro.getName(),
                 pro.getImageUrl(),
                 pro.getCategoryType(),

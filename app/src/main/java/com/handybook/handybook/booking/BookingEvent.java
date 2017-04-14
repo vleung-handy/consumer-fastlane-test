@@ -14,6 +14,7 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.HandyEvent;
+import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
 import java.util.List;
@@ -484,4 +485,43 @@ public abstract class BookingEvent {
 
     public static class FinalizeBookingError extends HandyEvent.ReceiveErrorEvent {}
 
+
+    public static class RescheduleBookingWithProAvailabilitySuccess
+            extends HandyEvent.ReceiveSuccessEvent {
+
+        private Booking mBooking;
+        private ProAvailabilityResponse mProAvailability;
+        private String mNotice;
+
+        public RescheduleBookingWithProAvailabilitySuccess(
+                final Booking booking,
+                final ProAvailabilityResponse proAvailability,
+                final String notice
+        ) {
+            mBooking = booking;
+            mProAvailability = proAvailability;
+            mNotice = notice;
+        }
+
+        public ProAvailabilityResponse getProAvailability() {
+            return mProAvailability;
+        }
+
+        public String getNotice() {
+            return mNotice;
+        }
+
+        public Booking getBooking() {
+            return mBooking;
+        }
+    }
+
+
+    public static class RescheduleBookingWithProAvailabilityError
+            extends HandyEvent.ReceiveErrorEvent {
+
+        public RescheduleBookingWithProAvailabilityError(DataManager.DataManagerError error) {
+            this.error = error;
+        }
+    }
 }

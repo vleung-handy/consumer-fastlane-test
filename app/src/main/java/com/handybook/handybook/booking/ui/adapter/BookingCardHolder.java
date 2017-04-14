@@ -22,11 +22,11 @@ public class BookingCardHolder extends RecyclerView.ViewHolder {
 
     private Booking mBooking;
 
-    @Bind(R.id.image_icon)
+    @Bind(R.id.booking_item_image_icon)
     ImageView mImageIcon;
-    @Bind(R.id.text_booking_title)
+    @Bind(R.id.booking_item_title)
     TextView mTextBookingTitle;
-    @Bind(R.id.text_booking_subtitle)
+    @Bind(R.id.booking_item_subtitle)
     TextView mTextBookingSubtitle;
 
     View.OnClickListener mOnClickListener;

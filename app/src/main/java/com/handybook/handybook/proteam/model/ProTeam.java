@@ -156,14 +156,14 @@ public class ProTeam implements Parcelable {
         }
 
         public void filterFavorPros(@NonNull final List<Provider> pros) {
-            Set<Integer> ids = new HashSet<>();
+            Set<String> ids = new HashSet<>();
             for (Provider pro : pros) {
-                ids.add(Integer.parseInt(pro.getId()));
+                ids.add(pro.getId());
             }
             filterFavorPros(ids);
         }
 
-        public void filterFavorPros(@NonNull final Set<Integer> ids) {
+        public void filterFavorPros(@NonNull final Set<String> ids) {
             // Filtering mPreferred
             if (mPreferred != null) {
                 List<Provider> preferred = new ArrayList<>();

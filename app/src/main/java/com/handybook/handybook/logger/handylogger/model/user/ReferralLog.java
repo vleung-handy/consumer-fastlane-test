@@ -1,9 +1,9 @@
 package com.handybook.handybook.logger.handylogger.model.user;
 
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
-import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
-import com.handybook.handybook.logger.handylogger.model.booking.EventType;
 
 public abstract class ReferralLog extends EventLog {
 

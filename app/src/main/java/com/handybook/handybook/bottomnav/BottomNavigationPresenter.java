@@ -17,7 +17,10 @@ package com.handybook.handybook.bottomnav;
  */
 
 import android.content.Context;
+import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuPresenter;
@@ -25,16 +28,19 @@ import android.support.v7.view.menu.MenuView;
 import android.support.v7.view.menu.SubMenuBuilder;
 import android.view.ViewGroup;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 /**
  * this is mostly copied from android.support.design.internal.BottomNavigationPresenter
  */
-class BottomNavigationPresenter implements MenuPresenter {
-
+@RestrictTo(LIBRARY_GROUP)
+public class BottomNavigationPresenter implements MenuPresenter {
     private MenuBuilder mMenu;
     private BottomNavigationMenuView mMenuView;
     private boolean mUpdateSuspended = false;
+    private int mId;
 
-    void setBottomNavigationMenuView(BottomNavigationMenuView menuView) {
+    public void setBottomNavigationMenuView(BottomNavigationMenuView menuView) {
         mMenuView = menuView;
     }
 
@@ -86,20 +92,63 @@ class BottomNavigationPresenter implements MenuPresenter {
         return false;
     }
 
+    public void setId(int id) {
+        mId = id;
+    }
+
     @Override
     public int getId() {
-        return -1;
+        return mId;
     }
 
     @Override
     public Parcelable onSaveInstanceState() {
-        return null;
+        SavedState savedState = new SavedState();
+        savedState.selectedItemId = mMenuView.getSelectedItemId();
+        return savedState;
     }
 
     @Override
-    public void onRestoreInstanceState(Parcelable state) {}
+    public void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof SavedState) {
+            mMenuView.tryRestoreSelectedItemId(((SavedState) state).selectedItemId);
+        }
+    }
 
-    void setUpdateSuspended(boolean updateSuspended) {
+    public void setUpdateSuspended(boolean updateSuspended) {
         mUpdateSuspended = updateSuspended;
+    }
+
+    static class SavedState implements Parcelable {
+
+        int selectedItemId;
+
+        SavedState() {}
+
+        SavedState(Parcel in) {
+            selectedItemId = in.readInt();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(@NonNull Parcel out, int flags) {
+            out.writeInt(selectedItemId);
+        }
+
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 }

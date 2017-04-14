@@ -32,7 +32,7 @@ import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
@@ -198,14 +198,6 @@ public class RatingFlowReferralFragment extends InjectedFragment {
     }
 
     private void initProTeamCarousel() {
-        if (mRecommendedProviders != null) {
-            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RecommendedProvidersShown(
-                    mRecommendedProviders,
-                    userManager.getCurrentUser().getId(),
-                    mBooking.getId()
-            )));
-        }
-
         if (mRecommendedProviders == null && mMode == Mode.FEEDBACK) {
             showUiBlockers();
             dataManager.getRecommendedProviders(
@@ -228,6 +220,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         }
 
         if (mRecommendedProviders == null || mRecommendedProviders.isEmpty()) { return; }
+
+        bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RecommendedProvidersShown(
+                mRecommendedProviders,
+                userManager.getCurrentUser().getId(),
+                mBooking.getId()
+        )));
 
         mProTeamSection.setVisibility(View.VISIBLE);
 
@@ -328,8 +326,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
                     @Override
                     public void onAnimationEnd(final Animation animation) {
-                        if (mMode == Mode.REFERRAL && mReferralDescriptor != null) {
+                        if (shouldShowReferralContent()) {
                             animateContentIn(mReferralContent);
+                            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
+                                    EventType.EVENT_TYPE_SHOWN,
+                                    null
+                            )));
                         }
                         else {
                             animateContentIn(mReviewSection);
@@ -355,6 +357,10 @@ public class RatingFlowReferralFragment extends InjectedFragment {
             }
         });
         mHeader.startAnimation(slideDownAnimation);
+    }
+
+    private boolean shouldShowReferralContent() {
+        return mMode == Mode.REFERRAL && mReferralDescriptor != null;
     }
 
     private void animateContentIn(View view) {
@@ -387,7 +393,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     getResources().getStringArray(R.array.referral_email_bcc_array)
             );
             launchShareIntent(emailIntent, ReferralChannels.CHANNEL_EMAIL);
-            sendShareButtonTappedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
+            sendShareMethodSelectedLog(emailReferralInfo.getGuid(), ReferralChannels.CHANNEL_EMAIL);
         }
         else {
             Crashlytics.logException(new Exception("Email referral info is null"));
@@ -404,7 +410,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                     smsReferralInfo
             );
             launchShareIntent(smsReferralIntent, ReferralChannels.CHANNEL_SMS);
-            sendShareButtonTappedLog(smsReferralInfo.getGuid(), ReferralChannels.CHANNEL_SMS);
+            sendShareMethodSelectedLog(smsReferralInfo.getGuid(), ReferralChannels.CHANNEL_SMS);
         }
         else {
             Crashlytics.logException(new Exception("SMS referral info is null"));
@@ -418,6 +424,16 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                          Integer.parseInt(mBooking.getProvider().getId())
                  ))
         );
+
+        if (shouldShowReferralContent()) {
+            //if the referral content is being displayed, then we want to log accordingly.
+            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ReferralPageLog(
+                    EventType.EVENT_TYPE_SUBMITTED,
+                    null
+                     ))
+            );
+        }
+
         if (getActivity() instanceof RatingFlowActivity) {
 
             if (mMode == Mode.REVIEW && mReviewFragment != null) {
@@ -442,12 +458,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
         Utils.safeLaunchIntent(intent, getActivity());
     }
 
-    private void sendShareButtonTappedLog(final String guid, final String referralMedium) {
+    private void sendShareMethodSelectedLog(final String guid, final String referralMedium) {
         if (mReferralDescriptor != null) {
             String couponCode = StringUtils.replaceWithEmptyIfNull(
                     mReferralDescriptor.getCouponCode());
             String identifier = StringUtils.replaceWithEmptyIfNull(guid);
-            bus.post(new LogEvent.AddLogEvent(new ShareModalLog.PostRatingShareButtonTappedLog(
+            bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareMethodSelected(
                     referralMedium,
                     identifier,
                     couponCode,

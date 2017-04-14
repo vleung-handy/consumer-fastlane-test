@@ -10,7 +10,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,16 +22,19 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.ProviderRequest;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.core.ui.view.BookingListItem;
 import com.handybook.handybook.core.ui.view.ExpandableCleaningPlan;
@@ -40,11 +42,11 @@ import com.handybook.handybook.core.ui.view.NoBookingsView;
 import com.handybook.handybook.core.ui.view.ShareBannerView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
-import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
+import com.handybook.handybook.logger.handylogger.model.booking.ViewAvailabilityLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
-import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.handybook.referral.ui.ReferralV2Fragment;
 import com.squareup.otto.Subscribe;
 
@@ -59,7 +61,7 @@ import butterknife.OnClick;
  * bookings.
  */
 public class UpcomingBookingsFragment extends InjectedFragment
-        implements SwipeRefreshLayout.OnRefreshListener{
+        implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String mOverlayFragmentTag
             = ServiceCategoriesOverlayFragment.class.getSimpleName();
@@ -303,6 +305,10 @@ public class UpcomingBookingsFragment extends InjectedFragment
         mBookingsContainer.removeAllViews();
         for (int i = startingIndex; i < mBookings.size(); i++) {
             final Booking booking = mBookings.get(i);
+            final ProviderRequest providerRequest = booking.getProviderRequest();
+            final boolean enableProAvailableBanner
+                    = mConfigurationManager.getPersistentConfiguration()
+                                           .isProviderRequestsResponseEnabled();
             mBookingsContainer.addView(new BookingListItem(
                     getActivity(),
                     new View.OnClickListener() {
@@ -316,18 +322,41 @@ public class UpcomingBookingsFragment extends InjectedFragment
                             enableRefresh();
                         }
                     },
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View v) {
+                            if (enableProAvailableBanner && providerRequest != null &&
+                                providerRequest.getProvider() != null) {
+                                bus.post(new LogEvent.AddLogEvent(new ViewAvailabilityLog(
+                                        EventContext.UPCOMING_BOOKINGS,
+                                        booking.getId(),
+                                        userManager.getCurrentUser().getId(),
+                                        providerRequest.getProvider().getId(),
+                                        getString(
+                                                R.string.pro_is_busy_formatted,
+                                                providerRequest.getProvider()
+                                                               .getFirstNameAndLastInitial()
+                                        )
+                                )));
+
+                                progressDialog.show();
+                                bookingManager.rescheduleBookingWithProAvailability(
+                                        providerRequest.getProvider().getId(),
+                                        booking
+                                );
+                            }
+                        }
+                    },
                     booking,
                     mConfigurationManager.getPersistentConfiguration()
-                                         .isBookingHoursClarificationExperimentEnabled()
+                                         .isBookingHoursClarificationExperimentEnabled(),
+                    enableProAvailableBanner
             ));
 
             //add divider
-            mBookingsContainer.addView(getActivity().getLayoutInflater()
-                                                    .inflate(
-                                                            R.layout.layout_divider,
-                                                            mBookingsContainer,
-                                                            false
-                                                    ));
+            mBookingsContainer.addView(
+                    getActivity().getLayoutInflater()
+                                 .inflate(R.layout.layout_divider, mBookingsContainer, false));
         }
     }
 
@@ -470,8 +499,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
     /**
      * init the review app banner fragment. it will handle everything related to the banner
      */
-    private void initReviewAppBannerFragment()
-    {
+    private void initReviewAppBannerFragment() {
         ReviewAppBannerFragment reviewAppBannerFragment = ReviewAppBannerFragment.newInstance();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(
@@ -584,5 +612,30 @@ public class UpcomingBookingsFragment extends InjectedFragment
     @Override
     public void onRefresh() {
         loadBookings();
+    }
+
+    @Subscribe
+    public void onRescheduleWithAvailabilitySuccess(BookingEvent.RescheduleBookingWithProAvailabilitySuccess success) {
+        progressDialog.dismiss();
+
+        final Intent intent = new Intent(getContext(), BookingDateActivity.class);
+        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, success.getBooking());
+        intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, success.getNotice());
+        intent.putExtra(
+                BundleKeys.RESCHEDULE_TYPE,
+                BookingDetailFragment.RescheduleType.FROM_PRO_BANNER
+        );
+        intent.putExtra(
+                BundleKeys.PROVIDER_ID,
+                success.getBooking().getProviderRequest().getProvider().getId()
+        );
+        intent.putExtra(BundleKeys.PRO_AVAILABILITY, success.getProAvailability());
+        startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+    }
+
+    @Subscribe
+    public void onRescheduleWithAvailabilityError(BookingEvent.RescheduleBookingWithProAvailabilityError error) {
+        progressDialog.dismiss();
+        Toast.makeText(getContext(), R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
     }
 }

@@ -602,5 +602,10 @@
     <string name="review_app_banner_review_directive_prompt_negative_button">Not Now</string>
     <string name="review_app_banner_review_directive_prompt_positive_button">Yes, I\'ll Review</string>
     <string name="booking_subscription_trial_cta">Can I try a cleaning before signing up?</string>
+
+    <!--pro unavailable banner-->
+    <string name="view_availability">View Availability</string>
+    <string name="pro_is_busy_formatted">%1$s is busy at this time but sent you some alternatives</string>
+
 </resources>
 
