@@ -29,7 +29,7 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.EventType;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.squareup.picasso.Picasso;

@@ -20,7 +20,7 @@ import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.EventType;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.ReferralChannels;
@@ -28,7 +28,7 @@ import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
-import static com.handybook.handybook.logger.handylogger.model.booking.EventContext.NATIVE_SHARE;
+import static com.handybook.handybook.logger.handylogger.constants.EventContext.NATIVE_SHARE;
 
 public abstract class BaseReferralFragment extends InjectedFragment {
 

@@ -1,4 +1,4 @@
-package com.handybook.handybook.logger.handylogger.model.booking;
+package com.handybook.handybook.logger.handylogger.constants;
 
 public interface EventType {
 

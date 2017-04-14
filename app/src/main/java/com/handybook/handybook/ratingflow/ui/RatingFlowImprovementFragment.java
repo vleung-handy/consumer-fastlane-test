@@ -18,7 +18,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.EventType;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.ratingflow.ui.view.TextOptionsLayout;
 

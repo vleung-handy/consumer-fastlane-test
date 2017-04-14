@@ -5,8 +5,8 @@ import android.support.annotation.StringDef;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
-import static com.handybook.handybook.logger.handylogger.model.booking.EventType.SHARE_BUTTON_TAPPED;
-import static com.handybook.handybook.logger.handylogger.model.booking.EventType.SHARE_METHOD_SELECTED;
+import static com.handybook.handybook.logger.handylogger.constants.EventType.SHARE_BUTTON_TAPPED;
+import static com.handybook.handybook.logger.handylogger.constants.EventType.SHARE_METHOD_SELECTED;
 
 /**
  * This is used to record a share action triggered by the user.
