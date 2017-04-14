@@ -11,8 +11,10 @@ import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.referral.model.ProReferral;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class ProTeamEvent {
@@ -24,16 +26,27 @@ public abstract class ProTeamEvent {
     public static class ReceiveProTeamSuccess extends HandyEvent.ReceiveSuccessEvent {
 
         private final ProTeam mProTeam;
+        private Map<String, ProReferral> mProReferral;
         private final String mProTeamHelpCenterUrl;
 
-        public ReceiveProTeamSuccess(final ProTeam proTeam, final String proTeamHelpCenterUrl) {
+        public ReceiveProTeamSuccess(
+                final ProTeam proTeam,
+                final Map<String, ProReferral> proReferral,
+                final String proTeamHelpCenterUrl
+        ) {
             mProTeam = proTeam;
             mProTeamHelpCenterUrl = proTeamHelpCenterUrl;
+            mProReferral = proReferral;
         }
 
         @Nullable
         public ProTeam getProTeam() {
             return mProTeam;
+        }
+
+        @Nullable
+        public Map<String, ProReferral> getProReferral() {
+            return mProReferral;
         }
 
         public String getProTeamHelpCenterUrl() {

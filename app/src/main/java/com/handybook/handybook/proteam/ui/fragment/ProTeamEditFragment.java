@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +22,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.RequestCode;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
@@ -34,11 +35,15 @@ import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
+import com.handybook.handybook.referral.model.ProReferral;
+import com.handybook.handybook.referral.model.ReferralDescriptor;
+import com.handybook.handybook.referral.model.ReferralResponse;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,6 +73,11 @@ public class ProTeamEditFragment extends InjectedFragment implements
     View mToolbarSaveButton;
 
     private ProTeam mProTeam;
+    private Map<String, ProReferral> mProReferrals;
+    private ReferralDescriptor mReferralDescriptor;
+    private boolean mProTeamRequestDone = false;
+    private boolean mReferralDescriptorRequestDone = false;
+
     private TabAdapter mTabAdapter;
     private HashSet<Provider> mCleanersToAdd = new HashSet<>();
     private HashSet<Provider> mCleanersToRemove = new HashSet<>();
@@ -76,26 +86,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     private ProTeamProListFragment mProTeamListFragment;
 
     public static ProTeamEditFragment newInstance() {
-        return newInstance(null);
-    }
-
-    public static ProTeamEditFragment newInstance(@Nullable final ProTeam proTeam) {
-        final ProTeamEditFragment fragment = new ProTeamEditFragment();
-        if (proTeam != null) {
-            final Bundle arguments = new Bundle();
-            arguments.putParcelable(BundleKeys.PRO_TEAM, proTeam);
-            fragment.setArguments(arguments);
-        }
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        final Bundle arguments = getArguments();
-        if (arguments != null) {
-            mProTeam = arguments.getParcelable(BundleKeys.PRO_TEAM);
-        }
+        return new ProTeamEditFragment();
     }
 
     @Override
@@ -132,19 +123,55 @@ public class ProTeamEditFragment extends InjectedFragment implements
         if (mProTeam == null) {
             mSwipeRefreshLayout.setRefreshing(true);
             requestProTeam();
+            requestReferralDescriptor();
         }
     }
 
     private void requestProTeam() {
+        mProTeamRequestDone = false;
         bus.post(new ProTeamEvent.RequestProTeam());
+    }
+
+    private void requestReferralDescriptor() {
+        mReferralDescriptorRequestDone = false;
+        dataManager.requestPrepareReferrals(
+                false,
+                new FragmentSafeCallback<ReferralResponse>(this) {
+                    @Override
+                    public void onCallbackSuccess(final ReferralResponse response) {
+                        mReferralDescriptor = response.getReferralDescriptor();
+                        mReferralDescriptorRequestDone = true;
+                        if (isInitialRequestsDone()) {
+                            initialize();
+                        }
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        // do nothing
+                        mReferralDescriptorRequestDone = true;
+                        dataManagerErrorHandler.handleError(getContext(), error);
+                        if (isInitialRequestsDone()) {
+                            initialize();
+                        }
+                    }
+                }
+        );
     }
 
     @Subscribe
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event) {
-        mSwipeRefreshLayout.setRefreshing(false);
+        mProTeamRequestDone = true;
         mProTeam = event.getProTeam();
-        initialize();
+        mProReferrals = event.getProReferral();
+        if (isInitialRequestsDone()) {
+            initialize();
+        }
         bus.post(new ProTeamEvent.ProTeamUpdated(mProTeam));
+    }
+
+    private boolean isInitialRequestsDone() {
+        return mProTeamRequestDone && mReferralDescriptorRequestDone;
     }
 
     @Subscribe
@@ -154,6 +181,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
     }
 
     private void initialize() {
+        mSwipeRefreshLayout.setRefreshing(false);
         if (isSettingFavoriteProEnabled()) {
             initProTeamViewPager();
         }
@@ -365,7 +393,9 @@ public class ProTeamEditFragment extends InjectedFragment implements
             mContext = context;
             mFragments.add(NewProTeamProListFragment.newInstance(
                     mProTeam.getCategory(ProTeamCategoryType.CLEANING),
-                    ProTeamCategoryType.CLEANING
+                    ProTeamCategoryType.CLEANING,
+                    mProReferrals,
+                    mReferralDescriptor
             ));
             mPageTitles.add(mContext.getString(R.string.cleaners));
             if (shouldShowHandymenTab()) {
