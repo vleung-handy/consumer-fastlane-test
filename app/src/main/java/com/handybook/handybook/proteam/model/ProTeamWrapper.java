@@ -51,8 +51,9 @@ public class ProTeamWrapper {
         //there are times when we get back a Map of mProReferral, but there isn't a Provider within
         //them. If it's not available, then populate it there.
         if (wrapper.getProReferral() != null && !wrapper.getProReferral().isEmpty()) {
-            for (String providerId : wrapper.getProReferral().keySet()) {
-                ProReferral referral = wrapper.getProReferral().get(providerId);
+            for (Map.Entry<String, ProReferral> pro : wrapper.getProReferral().entrySet()) {
+                String providerId = pro.getKey();
+                ProReferral referral = pro.getValue();
                 if (referral.getProvider() == null) {
                     referral.setProvider(wrapper.getProvider(providerId));
                 }
