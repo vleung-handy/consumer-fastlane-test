@@ -26,6 +26,7 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
+import com.handybook.handybook.logger.handylogger.model.ConversationsLog;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
@@ -300,12 +301,17 @@ public class ProTeamConversationsFragment extends InjectedFragment
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.INDIFFERENT)
         )));
 
+        ProTeam.ProTeamCategory category = mProTeam.getAllCategories();
+        bus.post(new LogEvent.AddLogEvent(new ConversationsLog.Loaded(
+                category.getIndifferent().size() + category.getPreferred().size())));
+
         initRecyclerView();
     }
 
     @Subscribe
     public void onReceiveProTeamError(final ProTeamEvent.ReceiveProTeamError event) {
         mSwipeRefreshLayout.setRefreshing(false);
+        bus.post(new LogEvent.AddLogEvent(new ConversationsLog.LoadingError(event.error.getMessage())));
     }
 
     @OnClick(R.id.pro_team_toolbar_edit_pro_team_button)
