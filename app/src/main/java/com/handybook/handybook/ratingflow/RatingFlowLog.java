@@ -6,16 +6,16 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.Provider;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
-import com.handybook.handybook.logger.handylogger.model.booking.EventType;
 import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SHOWN;
-import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SKIPPED;
-import static com.handybook.handybook.logger.handylogger.model.booking.EventType.EVENT_TYPE_SUBMITTED;
+import static com.handybook.handybook.logger.handylogger.constants.EventType.EVENT_TYPE_SHOWN;
+import static com.handybook.handybook.logger.handylogger.constants.EventType.EVENT_TYPE_SKIPPED;
+import static com.handybook.handybook.logger.handylogger.constants.EventType.EVENT_TYPE_SUBMITTED;
 
 public class RatingFlowLog extends EventLog {
 

@@ -3,7 +3,7 @@ package com.handybook.handybook.logger.handylogger.model.booking;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
-import static com.handybook.handybook.logger.handylogger.model.booking.EventType.VIEW_AVAILABILITY_SELECTED;
+import static com.handybook.handybook.logger.handylogger.constants.EventType.VIEW_AVAILABILITY_SELECTED;
 
 public class ViewAvailabilityLog extends EventLog {
 

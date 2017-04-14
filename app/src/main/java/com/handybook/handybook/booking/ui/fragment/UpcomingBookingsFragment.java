@@ -43,7 +43,7 @@ import com.handybook.handybook.core.ui.view.ShareBannerView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookingsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.ViewAvailabilityLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;

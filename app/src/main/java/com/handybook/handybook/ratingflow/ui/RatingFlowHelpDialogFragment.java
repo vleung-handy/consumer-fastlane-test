@@ -20,7 +20,7 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.ui.fragment.SlideUpDialogFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.logger.handylogger.model.booking.EventType;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.squareup.otto.Bus;
 
