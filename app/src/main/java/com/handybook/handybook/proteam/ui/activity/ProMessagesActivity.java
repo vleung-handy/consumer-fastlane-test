@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.constant.ProviderAvailabilitySource;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingRequest;
@@ -371,7 +372,8 @@ public class ProMessagesActivity extends MessagesListActivity {
                 else {
                     mBookingManager.rescheduleBookingWithProAvailability(
                             mProViewModel.getProviderId(),
-                            mBooking
+                            mBooking,
+                            null
                     );
 
                 }
