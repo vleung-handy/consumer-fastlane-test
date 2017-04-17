@@ -57,7 +57,7 @@ public class PrerateProInfo implements Serializable {
     private ProviderMatchPreference mProviderMatchPreference;
 
     /**
-     * The presence of this info suggests that we can sharethis specific pro
+     * The presence of this info suggests that we can share this specific pro
      */
     @SerializedName("pro_referral_info")
     private ProReferral mProReferralInfo;
