@@ -128,11 +128,6 @@ public class NewProTeamProListFragment extends InjectedFragment {
      * @param proId
      */
     private void launchProReferralDialog(final int proId) {
-        //TODO: JIA: this is to hardcode the feature dark. Remove when ready.
-        if (1 == 1) {
-            return;
-        }
-
         FavProReferralDialogFragment dialogFragment = FavProReferralDialogFragment.newInstance(
                 mProReferrals.get(String.valueOf(proId)),
                 mReferralDescriptor

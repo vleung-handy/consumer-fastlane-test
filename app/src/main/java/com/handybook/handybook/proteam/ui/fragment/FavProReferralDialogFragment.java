@@ -5,7 +5,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +14,31 @@ import android.widget.LinearLayout;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.library.ui.fragment.InjectedDialogFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
+import com.handybook.handybook.logger.handylogger.model.booking.EventType;
+import com.handybook.handybook.proteam.ProTeamManagementLog;
 import com.handybook.handybook.referral.model.ProReferral;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.ui.SimpleProReferralFragment;
+import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
+import java.util.List;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * This is a standalone dialog fragment that allows a user to refer a specific pro.
  */
-public class FavProReferralDialogFragment extends DialogFragment {
+public class FavProReferralDialogFragment extends InjectedDialogFragment {
+
+    @Bind(R.id.fav_pro_referral_avatar)
+    CircleImageView mAvatar;
 
     private ProReferral mProReferral;
     private ReferralDescriptor mReferralDescriptor;
@@ -48,11 +62,21 @@ public class FavProReferralDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mProReferral = (ProReferral) getArguments().getSerializable(BundleKeys.PRO_REFERRAL);
             mReferralDescriptor
                     = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
         }
+
+        List<Integer> providerIds = Arrays.asList(Integer.parseInt(mProReferral.getProvider()
+                                                                               .getId()));
+        mBus.post(new LogEvent.AddLogEvent(new ProTeamManagementLog(
+                          EventType.REFERRAL_PAGE_SHOWN,
+                          EventContext.PROTEAM_MANAGEMENT,
+                          providerIds
+                  ))
+        );
     }
 
     @Nullable
@@ -70,11 +94,18 @@ public class FavProReferralDialogFragment extends DialogFragment {
                 = (SimpleProReferralFragment) getChildFragmentManager().findFragmentByTag(
                 SimpleProReferralFragment.class.getName());
 
+        Picasso.with(getContext())
+               .load(mProReferral.getProvider().getImageUrl())
+               .placeholder(R.drawable.img_pro_placeholder)
+               .noFade()
+               .into(mAvatar);
+
         if (mSimpleProReferralFragment == null) {
             mSimpleProReferralFragment = SimpleProReferralFragment.newInstance(
                     mProReferral,
                     mReferralDescriptor,
-                    mProReferral.getProvider()
+                    mProReferral.getProvider(),
+                    EventContext.PROTEAM_MANAGEMENT
             );
 
             getChildFragmentManager().beginTransaction()
@@ -98,6 +129,11 @@ public class FavProReferralDialogFragment extends DialogFragment {
                 = R.style.dialog_animation_slide_up_down_from_bottom;
 
         return dialog;
+    }
+
+    @OnClick(R.id.exit_button)
+    public void exitClicked() {
+        dismiss();
     }
 
     @Override

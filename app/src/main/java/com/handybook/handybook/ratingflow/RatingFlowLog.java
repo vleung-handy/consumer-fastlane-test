@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.model.user.NativeShareLog;
 
 import java.util.ArrayList;
@@ -19,10 +20,9 @@ import static com.handybook.handybook.logger.handylogger.constants.EventType.EVE
 
 public class RatingFlowLog extends EventLog {
 
-    private static final String EVENT_CONTEXT = "rating_flow";
 
     private RatingFlowLog(final String eventType) {
-        super(eventType, EVENT_CONTEXT);
+        super(eventType, EventContext.RATING_FLOW);
     }
 
     @StringDef({EVENT_TYPE_SHOWN, EVENT_TYPE_SUBMITTED, EVENT_TYPE_SKIPPED})
@@ -260,6 +260,7 @@ public class RatingFlowLog extends EventLog {
 
     public static class ShareButtonForProTapped extends NativeShareLog.NativeShareProLog {
         public ShareButtonForProTapped(
+                final String eventContext,
                 final String providerId,
                 final String referralMedium,
                 final String referralIdentifier,
@@ -270,7 +271,7 @@ public class RatingFlowLog extends EventLog {
         ) {
             super(
                     EventType.SHARE_BUTTON_TAPPED,
-                    EVENT_CONTEXT,
+                    eventContext,
                     providerId,
                     referralMedium,
                     referralIdentifier,
@@ -286,6 +287,7 @@ public class RatingFlowLog extends EventLog {
     public static class ShareMethodForProSelected extends NativeShareLog.NativeShareProLog {
 
         public ShareMethodForProSelected(
+                final String eventContext,
                 final String providerId,
                 final String referralMedium,
                 final String referralIdentifier,
@@ -296,7 +298,7 @@ public class RatingFlowLog extends EventLog {
         ) {
             super(
                     EventType.SHARE_METHOD_SELECTED,
-                    EVENT_CONTEXT,
+                    eventContext,
                     providerId,
                     referralMedium,
                     referralIdentifier,
@@ -321,7 +323,7 @@ public class RatingFlowLog extends EventLog {
         ) {
             super(
                     EventType.SHARE_METHOD_SELECTED,
-                    EVENT_CONTEXT,
+                    EventContext.RATING_FLOW,
                     referralMedium,
                     referralIdentifier,
                     couponCode,

@@ -10,4 +10,5 @@ public interface EventType {
     String EVENT_TYPE_SHOWN = "shown";
     String EVENT_TYPE_SKIPPED = "skipped";
     String VIEW_AVAILABILITY_SELECTED = "view_availability_selected";
+    String REFERRAL_PAGE_SHOWN = "referral_page_shown";
 }

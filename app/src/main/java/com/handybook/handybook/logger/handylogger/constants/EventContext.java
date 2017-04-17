@@ -7,4 +7,6 @@ public interface EventContext {
     String BOOKING_DETAILS = "booking_details";
     String NATIVE_SHARE = "native_share";
     String UPCOMING_BOOKINGS = "upcoming_bookings";
+    String PROTEAM_MANAGEMENT = "pro_team_management";
+    String RATING_FLOW = "rating_flow";
 }
