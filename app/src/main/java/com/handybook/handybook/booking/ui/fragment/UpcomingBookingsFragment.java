@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.constant.ProviderAvailabilitySource;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.ProviderRequest;
 import com.handybook.handybook.booking.model.RecurringBooking;
@@ -342,7 +343,8 @@ public class UpcomingBookingsFragment extends InjectedFragment
                                 progressDialog.show();
                                 bookingManager.rescheduleBookingWithProAvailability(
                                         providerRequest.getProvider().getId(),
-                                        booking
+                                        booking,
+                                        ProviderAvailabilitySource.PROVIDER_REQUEST_RESPONSE
                                 );
                             }
                         }

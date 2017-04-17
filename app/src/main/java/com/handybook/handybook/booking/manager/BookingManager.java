@@ -61,7 +61,8 @@ public class BookingManager implements Observer {
 
     public void rescheduleBookingWithProAvailability(
             @NonNull final String providerId,
-            @NonNull final Booking booking
+            @NonNull final Booking booking,
+            @Nullable final String source
     ) {
         DataManager.Callback<ProAvailabilityResponse> proAvailabilityCallback
                 = new DataManager.Callback<ProAvailabilityResponse>() {
@@ -93,8 +94,7 @@ public class BookingManager implements Observer {
             }
         };
 
-        mDataManager
-                .getProviderAvailability(providerId, booking.getHours(), proAvailabilityCallback);
+        mDataManager.getProviderAvailability(providerId, booking.getHours(), source, proAvailabilityCallback);
     }
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers

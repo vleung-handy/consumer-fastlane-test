@@ -1057,11 +1057,13 @@ public class DataManager {
     public void getProviderAvailability(
             final String providerId,
             final float durationHour,
+            final String source,
             final Callback<ProAvailabilityResponse> cb
     ) {
         mService.getProviderAvailability(
                 providerId,
                 durationHour,
+                source,
                 new ProAvailabilityCallback(cb)
         );
     }

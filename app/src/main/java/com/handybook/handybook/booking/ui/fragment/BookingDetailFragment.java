@@ -19,6 +19,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.constant.ProviderAvailabilitySource;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.JobStatus;
@@ -178,7 +179,8 @@ public final class BookingDetailFragment extends InjectedFragment
                             )));
                             bookingManager.rescheduleBookingWithProAvailability(
                                     providerRequest.getProvider().getId(),
-                                    mBooking
+                                    mBooking,
+                                    null
                             );
                         }
                     }
