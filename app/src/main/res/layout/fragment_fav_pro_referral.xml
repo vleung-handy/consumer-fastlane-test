@@ -21,14 +21,10 @@
         android:layout_width="@dimen/mini_pro_profile_image_size_large"
         android:layout_height="@dimen/mini_pro_profile_image_size_large"
         tools:src="@drawable/img_pro_placeholder"
-        android:layout_marginTop="@dimen/default_margin"
         />
-
     <FrameLayout
         android:id="@+id/fav_pro_referral.referral_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-
-
 </LinearLayout>
