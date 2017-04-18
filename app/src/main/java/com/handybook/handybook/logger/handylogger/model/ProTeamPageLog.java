@@ -4,7 +4,7 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage.HandyLoggerSourcePage;
-import com.handybook.handybook.logger.handylogger.model.booking.EventContext;
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 

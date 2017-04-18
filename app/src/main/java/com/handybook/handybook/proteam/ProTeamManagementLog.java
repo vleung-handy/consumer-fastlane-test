@@ -7,8 +7,8 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import java.util.List;
 
-import static com.handybook.handybook.logger.handylogger.model.booking.EventContext.PROTEAM_MANAGEMENT;
-import static com.handybook.handybook.logger.handylogger.model.booking.EventType.REFERRAL_PAGE_SHOWN;
+import static com.handybook.handybook.logger.handylogger.constants.EventContext.PROTEAM_MANAGEMENT;
+import static com.handybook.handybook.logger.handylogger.constants.EventType.REFERRAL_PAGE_SHOWN;
 
 public class ProTeamManagementLog extends EventLog {
 
