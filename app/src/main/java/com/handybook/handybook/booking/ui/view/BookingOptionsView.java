@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -14,6 +15,7 @@ public abstract class BookingOptionsView extends FrameLayout {
     protected BookingOption option;
     protected OnUpdatedListener updateListener;
     protected ViewGroup mainLayout;
+    private OnTouchListener touchInterceptor;
 
     BookingOptionsView(
             final Context context, final int layout, final BookingOption option,
@@ -40,6 +42,10 @@ public abstract class BookingOptionsView extends FrameLayout {
         LayoutInflater.from(context).inflate(layout, this);
     }
 
+    public void setOnTouchInterceptor(final OnTouchListener onTouchListener) {
+        touchInterceptor = onTouchListener;
+    }
+
     public interface OnUpdatedListener {
 
         void onUpdate(BookingOptionsView view);
@@ -63,4 +69,9 @@ public abstract class BookingOptionsView extends FrameLayout {
     }
 
     public abstract String getCurrentValue();
+
+    @Override
+    public boolean onInterceptTouchEvent(final MotionEvent ev) {
+        return touchInterceptor != null && touchInterceptor.onTouch(null, ev);
+    }
 }
