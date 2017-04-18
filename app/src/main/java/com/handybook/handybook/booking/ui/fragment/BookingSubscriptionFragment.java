@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -46,9 +46,9 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     private static final String KEY_TRIAL_EXPANDED = "key:trial_expanded";
 
     @Bind(R.id.booking_frequency_options_spinner_view)
-    FrameLayout mFrequencyLayout;
+    ViewGroup mFrequencyLayout;
     @Bind(R.id.booking_subscription_option_layout)
-    FrameLayout mSubscriptionOptionsLayout;
+    ViewGroup mSubscriptionOptionsLayout;
     @Bind(R.id.next_button)
     Button nextButton;
     @Bind(R.id.toolbar)
@@ -59,10 +59,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     LinearLayout mTrialContainer;
     @Bind(R.id.booking_subscription_trial_cta)
     TextView mTrialCta;
-    @Bind(R.id.booking_subscription_trial_layout)
-    ViewGroup mTrialLayout;
-    @Bind(R.id.booking_subscription_trial_title)
-    TextView mTrialTitle;
     @Bind(R.id.booking_subscription_trial_option_checkbox)
     BookingOptionsCheckboxView mTrialCheckbox;
 
@@ -130,7 +126,16 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         mTrialCheckbox.setRightTitle("$299");
         mTrialCheckbox.setRightText(getString(R.string.booking_subscription_term_cleaning));
         mTrialCheckbox.setSuperText(null);
+        mTrialCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+                trialChecked(isChecked);
+            }
+        });
+    }
 
+    private void trialChecked(final boolean isChecked) {
+        showToast("Trial checked");
     }
 
     @OnClick(R.id.booking_subscription_trial_cta)
@@ -141,8 +146,8 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     private void expandTrial() {
         mIsTrialExpanded = true;
-        mTrialLayout.setVisibility(View.VISIBLE);
         mTrialCta.setVisibility(View.GONE);
+        mTrialCheckbox.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -231,8 +236,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         //Booking option used for the BookingOptionsSelectView
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION);
-        bookingOption.setTitle(getString(R.string.booking_subscription_term_title));
-
 
         CommitmentType commitmentType = bookingManager.getCurrentQuote().getCommitmentType();
         List<SubscriptionLength> subscriptionLengths = commitmentType.getUniqueLengths();
@@ -277,6 +280,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         to create an options view
          */
         mSubscriptionOptionsView = new BookingOptionsSelectView(getActivity(), bookingOption, null);
+        mSubscriptionOptionsView.hideTitle();
         updateSubscriptionOptions();
         mSubscriptionOptionsLayout.addView(mSubscriptionOptionsView);
     }

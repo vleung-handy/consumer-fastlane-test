@@ -606,6 +606,7 @@
     <!--pro unavailable banner-->
     <string name="view_availability">View Availability</string>
     <string name="pro_is_busy_formatted">%1$s is busy at this time but sent you some alternatives</string>
+    <string name="booking_subscription_length_title">Get More Savings</string>
 
 </resources>
 

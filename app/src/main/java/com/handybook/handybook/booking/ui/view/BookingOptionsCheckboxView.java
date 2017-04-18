@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -126,12 +127,24 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
         mCheckBox.setChecked(checked);
     }
 
+    public boolean isChecked() {
+        return mCheckBox.isChecked();
+    }
+
     public void setLeftIndicatorVisible(final boolean isVisible) {
         mLeftIndicator.setVisibility(isVisible ? VISIBLE : GONE);
+        invalidate();
     }
 
     public void setSuperText(final String text) {
         setTextView(mSuperText, text);
+    }
+
+    public void setOnCheckedChangeListener(
+            @Nullable CompoundButton.OnCheckedChangeListener listener
+    ) {
+        mCheckBox.setOnCheckedChangeListener(listener);
+        invalidate();
     }
 
     private void setTextView(@NonNull TextView textView, @Nullable String text) {
@@ -139,6 +152,7 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
         if (text == null) {
             textView.setVisibility(GONE);
         }
+        invalidate();
     }
 
     private static class SavedState extends BaseSavedState {
