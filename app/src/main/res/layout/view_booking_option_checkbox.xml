@@ -70,7 +70,9 @@
                     android:freezesText="false"
                     android:maxLines="2"
                     android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
-                    tools:text="Title"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:text="Left Title can have\ntwo lines too"
                     />
 
                 <TextView
@@ -79,10 +81,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:freezesText="false"
-                    android:textAllCaps="true"
                     android:textColor="@drawable/black_text_blue_selected_color_selector"
                     android:visibility="gone"
-                    tools:text="Subtitle blah blah blah blah blah blah blah\nSubtitle Line 2"
+                    tools:text="Left text line 1\nline two\nand three"
                     tools:visibility="visible"
                     />
 
@@ -120,6 +121,7 @@
                     android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
                     android:visibility="gone"
                     tools:visibility="visible"
+                    tools:text="/moon"
                     />
             </LinearLayout>
         </LinearLayout>

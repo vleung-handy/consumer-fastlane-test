@@ -133,7 +133,6 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
 
     public void setLeftIndicatorVisible(final boolean isVisible) {
         mLeftIndicator.setVisibility(isVisible ? VISIBLE : GONE);
-        invalidate();
     }
 
     public void setSuperText(final String text) {
@@ -144,7 +143,6 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
             @Nullable CompoundButton.OnCheckedChangeListener listener
     ) {
         mCheckBox.setOnCheckedChangeListener(listener);
-        invalidate();
     }
 
     private void setTextView(@NonNull TextView textView, @Nullable String text) {
@@ -152,7 +150,9 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
         if (text == null) {
             textView.setVisibility(GONE);
         }
-        invalidate();
+        else {
+            textView.setVisibility(VISIBLE);
+        }
     }
 
     private static class SavedState extends BaseSavedState {
