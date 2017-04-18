@@ -60,10 +60,10 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     @Bind(R.id.booking_subscription_trial_cta)
     TextView mTrialCta;
     @Bind(R.id.booking_subscription_trial_layout)
-    FrameLayout mTrialLayout;
+    ViewGroup mTrialLayout;
     @Bind(R.id.booking_subscription_trial_title)
     TextView mTrialTitle;
-    @Bind(R.id.booking_subscription_trial_layout)
+    @Bind(R.id.booking_subscription_trial_option_checkbox)
     BookingOptionsCheckboxView mTrialCheckbox;
 
     private BookingTransaction mBookingTransaction;
