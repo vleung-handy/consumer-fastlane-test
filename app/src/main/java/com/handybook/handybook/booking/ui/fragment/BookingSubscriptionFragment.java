@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
+import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.subscription.CommitmentType;
 import com.handybook.handybook.booking.model.subscription.Price;
 import com.handybook.handybook.booking.model.subscription.SubscriptionFrequency;
 import com.handybook.handybook.booking.model.subscription.SubscriptionLength;
 import com.handybook.handybook.booking.model.subscription.SubscriptionPrices;
+import com.handybook.handybook.booking.ui.view.BookingOptionsCheckboxView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
@@ -41,29 +43,38 @@ import butterknife.OnClick;
 public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     private static final String TAG = BookingSubscriptionFragment.class.getName();
+    private static final String KEY_TRIAL_EXPANDED = "key:trial_expanded";
 
     @Bind(R.id.booking_frequency_options_spinner_view)
     FrameLayout mFrequencyLayout;
     @Bind(R.id.booking_subscription_option_layout)
-    LinearLayout mSubscriptionOptionsLayout;
+    FrameLayout mSubscriptionOptionsLayout;
     @Bind(R.id.next_button)
     Button nextButton;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.booking_scrollview)
     ScrollView mScrollView;
-    @Bind(R.id.booking_subscription_trial_cta)
-    TextView mTrialCta;
     @Bind(R.id.booking_subscription_trial_container)
     LinearLayout mTrialContainer;
+    @Bind(R.id.booking_subscription_trial_cta)
+    TextView mTrialCta;
+    @Bind(R.id.booking_subscription_trial_layout)
+    FrameLayout mTrialLayout;
+    @Bind(R.id.booking_subscription_trial_title)
+    TextView mTrialTitle;
+    @Bind(R.id.booking_subscription_trial_layout)
+    BookingOptionsCheckboxView mTrialCheckbox;
 
     private BookingTransaction mBookingTransaction;
     protected BookingOptionsSelectView mSubscriptionOptionsView;
+    protected BookingOptionsSelectView mTrialOptionView;
     protected BookingOptionsSpinnerView mFrequencyOptionsSpinnerView;
     //This used to do a looking up from the selected subscription value to the subscription key
     private Map<String, String> mSubscriptionLengthToKey;
     //This used to do a looking up from the selected frequency value to the frequency key
     private Map<String, String> mFrequencyValueToKey;
+    private boolean mIsTrialExpanded = false;
 
     public static BookingSubscriptionFragment newInstance() {
         return new BookingSubscriptionFragment();
@@ -89,37 +100,48 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         );
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_subscription_titlebar));
-
+        if (savedInstanceState != null) {
+            mIsTrialExpanded = savedInstanceState.getBoolean(KEY_TRIAL_EXPANDED, false);
+        }
         createFrequencyView();
         createSubscriptionOptions();
         initTrial();
         return view;
     }
 
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_TRIAL_EXPANDED, mIsTrialExpanded);
+    }
+
     private void initTrial() {
-        mTrialContainer.setVisibility(View.GONE);
-        if (true) {
-            // Fill trial with stuff
-            BookingOption bookingOption = new BookingOption();
-            bookingOption.setType(BookingOption.TYPE_OPTION);
-            bookingOption.setOptionsRightTitleText(new String[]{"Title"});
-            bookingOption.setOptionsRightSubText(new String[]{"Substring"});
-            bookingOption.setOptions(new String[]{"Option"});
-
-            mSubscriptionOptionsView = new BookingOptionsSelectView(
-                    getActivity(),
-                    bookingOption,
-                    null
-            );
-            mTrialContainer.addView(mSubscriptionOptionsView, 1);
-
+        BookingQuote quote = bookingManager.getCurrentQuote();
+        if (!quote.isCommitmentTrialActive()) {
+            return;
         }
+        mTrialContainer.setVisibility(View.VISIBLE);
+        if (mIsTrialExpanded) {
+            expandTrial();
+        }
+        quote.getTrialCommitmentType();
+        mTrialCheckbox.setLeftTitle("Top Left");
+        mTrialCheckbox.setLeftText("Bottom Left");
+        mTrialCheckbox.setRightTitle("$299");
+        mTrialCheckbox.setRightText(getString(R.string.booking_subscription_term_cleaning));
+        mTrialCheckbox.setSuperText(null);
+
     }
 
     @OnClick(R.id.booking_subscription_trial_cta)
     public void onTrialCtaClicked() {
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialCtaClickedLog()));
-        mTrialContainer.setVisibility(View.VISIBLE);
+        expandTrial();
+    }
+
+    private void expandTrial() {
+        mIsTrialExpanded = true;
+        mTrialLayout.setVisibility(View.VISIBLE);
         mTrialCta.setVisibility(View.GONE);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -209,6 +231,8 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         //Booking option used for the BookingOptionsSelectView
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION);
+        bookingOption.setTitle(getString(R.string.booking_subscription_term_title));
+
 
         CommitmentType commitmentType = bookingManager.getCurrentQuote().getCommitmentType();
         List<SubscriptionLength> subscriptionLengths = commitmentType.getUniqueLengths();
@@ -254,7 +278,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
          */
         mSubscriptionOptionsView = new BookingOptionsSelectView(getActivity(), bookingOption, null);
         updateSubscriptionOptions();
-        mSubscriptionOptionsLayout.addView(mSubscriptionOptionsView, 1);
+        mSubscriptionOptionsLayout.addView(mSubscriptionOptionsView);
     }
 
     private void updateSubscriptionOptions() {

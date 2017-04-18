@@ -36,7 +36,7 @@
     <ScrollView
         android:id="@+id/booking_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="true"
         android:fillViewport="true"
@@ -64,58 +64,61 @@
                 android:layout_marginBottom="10dp"
                 />
 
-            <LinearLayout
+            <FrameLayout
                 android:id="@+id/booking_subscription_option_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingTop="18dp"
-                    android:text="@string/booking_subscription_term_title"
-                    android:textColor="@color/handy_text_black"
-                    android:textSize="@dimen/text_size_large"
-                    />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/booking_subscription_trial_cta"
-                style="@style/TextView.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/default_padding"
-                android:text="@string/booking_subscription_trial_cta"
-                android:textColor="@color/handy_darkened_blue"
+                android:layout_marginBottom="10dp"
                 />
 
             <LinearLayout
                 android:id="@+id/booking_subscription_trial_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginTop="@dimen/default_margin_half"
-                android:paddingBottom="@dimen/default_padding"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:visibility="gone"
                 tools:visibility="visible"
                 >
 
                 <TextView
-                    android:id="@+id/booking_subscription_trial_title"
+                    android:id="@+id/booking_subscription_trial_cta"
+                    style="@style/TextView.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingTop="18dp"
-                    android:textColor="@color/handy_text_black"
-                    android:textSize="@dimen/text_size_large"
-                    tools:text="Give Handy a Try!"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/default_padding"
+                    android:text="@string/booking_subscription_trial_cta"
+                    android:textColor="@color/handy_darkened_blue"
                     />
+
+                <LinearLayout
+                    android:id="@+id/booking_subscription_trial_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/handy_white"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/default_padding"
+                    android:paddingBottom="@dimen/default_padding"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    >
+
+                    <TextView
+                        android:id="@+id/booking_subscription_trial_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/TextView.Medium"
+                        android:gravity="center"
+                        tools:text="Give Handy a Try!"
+                        />
+
+                    <com.handybook.handybook.booking.ui.view.BookingOptionsCheckboxView
+                        android:id="@+id/booking_subscription_trial_option_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </LinearLayout>
                 <!--There will be a radio button here-->
             </LinearLayout>
         </LinearLayout>

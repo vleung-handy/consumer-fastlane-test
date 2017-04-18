@@ -95,6 +95,7 @@ public class BookingQuote extends Observable {
     @SerializedName(KEY_COMMITMENT_PRICES)
     private JsonObject mCommitmentPrices;
     private CommitmentType mCommitmentType;
+    private CommitmentType mTrialCommitmentType;
     private CommitmentPricesMap mCommitmentPricesMap;
 
     //This is the key to the commitment prices
@@ -428,6 +429,10 @@ public class BookingQuote extends Observable {
         return mCommitmentType;
     }
 
+    public CommitmentType getTrialCommitmentType() {
+        return mCommitmentType;
+    }
+
     public List<CommitmentType.CommitmentTypeName> getActiveCommitmentTypes() {
         return mActiveCommitmentTypes;
     }
@@ -520,9 +525,13 @@ public class BookingQuote extends Observable {
                                                            .fromJson(json, BookingQuote.class);
 
         if (bookingQuote != null && bookingQuote.getCommitmentPrices() != null) {
-            //if there is a specified active commitment to use
-            if (bookingQuote.isCommitmentMonthsActive()) {
-                bookingQuote.setupCommitmentPricingStructure();
+            if (bookingQuote.isCommitmentMonthsActive() || bookingQuote.isCommitmentTrialActive()) {
+                if (bookingQuote.isCommitmentMonthsActive()) {
+                    bookingQuote.setupCommitmentPricingStructure();
+                }
+                else if (bookingQuote.isCommitmentTrialActive()) {
+                    bookingQuote.setupTrialPricingStructure();
+                }
             }
             else {
                 //this uses no commitments by default
@@ -545,6 +554,17 @@ public class BookingQuote extends Observable {
         }
     }
 
+    public void setupTrialPricingStructure() {
+        if (getCommitmentPrices() != null) {
+            setTrialCommitmentType(new Gson().fromJson(
+                    getCommitmentPrices(),
+                    CommitmentType.class
+            ));
+            getTrialCommitmentType().transform(CommitmentType.CommitmentTypeName.TRIAL);
+            triggerObservers();
+        }
+    }
+
     /**
      * Returns true if the active commitments are "months"
      * @return
@@ -559,6 +579,17 @@ public class BookingQuote extends Observable {
         }
 
         return false;
+    }
+
+    /**
+     * Returns true if trial active
+     * @return
+     */
+    public boolean isCommitmentTrialActive() {
+        return getActiveCommitmentTypes() != null
+               && !getActiveCommitmentTypes().isEmpty()
+               && getActiveCommitmentTypes().contains(CommitmentType.CommitmentTypeName.TRIAL);
+
     }
 
     public static ExclusionStrategy getExclusionStrategy() {
@@ -586,6 +617,10 @@ public class BookingQuote extends Observable {
      * @param commitmentType
      */
     private void setCommitmentType(final CommitmentType commitmentType) {
+        mCommitmentType = commitmentType;
+    }
+
+    private void setTrialCommitmentType(final CommitmentType commitmentType) {
         mCommitmentType = commitmentType;
     }
 
