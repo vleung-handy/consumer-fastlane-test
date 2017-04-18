@@ -2,6 +2,7 @@ package com.handybook.handybook.referral;
 
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
+import com.handybook.handybook.proteam.ui.fragment.FavProReferralDialogFragment;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.ui.BaseReferralFragment;
 import com.handybook.handybook.referral.ui.ProReferralFragment;
@@ -34,6 +35,7 @@ import dagger.Provides;
                 ReferralV2Fragment.class,
                 ProReferralFragment.class,
                 SimpleProReferralFragment.class,
+                FavProReferralDialogFragment.class,
         })
 public final class ReferralModule {
 

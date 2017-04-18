@@ -11,6 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.handybook.handybook.referral.model.ProReferral;
@@ -73,7 +74,8 @@ public class RatingFlowShareProFragment extends RatingFlowFeedbackChildFragment 
             frag = SimpleProReferralFragment.newInstance(
                     mProReferral,
                     mReferralDescriptor,
-                    mProvider
+                    mProvider,
+                    EventContext.RATING_FLOW
             );
 
             getChildFragmentManager().beginTransaction()

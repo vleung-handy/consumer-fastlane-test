@@ -48,17 +48,20 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
 
     private Provider mProvider;
     private ProReferral mProReferral;
+    private String mLoggingEventContext;
 
     public static SimpleProReferralFragment newInstance(
             @NonNull final ProReferral proReferral,
             @NonNull final ReferralDescriptor referralDescriptor,
-            @NonNull final Provider provider
+            @NonNull final Provider provider,
+            @NonNull final String loggingEventContext
     ) {
 
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.PRO_REFERRAL, proReferral);
         args.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
         args.putSerializable(BundleKeys.PROVIDER, provider);
+        args.putString(BundleKeys.EVENT_CONTEXT, loggingEventContext);
 
         SimpleProReferralFragment fragment = new SimpleProReferralFragment();
         fragment.setArguments(args);
@@ -72,6 +75,7 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
         mReferralDescriptor
                 = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
         mProvider = (Provider) getArguments().getSerializable(BundleKeys.PROVIDER);
+        mLoggingEventContext = getArguments().getString(BundleKeys.EVENT_CONTEXT);
     }
 
     @Nullable
@@ -139,6 +143,7 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
     @Override
     protected void sendShareButtonTappedLog(final String guid, final String referralMedium) {
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareButtonForProTapped(
+                mLoggingEventContext,
                 mProvider.getId(),
                 referralMedium,
                 guid,
@@ -152,6 +157,7 @@ public class SimpleProReferralFragment extends BaseReferralFragment {
     @Override
     protected void sendShareMethodSelectedLog(final String guid, final String referralMedium) {
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ShareMethodForProSelected(
+                mLoggingEventContext,
                 mProvider.getId(),
                 referralMedium,
                 guid,

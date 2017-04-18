@@ -60,5 +60,6 @@ public class BundleKeys {
     public static final String IMPROVEMENT_FEEDBACK = "improvement_feedback";
     public static final String RECOMMENDED_PROVIDERS = "recommended_providers";
     public static final String PRO_AVAILABILITY = "pro_availability";
+    public static final String EVENT_CONTEXT = "event_context";
 
 }
