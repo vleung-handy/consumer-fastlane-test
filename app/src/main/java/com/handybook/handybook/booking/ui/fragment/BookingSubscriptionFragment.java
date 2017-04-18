@@ -2,8 +2,10 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,6 +46,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     private static final String TAG = BookingSubscriptionFragment.class.getName();
     private static final String KEY_TRIAL_EXPANDED = "key:trial_expanded";
+    private static final String KEY_MONTHS_DISABLED = "key:months_disabled";
 
     @Bind(R.id.booking_frequency_options_spinner_view)
     ViewGroup mFrequencyLayout;
@@ -63,14 +66,15 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     BookingOptionsCheckboxView mTrialCheckbox;
 
     private BookingTransaction mBookingTransaction;
-    protected BookingOptionsSelectView mSubscriptionOptionsView;
-    protected BookingOptionsSelectView mTrialOptionView;
-    protected BookingOptionsSpinnerView mFrequencyOptionsSpinnerView;
+    protected BookingOptionsSelectView mCommitmentView;
+    protected BookingOptionsSpinnerView mFrequencyView;
     //This used to do a looking up from the selected subscription value to the subscription key
     private Map<String, String> mSubscriptionLengthToKey;
     //This used to do a looking up from the selected frequency value to the frequency key
     private Map<String, String> mFrequencyValueToKey;
+
     private boolean mIsTrialExpanded = false;
+    private boolean mIsMonthsDisabled = false;
 
     public static BookingSubscriptionFragment newInstance() {
         return new BookingSubscriptionFragment();
@@ -98,6 +102,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         setupToolbar(mToolbar, getString(R.string.booking_subscription_titlebar));
         if (savedInstanceState != null) {
             mIsTrialExpanded = savedInstanceState.getBoolean(KEY_TRIAL_EXPANDED, false);
+            mIsMonthsDisabled = savedInstanceState.getBoolean(KEY_MONTHS_DISABLED, false);
         }
         createFrequencyView();
         createSubscriptionOptions();
@@ -109,6 +114,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_TRIAL_EXPANDED, mIsTrialExpanded);
+        outState.putBoolean(KEY_MONTHS_DISABLED, mIsMonthsDisabled);
     }
 
     private void initTrial() {
@@ -121,27 +127,41 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
             expandTrial();
         }
         quote.getTrialCommitmentType();
-        mTrialCheckbox.setLeftTitle("Top Left");
         mTrialCheckbox.setLeftText("Bottom Left");
+        mTrialCheckbox.setLeftTitle("Top Left");
         mTrialCheckbox.setRightTitle("$299");
         mTrialCheckbox.setRightText(getString(R.string.booking_subscription_term_cleaning));
         mTrialCheckbox.setSuperText(null);
         mTrialCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-                trialChecked(isChecked);
+                onTrialCheckedChanged(isChecked);
             }
         });
     }
 
-    private void trialChecked(final boolean isChecked) {
-        showToast("Trial checked");
+    private void onTrialCheckedChanged(final boolean isChecked) {
+        if (isChecked) {
+            updateBookingTransaction(CommitmentType.STRING_TRIAL, 0, 0);
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialCheckedLog()));
+            disableMonths();
+        }
+        else {
+            enableMonths();
+        }
     }
 
-    @OnClick(R.id.booking_subscription_trial_cta)
-    public void onTrialCtaClicked() {
-        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialCtaClickedLog()));
-        expandTrial();
+    private void enableMonths() {
+        mIsMonthsDisabled = false;
+        mTrialCheckbox.setChecked(false);
+        mFrequencyView.setAlpha(1);
+        mSubscriptionOptionsLayout.setAlpha(1);
+    }
+
+    private void disableMonths() {
+        mIsMonthsDisabled = true;
+        mFrequencyView.setAlpha(0.5f);
+        mSubscriptionOptionsLayout.setAlpha(0.5f);
     }
 
     private void expandTrial() {
@@ -156,17 +176,32 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         }, 50);
     }
 
-    @OnClick(R.id.next_button)
-    public void onNextButtonClick() {
-        //Get the frequency selected
-        mBookingTransaction.setRecurringFrequency(Integer.parseInt(getCurrentFrequencyKey()));
+    @OnClick(R.id.booking_subscription_trial_cta)
+    public void onTrialCtaClicked() {
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialCtaClickedLog()));
+        expandTrial();
+    }
 
-        //Get the subscription selected
-        String subKey = mSubscriptionLengthToKey.get(mSubscriptionOptionsView.getCurrentValue());
-        int commitmentLength = TextUtils.isBlank(subKey) ? 0 : Integer.parseInt(subKey);
+    private void updateBookingTransaction(
+            @NonNull String commitmentType,
+            final int recurringFrequency,
+            final int commitmentLength
+    ) {
+        mBookingTransaction.setCommitmentType(commitmentType);
+        mBookingTransaction.setRecurringFrequency(recurringFrequency);
         mBookingTransaction.setCommitmentLength(commitmentLength);
+    }
 
-        continueBookingFlow();
+    @NonNull
+    private String getCurrentFrequencyKey() {
+        //This is here only because unit tests fail here. Should never happen in real life
+        if (mFrequencyView.getListSize() == 0) { return "0"; }
+        return mFrequencyValueToKey.get(mFrequencyView.getCurrentValue());
+    }
+
+    @NonNull
+    private String getCurrentCommitmentKey() {
+        return mSubscriptionLengthToKey.get(mCommitmentView.getCurrentValue());
     }
 
     @OnClick(R.id.booking_subscription_toolbar_faq)
@@ -202,12 +237,13 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         }
 
         //Create the frequency spinner
-        mFrequencyOptionsSpinnerView = new BookingOptionsSpinnerView(
+        mFrequencyView = new BookingOptionsSpinnerView(
                 getContext(),
                 bookingOption,
                 new BookingOptionsView.OnUpdatedListener() {
                     @Override
                     public void onUpdate(final BookingOptionsView view) {
+                        enableMonths();
                         updateSubscriptionOptions();
                     }
 
@@ -228,8 +264,13 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
                     }
                 }
         );
-
-        mFrequencyLayout.addView(mFrequencyOptionsSpinnerView);
+        mFrequencyView.setOnTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                return false;
+            }
+        });
+        mFrequencyLayout.addView(mFrequencyView);
     }
 
     private void createSubscriptionOptions() {
@@ -279,10 +320,17 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         build a BookingOption model from the monthly subscription options so we can use it
         to create an options view
          */
-        mSubscriptionOptionsView = new BookingOptionsSelectView(getActivity(), bookingOption, null);
-        mSubscriptionOptionsView.hideTitle();
+        mCommitmentView = new BookingOptionsSelectView(getActivity(), bookingOption, null);
+        mCommitmentView.hideTitle();
         updateSubscriptionOptions();
-        mSubscriptionOptionsLayout.addView(mSubscriptionOptionsView);
+        mCommitmentView.setOnTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                enableMonths();
+                return false;
+            }
+        });
+        mSubscriptionOptionsLayout.addView(mCommitmentView);
     }
 
     private void updateSubscriptionOptions() {
@@ -291,21 +339,28 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
         for (int i = 0; i < subscriptionLengths.size(); i++) {
             SubscriptionLength subscriptionLength = subscriptionLengths.get(i);
-            String key = subscriptionLength.getKey();
+            String commitmentKey = subscriptionLength.getKey();
             SubscriptionPrices subscriptionPrice = commitmentType.getSubscriptionPrice(
-                    key,
+                    commitmentKey,
                     getCurrentFrequencyKey()
             );
 
             if (subscriptionPrice != null) {
                 boolean isEnabled = subscriptionPrice.isEnabled();
-                mSubscriptionOptionsView.setIsOptionEnabled(isEnabled, i);
+                if (isEnabled && !mTrialCheckbox.isChecked()) {
+                    updateBookingTransaction(
+                            CommitmentType.STRING_MONTHS,
+                            Integer.parseInt(getCurrentFrequencyKey()),
+                            Integer.parseInt(commitmentKey)
+                    );
+                }
+                mCommitmentView.setIsOptionEnabled(isEnabled, i);
 
                 Price price = subscriptionPrice.getPrices()
                                                .get(Float.toString(mBookingTransaction.getHours()));
 
                 if (price != null) {
-                    mSubscriptionOptionsView.updateRightOptionsTitleText(
+                    mCommitmentView.updateRightOptionsTitleText(
                             TextUtils.formatPriceCents(
                                     price.getFullPrice(),
                                     bookingManager.getCurrentQuote().getCurrencyChar()
@@ -315,16 +370,31 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
                 }
 
                 if (isEnabled && subscriptionLength.isDefault()) {
-                    mSubscriptionOptionsView.setCurrentIndex(i);
+                    mCommitmentView.setCurrentIndex(i);
                 }
             }
         }
     }
 
-    private String getCurrentFrequencyKey() {
-        //This is here only because unit tests fail here. Should never happen in real life
-        if (mFrequencyOptionsSpinnerView.getListSize() == 0) { return "0"; }
-
-        return mFrequencyValueToKey.get(mFrequencyOptionsSpinnerView.getCurrentValue());
+    @OnClick(R.id.next_button)
+    public void onNextButtonClick() {
+        if (mTrialCheckbox.isChecked()) {
+            updateBookingTransaction(CommitmentType.STRING_TRIAL, 0, 0);
+        }
+        else {
+            updateBookingTransaction(
+                    CommitmentType.STRING_MONTHS,
+                    Integer.parseInt(getCurrentFrequencyKey()),
+                    Integer.parseInt(getCurrentCommitmentKey())
+            );
+        }
+/*
+        String out =
+                "CT: " + mBookingTransaction.getCommitmentType()
+                + " F: " + String.valueOf(mBookingTransaction.getRecurringFrequency())
+                + " C: " + String.valueOf(mBookingTransaction.getCommitmentLength());
+        showToast(out);
+*/
+        continueBookingFlow();
     }
 }
