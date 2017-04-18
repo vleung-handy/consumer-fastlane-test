@@ -11,4 +11,6 @@ public interface EventType {
     String EVENT_TYPE_SKIPPED = "skipped";
     String VIEW_AVAILABILITY_SELECTED = "view_availability_selected";
     String REFERRAL_PAGE_SHOWN = "referral_page_shown";
+    String CONVERSATIONS_LOADING_ERROR = "conversations_loading_error";
+    String CONVERSATIONS_LOADED = "conversations_loaded";
 }

@@ -9,4 +9,5 @@ public interface EventContext {
     String UPCOMING_BOOKINGS = "upcoming_bookings";
     String PROTEAM_MANAGEMENT = "pro_team_management";
     String RATING_FLOW = "rating_flow";
+    String CONVERSATIONS = "pro_team_converations";
 }
