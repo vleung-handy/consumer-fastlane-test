@@ -78,6 +78,15 @@ public class BookingFunnelLog extends EventLog {
     }
 
 
+    public static class BookingOneTimeTrialCheckedLog extends BookingFunnelLog {
+
+        private static final String EVENT_TYPE = "onetime_checked";
+
+        public BookingOneTimeTrialCheckedLog() {
+            super(EVENT_TYPE);
+        }
+    }
+
     public static class BookingFAQPressedLog extends BookingFunnelLog {
 
         private static final String EVENT_TYPE = "commitment_faq_pressed";
