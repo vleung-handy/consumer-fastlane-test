@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -19,7 +20,8 @@ import com.handybook.handybook.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingOptionsCheckboxView extends FrameLayout {
+public final class BookingOptionsCheckboxView extends FrameLayout implements
+        CompoundButton.OnCheckedChangeListener {
 
     @Bind(R.id.booking_select_checkbox_left_title)
     TextView mLeftTitle;
@@ -35,6 +37,7 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
     ImageView mLeftIndicator;
     @Bind(R.id.booking_select_checkbox_super_text)
     TextView mSuperText;
+    private CompoundButton.OnCheckedChangeListener mOutsideListener;
 
     public BookingOptionsCheckboxView(final Context context) {
         super(context);
@@ -70,6 +73,7 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
         setSaveEnabled(true);
         inflate(getContext(), R.layout.view_booking_option_checkbox, this);
         ButterKnife.bind(this);
+        mCheckBox.setOnCheckedChangeListener(this);
         if (isInEditMode()) {
             demo();
         }
@@ -142,7 +146,7 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
     public void setOnCheckedChangeListener(
             @Nullable CompoundButton.OnCheckedChangeListener listener
     ) {
-        mCheckBox.setOnCheckedChangeListener(listener);
+        mOutsideListener = listener;
     }
 
     private void setTextView(@NonNull TextView textView, @Nullable String text) {
@@ -152,6 +156,14 @@ public final class BookingOptionsCheckboxView extends FrameLayout {
         }
         else {
             textView.setVisibility(VISIBLE);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+        ((ViewGroup) getRootView()).dispatchSetSelected(isChecked);
+        if (mOutsideListener != null) {
+            mOutsideListener.onCheckedChanged(buttonView, isChecked);
         }
     }
 
