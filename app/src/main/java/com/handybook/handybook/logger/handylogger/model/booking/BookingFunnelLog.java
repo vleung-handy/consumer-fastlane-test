@@ -70,7 +70,7 @@ public class BookingFunnelLog extends EventLog {
 
     public static class BookingOneTimeTrialCtaClickedLog extends BookingFunnelLog {
 
-        private static final String EVENT_TYPE = "onetime_selected";
+        private static final String EVENT_TYPE = "onetime_trial_selected";
 
         public BookingOneTimeTrialCtaClickedLog() {
             super(EVENT_TYPE);
@@ -80,7 +80,7 @@ public class BookingFunnelLog extends EventLog {
 
     public static class BookingOneTimeTrialCheckedLog extends BookingFunnelLog {
 
-        private static final String EVENT_TYPE = "onetime_checked";
+        private static final String EVENT_TYPE = "onetime_trial_checked";
 
         public BookingOneTimeTrialCheckedLog() {
             super(EVENT_TYPE);
