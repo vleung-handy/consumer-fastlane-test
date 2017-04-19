@@ -20,6 +20,7 @@ import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
@@ -32,6 +33,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.squareup.otto.Subscribe;
+import com.usebutton.sdk.models.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,6 +53,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
     static final String EXTRA_RESCHEDULE_TYPE = "com.handy.handy.EXTRA_RESCHEDULE_TYPE";
     static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
+    static final String EXTRA_PROVIDER_NAME = "com.handy.handy.EXTRA_PROVIDER_NAME";
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
 
     @Bind(R.id.next_button)
@@ -143,6 +146,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     private String mNotice;
     private BookingDetailFragment.RescheduleType mRescheduleType;
     private String mProviderId;
+    private String mProviderName;
 
     public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
         final BookingDateFragment fragment = new BookingDateFragment();
@@ -157,6 +161,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             final String notice,
             BookingDetailFragment.RescheduleType type,
             final String providerId,
+            final String providerName,
             final ProAvailabilityResponse availabilityResponse
     ) {
         final BookingDateFragment fragment = new BookingDateFragment();
@@ -165,6 +170,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         args.putString(EXTRA_RESCHEDULE_NOTICE, notice);
         args.putSerializable(EXTRA_RESCHEDULE_TYPE, type);
         args.putString(EXTRA_PROVIDER_ID, providerId);
+        args.putString(EXTRA_PROVIDER_NAME, providerName);
         args.putSerializable(BundleKeys.PRO_AVAILABILITY, availabilityResponse);
         fragment.setArguments(args);
         return fragment;
@@ -183,6 +189,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             }
             mNotice = getArguments().getString(EXTRA_RESCHEDULE_NOTICE);
             mProviderId = getArguments().getString(EXTRA_PROVIDER_ID);
+            mProviderName = getArguments().getString(EXTRA_PROVIDER_NAME);
 
             mRescheduleType = (BookingDetailFragment.RescheduleType)
                     getArguments().getSerializable(EXTRA_RESCHEDULE_TYPE);
@@ -256,8 +263,9 @@ public final class BookingDateFragment extends BookingFlowFragment
                 String locationText;
                 //If it's a reschedule from chat, display a different message
                 if (mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT &&
-                    mRescheduleBooking.getProvider() != null) {
-                    locationText = getString(R.string.when_pro_formatted, mRescheduleBooking.getProvider().getFirstName());
+                    !TextUtils.isEmpty(mProviderId) &&
+                    !TextUtils.isEmpty(mProviderName)) {
+                    locationText = getString(R.string.when_pro_formatted, mProviderName);
                 }
                 else {
                     locationText = getString(R.string.when_come);
@@ -288,8 +296,11 @@ public final class BookingDateFragment extends BookingFlowFragment
                 mProAvailability
         );
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.booking_date_time_input_fragment_container, bookingDateTimeInputFragment,
-                BookingTimeInputDialogFragment.TAG);
+        transaction.replace(
+                R.id.booking_date_time_input_fragment_container,
+                bookingDateTimeInputFragment,
+                BookingTimeInputDialogFragment.TAG
+        );
         transaction.commit();
         updateBookingRequestDateTime(startDateTime.getTime());
     }
@@ -354,7 +365,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             return TimeZone.getTimeZone(mRescheduleBooking.getBookingTimezone());
         }
         if (bookingManager.getCurrentRequest() != null &&
-                 !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone())) {
+            !TextUtils.isEmpty(bookingManager.getCurrentRequest().getTimeZone())) {
             return TimeZone.getTimeZone(bookingManager.getCurrentRequest().getTimeZone());
         }
         return TimeZone.getDefault();

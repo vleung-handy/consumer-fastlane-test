@@ -26,6 +26,7 @@ public final class BookingDateActivity extends MenuDrawerActivity {
                     getIntent().getSerializableExtra(BundleKeys.RESCHEDULE_TYPE);
 
             final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
+            final String providerName = getIntent().getStringExtra(BundleKeys.PROVIDER_NAME);
 
             final ProAvailabilityResponse availabilityResponse = (ProAvailabilityResponse)
                     getIntent().getSerializableExtra(BundleKeys.PRO_AVAILABILITY);
@@ -35,6 +36,7 @@ public final class BookingDateActivity extends MenuDrawerActivity {
                     notice,
                     type,
                     providerId,
+                    providerName,
                     availabilityResponse
             );
         }

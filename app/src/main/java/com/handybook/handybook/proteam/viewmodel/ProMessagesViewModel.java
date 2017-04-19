@@ -11,40 +11,47 @@ import java.io.Serializable;
 public class ProMessagesViewModel implements Serializable {
 
     private final String mProviderId;
-    private final String mProName;
+    private final String mProviderName;
+    private final String mProviderFirstName;
     private final String mImageUrl;
     private final ProTeamCategoryType mProTeamCategoryType;
     private final boolean mIsFavorite;
 
-    public ProMessagesViewModel(@NonNull final Provider pro) {
+    public ProMessagesViewModel(@NonNull final Provider provider) {
         this(
-                pro.getId(),
-                pro.getName(),
-                pro.getImageUrl(),
-                pro.getCategoryType(),
-                pro.isFavorite()
+                provider.getId(),
+                provider.getName(),
+                provider.getFirstName(),
+                provider.getImageUrl(),
+                provider.getCategoryType(),
+                provider.isFavorite()
         );
     }
 
     public ProMessagesViewModel(
             @Nullable final String providerId,
-            @Nullable final String proName,
+            @Nullable final String providerName,
+            @Nullable final String providerFirstName,
             @Nullable final String imageUrl,
             @Nullable final ProTeamCategoryType proCategoryType,
             final boolean isFavorite
     ) {
         mProviderId = providerId;
+        mProviderName = providerName;
+        mProviderFirstName = providerFirstName;
         mImageUrl = imageUrl;
-        mProName = proName;
-        mIsFavorite = isFavorite;
         mProTeamCategoryType = proCategoryType;
+        mIsFavorite = isFavorite;
     }
 
     @Nullable
     public String getProviderId() { return mProviderId; }
 
     @Nullable
-    public String getProName() { return mProName; }
+    public String getProviderName() { return mProviderName; }
+
+    @Nullable
+    public String getProviderFirstName() { return mProviderFirstName; }
 
     @Nullable
     public String getImageUrl() { return mImageUrl; }
