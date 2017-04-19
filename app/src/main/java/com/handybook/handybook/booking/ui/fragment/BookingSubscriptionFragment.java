@@ -126,10 +126,17 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         if (mIsTrialExpanded) {
             expandTrial();
         }
-        quote.getTrialCommitmentType();
-        mTrialCheckbox.setLeftText("Bottom Left");
-        mTrialCheckbox.setLeftTitle("Top Left");
-        mTrialCheckbox.setRightTitle("$299");
+        CommitmentType trialCommitmentType = bookingManager.getCurrentQuote()
+                                                           .getTrialCommitmentType();
+        SubscriptionPrices trialPrices = trialCommitmentType.getSubscriptionPrice("0", "0");
+        Price price = trialPrices.getPrices().get(Float.toString(mBookingTransaction.getHours()));
+        mTrialCheckbox.setRightTitle(
+                TextUtils.formatPriceCents(
+                        price.getFullPrice(),
+                        bookingManager.getCurrentQuote().getCurrencyChar()
+                )
+        );
+        mTrialCheckbox.setLeftTitle(trialCommitmentType.getUniqueLengths().get(0).getTitle());
         mTrialCheckbox.setRightText(getString(R.string.booking_subscription_term_cleaning));
         mTrialCheckbox.setSuperText(null);
         mTrialCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -138,6 +145,9 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
                 onTrialCheckedChanged(isChecked);
             }
         });
+        if (CommitmentType.STRING_TRIAL.equals(mBookingTransaction.getCommitmentType())) {
+            mTrialCheckbox.setChecked(true);
+        }
     }
 
     private void onTrialCheckedChanged(final boolean isChecked) {

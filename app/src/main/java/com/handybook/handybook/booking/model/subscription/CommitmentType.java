@@ -65,6 +65,8 @@ public class CommitmentType implements Serializable {
      */
     private List<SubscriptionLength> mUniqueLengths;
 
+    private CommitmentTypeName mTransformedCommitment;
+
     /**
      * Apply a massive transformation of the commitments into something more understandable and
      * readable.
@@ -80,10 +82,14 @@ public class CommitmentType implements Serializable {
         mSubscriptionPrices = new HashMap<>();
         mUniqueFrequencies = new ArrayList<>();
         mUniqueLengths = new ArrayList<>();
+        mTransformedCommitment = commitmentToUse;
 
         try {
             if (commitmentToUse == CommitmentTypeName.MONTHS && mMonths != null) {
                 processLengths(mMonths);
+            }
+            else if (CommitmentTypeName.TRIAL.equals(commitmentToUse) && mTrial != null) {
+                processLengths(mTrial);
             }
             else if (mNoCommitment != null) {
                 //fall back to use
@@ -127,10 +133,11 @@ public class CommitmentType implements Serializable {
                 );
 
                 //This is not added to the unique lengths because 0 is not to be displayed
-                // for the Plan terms
-                if (!lengthKey.equals("0")) {
-                    mUniqueLengths.add(length);
+                // for the Plan terms unless trial of course
+                if (mTransformedCommitment == CommitmentTypeName.MONTHS && lengthKey.equals("0")) {
+                    continue;
                 }
+                mUniqueLengths.add(length);
             }
 
             //digging deeper in the length information, we'll find frequency
