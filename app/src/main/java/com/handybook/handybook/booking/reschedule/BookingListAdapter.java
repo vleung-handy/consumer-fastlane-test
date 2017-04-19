@@ -37,8 +37,7 @@ public class BookingListAdapter extends RecyclerView.Adapter<BookingItemHolder> 
                 null,
                 null,
                 null,
-                mIsBookingHoursClarificationExperimentEnabled,
-                false
+                mIsBookingHoursClarificationExperimentEnabled
         );
 
         item.setLayoutParams(new RecyclerView.LayoutParams(

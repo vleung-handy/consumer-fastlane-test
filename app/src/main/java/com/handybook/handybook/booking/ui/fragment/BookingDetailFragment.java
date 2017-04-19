@@ -19,7 +19,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.constant.ProviderAvailabilitySource;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.JobStatus;
@@ -152,12 +151,8 @@ public final class BookingDetailFragment extends InjectedFragment
     ) {
         if (mBooking == null) { return; }
 
-        boolean enableProAvailableBanner =
-                mConfigurationManager.getPersistentConfiguration()
-                                     .isProviderRequestsResponseEnabled();
         final ProviderRequest providerRequest = mBooking.getProviderRequest();
-        if (enableProAvailableBanner && providerRequest != null &&
-            providerRequest.getProvider() != null) {
+        if (providerRequest != null && providerRequest.getProvider() != null) {
             mProBusyView.setVisibility(View.VISIBLE);
             mProBusyView.setDisplay(
                     providerRequest.getProvider().getImageUrl(),
@@ -589,8 +584,7 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     private void setProBusyViewVisibility() {
-        if (mConfigurationManager.getPersistentConfiguration().isProviderRequestsResponseEnabled()
-            && mBooking != null
+        if (mBooking != null
             && mBooking.getProviderRequest() != null
             && mBooking.getProviderRequest().getProvider() != null) {
             mProBusyView.setVisibility(View.VISIBLE);
