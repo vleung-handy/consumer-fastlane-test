@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.view;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,8 @@ import com.handybook.handybook.library.util.Utils;
  * these are dynamically generated for booking details
  */
 public class BookingActionButton extends Button {
+
+    private BookingActionButtonType mBookingActionButtonType;
 
     public BookingActionButton(Context context) {
         super(context);
@@ -34,36 +37,49 @@ public class BookingActionButton extends Button {
 
     @SuppressWarnings("deprecation")
     public void init(String bookingAction, OnClickListener clickListener) {
-        final BookingActionButtonType bookingActionButtonType = Utils.getBookingActionButtonType(
+        mBookingActionButtonType = Utils.getBookingActionButtonType(
                 bookingAction);
-        if (bookingActionButtonType == null) {
+        if (mBookingActionButtonType == null) {
             Crashlytics.log(
                     "BookingActionButton : No associated action type for : " + bookingAction);
             return;
         }
 
-        setBackgroundResource(bookingActionButtonType.getBackgroundDrawableId());
+        setBackgroundResource(mBookingActionButtonType.getBackgroundDrawableId());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setTextAppearance(bookingActionButtonType.getTextStyleId());
+            setTextAppearance(mBookingActionButtonType.getTextStyleId());
         }
         else {
-            setTextAppearance(getContext(), bookingActionButtonType.getTextStyleId());
+            setTextAppearance(getContext(), mBookingActionButtonType.getTextStyleId());
         }
-        int leftDrawableResourceId = bookingActionButtonType.getLeftDrawableResourceId();
-        if (leftDrawableResourceId > 0) {
+
+        setLeftDrawable();
+        setText(mBookingActionButtonType.getDisplayNameId());
+        setId(mBookingActionButtonType.getAccessibilityId());
+        setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));
+        if (clickListener != null) {
+            setOnClickListener(clickListener);
+        }
+    }
+
+    @Override
+    public void setEnabled(final boolean enabled) {
+        super.setEnabled(enabled);
+        setLeftDrawable();
+    }
+
+    private void setLeftDrawable() {
+        @DrawableRes
+        int drawableResourceId = isEnabled()
+                                 ? mBookingActionButtonType.getLeftDrawableResourceId()
+                                 : mBookingActionButtonType.getLeftDisabledDrawableResourceId();
+        if (drawableResourceId > 0) {
             setCompoundDrawablesWithIntrinsicBounds(
-                    bookingActionButtonType.getLeftDrawableResourceId(),
+                    drawableResourceId,
                     0,
                     0,
                     0
             );
-        }
-
-        setText(bookingActionButtonType.getDisplayNameId());
-        setId(bookingActionButtonType.getAccessibilityId());
-        setTypeface(TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));
-        if (clickListener != null) {
-            setOnClickListener(clickListener);
         }
     }
 }

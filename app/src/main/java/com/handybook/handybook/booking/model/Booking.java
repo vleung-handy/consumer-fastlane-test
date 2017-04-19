@@ -104,6 +104,8 @@ public class Booking implements Parcelable {
     private ProviderRequest mProviderRequest;
     @SerializedName("show_payment_section")
     private boolean mShouldShowPaymentSection;
+    @SerializedName("chat_options")
+    private ChatOptions mChatOptions;
 
     public ProviderAssignmentInfo getProviderAssignmentInfo() {
         return mProviderAssignmentInfo;
@@ -194,6 +196,10 @@ public class Booking implements Parcelable {
 
     public ProviderRequest getProviderRequest() {
         return mProviderRequest;
+    }
+
+    public ChatOptions getChatOptions() {
+        return mChatOptions;
     }
 
     //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table,
@@ -436,6 +442,7 @@ public class Booking implements Parcelable {
         mEntryMethodOption = (EntryMethodOption) in.readSerializable();
         mProviderAssignmentInfo = (ProviderAssignmentInfo) in.readSerializable();
         mProviderRequest = (ProviderRequest) in.readSerializable();
+        mChatOptions = (ChatOptions) in.readSerializable();
     }
 
     public static Booking fromJson(final String json) {
@@ -483,6 +490,7 @@ public class Booking implements Parcelable {
         out.writeSerializable(mEntryMethodOption);
         out.writeSerializable(mProviderAssignmentInfo);
         out.writeSerializable(mProviderRequest);
+        out.writeSerializable(mChatOptions);
     }
 
     @Override

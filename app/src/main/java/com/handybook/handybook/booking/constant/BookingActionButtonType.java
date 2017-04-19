@@ -20,6 +20,7 @@ public enum BookingActionButtonType {
             R.string.call,
             BookingActionButtonStyle.CONTACT,
             R.drawable.ic_call_blue,
+            R.drawable.ic_call_gray,
             R.id.action_button_contact_phone
     ),
     CONTACT_TEXT(
@@ -27,6 +28,7 @@ public enum BookingActionButtonType {
             R.string.text,
             BookingActionButtonStyle.CONTACT,
             R.drawable.ic_text_blue,
+            R.drawable.ic_text_gray,
             R.id.action_button_contact_text
     ),;
 
@@ -35,6 +37,7 @@ public enum BookingActionButtonType {
     private BookingActionButtonStyle style;
     private int accessibilityId;
     private int mLeftDrawableResourceId;
+    private int mLeftDisabledDrawableResourceId;
 
     BookingActionButtonType(
             String actionName,
@@ -53,14 +56,20 @@ public enum BookingActionButtonType {
             int displayNameId,
             BookingActionButtonStyle style,
             int leftDrawableResourceId,
+            int leftDisabledDrawableResourceId,
             int accessibilityId
     ) {
         this(actionName, displayNameId, style, accessibilityId);
         mLeftDrawableResourceId = leftDrawableResourceId;
+        mLeftDisabledDrawableResourceId = leftDisabledDrawableResourceId;
     }
 
     public int getLeftDrawableResourceId() {
         return mLeftDrawableResourceId;
+    }
+
+    public int getLeftDisabledDrawableResourceId() {
+        return mLeftDisabledDrawableResourceId;
     }
 
     public int getBackgroundDrawableId() {

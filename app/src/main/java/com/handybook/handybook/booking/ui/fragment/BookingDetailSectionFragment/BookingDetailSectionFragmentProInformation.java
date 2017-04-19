@@ -287,13 +287,12 @@ public class BookingDetailSectionFragmentProInformation extends
     @Override
     protected List<String> getActionButtonTypeList(Booking booking) {
         List<String> actionButtonTypes = new ArrayList<>();
-        if (booking.hasAssignedProvider()) {
-            //Make sure it is not an empty phone number
-            if (validateProPhoneInformation(booking)) {
-                actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
-                actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
-            }
+
+        if (booking.getChatOptions() != null && booking.getChatOptions().shouldAllowChat()) {
+            actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
+            actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
         }
+
         return actionButtonTypes;
     }
 
@@ -349,11 +348,11 @@ public class BookingDetailSectionFragmentProInformation extends
 
         @Override
         public void onClick(final View v) {
-            if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
-                booking.getProvider() != null && booking.getProvider().isChatEnabled()) {
+            if (booking.getChatOptions() != null &&
+                booking.getChatOptions().shouldDirectToInAppChat()) {
+                progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                         EventContext.BOOKING_DETAILS, booking.getId(), ProContactedLog.CHAT)));
-                progressDialog.show();
                 HandyLibrary.getInstance()
                             .getHandyService()
                             .createConversation(
