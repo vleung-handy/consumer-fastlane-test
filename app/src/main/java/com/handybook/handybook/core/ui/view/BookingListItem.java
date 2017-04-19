@@ -38,8 +38,6 @@ public class BookingListItem extends FrameLayout {
      */
     private final boolean mIsBookingHoursClarificationExperimentEnabled;
 
-    private final boolean mIsProviderRequestsResponseEnabled;
-
     /**
      * @param isBookingHoursClarificationExperimentEnabled this is passed here because don't want to
      *                                                     pass the entire config object or inject
@@ -52,8 +50,7 @@ public class BookingListItem extends FrameLayout {
             View.OnClickListener clickListener,
             @Nullable View.OnClickListener bannerOnClickListener,
             Booking booking,
-            boolean isBookingHoursClarificationExperimentEnabled,
-            boolean isProviderRequestsResponseEnabled
+            boolean isBookingHoursClarificationExperimentEnabled
     ) {
         super(context);
         mOnClickListener = clickListener;
@@ -61,8 +58,6 @@ public class BookingListItem extends FrameLayout {
         mBooking = booking;
         mIsBookingHoursClarificationExperimentEnabled
                 = isBookingHoursClarificationExperimentEnabled;
-        mIsProviderRequestsResponseEnabled
-                = isProviderRequestsResponseEnabled;
         init();
     }
 
@@ -111,8 +106,7 @@ public class BookingListItem extends FrameLayout {
     }
 
     private void setProBusyBanner() {
-        if (mIsProviderRequestsResponseEnabled &&
-            mBooking != null &&
+        if (mBooking != null &&
             mBooking.getProviderRequest() != null &&
             mBooking.getProviderRequest().getProvider() != null) {
             mProBusyView.setVisibility(VISIBLE);
