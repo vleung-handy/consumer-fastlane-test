@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.constant.ProviderAvailabilitySource;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingRequest;
@@ -384,7 +383,7 @@ public class ProMessagesActivity extends MessagesListActivity {
                     this,
                     getString(
                             R.string.reschedule_no_bookings_formatted,
-                            mProMessageViewModel.getProName()
+                            mProMessageViewModel.getProviderName()
                     ),
                     Toast.LENGTH_LONG
             ).show();
@@ -427,8 +426,9 @@ public class ProMessagesActivity extends MessagesListActivity {
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
         intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, notice);
         intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.FROM_CHAT);
-        intent.putExtra(BundleKeys.PRO_AVAILABILITY, mProAvailabilityResponse);
         intent.putExtra(BundleKeys.PROVIDER_ID, mProMessageViewModel.getProviderId());
+        intent.putExtra(BundleKeys.PROVIDER_NAME, mProMessageViewModel.getProviderFirstName());
+        intent.putExtra(BundleKeys.PRO_AVAILABILITY, mProAvailabilityResponse);
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }
 
