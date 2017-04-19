@@ -153,10 +153,11 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     private void onTrialCheckedChanged(final boolean isChecked) {
         if (isChecked) {
             updateBookingTransaction(CommitmentType.STRING_TRIAL, 0, 0);
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialCheckedLog()));
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialSelectedLog()));
             disableMonths();
         }
         else {
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialDeselectedLog()));
             enableMonths();
         }
     }
@@ -188,7 +189,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     @OnClick(R.id.booking_subscription_trial_cta)
     public void onTrialCtaClicked() {
-        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialCtaClickedLog()));
+        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialCtaTappedLog()));
         expandTrial();
     }
 

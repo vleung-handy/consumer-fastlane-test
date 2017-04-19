@@ -68,21 +68,31 @@ public class BookingFunnelLog extends EventLog {
     }
 
 
-    public static class BookingOneTimeTrialCtaClickedLog extends BookingFunnelLog {
+    public static class BookingOneTimeTrialCtaTappedLog extends BookingFunnelLog {
 
-        private static final String EVENT_TYPE = "onetime_trial_selected";
+        private static final String EVENT_TYPE = "onetime_trial_cta_tapped";
 
-        public BookingOneTimeTrialCtaClickedLog() {
+        public BookingOneTimeTrialCtaTappedLog() {
             super(EVENT_TYPE);
         }
     }
 
 
-    public static class BookingOneTimeTrialCheckedLog extends BookingFunnelLog {
+    public static class BookingOneTimeTrialSelectedLog extends BookingFunnelLog {
 
-        private static final String EVENT_TYPE = "onetime_trial_checked";
+        private static final String EVENT_TYPE = "onetime_trial_selected";
 
-        public BookingOneTimeTrialCheckedLog() {
+        public BookingOneTimeTrialSelectedLog() {
+            super(EVENT_TYPE);
+        }
+    }
+
+
+    public static class BookingOneTimeTrialDeselectedLog extends BookingFunnelLog {
+
+        private static final String EVENT_TYPE = "onetime_trial_deselected";
+
+        public BookingOneTimeTrialDeselectedLog() {
             super(EVENT_TYPE);
         }
     }
