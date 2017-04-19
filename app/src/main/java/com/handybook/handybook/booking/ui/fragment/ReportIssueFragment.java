@@ -79,7 +79,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
         @Override
         public void onClick(final View v) {
             if (mBooking.getChatOptions() != null &&
-                mBooking.getChatOptions().isDirectToInAppChat()) {
+                mBooking.getChatOptions().shouldDirectToInAppChat()) {
                 progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                         EventContext.ISSUE_RESOLUTION, mBooking.getId(), ProContactedLog.CHAT)));

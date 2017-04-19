@@ -288,7 +288,7 @@ public class BookingDetailSectionFragmentProInformation extends
     protected List<String> getActionButtonTypeList(Booking booking) {
         List<String> actionButtonTypes = new ArrayList<>();
 
-        if (booking.getChatOptions() != null && booking.getChatOptions().isAllowChat()) {
+        if (booking.getChatOptions() != null && booking.getChatOptions().shouldAllowChat()) {
             actionButtonTypes.add(BookingAction.ACTION_CONTACT_PHONE);
             actionButtonTypes.add(BookingAction.ACTION_CONTACT_TEXT);
         }
@@ -349,7 +349,7 @@ public class BookingDetailSectionFragmentProInformation extends
         @Override
         public void onClick(final View v) {
             if (booking.getChatOptions() != null &&
-                booking.getChatOptions().isDirectToInAppChat()) {
+                booking.getChatOptions().shouldDirectToInAppChat()) {
                 progressDialog.show();
                 bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                         EventContext.BOOKING_DETAILS, booking.getId(), ProContactedLog.CHAT)));

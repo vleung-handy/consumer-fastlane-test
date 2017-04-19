@@ -125,7 +125,7 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
             Provider provider = booking.getProvider();
             boolean phoneAvailable = provider != null && !TextUtils.isEmpty(provider.getPhone());
             boolean inAppChatEnabled = booking.getChatOptions() != null &&
-                                       booking.getChatOptions().isDirectToInAppChat();
+                                       booking.getChatOptions().shouldDirectToInAppChat();
 
             for (String actionButtonType : actionButtonTypes) {
                 BookingActionButtonType bookingABT = Utils.getBookingActionButtonType(

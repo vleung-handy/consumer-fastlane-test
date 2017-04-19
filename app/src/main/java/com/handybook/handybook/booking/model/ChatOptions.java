@@ -11,19 +11,11 @@ public class ChatOptions implements Serializable {
     @SerializedName("direct_to_in_app_chat")
     private boolean mDirectToInAppChat;
 
-    public boolean isAllowChat() {
+    public boolean shouldAllowChat() {
         return mAllowChat;
     }
 
-    public boolean isDirectToInAppChat() {
+    public boolean shouldDirectToInAppChat() {
         return mDirectToInAppChat;
-    }
-
-    public void setAllowChat(final boolean allowChat) {
-        mAllowChat = allowChat;
-    }
-
-    public void setDirectToInAppChat(final boolean directToInAppChat) {
-        mDirectToInAppChat = directToInAppChat;
     }
 }
