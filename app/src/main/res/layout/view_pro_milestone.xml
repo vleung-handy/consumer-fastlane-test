@@ -102,7 +102,7 @@
                 android:layout_height="@dimen/default_button_height"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_text_blue"
-                android:text="@string/text"
+                android:text="@string/message"
                 android:visibility="gone"
                 tools:visibility="visible"
                 />

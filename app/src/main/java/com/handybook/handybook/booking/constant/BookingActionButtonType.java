@@ -25,7 +25,7 @@ public enum BookingActionButtonType {
     ),
     CONTACT_TEXT(
             BookingAction.ACTION_CONTACT_TEXT,
-            R.string.text,
+            R.string.message,
             BookingActionButtonStyle.CONTACT,
             R.drawable.ic_text_blue,
             R.drawable.ic_text_gray,
