@@ -10,7 +10,6 @@ import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionBookingActionsView;
-import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
@@ -94,18 +93,17 @@ public class BookingDetailSectionFragmentBookingActions
             )));
 
             BookingDetailFragment parentFragment = (BookingDetailFragment) getParentFragment();
-            if (parentFragment != null) {
-                Configuration configuration = parentFragment.getConfiguration();
-                if (configuration != null && configuration.isShowRescheduleFlowOnCancel()) {
-                    //interrupt the cancelation process by asking whether the user wants to reschedule instead.
-                    parentFragment.setRescheduleType(BookingDetailFragment.RescheduleType.FROM_CANCELATION);
-                    bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
-                    return;
-                }
-            }
 
-            //if there were no configuration suggesting rescheduling, then proceed with normal cancelation
-            bus.post(new BookingEvent.RequestBookingCancellationData(booking.getId()));
+            if (parentFragment != null &&
+                mConfigurationManager.getPersistentConfiguration().isShowRescheduleFlowOnCancel()) {
+                //interrupt the cancellation process by asking whether the user wants to reschedule instead.
+                parentFragment.setRescheduleType(BookingDetailFragment.RescheduleType.FROM_CANCELATION);
+                bus.post(new BookingEvent.RequestPreRescheduleInfo(booking.getId()));
+            }
+            else {
+                //if there were no configuration suggesting rescheduling, then proceed with normal cancellation
+                bus.post(new BookingEvent.RequestBookingCancellationData(booking.getId()));
+            }
         }
     };
 
