@@ -85,7 +85,7 @@ public class CommitmentType implements Serializable {
         mTransformedCommitment = commitmentToUse;
 
         try {
-            if (commitmentToUse == CommitmentTypeName.MONTHS && mMonths != null) {
+            if (CommitmentTypeName.MONTHS.equals(commitmentToUse) && mMonths != null) {
                 processLengths(mMonths);
             }
             else if (CommitmentTypeName.TRIAL.equals(commitmentToUse) && mTrial != null) {
@@ -134,10 +134,21 @@ public class CommitmentType implements Serializable {
 
                 //This is not added to the unique lengths because 0 is not to be displayed
                 // for the Plan terms unless trial of course
-                if (mTransformedCommitment == CommitmentTypeName.MONTHS && lengthKey.equals("0")) {
-                    continue;
+
+                switch (mTransformedCommitment) {
+                    case TRIAL:
+                        if (lengthKey.equals("0")) {
+                            mUniqueLengths.add(length);
+                        }
+                        else {
+                            continue;
+                        }
+                        break;
+                    case MONTHS:
+                        if (!lengthKey.equals("0")) {
+                            mUniqueLengths.add(length);
+                        }
                 }
-                mUniqueLengths.add(length);
             }
 
             //digging deeper in the length information, we'll find frequency
