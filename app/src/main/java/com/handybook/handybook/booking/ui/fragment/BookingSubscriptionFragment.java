@@ -166,13 +166,18 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         mIsMonthsDisabled = false;
         mTrialCheckbox.setChecked(false);
         mFrequencyView.setAlpha(1);
-        mSubscriptionOptionsLayout.setAlpha(1);
+        //        mSubscriptionOptionsLayout.setAlpha(1);
+        updateSubscriptionOptions();
     }
 
     private void disableMonths() {
         mIsMonthsDisabled = true;
         mFrequencyView.setAlpha(0.5f);
-        mSubscriptionOptionsLayout.setAlpha(0.5f);
+        //        mSubscriptionOptionsLayout.setAlpha(0.5f);
+        for (int i = 0; i < mCommitmentView.getOptionViewsCount(); i++) {
+            mCommitmentView.setIsOptionEnabled(false, i);
+        }
+
     }
 
     private void expandTrial() {
@@ -212,6 +217,9 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     @NonNull
     private String getCurrentCommitmentKey() {
+        if (mCommitmentView.getCurrentIndex() == -1) {
+            return "0";
+        } // One time deselects commitment
         return mSubscriptionLengthToKey.get(mCommitmentView.getCurrentValue());
     }
 
@@ -275,12 +283,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
                     }
                 }
         );
-        mFrequencyView.setOnTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(final View v, final MotionEvent event) {
-                return false;
-            }
-        });
         mFrequencyLayout.addView(mFrequencyView);
     }
 
@@ -358,13 +360,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
             if (subscriptionPrice != null) {
                 boolean isEnabled = subscriptionPrice.isEnabled();
-                if (isEnabled && !mTrialCheckbox.isChecked()) {
-                    updateBookingTransaction(
-                            CommitmentType.STRING_MONTHS,
-                            Integer.parseInt(getCurrentFrequencyKey()),
-                            Integer.parseInt(commitmentKey)
-                    );
-                }
                 mCommitmentView.setIsOptionEnabled(isEnabled, i);
 
                 Price price = subscriptionPrice.getPrices()
@@ -399,13 +394,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
                     Integer.parseInt(getCurrentCommitmentKey())
             );
         }
-/*
-        String out =
-                "CT: " + mBookingTransaction.getCommitmentType()
-                + " F: " + String.valueOf(mBookingTransaction.getRecurringFrequency())
-                + " C: " + String.valueOf(mBookingTransaction.getCommitmentLength());
-        showToast(out);
-*/
         continueBookingFlow();
     }
 }

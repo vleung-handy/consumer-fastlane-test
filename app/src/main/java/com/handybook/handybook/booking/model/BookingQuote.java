@@ -355,7 +355,7 @@ public class BookingQuote extends Observable {
             final int freq,
             final int length
     ) {
-        if (commitmentType.equals(CommitmentType.STRING_MONTHS) && getCommitmentType() != null) {
+        if (CommitmentType.STRING_MONTHS.equals(commitmentType) && getCommitmentType() != null) {
             //this means to use the new commitment model
             Price price = getCommitmentType()
                     .getPrice(
@@ -366,7 +366,7 @@ public class BookingQuote extends Observable {
 
             return new float[]{price.getFullPrice(), price.getAmountDue()};
         }
-        else if (commitmentType.equals(CommitmentType.STRING_TRIAL) &&
+        else if (CommitmentType.STRING_TRIAL.equals(commitmentType) &&
                  getTrialCommitmentType() != null) {
             //this means to use the new commitment model
             Price price = getTrialCommitmentType()
