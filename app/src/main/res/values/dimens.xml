@@ -7,8 +7,8 @@
 
     <!--bottom nav-->
     <dimen name="bottom_nav_icon_size">40dp</dimen>
-    <dimen name="bottom_nav_margin">5dp</dimen>
-    <dimen name="bottom_nav_text_size">12sp</dimen>
+    <dimen name="bottom_nav_margin_bottom">8dp</dimen>
+    <dimen name="bottom_nav_text_size">10sp</dimen>
 
     <!-- Home Service Padding -->
     <dimen name="service_home_padding">28dp</dimen>

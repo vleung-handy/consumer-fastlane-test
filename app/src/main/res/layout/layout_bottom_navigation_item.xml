@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--mostly copied from R.layout.design_bottom_navigation_item-->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--this assumes that the icon asset itself has padding-->
     <ImageView
         android:id="@+id/icon"
         android:layout_width="@dimen/bottom_nav_icon_size"
         android:layout_height="@dimen/bottom_nav_icon_size"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/bottom_nav_margin"
-        android:layout_marginBottom="@dimen/bottom_nav_margin"
+        android:layout_gravity="center|top"
         android:duplicateParentState="true" />
     <android.support.design.internal.BaselineLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/bottom_nav_margin"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/bottom_nav_margin_bottom"
+        android:layout_gravity="center|bottom"
         android:duplicateParentState="true">
         <TextView
             android:id="@+id/smallLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/design_bottom_navigation_text_size"
+            android:textSize="@dimen/bottom_nav_text_size"
             android:singleLine="true"
             android:duplicateParentState="true" />
 
@@ -28,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:textSize="@dimen/design_bottom_navigation_active_text_size"
+            android:textSize="@dimen/bottom_nav_text_size"
             android:singleLine="true"
             android:duplicateParentState="true"
             />

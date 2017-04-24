@@ -607,5 +607,11 @@
     <string name="view_availability">View Availability</string>
     <string name="pro_is_busy_formatted">%1$s is busy at this time but sent you some alternatives</string>
 
+    <!--bottom nav item labels-->
+    <string name="bottom_nav_item_bookings">Bookings</string>
+    <string name="bottom_nav_item_messages">Messages</string>
+    <string name="bottom_nav_item_services">Services</string>
+    <string name="bottom_nav_item_share">Share</string>
+    <string name="bottom_nav_item_account">Account</string>
 </resources>
 

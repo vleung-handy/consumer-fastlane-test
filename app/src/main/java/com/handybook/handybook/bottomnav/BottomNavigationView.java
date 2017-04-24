@@ -30,7 +30,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.AbsSavedState;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -158,10 +157,6 @@ public class BottomNavigationView extends FrameLayout {
         else {
             mMenuView.setItemTextColor(
                     createDefaultColorStateList(android.R.attr.textColorSecondary));
-        }
-        if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
-            ViewCompat.setElevation(this, a.getDimensionPixelSize(
-                    R.styleable.BottomNavigationView_elevation, 0));
         }
 
         int itemBackground = a.getResourceId(

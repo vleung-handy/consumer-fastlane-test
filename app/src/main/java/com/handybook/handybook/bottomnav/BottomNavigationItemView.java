@@ -2,7 +2,6 @@ package com.handybook.handybook.bottomnav;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
@@ -32,11 +31,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
-    private final int mDefaultMargin;
-    private final int mShiftAmount;
-    private final float mScaleUpFactor;
-    private final float mScaleDownFactor;
-
     private boolean mShiftingMode;
 
     private ImageView mIcon;
@@ -61,15 +55,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        final Resources res = getResources();
-        int inactiveLabelSize =
-                res.getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size);
-        int activeLabelSize = res.getDimensionPixelSize(
-                R.dimen.design_bottom_navigation_active_text_size);
-        mDefaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
-        mShiftAmount = inactiveLabelSize - activeLabelSize;
-        mScaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
-        mScaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
 
         LayoutInflater.from(context)
                       .inflate(
@@ -136,7 +121,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
             if (checked) {
                 LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-                iconParams.topMargin = mDefaultMargin;
                 mIcon.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(VISIBLE);
                 ViewCompat.setScaleX(mLargeLabel, 1f);
@@ -145,7 +129,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
             else {
                 LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER;
-                iconParams.topMargin = mDefaultMargin;
                 mIcon.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(INVISIBLE);
                 ViewCompat.setScaleX(mLargeLabel, 0.5f);
@@ -154,32 +137,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
             mSmallLabel.setVisibility(INVISIBLE);
         }
         else {
-            if (checked) {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-                iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-                iconParams.topMargin = mDefaultMargin + mShiftAmount;
-                mIcon.setLayoutParams(iconParams);
-                mLargeLabel.setVisibility(VISIBLE);
-                mSmallLabel.setVisibility(INVISIBLE);
-
-                ViewCompat.setScaleX(mLargeLabel, 1f);
-                ViewCompat.setScaleY(mLargeLabel, 1f);
-                ViewCompat.setScaleX(mSmallLabel, mScaleUpFactor);
-                ViewCompat.setScaleY(mSmallLabel, mScaleUpFactor);
-            }
-            else {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-                iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-                iconParams.topMargin = mDefaultMargin;
-                mIcon.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(INVISIBLE);
                 mSmallLabel.setVisibility(VISIBLE);
 
-                ViewCompat.setScaleX(mLargeLabel, mScaleDownFactor);
-                ViewCompat.setScaleY(mLargeLabel, mScaleDownFactor);
                 ViewCompat.setScaleX(mSmallLabel, 1f);
                 ViewCompat.setScaleY(mSmallLabel, 1f);
-            }
         }
 
         refreshDrawableState();
