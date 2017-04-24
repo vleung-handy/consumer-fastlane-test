@@ -4,6 +4,7 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage.HandyLoggerSourcePage;
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 
@@ -12,9 +13,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
 public abstract class ProTeamPageLog extends EventLog {
-
-    private static final String EVENT_CONTEXT = "pro_team_management";
-
 
     public static class Context {
 
@@ -36,7 +34,7 @@ public abstract class ProTeamPageLog extends EventLog {
     }
 
     protected ProTeamPageLog(final String eventType) {
-        super(eventType, EVENT_CONTEXT);
+        super(eventType, EventContext.PROTEAM_MANAGEMENT);
     }
 
     /**

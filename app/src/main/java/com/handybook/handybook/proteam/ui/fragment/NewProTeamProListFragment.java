@@ -37,12 +37,16 @@ import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
+import com.handybook.handybook.referral.model.ProReferral;
+import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -65,6 +69,11 @@ public class NewProTeamProListFragment extends InjectedFragment {
 
     private ProTeam.ProTeamCategory mProTeamCategory;
     private ProTeamCategoryType mProTeamCategoryType;
+    private Map<String, ProReferral> mProReferrals;
+
+    //we only need mReferralDescriptor because it contains the sender/receiver referral amounts
+    private ReferralDescriptor mReferralDescriptor;
+
     private NewProTeamCategoryAdapter.ActionCallbacks mProTeamActionCallbacks =
             new NewProTeamCategoryAdapter.ActionCallbacks() {
                 @Override
@@ -112,6 +121,19 @@ public class NewProTeamProListFragment extends InjectedFragment {
                     ));
                 }
             };
+
+    /**
+     * We do this typically after a pro has been "favorited" -- launch a dialog offering the user
+     * the ability to share this current pro.
+     * @param proId
+     */
+    private void launchProReferralDialog(final int proId) {
+        FavProReferralDialogFragment dialogFragment = FavProReferralDialogFragment.newInstance(
+                mProReferrals.get(String.valueOf(proId)),
+                mReferralDescriptor
+        );
+        FragmentUtils.safeLaunchDialogFragment(dialogFragment, getActivity(), null);
+    }
 
     private void launchProTeamActionPicker(final ProTeamActionPickerViewModel viewModel) {
         final ProTeamActionPickerDialogFragment dialogFragment =
@@ -162,6 +184,12 @@ public class NewProTeamProListFragment extends InjectedFragment {
                         }
                         bus.post(new LogEvent.AddLogEvent(
                                 new ProTeamPageLog.EditProTeamSuccess(proTeamEdits)));
+
+                        if (matchPreference == ProviderMatchPreference.FAVORITE
+                            && mProReferrals != null
+                            && mReferralDescriptor != null) {
+                            launchProReferralDialog(proId);
+                        }
                     }
 
                     @Override
@@ -192,15 +220,34 @@ public class NewProTeamProListFragment extends InjectedFragment {
 
     public static NewProTeamProListFragment newInstance(
             @NonNull final ProTeam.ProTeamCategory proTeamCategory,
-            @NonNull final ProTeamCategoryType proTeamCategoryType
+            @NonNull final ProTeamCategoryType proTeamCategoryType,
+            @Nullable final Map<String, ProReferral> proReferrals,
+            @Nullable final ReferralDescriptor referralDescriptor
     ) {
         final NewProTeamProListFragment fragment = new NewProTeamProListFragment();
         final Bundle arguments = new Bundle();
         arguments.putParcelable(BundleKeys.PRO_TEAM_CATEGORY, proTeamCategory);
         arguments.putSerializable(BundleKeys.PRO_TEAM_CATEGORY_TYPE, proTeamCategoryType);
+        arguments.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
+
+        arguments.putSerializable(BundleKeys.PRO_REFERRAL, (Serializable) proReferrals);
         fragment.setArguments(arguments);
         return fragment;
     }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
+        mProTeamCategoryType = (ProTeamCategoryType) getArguments().getSerializable(
+                BundleKeys.PRO_TEAM_CATEGORY_TYPE);
+        mProReferrals
+                = (Map<String, ProReferral>) getArguments().getSerializable(BundleKeys.PRO_REFERRAL);
+        mReferralDescriptor
+                = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
+    }
+
 
     @Nullable
     @Override
@@ -209,10 +256,6 @@ public class NewProTeamProListFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
-        mProTeamCategoryType = (ProTeamCategoryType) getArguments().getSerializable(
-                BundleKeys.PRO_TEAM_CATEGORY_TYPE);
-
         final View view = inflater.inflate(
                 R.layout.fragment_new_pro_team_pro_list,
                 container,

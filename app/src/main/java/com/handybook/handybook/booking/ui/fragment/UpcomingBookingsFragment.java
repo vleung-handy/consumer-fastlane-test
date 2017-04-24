@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.booking.BookingEvent;
+import com.handybook.handybook.booking.constant.ProviderAvailabilitySource;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.ProviderRequest;
 import com.handybook.handybook.booking.model.RecurringBooking;
@@ -306,9 +307,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
         for (int i = startingIndex; i < mBookings.size(); i++) {
             final Booking booking = mBookings.get(i);
             final ProviderRequest providerRequest = booking.getProviderRequest();
-            final boolean enableProAvailableBanner
-                    = mConfigurationManager.getPersistentConfiguration()
-                                           .isProviderRequestsResponseEnabled();
             mBookingsContainer.addView(new BookingListItem(
                     getActivity(),
                     new View.OnClickListener() {
@@ -325,8 +323,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
                     new View.OnClickListener() {
                         @Override
                         public void onClick(final View v) {
-                            if (enableProAvailableBanner && providerRequest != null &&
-                                providerRequest.getProvider() != null) {
+                            if (providerRequest != null && providerRequest.getProvider() != null) {
                                 bus.post(new LogEvent.AddLogEvent(new ViewAvailabilityLog(
                                         EventContext.UPCOMING_BOOKINGS,
                                         booking.getId(),
@@ -342,15 +339,15 @@ public class UpcomingBookingsFragment extends InjectedFragment
                                 progressDialog.show();
                                 bookingManager.rescheduleBookingWithProAvailability(
                                         providerRequest.getProvider().getId(),
-                                        booking
+                                        booking,
+                                        ProviderAvailabilitySource.PROVIDER_REQUEST_RESPONSE
                                 );
                             }
                         }
                     },
                     booking,
                     mConfigurationManager.getPersistentConfiguration()
-                                         .isBookingHoursClarificationExperimentEnabled(),
-                    enableProAvailableBanner
+                                         .isBookingHoursClarificationExperimentEnabled()
             ));
 
             //add divider

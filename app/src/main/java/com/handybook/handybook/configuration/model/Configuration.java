@@ -45,9 +45,6 @@ public class Configuration implements Serializable {
     private boolean mEnableProTeamReschedule;
     @SerializedName("pro_team_reschedule_cta_enabled")
     private boolean mEnableProTeamRescheduleCTA;
-
-    @SerializedName("direct_sms_to_chat_enabled")
-    private boolean mDirectSmsToChatEnabled;
     @SerializedName("setting_favorite_pro_enabled")
     private boolean mSettingFavoriteProEnabled;
 
@@ -65,11 +62,6 @@ public class Configuration implements Serializable {
 
     @SerializedName("consolidated_quote_flow_enabled")
     private boolean mConsolidateBookingGetQuoteFlowExperimentEnabled;
-
-    @SerializedName("provider_requests_response_enabled")
-    private boolean mProviderRequestsResponseEnabled;
-
-
 
     public ReviewAppBanner getReviewAppBanner() {
         return mReviewAppBanner;
@@ -131,10 +123,6 @@ public class Configuration implements Serializable {
 
     public boolean isProTeamRescheduleCTAEnabled() { return mEnableProTeamRescheduleCTA; }
 
-    public boolean isDirectSmsToChatEnabled() {
-        return mDirectSmsToChatEnabled;
-    }
-
     public boolean isSettingFavoriteProEnabled() {
         return mSettingFavoriteProEnabled;
     }
@@ -145,10 +133,6 @@ public class Configuration implements Serializable {
 
     public boolean isNewRatingFlowEnabled() {
         return mNewRatingFlowEnabled;
-    }
-
-    public boolean isProviderRequestsResponseEnabled() {
-        return false;
     }
 
     public static class ReviewAppBanner implements Serializable {

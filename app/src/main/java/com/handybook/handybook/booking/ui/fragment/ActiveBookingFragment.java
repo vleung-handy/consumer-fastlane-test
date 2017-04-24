@@ -704,8 +704,8 @@ public class ActiveBookingFragment extends InjectedFragment
 
     @OnClick(R.id.active_booking_text)
     public void textClicked() {
-        if (mConfigurationManager.getPersistentConfiguration().isDirectSmsToChatEnabled() &&
-            mBooking.getProvider() != null && mBooking.getProvider().isChatEnabled()) {
+        if (mBooking.getChatOptions() != null &&
+            mBooking.getChatOptions().shouldDirectToInAppChat()) {
             progressDialog.show();
             bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                     EventContext.ACTIVE_BOOKING,

@@ -44,6 +44,7 @@ public class ProTeamManager {
             public void onSuccess(final ProTeamWrapper proTeamWrapper) {
                 mBus.post(new ProTeamEvent.ReceiveProTeamSuccess(
                         proTeamWrapper.getProTeam(),
+                        proTeamWrapper.getProReferral(),
                         proTeamWrapper.getProTeamHelpCenterUrl()
                 ));
             }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
@@ -123,6 +124,16 @@ public class SplashActivity extends BaseActivity {
         }
         else if (user != null) {
             //TODO investigate  <-- @Xi what is it that we need to investigate?
+
+            //This needs to be set to fix an issue with existing users not having their zip set
+            if (config.isOnboardingV2Enabled() &&
+                TextUtils.isEmpty(mDefaultPreferencesManager.getString(PrefsKey.ZIP, null)) &&
+                user.getAddress() != null &&
+                !TextUtils.isEmpty(user.getAddress().getZip())) {
+                //the fact that the user is logged in guarantees at least zip information
+                mDefaultPreferencesManager.setString(PrefsKey.ZIP, user.getAddress().getZip());
+            }
+
             final Intent intent = new Intent(this, BottomNavActivity.class);
             startActivity(intent);
             unregisterAndFinish();

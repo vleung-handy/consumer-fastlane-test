@@ -15,7 +15,7 @@ public class PushActionWidgets {
 
         NotificationActionButton contactTextButton =
                 new NotificationActionButton.Builder(PushActionConstants.ACTION_CONTACT_TEXT)
-                        .setLabel(R.string.text)
+                        .setLabel(R.string.message)
                         .setIcon(R.drawable.ic_sms)
                         .build();
 
