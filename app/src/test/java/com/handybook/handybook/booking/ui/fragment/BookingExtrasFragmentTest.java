@@ -25,6 +25,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
@@ -52,10 +53,11 @@ public class BookingExtrasFragmentTest extends RobolectricGradleTestWrapper {
         when(mMockOption.getType()).thenReturn("option_type");
         when(mMockQuote.getBookingOption()).thenReturn(mMockOption);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{
-                0.0f,
-                0.0f
-        });
+        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt()))
+                .thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyString(), anyFloat(), anyInt(), anyInt()))
+                .thenReturn(new float[]{0.0f, 0.0f});
+
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
         mFragment = BookingExtrasFragment.newInstance();

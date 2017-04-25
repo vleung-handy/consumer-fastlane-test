@@ -26,6 +26,7 @@ public class CommitmentType implements Serializable {
 
     public static final String STRING_NO_COMMITMENT = "no_commitment";
     public static final String STRING_MONTHS = "months";
+    public static final String STRING_TRIAL = "trial";
 
     private static final String JSON_KEY_DEFAULT = "default";
     private static final String JSON_KEY_TITLE = "title";
@@ -40,6 +41,9 @@ public class CommitmentType implements Serializable {
 
     @SerializedName(STRING_MONTHS)
     private JsonObject mMonths;
+
+    @SerializedName(STRING_TRIAL)
+    private JsonObject mTrial;
 
     /**
      * In the form of <LengthKey, <FrequencyKey, SubscriptionPrice>>. This is so that you can
@@ -61,6 +65,8 @@ public class CommitmentType implements Serializable {
      */
     private List<SubscriptionLength> mUniqueLengths;
 
+    private CommitmentTypeName mTransformedCommitment;
+
     /**
      * Apply a massive transformation of the commitments into something more understandable and
      * readable.
@@ -76,10 +82,14 @@ public class CommitmentType implements Serializable {
         mSubscriptionPrices = new HashMap<>();
         mUniqueFrequencies = new ArrayList<>();
         mUniqueLengths = new ArrayList<>();
+        mTransformedCommitment = commitmentToUse;
 
         try {
-            if (commitmentToUse == CommitmentTypeName.MONTHS && mMonths != null) {
+            if (CommitmentTypeName.MONTHS.equals(commitmentToUse) && mMonths != null) {
                 processLengths(mMonths);
+            }
+            else if (CommitmentTypeName.TRIAL.equals(commitmentToUse) && mTrial != null) {
+                processLengths(mTrial);
             }
             else if (mNoCommitment != null) {
                 //fall back to use
@@ -123,9 +133,21 @@ public class CommitmentType implements Serializable {
                 );
 
                 //This is not added to the unique lengths because 0 is not to be displayed
-                // for the Plan terms
-                if (!lengthKey.equals("0")) {
-                    mUniqueLengths.add(length);
+                // for the Plan terms unless trial of course
+
+                switch (mTransformedCommitment) {
+                    case TRIAL:
+                        if (lengthKey.equals("0")) {
+                            mUniqueLengths.add(length);
+                        }
+                        else {
+                            continue;
+                        }
+                        break;
+                    case MONTHS:
+                        if (!lengthKey.equals("0")) {
+                            mUniqueLengths.add(length);
+                        }
                 }
             }
 
@@ -293,14 +315,6 @@ public class CommitmentType implements Serializable {
         return false;
     }
 
-    public void setNoCommitment(final JsonObject noCommitment) {
-        mNoCommitment = noCommitment;
-    }
-
-    public void setMonths(final JsonObject months) {
-        mMonths = months;
-    }
-
     public List<SubscriptionFrequency> getUniqueFrequencies() {
         return mUniqueFrequencies;
     }
@@ -317,7 +331,9 @@ public class CommitmentType implements Serializable {
         @SerializedName(STRING_NO_COMMITMENT)
         NO_COMMITMENT(STRING_NO_COMMITMENT),
         @SerializedName(STRING_MONTHS)
-        MONTHS(STRING_MONTHS);
+        MONTHS(STRING_MONTHS),
+        @SerializedName(STRING_TRIAL)
+        TRIAL(STRING_TRIAL);
 
         private final String mValue;
 

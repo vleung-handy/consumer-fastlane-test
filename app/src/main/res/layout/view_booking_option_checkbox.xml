@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/handy_white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/default_padding_half"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding_half"
+        >
+
+        <TextView
+            android:id="@+id/booking_select_checkbox_super_text"
+            style="@style/TextView.Headline.XSmall.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_half"
+            android:freezesText="false"
+            android:paddingBottom="@dimen/default_padding_quarter"
+            android:textAllCaps="true"
+            android:textColor="@color/handy_blue"
+            android:visibility="gone"
+            tools:text="Recommended"
+            tools:visibility="visible"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <CheckBox
+                android:id="@+id/booking_select_checkbox_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/option_checkbox"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="@dimen/icon_padding"
+                android:saveEnabled="false"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/booking_select_checkbox_left_title"
+                    style="@style/TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:freezesText="false"
+                    android:maxLines="2"
+                    android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:text="Left Title can have\ntwo lines too"
+                    />
+
+                <TextView
+                    android:id="@+id/booking_select_checkbox_left_text"
+                    style="@style/TextView.Headline.XSmall.Blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:freezesText="false"
+                    android:textColor="@drawable/black_text_blue_selected_color_selector"
+                    android:visibility="gone"
+                    tools:text="Left text line 1\nline two\nand three"
+                    tools:visibility="visible"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center|end"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/booking_select_checkbox_right_title"
+                    style="@style/TextView.XLarge.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:freezesText="false"
+                    android:maxLines="1"
+                    android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+                    android:visibility="gone"
+                    tools:text="0% off"
+                    tools:visibility="visible"
+                    />
+
+                <TextView
+                    android:id="@+id/booking_select_checkbox_right_text"
+                    style="@style/TextView.Headline.XSmall.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:freezesText="false"
+                    android:maxLines="1"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:text="/moon"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/booking_select_checkbox_left_indicator"
+        android:layout_width="@dimen/option_left_strip_indicator_width"
+        android:layout_height="match_parent"
+        android:background="@color/handy_blue"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+</FrameLayout>

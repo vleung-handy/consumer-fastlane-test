@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -59,11 +60,11 @@ public class BookingHeaderFragmentTest extends RobolectricGradleTestWrapper {
         when(mMockBookingRequest.getTimeZone()).thenReturn("America/Los_Angeles");
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockBookingRequest);
-        when(mMockQuote.getPricing(
-                anyFloat(),
-                anyInt(),
-                anyInt()
-        )).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt()))
+                .thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyString(), anyFloat(), anyInt(), anyInt()))
+                .thenReturn(new float[]{0.0f, 0.0f});
+
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
 
         mFragment = BookingHeaderFragment.newInstance();

@@ -104,6 +104,7 @@ public class WalletUtils {
     ) {
         final float hours = transaction.getHours() + transaction.getExtraHours();
         final float[] pricing = quote.getPricing(
+                transaction.getCommitmentType(),
                 hours,
                 transaction.getRecurringFrequency(),
                 transaction.getCommitmentLength()

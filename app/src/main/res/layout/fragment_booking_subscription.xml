@@ -27,56 +27,96 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:textSize="16sp"
-            android:textAllCaps="false"
             android:text="@string/booking_subscription_titlebar_faq"
+            android:textAllCaps="false"
+            android:textSize="16sp"
             />
     </android.support.v7.widget.Toolbar>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:text="@string/booking_subscription_title"
-        android:textColor="@color/handy_text_black"
-        android:textSize="@dimen/text_size_large"
-        />
-
-    <FrameLayout
-        android:id="@+id/booking_frequency_options_spinner_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        />
 
     <ScrollView
         android:id="@+id/booking_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="true"
         android:fillViewport="true"
         >
 
         <LinearLayout
-            android:id="@+id/booking_subscription_option_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical"
             >
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/booking_subscription_term_title"
-                android:textColor="@color/handy_text_black"
+                android:layout_height="60dp"
                 android:gravity="center"
-                android:paddingTop="18dp"
+                android:text="@string/booking_subscription_title"
+                android:textColor="@color/handy_text_black"
                 android:textSize="@dimen/text_size_large"
                 />
-        </LinearLayout>
 
+            <FrameLayout
+                android:id="@+id/booking_frequency_options_spinner_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/booking_subscription_option_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/handy_white"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/booking_subscription_option_title"
+                    style="@style/TextView.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:gravity="center"
+                    android:text="@string/booking_subscription_length_title"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/booking_subscription_trial_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
+
+                <TextView
+                    android:id="@+id/booking_subscription_trial_cta"
+                    style="@style/TextView.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/default_padding"
+                    android:text="@string/booking_subscription_trial_cta"
+                    android:textColor="@color/handy_darkened_blue"
+                    />
+
+                <com.handybook.handybook.booking.ui.view.BookingOptionsCheckboxView
+                    android:id="@+id/booking_subscription_trial_option_checkbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
     <Button

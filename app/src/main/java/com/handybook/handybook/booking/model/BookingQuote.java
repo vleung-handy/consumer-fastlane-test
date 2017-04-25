@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.model;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
@@ -33,6 +34,7 @@ import static com.handybook.handybook.booking.model.subscription.SubscriptionFre
 import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.MONTHLY_PRICE;
 import static com.handybook.handybook.booking.model.subscription.SubscriptionFrequency.WEEKLY_PRICE;
 
+@SuppressWarnings("SSBasedInspection")
 public class BookingQuote extends Observable {
 
     public static final String KEY_ID = "id";
@@ -94,6 +96,7 @@ public class BookingQuote extends Observable {
     @SerializedName(KEY_COMMITMENT_PRICES)
     private JsonObject mCommitmentPrices;
     private CommitmentType mCommitmentType;
+    private CommitmentType mTrialCommitmentType;
     private CommitmentPricesMap mCommitmentPricesMap;
 
     //This is the key to the commitment prices
@@ -146,6 +149,7 @@ public class BookingQuote extends Observable {
         currentQuote.setCoupon(newQuote.getCoupon());
         currentQuote.setCommitmentPrices(newQuote.getCommitmentPrices());
         currentQuote.setupCommitmentPricingStructure();
+        currentQuote.setupTrialPricingStructure();
         currentQuote.setActiveCommitmentTypes(newQuote.getActiveCommitmentTypes());
         currentQuote.setBill(newQuote.getBill());
 
@@ -340,11 +344,32 @@ public class BookingQuote extends Observable {
      * there is no {@link CommitmentType} present.
      * @return
      */
-    @Nullable
     public float[] getPricing(final float hours, final int freq, final int length) {
-        if (getCommitmentType() != null) {
+        return getPricing(CommitmentType.STRING_MONTHS, hours, freq, length);
+    }
+
+    @Nullable
+    public float[] getPricing(
+            @NonNull String commitmentType,
+            final float hours,
+            final int freq,
+            final int length
+    ) {
+        if (CommitmentType.STRING_MONTHS.equals(commitmentType) && getCommitmentType() != null) {
             //this means to use the new commitment model
             Price price = getCommitmentType()
+                    .getPrice(
+                            String.valueOf(length),
+                            String.valueOf(freq),
+                            String.valueOf(hours)
+                    );
+
+            return new float[]{price.getFullPrice(), price.getAmountDue()};
+        }
+        else if (CommitmentType.STRING_TRIAL.equals(commitmentType) &&
+                 getTrialCommitmentType() != null) {
+            //this means to use the new commitment model
+            Price price = getTrialCommitmentType()
                     .getPrice(
                             String.valueOf(length),
                             String.valueOf(freq),
@@ -425,6 +450,10 @@ public class BookingQuote extends Observable {
 
     public CommitmentType getCommitmentType() {
         return mCommitmentType;
+    }
+
+    public CommitmentType getTrialCommitmentType() {
+        return mTrialCommitmentType;
     }
 
     public List<CommitmentType.CommitmentTypeName> getActiveCommitmentTypes() {
@@ -519,9 +548,13 @@ public class BookingQuote extends Observable {
                                                            .fromJson(json, BookingQuote.class);
 
         if (bookingQuote != null && bookingQuote.getCommitmentPrices() != null) {
-            //if there is a specified active commitment to use
-            if (bookingQuote.isCommitmentMonthsActive()) {
-                bookingQuote.setupCommitmentPricingStructure();
+            if (bookingQuote.isCommitmentMonthsActive() || bookingQuote.isCommitmentTrialActive()) {
+                if (bookingQuote.isCommitmentMonthsActive()) {
+                    bookingQuote.setupCommitmentPricingStructure();
+                }
+                if (bookingQuote.isCommitmentTrialActive()) {
+                    bookingQuote.setupTrialPricingStructure();
+                }
             }
             else {
                 //this uses no commitments by default
@@ -544,6 +577,16 @@ public class BookingQuote extends Observable {
         }
     }
 
+    public void setupTrialPricingStructure() {
+        if (getCommitmentPrices() != null) {
+            setTrialCommitmentType(
+                    new Gson().fromJson(getCommitmentPrices(), CommitmentType.class)
+            );
+            getTrialCommitmentType().transform(CommitmentType.CommitmentTypeName.TRIAL);
+            triggerObservers();
+        }
+    }
+
     /**
      * Returns true if the active commitments are "months"
      * @return
@@ -558,6 +601,17 @@ public class BookingQuote extends Observable {
         }
 
         return false;
+    }
+
+    /**
+     * Returns true if trial active
+     * @return
+     */
+    public boolean isCommitmentTrialActive() {
+        return getActiveCommitmentTypes() != null
+               && !getActiveCommitmentTypes().isEmpty()
+               && getActiveCommitmentTypes().contains(CommitmentType.CommitmentTypeName.TRIAL);
+
     }
 
     public static ExclusionStrategy getExclusionStrategy() {
@@ -586,6 +640,10 @@ public class BookingQuote extends Observable {
      */
     private void setCommitmentType(final CommitmentType commitmentType) {
         mCommitmentType = commitmentType;
+    }
+
+    private void setTrialCommitmentType(final CommitmentType commitmentType) {
+        mTrialCommitmentType = commitmentType;
     }
 
     public void setCommitmentPrices(final JsonObject commitmentPrices) {

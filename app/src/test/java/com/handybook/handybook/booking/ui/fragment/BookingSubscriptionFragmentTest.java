@@ -80,8 +80,8 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
         when(mBookingManager.getCurrentQuote()).thenReturn(getNewSubscriptionBookingQuote());
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
 
-        BookingOptionsSpinnerView frequencySpinner = mFragment.mFrequencyOptionsSpinnerView;
-        BookingOptionsSelectView subscriptionViews = mFragment.mSubscriptionOptionsView;
+        BookingOptionsSpinnerView frequencySpinner = mFragment.mFrequencyView;
+        BookingOptionsSelectView subscriptionViews = mFragment.mCommitmentView;
         assertThat(frequencySpinner.getListSize(), equalTo(FREQUENCY_LABELS.length));
         assertThat(subscriptionViews.getOptionViewsCount(), equalTo(SUBSCRIPTION_LABELS.length));
         //Check default value
@@ -104,8 +104,8 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
         when(mBookingManager.getCurrentQuote()).thenReturn(getOneTimeWithSubscriptionBookingQuote());
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
 
-        BookingOptionsSpinnerView frequencySpinner = mFragment.mFrequencyOptionsSpinnerView;
-        BookingOptionsSelectView subscriptionViews = mFragment.mSubscriptionOptionsView;
+        BookingOptionsSpinnerView frequencySpinner = mFragment.mFrequencyView;
+        BookingOptionsSelectView subscriptionViews = mFragment.mCommitmentView;
         assertThat(frequencySpinner.getListSize(), equalTo(FREQUENCY_LABELS_WITH_ONETIME.length));
         assertThat(subscriptionViews.getOptionViewsCount(), equalTo(SUBSCRIPTION_LABELS.length));
 

@@ -124,6 +124,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         }
 
         final float[] pricing = quote.getPricing(
+                transaction.getCommitmentType(),
                 hours,
                 transaction.getRecurringFrequency(),
                 transaction.getCommitmentLength()
@@ -133,7 +134,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         priceView.setCurrencySymbol(currChar);
 
         //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-        if (quote.getCommitmentType() != null) {
+        if (quote.getCommitmentType() != null || quote.getTrialCommitmentType() != null) {
             priceView.setPriceCents(Math.round(pricing[1]));
         }
         else {
@@ -143,7 +144,7 @@ public final class BookingHeaderFragment extends BookingFlowFragment implements 
         if (pricing[1] < pricing[0]) {
             String priceText = "";
             //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-            if (quote.getCommitmentType() != null) {
+            if (quote.getCommitmentType() != null || quote.getTrialCommitmentType() != null) {
                 priceText = TextUtils.formatPriceCents(Math.round(pricing[0]), currChar);
             }
             else {
