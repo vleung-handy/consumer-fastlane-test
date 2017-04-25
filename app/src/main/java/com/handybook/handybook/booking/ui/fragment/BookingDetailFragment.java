@@ -50,6 +50,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.model.booking.ViewAvailabilityLog;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
 import com.handybook.handybook.referral.event.ReferralsEvent;
@@ -61,6 +62,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -88,6 +91,9 @@ public final class BookingDetailFragment extends InjectedFragment
     BookingDetailView mBookingDetailView;
     @Bind(R.id.nav_help)
     TextView mHelp;
+
+    @Inject
+    ProTeamManager mProTeamManager;
 
     private ArrayList<Service> mServices;
 
@@ -192,6 +198,11 @@ public final class BookingDetailFragment extends InjectedFragment
         if (mBooking == null) {
             showUiBlockers();
             bus.post(new BookingEvent.RequestBookingDetails(mBookingId));
+        }
+        else if (mCategory == null && mConfigurationManager.getPersistentConfiguration()
+                                                           .isProTeamRescheduleCTAEnabled()) {
+            showUiBlockers();
+            mProTeamManager.requestBookingProTeam(mBooking.getId());
         }
 
         if (mServices == null) {
@@ -453,6 +464,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onReceiveBookingProTeamSuccess(final ProTeamEvent.ReceiveBookingProTeamSuccess event) {
+        removeUiBlockers();
         mCategory = event.getProTeamCategory();
     }
 
@@ -485,13 +497,19 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onReceiveBookingDetailsSuccess(BookingEvent.ReceiveBookingDetailsSuccess event) {
-        removeUiBlockers();
-
         mBooking = event.booking;
         getArguments().putParcelable(BundleKeys.BOOKING, event.booking);
         setUpdatedBookingResult();
         setupForBooking(event.booking);
         setProBusyViewVisibility();
+
+        if (mCategory == null && mConfigurationManager.getPersistentConfiguration()
+                                                      .isProTeamRescheduleCTAEnabled()) {
+            mProTeamManager.requestBookingProTeam(mBooking.getId());
+        }
+        else {
+            removeUiBlockers();
+        }
     }
 
     @Subscribe

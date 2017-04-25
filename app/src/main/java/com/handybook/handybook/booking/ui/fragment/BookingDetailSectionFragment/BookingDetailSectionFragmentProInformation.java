@@ -30,7 +30,6 @@ import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
-import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
@@ -42,14 +41,9 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class BookingDetailSectionFragmentProInformation extends
         BookingDetailSectionFragment<BookingDetailSectionProInfoView>
         implements ConversationCallback {
-
-    @Inject
-    ProTeamManager mProTeamManager;
 
     public static BookingDetailSectionFragmentProInformation newInstance() {
         return new BookingDetailSectionFragmentProInformation();
@@ -106,14 +100,6 @@ public class BookingDetailSectionFragmentProInformation extends
                 actionTextView.setVisibility(View.VISIBLE);
             }
             //handle more actions
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleCTAEnabled()) {
-            mProTeamManager.requestBookingProTeam(booking.getId());
         }
     }
 
