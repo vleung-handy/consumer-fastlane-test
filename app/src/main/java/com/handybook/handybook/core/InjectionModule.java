@@ -17,13 +17,11 @@ import com.handybook.handybook.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditPreferencesActivity;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditAddressFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditEntryInformationFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditExtrasFragment;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditHoursFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditPreferencesFragment;
 import com.handybook.handybook.booking.history.HistoryActivity;
@@ -203,8 +201,6 @@ import dagger.Module;
                 BookingEditPreferencesFragment.class,
                 BookingEditEntryInformationActivity.class,
                 BookingEditEntryInformationFragment.class,
-                BookingEditFrequencyActivity.class,
-                BookingEditFrequencyFragment.class,
                 BookingEditExtrasActivity.class,
                 BookingEditExtrasFragment.class,
                 BookingEditHoursActivity.class,

@@ -21,11 +21,9 @@ import com.handybook.handybook.autocomplete.AutoCompleteAddressFragment;
 import com.handybook.handybook.autocomplete.AutoCompleteAddressFragmentTest;
 import com.handybook.handybook.autocomplete.PlacesService;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditAddressFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditExtrasFragment;
-import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditFrequencyFragment;
 import com.handybook.handybook.booking.bookingedit.ui.fragment.BookingEditHoursFragment;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
@@ -138,8 +136,6 @@ import static org.mockito.Mockito.when;
         AutoCompleteAddressFragment.class,
         AutoCompleteAddressFragmentTest.class,
         BaseActivity.class,
-        BookingEditFrequencyActivity.class,
-        BookingEditFrequencyFragment.class,
         BookingEditHoursActivity.class,
         BookingEditHoursFragment.class,
         BookingEditExtrasActivity.class,
