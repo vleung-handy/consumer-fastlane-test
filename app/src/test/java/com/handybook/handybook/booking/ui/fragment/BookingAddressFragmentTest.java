@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Shadows.shadowOf;
@@ -53,6 +54,9 @@ public class BookingAddressFragmentTest extends RobolectricGradleTestWrapper {
                 anyInt(),
                 anyInt()
         )).thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyString(), anyFloat(), anyInt(), anyInt()))
+                .thenReturn(new float[]{0.0f, 0.0f});
+
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         mFragment = BookingAddressFragment.newInstance();
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);

@@ -36,6 +36,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -77,10 +78,10 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper {
                 .inject(this);
         when(mUserManager.getCurrentUser()).thenReturn(mMockUser);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{
-                0.0f,
-                0.0f
-        });
+        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt()))
+                .thenReturn(new float[]{0.0f, 0.0f});
+        when(mMockQuote.getPricing(anyString(), anyFloat(), anyInt(), anyInt()))
+                .thenReturn(new float[]{0.0f, 0.0f});
         when(mMockQuote.isAndroidPayEnabled()).thenReturn(true);
         when(mMockQuote.getAndroidPayCouponCode()).thenReturn("ANDROIDPAY");
         when(mMockQuote.getAndroidPayCouponValueFormatted()).thenReturn("$10");
