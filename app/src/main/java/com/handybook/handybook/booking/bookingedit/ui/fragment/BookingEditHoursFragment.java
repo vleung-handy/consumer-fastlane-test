@@ -18,12 +18,12 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursViewModel;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingOption;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
@@ -32,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditHoursFragment extends BookingFlowFragment {
+public final class BookingEditHoursFragment extends InjectedFragment {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -295,7 +295,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment {
 
     @Subscribe
     public final void onReceiveEditHoursInfoError(BookingEditEvent.ReceiveEditHoursInfoViewModelError event) {
-        onReceiveErrorEvent(event);
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
@@ -309,7 +309,7 @@ public final class BookingEditHoursFragment extends BookingFlowFragment {
 
     @Subscribe
     public final void onReceiveEditHoursError(BookingEditEvent.ReceiveEditHoursError event) {
-        onReceiveErrorEvent(event);
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
         removeUiBlockers(); //allow user to try again
     }
 
