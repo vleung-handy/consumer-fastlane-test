@@ -23,17 +23,20 @@ public class ProTeamManager {
     private static final String DEFAULT_USER_ID = "0";
     private final Bus mBus;
     private final HandyRetrofitService mService;
+    private final DataManager mDataManager;
     private final UserManager mUserManager;
 
     @Inject
     public ProTeamManager(
             final Bus bus,
             HandyRetrofitService service,
+            DataManager dataManager,
             UserManager userManager
     ) {
         mBus = bus;
         mBus.register(this);
         mService = service;
+        mDataManager = dataManager;
         mUserManager = userManager;
     }
 
@@ -117,13 +120,7 @@ public class ProTeamManager {
                 mBus.post(new ProTeamEvent.ReceiveBookingProTeamError(error));
             }
         };
-
-        mService.requestProTeam(getUserIdString(), new HandyRetrofitCallback(cb) {
-            @Override
-            protected void success(final JSONObject response) {
-                cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
-            }
-        });
+        mDataManager.requestProTeam(getUserIdString(), cb);
     }
 
     private void requestBookingProTeam(@NonNull final ProTeam proTeam, @NonNull String bookingId) {
@@ -141,11 +138,6 @@ public class ProTeamManager {
                 mBus.post(new ProTeamEvent.ReceiveBookingProTeamError(error));
             }
         };
-        mService.requestProTeamViaBooking(bookingId, new HandyRetrofitCallback(cb) {
-            @Override
-            protected void success(final JSONObject response) {
-                cb.onSuccess(BookingProTeam.fromJson(response.toString()));
-            }
-        });
+        mDataManager.requestProTeamViaBooking(bookingId, cb);
     }
 }
