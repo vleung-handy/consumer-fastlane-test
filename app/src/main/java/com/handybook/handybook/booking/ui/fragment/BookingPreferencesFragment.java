@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +48,6 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     @Bind(R.id.instructions_layout)
     InstructionListView mInstructionListView;
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-
     private boolean mIsPreferenceDragged, mIsPreferenceToggled;
 
     {
@@ -84,6 +80,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 if (mIsNewUser) // Prompt the user to create a pasword
                 {
                     final Intent intent = new Intent(getActivity(), BookingFinalizeActivity.class);
+                    intent.putExtras(createProgressBundle());
                     intent.putExtra(
                             BookingFinalizeActivity.EXTRA_PAGE,
                             BookingFinalizeActivity.PAGE_PASSWORD_PROMPT
@@ -194,6 +191,12 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             mInstructionListView.setVisibility(View.GONE);
         }
         mNextButton.setOnClickListener(mOnNextClickedListener);
+    }
+
+    @Override
+    protected void setupProgressBar() {
+        mProgressBar.setVisibility(mShowProgress ? View.VISIBLE : View.GONE);
+        mProgressBar.setProgress(mIsNewUser ? mProgress : MAX_PROGRESS);
     }
 
     @Override

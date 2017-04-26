@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -72,9 +71,6 @@ public final class BookingDateFragment extends BookingFlowFragment
     @Bind(R.id.reschedule_cancel_text)
     TextView mRescheduleCancelText;
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-
     private Date mSelectedDateTime;
 
     private ArrayList<BookingOption> mBookingOptions;
@@ -128,6 +124,7 @@ public final class BookingDateFragment extends BookingFlowFragment
 
                 if (mBookingOptions != null && mBookingOptions.size() > 0) {
                     final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                    intent.putExtras(createProgressBundle());
                     intent.putParcelableArrayListExtra(
                             BookingOptionsActivity.EXTRA_OPTIONS,
                             new ArrayList<>(mBookingOptions)

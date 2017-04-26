@@ -19,16 +19,19 @@ public final class BookingRecurrenceActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
+        Fragment fragment;
         BookingQuote quote = mBookingManager.getCurrentQuote();
         if (quote.isCommitmentMonthsActive()) {
             mBookingManager.getCurrentTransaction().setCommitmentType(CommitmentType.STRING_MONTHS);
-            return BookingSubscriptionFragment.newInstance();
+            fragment = BookingSubscriptionFragment.newInstance();
         }
         else {
             mBookingManager.getCurrentTransaction()
                            .setCommitmentType(CommitmentType.STRING_NO_COMMITMENT);
-            return BookingRecurrenceFragment.newInstance();
+            fragment = BookingRecurrenceFragment.newInstance();
         }
+        fragment.setArguments(getIntent().getExtras());
+        return fragment;
     }
 
     @Override

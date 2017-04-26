@@ -10,14 +10,12 @@
         style="@style/Button.Green" />
 
 
-    <include
-        layout="@layout/toolbar"
-        />
+    <include layout="@layout/toolbar_booking_flow"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@+id/toolbar_booking_flow"
         android:layout_above="@id/next_button">
 
         <RelativeLayout

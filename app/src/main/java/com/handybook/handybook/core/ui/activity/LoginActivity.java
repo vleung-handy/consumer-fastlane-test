@@ -56,7 +56,7 @@ public final class LoginActivity extends BaseActivity {
                 fromBookingFunnel,
                 fromOnboarding
         );
-
+        fragment.setArguments(getIntent().getExtras());
         final FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.login_fragment_container, fragment).commit();
     }

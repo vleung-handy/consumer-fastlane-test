@@ -13,8 +13,7 @@ import java.util.HashMap;
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_CHILD_DISPLAY_MAP;
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_OPTIONS;
 
-public final class BookingGetQuoteActivity extends MenuDrawerActivity
-{
+public final class BookingGetQuoteActivity extends MenuDrawerActivity {
 
     /**
      * mostly copied from BookingOptionsActivity
@@ -22,12 +21,15 @@ public final class BookingGetQuoteActivity extends MenuDrawerActivity
 
     @Override
     protected final Fragment createFragment() {
-        final ArrayList<BookingOption> options = getIntent().getParcelableArrayListExtra(EXTRA_OPTIONS);
+        final ArrayList<BookingOption> options =
+                getIntent().getParcelableArrayListExtra(EXTRA_OPTIONS);
 
         final HashMap<String, Boolean> childDisplayMap
-                = (HashMap)getIntent().getSerializableExtra(EXTRA_CHILD_DISPLAY_MAP);
+                = (HashMap) getIntent().getSerializableExtra(EXTRA_CHILD_DISPLAY_MAP);
 
-        return BookingGetQuoteFragment.newInstance(options, childDisplayMap);
+        Fragment fragment = BookingGetQuoteFragment.newInstance(options, childDisplayMap);
+        fragment.setArguments(getIntent().getExtras());
+        return fragment;
     }
 
     @Override

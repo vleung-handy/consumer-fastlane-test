@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -95,8 +94,6 @@ public final class LoginFragment extends BookingFlowFragment {
     TextView mWelcomeText;
     @Bind(R.id.login_scroll_view)
     ScrollView mLoginScrollView;
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
 
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 

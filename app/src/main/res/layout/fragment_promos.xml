@@ -8,14 +8,14 @@
     android:orientation="vertical"
     >
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar_booking_flow"/>
 
     <ScrollView
         android:id="@+id/promotions_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/promotions_apply_button"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/toolbar_booking_flow"
         >
 
         <LinearLayout

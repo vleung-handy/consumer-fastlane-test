@@ -78,6 +78,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
         mNextButton.setText(getString(R.string.finish));
         mPasswordText.setVisibility(View.VISIBLE);
         mNextButton.setOnClickListener(nextClicked);
+        mToolbar.setTitle(R.string.confirmation);
         return view;
     }
 
@@ -95,6 +96,12 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
     public final void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_PWD_HIGHLIGHT, mPasswordText.isHighlighted());
+    }
+
+    @Override
+    protected void setupProgressBar() {
+        mProgressBar.setVisibility(mShowProgress ? View.VISIBLE : View.GONE);
+        mProgressBar.setProgress(MAX_PROGRESS);
     }
 
     @Override

@@ -32,13 +32,15 @@ public final class BookingOptionsActivity extends MenuDrawerActivity {
 
         final boolean isPost = getIntent().getBooleanExtra(EXTRA_IS_POST, false);
 
-        return BookingOptionsFragment.newInstance(
+        Fragment fragment = BookingOptionsFragment.newInstance(
                 options,
                 page,
                 childDisplayMap,
                 postOptions,
                 isPost
         );
+        fragment.setArguments(getIntent().getExtras());
+        return fragment;
     }
 
     @Override

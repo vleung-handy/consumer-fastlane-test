@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/handy_bg"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
     >
 
     <Button
@@ -11,14 +12,13 @@
         android:text="@string/next"
         />
 
-    <include layout="@layout/toolbar"
-        />
+    <include layout="@layout/toolbar_booking_flow"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/next_button"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/toolbar_booking_flow"
         >
 
         <TextView

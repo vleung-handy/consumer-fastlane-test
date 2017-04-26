@@ -14,7 +14,9 @@ public final class BookingPaymentActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        return BookingPaymentFragment.newInstance();
+        Fragment fragment = BookingPaymentFragment.newInstance();
+        fragment.setArguments(getIntent().getExtras());
+        return fragment;
     }
 
     @Override

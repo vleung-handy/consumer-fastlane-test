@@ -2,20 +2,29 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/handy_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    >
+
+    <!-- BookingFlowFragment must contain toolbar_booking_flow -->
+    <include
+        layout="@layout/toolbar_booking_flow"
+        android:visibility="gone"
+        />
 
     <ScrollView
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/default_padding">
+            android:paddingBottom="@dimen/default_padding"
+            >
 
             <LinearLayout
                 android:id="@+id/header"
@@ -37,7 +46,8 @@
                     android:textAllCaps="true"
                     android:textAppearance="@style/TextView.Bold"
                     android:textColor="@color/white_trans"
-                    android:textSize="@dimen/text_size_xsmall"/>
+                    android:textSize="@dimen/text_size_xsmall"
+                    />
 
                 <TextView
                     android:id="@+id/subtitle"
@@ -49,7 +59,8 @@
                     android:paddingLeft="@dimen/default_padding_double"
                     android:paddingRight="@dimen/default_padding_double"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_xlarge"/>
+                    android:textSize="@dimen/text_size_xlarge"
+                    />
 
             </LinearLayout>
 
@@ -58,7 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/header"
-                android:layout_marginTop="-50dp">
+                android:layout_marginTop="-50dp"
+                >
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -74,14 +86,16 @@
                     app:cardElevation="1dp"
                     app:cardPreventCornerOverlap="false"
                     app:cardUseCompatPadding="true"
-                    app:contentPadding="0dp">
+                    app:contentPadding="0dp"
+                    >
 
                     <LinearLayout
                         android:id="@+id/list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:orientation="vertical"/>
+                        android:orientation="vertical"
+                        />
 
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -94,14 +108,16 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="-20dp"
                 android:animateLayoutChanges="true"
-                android:transitionName="icon"/>
+                android:transitionName="icon"
+                />
 
         </RelativeLayout>
     </ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -110,7 +126,8 @@
             android:background="@color/transparent"
             android:orientation="vertical"
             app:contentInsetStart="0dp"
-            app:navigationIcon="@drawable/ic_back"/>
+            app:navigationIcon="@drawable/ic_back"
+            />
 
         <ImageView
             android:id="@+id/toolbar_icon"
@@ -118,6 +135,7 @@
             android:layout_height="40dp"
             android:layout_centerInParent="true"
             android:animateLayoutChanges="true"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            />
     </RelativeLayout>
 </RelativeLayout>

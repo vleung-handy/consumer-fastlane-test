@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
@@ -50,15 +53,31 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_OPTIONS;
 
 public class BookingFlowFragment extends InjectedFragment {
+
+    public static final int MAX_PROGRESS = 100;
+
+    protected boolean mShowProgress;
+    protected int mProgress;
+
+    @Bind(R.id.toolbar)
+    protected Toolbar mToolbar;
+    @Bind(R.id.horizontal_progress_bar)
+    protected ProgressBar mProgressBar;
 
     @Inject
     protected DefaultPreferencesManager mDefaultPreferencesManager;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            mShowProgress = getArguments().getBoolean(BundleKeys.SHOW_PROGRESS, false);
+            mProgress = getArguments().getInt(BundleKeys.PROGRESS, 0);
+        }
         super.onCreate(savedInstanceState);
         Crashlytics.log(getClass().getSimpleName() + ".onCreate with transaction "
                         + bookingManager.getCurrentTransaction());
@@ -83,6 +102,12 @@ public class BookingFlowFragment extends InjectedFragment {
         Crashlytics.log(getClass().getSimpleName() + ".onDestroy with transaction "
                         + bookingManager.getCurrentTransaction());
         super.onDestroy();
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        setupProgressBar();
+        super.onViewCreated(view, savedInstanceState);
     }
 
     protected final void startBookingFlow(final int serviceId, final String uniq) {
@@ -115,8 +140,28 @@ public class BookingFlowFragment extends InjectedFragment {
         }
         else {
             final Intent intent = new Intent(getActivity(), BookingLocationActivity.class);
+            intent.putExtras(createProgressBundle());
             startActivity(intent);
         }
+    }
+
+    protected void setupProgressBar() {
+        mProgressBar.setVisibility(mShowProgress ? View.VISIBLE : View.GONE);
+        mProgressBar.setProgress(mProgress);
+    }
+
+    protected Bundle createProgressBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(BundleKeys.SHOW_PROGRESS, mShowProgress);
+        bundle.putInt(BundleKeys.PROGRESS, mProgress + 15);
+        return bundle;
+    }
+
+    private Bundle createInitialProgressBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(BundleKeys.SHOW_PROGRESS, true);
+        bundle.putInt(BundleKeys.PROGRESS, 10);
+        return bundle;
     }
 
     private void startConsolidatedGetQuoteFlow() {
@@ -137,6 +182,7 @@ public class BookingFlowFragment extends InjectedFragment {
                                 getActivity(),
                                 BookingGetQuoteActivity.class
                         );
+                        intent.putExtras(createInitialProgressBundle());
                         intent.putParcelableArrayListExtra(
                                 EXTRA_OPTIONS,
                                 new ArrayList<>(bookingOptions)
@@ -169,6 +215,7 @@ public class BookingFlowFragment extends InjectedFragment {
         bookingManager.getCurrentRequest().setZipArea(response.getZipArea());
         bookingManager.getCurrentRequest().setTimeZone(response.getTimeZone());
     }
+
     /**
      * Even though we're not showing the "zip" page to the user we still have to call this
      * "zip validation" step, so we can have the proper time zone setup
@@ -201,6 +248,7 @@ public class BookingFlowFragment extends InjectedFragment {
                                     getActivity(),
                                     BookingDateActivity.class
                             );
+                            intent.putExtras(createProgressBundle());
                             startActivity(intent);
                         }
                     }
@@ -240,6 +288,7 @@ public class BookingFlowFragment extends InjectedFragment {
                                 BookingOptionsActivity.EXTRA_OPTIONS,
                                 new ArrayList<>(bookingOptions)
                         );
+                        intent.putExtras(createProgressBundle());
                         intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, 0);
                         startActivity(intent);
                     }
@@ -285,8 +334,7 @@ public class BookingFlowFragment extends InjectedFragment {
         final User user = userManager.getCurrentUser();
         if (user != null) {
             request.setUserId(user.getId());
-            if(TextUtils.isBlank(request.getEmail()))
-            {
+            if (TextUtils.isBlank(request.getEmail())) {
                 //don't override booking request object's email field if present
                 request.setEmail(user.getEmail());
             }
@@ -298,6 +346,7 @@ public class BookingFlowFragment extends InjectedFragment {
             //if we are not in the new onboarding flow (i.e., we don't have zip & email stored),
             //then we should prompt the user to login.
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.putExtras(createProgressBundle());
             intent.putExtra(LoginActivity.EXTRA_FIND_USER, true);
             intent.putExtra(LoginActivity.EXTRA_FROM_BOOKING_FUNNEL, true);
             startActivity(intent);
@@ -417,6 +466,7 @@ public class BookingFlowFragment extends InjectedFragment {
                                     getActivity(),
                                     PeakPricingActivity.class
                             );
+                            intent.putExtras(createProgressBundle());
                             intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, booking);
                             intent.putExtra(BundleKeys.RESCHEDULE_PRICE_TABLE, peakTable);
                             intent.putExtra(BundleKeys.RESCHEDULE_ALL, rescheduleAll);
@@ -517,33 +567,40 @@ public class BookingFlowFragment extends InjectedFragment {
         boolean isVoucherFlow = request.getPromoType() == PromoCode.Type.VOUCHER;
         // show recurrence options if available (show first if regular flow)
         if (!isVoucherFlow && shouldShowRecurrenceOptions(request, false)) {
-            startActivity(new Intent(getActivity(), BookingRecurrenceActivity.class));
+            final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
+            intent.putExtras(createProgressBundle());
+            startActivity(intent);
         }
         // show surge pricing options if necessary (show second if regular flow)
         else if (!isVoucherFlow && shouldShowSurgePricingOptions(peakTable, false)) {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+            intent.putExtras(createProgressBundle());
             startActivity(intent);
         }
         // show surge pricing options if necessary (show first if voucher flow)
         else if (isVoucherFlow && shouldShowSurgePricingOptions(peakTable, true)) {
             final Intent intent = new Intent(getActivity(), PeakPricingActivity.class);
+            intent.putExtras(createProgressBundle());
             intent.putExtra(BundleKeys.FOR_VOUCHER, true);
             startActivity(intent);
         }
         // show recurrence options if available (show second if voucher flow)
         else if (isVoucherFlow && shouldShowRecurrenceOptions(request, true)) {
             final Intent intent = new Intent(getActivity(), BookingRecurrenceActivity.class);
+            intent.putExtras(createProgressBundle());
             startActivity(intent);
         }
         // show extras for home cleaning
         else if (!(BookingFlowFragment.this instanceof BookingExtrasFragment)
                  && request.getUniq().equals("home_cleaning")) {
             final Intent intent = new Intent(getActivity(), BookingExtrasActivity.class);
+            intent.putExtras(createProgressBundle());
             startActivity(intent);
         }
         // show address info
         else {
             final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);
+            intent.putExtras(createProgressBundle());
             startActivity(intent);
         }
         // if user logged in, hide login view on back
@@ -615,14 +672,15 @@ public class BookingFlowFragment extends InjectedFragment {
                        || (!(BookingFlowFragment.this instanceof BookingRecurrenceFragment)));
     }
 
-    private void startLoginActivity(@Nullable String email, @Nullable String bookingUserName)
-    {
+    private void startLoginActivity(@Nullable String email, @Nullable String bookingUserName) {
         final Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.putExtras(createProgressBundle());
         intent.putExtra(LoginActivity.EXTRA_BOOKING_EMAIL, email);
         intent.putExtra(LoginActivity.EXTRA_BOOKING_USER_NAME, bookingUserName);
         intent.putExtra(LoginActivity.EXTRA_FROM_BOOKING_FUNNEL, true);
         startActivity(intent);
     }
+
     private void handleBookingQuoteError(final DataManager.DataManagerError error) {
         if (!allowCallbacks) {
             return;
@@ -646,8 +704,7 @@ public class BookingFlowFragment extends InjectedFragment {
             )));
         }
 
-        if(isErrorCausedByLoginRequired(error) && !(this instanceof LoginFragment))
-        {
+        if (isErrorCausedByLoginRequired(error) && !(this instanceof LoginFragment)) {
             String email = bookingManager.getCurrentRequest() == null ?
                            null : bookingManager.getCurrentRequest().getEmail();
             startLoginActivity(email, null);
@@ -711,8 +768,7 @@ public class BookingFlowFragment extends InjectedFragment {
 
         //note that this response is currently only being used by the consolidated quote flow
         ZipValidationResponse zipValidationResponse = quote.getZipValidationResponse();
-        if(zipValidationResponse != null && zipValidationResponse.getZipArea() != null)
-        {
+        if (zipValidationResponse != null && zipValidationResponse.getZipArea() != null) {
             /*
             note that this is logged in BookingLocationFragment
             but logging this here to cover the consolidated quote flow experiment.
@@ -726,7 +782,6 @@ public class BookingFlowFragment extends InjectedFragment {
             )));
         }
         updateCurrentBookingRequest(zipValidationResponse);
-
 
         // persist extras since api doesn't return them on quote update calls
         final BookingQuote oldQuote = bookingManager.getCurrentQuote();
@@ -752,10 +807,9 @@ public class BookingFlowFragment extends InjectedFragment {
 
         note that we currently do not support allowing the user to modify their email in the booking flow
          */
-        if(!userManager.isUserLoggedIn()
-           && quote.getUserExistsResponse() != null
-                && quote.getUserExistsResponse().exists())
-        {
+        if (!userManager.isUserLoggedIn()
+            && quote.getUserExistsResponse() != null
+            && quote.getUserExistsResponse().exists()) {
             final Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.putExtra(LoginActivity.EXTRA_FIND_USER, true);
             intent.putExtra(LoginActivity.EXTRA_FROM_BOOKING_FUNNEL, true);

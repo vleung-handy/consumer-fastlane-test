@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,9 +68,6 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
 
     @Bind(R.id.fragment_booking_get_quote_next_button)
     Button mNextButton;
-
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
 
     /**
      * only exposed for logging purposes

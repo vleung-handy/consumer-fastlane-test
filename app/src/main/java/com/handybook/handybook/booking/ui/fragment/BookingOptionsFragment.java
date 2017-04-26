@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,9 +55,6 @@ public class BookingOptionsFragment extends BookingFlowFragment {
     protected TextView headerText;
     @Bind(R.id.next_button)
     protected Button nextButton;
-
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
 
     public static BookingOptionsFragment newInstance(
             final ArrayList<BookingOption> options,
@@ -417,10 +413,12 @@ public class BookingOptionsFragment extends BookingFlowFragment {
                         BundleKeys.POST_OPTIONS,
                         new ArrayList<>(postOptions)
                 );
+                intent.putExtras(createProgressBundle());
                 startActivity(intent);
             }
             else {
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                intent.putExtras(createProgressBundle());
                 intent.putParcelableArrayListExtra(
                         BookingOptionsActivity.EXTRA_OPTIONS,
                         new ArrayList<>(nextOptions)

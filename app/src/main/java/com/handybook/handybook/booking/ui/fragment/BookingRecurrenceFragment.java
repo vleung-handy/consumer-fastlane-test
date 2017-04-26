@@ -3,7 +3,6 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +37,6 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
     LinearLayout optionsLayout;
     @Bind(R.id.next_button)
     Button nextButton;
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
     @Bind(R.id.fragment_booking_recurrence_show_more_options_button)
     View mShowMoreOptionsButton;
     @Bind(R.id.fragment_booking_recurrence_disclaimer_text)
@@ -83,6 +80,9 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
         initFromQuoteConfig(quoteConfig);
 
         nextButton.setOnClickListener(nextClicked);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setIndeterminate(false);
+        mProgressBar.setProgress(40);
         return view;
     }
 

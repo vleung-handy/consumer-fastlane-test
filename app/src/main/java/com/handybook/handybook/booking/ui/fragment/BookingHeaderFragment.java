@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.ui.view.PriceView;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
@@ -25,7 +26,7 @@ import java.util.Observer;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingHeaderFragment extends BookingFlowFragment implements Observer {
+public final class BookingHeaderFragment extends InjectedFragment implements Observer {
 
     private static final SimpleDateFormat TIME_FORMAT = DateTimeUtils.CLOCK_FORMATTER_12HR;
     private static final String DATE_FORMAT = "EEEE',' MMMM d";

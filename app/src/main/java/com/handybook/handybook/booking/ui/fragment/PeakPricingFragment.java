@@ -141,6 +141,8 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         mArrowLeft.setOnTouchListener(arrowTouched);
         mArrowRight.setOnTouchListener(arrowTouched);
 
+        mToolbar.setTitle(R.string.price);
+
         return view;
     }
 
