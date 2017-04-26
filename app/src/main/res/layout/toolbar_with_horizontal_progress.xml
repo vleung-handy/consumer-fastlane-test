@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/toolbar_with_horizontal_progress_layout"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
+<LinearLayout
+    android:id="@+id/toolbar_with_horizontal_progress_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     >
 
     <android.support.v7.widget.Toolbar
@@ -40,8 +41,8 @@
         android:id="@+id/title_bar_error_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/default_padding"
         android:gravity="center"
+        android:padding="@dimen/default_padding"
         android:textAppearance="@style/TextView.Medium"
         android:textColor="@color/error_red"
         android:visibility="gone"
