@@ -107,12 +107,15 @@ public class ProTeamManager {
         );
     }
 
-    public void requestBookingProTeam(@NonNull final String bookingId) {
+    public void requestBookingProTeam(
+            @NonNull final String bookingId,
+            final DataManager.Callback<ProTeam.ProTeamCategory> finalCallback
+    ) {
 
         final DataManager.Callback<ProTeamWrapper> cb = new DataManager.Callback<ProTeamWrapper>() {
             @Override
             public void onSuccess(final ProTeamWrapper proTeamWrapper) {
-                requestBookingProTeam(proTeamWrapper.getProTeam(), bookingId);
+                requestBookingProTeam(proTeamWrapper.getProTeam(), bookingId, finalCallback);
             }
 
             @Override
@@ -123,13 +126,18 @@ public class ProTeamManager {
         mDataManager.requestProTeam(getUserIdString(), cb);
     }
 
-    private void requestBookingProTeam(@NonNull final ProTeam proTeam, @NonNull String bookingId) {
+    private void requestBookingProTeam(
+            @NonNull final ProTeam proTeam,
+            @NonNull String bookingId,
+            final DataManager.Callback<ProTeam.ProTeamCategory> finalCallback
+    ) {
         final DataManager.Callback<BookingProTeam> cb = new DataManager.Callback<BookingProTeam>() {
             @Override
             public void onSuccess(final BookingProTeam response) {
                 // We filter the existing pro team based on the returning result
                 ProTeam.ProTeamCategory proTeamCategory = proTeam.getAllCategories();
                 proTeamCategory.filterFavorPros(response.getProTeamPros());
+                finalCallback.onSuccess(proTeamCategory);
                 mBus.post(new ProTeamEvent.ReceiveBookingProTeamSuccess(proTeamCategory));
             }
 

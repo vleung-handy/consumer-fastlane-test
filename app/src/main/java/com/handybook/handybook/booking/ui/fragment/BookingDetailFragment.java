@@ -50,6 +50,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.model.booking.ViewAvailabilityLog;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
 import com.handybook.handybook.referral.event.ReferralsEvent;
@@ -62,6 +63,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -71,6 +74,17 @@ public final class BookingDetailFragment extends InjectedFragment
 
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
     private static final String STATE_SERVICES = "STATE_SERVICES";
+    private static final String STATE_CATEGORY = "STATE_CATEGORY";
+
+    @Bind(R.id.booking_detail_pro_busy_view)
+    ProBusyView mProBusyView;
+    @Bind(R.id.booking_detail_view)
+    BookingDetailView mBookingDetailView;
+    @Bind(R.id.nav_help)
+    TextView mHelp;
+
+    @Inject
+    ProTeamManager mProTeamManager;
 
     private Booking mBooking;
     private Configuration mConfiguration;
@@ -82,14 +96,25 @@ public final class BookingDetailFragment extends InjectedFragment
 
     private ProTeam.ProTeamCategory mCategory;
 
-    @Bind(R.id.booking_detail_pro_busy_view)
-    ProBusyView mProBusyView;
-    @Bind(R.id.booking_detail_view)
-    BookingDetailView mBookingDetailView;
-    @Bind(R.id.nav_help)
-    TextView mHelp;
-
     private ArrayList<Service> mServices;
+
+    private DataManager.Callback<ProTeam.ProTeamCategory> mBookingProTeamCallback;
+
+    {
+        mBookingProTeamCallback = new DataManager.Callback<ProTeam.ProTeamCategory>() {
+            @Override
+            public void onSuccess(final ProTeam.ProTeamCategory response) {
+                mCategory = response;
+                launchReschedule();
+            }
+
+            @Override
+            public void onError(final DataManager.DataManagerError error) {
+                launchReschedule();
+            }
+        };
+    }
+
 
     public static BookingDetailFragment newInstance(
             final Booking booking,
@@ -128,6 +153,7 @@ public final class BookingDetailFragment extends InjectedFragment
             }
 
             mServices = (ArrayList<Service>) savedInstanceState.getSerializable(STATE_SERVICES);
+            mCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
         }
     }
 
@@ -242,6 +268,7 @@ public final class BookingDetailFragment extends InjectedFragment
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_UPDATED_BOOKING, mBookingUpdated);
         outState.putSerializable(STATE_SERVICES, mServices);
+        outState.putParcelable(STATE_CATEGORY, mCategory);
     }
 
     @Override
@@ -437,10 +464,22 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     public void onRescheduleClicked() {
-        if (!mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled()
-            || mCategory == null
-            || mCategory.getPreferred() == null
-            || mCategory.getPreferred().isEmpty()) {
+        if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled() &&
+            mCategory == null) {
+            mProTeamManager.requestBookingProTeam(mBooking.getId(), mBookingProTeamCallback);
+        }
+        else if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled() &&
+                 mCategory.getPreferred() != null && !mCategory.getPreferred().isEmpty()) {
+            launchReschedule();
+        }
+        else {
+            bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
+        }
+    }
+
+    private void launchReschedule() {
+        if (mCategory == null || mCategory.getPreferred() == null ||
+            mCategory.getPreferred().isEmpty()) {
             bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         }
         else {
