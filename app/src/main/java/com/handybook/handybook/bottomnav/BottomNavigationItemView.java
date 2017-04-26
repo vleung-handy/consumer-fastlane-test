@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -41,6 +42,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     private boolean mShiftingMode;
 
     private ImageView mIcon;
+    /**
+     * wraps the icon and its "badge". reference needed for shifting everything up when selected
+     */
+    private RelativeLayout mIconAndBadgeWrapper;
     private final TextView mSmallLabel;
     private final TextView mLargeLabel;
     private int mItemPosition = INVALID_ITEM_POSITION;
@@ -82,6 +87,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
                       );
         setBackgroundResource(android.support.design.R.drawable.design_bottom_navigation_item_background);
         mIcon = (ImageView) findViewById(R.id.icon);
+        mIconAndBadgeWrapper = (RelativeLayout) findViewById(R.id.icon_and_badge_wrapper);
         mSmallLabel = (TextView) findViewById(R.id.smallLabel);
         mLargeLabel = (TextView) findViewById(R.id.largeLabel);
 
@@ -137,19 +143,19 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         ViewCompat.setPivotY(mSmallLabel, mSmallLabel.getBaseline());
         if (mShiftingMode) {
             if (checked) {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+                LayoutParams iconParams = (LayoutParams) mIconAndBadgeWrapper.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
                 iconParams.topMargin = mDefaultMargin;
-                mIcon.setLayoutParams(iconParams);
+                mIconAndBadgeWrapper.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(VISIBLE);
                 ViewCompat.setScaleX(mLargeLabel, 1f);
                 ViewCompat.setScaleY(mLargeLabel, 1f);
             }
             else {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+                LayoutParams iconParams = (LayoutParams) mIconAndBadgeWrapper.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER;
                 iconParams.topMargin = mDefaultMargin;
-                mIcon.setLayoutParams(iconParams);
+                mIconAndBadgeWrapper.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(INVISIBLE);
                 ViewCompat.setScaleX(mLargeLabel, 0.5f);
                 ViewCompat.setScaleY(mLargeLabel, 0.5f);
@@ -158,10 +164,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         }
         else {
             if (checked) {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+                LayoutParams iconParams = (LayoutParams) mIconAndBadgeWrapper.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
                 iconParams.topMargin = mDefaultMargin + mShiftAmount;
-                mIcon.setLayoutParams(iconParams);
+                mIconAndBadgeWrapper.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(VISIBLE);
                 mSmallLabel.setVisibility(INVISIBLE);
 
@@ -171,10 +177,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
                 ViewCompat.setScaleY(mSmallLabel, mScaleUpFactor);
             }
             else {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+                LayoutParams iconParams = (LayoutParams) mIconAndBadgeWrapper.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
                 iconParams.topMargin = mDefaultMargin;
-                mIcon.setLayoutParams(iconParams);
+                mIconAndBadgeWrapper.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(INVISIBLE);
                 mSmallLabel.setVisibility(VISIBLE);
 

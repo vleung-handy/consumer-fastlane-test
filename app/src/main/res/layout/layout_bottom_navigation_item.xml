@@ -1,51 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--mostly copied from R.layout.design_bottom_navigation_item-->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_marginTop="@dimen/bottom_nav_margin_top"
-        android:padding="@dimen/bottom_nav_icon_padding"
+
+    <RelativeLayout
+        android:id="@+id/icon_and_badge_wrapper"
         android:layout_width="@dimen/bottom_nav_icon_size"
         android:layout_height="@dimen/bottom_nav_icon_size"
         android:layout_gravity="center|top"
-        android:duplicateParentState="true" />
+        android:layout_marginTop="@dimen/bottom_nav_margin_top"
+        android:duplicateParentState="true"
+        >
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:duplicateParentState="true"
+            android:padding="@dimen/bottom_nav_icon_padding"
+            />
+
+        <View
+            android:id="@+id/indicator"
+            android:layout_width="@dimen/bottom_nav_indicator_size"
+            android:layout_height="@dimen/bottom_nav_indicator_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/bottom_nav_icon_padding"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/circle_red"
+            android:duplicateParentState="true"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+
     <android.support.design.internal.BaselineLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/bottom_nav_margin_bottom"
         android:layout_gravity="center|bottom"
-        android:duplicateParentState="true">
+        android:layout_marginBottom="@dimen/bottom_nav_margin_bottom"
+        android:duplicateParentState="true"
+        >
+
         <TextView
             android:id="@+id/smallLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/bottom_nav_inactive_label_text_size"
+            android:duplicateParentState="true"
             android:singleLine="true"
-            android:duplicateParentState="true" />
+            android:textSize="@dimen/bottom_nav_inactive_label_text_size"
+            />
 
         <TextView
             android:id="@+id/largeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:textSize="@dimen/bottom_nav_active_label_text_size"
-            android:singleLine="true"
             android:duplicateParentState="true"
+            android:singleLine="true"
+            android:textSize="@dimen/bottom_nav_active_label_text_size"
+            android:visibility="invisible"
             />
     </android.support.design.internal.BaselineLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="18dp"
-        android:paddingRight="20dp"
-        android:id="@+id/indicator"
-        android:visibility="gone"
-        >
-        <View android:layout_width="5dp"
-              android:layout_height="5dp"
-              android:background="@drawable/circle_red"
-              android:layout_alignParentRight="true"
-              android:layout_alignParentBottom="true" />
-    </RelativeLayout>
 </merge>
