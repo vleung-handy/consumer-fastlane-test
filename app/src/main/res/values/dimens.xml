@@ -9,7 +9,9 @@
     <dimen name="bottom_nav_icon_padding">8dp</dimen>
     <dimen name="bottom_nav_icon_size">40dp</dimen>
     <dimen name="bottom_nav_margin_bottom">8dp</dimen>
-    <dimen name="bottom_nav_text_size">10sp</dimen>
+    <dimen name="bottom_nav_margin_top">0dp</dimen>
+    <dimen name="bottom_nav_inactive_label_text_size">10sp</dimen>
+    <dimen name="bottom_nav_active_label_text_size">10sp</dimen>
 
     <!-- Home Service Padding -->
     <dimen name="service_home_padding">28dp</dimen>

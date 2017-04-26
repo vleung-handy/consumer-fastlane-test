@@ -3,6 +3,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
         android:id="@+id/icon"
+        android:layout_marginTop="@dimen/bottom_nav_margin_top"
         android:padding="@dimen/bottom_nav_icon_padding"
         android:layout_width="@dimen/bottom_nav_icon_size"
         android:layout_height="@dimen/bottom_nav_icon_size"
@@ -18,7 +19,7 @@
             android:id="@+id/smallLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/bottom_nav_text_size"
+            android:textSize="@dimen/bottom_nav_inactive_label_text_size"
             android:singleLine="true"
             android:duplicateParentState="true" />
 
@@ -27,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:textSize="@dimen/bottom_nav_text_size"
+            android:textSize="@dimen/bottom_nav_active_label_text_size"
             android:singleLine="true"
             android:duplicateParentState="true"
             />
