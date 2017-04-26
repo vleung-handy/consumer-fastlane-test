@@ -33,7 +33,9 @@ import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.core.ui.view.ProAvatarView;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
+import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamWrapper;
@@ -104,6 +106,22 @@ public class ProMessagesActivity extends MessagesListActivity {
         }
 
         updateProAvatar();
+        if(mBooking!= null
+           && mBooking.getProvider() != null
+           && mBooking.getProvider().getProProfileEnabled()) {
+            mAvatarContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                //launch pro profiles activity
+
+                Intent intent = new Intent(ProMessagesActivity.this, ProProfileActivity.class);
+                intent.putExtra(BundleKeys.PROVIDER_ID, mProMessageViewModel.getProviderId());
+                intent.putExtra(BundleKeys.PAGE_SOURCE, SourcePage.MESSAGES);
+                startActivity(intent);
+                }
+            });
+        }
+
         mAttachmentViewItemHeight
                 = getResources().getDimensionPixelSize(R.dimen.attachment_item_height);
 
@@ -173,14 +191,10 @@ public class ProMessagesActivity extends MessagesListActivity {
      */
     private void initCleaningService() {
         //we can safely assume that by this point, there is a valid cached services
-        List<Service> cachedServices = mServiceManager.getCachedServices();
-        if (cachedServices != null) {
-            for (final Service service : cachedServices) {
-                if (service.getUniq().equalsIgnoreCase("home_cleaning")) {
-                    mCleaningService = service;
-                    return;
-                }
-            }
+        Service cachedHomeCleaningService = mServiceManager.getCachedService(Booking.SERVICE_HOME_CLEANING);
+        if(cachedHomeCleaningService != null)
+        {
+            mCleaningService = cachedHomeCleaningService;
         }
     }
 

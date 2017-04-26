@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_background_gray"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/toolbar"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="false"
+            >
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:fitsSystemWindows="false"
+                app:elevation="0dp"
+                >
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="false"
+                    app:layout_scrollFlags="scroll|snap"
+                    app:scrimVisibleHeightTrigger="0dp"
+                    app:titleEnabled="false"
+                    app:toolbarId="@+id/persistent_promo_preview_view"
+                    >
+
+                    <com.handybook.handybook.proprofiles.ui.ProProfileHeaderView
+                        android:id="@+id/pro_profile_header_layout"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/default_margin"
+                        android:layout_height="wrap_content"
+                        app:layout_collapseMode="pin"
+                        app:layout_collapseParallaxMultiplier="1"
+                        />
+
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <com.handybook.handybook.proprofiles.ui.ProProfileDetailsLayout
+                android:id="@+id/pro_profile_details_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                />
+        </android.support.design.widget.CoordinatorLayout>
+
+        <com.handybook.handybook.library.ui.view.LoadingLayout
+            android:background="@color/handy_background_gray"
+            app:loadingText="@string/loading"
+            android:id="@+id/pro_profile_loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <include android:background="@color/handy_bg" layout="@layout/layout_loading_error"/>
+
+    </FrameLayout>
+</LinearLayout>

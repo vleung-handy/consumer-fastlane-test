@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:id="@+id/pro_profile_stats_items_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/default_padding"
+        >
+
+        <!--todo remove, for test only-->
+
+        <TextView
+            style="@style/TextView.ProProfileAboutItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_half"
+            android:drawableLeft="@drawable/ic_location_pin"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="Serving New York City"
+            />
+
+        <TextView
+            style="@style/TextView.ProProfileAboutItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_half"
+            android:drawableLeft="@drawable/ic_checkbox"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="2+ years of experience"
+
+            />
+
+        <TextView
+            style="@style/TextView.ProProfileAboutItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_half"
+            android:drawableLeft="@drawable/ic_experience_badge"
+            android:drawablePadding="10dp"
+            android:text="1+ years of working with Handy"
+
+            />
+
+        <TextView
+            style="@style/TextView.ProProfileAboutItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin_half"
+            android:drawableLeft="@drawable/ic_background_check"
+            android:drawablePadding="10dp"
+            android:text="Background-checked"
+
+            />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

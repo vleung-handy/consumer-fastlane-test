@@ -71,8 +71,18 @@ public class MiniProProfile extends FrameLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.layout_mini_pro_profile, this);
+        inflate(getContext(), getLayoutResourceId(), this);
         ButterKnife.bind(this);
+    }
+
+    protected int getLayoutResourceId()
+    {
+        return R.layout.layout_mini_pro_profile;
+    }
+
+    public void setProfileImageClickListener(OnClickListener onClickListener)
+    {
+        mProfileImage.setOnClickListener(onClickListener);
     }
 
     public void setTitle(final String title) {

@@ -39,6 +39,7 @@ import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
 import com.handybook.handybook.onboarding.OnboardingModule;
 import com.handybook.handybook.promos.PromosModule;
+import com.handybook.handybook.proprofiles.ProProfileModule;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.ratingflow.RatingFlowModule;
@@ -74,6 +75,7 @@ import retrofit.converter.GsonConverter;
                 ReferralModule.class,
                 PromosModule.class,
                 RatingFlowModule.class,
+                ProProfileModule.class,
         }
 )
 public final class ApplicationModule {

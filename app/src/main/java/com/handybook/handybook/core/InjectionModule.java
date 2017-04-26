@@ -120,6 +120,7 @@ import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
+import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselPagerAdapter;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
@@ -268,5 +269,6 @@ import dagger.Module;
                 BookingGetQuoteFragment.class,
                 BookingOptionsInputFragment.class,
                 ReviewAppBannerFragment.class,
+                CarouselPagerAdapter.class//todo this is proteam specific; should put in a proteam module
         })
 public final class InjectionModule {}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--CTA button supporting image and text. specific to this app-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/default_padding"
+              android:paddingRight="@dimen/default_padding"
+              android:paddingLeft="@dimen/default_padding"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:background="@drawable/button_white"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/element_image_text_action_button_image_view"
+        android:layout_width="@dimen/pro_profile_action_button_image_size"
+        android:layout_height="@dimen/pro_profile_action_button_image_size"
+        />
+    <TextView
+        android:id="@+id/element_image_text_action_button_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextView.Small"
+        android:textColor="@color/handy_darkened_blue"
+        />
+</LinearLayout>

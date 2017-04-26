@@ -64,4 +64,16 @@
         <attr name="starHeight" format="dimension"/>
         <attr name="starMargin" format="dimension"/>
     </declare-styleable>
+
+    <!--image text action button-->
+    <declare-styleable name="ImageTextActionButton">
+        <attr name="text"
+              format="string"/>
+        <attr name="drawable"
+              format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="LoadingLayout">
+        <attr name="loadingText" format="string"/>
+    </declare-styleable>
 </resources>

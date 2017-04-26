@@ -1,6 +1,7 @@
 package com.handybook.handybook.library.ui.view.proteamcarousel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -11,7 +12,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.logger.handylogger.constants.SourcePage;
+import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -24,7 +28,6 @@ public class CarouselPagerAdapter extends PagerAdapter {
     private List<ProCarouselVM> mProCarouselVMs;
     private ActionListener mActionListener;
     private Context mContext;
-
 
     public interface ActionListener {
 
@@ -88,6 +91,16 @@ public class CarouselPagerAdapter extends PagerAdapter {
                .placeholder(R.drawable.img_pro_placeholder)
                .into(image);
 
+//        if(profile.isProfileEnabled()) //todo revert
+//        {
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    launchProProfileIntent(profile.getProviderId());
+                }
+            });
+//        }
+
         if (!TextUtils.isBlank(profile.getButtonText())) {
             mButton.setText(profile.getButtonText());
         }
@@ -103,6 +116,14 @@ public class CarouselPagerAdapter extends PagerAdapter {
 
         container.addView(itemView);
         return itemView;
+    }
+
+    private void launchProProfileIntent(@NonNull String providerId)
+    {
+        Intent intent = new Intent(mContext, ProProfileActivity.class);
+        intent.putExtra(BundleKeys.PROVIDER_ID, providerId);
+        intent.putExtra(BundleKeys.PAGE_SOURCE, SourcePage.SHARE);
+        mContext.startActivity(intent);
     }
 
     @Override

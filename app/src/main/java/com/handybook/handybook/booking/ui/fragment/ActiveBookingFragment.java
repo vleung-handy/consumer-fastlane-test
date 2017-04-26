@@ -49,8 +49,10 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.PlayServicesUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
+import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.booking.ActiveBookingLog;
 import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
+import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
@@ -240,6 +242,17 @@ public class ActiveBookingFragment extends InjectedFragment
             else {
                 mTextCall.setVisibility(View.GONE);
                 mTextText.setVisibility(View.GONE);
+            }
+            if (provider.getProProfileEnabled()) {
+                mProProfile.setProfileImageClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        Intent intent = new Intent(getContext(), ProProfileActivity.class);
+                        intent.putExtra(BundleKeys.PROVIDER_ID, provider.getId());
+                        intent.putExtra(BundleKeys.PAGE_SOURCE, SourcePage.ACTIVE_BOOKING);
+                        startActivity(intent);
+                    }
+                });
             }
         }
         else {

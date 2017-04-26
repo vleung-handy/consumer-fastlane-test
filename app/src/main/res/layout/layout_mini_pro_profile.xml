@@ -100,5 +100,20 @@
         </LinearLayout>
 
         <include layout="@layout/job_count_ratings_layout"/>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/mini_pro_profile_no_reviews_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:visibility="visible"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New to Handy"
+                />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -102,6 +102,10 @@
             android:screenOrientation="portrait"
             />
         <activity
+            android:name=".proprofiles.ui.ProProfileActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name=".account.ui.EditContactInfoActivity"
             android:screenOrientation="portrait"
             />

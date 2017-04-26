@@ -42,6 +42,8 @@ public class Provider implements Serializable, Comparable<Provider> {
     private String mLayerUserId;
     @SerializedName("last_seen_at")
     private Date mLastSeenAt;
+    @SerializedName("pro_profile_enabled")
+    private Boolean mProProfileEnabled;
 
     public Provider(
             final int status,
@@ -53,6 +55,10 @@ public class Provider implements Serializable, Comparable<Provider> {
         mFirstName = firstName;
         mLastName = lastName;
         mPhone = phone;
+    }
+
+    public Boolean getProProfileEnabled() {
+        return mProProfileEnabled == null ? false : mProProfileEnabled;
     }
 
     public final int getStatus() {

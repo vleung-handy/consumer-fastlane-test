@@ -1,0 +1,34 @@
+{
+  "provider_information": {
+    "id": "123",
+    "first_name": "Howard",
+    "last_name": "Cordray",
+    "average_rating": 4.72,
+    "booking_count": 2468,
+    "profile_images": [
+      {
+        "url": "https://blah.media.com/12345",
+        "type": "medium"
+      }
+    ]
+  },
+  "regions": [
+    "New York",
+    "New Jersey"
+  ],
+  "stats": {
+    "years_experience_handy": "1+ years",
+    "years_pro_experience": "6 months - 1 year",
+    "background_checked": true
+  },
+  "customer_relationship": [
+    {
+      "type": "bookings_count",
+      "text": "236 bookings with you"
+    },
+    {
+      "type": "last_review",
+      "text": "Howard did a great job! Really enjoyed working with him"
+    }
+  ]
+}

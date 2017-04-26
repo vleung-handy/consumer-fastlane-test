@@ -142,6 +142,9 @@
     <dimen name="rating_flow.star_margin">8dp</dimen>
     <dimen name="rating_flow.star_margin_small">6dp</dimen>
 
-
+    <!-- Pro Profiles -->
+    <dimen name="pro_profile_pro_image_size">72dp</dimen>
+    <dimen name="pro_profile_action_button_image_size">38dp</dimen>
+    <dimen name="pro_profile_about_page_icon_padding">10dp</dimen>
 
 </resources>

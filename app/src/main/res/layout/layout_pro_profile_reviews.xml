@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <com.handybook.handybook.proprofiles.reviews.ui.ProReviewsRecyclerView
+        android:id="@+id/pro_profile_reviews_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <include
+        android:id="@+id/pro_profile_reviews_empty_view"
+        layout="@layout/layout_pro_profile_no_reviews"
+        />
+
+    <com.handybook.handybook.library.ui.view.LoadingLayout
+        android:background="@color/white"
+        android:id="@+id/pro_profile_reviews_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:loadingText="@string/pro_profile_reviews_loading"
+        />
+
+    <include layout="@layout/layout_scrolling_view_loading_error"/>
+</FrameLayout>

@@ -42,14 +42,18 @@ public class RatingFlowFiveStarsView extends LinearLayout {
         }
     };
 
-    public void selectRating(final int rating) {
-        if (mIsLocked || rating < 1 || rating > STARS_COUNT) { return; }
+    public void selectRating(final int rating, final boolean ignoreLock) {
+        if ((!ignoreLock && mIsLocked) || rating < 1 || rating > STARS_COUNT) { return; }
         for (int index = 0; index < mStarViews.size(); index++) {
             setActive(mStarViews.get(index), index < rating);
         }
         if (mRatingSelectionListener != null) {
             mRatingSelectionListener.onRatingSelected(rating);
         }
+    }
+
+    public void selectRating(final int rating) {
+        selectRating(rating, false);
     }
 
     public void lock() {

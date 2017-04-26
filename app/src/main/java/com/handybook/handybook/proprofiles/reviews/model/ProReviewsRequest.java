@@ -1,0 +1,75 @@
+package com.handybook.handybook.proprofiles.reviews.model;
+
+import android.support.annotation.StringDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+/**
+ * request for a page of reviews
+ */
+public class ProReviewsRequest {
+
+    /**
+     * represents the last review id of the current page of reviews
+     */
+    private Integer mCurrentPageLastReviewId;
+
+    /**
+     * the maximum number of reviews to return
+     */
+    private int mMaxReviewsPerPage;
+
+    /**
+     * the sort order of the reviews to return
+     */
+    @ProReviewsSortOrder
+    private String mSortOrder;
+
+    /**
+     * the min rating of the reviews to return
+     */
+    private float mMinRating;
+
+    public ProReviewsRequest(
+            Integer currentPageLastReviewId, int maxReviewsPerPage,
+            @ProReviewsSortOrder String sortOrder, float minRating
+    ) {
+        mCurrentPageLastReviewId = currentPageLastReviewId;
+        mMaxReviewsPerPage = maxReviewsPerPage;
+        mSortOrder = sortOrder;
+        mMinRating = minRating;
+    }
+
+    public Integer getCurrentPageLastReviewId() {
+        return mCurrentPageLastReviewId;
+    }
+
+    public int getMaxReviewsPerPage() {
+        return mMaxReviewsPerPage;
+    }
+
+    @ProReviewsSortOrder
+    public String getSortOrder() {
+        return mSortOrder;
+    }
+
+    public float getMinRating() {
+        return mMinRating;
+    }
+
+    public static class SortOrder {
+
+        public static final String DESCENDING = "desc";
+        public static final String ASCENDING = "asc";
+    }
+
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({
+                       SortOrder.DESCENDING,
+                       SortOrder.ASCENDING
+               })
+    public @interface ProReviewsSortOrder {
+    }
+}

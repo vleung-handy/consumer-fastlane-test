@@ -65,4 +65,6 @@ public class BundleKeys {
     public static final String BOOKING_FLOW_STARTED = "BOOKING_FLOW_STARTED";
     public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
     public static final String PROGRESS = "PROGRESS";
+    public static final String PAGE_SOURCE = "page_source";
+
 }

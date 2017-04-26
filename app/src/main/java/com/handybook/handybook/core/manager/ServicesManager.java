@@ -271,6 +271,26 @@ public class ServicesManager {
         return newMostCommonServices;
     }
 
+    /**
+     * @param serviceMachineName see the constants in {@link com.handybook.handybook.booking.model.Booking}
+     *                           they do not have a StringDef but that would be ideal.
+     *                           compared with value returned in getUniq() method of the Service class
+     * @return the cached Service model for the given service machine name
+     */
+    @Nullable
+    public Service getCachedService(String serviceMachineName)
+    {
+        List<Service> cachedServices = getCachedServices();
+        if (cachedServices != null) {
+            for (final Service service : cachedServices) {
+                if (service.getUniq().equalsIgnoreCase(serviceMachineName)) {
+                    return service;
+                }
+            }
+        }
+        return null;
+    }
+
     @Nullable
     public List<Service> getCachedServices() {
         String cachedServicesJson;
