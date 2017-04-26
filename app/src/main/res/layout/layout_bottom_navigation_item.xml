@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--mostly copied from R.layout.design_bottom_navigation_item-->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--this assumes that the icon asset itself has padding-->
     <ImageView
         android:id="@+id/icon"
+        android:padding="@dimen/bottom_nav_icon_padding"
         android:layout_width="@dimen/bottom_nav_icon_size"
         android:layout_height="@dimen/bottom_nav_icon_size"
         android:layout_gravity="center|top"

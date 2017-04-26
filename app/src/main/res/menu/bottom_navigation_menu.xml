@@ -18,7 +18,6 @@
         app:showAsAction="ifRoom"
         />
 
-    <!--TODO get new icon for below-->
     <item
         android:id="@+id/add_booking"
         android:enabled="true"
