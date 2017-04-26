@@ -428,7 +428,7 @@ public class Booking implements Parcelable {
         mExtrasInfo = new ArrayList<>();
         in.readTypedList(mExtrasInfo, ExtraInfo.CREATOR);
 
-        final boolean[] booleanData = new boolean[5];
+        final boolean[] booleanData = new boolean[6];
         in.readBooleanArray(booleanData);
 
         mCanEditFrequency = booleanData[0];
@@ -436,6 +436,7 @@ public class Booking implements Parcelable {
         mCanEditHours = booleanData[2];
         mCanLeaveTip = booleanData[3];
         mMilestonesEnabled = booleanData[4];
+        mShouldShowPaymentSection = booleanData[5];
 
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
 
@@ -485,6 +486,7 @@ public class Booking implements Parcelable {
                                               mCanEditHours,
                                               mCanLeaveTip,
                                               mMilestonesEnabled,
+                                              mShouldShowPaymentSection
                                               });
         out.writeParcelable(mInstructions, 0);
         out.writeSerializable(mEntryMethodOption);
