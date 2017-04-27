@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,8 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     public static BookingEntryInfoFragment newInstance(
             final boolean isNewUser,
             final Instructions instructions,
-            final EntryMethodsInfo entryMethodsInfo
+            final EntryMethodsInfo entryMethodsInfo,
+            @Nullable Bundle extras
     ) {
         final BookingEntryInfoFragment fragment = new BookingEntryInfoFragment();
         final Bundle args = new Bundle();
@@ -60,6 +62,9 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
         args.putBoolean(EXTRA_NEW_USER, isNewUser);
         args.putParcelable(EXTRA_INSTRUCTIONS, instructions);
         args.putSerializable(BookingFinalizeActivity.EXTRA_ENTRY_METHODS_INFO, entryMethodsInfo);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
         return fragment;
     }

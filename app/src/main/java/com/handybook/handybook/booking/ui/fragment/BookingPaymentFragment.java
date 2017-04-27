@@ -139,6 +139,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     private BookingQuote mCurrentQuote;
     private BookingTransaction mCurrentTransaction;
 
+    public static BookingPaymentFragment newInstance(@Nullable final Bundle extras) {
+        BookingPaymentFragment fragment = new BookingPaymentFragment();
+        fragment.setArguments(extras);
+        return fragment;
+    }
+
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed() {
         startCardScanActivity();
@@ -214,10 +220,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     @OnClick(R.id.payment_fragment_apply_promo_cta)
     public void onApplyPromoButtonClicked() {
         showAndUpdatePromoCodeInput();
-    }
-
-    public static BookingPaymentFragment newInstance() {
-        return new BookingPaymentFragment();
     }
 
     @Override

@@ -24,19 +24,17 @@ public final class PeakPricingActivity extends MenuDrawerActivity {
                 = (ArrayList<ArrayList<PeakPriceInfo>>) getIntent()
                 .getSerializableExtra(BundleKeys.RESCHEDULE_PRICE_TABLE);
 
-        Fragment fragment;
         if (reschedulePriceTable != null) {
-            fragment = PeakPricingFragment.newInstance(
+            return PeakPricingFragment.newInstance(
                     reschedulePriceTable,
                     rescheduleBooking,
-                    rescheduleAll
+                    rescheduleAll,
+                    getIntent().getExtras()
             );
         }
         else {
-            fragment = PeakPricingFragment.newInstance(forVoucher);
+            return PeakPricingFragment.newInstance(forVoucher, getIntent().getExtras());
         }
-        fragment.setArguments(getIntent().getExtras());
-        return fragment;
     }
 
     @Override

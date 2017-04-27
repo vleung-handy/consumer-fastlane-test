@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,10 +42,9 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
     @Bind(R.id.password_text)
     PasswordInputTextView mPasswordText;
 
-    public static BookingPasswordPromptFragment newInstance() {
+    public static BookingPasswordPromptFragment newInstance(@Nullable final Bundle extras) {
         final BookingPasswordPromptFragment fragment = new BookingPasswordPromptFragment();
-        final Bundle args = new Bundle();
-        fragment.setArguments(args);
+        fragment.setArguments(extras);
         return fragment;
     }
 

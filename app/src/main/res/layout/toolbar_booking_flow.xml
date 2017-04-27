@@ -19,6 +19,7 @@
         app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
         app:titleMargin="@dimen/default_margin"
         app:titleTextAppearance="@style/Toolbar.TitleText"
+        android:paddingRight="@dimen/default_padding"
         />
 
     <ProgressBar

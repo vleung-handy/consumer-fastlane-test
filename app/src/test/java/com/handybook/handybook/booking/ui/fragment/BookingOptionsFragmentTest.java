@@ -53,7 +53,8 @@ public class BookingOptionsFragmentTest extends RobolectricGradleTestWrapper {
                 99,
                 new HashMap<String, Boolean>(),
                 new ArrayList<BookingOption>(),
-                false
+                false,
+                null
         );
 
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);

@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,10 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
     @Bind(R.id.next_button)
     Button mNextButton;
 
-    public static BookingExtrasFragment newInstance() {
-        return new BookingExtrasFragment();
+    public static BookingExtrasFragment newInstance(@Nullable final Bundle extras) {
+        BookingExtrasFragment fragment = new BookingExtrasFragment();
+        fragment.setArguments(extras);
+        return fragment;
     }
 
     @Override

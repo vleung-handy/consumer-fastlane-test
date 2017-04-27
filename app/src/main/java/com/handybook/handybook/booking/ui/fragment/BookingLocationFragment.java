@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,10 @@ public final class BookingLocationFragment extends BookingFlowFragment
     @Bind(R.id.next_button)
     Button mNextButton;
 
-    public static BookingLocationFragment newInstance() {
-        return new BookingLocationFragment();
+    public static BookingLocationFragment newInstance(@Nullable final Bundle extras) {
+        BookingLocationFragment fragment = new BookingLocationFragment();
+        fragment.setArguments(extras);
+        return fragment;
     }
 
     @Override

@@ -61,6 +61,7 @@ public class BookingFlowFragment extends InjectedFragment {
 
     public static final int MAX_PROGRESS = 100;
 
+    protected boolean mFlowStarted;
     protected boolean mShowProgress;
     protected int mProgress;
 
@@ -76,6 +77,7 @@ public class BookingFlowFragment extends InjectedFragment {
     public void onCreate(final Bundle savedInstanceState) {
         if (getArguments() != null) {
             mShowProgress = getArguments().getBoolean(BundleKeys.SHOW_PROGRESS, false);
+            mFlowStarted = getArguments().getBoolean(BundleKeys.BOOKING_FLOW_STARTED, false);
             mProgress = getArguments().getInt(BundleKeys.PROGRESS, 0);
         }
         super.onCreate(savedInstanceState);
@@ -152,6 +154,7 @@ public class BookingFlowFragment extends InjectedFragment {
 
     protected Bundle createProgressBundle() {
         Bundle bundle = new Bundle();
+        bundle.putBoolean(BundleKeys.BOOKING_FLOW_STARTED, true);
         bundle.putBoolean(BundleKeys.SHOW_PROGRESS, mShowProgress);
         bundle.putInt(BundleKeys.PROGRESS, mProgress + 15);
         return bundle;
@@ -159,6 +162,7 @@ public class BookingFlowFragment extends InjectedFragment {
 
     private Bundle createInitialProgressBundle() {
         Bundle bundle = new Bundle();
+        bundle.putBoolean(BundleKeys.BOOKING_FLOW_STARTED, true);
         bundle.putBoolean(BundleKeys.SHOW_PROGRESS, true);
         bundle.putInt(BundleKeys.PROGRESS, 10);
         return bundle;
@@ -288,7 +292,12 @@ public class BookingFlowFragment extends InjectedFragment {
                                 BookingOptionsActivity.EXTRA_OPTIONS,
                                 new ArrayList<>(bookingOptions)
                         );
-                        intent.putExtras(createProgressBundle());
+                        if (mFlowStarted) {
+                            intent.putExtras(createProgressBundle());
+                        }
+                        else {
+                            intent.putExtras(createInitialProgressBundle());
+                        }
                         intent.putExtra(BookingOptionsActivity.EXTRA_PAGE, 0);
                         startActivity(intent);
                     }
@@ -310,7 +319,6 @@ public class BookingFlowFragment extends InjectedFragment {
         */
         if (this instanceof BookingRecurrenceFragment
             || this instanceof BookingSubscriptionFragment
-            || this instanceof PeakPricingFragment
             || this instanceof BookingExtrasFragment
             || this instanceof PeakPricingFragment) {
             continueFlow();

@@ -3,6 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -149,10 +150,16 @@ public final class BookingDateFragment extends BookingFlowFragment
     private String mProviderId;
     private ProTeamProViewModel mProTeamProViewModel;
 
-    public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
+    public static BookingDateFragment newInstance(
+            final ArrayList<BookingOption> postOptions,
+            @Nullable final Bundle extras
+    ) {
         final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
         args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -163,7 +170,8 @@ public final class BookingDateFragment extends BookingFlowFragment
             BookingDetailFragment.RescheduleType type,
             final String providerId,
             final ProTeamProViewModel proTeamProViewModel,
-            final ProAvailabilityResponse availabilityResponse
+            final ProAvailabilityResponse availabilityResponse,
+            @Nullable final Bundle extras
     ) {
         final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
@@ -173,6 +181,9 @@ public final class BookingDateFragment extends BookingFlowFragment
         args.putString(EXTRA_PROVIDER_ID, providerId);
         args.putSerializable(EXTRA_PRO_TEAM_PRO, proTeamProViewModel);
         args.putSerializable(BundleKeys.PRO_AVAILABILITY, availabilityResponse);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
         return fragment;
     }

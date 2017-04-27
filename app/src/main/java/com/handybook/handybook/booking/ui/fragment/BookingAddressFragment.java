@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,10 @@ public final class BookingAddressFragment extends BookingFlowFragment {
     AutoCompleteAddressFragment mAutoCompleteFragment;
     private static final String AC_FRAG_TAG = AutoCompleteAddressFragment.class.getName();
 
-    public static BookingAddressFragment newInstance() {
-        return new BookingAddressFragment();
+    public static BookingAddressFragment newInstance(@Nullable Bundle extras) {
+        BookingAddressFragment fragment = new BookingAddressFragment();
+        fragment.setArguments(extras);
+        return fragment;
     }
 
     @Override

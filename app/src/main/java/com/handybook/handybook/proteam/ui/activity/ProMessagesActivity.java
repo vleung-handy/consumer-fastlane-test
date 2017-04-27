@@ -327,6 +327,9 @@ public class ProMessagesActivity extends MessagesListActivity {
         mBookingManager.clear();
         mBookingManager.setCurrentRequest(request);
         final Intent intent = new Intent(this, BookingLocationActivity.class);
+        intent.putExtra(BundleKeys.SHOW_PROGRESS, true);
+        intent.putExtra(BundleKeys.BOOKING_FLOW_STARTED, true);
+        intent.putExtra(BundleKeys.PROGRESS, 10);
         startActivity(intent);
     }
 

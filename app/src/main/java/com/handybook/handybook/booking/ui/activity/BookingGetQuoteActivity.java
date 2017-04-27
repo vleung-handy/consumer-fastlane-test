@@ -27,9 +27,8 @@ public final class BookingGetQuoteActivity extends MenuDrawerActivity {
         final HashMap<String, Boolean> childDisplayMap
                 = (HashMap) getIntent().getSerializableExtra(EXTRA_CHILD_DISPLAY_MAP);
 
-        Fragment fragment = BookingGetQuoteFragment.newInstance(options, childDisplayMap);
-        fragment.setArguments(getIntent().getExtras());
-        return fragment;
+        return BookingGetQuoteFragment.newInstance(
+                options, childDisplayMap, getIntent().getExtras());
     }
 
     @Override

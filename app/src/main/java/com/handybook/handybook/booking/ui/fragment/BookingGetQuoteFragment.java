@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,15 +77,18 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
 
     public static BookingGetQuoteFragment newInstance(
             final ArrayList<BookingOption> options,
-            final HashMap<String, Boolean> childDisplayMap
+            final HashMap<String, Boolean> childDisplayMap,
+            @Nullable final Bundle extras
     ) {
         final BookingGetQuoteFragment fragment = new BookingGetQuoteFragment();
         final Bundle args = new Bundle();
 
         args.putParcelableArrayList(EXTRA_OPTIONS, options);
         args.putSerializable(EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
-
         return fragment;
     }
 

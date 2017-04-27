@@ -33,22 +33,21 @@ public final class BookingDateActivity extends MenuDrawerActivity {
             final ProAvailabilityResponse availabilityResponse = (ProAvailabilityResponse)
                     getIntent().getSerializableExtra(BundleKeys.PRO_AVAILABILITY);
 
-            Fragment fragment = BookingDateFragment.newInstance(
+            return BookingDateFragment.newInstance(
                     rescheduleBooking,
                     notice,
                     type,
                     providerId,
                     proTeamProViewModel,
-                    availabilityResponse
+                    availabilityResponse,
+                    getIntent().getExtras()
             );
-            fragment.setArguments(getIntent().getExtras());
-            return fragment;
         }
 
         final ArrayList<BookingOption> postOptions
                 = getIntent().getParcelableArrayListExtra(BundleKeys.POST_OPTIONS);
 
-        return BookingDateFragment.newInstance(postOptions);
+        return BookingDateFragment.newInstance(postOptions, getIntent().getExtras());
     }
 
     @Override

@@ -25,7 +25,8 @@ public final class BookingRescheduleOptionsActivity extends MenuDrawerActivity {
                 rescheduleBooking,
                 date,
                 providerId,
-                type
+                type,
+                getIntent().getExtras()
         );
     }
 

@@ -30,30 +30,30 @@ public final class BookingFinalizeActivity extends MenuDrawerActivity {
         final EntryMethodsInfo entryMethodsInfo =
                 (EntryMethodsInfo)
                         getIntent().getSerializableExtra(EXTRA_ENTRY_METHODS_INFO);
-        Fragment fragment;
         switch (getIntent().getIntExtra(EXTRA_PAGE, PAGE_ENTRY_INFORMATION)) {
             case PAGE_ENTRY_INFORMATION:
-                fragment = BookingEntryInfoFragment.newInstance(
+                return BookingEntryInfoFragment.newInstance(
                         isNewUser,
                         instructions,
-                        entryMethodsInfo
+                        entryMethodsInfo,
+                        getIntent().getExtras()
                 );
-                break;
             case PAGE_PREFERENCES:
-                fragment = BookingPreferencesFragment.newInstance(isNewUser, instructions);
-                break;
-            case PAGE_PASSWORD_PROMPT:
-                fragment = BookingPasswordPromptFragment.newInstance();
-                break;
-            default:
-                fragment = BookingEntryInfoFragment.newInstance(
+                return BookingPreferencesFragment.newInstance(
                         isNewUser,
                         instructions,
-                        entryMethodsInfo
+                        getIntent().getExtras()
+                );
+            case PAGE_PASSWORD_PROMPT:
+                return BookingPasswordPromptFragment.newInstance(getIntent().getExtras());
+            default:
+                return BookingEntryInfoFragment.newInstance(
+                        isNewUser,
+                        instructions,
+                        entryMethodsInfo,
+                        getIntent().getExtras()
                 );
         }
-        fragment.setArguments(getIntent().getExtras());
-        return fragment;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,10 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
     @Bind(R.id.fragment_booking_recurrence_disclaimer_text)
     TextView mDisclaimerText;
 
-    public static BookingRecurrenceFragment newInstance() {
-        return new BookingRecurrenceFragment();
+    public static BookingRecurrenceFragment newInstance(@Nullable final Bundle extras) {
+        BookingRecurrenceFragment fragment = new BookingRecurrenceFragment();
+        fragment.setArguments(extras);
+        return fragment;
     }
 
     @Override
