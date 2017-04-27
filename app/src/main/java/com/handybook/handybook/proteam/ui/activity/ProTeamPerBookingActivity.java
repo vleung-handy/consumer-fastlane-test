@@ -7,7 +7,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.ui.fragment.BookingProTeamConversationsFragment;
+import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
 
 public class ProTeamPerBookingActivity extends MenuDrawerActivity {
 
@@ -16,7 +16,7 @@ public class ProTeamPerBookingActivity extends MenuDrawerActivity {
         ProTeam.ProTeamCategory category
                 = getIntent().getParcelableExtra(BundleKeys.PRO_TEAM_CATEGORY);
         Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
-        return BookingProTeamConversationsFragment.newInstance(category, booking);
+        return BookingProTeamRescheduleFragment.newInstance(category, booking);
     }
 
     @Override
