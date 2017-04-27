@@ -73,16 +73,34 @@
                 android:orientation="vertical"
                 >
 
-                <TextView
-                    android:id="@+id/booking_subscription_option_title"
-                    style="@style/TextView.Large"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:gravity="center"
-                    android:text="@string/booking_subscription_length_title"
-                    />
+                    >
+
+                    <TextView
+                        android:id="@+id/booking_subscription_option_title"
+                        style="@style/TextView.Large"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:gravity="center"
+                        android:text="@string/booking_subscription_length_title"
+                        />
+
+                    <ImageView
+                        android:id="@+id/booking_subscription_commitment_tooltip"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginRight="@dimen/default_margin"
+                        android:contentDescription="@string/cd_view_payment_questionmark_icon"
+                        android:src="@drawable/ic_question_mark_grey_outline"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        />
+                </FrameLayout>
 
 
             </LinearLayout>
