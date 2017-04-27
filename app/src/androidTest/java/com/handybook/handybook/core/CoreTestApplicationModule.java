@@ -472,9 +472,10 @@ public final class CoreTestApplicationModule {
     final ProTeamManager provideProTeamManager(
             final Bus bus,
             final HandyRetrofitService service,
+            final DataManager dataManager,
             final UserManager userDataManager
     ) {
-        return new ProTeamManager(bus, service, userDataManager);
+        return new ProTeamManager(bus, service, dataManager, userDataManager);
     }
 
     private String getDeviceId() {
