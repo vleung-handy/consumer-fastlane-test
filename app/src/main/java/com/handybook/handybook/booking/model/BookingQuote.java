@@ -62,7 +62,7 @@ public class BookingQuote extends Observable {
     public static final String KEY_COMMITMENT_PRICES = "commitment_prices";
     public static final String KEY_ACTIVE_COMMITMENT_TYPES = "active_commitment_types";
     public static final String KEY_COMMITMENT_FAQ_URL = "commitment_faq_url";
-    public static final String KEY_COMMITMENT_TOOLTIP = "commitment_tooltip";
+    public static final String KEY_COMMITMENT_TOOLTIP = "commitment_faq_tooltip";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
