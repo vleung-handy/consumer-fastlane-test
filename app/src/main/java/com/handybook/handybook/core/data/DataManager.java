@@ -536,7 +536,6 @@ public class DataManager {
                 rescheduleAll ? 1 : 0,
                 userId,
                 providerId,
-                chatRescheduleAgreement ? 1 : 0,
                 new HandyRetrofitCallback(cb) {
                     @Override
                     protected void success(final JSONObject response) {
