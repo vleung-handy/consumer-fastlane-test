@@ -128,9 +128,10 @@ public class BookingQuote extends Observable {
     private Bill mBill;
     @SerializedName("zipcode_info")
     private ZipValidationResponse mZipValidationResponse;
+    @SerializedName("user_info")
+    private UserExistsResponse mUserExistsResponse;
     @SerializedName(KEY_COMMITMENT_TOOLTIP)
     private String mCommitmentTooltip;
-    private UserExistsResponse mUserExistsResponse;
 
     public UserExistsResponse getUserExistsResponse() {
         return mUserExistsResponse;

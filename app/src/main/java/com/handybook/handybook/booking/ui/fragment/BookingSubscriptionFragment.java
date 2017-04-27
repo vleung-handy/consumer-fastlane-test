@@ -124,7 +124,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         }
         else {
             mCommitmentTooltip.setVisibility(View.GONE);
-
         }
     }
 
