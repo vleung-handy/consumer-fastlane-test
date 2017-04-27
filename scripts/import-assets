@@ -9,6 +9,7 @@ names=()
 target_names=()
 
 source=$1
+IFS=$'\n' #specify the file separator so that we can parse files with whitespaces
 for f in $(find $source -name \*.png); do
   name=`echo $f | sed 's/.*\/\(.*\)\.png/\1/' | cut -d '@' -f 1`
   scale=`echo $f | sed 's/.*\/\(.*\)\.png/\1/' | cut -d '@' -f 2`

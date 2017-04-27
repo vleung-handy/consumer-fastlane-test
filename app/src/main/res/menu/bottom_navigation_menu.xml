@@ -7,35 +7,36 @@
         android:id="@+id/bookings"
         android:enabled="true"
         android:icon="@drawable/ic_menu_bookings_inactive"
-        android:title=""
+        android:title="@string/bottom_nav_item_bookings"
         app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/messages"
         android:enabled="true"
         android:icon="@drawable/ic_menu_messages_inactive"
-        android:title=""
+        android:title="@string/bottom_nav_item_messages"
         app:showAsAction="ifRoom"
         />
+
     <item
         android:id="@+id/add_booking"
         android:enabled="true"
         android:icon="@drawable/ic_menu_add_inactive"
-        android:title=""
+        android:title="@string/bottom_nav_item_services"
         app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/gift"
         android:enabled="true"
         android:icon="@drawable/ic_menu_gift_inactive"
-        android:title=""
+        android:title="@string/bottom_nav_item_share"
         app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/account"
         android:enabled="true"
         android:icon="@drawable/ic_menu_account_inactive"
-        android:title=""
+        android:title="@string/bottom_nav_item_account"
         app:showAsAction="ifRoom"
         />
 </menu>
