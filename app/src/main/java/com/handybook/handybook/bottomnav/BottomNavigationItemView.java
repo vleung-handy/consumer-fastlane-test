@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
+import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.PointerIconCompat;
@@ -20,8 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.handybook.handybook.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
@@ -42,10 +41,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     private boolean mShiftingMode;
 
     private ImageView mIcon;
-    /**
-     * wraps the icon and its "badge". reference needed for shifting everything up when selected
-     */
-    private RelativeLayout mIconAndBadgeWrapper;
     private final TextView mSmallLabel;
     private final TextView mLargeLabel;
     private int mItemPosition = INVALID_ITEM_POSITION;
@@ -56,6 +51,12 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     // Handy: This is a custom handy indicator used for when there is chat messages
     private final View mIndicator;
+
+    /**
+     * Handy component:
+     * wraps the icon and its "badge". reference needed for shifting everything up when selected
+     */
+    private RelativeLayout mIconAndBadgeWrapper;
 
     public BottomNavigationItemView(@NonNull Context context) {
         this(context, null);
@@ -70,29 +71,29 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
         final Resources res = getResources();
         int inactiveLabelSize =
-                res.getDimensionPixelSize(R.dimen.bottom_nav_inactive_label_text_size);
+                res.getDimensionPixelSize(com.handybook.handybook.R.dimen.bottom_nav_inactive_label_text_size);
         int activeLabelSize = res.getDimensionPixelSize(
-                R.dimen.bottom_nav_active_label_text_size);
+                com.handybook.handybook.R.dimen.bottom_nav_active_label_text_size);
         mDefaultMargin = res.getDimensionPixelSize(
-                R.dimen.bottom_nav_margin_top);
+                com.handybook.handybook.R.dimen.bottom_nav_margin_top);
         mShiftAmount = inactiveLabelSize - activeLabelSize;
         mScaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
         mScaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
 
         LayoutInflater.from(context)
                       .inflate(
-                              R.layout.layout_bottom_navigation_item,
+                              com.handybook.handybook.R.layout.layout_bottom_navigation_item,
                               this,
                               true
                       );
-        setBackgroundResource(android.support.design.R.drawable.design_bottom_navigation_item_background);
-        mIcon = (ImageView) findViewById(R.id.icon);
-        mIconAndBadgeWrapper = (RelativeLayout) findViewById(R.id.icon_and_badge_wrapper);
-        mSmallLabel = (TextView) findViewById(R.id.smallLabel);
-        mLargeLabel = (TextView) findViewById(R.id.largeLabel);
+        setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
+        mIcon = (ImageView) findViewById(com.handybook.handybook.R.id.icon);
+        mSmallLabel = (TextView) findViewById(com.handybook.handybook.R.id.smallLabel);
+        mLargeLabel = (TextView) findViewById(com.handybook.handybook.R.id.largeLabel);
 
         // Handy Code
-        mIndicator = findViewById(R.id.indicator);
+        mIndicator = findViewById(com.handybook.handybook.R.id.indicator);
+        mIconAndBadgeWrapper = (RelativeLayout) findViewById(com.handybook.handybook.R.id.icon_and_badge_wrapper);
     }
 
     @Override
@@ -143,18 +144,22 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         ViewCompat.setPivotY(mSmallLabel, mSmallLabel.getBaseline());
         if (mShiftingMode) {
             if (checked) {
+//                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
                 LayoutParams iconParams = (LayoutParams) mIconAndBadgeWrapper.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
                 iconParams.topMargin = mDefaultMargin;
+//                mIcon.setLayoutParams(iconParams);
                 mIconAndBadgeWrapper.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(VISIBLE);
                 ViewCompat.setScaleX(mLargeLabel, 1f);
                 ViewCompat.setScaleY(mLargeLabel, 1f);
             }
             else {
+//                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
                 LayoutParams iconParams = (LayoutParams) mIconAndBadgeWrapper.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER;
                 iconParams.topMargin = mDefaultMargin;
+//                mIcon.setLayoutParams(iconParams);
                 mIconAndBadgeWrapper.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(INVISIBLE);
                 ViewCompat.setScaleX(mLargeLabel, 0.5f);
@@ -164,9 +169,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         }
         else {
             if (checked) {
+//                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
                 LayoutParams iconParams = (LayoutParams) mIconAndBadgeWrapper.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
                 iconParams.topMargin = mDefaultMargin + mShiftAmount;
+//                mIcon.setLayoutParams(iconParams);
                 mIconAndBadgeWrapper.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(VISIBLE);
                 mSmallLabel.setVisibility(INVISIBLE);
@@ -177,9 +184,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
                 ViewCompat.setScaleY(mSmallLabel, mScaleUpFactor);
             }
             else {
+//                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
                 LayoutParams iconParams = (LayoutParams) mIconAndBadgeWrapper.getLayoutParams();
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
                 iconParams.topMargin = mDefaultMargin;
+//                mIcon.setLayoutParams(iconParams);
                 mIconAndBadgeWrapper.setLayoutParams(iconParams);
                 mLargeLabel.setVisibility(INVISIBLE);
                 mSmallLabel.setVisibility(VISIBLE);
