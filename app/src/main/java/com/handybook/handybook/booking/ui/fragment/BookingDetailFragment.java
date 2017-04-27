@@ -81,7 +81,7 @@ public final class BookingDetailFragment extends InjectedFragment
     @Bind(R.id.booking_detail_view)
     BookingDetailView mBookingDetailView;
     @Bind(R.id.nav_help)
-    TextView mHelp;
+    TextView mNavHelpText;
 
     @Inject
     ProTeamManager mProTeamManager;
@@ -94,22 +94,22 @@ public final class BookingDetailFragment extends InjectedFragment
 
     private RescheduleType mRescheduleType;
 
-    private ProTeam.ProTeamCategory mCategory;
+    private ProTeam.ProTeamCategory mProTeamCategory;
 
     private ArrayList<Service> mServices;
 
-    private DataManager.Callback<ProTeam.ProTeamCategory> mBookingProTeamCallback;
+    private FragmentSafeCallback<ProTeam.ProTeamCategory> mBookingProTeamCallback;
 
     {
-        mBookingProTeamCallback = new DataManager.Callback<ProTeam.ProTeamCategory>() {
+        mBookingProTeamCallback = new FragmentSafeCallback<ProTeam.ProTeamCategory>(this) {
             @Override
-            public void onSuccess(final ProTeam.ProTeamCategory response) {
-                mCategory = response;
+            public void onCallbackSuccess(final ProTeam.ProTeamCategory response) {
+                mProTeamCategory = response;
                 launchReschedule();
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error) {
+            public void onCallbackError(final DataManager.DataManagerError error) {
                 launchReschedule();
             }
         };
@@ -153,7 +153,7 @@ public final class BookingDetailFragment extends InjectedFragment
             }
 
             mServices = (ArrayList<Service>) savedInstanceState.getSerializable(STATE_SERVICES);
-            mCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
+            mProTeamCategory = savedInstanceState.getParcelable(STATE_CATEGORY);
         }
     }
 
@@ -268,7 +268,7 @@ public final class BookingDetailFragment extends InjectedFragment
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_UPDATED_BOOKING, mBookingUpdated);
         outState.putSerializable(STATE_SERVICES, mServices);
-        outState.putParcelable(STATE_CATEGORY, mCategory);
+        outState.putParcelable(STATE_CATEGORY, mProTeamCategory);
     }
 
     @Override
@@ -310,7 +310,7 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     private void setupForBooking(Booking booking) {
-        mHelp.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.GONE);
+        mNavHelpText.setVisibility(shouldShowPanicButtons(mBooking) ? View.VISIBLE : View.GONE);
         mBookingDetailView.updateDisplay(
                 booking,
                 mServices,
@@ -464,13 +464,13 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     public void onRescheduleClicked() {
-        if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled() &&
-            mCategory == null) {
-            mProTeamManager.requestBookingProTeam(mBooking.getId(), mBookingProTeamCallback);
-        }
-        else if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled() &&
-                 mCategory.getPreferred() != null && !mCategory.getPreferred().isEmpty()) {
-            launchReschedule();
+        if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled()) {
+            if (mProTeamCategory == null) {
+                mProTeamManager.requestBookingProTeam(mBooking.getId(), mBookingProTeamCallback);
+            }
+            else {
+                launchReschedule();
+            }
         }
         else {
             bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
@@ -478,13 +478,13 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     private void launchReschedule() {
-        if (mCategory == null || mCategory.getPreferred() == null ||
-            mCategory.getPreferred().isEmpty()) {
+        if (mProTeamCategory == null || mProTeamCategory.getPreferred() == null ||
+            mProTeamCategory.getPreferred().isEmpty()) {
             bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         }
         else {
             Intent intent = new Intent(getContext(), ProTeamPerBookingActivity.class);
-            intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mCategory);
+            intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mProTeamCategory);
             intent.putExtra(BundleKeys.BOOKING, mBooking);
             startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
         }
@@ -492,7 +492,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onReceiveBookingProTeamSuccess(final ProTeamEvent.ReceiveBookingProTeamSuccess event) {
-        mCategory = event.getProTeamCategory();
+        mProTeamCategory = event.getProTeamCategory();
     }
 
     @Subscribe

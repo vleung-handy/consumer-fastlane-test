@@ -23,6 +23,7 @@ import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
@@ -51,17 +52,17 @@ public class BookingDetailSectionFragmentProInformation extends
     @Inject
     ProTeamManager mProTeamManager;
 
-    private DataManager.Callback<ProTeam.ProTeamCategory> mCallback;
+    private FragmentSafeCallback<ProTeam.ProTeamCategory> mCallback;
 
     {
-        mCallback = new DataManager.Callback<ProTeam.ProTeamCategory>() {
+        mCallback = new FragmentSafeCallback<ProTeam.ProTeamCategory>(this) {
             @Override
-            public void onSuccess(final ProTeam.ProTeamCategory response) {
+            public void onCallbackSuccess(final ProTeam.ProTeamCategory response) {
                 onReceiveBookingProTeamSuccess(response);
             }
 
             @Override
-            public void onError(final DataManager.DataManagerError error) {}
+            public void onCallbackError(final DataManager.DataManagerError error) {}
         };
     }
 
