@@ -36,12 +36,20 @@ public class EditPlanFragment extends InjectedFragment {
     TextView mAddressText;
     @Bind(R.id.edit_plan_next_cleaning_time_text)
     TextView mNextCleaningTimeText;
+    @Bind(R.id.edit_plan_cancel)
+    TextView mCancelText;
 
     private RecurringBooking mPlan;
+    private boolean mHideCancel;
 
     public static EditPlanFragment newInstance(RecurringBooking plan) {
+        return newInstance(plan, false);
+    }
+
+    public static EditPlanFragment newInstance(RecurringBooking plan, boolean hideCancel) {
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.RECURRING_PLAN, plan);
+        args.putBoolean(BundleKeys.HIDE_CANCEL, hideCancel);
         EditPlanFragment fragment = new EditPlanFragment();
         fragment.setArguments(args);
         return fragment;
@@ -51,6 +59,7 @@ public class EditPlanFragment extends InjectedFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPlan = (RecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_PLAN);
+        mHideCancel = getArguments().getBoolean(BundleKeys.HIDE_CANCEL);
     }
 
     @Override
@@ -123,5 +132,7 @@ public class EditPlanFragment extends InjectedFragment {
         }
         mNextCleaningTimeText.setText(DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(
                 mPlan.getNextBookingDate()));
+
+        mCancelText.setVisibility(mHideCancel ? View.GONE : View.VISIBLE);
     }
 }

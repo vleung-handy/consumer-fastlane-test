@@ -464,7 +464,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
                             @Override
                             public void onClick(final View v) {
                                 RecurringBooking rb = (RecurringBooking) v.getTag();
-                                EditPlanFragment fragment = EditPlanFragment.newInstance(rb);
+                                EditPlanFragment fragment = EditPlanFragment.newInstance(rb, true);
                                 FragmentUtils.switchToFragment(
                                         UpcomingBookingsFragment.this, fragment, true);
                             }

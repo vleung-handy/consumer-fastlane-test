@@ -36,6 +36,7 @@ public class BundleKeys {
             = "edit_pro_team_preference_action_type";
     public static final String RECURRING_BOOKING = "recurring_booking";
     public static final String RECURRING_PLAN = "recurring_plan";
+    public static final String HIDE_CANCEL = "HIDE_CANCEL";
     public static final String RECURRING_PLANS = "recurring_plans";
     public static final String REFERRAL_PAGE_SOURCE = "referral_page_source";
     public static final String REFERRAL_HIDE_TOOLBAR = "referral_hide_toolbar";
