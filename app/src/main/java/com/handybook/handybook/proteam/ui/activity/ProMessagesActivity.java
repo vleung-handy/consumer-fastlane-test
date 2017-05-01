@@ -54,6 +54,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
+import static com.handybook.handybook.booking.ui.fragment.BookingFlowFragment.INCREMENT;
 
 /**
  * This is a derivation of the MessagesListActivity that allows for a reschedule flow
@@ -329,7 +330,7 @@ public class ProMessagesActivity extends MessagesListActivity {
         final Intent intent = new Intent(this, BookingLocationActivity.class);
         intent.putExtra(BundleKeys.SHOW_PROGRESS, true);
         intent.putExtra(BundleKeys.BOOKING_FLOW_STARTED, true);
-        intent.putExtra(BundleKeys.PROGRESS, 10);
+        intent.putExtra(BundleKeys.PROGRESS, INCREMENT);
         startActivity(intent);
     }
 

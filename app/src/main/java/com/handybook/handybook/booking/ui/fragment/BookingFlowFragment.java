@@ -60,9 +60,11 @@ import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFra
 public class BookingFlowFragment extends InjectedFragment {
 
     public static final int MAX_PROGRESS = 100;
+    public static final int INCREMENT = 9;
 
     protected boolean mFlowStarted;
     protected boolean mShowProgress;
+    // Range from 0 to 100
     protected int mProgress;
 
     @Bind(R.id.toolbar)
@@ -156,7 +158,7 @@ public class BookingFlowFragment extends InjectedFragment {
         Bundle bundle = new Bundle();
         bundle.putBoolean(BundleKeys.BOOKING_FLOW_STARTED, true);
         bundle.putBoolean(BundleKeys.SHOW_PROGRESS, mShowProgress);
-        bundle.putInt(BundleKeys.PROGRESS, mProgress + 15);
+        bundle.putInt(BundleKeys.PROGRESS, mProgress + INCREMENT);
         return bundle;
     }
 
@@ -164,7 +166,7 @@ public class BookingFlowFragment extends InjectedFragment {
         Bundle bundle = new Bundle();
         bundle.putBoolean(BundleKeys.BOOKING_FLOW_STARTED, true);
         bundle.putBoolean(BundleKeys.SHOW_PROGRESS, true);
-        bundle.putInt(BundleKeys.PROGRESS, 10);
+        bundle.putInt(BundleKeys.PROGRESS, INCREMENT);
         return bundle;
     }
 
@@ -605,6 +607,7 @@ public class BookingFlowFragment extends InjectedFragment {
             intent.putExtras(createProgressBundle());
             startActivity(intent);
         }
+
         // show address info
         else {
             final Intent intent = new Intent(getActivity(), BookingAddressActivity.class);

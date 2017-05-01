@@ -225,6 +225,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (mProgress < 70) {
+            mProgress = 70;
+        }
         ((BaseApplication) getActivity().getApplication()).inject(this);
         if (savedInstanceState != null) {
             mUseExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
