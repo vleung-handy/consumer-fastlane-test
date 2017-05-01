@@ -14,6 +14,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.layer.LayerHelper;
 import com.handybook.shared.layer.ui.LayerRecyclerAdapter;
@@ -163,12 +164,15 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == NORMAL) {
-            final View itemView = LayoutInflater
-                    .from(parent.getContext())
-                    .inflate(R.layout.layout_pro_team_conversation_item, parent, false);
+            final ProTeamProConversationItemView itemView =
+                    new ProTeamProConversationItemView(
+                            parent.getContext(),
+                            mHideConversation,
+                            mProviderId
+                    );
             itemView.setOnClickListener(mOnClickListener);
 
-            return new ConversationHolder(itemView, mHideConversation, mProviderId);
+            return new ConversationHolder(itemView);
         }
         else // Header
         {

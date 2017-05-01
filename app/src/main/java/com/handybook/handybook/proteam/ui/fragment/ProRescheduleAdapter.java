@@ -12,6 +12,7 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.library.ui.viewholder.SingleViewHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
 import java.util.ArrayList;
@@ -82,12 +83,11 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == NORMAL) {
-            final View itemView = LayoutInflater
-                    .from(parent.getContext())
-                    .inflate(R.layout.layout_pro_team_conversation_item, parent, false);
+            final ProTeamProConversationItemView itemView =
+                    new ProTeamProConversationItemView(parent.getContext(), true, mProviderId);
             itemView.setOnClickListener(mOnClickListener);
 
-            return new ConversationHolder(itemView, true, mProviderId);
+            return new ConversationHolder(itemView);
         }
         else // Header
         {
