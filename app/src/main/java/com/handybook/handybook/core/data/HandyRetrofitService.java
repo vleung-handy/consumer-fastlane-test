@@ -299,7 +299,6 @@ public interface HandyRetrofitService {
             @Field("reschedule_all") int rescheduleAll,
             @Field("user_id") String userId,
             @Field("provider_id") String providerId,
-            @Field("chat_reschedule_agreement") int chatRescheduleAgreeemnt,
             HandyRetrofitCallback cb
     );
 

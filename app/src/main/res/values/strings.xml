@@ -609,5 +609,11 @@
     <string name="pro_is_busy_formatted">%1$s is busy at this time but sent you some alternatives</string>
     <string name="booking_subscription_length_title">Get More Savings</string>
 
+    <!--bottom nav item labels-->
+    <string name="bottom_nav_item_bookings">Bookings</string>
+    <string name="bottom_nav_item_messages">Messages</string>
+    <string name="bottom_nav_item_services">Services</string>
+    <string name="bottom_nav_item_share">Share</string>
+    <string name="bottom_nav_item_account">Account</string>
 </resources>
 

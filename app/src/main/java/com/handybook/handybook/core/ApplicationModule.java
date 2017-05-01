@@ -65,7 +65,7 @@ import retrofit.converter.GsonConverter;
         injects = {
                 BaseApplication.class,
                 // Do not add new class here. Put it into InjectionModule instead.
-},
+        },
         includes = {
                 InjectionModule.class,
                 HelpModule.class,
@@ -473,9 +473,10 @@ public final class ApplicationModule {
     final ProTeamManager provideProTeamManager(
             final Bus bus,
             final HandyRetrofitService service,
+            final DataManager dataManager,
             final UserManager userDataManager
     ) {
-        return new ProTeamManager(bus, service, userDataManager);
+        return new ProTeamManager(bus, service, dataManager, userDataManager);
     }
 
     private String getDeviceId() {

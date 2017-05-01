@@ -54,6 +54,8 @@ import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
 import com.handybook.handybook.notifications.model.HandyNotification;
 import com.handybook.handybook.promos.persistent.PersistentPromo;
 import com.handybook.handybook.promos.splash.SplashPromo;
+import com.handybook.handybook.proteam.model.BookingProTeam;
+import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
@@ -534,7 +536,6 @@ public class DataManager {
                 rescheduleAll ? 1 : 0,
                 userId,
                 providerId,
-                chatRescheduleAgreement ? 1 : 0,
                 new HandyRetrofitCallback(cb) {
                     @Override
                     protected void success(final JSONObject response) {
@@ -908,6 +909,24 @@ public class DataManager {
                     }
                 }
         );
+    }
+
+    public void requestProTeam(String userId, final Callback<ProTeamWrapper> cb) {
+        mService.requestProTeam(userId, new HandyRetrofitCallback(cb) {
+            @Override
+            protected void success(final JSONObject response) {
+                cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
+            }
+        });
+    }
+
+    public void requestProTeamViaBooking(String bookingId, final Callback<BookingProTeam> cb) {
+        mService.requestProTeamViaBooking(bookingId, new HandyRetrofitCallback(cb) {
+            @Override
+            protected void success(final JSONObject response) {
+                cb.onSuccess(BookingProTeam.fromJson(response.toString()));
+            }
+        });
     }
 
     /**
