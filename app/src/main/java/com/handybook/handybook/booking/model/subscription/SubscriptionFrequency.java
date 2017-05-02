@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.model.subscription;
 
+import android.support.annotation.NonNull;
+
 /**
  * These consists of keys such as {price, weekly_recurring_price, bimonthly_recurring_price,
  * etc...}
@@ -31,7 +33,7 @@ public class SubscriptionFrequency extends SubscriptionType {
      * @param key
      * @return
      */
-    public static String convertFrequencyKey(String key) {
+    public static String convertToFrequencyKey(String key) {
         if (PRICE_KEY.equals(key)) {
             return String.valueOf(ONCE);
         }
@@ -47,5 +49,23 @@ public class SubscriptionFrequency extends SubscriptionType {
 
         //this is the default behavior. Shouldn't happen.
         return String.valueOf(ONCE);
+    }
+
+    @NonNull
+    public static String convertFromFrequencyKey(@NonNull String name) {
+        if (String.valueOf(ONCE).equals(name)) {
+            return PRICE_KEY;
+        }
+        else if (String.valueOf(WEEKLY_PRICE).equals(name)) {
+            return PRICE_WEEKLY_RECURRING_KEY;
+        }
+        else if (String.valueOf(BI_MONTHLY_PRICE).equals(name)) {
+            return PRICE_BIMONTHLY_RECURRING_KEY;
+        }
+        else if (String.valueOf(MONTHLY_PRICE).equals(name)) {
+            return PRICE_MONTHLY_RECURRING_KEY;
+        }
+        //this is the default behavior. Shouldn't happen.
+        return String.valueOf(PRICE_KEY);
     }
 }

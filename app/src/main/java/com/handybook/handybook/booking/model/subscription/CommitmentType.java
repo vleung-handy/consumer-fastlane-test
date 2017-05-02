@@ -30,6 +30,7 @@ public class CommitmentType implements Serializable {
 
     private static final String JSON_KEY_DEFAULT = "default";
     private static final String JSON_KEY_TITLE = "title";
+    private static final String JSON_KEY_COMMITMENT_SUBTITLE = "commitment_subtitle";
     private static final String JSON_KEY_DISABLED = "disabled";
     private static final String JSON_KEY_HOURS = "hours";
     private static final String JSON_KEY_FREQUENCY = "frequency";
@@ -66,6 +67,7 @@ public class CommitmentType implements Serializable {
     private List<SubscriptionLength> mUniqueLengths;
 
     private CommitmentTypeName mTransformedCommitment;
+    private JsonObject mProcessedCommitmentType;
 
     /**
      * Apply a massive transformation of the commitments into something more understandable and
@@ -114,6 +116,7 @@ public class CommitmentType implements Serializable {
      * @param data
      */
     private void processLengths(JsonObject data) throws Exception {
+        mProcessedCommitmentType = data;
         if (data == null) {
             return;
         }
@@ -170,7 +173,7 @@ public class CommitmentType implements Serializable {
         for (final Map.Entry<String, JsonElement> entrySet : data.entrySet()) {
             //The key is in the form of {"price", "weekly_recurring_price", "monthly_recurring_price", etc.},
             //but it needs to be converted to {0, 2, 4, etc. }
-            String freqKey = SubscriptionFrequency.convertFrequencyKey(entrySet.getKey());
+            String freqKey = SubscriptionFrequency.convertToFrequencyKey(entrySet.getKey());
             JsonObject freqInformation = (JsonObject) entrySet.getValue();
 
             //within freqInformation, there is the prices ("hours") table, in the form of
@@ -220,6 +223,28 @@ public class CommitmentType implements Serializable {
         }
 
         return null;
+    }
+
+    @Nullable
+    public String getCommitmentSubtitle(
+            @NonNull final String lengthKey,
+            @NonNull final String frequencyKey
+    ) {
+        String subtitle = null;
+        try {
+            subtitle = GsonUtil.safeGetAsString(
+                    mProcessedCommitmentType
+                            .getAsJsonObject(lengthKey)
+                            .getAsJsonObject(JSON_KEY_FREQUENCY)
+                            .getAsJsonObject(frequencyKey)
+                            .getAsJsonPrimitive(JSON_KEY_COMMITMENT_SUBTITLE)
+            );
+        }
+        catch (Exception e) {
+            Crashlytics.log("Failed to retreive subtitle");
+            Crashlytics.logException(e);
+        }
+        return subtitle;
     }
 
     public SubscriptionPrices getSubscriptionPrice(String lengthKey, String frequencyKey) {

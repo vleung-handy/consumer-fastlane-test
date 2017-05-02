@@ -109,6 +109,9 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView {
     }
 
     private void showTextView(TextView textView, String textString) {
+        if (textString == null) {
+            textView.setVisibility(GONE);
+        }
         textView.setText(textString);
         textView.setVisibility(VISIBLE);
     }
@@ -301,6 +304,11 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView {
     public final void updateRightOptionsTitleText(String text, int position) {
         showTextView((TextView) optionViews[position].findViewById(R.id.right_title_text), text);
     }
+
+    public void updateSubtitleText(final String text, final int position) {
+        showTextView((TextView) optionViews[position].findViewById(R.id.sub_text), text);
+    }
+
 
     public final void setCurrentIndex(final int index) {
         if (index < 0 || !checkMap.containsKey(index)) {

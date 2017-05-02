@@ -311,40 +311,51 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         CommitmentType commitmentType = bookingManager.getCurrentQuote().getCommitmentType();
         List<SubscriptionLength> subscriptionLengths = commitmentType.getUniqueLengths();
         String[] subscriptionTitles = new String[subscriptionLengths.size()];
-        String[] pricesText = new String[subscriptionLengths.size()];
-        String[] cleaningTexts = new String[subscriptionLengths.size()];
+        String[] subscriptionSubtitles = new String[subscriptionLengths.size()];
+        String[] subscriptionPrices = new String[subscriptionLengths.size()];
+        String[] subscriptionSubprices = new String[subscriptionLengths.size()];
         mSubscriptionLengthToKey = new HashMap<>();
 
-        String cleaningText = getString(R.string.booking_subscription_term_cleaning);
+        final String cleaningText = getString(R.string.booking_subscription_term_cleaning);
 
         for (int i = 0; i < subscriptionLengths.size(); i++) {
             SubscriptionLength subscriptionLength = subscriptionLengths.get(i);
-            String key = subscriptionLength.getKey();
+            String lengthKey = subscriptionLength.getKey();
             if (subscriptionLength.isDefault()) {
                 bookingOption.setDefaultValue(Integer.toString(i));
             }
-            mSubscriptionLengthToKey.put(subscriptionLength.getTitle(), key);
+            mSubscriptionLengthToKey.put(subscriptionLength.getTitle(), lengthKey);
             subscriptionTitles[i] = subscriptionLength.getTitle();
+            subscriptionSubtitles[i] = bookingManager
+                    .getCurrentQuote()
+                    .getCommitmentType()
+                    .getCommitmentSubtitle(
+                            lengthKey,
+                            SubscriptionFrequency.convertFromFrequencyKey(
+                                    getCurrentFrequencyKey()
+                            )
+                    );
+            subscriptionSubprices[i] = cleaningText;
             Price price = commitmentType.getPrice(
-                    key,
+                    lengthKey,
                     getCurrentFrequencyKey(),
                     Float.toString(mBookingTransaction.getHours())
             );
 
             if (price != null) {
-                pricesText[i] = TextUtils.formatPriceCents(
+                subscriptionPrices[i] = TextUtils.formatPriceCents(
                         price.getFullPrice(),
                         bookingManager.getCurrentQuote()
                                       .getCurrencyChar()
                 );
             }
 
-            cleaningTexts[i] = cleaningText;
         }
 
-        bookingOption.setOptionsRightTitleText(pricesText);
-        bookingOption.setOptionsRightSubText(cleaningTexts);
         bookingOption.setOptions(subscriptionTitles);
+        bookingOption.setOptionsRightTitleText(subscriptionPrices);
+        bookingOption.setOptionsSubText(subscriptionSubtitles);
+        bookingOption.setOptionsRightSubText(subscriptionSubprices);
 
         /*
         build a BookingOption model from the monthly subscription options so we can use it
@@ -370,17 +381,17 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         for (int i = 0; i < subscriptionLengths.size(); i++) {
             SubscriptionLength subscriptionLength = subscriptionLengths.get(i);
             String commitmentKey = subscriptionLength.getKey();
-            SubscriptionPrices subscriptionPrice = commitmentType.getSubscriptionPrice(
+            SubscriptionPrices pricingStructure = commitmentType.getSubscriptionPrice(
                     commitmentKey,
                     getCurrentFrequencyKey()
             );
 
-            if (subscriptionPrice != null) {
-                boolean isEnabled = subscriptionPrice.isEnabled();
+            if (pricingStructure != null) {
+                boolean isEnabled = pricingStructure.isEnabled();
                 mCommitmentView.setIsOptionEnabled(isEnabled, i);
 
-                Price price = subscriptionPrice.getPrices()
-                                               .get(Float.toString(mBookingTransaction.getHours()));
+                Price price = pricingStructure.getPrices()
+                                              .get(Float.toString(mBookingTransaction.getHours()));
 
                 if (price != null) {
                     mCommitmentView.updateRightOptionsTitleText(
@@ -395,6 +406,18 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
                 if (isEnabled && subscriptionLength.isDefault()) {
                     mCommitmentView.setCurrentIndex(i);
                 }
+                mCommitmentView.updateSubtitleText(
+                        bookingManager
+                                .getCurrentQuote()
+                                .getCommitmentType()
+                                .getCommitmentSubtitle(
+                                        getCurrentCommitmentKey(),
+                                        SubscriptionFrequency.convertFromFrequencyKey(
+                                                getCurrentFrequencyKey()
+                                        )
+                                ),
+                        i
+                );
             }
         }
     }
