@@ -39,11 +39,6 @@ public class UpcomingBookingsOnePlanNoBookingsTest extends UpcomingBookingsBaseT
     }
 
     @Test
-    public void testCleaningPlan() {
-        testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 1);
-    }
-
-    @Test
     public void testNoUpcomingBookings() {
         assertNoUpcomingBookings();
     }

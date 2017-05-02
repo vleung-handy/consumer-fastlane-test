@@ -1,7 +1,5 @@
 package com.handybook.handybook.booking.ui.fragment;
 
-import android.view.View;
-
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
@@ -10,8 +8,6 @@ import com.handybook.handybook.library.util.IOUtils;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * This is to test the situation where there are no cleaning plans on the upcoming bookings page
@@ -45,18 +41,6 @@ public class UpcomingBookingsCleaningPlanTest extends UpcomingBookingsBaseTest {
     @Test
     public void testActiveBookingSection() throws Exception {
         testActiveBookingPresent(mUpcomingBookingsFragment, "195370");
-    }
-
-    /**
-     * Cleaning plans should not be visible
-     */
-    @Test
-    public void testCleaningPlanVisibility() {
-        assertEquals(
-                "Cleaning plans should not be visible",
-                View.GONE,
-                mUpcomingBookingsFragment.mExpandableCleaningPlan.getVisibility()
-        );
     }
 
     /**

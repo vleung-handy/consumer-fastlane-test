@@ -53,14 +53,6 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
         testUpcomingBookingsContainingBookings(mUpcomingBookingsFragment, 7);
     }
 
-    /**
-     * Verify the correctness of the cleaning plans
-     */
-    @Test
-    public void testCleaningPlan() {
-        testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 3);
-    }
-
     @Test
     public void testEmptyViewNotShowing() {
         assertEmptyViewNotShowing();

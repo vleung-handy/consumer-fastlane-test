@@ -39,14 +39,6 @@ public class UpcomingBookingsNoActiveTest extends UpcomingBookingsBaseTest {
     }
 
     /**
-     * Verify the correctness of the cleaning plans
-     */
-    @Test
-    public void testCleaningPlan() {
-        testCleaningPlanContainingPlans(mUpcomingBookingsFragment, 3);
-    }
-
-    /**
      * Verify that there are upcoming bookings
      */
     @Test

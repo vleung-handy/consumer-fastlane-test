@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handybook.handybook.R;
 import com.handybook.handybook.RobolectricGradleTestWrapper;
-import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.core.TestActivity;
@@ -75,35 +74,6 @@ public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper {
     }
 
     /**
-     * Verify the correctness of the cleaning plans, with the specified number of children
-     */
-    protected void testCleaningPlanContainingPlans(
-            UpcomingBookingsFragment fragment,
-            int childCount
-    ) {
-        assertEquals(
-                "Cleaning plans should be visible",
-                View.VISIBLE,
-                fragment.mExpandableCleaningPlan.getVisibility()
-        );
-        assertEquals(
-                "There should be plans with a dividers in between for a total of " + childCount
-                + " views.",
-                childCount,
-                fragment.mExpandableCleaningPlan.planContainer.getChildCount()
-        );
-
-        //we only test the clicking of the plans, if the above rule passes
-        if (fragment.mExpandableCleaningPlan.planContainer.getChildCount() == childCount) {
-            //when the plan is clicked, it should launch the rescheduling activity
-            fragment.mExpandableCleaningPlan.planContainer.getChildAt(0).performClick();
-            Fragment newFragment = mUpcomingBookingsFragment
-                    .getFragmentManager().findFragmentById(R.id.fragment_container);
-            assertTrue(newFragment instanceof EditPlanFragment);
-        }
-    }
-
-    /**
      * Active Booking Should be there
      *
      * @throws Exception
@@ -133,14 +103,6 @@ public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper {
                 "The active booking container should NOT be visible here",
                 View.GONE,
                 mUpcomingBookingsFragment.mActiveBookingContainer.getVisibility()
-        );
-    }
-
-    protected void assertNoCleaningPlan() {
-        assertEquals(
-                "The cleaning plan section should not be visible",
-                View.GONE,
-                mUpcomingBookingsFragment.mExpandableCleaningPlan.getVisibility()
         );
     }
 
