@@ -3,6 +3,7 @@ package com.handybook.handybook.logger.handylogger.model.chat;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import java.util.Date;
@@ -140,12 +141,9 @@ public class ChatLog extends EventLog {
     }
 
 
-    /**
-     * user selects a booking to reschedule
-     */
-    public static class RescheduleBookingSelectedLog extends ChatLog {
+    private static class RescheduleBaseLog extends ChatLog {
 
-        private static final String EVENT_TYPE = "reschedule_booking_selected";
+        private static final String EVENT_TYPE_PREFIX = "reschedule_";
 
         @SerializedName("provider_id")
         private final String mProviderId;
@@ -157,41 +155,56 @@ public class ChatLog extends EventLog {
         @Nullable
         private final String mRecurringId;
 
+        @SerializedName("old_date")
+        @Nullable
+        private final Date mOldDate;
+
+        @SerializedName("new_date")
+        @Nullable
+        private final Date mNewDate;
+
+        public RescheduleBaseLog(
+                String eventTypeSuffix,
+                final String providerId,
+                final String bookingId,
+                @Nullable final String recurringId,
+                final Date oldDate,
+                final Date newDate
+        ) {
+            super(EVENT_TYPE_PREFIX + eventTypeSuffix);
+            mProviderId = providerId;
+            mBookingId = bookingId;
+            mRecurringId = recurringId;
+            mOldDate = oldDate;
+            mNewDate = newDate;
+        }
+    }
+
+    /**
+     * user selects a booking to reschedule
+     */
+    public static class RescheduleBookingSelectedLog extends RescheduleBaseLog {
+
+        private static final String EVENT_TYPE_SUFFIX = "booking_selected";
+
         public RescheduleBookingSelectedLog(
                 final String providerId,
                 final String bookingId,
                 @Nullable final String recurringId
         ) {
-            super(EVENT_TYPE);
-            mProviderId = providerId;
-            mBookingId = bookingId;
-            mRecurringId = recurringId;
+            super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, null, null);
         }
     }
-
 
     /**
      * user submits a reschedule
      */
-    public static class RescheduleSubmittedLog extends ChatLog {
+    public static class RescheduleSubmittedLog extends RescheduleBaseLog {
 
-        private static final String EVENT_TYPE = "reschedule_submitted";
+        private static final String EVENT_TYPE_SUFFIX = "submitted";
 
-        @SerializedName("provider_id")
-        private String mProviderId;
-
-        @SerializedName("booking_id")
-        private String mBookingId;
-
-        @SerializedName("old_date")
-        private final Date mOldDate;
-
-        @SerializedName("new_date")
-        private final Date mNewDate;
-
-        @SerializedName("recurring_id")
-        @Nullable
-        private final String mRecurringId;
+        @SerializedName("source")
+        private final String mSource;
 
         public RescheduleSubmittedLog(
                 final String providerId,
@@ -200,40 +213,21 @@ public class ChatLog extends EventLog {
                 final Date newDate,
                 @Nullable final String recurringId
         ) {
-            super(EVENT_TYPE);
-            mProviderId = providerId;
-            mBookingId = bookingId;
-            mOldDate = oldDate;
-            mNewDate = newDate;
-            mRecurringId = recurringId;
+            super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
+            mSource = BookingDetailFragment.RescheduleType.FROM_CANCELATION.getSourceName();
         }
     }
-
-    //    TODO: refactor all these reschedule logs to have some sort of a base with all those properties
 
 
     /**
      * user successfully reschedules
      */
-    public static class RescheduleSuccessLog extends ChatLog {
+    public static class RescheduleSuccessLog extends RescheduleBaseLog {
 
-        private static final String EVENT_TYPE = "reschedule_success";
+        private static final String EVENT_TYPE_SUFFIX = "success";
 
-        @SerializedName("provider_id")
-        private String mProviderId;
-
-        @SerializedName("booking_id")
-        private String mBookingId;
-
-        @SerializedName("old_date")
-        private final Date mOldDate;
-
-        @SerializedName("new_date")
-        private final Date mNewDate;
-
-        @SerializedName("recurring_id")
-        @Nullable
-        private final String mRecurringId;
+        @SerializedName("source")
+        private final String mSource;
 
         public RescheduleSuccessLog(
                 final String providerId,
@@ -242,12 +236,8 @@ public class ChatLog extends EventLog {
                 final Date newDate,
                 @Nullable final String recurringId
         ) {
-            super(EVENT_TYPE);
-            mProviderId = providerId;
-            mBookingId = bookingId;
-            mOldDate = oldDate;
-            mNewDate = newDate;
-            mRecurringId = recurringId;
+            super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
+            mSource = BookingDetailFragment.RescheduleType.FROM_CANCELATION.getSourceName();
         }
     }
 
@@ -255,25 +245,9 @@ public class ChatLog extends EventLog {
     /**
      * user receives an error while rescheduling
      */
-    public static class RescheduleErrorLog extends ChatLog {
+    public static class RescheduleErrorLog extends RescheduleBaseLog {
 
-        private static final String EVENT_TYPE = "reschedule_error";
-
-        @SerializedName("provider_id")
-        private String mProviderId;
-
-        @SerializedName("booking_id")
-        private String mBookingId;
-
-        @SerializedName("old_date")
-        private final Date mOldDate;
-
-        @SerializedName("new_date")
-        private final Date mNewDate;
-
-        @SerializedName("recurring_id")
-        @Nullable
-        private final String mRecurringId;
+        private static final String EVENT_TYPE_SUFFIX = "error";
 
         public RescheduleErrorLog(
                 final String providerId,
@@ -282,12 +256,7 @@ public class ChatLog extends EventLog {
                 final Date newDate,
                 @Nullable final String recurringId
         ) {
-            super(EVENT_TYPE);
-            mProviderId = providerId;
-            mBookingId = bookingId;
-            mOldDate = oldDate;
-            mNewDate = newDate;
-            mRecurringId = recurringId;
+            super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
         }
     }
 

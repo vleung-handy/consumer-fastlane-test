@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.Provider;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import java.util.Date;
@@ -170,14 +171,19 @@ public abstract class BookingDetailsLog extends EventLog {
 
         private static final String EVENT_TYPE_SUFFIX = "submitted";
 
+        @SerializedName("source")
+        private final String mSource;
+
         public RescheduleSubmittedLog(
                 @Nullable final String providerId,
                 final String bookingId,
                 final Date oldDate,
                 final Date newDate,
-                @Nullable final String recurringId
+                @Nullable final String recurringId,
+                final BookingDetailFragment.RescheduleType rescheduleType
         ) {
             super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
+            mSource = rescheduleType.getSourceName();
         }
     }
 
@@ -189,14 +195,19 @@ public abstract class BookingDetailsLog extends EventLog {
 
         private static final String EVENT_TYPE_SUFFIX = "success";
 
+        @SerializedName("source")
+        private final String mSource;
+
         public RescheduleSuccessLog(
                 @Nullable final String provider,
                 final String bookingId,
                 final Date oldDate,
                 final Date newDate,
-                @Nullable final String recurringId
-        ) {
+                @Nullable final String recurringId,
+                final BookingDetailFragment.RescheduleType rescheduleType
+                ) {
             super(EVENT_TYPE_SUFFIX, provider, bookingId, recurringId, oldDate, newDate);
+            mSource = rescheduleType.getSourceName();
         }
     }
 
@@ -218,6 +229,53 @@ public abstract class BookingDetailsLog extends EventLog {
             super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
         }
     }
+
+
+//    public static class SkipBookingBase extends BookingDetailsLog {
+//        private static final String EVENT_TYPE_PREFIX = "skip_booking_";
+//
+//        @SerializedName("booking_id")
+//        private final String mBookingId;
+//
+//        public SkipBookingBase(final String eventTypeSuffix, final String bookingId) {
+//            //in the form of skip_booking_selected, etc.
+//            super(EVENT_TYPE_PREFIX + eventTypeSuffix);
+//            mBookingId = bookingId;
+//        }
+//    }
+//
+//    public static class SkipBookingSelected extends SkipBookingBase {
+//
+//        public SkipBookingSelected(final String bookingId) {
+//            //in the form of skip_booking_selected, etc.
+//            super("success", bookingId);
+//        }
+//    }
+//
+//    public static class SkipBookingError extends SkipBookingBase {
+//
+//        public SkipBookingError(final String bookingId) {
+//            //in the form of skip_booking_selected, etc.
+//            super("success", bookingId);
+//        }
+//    }
+//
+//    public static class SkipBookingSuccess extends SkipBookingBase {
+//
+//        public SkipBookingSuccess(final String bookingId) {
+//            //in the form of skip_booking_selected, etc.
+//            super("success", bookingId);
+//        }
+//    }
+//
+//    public static class SkipBookingSuccess extends SkipBookingBase {
+//
+//        public SkipBookingSuccess(final String bookingId) {
+//            //in the form of skip_booking_selected, etc.
+//            super("success", bookingId);
+//        }
+//    }
+
 
     public static class RescheduleInsteadShown extends BookingDetailsLog {
 

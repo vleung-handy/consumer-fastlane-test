@@ -364,7 +364,8 @@ public class BookingFlowFragment extends InjectedFragment {
                              booking.getId(),
                              booking.getStartDate(),
                              date,
-                             recurringId
+                             recurringId,
+                             rescheduleType
                      ))
             );
         }
@@ -395,7 +396,8 @@ public class BookingFlowFragment extends InjectedFragment {
                                     booking.getId(),
                                     booking.getStartDate(),
                                     date,
-                                    recurringId
+                                    recurringId,
+                                    rescheduleType
                                      ))
                             );
                         }
