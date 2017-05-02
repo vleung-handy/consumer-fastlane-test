@@ -39,11 +39,6 @@ public class UpcomingBookingsNoBookingsTest extends UpcomingBookingsBaseTest {
     }
 
     @Test
-    public void testNoCleaningPlan() {
-        assertNoCleaningPlan();
-    }
-
-    @Test
     public void testNoUpcomingBookings() {
         assertNoUpcomingBookings();
     }

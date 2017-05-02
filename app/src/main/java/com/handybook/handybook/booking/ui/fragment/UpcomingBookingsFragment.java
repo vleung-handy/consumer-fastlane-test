@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.ProviderAvailabilitySource;
 import com.handybook.handybook.booking.model.Booking;
@@ -38,7 +37,6 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.core.ui.view.BookingListItem;
-import com.handybook.handybook.core.ui.view.ExpandableCleaningPlan;
 import com.handybook.handybook.core.ui.view.NoBookingsView;
 import com.handybook.handybook.core.ui.view.ShareBannerView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
@@ -97,9 +95,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
 
     @Bind(R.id.text_upcoming_bookings)
     TextView mTextUpcomingBookings;
-
-    @Bind(R.id.expanable_cleaning_plan)
-    ExpandableCleaningPlan mExpandableCleaningPlan;
 
     @Bind(R.id.upcoming_bookings_padding_view)
     View mPaddingView;
@@ -397,15 +392,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
             }
 
         }
-
-        //active cleaning plans display independently of bookings
-        if (mActivePlanCount > 0) {
-            mExpandableCleaningPlan.setVisibility(View.VISIBLE);
-        }
-        else {
-            mExpandableCleaningPlan.setVisibility(View.GONE);
-        }
-
     }
 
     @Subscribe
@@ -457,22 +443,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
     private void setupBookingsView() {
         if (mBookingsRequestCompleted && mServiceRequestCompleted) {
             mSwipeRefreshLayout.setRefreshing(false);
-
-            if (mActivePlanCount > 0) {
-                mExpandableCleaningPlan.bind(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(final View v) {
-                                RecurringBooking rb = (RecurringBooking) v.getTag();
-                                EditPlanFragment fragment = EditPlanFragment.newInstance(rb);
-                                FragmentUtils.switchToFragment(
-                                        UpcomingBookingsFragment.this, fragment, true);
-                            }
-                        },
-                        mRecurringBookings,
-                        getActiveCountString()
-                );
-            }
 
             bindBookingsToList();
             updateVisibilityState();
