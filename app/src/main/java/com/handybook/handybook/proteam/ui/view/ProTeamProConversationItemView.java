@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +17,8 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.layer.LayerUtil;
 import com.layer.sdk.messaging.Message;
+
+import java.text.DecimalFormat;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -46,6 +50,15 @@ public class ProTeamProConversationItemView extends FrameLayout {
     @Bind(R.id.conversation_type_indicator)
     ImageView mServiceTypeIndicator;
 
+    @Bind(R.id.conversation_job_count_ratings)
+    ViewGroup mRatingAndJobsCountContainer;
+
+    @Bind(R.id.mini_pro_profile_rating)
+    TextView mRatingText;
+
+    @Bind(R.id.mini_pro_profile_jobs_count)
+    TextView mJobsCountText;
+
     private ProTeamProViewModel mProTeamProViewModel;
 
     @BindColor(R.color.handy_tertiary_gray)
@@ -62,19 +75,19 @@ public class ProTeamProConversationItemView extends FrameLayout {
     private Typeface mBoldTypeFace;
     private Typeface mNormalTypeFace;
     private boolean mHideConversation;
-    private String mProviderId;
+    private String mAssignedProviderId;
 
     public ProTeamProConversationItemView(
             @NonNull final Context context,
             final boolean hideConversation,
-            final String providerId
+            final String assignedProviderId
 
     ) {
         super(context);
-        init(hideConversation, providerId);
+        init(hideConversation, assignedProviderId);
     }
 
-    private void init(final boolean hideConversation, final String providerId) {
+    private void init(final boolean hideConversation, final String assignedProviderId) {
         inflate(getContext(), R.layout.layout_pro_team_conversation_item, this);
         ButterKnife.bind(this);
 
@@ -88,7 +101,7 @@ public class ProTeamProConversationItemView extends FrameLayout {
         );
 
         mHideConversation = hideConversation;
-        mProviderId = providerId;
+        mAssignedProviderId = assignedProviderId;
     }
 
     public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel) {
@@ -97,7 +110,7 @@ public class ProTeamProConversationItemView extends FrameLayout {
         mTextTitle.setText(mProTeamProViewModel.getTitle());
         if (mHideConversation) {
             mTextMessage.setVisibility(View.GONE);
-            mTextTimestamp.setVisibility(View.GONE);
+            mTextTimestamp.setVisibility(View.INVISIBLE);
         }
         else {
             mTextMessage.setText(mNewConversationMessage);
@@ -117,18 +130,43 @@ public class ProTeamProConversationItemView extends FrameLayout {
             mServiceTypeIndicator.setVisibility(View.GONE);
         }
 
-        if (proTeamProViewModel.getProTeamPro().getId().equals(mProviderId)) {
+        if (proTeamProViewModel.getProTeamPro().getId().equals(mAssignedProviderId)) {
             mTextCurrent.setVisibility(View.VISIBLE);
         }
         else {
             mTextCurrent.setVisibility(View.GONE);
         }
 
-        bindWithLayer();
+        if (mHideConversation) {
+            setRatingAndJobsCount(
+                    proTeamProViewModel.getAverageRating(),
+                    proTeamProViewModel.getJobsCount()
+            );
+        }
+        else {
+            bindWithLayer();
+        }
+    }
+
+    private void setRatingAndJobsCount(
+            @Nullable final Float rating,
+            @Nullable final Integer jobsCount
+    ) {
+        if (rating != null && rating > 0.0f && jobsCount != null && jobsCount > 0) {
+            mRatingAndJobsCountContainer.setVisibility(VISIBLE);
+
+            final DecimalFormat format = new DecimalFormat();
+            format.setMinimumFractionDigits(1);
+            format.setMaximumFractionDigits(1);
+            mRatingText.setText(format.format(rating));
+
+            mJobsCountText.setText(
+                    getResources().getQuantityString(R.plurals.jobs_count, jobsCount, jobsCount));
+        }
     }
 
     private void bindWithLayer() {
-        if (mProTeamProViewModel.getConversation() == null || mHideConversation) {
+        if (mProTeamProViewModel.getConversation() == null) {
             //there is no conversation to bind, just don't do anything.
             return;
         }
@@ -153,7 +191,7 @@ public class ProTeamProConversationItemView extends FrameLayout {
             mTextTimestamp.setVisibility(View.VISIBLE);
         }
         else {
-            mTextTimestamp.setVisibility(View.GONE);
+            mTextTimestamp.setVisibility(View.INVISIBLE);
         }
 
         //if there are unreads, make the entire thing bold

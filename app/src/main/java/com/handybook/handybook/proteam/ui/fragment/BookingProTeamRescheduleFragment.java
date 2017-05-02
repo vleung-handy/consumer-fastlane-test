@@ -170,7 +170,7 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
         mAdapter.addHeader(header1);
         mAdapter.addHeader(header2);
         mAdapter.addHeader(header3);
-        mAdapter.setProviderId(mBooking.getProvider().getId());
+        mAdapter.setAssignedProviderId(mBooking.getProvider().getId());
 
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -211,7 +211,7 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
         intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, success.getNotice());
         intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.FROM_CHAT);
         intent.putExtra(BundleKeys.PROVIDER_ID, mSelectedProTeamMember.getProTeamPro().getId());
-        intent.putExtra(BundleKeys.PROVIDER_NAME, mSelectedProTeamMember.getProTeamPro().getFirstName());
+        intent.putExtra(BundleKeys.PRO_TEAM_PRO, mSelectedProTeamMember);
         intent.putExtra(BundleKeys.PRO_AVAILABILITY, success.getProAvailability());
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }

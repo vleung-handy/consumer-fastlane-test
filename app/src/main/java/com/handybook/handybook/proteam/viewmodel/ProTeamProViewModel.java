@@ -8,7 +8,9 @@ import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.layer.sdk.messaging.Conversation;
 
-public class ProTeamProViewModel {
+import java.io.Serializable;
+
+public class ProTeamProViewModel implements Serializable {
 
     private final Provider mProTeamPro;
     private final ProviderMatchPreference mProviderMatchPreference;
@@ -18,7 +20,7 @@ public class ProTeamProViewModel {
     private boolean mIsChecked;
     private boolean mIsHandymanIndicatorEnabled;
     private String mImageUrl;
-    private Conversation mConversation;
+    transient private Conversation mConversation; // Be careful!
     private boolean mIsFavorite;
 
     private ProTeamProViewModel(

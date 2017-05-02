@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/handy_bg"
@@ -22,68 +23,78 @@
         android:layout_below="@id/toolbar"
         >
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin"
             android:layout_marginBottom="0dp"
+            android:orientation="vertical"
             >
+
+            <FrameLayout
+                android:id="@+id/selected_pro_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:background="@color/white"
+                android:paddingBottom="@dimen/default_padding_half"
+                android:paddingTop="@dimen/default_padding_half"
+                android:visibility="gone"
+                />
 
             <TextView
                 android:id="@+id/location_text"
-                style="@style/TextView"
+                style="@style/TextView.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 android:gravity="center"
-                android:text="@string/when_come"
+                android:text="@string/select_start_time"
                 />
 
             <FrameLayout
                 android:id="@+id/booking_date_time_input_fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/location_text"
-                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_half"
                 />
 
-            <TextView
-                android:id="@+id/reschedule_cancel_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/booking_date_time_input_fragment_container"
-                android:layout_margin="@dimen/default_padding"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="@string/reschedule_cancel_booking"
-                android:textColor="@color/handy_blue"
-                android:visibility="gone"
-                />
+                android:orientation="vertical"
+                >
 
-            <TextView
-                android:id="@+id/notice_text"
-                style="@style/TextView.XSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/reschedule_cancel_text"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                android:gravity="center"
-                android:text="notice"
-                android:visibility="gone"
-                />
+                <TextView
+                    android:id="@+id/reschedule_cancel_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default_padding"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="@string/reschedule_cancel_booking"
+                    android:textColor="@color/handy_blue"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/default_margin"
-                android:layout_below="@id/notice_text"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                />
+                <TextView
+                    android:id="@+id/notice_text"
+                    style="@style/TextView.XSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    tools:text="Some kind of notice"
+                    tools:visibility="visible"
+                    />
+            </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 

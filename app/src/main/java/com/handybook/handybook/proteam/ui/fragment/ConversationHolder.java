@@ -9,7 +9,6 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 public class ConversationHolder extends RecyclerView.ViewHolder {
 
     private final ProTeamProConversationItemView mProItemView;
-    private boolean mHideConversation;
 
     public ConversationHolder(final ProTeamProConversationItemView itemView) {
         super(itemView);

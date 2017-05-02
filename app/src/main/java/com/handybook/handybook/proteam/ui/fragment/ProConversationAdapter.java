@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
+import com.handybook.handybook.core.ui.view.MiniProProfile;
 import com.handybook.handybook.library.ui.viewholder.SingleViewHolder;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
+import com.handybook.handybook.proteam.holder.ProTeamProHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
@@ -38,7 +40,6 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
     private List<String> mChatEligibleMemberIds;
     private Bus mBus;
     private boolean mHideConversation;
-    private String mProviderId;
 
     /**
      * We're using this flag to denote the first time conversations became available
@@ -65,10 +66,6 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
 
     public void setHideConversation(boolean hideConversation) {
         mHideConversation = hideConversation;
-    }
-
-    public void setProviderId(@NonNull String providerId) {
-        mProviderId = providerId;
     }
 
     private void initProTeamProViewModels() {
@@ -168,7 +165,7 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
                     new ProTeamProConversationItemView(
                             parent.getContext(),
                             mHideConversation,
-                            mProviderId
+                            null
                     );
             itemView.setOnClickListener(mOnClickListener);
 
