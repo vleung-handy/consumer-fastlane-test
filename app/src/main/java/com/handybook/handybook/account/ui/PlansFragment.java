@@ -44,8 +44,8 @@ public class PlansFragment extends InjectedFragment {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPlans = (ArrayList<RecurringBooking>)
-                getArguments().getSerializable(BundleKeys.RECURRING_PLANS);
+        mPlans
+                = (ArrayList<RecurringBooking>) getArguments().getSerializable(BundleKeys.RECURRING_PLANS);
     }
 
     @Override
