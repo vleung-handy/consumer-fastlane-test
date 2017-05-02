@@ -359,11 +359,12 @@ public class BookingFlowFragment extends InjectedFragment {
             );
         }
         else {
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                             BookingDetailsLog.EventType.SUBMITTED,
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSubmittedLog (
+                             providerId,
                              booking.getId(),
                              booking.getStartDate(),
-                             date
+                             date,
+                             recurringId
                      ))
             );
         }
@@ -389,11 +390,12 @@ public class BookingFlowFragment extends InjectedFragment {
                             );
                         }
                         else {
-                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                             BookingDetailsLog.EventType.SUCCESS,
-                                             booking.getId(),
-                                             booking.getStartDate(),
-                                             date
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSuccessLog (
+                                    providerId,
+                                    booking.getId(),
+                                    booking.getStartDate(),
+                                    date,
+                                    recurringId
                                      ))
                             );
                         }
@@ -453,11 +455,12 @@ public class BookingFlowFragment extends InjectedFragment {
                             );
                         }
                         else {
-                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                             BookingDetailsLog.EventType.ERROR,
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleErrorLog (
+                                             providerId,
                                              booking.getId(),
                                              booking.getStartDate(),
-                                             date
+                                             date,
+                                             recurringId
                                      ))
                             );
                         }

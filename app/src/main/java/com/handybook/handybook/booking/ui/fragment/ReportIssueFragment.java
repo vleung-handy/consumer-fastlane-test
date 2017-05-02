@@ -300,11 +300,10 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                     }
                     else if (JobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType())) {
                         // show reschedule page
-                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                         BookingDetailsLog.EventType.SELECTED,
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBookingSelectedLog(
+                                        mBooking.getProvider(),
                                          mBooking.getId(),
-                                         mBooking.getStartDate(),
-                                         null
+                                         mBooking.getRecurringId()
                                  ))
                         );
 
