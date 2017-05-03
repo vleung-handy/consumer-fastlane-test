@@ -111,6 +111,7 @@ public final class BookingOptionsSelectView extends BookingOptionsIndexView {
     private void showTextView(TextView textView, String textString) {
         if (textString == null) {
             textView.setVisibility(GONE);
+            return;
         }
         textView.setText(textString);
         textView.setVisibility(VISIBLE);
