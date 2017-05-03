@@ -105,9 +105,10 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment {
             public void onClick(final View v) {
                 disableInputs();
                 progressDialog.show();
-                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                                 BookingDetailsLog.EventType.SUBMITTED,
-                                 mBooking.getId()
+
+                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.CancelBooking(
+                        mBooking.getId(),
+                        mButton.getText().toString()
                          ))
                 );
                 final FragmentSafeCallback<String> cb = new FragmentSafeCallback<String>(
@@ -115,10 +116,6 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment {
                 ) {
                     @Override
                     public void onCallbackSuccess(final String message) {
-                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                                BookingDetailsLog.EventType.SUCCESS,
-                                mBooking.getId()
-                        )));
                         if (!allowCallbacks) { return; }
                         progressDialog.dismiss();
                         enableInputs();
@@ -129,12 +126,6 @@ public final class BookingCancelReasonFragment extends BookingFlowFragment {
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                                         BookingDetailsLog.EventType.ERROR,
-                                         mBooking.getId()
-                                 ))
-                        );
-
                         if (!allowCallbacks) { return; }
                         progressDialog.dismiss();
                         enableInputs();

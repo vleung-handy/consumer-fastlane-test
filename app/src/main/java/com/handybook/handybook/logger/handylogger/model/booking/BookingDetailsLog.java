@@ -231,50 +231,20 @@ public abstract class BookingDetailsLog extends EventLog {
     }
 
 
-//    public static class SkipBookingBase extends BookingDetailsLog {
-//        private static final String EVENT_TYPE_PREFIX = "skip_booking_";
-//
-//        @SerializedName("booking_id")
-//        private final String mBookingId;
-//
-//        public SkipBookingBase(final String eventTypeSuffix, final String bookingId) {
-//            //in the form of skip_booking_selected, etc.
-//            super(EVENT_TYPE_PREFIX + eventTypeSuffix);
-//            mBookingId = bookingId;
-//        }
-//    }
-//
-//    public static class SkipBookingSelected extends SkipBookingBase {
-//
-//        public SkipBookingSelected(final String bookingId) {
-//            //in the form of skip_booking_selected, etc.
-//            super("success", bookingId);
-//        }
-//    }
-//
-//    public static class SkipBookingError extends SkipBookingBase {
-//
-//        public SkipBookingError(final String bookingId) {
-//            //in the form of skip_booking_selected, etc.
-//            super("success", bookingId);
-//        }
-//    }
-//
-//    public static class SkipBookingSuccess extends SkipBookingBase {
-//
-//        public SkipBookingSuccess(final String bookingId) {
-//            //in the form of skip_booking_selected, etc.
-//            super("success", bookingId);
-//        }
-//    }
-//
-//    public static class SkipBookingSuccess extends SkipBookingBase {
-//
-//        public SkipBookingSuccess(final String bookingId) {
-//            //in the form of skip_booking_selected, etc.
-//            super("success", bookingId);
-//        }
-//    }
+    public static class CancelBooking extends BookingDetailsLog {
+        private static final String EVENT_TYPE = "booking_cancelled";
+        @SerializedName("booking_id")
+        private final String mBookingId;
+
+        @SerializedName("booking_cancellation_reason")
+        private final String mBookingCancellationReason;
+
+        public CancelBooking(String bookingId, String bookingCancellationReason) {
+            super(EVENT_TYPE);
+            mBookingId = bookingId;
+            mBookingCancellationReason = bookingCancellationReason;
+        }
+    }
 
 
     public static class RescheduleInsteadShown extends BookingDetailsLog {
