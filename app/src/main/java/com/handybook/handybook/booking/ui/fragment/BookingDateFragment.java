@@ -201,12 +201,19 @@ public final class BookingDateFragment extends BookingFlowFragment
 
             mProAvailability = (ProAvailabilityResponse)
                     getArguments().getSerializable(BundleKeys.PRO_AVAILABILITY);
+
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleDatePickerShownLog(
+                    mProviderId,
+                    mRescheduleBooking.getId(),
+                    mRescheduleDate,
+                    mRescheduleType
+            )));
         }
         else {
             mBookingOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerShownLog()));
         }
 
-        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerShownLog()));
     }
 
     @Override
@@ -259,7 +266,11 @@ public final class BookingDateFragment extends BookingFlowFragment
                 //this is the reschedule flow from cancelation
                 //log that we are here.
                 bus.post(new LogEvent.AddLogEvent(
-                        new BookingDetailsLog.RescheduleInsteadShown(mRescheduleBooking.getId())
+                        new BookingDetailsLog.RescheduleBookingSelectedLog(
+                                mRescheduleBooking.getProvider(),
+                                mRescheduleBooking.getId(),
+                                mRescheduleBooking.getRecurringId()
+                        )
                 ));
 
                 setToolbarTitle(getString(R.string.reschedule_instead));

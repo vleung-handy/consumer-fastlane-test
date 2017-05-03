@@ -97,6 +97,33 @@ public abstract class BookingDetailsLog extends EventLog {
         }
     }
 
+
+    public static class RescheduleDatePickerShownLog extends BookingFunnelLog {
+
+        private static final String EVENT_TYPE = "reschedule_date_picker_shown";
+
+        @SerializedName("provider_id")
+        @Nullable
+        private final String mProviderId;
+
+        @SerializedName("booking_id")
+        private final String mBookingId;
+
+        @SerializedName("original_date_start")
+        private final Date mOriginalStartDate;
+
+        @SerializedName("source")
+        private final String mSource;
+
+        public RescheduleDatePickerShownLog(String providerId, String bookingId, Date startDate, BookingDetailFragment.RescheduleType rescheduleType) {
+            super(EVENT_TYPE);
+            mProviderId = providerId;
+            mBookingId = bookingId;
+            mOriginalStartDate = startDate;
+            mSource = rescheduleType.getSourceName();
+        }
+    }
+
     private static class RescheduleBaseLog extends BookingDetailsLog {
 
         private static final String EVENT_TYPE_PREFIX = "reschedule_";
@@ -247,21 +274,6 @@ public abstract class BookingDetailsLog extends EventLog {
     }
 
 
-    public static class RescheduleInsteadShown extends BookingDetailsLog {
-
-        private static final String EVENT_TYPE = "reschedule_instead_shown";
-
-        @SerializedName("booking_id")
-        private final String mBookingId;
-
-        public RescheduleInsteadShown(final String bookingId) {
-            super(EVENT_TYPE);
-
-            mBookingId = bookingId;
-        }
-    }
-
-
     public static class ContinueSkipSelected extends BookingDetailsLog {
 
         private static final String EVENT_TYPE = "continue_skip_selected";
@@ -296,23 +308,6 @@ public abstract class BookingDetailsLog extends EventLog {
         public RescheduleSelectedProShown(final int numProviders) {
             super(EVENT_TYPE);
             mNumProviders = numProviders;
-        }
-    }
-
-
-    public static class RescheduleProviderSelected extends BookingDetailsLog {
-
-        public static final String EVENT_TYPE = "reschedule_provider_selected";
-
-        @SerializedName("provider_id")
-        private final String mProviderId;
-        @SerializedName("layer_conversation_id")
-        private final String mConversationId;
-
-        public RescheduleProviderSelected(final String providerId, final String conversationId) {
-            super(EVENT_TYPE);
-            mProviderId = providerId;
-            mConversationId = conversationId;
         }
     }
 
