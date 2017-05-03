@@ -1,31 +1,22 @@
 {
   "project_info": {
-    "project_number": "1040753213623",
-    "firebase_url": "https://handybook-com-api-project-1040753213623.firebaseio.com",
-    "project_id": "handybook.com:api-project-1040753213623",
-    "storage_bucket": "handybook.com:api-project-1040753213623.appspot.com"
+    "project_number": "144555183644",
+    "firebase_url": "https://maps-ext-105149258.firebaseio.com",
+    "project_id": "maps-ext-105149258",
+    "storage_bucket": "maps-ext-105149258.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1040753213623:android:1f5413345ea15452",
+        "mobilesdk_app_id": "1:144555183644:android:1f5413345ea15452",
         "android_client_info": {
           "package_name": "com.handy.handy.prod"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1040753213623-ghdu5pjiije9t3c0bf2qm08kpirif7ja.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "1040753213623.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAnIrHrYgfs0Zi1saVc-QYa2VdZRPLx2G0"
+          "current_key": "AIzaSyClEStqiKkzCqycC7zsaoKkGLDDDJKye7Y"
         }
       ],
       "services": {
@@ -40,7 +31,140 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144555183644:android:d36d53487f284f31",
+        "android_client_info": {
+          "package_name": "com.handy.handy.prod.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClEStqiKkzCqycC7zsaoKkGLDDDJKye7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-70958758-4"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144555183644:android:030e912766b5a260",
+        "android_client_info": {
+          "package_name": "com.handy.portal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClEStqiKkzCqycC7zsaoKkGLDDDJKye7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
           "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144555183644:android:2bbcf79df7ecd146",
+        "android_client_info": {
+          "package_name": "com.handy.portal.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClEStqiKkzCqycC7zsaoKkGLDDDJKye7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144555183644:android:0342005f154ccfb3",
+        "android_client_info": {
+          "package_name": "com.handybook.handy_portal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClEStqiKkzCqycC7zsaoKkGLDDDJKye7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144555183644:android:404da33fc25e209d",
+        "android_client_info": {
+          "package_name": "com.handybook.handy_portal.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClEStqiKkzCqycC7zsaoKkGLDDDJKye7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
         }
       }
     }
