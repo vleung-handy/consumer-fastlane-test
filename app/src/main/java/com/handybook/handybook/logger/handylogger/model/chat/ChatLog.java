@@ -206,15 +206,20 @@ public class ChatLog extends EventLog {
         @SerializedName("source")
         private final String mSource;
 
+        @SerializedName("is_instant")
+        private final boolean mIsInstantBookEnabled;
+
         public RescheduleSubmittedLog(
                 final String providerId,
                 final String bookingId,
                 final Date oldDate,
                 final Date newDate,
-                @Nullable final String recurringId
+                @Nullable final String recurringId,
+                final boolean isInstantBookEnabled
         ) {
             super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
             mSource = BookingDetailFragment.RescheduleType.FROM_CANCELATION.getSourceName();
+            mIsInstantBookEnabled = isInstantBookEnabled;
         }
     }
 
@@ -229,15 +234,20 @@ public class ChatLog extends EventLog {
         @SerializedName("source")
         private final String mSource;
 
+        @SerializedName("is_instant")
+        private final boolean mIsInstantBookEnabled;
+
         public RescheduleSuccessLog(
                 final String providerId,
                 final String bookingId,
                 final Date oldDate,
                 final Date newDate,
-                @Nullable final String recurringId
+                @Nullable final String recurringId,
+                final boolean isInstantBookEnabled
         ) {
             super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
             mSource = BookingDetailFragment.RescheduleType.FROM_CANCELATION.getSourceName();
+            mIsInstantBookEnabled = isInstantBookEnabled;
         }
     }
 

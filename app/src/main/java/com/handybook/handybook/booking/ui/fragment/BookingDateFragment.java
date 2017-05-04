@@ -56,6 +56,8 @@ public final class BookingDateFragment extends BookingFlowFragment
     static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
     static final String EXTRA_PRO_TEAM_PRO = "com.handy.handy.EXTRA_PRO_TEAM_PRO";
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
+    private static final String STATE_RESCHEDULE_IS_INSTANT_BOOK_ENABLED
+            = "RESCHEDULE_INSTANT_BOOK";
 
     @Bind(R.id.next_button)
     Button mNextButton;
@@ -94,6 +96,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                     );
                     intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
                     intent.putExtra(BundleKeys.RESCHEDULE_TYPE, mRescheduleType);
+                    intent.putExtra(BundleKeys.RESCHEDULE_IS_INSTANT_BOOK_ENABLED, mRescheduleInstantBookEnabled);
                     intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, mSelectedDateTime.getTime());
                     intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
                     startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
@@ -105,7 +108,8 @@ public final class BookingDateFragment extends BookingFlowFragment
                             false,
                             mProviderId,
                             mRescheduleType,
-                            null
+                            null,
+                            mRescheduleInstantBookEnabled
                     );
                 }
             }
@@ -147,6 +151,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         }
     };
     private Date mRescheduleDate;
+    private boolean mRescheduleInstantBookEnabled;
     private String mNotice;
     private BookingDetailFragment.RescheduleType mRescheduleType;
     private String mProviderId;
@@ -187,6 +192,10 @@ public final class BookingDateFragment extends BookingFlowFragment
         if (mRescheduleBooking != null) {
             if (savedInstanceState != null) {
                 mRescheduleDate = new Date(savedInstanceState.getLong(STATE_RESCHEDULE_DATE, 0));
+                mRescheduleInstantBookEnabled = savedInstanceState.getBoolean(
+                        STATE_RESCHEDULE_IS_INSTANT_BOOK_ENABLED,
+                        false
+                );
             }
             else {
                 mRescheduleDate = mRescheduleBooking.getStartDate();
@@ -325,7 +334,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                 BookingTimeInputDialogFragment.TAG
         );
         transaction.commit();
-        updateBookingRequestDateTime(startDateTime.getTime());
+        updateBookingRequestDateTime(startDateTime.getTime(), false);
     }
 
     @Override
@@ -333,6 +342,10 @@ public final class BookingDateFragment extends BookingFlowFragment
         super.onSaveInstanceState(outState);
         if (mRescheduleDate != null) {
             outState.putLong(STATE_RESCHEDULE_DATE, mRescheduleDate.getTime());
+            outState.putBoolean(
+                    STATE_RESCHEDULE_IS_INSTANT_BOOK_ENABLED,
+                    mRescheduleInstantBookEnabled
+            );
         }
     }
 
@@ -399,9 +412,13 @@ public final class BookingDateFragment extends BookingFlowFragment
      * with the selected date time input
      * for the booking's timezone
      */
-    private void updateBookingRequestDateTime(final Date selectedDateTime) {
+    private void updateBookingRequestDateTime(
+            final Date selectedDateTime,
+            boolean isInstantBookEnabled
+    ) {
         if (mRescheduleBooking != null) {
             mRescheduleDate = selectedDateTime;
+            mRescheduleInstantBookEnabled = isInstantBookEnabled;
         }
         else {
             final BookingRequest request = bookingManager.getCurrentRequest();
@@ -453,7 +470,10 @@ public final class BookingDateFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onSelectedDateTimeUpdatedListener(Calendar selectedDateTime) {
-        updateBookingRequestDateTime(selectedDateTime.getTime());
+    public void onSelectedDateTimeUpdatedListener(
+            Calendar selectedDateTime,
+            boolean isInstantBookEnabled
+    ) {
+        updateBookingRequestDateTime(selectedDateTime.getTime(), isInstantBookEnabled);
     }
 }

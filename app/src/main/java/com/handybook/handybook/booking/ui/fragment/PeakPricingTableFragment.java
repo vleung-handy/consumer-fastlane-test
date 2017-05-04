@@ -184,7 +184,8 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
                                 mIsForRescheduleAll,
                                 null,
                                 null,
-                                null
+                                null,
+                                false
                         );
                     }
                     else {

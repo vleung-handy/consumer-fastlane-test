@@ -336,7 +336,8 @@ public class BookingFlowFragment extends InjectedFragment {
             final boolean rescheduleAll,
             @Nullable final String providerId,
             final BookingDetailFragment.RescheduleType rescheduleType,
-            @Nullable final String recurringId
+            @Nullable final String recurringId,
+            final boolean isInstantBookEnabled
     ) {
         final String newDate = DateTimeUtils.formatDate(
                 date,
@@ -354,7 +355,8 @@ public class BookingFlowFragment extends InjectedFragment {
                     booking.getId(),
                     booking.getStartDate(),
                     date,
-                    recurringId
+                    recurringId,
+                    isInstantBookEnabled
                      ))
             );
         }
@@ -365,7 +367,8 @@ public class BookingFlowFragment extends InjectedFragment {
                              booking.getStartDate(),
                              date,
                              recurringId,
-                             rescheduleType
+                             rescheduleType,
+                             isInstantBookEnabled
                      ))
             );
         }
@@ -386,7 +389,8 @@ public class BookingFlowFragment extends InjectedFragment {
                                              booking.getId(),
                                              booking.getStartDate(),
                                              date,
-                                             recurringId
+                                             recurringId,
+                                             isInstantBookEnabled
                                      ))
                             );
                         }
@@ -397,7 +401,8 @@ public class BookingFlowFragment extends InjectedFragment {
                                     booking.getStartDate(),
                                     date,
                                     recurringId,
-                                    rescheduleType
+                                    rescheduleType,
+                                    isInstantBookEnabled
                                      ))
                             );
                         }

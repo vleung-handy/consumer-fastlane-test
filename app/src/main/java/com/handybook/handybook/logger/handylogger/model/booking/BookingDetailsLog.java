@@ -201,16 +201,21 @@ public abstract class BookingDetailsLog extends EventLog {
         @SerializedName("source")
         private final String mSource;
 
+        @SerializedName("is_instant")
+        private final boolean mIsInstantBookEnabled;
+
         public RescheduleSubmittedLog(
                 @Nullable final String providerId,
                 final String bookingId,
                 final Date oldDate,
                 final Date newDate,
                 @Nullable final String recurringId,
-                final BookingDetailFragment.RescheduleType rescheduleType
+                final BookingDetailFragment.RescheduleType rescheduleType,
+                final boolean isInstantBookEnabled
         ) {
             super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
             mSource = rescheduleType.getSourceName();
+            mIsInstantBookEnabled = isInstantBookEnabled;
         }
     }
 
@@ -225,16 +230,21 @@ public abstract class BookingDetailsLog extends EventLog {
         @SerializedName("source")
         private final String mSource;
 
+        @SerializedName("is_instant")
+        private final boolean mIsInstantBookEnabled;
+
         public RescheduleSuccessLog(
                 @Nullable final String provider,
                 final String bookingId,
                 final Date oldDate,
                 final Date newDate,
                 @Nullable final String recurringId,
-                final BookingDetailFragment.RescheduleType rescheduleType
+                final BookingDetailFragment.RescheduleType rescheduleType,
+                final boolean isInstantBookEnabled
                 ) {
             super(EVENT_TYPE_SUFFIX, provider, bookingId, recurringId, oldDate, newDate);
             mSource = rescheduleType.getSourceName();
+            mIsInstantBookEnabled = isInstantBookEnabled;
         }
     }
 

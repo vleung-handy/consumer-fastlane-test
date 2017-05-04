@@ -26,6 +26,8 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
 
     static final String EXTRA_RESCHEDULE_BOOKING = "com.handy.handy.EXTRA_RESCHEDULE_BOOKING";
     static final String EXTRA_RESCHEDULE_DATE = "com.handy.handy.EXTRA_RESCHEDULE_DATE";
+    static final String EXTRA_RESCHEDULE_IS_INSTANT_BOOK_ENABLED
+            = "com.handy.handy.EXTRA_RESCHEDULE_IS_INSTANT_BOOK_ENABLED";
     static final String EXTRA_RESCHEDULE_TYPE = "com.handy.handy.EXTRA_RESCHEDULE_TYPE";
     static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
     private static final String STATE_OPTION_INDEX = "OPTION_INDEX";
@@ -40,12 +42,14 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
     @Bind(R.id.reschedule_button)
     Button rescheduleButton;
     BookingDetailFragment.RescheduleType mRescheduleType;
+    boolean mIsInstantBookEnabled;
 
     public static BookingRescheduleOptionsFragment newInstance(
             final Booking booking,
             final Date date,
             @Nullable final String providerId,
-            final BookingDetailFragment.RescheduleType rescheduleType
+            final BookingDetailFragment.RescheduleType rescheduleType,
+            final boolean isInstantBookEnabled
     ) {
         final BookingRescheduleOptionsFragment fragment = new BookingRescheduleOptionsFragment();
         final Bundle args = new Bundle();
@@ -54,6 +58,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         args.putLong(EXTRA_RESCHEDULE_DATE, date.getTime());
         args.putString(EXTRA_PROVIDER_ID, providerId);
         args.putSerializable(EXTRA_RESCHEDULE_TYPE, rescheduleType);
+        args.putBoolean(EXTRA_RESCHEDULE_IS_INSTANT_BOOK_ENABLED, isInstantBookEnabled);
         fragment.setArguments(args);
 
         return fragment;
@@ -67,6 +72,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         mProviderId = getArguments().getString(EXTRA_PROVIDER_ID);
         mRescheduleType = (BookingDetailFragment.RescheduleType) getArguments().getSerializable(
                 EXTRA_RESCHEDULE_TYPE);
+        mIsInstantBookEnabled = getArguments().getBoolean(EXTRA_RESCHEDULE_IS_INSTANT_BOOK_ENABLED);
 
         if (savedInstanceState != null) {
             optionIndex = savedInstanceState.getInt(STATE_OPTION_INDEX, 0);
@@ -92,9 +98,10 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         options.setOptions(new String[]{getString(R.string.no), getString(R.string.yes)});
         options.setDefaultValue(Integer.toString(optionIndex));
 
-        final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(getActivity(),
-                                                                                  options,
-                                                                                  optionUpdated
+        final BookingOptionsSelectView optionsView = new BookingOptionsSelectView(
+                getActivity(),
+                options,
+                optionUpdated
         );
 
         optionsView.hideTitle();
@@ -109,7 +116,8 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
                         optionIndex == 1,
                         mProviderId,
                         mRescheduleType,
-                        String.valueOf(booking.getRecurringId())
+                        String.valueOf(booking.getRecurringId()),
+                        mIsInstantBookEnabled
                 );
             }
         });
