@@ -111,7 +111,7 @@
 
                 <TextView
                     android:id="@+id/right_subtitle_text"
-                    style="@style/TextView.Headline.XSmall.Bold"
+                    style="@style/TextView.Headline.XSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:freezesText="false"
@@ -119,6 +119,8 @@
                     android:textAllCaps="false"
                     android:textColor="@drawable/darkgrey_text_black_selected_color_selector"
                     android:visibility="gone"
+                    tools:text="/cleaning"
+                    tools:visibility="visible"
                     />
             </LinearLayout>
         </LinearLayout>
