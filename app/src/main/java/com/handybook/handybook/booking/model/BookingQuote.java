@@ -62,6 +62,7 @@ public class BookingQuote extends Observable {
     public static final String KEY_COMMITMENT_PRICES = "commitment_prices";
     public static final String KEY_ACTIVE_COMMITMENT_TYPES = "active_commitment_types";
     public static final String KEY_COMMITMENT_FAQ_URL = "commitment_faq_url";
+    public static final String KEY_COMMITMENT_TOOLTIP = "commitment_tooltip_text";
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -129,6 +130,8 @@ public class BookingQuote extends Observable {
     private ZipValidationResponse mZipValidationResponse;
     @SerializedName("user_info")
     private UserExistsResponse mUserExistsResponse;
+    @SerializedName(KEY_COMMITMENT_TOOLTIP)
+    private String mCommitmentTooltip;
 
     public UserExistsResponse getUserExistsResponse() {
         return mUserExistsResponse;
@@ -153,6 +156,10 @@ public class BookingQuote extends Observable {
         currentQuote.setActiveCommitmentTypes(newQuote.getActiveCommitmentTypes());
         currentQuote.setBill(newQuote.getBill());
 
+    }
+
+    public boolean hasCommitmentTooltip() {
+        return mCommitmentTooltip != null && !mCommitmentTooltip.isEmpty();
     }
 
     public static class QuoteConfig implements Serializable {
@@ -464,6 +471,11 @@ public class BookingQuote extends Observable {
         return mCommitmentPricesMap;
     }
 
+    @Nullable
+    public String getCommitmentTooltip() {
+        return mCommitmentTooltip;
+    }
+
     private void triggerObservers() {
         setChanged();
         notifyObservers();
@@ -565,7 +577,6 @@ public class BookingQuote extends Observable {
                 bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
             }
         }
-
         return bookingQuote;
     }
 
@@ -698,6 +709,7 @@ public class BookingQuote extends Observable {
                     KEY_ACTIVE_COMMITMENT_TYPES,
                     context.serialize(value.getActiveCommitmentTypes())
             );
+            jsonObj.add(KEY_COMMITMENT_TOOLTIP, context.serialize(value.getCommitmentTooltip()));
             return jsonObj;
         }
     }

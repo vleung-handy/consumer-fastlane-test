@@ -3,6 +3,8 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import com.handybook.handybook.booking.model.subscription.Price;
 import com.handybook.handybook.booking.model.subscription.SubscriptionFrequency;
 import com.handybook.handybook.booking.model.subscription.SubscriptionLength;
 import com.handybook.handybook.booking.model.subscription.SubscriptionPrices;
+import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsCheckboxView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
@@ -47,6 +51,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     private static final String TAG = BookingSubscriptionFragment.class.getName();
     private static final String KEY_TRIAL_EXPANDED = "key:trial_expanded";
     private static final String KEY_MONTHS_DISABLED = "key:months_disabled";
+    public static final String TAG_COMMITMENT_FAQ = "dialog:commitment:faq";
 
     @Bind(R.id.booking_frequency_options_spinner_view)
     ViewGroup mFrequencyLayout;
@@ -64,6 +69,8 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     TextView mTrialCta;
     @Bind(R.id.booking_subscription_trial_option_checkbox)
     BookingOptionsCheckboxView mTrialCheckbox;
+    @Bind(R.id.booking_subscription_commitment_tooltip)
+    ImageView mCommitmentTooltip;
 
     private BookingTransaction mBookingTransaction;
     protected BookingOptionsSelectView mCommitmentView;
@@ -107,7 +114,17 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         createFrequencyView();
         createSubscriptionOptions();
         initTrial();
+        initTooltip();
         return view;
+    }
+
+    private void initTooltip() {
+        if (bookingManager.getCurrentQuote().hasCommitmentTooltip()) {
+            mCommitmentTooltip.setVisibility(View.VISIBLE);
+        }
+        else {
+            mCommitmentTooltip.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -294,40 +311,51 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         CommitmentType commitmentType = bookingManager.getCurrentQuote().getCommitmentType();
         List<SubscriptionLength> subscriptionLengths = commitmentType.getUniqueLengths();
         String[] subscriptionTitles = new String[subscriptionLengths.size()];
-        String[] pricesText = new String[subscriptionLengths.size()];
-        String[] cleaningTexts = new String[subscriptionLengths.size()];
+        String[] subscriptionSubtitles = new String[subscriptionLengths.size()];
+        String[] subscriptionPrices = new String[subscriptionLengths.size()];
+        String[] subscriptionSubprices = new String[subscriptionLengths.size()];
         mSubscriptionLengthToKey = new HashMap<>();
 
-        String cleaningText = getString(R.string.booking_subscription_term_cleaning);
+        final String cleaningText = getString(R.string.booking_subscription_term_cleaning);
 
         for (int i = 0; i < subscriptionLengths.size(); i++) {
             SubscriptionLength subscriptionLength = subscriptionLengths.get(i);
-            String key = subscriptionLength.getKey();
+            String commitmentKey = subscriptionLength.getKey();
             if (subscriptionLength.isDefault()) {
                 bookingOption.setDefaultValue(Integer.toString(i));
             }
-            mSubscriptionLengthToKey.put(subscriptionLength.getTitle(), key);
+            mSubscriptionLengthToKey.put(subscriptionLength.getTitle(), commitmentKey);
             subscriptionTitles[i] = subscriptionLength.getTitle();
+            subscriptionSubtitles[i] = bookingManager
+                    .getCurrentQuote()
+                    .getCommitmentType()
+                    .getCommitmentSubtitle(
+                            commitmentKey,
+                            SubscriptionFrequency.convertFromFrequencyKey(
+                                    getCurrentFrequencyKey()
+                            )
+                    );
+            subscriptionSubprices[i] = cleaningText;
             Price price = commitmentType.getPrice(
-                    key,
+                    commitmentKey,
                     getCurrentFrequencyKey(),
                     Float.toString(mBookingTransaction.getHours())
             );
 
             if (price != null) {
-                pricesText[i] = TextUtils.formatPriceCents(
+                subscriptionPrices[i] = TextUtils.formatPriceCents(
                         price.getFullPrice(),
                         bookingManager.getCurrentQuote()
                                       .getCurrencyChar()
                 );
             }
 
-            cleaningTexts[i] = cleaningText;
         }
 
-        bookingOption.setOptionsRightTitleText(pricesText);
-        bookingOption.setOptionsRightSubText(cleaningTexts);
         bookingOption.setOptions(subscriptionTitles);
+        bookingOption.setOptionsRightTitleText(subscriptionPrices);
+        bookingOption.setOptionsSubText(subscriptionSubtitles);
+        bookingOption.setOptionsRightSubText(subscriptionSubprices);
 
         /*
         build a BookingOption model from the monthly subscription options so we can use it
@@ -353,17 +381,17 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         for (int i = 0; i < subscriptionLengths.size(); i++) {
             SubscriptionLength subscriptionLength = subscriptionLengths.get(i);
             String commitmentKey = subscriptionLength.getKey();
-            SubscriptionPrices subscriptionPrice = commitmentType.getSubscriptionPrice(
+            SubscriptionPrices pricingStructure = commitmentType.getSubscriptionPrice(
                     commitmentKey,
                     getCurrentFrequencyKey()
             );
 
-            if (subscriptionPrice != null) {
-                boolean isEnabled = subscriptionPrice.isEnabled();
+            if (pricingStructure != null) {
+                boolean isEnabled = pricingStructure.isEnabled();
                 mCommitmentView.setIsOptionEnabled(isEnabled, i);
 
-                Price price = subscriptionPrice.getPrices()
-                                               .get(Float.toString(mBookingTransaction.getHours()));
+                Price price = pricingStructure.getPrices()
+                                              .get(Float.toString(mBookingTransaction.getHours()));
 
                 if (price != null) {
                     mCommitmentView.updateRightOptionsTitleText(
@@ -378,7 +406,28 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
                 if (isEnabled && subscriptionLength.isDefault()) {
                     mCommitmentView.setCurrentIndex(i);
                 }
+                final String commitmentSubtitle = bookingManager
+                        .getCurrentQuote()
+                        .getCommitmentType()
+                        .getCommitmentSubtitle(
+                                commitmentKey,
+                                SubscriptionFrequency.convertFromFrequencyKey(
+                                        getCurrentFrequencyKey()
+                                )
+                        );
+                mCommitmentView.updateSubtitleText(commitmentSubtitle, i);
             }
+        }
+    }
+
+    @OnClick(R.id.booking_subscription_commitment_tooltip)
+    public void onCommitmentTooltipClick() {
+        final FragmentManager fm = ((AppCompatActivity) getContext())
+                .getSupportFragmentManager();
+        if (fm.findFragmentByTag(TAG_COMMITMENT_FAQ) == null) {
+            BookingDetailSectionPaymentView.PriceLineHelpTextDialog
+                    .newInstance(bookingManager.getCurrentQuote().getCommitmentTooltip())
+                    .show(fm, TAG_COMMITMENT_FAQ);
         }
     }
 
