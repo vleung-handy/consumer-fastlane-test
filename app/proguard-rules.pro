@@ -174,10 +174,15 @@
 -dontwarn javax.inject.**
 -dontwarn sun.misc.Unsafe
 
-# Guava 19.0
+# Guava
 -dontwarn java.lang.ClassValue
 -dontwarn com.google.j2objc.annotations.Weak
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn com.google.errorprone.annotations.CanIgnoreReturnValue
+-dontwarn com.google.errorprone.annotations.concurrent.LazyInit
+-dontwarn com.google.j2objc.annotations.RetainedWith
+-dontwarn com.google.errorprone.annotations.ForOverride
+
 
 # Button
 -keepattributes Exceptions,InnerClasses,EnclosingMethod
