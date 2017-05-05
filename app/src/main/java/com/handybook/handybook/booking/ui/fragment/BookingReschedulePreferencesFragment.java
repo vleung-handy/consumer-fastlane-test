@@ -29,6 +29,10 @@ public class BookingReschedulePreferencesFragment extends InjectedFragment {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.choose_pro_option)
+    View mChooseProOption;
+    @Bind(R.id.or_separator)
+    View mOrSeparator;
 
     private ProTeam.ProTeamCategory mProTeamCategory;
     private Booking mBooking;
@@ -70,6 +74,17 @@ public class BookingReschedulePreferencesFragment extends InjectedFragment {
         );
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (mProTeamCategory == null
+            || mProTeamCategory.getPreferred() == null
+            || mProTeamCategory.getPreferred().isEmpty()) {
+            mOrSeparator.setVisibility(View.GONE);
+            mChooseProOption.setVisibility(View.GONE);
+        }
     }
 
     @Override
