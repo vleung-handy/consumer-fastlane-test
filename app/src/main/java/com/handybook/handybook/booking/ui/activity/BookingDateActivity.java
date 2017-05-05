@@ -10,6 +10,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,8 @@ public final class BookingDateActivity extends MenuDrawerActivity {
                     getIntent().getSerializableExtra(BundleKeys.RESCHEDULE_TYPE);
 
             final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
-            final String providerName = getIntent().getStringExtra(BundleKeys.PROVIDER_NAME);
+            final ProTeamProViewModel proTeamProViewModel =
+                    (ProTeamProViewModel) getIntent().getSerializableExtra(BundleKeys.PRO_TEAM_PRO);
 
             final ProAvailabilityResponse availabilityResponse = (ProAvailabilityResponse)
                     getIntent().getSerializableExtra(BundleKeys.PRO_AVAILABILITY);
@@ -36,7 +38,7 @@ public final class BookingDateActivity extends MenuDrawerActivity {
                     notice,
                     type,
                     providerId,
-                    providerName,
+                    proTeamProViewModel,
                     availabilityResponse
             );
         }

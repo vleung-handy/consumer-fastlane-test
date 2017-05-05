@@ -3,15 +3,14 @@ package com.handybook.handybook.proteam.ui.fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.library.ui.viewholder.SingleViewHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeam.ProTeamCategory mProTeamCategory;
     private final View.OnClickListener mOnClickListener;
-    private String mProviderId;
+    private String mAssignedProviderId;
 
     /**
      * We're using this flag to denote the first time conversations became available
@@ -46,8 +45,8 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         mHeaders.add(new SingleViewHolder(header));
     }
 
-    public void setProviderId(@NonNull String providerId) {
-        mProviderId = providerId;
+    public void setAssignedProviderId(@NonNull String assignedProviderId) {
+        mAssignedProviderId = assignedProviderId;
     }
 
     private void initProTeamProViewModels() {
@@ -82,12 +81,13 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == NORMAL) {
-            final View itemView = LayoutInflater
-                    .from(parent.getContext())
-                    .inflate(R.layout.layout_pro_team_conversation_item, parent, false);
+            final ProTeamProConversationItemView itemView =
+                    new ProTeamProConversationItemView(parent.getContext(), true,
+                                                       mAssignedProviderId
+                    );
             itemView.setOnClickListener(mOnClickListener);
 
-            return new ConversationHolder(itemView, true, mProviderId);
+            return new ConversationHolder(itemView);
         }
         else // Header
         {

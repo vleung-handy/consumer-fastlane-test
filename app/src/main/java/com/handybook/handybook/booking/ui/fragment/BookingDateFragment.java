@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
-import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
@@ -32,8 +32,9 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
+import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.squareup.otto.Subscribe;
-import com.usebutton.sdk.models.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,7 +54,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     static final String EXTRA_RESCHEDULE_NOTICE = "com.handy.handy.EXTRA_RESCHEDULE_NOTICE";
     static final String EXTRA_RESCHEDULE_TYPE = "com.handy.handy.EXTRA_RESCHEDULE_TYPE";
     static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
-    static final String EXTRA_PROVIDER_NAME = "com.handy.handy.EXTRA_PROVIDER_NAME";
+    static final String EXTRA_PRO_TEAM_PRO = "com.handy.handy.EXTRA_PRO_TEAM_PRO";
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
 
     @Bind(R.id.next_button)
@@ -64,6 +65,9 @@ public final class BookingDateFragment extends BookingFlowFragment
 
     @Bind(R.id.location_text)
     TextView mLocationText;
+
+    @Bind(R.id.selected_pro_container)
+    ViewGroup mSelectedProContainer;
 
     @Bind(R.id.reschedule_cancel_text)
     TextView mRescheduleCancelText;
@@ -146,7 +150,7 @@ public final class BookingDateFragment extends BookingFlowFragment
     private String mNotice;
     private BookingDetailFragment.RescheduleType mRescheduleType;
     private String mProviderId;
-    private String mProviderName;
+    private ProTeamProViewModel mProTeamProViewModel;
 
     public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
         final BookingDateFragment fragment = new BookingDateFragment();
@@ -161,7 +165,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             final String notice,
             BookingDetailFragment.RescheduleType type,
             final String providerId,
-            final String providerName,
+            final ProTeamProViewModel proTeamProViewModel,
             final ProAvailabilityResponse availabilityResponse
     ) {
         final BookingDateFragment fragment = new BookingDateFragment();
@@ -170,7 +174,7 @@ public final class BookingDateFragment extends BookingFlowFragment
         args.putString(EXTRA_RESCHEDULE_NOTICE, notice);
         args.putSerializable(EXTRA_RESCHEDULE_TYPE, type);
         args.putString(EXTRA_PROVIDER_ID, providerId);
-        args.putString(EXTRA_PROVIDER_NAME, providerName);
+        args.putSerializable(EXTRA_PRO_TEAM_PRO, proTeamProViewModel);
         args.putSerializable(BundleKeys.PRO_AVAILABILITY, availabilityResponse);
         fragment.setArguments(args);
         return fragment;
@@ -189,7 +193,8 @@ public final class BookingDateFragment extends BookingFlowFragment
             }
             mNotice = getArguments().getString(EXTRA_RESCHEDULE_NOTICE);
             mProviderId = getArguments().getString(EXTRA_PROVIDER_ID);
-            mProviderName = getArguments().getString(EXTRA_PROVIDER_NAME);
+            mProTeamProViewModel =
+                    (ProTeamProViewModel) getArguments().getSerializable(EXTRA_PRO_TEAM_PRO);
 
             mRescheduleType = (BookingDetailFragment.RescheduleType)
                     getArguments().getSerializable(EXTRA_RESCHEDULE_TYPE);
@@ -247,6 +252,8 @@ public final class BookingDateFragment extends BookingFlowFragment
         setupToolbar(mToolbar, getString(R.string.time));
 
         if (mRescheduleBooking != null) {
+            mNextButton.setText(getString(R.string.reschedule));
+
             if (mRescheduleType != null &&
                 mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CANCELATION) {
                 //this is the reschedule flow from cancelation
@@ -260,22 +267,28 @@ public final class BookingDateFragment extends BookingFlowFragment
                 mRescheduleCancelText.setVisibility(View.VISIBLE);
             }
             else {
-                String locationText;
-                //If it's a reschedule from chat, display a different message
-                if (mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT &&
-                    !TextUtils.isEmpty(mProviderId) &&
-                    !TextUtils.isEmpty(mProviderName)) {
-                    locationText = getString(R.string.when_pro_formatted, mProviderName);
+                String toolbarTitle = getString(R.string.reschedule);
+                if (mProTeamProViewModel != null) {
+                    mSelectedProContainer.setVisibility(View.VISIBLE);
+                    mSelectedProContainer.removeAllViews();
+                    final ProTeamProConversationItemView selectedProView =
+                            new ProTeamProConversationItemView(
+                                    getActivity(),
+                                    true,
+                                    mRescheduleBooking.getProvider() != null
+                                    ? mRescheduleBooking.getProvider().getId()
+                                    : null
+                            );
+                    selectedProView.bind(mProTeamProViewModel);
+                    final String proFirstName = mProTeamProViewModel.getProTeamPro().getFirstName();
+                    mSelectedProContainer.addView(selectedProView);
+                    mLocationText.setGravity(Gravity.START);
+                    mNextButton.setText(getString(R.string.request_pro_formatted, proFirstName));
+                    toolbarTitle = getString(R.string.pro_x_availability_formatted, proFirstName);
                 }
-                else {
-                    locationText = getString(R.string.when_come);
-                }
-                setToolbarTitle(getString(R.string.reschedule));
-                mLocationText.setText(locationText);
+                setToolbarTitle(toolbarTitle);
                 mRescheduleCancelText.setVisibility(View.GONE);
             }
-
-            mNextButton.setText(getString(R.string.reschedule));
             if (mNotice != null) {
                 mNoticeTextView.setText(mNotice);
                 mNoticeTextView.setVisibility(View.VISIBLE);

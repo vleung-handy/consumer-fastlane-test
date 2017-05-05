@@ -6,11 +6,11 @@
                 android:background="@color/white"
                 android:clipChildren="false"
                 android:clipToPadding="false"
+                android:foreground="?attr/selectableItemBackground"
                 android:paddingBottom="@dimen/default_padding_half"
                 android:paddingLeft="@dimen/default_padding_quarter"
                 android:paddingRight="@dimen/default_padding_half"
                 android:paddingTop="@dimen/default_padding_half"
-                android:foreground="?attr/selectableItemBackground"
     >
 
     <ImageView
@@ -76,6 +76,36 @@
             android:src="@drawable/ic_handyman_outline_small"
             />
 
+        <include
+            android:id="@+id/conversation_job_count_ratings"
+            layout="@layout/job_count_ratings_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/conversation_title"
+            android:layout_marginEnd="@dimen/default_margin_double"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin_double"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="3dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/conversation_currently_assigned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/conversation_job_count_ratings"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin_half"
+            android:text="@string/currently_assigned"
+            android:textColor="@color/handy_tertiary_gray"
+            android:textSize="@dimen/text_size_xsmall"
+            android:visibility="gone"
+            tools:visibility="gone"
+            />
+
         <TextView
             android:id="@+id/conversation_message"
             style="@style/CircularBold"
@@ -105,20 +135,5 @@
         android:textColor="@color/handy_tertiary_gray"
         android:textSize="@dimen/text_size_xsmall"
         tools:text="Now"
-        />
-
-    <TextView
-        android:id="@+id/conversation_currently_assigned"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="@dimen/default_margin_half"
-        android:text="@string/currently_assigned"
-        android:textColor="@color/handy_tertiary_gray"
-        android:textSize="@dimen/text_size_xsmall"
-        android:visibility="gone"
-        tools:visibility="visible"
         />
 </RelativeLayout>
