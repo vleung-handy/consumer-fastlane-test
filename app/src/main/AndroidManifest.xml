@@ -269,7 +269,7 @@
                 />
         </activity>
         <activity
-            android:name=".proteam.ui.activity.ProTeamPerBookingActivity"
+            android:name=".proteam.ui.activity.BookingProTeamRescheduleActivity"
             android:label="@string/title_activity_pro_team"
             android:screenOrientation="portrait"
             />

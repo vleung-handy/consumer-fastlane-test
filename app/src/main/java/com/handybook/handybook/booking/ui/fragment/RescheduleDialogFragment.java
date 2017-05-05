@@ -12,7 +12,7 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
+import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -61,7 +61,7 @@ public class RescheduleDialogFragment extends BaseDialogFragment {
 
     @OnClick(R.id.reschedule_button)
     public void onRescheduleButtonClicked() {
-        Intent intent = new Intent(getContext(), ProTeamPerBookingActivity.class);
+        Intent intent = new Intent(getContext(), BookingProTeamRescheduleActivity.class);
         intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mCategory);
         intent.putExtra(BundleKeys.BOOKING, mBooking);
         startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);

@@ -123,7 +123,7 @@ import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
-import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
+import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
 import com.handybook.handybook.proteam.ui.fragment.NewProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
@@ -250,7 +250,7 @@ import dagger.Module;
                 BottomNavActivity.class,
                 LayerPushReceiver.class,
                 BookingSubscriptionFragment.class,
-                ProTeamPerBookingActivity.class,
+                BookingProTeamRescheduleActivity.class,
                 BookingProTeamRescheduleFragment.class,
                 RescheduleDialogFragment.class,
                 EditContactInfoActivity.class,
