@@ -109,12 +109,9 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        int pos = mRecyclerView.getChildAdapterPosition(v);
+                        int position = mRecyclerView.getChildAdapterPosition(v);
 
-                        // ignore header
-                        if (pos < mAdapter.getHeaderCount()) { return; }
-
-                        mSelectedProTeamMember = mAdapter.getItem(pos - mAdapter.getHeaderCount());
+                        mSelectedProTeamMember = mAdapter.getItem(position);
 
                         showUiBlockers();
                         //Go to date picker
@@ -123,13 +120,6 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
                                 mBooking,
                                 null
                         );
-
-                        //TODO new logging
-//                        bus.post(new LogEvent.AddLogEvent(
-//                                new BookingDetailsLog.RescheduleProviderSelected(
-//                                        mSelectedProTeamMember.getProTeamPro().getId(),
-//                                        "newlogging"
-//                                )));
                     }
                 }
         );

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.booking.model.Provider;
-import com.handybook.handybook.library.ui.viewholder.SingleViewHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
@@ -18,9 +17,6 @@ import java.util.List;
 
 public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int NORMAL = Integer.MIN_VALUE;
-
-    private List<SingleViewHolder> mHeaders = new ArrayList<>();
     private List<ProTeamProViewModel> mProTeamProViewModels;
     private final ProTeam.ProTeamCategory mProTeamCategory;
     private final View.OnClickListener mOnClickListener;
@@ -39,10 +35,6 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         mProTeamCategory = proTeamCategory;
         mOnClickListener = onClickListener;
         initProTeamProViewModels();
-    }
-
-    public void addHeader(@NonNull View header) {
-        mHeaders.add(new SingleViewHolder(header));
     }
 
     public void setAssignedProviderId(@NonNull String assignedProviderId) {
@@ -80,37 +72,25 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == NORMAL) {
-            final ProTeamProConversationItemView itemView =
-                    new ProTeamProConversationItemView(parent.getContext(), true,
-                                                       mAssignedProviderId
-                    );
-            itemView.setOnClickListener(mOnClickListener);
+        final ProTeamProConversationItemView itemView =
+                new ProTeamProConversationItemView(
+                        parent.getContext(),
+                        true,
+                        mAssignedProviderId
+                );
+        itemView.setOnClickListener(mOnClickListener);
 
-            return new ConversationHolder(itemView);
-        }
-        else // Header
-        {
-            return mHeaders.get(viewType);
-        }
-
+        return new ConversationHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        if (position >= mHeaders.size() &&
-            position < mProTeamProViewModels.size() + mHeaders.size()) {
-            ((ConversationHolder) holder).bind(getItem(position - mHeaders.size()));
-        }
+        ((ConversationHolder) holder).bind(getItem(position));
     }
 
     @Override
     public int getItemCount() {
-        return mProTeamProViewModels.size() + mHeaders.size();
-    }
-
-    public int getHeaderCount() {
-        return mHeaders.size();
+        return mProTeamProViewModels.size();
     }
 
     public ProTeamProViewModel getItem(final int index) {
@@ -124,7 +104,6 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemViewType(final int position) {
-        // We return the position as type if it's header.
-        return position >= mHeaders.size() ? NORMAL : position;
+        return 0;
     }
 }
