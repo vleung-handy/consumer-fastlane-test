@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:maxLines="1"
-        android:text="@string/select_pro"
+        android:text="@string/select_your_preference"
         />
 
     <TextView

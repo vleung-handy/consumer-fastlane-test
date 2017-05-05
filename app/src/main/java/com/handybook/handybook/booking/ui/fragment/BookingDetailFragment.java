@@ -26,6 +26,7 @@ import com.handybook.handybook.booking.model.ProviderRequest;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.booking.ui.activity.BookingReschedulePreferencesActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
@@ -483,7 +484,7 @@ public final class BookingDetailFragment extends InjectedFragment
             bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         }
         else {
-            Intent intent = new Intent(getContext(), BookingProTeamRescheduleActivity.class);
+            Intent intent = new Intent(getContext(), BookingReschedulePreferencesActivity.class);
             intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mProTeamCategory);
             intent.putExtra(BundleKeys.BOOKING, mBooking);
             startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);

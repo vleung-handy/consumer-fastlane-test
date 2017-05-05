@@ -45,6 +45,7 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingReschedulePreferencesActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
@@ -82,6 +83,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingReschedulePreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
@@ -178,6 +180,8 @@ import dagger.Module;
                 BookingEntryInfoFragment.class,
                 BookingAddressActivity.class,
                 PromosActivity.class,
+                BookingReschedulePreferencesActivity.class,
+                BookingReschedulePreferencesFragment.class,
                 BookingRescheduleOptionsActivity.class,
                 BookingRescheduleOptionsFragment.class,
                 BookingCancelOptionsActivity.class,

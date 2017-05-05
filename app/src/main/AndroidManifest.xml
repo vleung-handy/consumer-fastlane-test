@@ -200,6 +200,10 @@
             android:screenOrientation="portrait"
             />
         <activity
+            android:name=".booking.ui.activity.BookingReschedulePreferencesActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"
             android:screenOrientation="portrait"
             />

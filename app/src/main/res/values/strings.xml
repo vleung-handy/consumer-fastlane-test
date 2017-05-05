@@ -417,7 +417,7 @@
     <string name="pro_team_see_pro_recommendations">You\'ll see pro recommendations from friends here as we find them.</string>
     <string name="pro_team_ok">OK, Got it</string>
     <string name="pro_team_update_successful">Your Pro Team was updated successfully!</string>
-    <string name="select_pro">Select your preference</string>
+    <string name="select_your_preference">Select your preference</string>
     <string name="find_any_pro">Find me the best pro for my booking</string>
     <string name="select_any_time">Select any date and time</string>
     <string name="specific_pro">I know the pro I want and I\'ll change my booking to fit their schedule</string>
@@ -616,5 +616,11 @@
     <string name="bottom_nav_item_services">Services</string>
     <string name="bottom_nav_item_share">Share</string>
     <string name="bottom_nav_item_account">Account</string>
+
+    <!-- Reschedule Preferences -->
+    <string name="choose_time_option_title">Choose any date and time</string>
+    <string name="choose_time_option_subtitle">We\'ll request your Pro Team for your preferred time.</string>
+    <string name="choose_pro_option_title">Choose from a pro\'s availability</string>
+    <string name="choose_pro_option_subtitle">Select a pro to reschedule based on their availability.</string>
 </resources>
 
