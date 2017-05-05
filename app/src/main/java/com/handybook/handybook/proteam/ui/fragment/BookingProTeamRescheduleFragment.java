@@ -98,25 +98,6 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
                 mProTeamCategory.getPreferred().size())));
     }
 
-    @Subscribe
-    public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event) {
-        removeUiBlockers();
-
-        final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
-        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
-        intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, event.notice);
-        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.NORMAL);
-
-        startActivityForResult(intent, ActivityResult.START_RESCHEDULE);
-    }
-
-    @Subscribe
-    public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event) {
-        removeUiBlockers();
-
-        dataManagerErrorHandler.handleError(getActivity(), event.error);
-    }
-
     private void initRecyclerView() {
         if (mRecyclerView == null || mProTeamCategory == null) { return; }
 
@@ -153,23 +134,6 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
                 }
         );
 
-        View header1 = LayoutInflater.from(getContext()).inflate(
-                R.layout.list_item_conversation_header1, mRecyclerView, false);
-        View header2 = LayoutInflater.from(getContext()).inflate(
-                R.layout.list_item_conversation_header2, mRecyclerView, false);
-        header2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
-                bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleIndifferenceSelected()));
-
-            }
-        });
-        View header3 = LayoutInflater.from(getContext()).inflate(
-                R.layout.list_item_conversation_header3, mRecyclerView, false);
-        mAdapter.addHeader(header1);
-        mAdapter.addHeader(header2);
-        mAdapter.addHeader(header3);
         mAdapter.setAssignedProviderId(mBooking.getProvider().getId());
 
         mRecyclerView.setAdapter(mAdapter);
@@ -178,7 +142,7 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setupToolbar(mToolbar, getString(R.string.reschedule));
+        setupToolbar(mToolbar, getString(R.string.choose_a_pro));
     }
 
     @Override

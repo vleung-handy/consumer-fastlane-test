@@ -282,7 +282,6 @@ public final class BookingDateFragment extends BookingFlowFragment
                     selectedProView.bind(mProTeamProViewModel);
                     final String proFirstName = mProTeamProViewModel.getProTeamPro().getFirstName();
                     mSelectedProContainer.addView(selectedProView);
-                    mLocationText.setGravity(Gravity.START);
                     mNextButton.setText(getString(R.string.request_pro_formatted, proFirstName));
                     toolbarTitle = getString(R.string.pro_x_availability_formatted, proFirstName);
                 }

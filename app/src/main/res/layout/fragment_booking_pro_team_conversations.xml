@@ -29,6 +29,15 @@
             />
     </android.support.design.widget.AppBarLayout>
 
+    <TextView
+        style="@style/TextView.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/default_padding"
+        android:text="@string/which_pro"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/pro_team_recycler_view"
         android:layout_width="match_parent"

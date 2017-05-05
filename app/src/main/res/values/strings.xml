@@ -505,6 +505,8 @@
     <string name="account.your_plan">Your plan</string>
     <string name="account.cancel_plan">Cancel Plan</string>
     <string name="account.next_cleaning">Next cleaning</string>
+    <string name="choose_a_pro">Choose a Pro</string>
+    <string name="which_pro">Which pro would you like to schedule?</string>
     <string name="account.promo_code_description">Apply a discount</string>
     <string name="account.sign_out">Sign Out</string>
     <string name="account.work_with_pros_you_love">Work with pros you love</string>
