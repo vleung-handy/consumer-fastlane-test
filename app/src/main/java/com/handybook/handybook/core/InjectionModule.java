@@ -45,6 +45,7 @@ import com.handybook.handybook.booking.ui.activity.BookingOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingPaymentActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRecurrenceActivity;
 import com.handybook.handybook.booking.ui.activity.BookingRescheduleOptionsActivity;
+import com.handybook.handybook.booking.ui.activity.BookingReschedulePreferencesActivity;
 import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.CancelRecurringBookingActivity;
 import com.handybook.handybook.booking.ui.activity.PeakPricingActivity;
@@ -82,6 +83,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
+import com.handybook.handybook.booking.ui.fragment.BookingReschedulePreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
@@ -123,7 +125,7 @@ import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
-import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
+import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
 import com.handybook.handybook.proteam.ui.fragment.NewProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
@@ -178,6 +180,8 @@ import dagger.Module;
                 BookingEntryInfoFragment.class,
                 BookingAddressActivity.class,
                 PromosActivity.class,
+                BookingReschedulePreferencesActivity.class,
+                BookingReschedulePreferencesFragment.class,
                 BookingRescheduleOptionsActivity.class,
                 BookingRescheduleOptionsFragment.class,
                 BookingCancelOptionsActivity.class,
@@ -250,7 +254,7 @@ import dagger.Module;
                 BottomNavActivity.class,
                 LayerPushReceiver.class,
                 BookingSubscriptionFragment.class,
-                ProTeamPerBookingActivity.class,
+                BookingProTeamRescheduleActivity.class,
                 BookingProTeamRescheduleFragment.class,
                 RescheduleDialogFragment.class,
                 EditContactInfoActivity.class,

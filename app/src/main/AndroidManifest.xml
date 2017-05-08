@@ -200,6 +200,10 @@
             android:screenOrientation="portrait"
             />
         <activity
+            android:name=".booking.ui.activity.BookingReschedulePreferencesActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name=".booking.ui.activity.BookingRescheduleOptionsActivity"
             android:screenOrientation="portrait"
             />
@@ -269,7 +273,7 @@
                 />
         </activity>
         <activity
-            android:name=".proteam.ui.activity.ProTeamPerBookingActivity"
+            android:name=".proteam.ui.activity.BookingProTeamRescheduleActivity"
             android:label="@string/title_activity_pro_team"
             android:screenOrientation="portrait"
             />
