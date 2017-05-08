@@ -59,6 +59,7 @@ import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFra
 
 public class BookingFlowFragment extends InjectedFragment {
 
+    // TODO: We are assuming there are no more than 12 steps in the booking flow. We should refactor this into controller.
     public static final int MAX_PROGRESS = 100;
     public static final int INCREMENT = 9;
 
