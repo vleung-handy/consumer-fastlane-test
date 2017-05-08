@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 
@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public enum ActivityUrlMapper {
     NEW_QUOTE(ServiceCategoriesActivity.class, Pattern.compile(".*/quotes/new.*")),
     ACCOUNT(ProfileActivity.class, Pattern.compile(".*/(?:users|accounts)/(?:me|\\d+)/edit")),
-    BOOKINGS(BookingsActivity.class, Pattern.compile(".*/(?:users|accounts)/(?:me|\\d+)")),
+    BOOKINGS(BottomNavActivity.class, Pattern.compile(".*/(?:users|accounts)/(?:me|\\d+)")),
     BOOKING_DETAIL(
             BookingDetailActivity.class,
             Pattern.compile(".*/upcoming/(\\d+)/(?:reschedule_booking|cancel_booking)"),
@@ -55,6 +55,9 @@ public enum ActivityUrlMapper {
             for (int i = 0; i < mExtrasKeys.length; i++) {
                 final String key = mExtrasKeys[i];
                 arguments.putString(key, matcher.group(i + 1));
+            }
+            if (this == BOOKINGS) {
+                arguments.putSerializable(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.BOOKINGS);
             }
         }
         return arguments;
