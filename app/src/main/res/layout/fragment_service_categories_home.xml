@@ -43,6 +43,7 @@
     </android.support.v7.widget.Toolbar>
 
     <!-- BookingFlowFragment must contain toolbar_booking_flow -->
+    <!-- TODO: this should be fixed with the new booking flow control -->
     <include
         layout="@layout/toolbar_booking_flow"
         android:visibility="gone"
