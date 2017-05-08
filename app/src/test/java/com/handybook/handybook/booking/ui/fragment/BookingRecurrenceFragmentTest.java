@@ -58,7 +58,7 @@ public class BookingRecurrenceFragmentTest extends RobolectricGradleTestWrapper 
         when(mMockRequest.getUniq()).thenReturn("home_cleaning");
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
-        mFragment = BookingRecurrenceFragment.newInstance();
+        mFragment = BookingRecurrenceFragment.newInstance(null);
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 

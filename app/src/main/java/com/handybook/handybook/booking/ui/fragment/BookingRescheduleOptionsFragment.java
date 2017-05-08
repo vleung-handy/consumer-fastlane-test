@@ -49,7 +49,8 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
             final Date date,
             @Nullable final String providerId,
             final BookingDetailFragment.RescheduleType rescheduleType,
-            final boolean isInstantBookEnabled
+            final boolean isInstantBookEnabled,
+            @Nullable final Bundle extras
     ) {
         final BookingRescheduleOptionsFragment fragment = new BookingRescheduleOptionsFragment();
         final Bundle args = new Bundle();
@@ -59,6 +60,9 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
         args.putString(EXTRA_PROVIDER_ID, providerId);
         args.putSerializable(EXTRA_RESCHEDULE_TYPE, rescheduleType);
         args.putBoolean(EXTRA_RESCHEDULE_IS_INSTANT_BOOK_ENABLED, isInstantBookEnabled);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
 
         return fragment;
@@ -121,6 +125,8 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
                 );
             }
         });
+
+        mToolbar.setTitle(R.string.reschedule);
 
         return view;
     }

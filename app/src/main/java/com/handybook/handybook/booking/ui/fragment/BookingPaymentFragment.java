@@ -11,7 +11,6 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Layout;
@@ -128,8 +127,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     TextView mTermsOfUseText;
     @Bind(R.id.scan_card_button)
     TextView mScanCardButton;
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
     @Bind(R.id.payment_fragment_bill)
     BillView mBillView;
     @Bind(R.id.payment_fragment_price_header_container)
@@ -141,6 +138,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     private MaskedWallet mMaskedWallet;
     private BookingQuote mCurrentQuote;
     private BookingTransaction mCurrentTransaction;
+
+    public static BookingPaymentFragment newInstance(@Nullable final Bundle extras) {
+        BookingPaymentFragment fragment = new BookingPaymentFragment();
+        fragment.setArguments(extras);
+        return fragment;
+    }
 
     @OnClick(R.id.scan_card_button)
     public void onScanCardButtonPressed() {
@@ -219,13 +222,12 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         showAndUpdatePromoCodeInput();
     }
 
-    public static BookingPaymentFragment newInstance() {
-        return new BookingPaymentFragment();
-    }
-
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (mProgress < 70) {
+            mProgress = 70;
+        }
         ((BaseApplication) getActivity().getApplication()).inject(this);
         if (savedInstanceState != null) {
             mUseExistingCard = savedInstanceState.getBoolean(STATE_USE_EXISTING_CARD);
@@ -902,6 +904,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                                 getActivity(),
                                 BookingFinalizeActivity.class
                         );
+                        intent.putExtras(createProgressBundle());
                         intent.putExtra(BookingFinalizeActivity.EXTRA_NEW_USER, isNewUser);
                         intent.putExtra(
                                 BookingFinalizeActivity.EXTRA_INSTRUCTIONS,

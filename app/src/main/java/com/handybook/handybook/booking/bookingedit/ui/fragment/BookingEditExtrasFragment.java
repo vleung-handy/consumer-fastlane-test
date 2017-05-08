@@ -18,11 +18,11 @@ import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
 import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.squareup.otto.Subscribe;
 
@@ -35,7 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditExtrasFragment extends BookingFlowFragment {
+public final class BookingEditExtrasFragment extends InjectedFragment {
 
     //TODO: use ViewModel
     @Bind(R.id.toolbar)
@@ -299,7 +299,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment {
     public final void onReceiveEditExtrasViewModelError(
             BookingEditEvent.ReceiveEditBookingExtrasViewModelError event
     ) {
-        onReceiveErrorEvent(event);
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
         setSaveButtonEnabled(false); //don't allow user to save if options data is invalid
     }
 
@@ -313,7 +313,7 @@ public final class BookingEditExtrasFragment extends BookingFlowFragment {
 
     @Subscribe
     public final void onReceiveEditBookingExtrasError(BookingEditEvent.ReceiveEditExtrasError event) {
-        onReceiveErrorEvent(event);
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
         removeUiBlockers(); //allow user to try again
     }
 }

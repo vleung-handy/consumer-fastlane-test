@@ -28,7 +28,8 @@ public final class BookingRescheduleOptionsActivity extends MenuDrawerActivity {
                 date,
                 providerId,
                 type,
-                isInstantBookEnabled
+                isInstantBookEnabled,
+                getIntent().getExtras()
         );
     }
 

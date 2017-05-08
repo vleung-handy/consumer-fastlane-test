@@ -35,17 +35,23 @@ public final class BookingFinalizeActivity extends MenuDrawerActivity {
                 return BookingEntryInfoFragment.newInstance(
                         isNewUser,
                         instructions,
-                        entryMethodsInfo
+                        entryMethodsInfo,
+                        getIntent().getExtras()
                 );
             case PAGE_PREFERENCES:
-                return BookingPreferencesFragment.newInstance(isNewUser, instructions);
+                return BookingPreferencesFragment.newInstance(
+                        isNewUser,
+                        instructions,
+                        getIntent().getExtras()
+                );
             case PAGE_PASSWORD_PROMPT:
-                return BookingPasswordPromptFragment.newInstance();
+                return BookingPasswordPromptFragment.newInstance(getIntent().getExtras());
             default:
                 return BookingEntryInfoFragment.newInstance(
                         isNewUser,
                         instructions,
-                        entryMethodsInfo
+                        entryMethodsInfo,
+                        getIntent().getExtras()
                 );
         }
     }

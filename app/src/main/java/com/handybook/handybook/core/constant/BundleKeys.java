@@ -63,4 +63,7 @@ public class BundleKeys {
     public static final String RECOMMENDED_PROVIDERS = "recommended_providers";
     public static final String PRO_AVAILABILITY = "pro_availability";
     public static final String EVENT_CONTEXT = "event_context";
+    public static final String BOOKING_FLOW_STARTED = "BOOKING_FLOW_STARTED";
+    public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
+    public static final String PROGRESS = "PROGRESS";
 }

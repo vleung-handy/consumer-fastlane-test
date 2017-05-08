@@ -10,7 +10,7 @@ public final class BookingExtrasActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        return BookingExtrasFragment.newInstance();
+        return BookingExtrasFragment.newInstance(getIntent().getExtras());
     }
 
     @Override

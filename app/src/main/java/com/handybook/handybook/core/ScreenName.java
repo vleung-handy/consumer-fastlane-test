@@ -6,7 +6,6 @@ import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditAddressActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditEntryInformationActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditExtrasActivity;
-import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditFrequencyActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditHoursActivity;
 import com.handybook.handybook.booking.bookingedit.ui.activity.BookingEditPreferencesActivity;
 import com.handybook.handybook.booking.ui.activity.BookingAddressActivity;
@@ -55,7 +54,6 @@ public class ScreenName {
                 "Edit: EntryInformation"
         );
         sScreenNames.put(BookingEditExtrasActivity.class.getCanonicalName(), "Edit: Extras");
-        sScreenNames.put(BookingEditFrequencyActivity.class.getCanonicalName(), "Edit: Frequency");
         sScreenNames.put(BookingEditHoursActivity.class.getCanonicalName(), "Edit: Hours");
         sScreenNames.put(
                 BookingEditPreferencesActivity.class.getCanonicalName(),

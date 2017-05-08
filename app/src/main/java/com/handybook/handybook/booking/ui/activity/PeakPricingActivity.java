@@ -28,10 +28,13 @@ public final class PeakPricingActivity extends MenuDrawerActivity {
             return PeakPricingFragment.newInstance(
                     reschedulePriceTable,
                     rescheduleBooking,
-                    rescheduleAll
+                    rescheduleAll,
+                    getIntent().getExtras()
             );
         }
-        else { return PeakPricingFragment.newInstance(forVoucher); }
+        else {
+            return PeakPricingFragment.newInstance(forVoucher, getIntent().getExtras());
+        }
     }
 
     @Override

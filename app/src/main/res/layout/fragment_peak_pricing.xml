@@ -4,101 +4,108 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/handy_bg">
+    android:background="@color/handy_bg"
+    >
 
     <Button
         android:id="@+id/skip_button"
+        style="@style/Button.Green"
         android:text="@string/skip"
-        style="@style/Button.Green" />
+        />
 
-    <TextView
-        android:id="@+id/nav_text"
-        android:text="@string/price"
-        style="@style/TextView.Navbar" />
+    <include layout="@layout/toolbar_booking_flow"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/nav_text"
-        android:layout_above="@id/skip_button">
+        android:layout_above="@id/skip_button"
+        android:layout_below="@+id/toolbar_booking_flow"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="@dimen/default_margin">
+            android:paddingTop="@dimen/default_margin"
+            >
 
             <TextView
                 android:id="@+id/header_text"
+                style="@style/TextView.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:paddingLeft="@dimen/default_margin"
                 android:paddingRight="@dimen/default_margin"
                 android:text="@string/peak_price_info"
-                android:gravity="center"
-                style="@style/TextView.Small" />
+                />
 
             <RelativeLayout
                 android:id="@+id/date_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layout_below="@id/header_text"
-                android:background="@color/white">
+                android:layout_marginBottom="16dp"
+                android:background="@color/white"
+                >
 
                 <TextView
                     android:id="@+id/date_text"
+                    style="@style/TextView.Headline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:paddingBottom="16dp"
                     android:paddingLeft="@dimen/default_margin"
                     android:paddingRight="@dimen/default_margin"
                     android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
                     android:text="Date"
-                    style="@style/TextView.Headline"/>
+                    />
 
                 <ImageView
                     android:id="@+id/arrow_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:contentDescription="arrow left"
                     android:padding="16dp"
                     android:src="@drawable/ic_arrow_left"
-                    android:contentDescription="arrow left" />
+                    />
 
                 <ImageView
                     android:id="@+id/arrow_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="arrow right"
                     android:padding="16dp"
                     android:src="@drawable/ic_arrow_right"
-                    android:contentDescription="arrow right" />
+                    />
 
             </RelativeLayout>
 
             <com.handybook.handybook.library.ui.view.ViewPager
                 android:id="@+id/pager"
-                android:layout_below="@id/date_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
+                android:layout_below="@id/date_layout"
+                android:layout_marginBottom="16dp"
+                />
 
             <TextView
                 android:id="@+id/footer_text"
-                android:layout_below="@id/pager"
+                style="@style/TextView.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/pager"
                 android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:paddingLeft="@dimen/default_margin"
                 android:paddingRight="@dimen/default_margin"
                 android:text="@string/peak_price_info"
-                android:gravity="center"
-                style="@style/TextView.Small"
                 android:visibility="gone"
                 tools:visibility="visible"
                 />
