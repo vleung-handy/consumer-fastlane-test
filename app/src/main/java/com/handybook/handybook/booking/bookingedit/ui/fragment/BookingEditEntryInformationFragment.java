@@ -18,12 +18,12 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingInstruction;
 import com.handybook.handybook.booking.model.EntryMethodOption;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.view.EntryMethodsInfoView;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
@@ -37,7 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditEntryInformationFragment extends BookingFlowFragment {
+public final class BookingEditEntryInformationFragment extends InjectedFragment {
 
     private Booking booking;
     @Bind(R.id.next_button)

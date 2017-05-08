@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -65,22 +66,27 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     ImageView mArrowRight;
     private BookingTransaction mTransaction;
 
-    public static PeakPricingFragment newInstance(final boolean forVoucher) {
-        return newInstance(null, null, false, forVoucher);
-    }
-
     public static PeakPricingFragment newInstance(
-            final ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable,
-            final Booking rescheduleBooking,
-            final boolean rescheduleAll
+            final boolean forVoucher,
+            @Nullable Bundle extras
     ) {
-        return newInstance(reschedulePriceTable, rescheduleBooking, rescheduleAll, false);
+        return newInstance(null, null, false, forVoucher, extras);
     }
 
     public static PeakPricingFragment newInstance(
             final ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable,
             final Booking rescheduleBooking,
-            final boolean rescheduleAll, final boolean forVoucher
+            final boolean rescheduleAll,
+            @Nullable Bundle extras
+    ) {
+        return newInstance(reschedulePriceTable, rescheduleBooking, rescheduleAll, false, extras);
+    }
+
+    public static PeakPricingFragment newInstance(
+            final ArrayList<ArrayList<PeakPriceInfo>> reschedulePriceTable,
+            final Booking rescheduleBooking,
+            final boolean rescheduleAll, final boolean forVoucher,
+            @Nullable Bundle extras
     ) {
         final PeakPricingFragment fragment = new PeakPricingFragment();
         final Bundle args = new Bundle();
@@ -88,6 +94,9 @@ public final class PeakPricingFragment extends BookingFlowFragment {
         args.putParcelable(EXTRA_RESCHEDULE_BOOKING, rescheduleBooking);
         args.putBoolean(EXTRA_RESCHEDULE_ALL, rescheduleAll);
         args.putBoolean(EXTRA_FOR_VOUCHER, forVoucher);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -140,6 +149,8 @@ public final class PeakPricingFragment extends BookingFlowFragment {
 
         mArrowLeft.setOnTouchListener(arrowTouched);
         mArrowRight.setOnTouchListener(arrowTouched);
+
+        mToolbar.setTitle(R.string.price);
 
         return view;
     }

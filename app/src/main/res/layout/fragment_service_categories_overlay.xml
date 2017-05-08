@@ -3,9 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
     android:background="@color/handy_black_trans"
+    android:clickable="true"
     >
+    <!-- BookingFlowFragment must contain toolbar_booking_flow -->
+    <!-- TODO: this should be fixed with the new booking flow control -->
+    <include
+        layout="@layout/toolbar_booking_flow"
+        android:visibility="gone"
+        />
 
     <TableLayout
         android:id="@+id/services_wrapper"

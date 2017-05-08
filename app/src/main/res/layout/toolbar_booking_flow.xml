@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/toolbar_with_horizontal_progress_layout"
+    android:id="@+id/toolbar_booking_flow"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,6 +19,7 @@
         app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
         app:titleMargin="@dimen/default_margin"
         app:titleTextAppearance="@style/Toolbar.TitleText"
+        android:paddingRight="@dimen/default_padding"
         />
 
     <ProgressBar
@@ -29,24 +30,14 @@
         android:layout_gravity="center"
         android:layout_marginBottom="-2dp"
         android:layout_marginTop="-3dp"
-        android:indeterminate="true"
+        android:indeterminate="false"
         android:max="100"
         android:maxHeight="6dp"
         android:minHeight="6dp"
         android:theme="@style/LinearProgress"
         android:visibility="gone"
+        tools:visibility="visible"
+        tools:progress="50"
         />
 
-    <TextView
-        android:id="@+id/title_bar_error_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/default_padding"
-        android:textAppearance="@style/TextView.Medium"
-        android:textColor="@color/error_red"
-        android:visibility="gone"
-        tools:text="Sorry something went wrong"
-        tools:visibility="visible"
-        />
 </LinearLayout>

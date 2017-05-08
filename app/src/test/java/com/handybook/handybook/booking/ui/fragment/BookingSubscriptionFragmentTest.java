@@ -72,7 +72,7 @@ public class BookingSubscriptionFragmentTest extends RobolectricGradleTestWrappe
         when(mMockTransaction.getHours()).thenReturn(3f);
         when(mMockRequest.getUniq()).thenReturn("home_cleaning");
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
-        mFragment = BookingSubscriptionFragment.newInstance();
+        mFragment = BookingSubscriptionFragment.newInstance(null);
     }
 
     @Test

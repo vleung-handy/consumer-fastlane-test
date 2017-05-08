@@ -13,18 +13,18 @@ import com.handybook.handybook.booking.bookingedit.BookingEditEvent;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditAddressFragment extends BookingFlowFragment {
+public final class BookingEditAddressFragment extends InjectedFragment {
 
     @Bind(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
@@ -34,7 +34,6 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
 
     private Booking mBooking;
     private static final String AC_FRAG_TAG = AutoCompleteAddressFragment.class.getName();
-
 
     AutoCompleteAddressFragment mAutoCompleteFragment;
 
@@ -148,7 +147,7 @@ public final class BookingEditAddressFragment extends BookingFlowFragment {
 
     @Subscribe
     public final void onReceiveEditBookingAddressError(BookingEditEvent.ReceiveEditBookingAddressError event) {
-        onReceiveErrorEvent(event);
+        dataManagerErrorHandler.handleError(getActivity(), event.error);
         removeUiBlockers(); //allow user to try again
     }
 

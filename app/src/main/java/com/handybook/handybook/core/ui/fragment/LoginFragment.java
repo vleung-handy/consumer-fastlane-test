@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -95,8 +94,6 @@ public final class LoginFragment extends BookingFlowFragment {
     TextView mWelcomeText;
     @Bind(R.id.login_scroll_view)
     ScrollView mLoginScrollView;
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
 
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;
 
@@ -107,7 +104,8 @@ public final class LoginFragment extends BookingFlowFragment {
             final String bookingUserName,
             final String bookingUserEmail,
             final boolean fromBookingFunnel,
-            final boolean fromOnboarding
+            final boolean fromOnboarding,
+            @Nullable final Bundle extras
     ) {
         final LoginFragment fragment = new LoginFragment();
         final Bundle args = new Bundle();
@@ -117,6 +115,9 @@ public final class LoginFragment extends BookingFlowFragment {
         args.putBoolean(EXTRA_FIND_USER, findUser);
         args.putString(EXTRA_BOOKING_USER_NAME, bookingUserName);
         args.putString(EXTRA_BOOKING_EMAIL, bookingUserEmail);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
         return fragment;
     }

@@ -241,10 +241,6 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".booking.bookingedit.ui.activity.BookingEditFrequencyActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity
             android:name=".booking.bookingedit.ui.activity.BookingEditExtrasActivity"
             android:screenOrientation="portrait"
             />
