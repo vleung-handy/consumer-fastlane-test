@@ -131,19 +131,33 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     private void initCoupon() {
         final BookingQuote.QuoteCoupon coupon = bookingManager.getCurrentQuote().getCoupon();
-        if (coupon != null) {
-            mCouponBannerContainer.setVisibility(View.VISIBLE);
-            mTitle.setVisibility(View.GONE);
-            mCouponDisclaimer.setVisibility(View.VISIBLE);
-            mCouponBannerTitle.setText(coupon.getTitle());
-            mCouponBannerSubtitle.setText(coupon.getSubtitle());
-            mCouponDisclaimer.setText(coupon.getDisclaimer());
-        }
-        else {
-            mCouponBannerContainer.setVisibility(View.GONE);
+
+        if (coupon == null) {
             mTitle.setVisibility(View.VISIBLE);
+            mCouponBannerContainer.setVisibility(View.GONE);
             mCouponDisclaimer.setVisibility(View.GONE);
+            return;
         }
+
+        final String title = coupon.getTitle();
+        final String subtitle = coupon.getSubtitle();
+        final String disclaimer = coupon.getDisclaimer();
+
+        mTitle.setVisibility(View.GONE);
+        mCouponBannerContainer.setVisibility(View.VISIBLE);
+
+        mCouponBannerTitle.setText(title);
+        mCouponBannerTitle.setVisibility(
+                android.text.TextUtils.isEmpty(title) ? View.GONE : View.VISIBLE
+        );
+        mCouponBannerSubtitle.setText(subtitle);
+        mCouponBannerSubtitle.setVisibility(
+                android.text.TextUtils.isEmpty(subtitle) ? View.GONE : View.VISIBLE
+        );
+        mCouponDisclaimer.setText(disclaimer);
+        mCouponDisclaimer.setVisibility(
+                android.text.TextUtils.isEmpty(disclaimer) ? View.GONE : View.VISIBLE
+        );
     }
 
     private void initTooltip() {
