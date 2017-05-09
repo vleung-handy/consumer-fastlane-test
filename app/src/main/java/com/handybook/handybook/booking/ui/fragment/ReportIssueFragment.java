@@ -289,22 +289,14 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                     )));
 
                     if (JobStatus.DeepLinkWrapper.TYPE_CANCEL.equals(deepLinkWrapper.getType())) {
-                        // show cancel page
-                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                                BookingDetailsLog.EventType.SELECTED,
-                                mBooking.getId()
-                        )
-                        ));
-
                         bus.post(new BookingEvent.RequestBookingCancellationData(mBooking.getId()));
                     }
                     else if (JobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType())) {
                         // show reschedule page
-                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                         BookingDetailsLog.EventType.SELECTED,
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBookingSelectedLog(
+                                        mBooking.getProvider(),
                                          mBooking.getId(),
-                                         mBooking.getStartDate(),
-                                         null
+                                         mBooking.getRecurringId()
                                  ))
                         );
 

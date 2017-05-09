@@ -620,7 +620,20 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     public enum RescheduleType {
-        NORMAL, FROM_CANCELATION, FROM_CHAT, FROM_PRO_BANNER
+        NORMAL("booking_details_reschedule"),
+        FROM_CANCELATION("booking_details_reschedule"),
+        FROM_CHAT("chat_reschedule_agreement"),
+        FROM_PRO_BANNER("provider_request_response");
+
+        private String mSourceName;
+
+        RescheduleType(String sourceName) {
+            mSourceName = sourceName;
+        }
+
+        public String getSourceName() {
+            return mSourceName;
+        }
     }
 
     private void setProBusyViewVisibility() {

@@ -62,6 +62,7 @@ public class BookingDateTimeInputFragment extends InjectedFragment
     private ProAvailabilityResponse mProAvailability;
     private ProAvailabilityResponse.AvailableDay mCurrentSelectedAvailableDay;
     private Calendar mSelectedDateTime;
+    private boolean mIsSelectedInstantBookEnabled;
 
     public static final String BUNDLE_KEY_START_DATE_TIME = "BUNDLE_KEY_START_DATE_TIME";
     public static final String BUNDLE_KEY_DATE_DISPLAY_PATTERN = "BUNDLE_KEY_DATE_DISPLAY_PATTERN";
@@ -250,7 +251,8 @@ public class BookingDateTimeInputFragment extends InjectedFragment
                             startHourOfDay,
                             startMinuteOfStartHour,
                             endHourOfDay,
-                            endMinuteOfEndHour
+                            endMinuteOfEndHour,
+                            interval.isInstantBookEnabled()
                     ));
                 }
                 catch (ParseException e) {
@@ -271,7 +273,7 @@ public class BookingDateTimeInputFragment extends InjectedFragment
 
     private void notifyTimeUpdatedListener() {
         ((OnSelectedDateTimeUpdatedListener) getParentFragment()).onSelectedDateTimeUpdatedListener(
-                mSelectedDateTime);
+                mSelectedDateTime, mIsSelectedInstantBookEnabled);
     }
 
     // Reset mSelectedDateTime to the first time slot available based on pro schedule for that day.
@@ -291,9 +293,10 @@ public class BookingDateTimeInputFragment extends InjectedFragment
     }
 
     @Override
-    public void OnTimeSet(int hourOfDay, int minuteOfHour) {
+    public void OnTimeSet(int hourOfDay, int minuteOfHour, boolean isInstantBookEnabled) {
         mSelectedDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
         mSelectedDateTime.set(Calendar.MINUTE, minuteOfHour);
+        mIsSelectedInstantBookEnabled = isInstantBookEnabled;
         updateDateTimeDisplay();
         notifyTimeUpdatedListener();
     }
@@ -319,6 +322,6 @@ public class BookingDateTimeInputFragment extends InjectedFragment
 
     public interface OnSelectedDateTimeUpdatedListener {
 
-        void onSelectedDateTimeUpdatedListener(Calendar selectedDateTime);
+        void onSelectedDateTimeUpdatedListener(Calendar selectedDateTime, boolean isInstantBookEnabled);
     }
 }

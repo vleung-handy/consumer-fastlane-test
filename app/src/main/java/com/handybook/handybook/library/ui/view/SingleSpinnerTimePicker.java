@@ -81,10 +81,16 @@ public class SingleSpinnerTimePicker extends NumberPicker {
                ((int) TimeUnit.HOURS.toMinutes(1));
     }
 
+    public boolean getCurrentIsInstantBookEnabled() {
+        int selectedValue = getValue();
+        return mAdapter.isInstantBookEnabled(selectedValue);
+    }
+
     private static class Adapter extends BaseDataAdapter<String, Integer> {
 
         private List<String> mDisplayValues;
         private List<Integer> mUnderlyingValues;
+        private List<Boolean> mIsInstantBookEnabledValues;
 
         /**
          * Assumes that all of the given params are within the noted ranges
@@ -100,6 +106,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
         ) {
             mDisplayValues = new ArrayList<>();
             mUnderlyingValues = new ArrayList<>();
+            mIsInstantBookEnabledValues = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
 
             for (TimeInterval interval : timeIntervals) {
@@ -122,6 +129,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
                     mUnderlyingValues.add(calendar.get(Calendar.MINUTE) +
                                           calendar.get(Calendar.HOUR_OF_DAY) *
                                           DateTimeUtils.MINUTES_IN_HOUR);
+                    mIsInstantBookEnabledValues.add(interval.isInstantEnabled());
                     calendar.add(Calendar.MINUTE, minuteInterval);
                 }
             }
@@ -144,6 +152,12 @@ public class SingleSpinnerTimePicker extends NumberPicker {
         public Integer getUnderlyingValueAtIndex(final int index) {
             if (!isIndexValid(index)) { return null; }
             return mUnderlyingValues.get(index);
+        }
+
+        @Override
+        boolean isInstantBookEnabled(final int index) {
+            if (!isIndexValid(index)) { return false; }
+            return mIsInstantBookEnabledValues.get(index);
         }
 
         /**
@@ -192,6 +206,10 @@ public class SingleSpinnerTimePicker extends NumberPicker {
         boolean isItemEnabled(int index) {
             return true;
         }
+
+        boolean isInstantBookEnabled(int index) {
+            return false;
+        }
     }
 
 
@@ -201,6 +219,21 @@ public class SingleSpinnerTimePicker extends NumberPicker {
         private int mStartMinuteOfStartHour;
         private int mEndHourOfDay;
         private int mEndMinuteOfEndHour;
+        private boolean mInstantEnabled;
+
+        public TimeInterval(
+                final int startHourOfDay,
+                final int startMinuteOfStartHour,
+                final int endHourOfDay,
+                final int endMinuteOfEndHour,
+                final boolean instantBookEnabled
+        ) {
+            this.mStartHourOfDay = startHourOfDay;
+            this.mStartMinuteOfStartHour = startMinuteOfStartHour;
+            this.mEndHourOfDay = endHourOfDay;
+            this.mEndMinuteOfEndHour = endMinuteOfEndHour;
+            mInstantEnabled = instantBookEnabled;
+        }
 
         public TimeInterval(
                 final int startHourOfDay,
@@ -208,10 +241,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
                 final int endHourOfDay,
                 final int endMinuteOfEndHour
         ) {
-            this.mStartHourOfDay = startHourOfDay;
-            this.mStartMinuteOfStartHour = startMinuteOfStartHour;
-            this.mEndHourOfDay = endHourOfDay;
-            this.mEndMinuteOfEndHour = endMinuteOfEndHour;
+            this(startHourOfDay, startMinuteOfStartHour, endHourOfDay, endMinuteOfEndHour, false);
         }
 
         public int getStartHourOfDay() {
@@ -228,6 +258,10 @@ public class SingleSpinnerTimePicker extends NumberPicker {
 
         public int getEndMinuteOfEndHour() {
             return mEndMinuteOfEndHour;
+        }
+
+        public boolean isInstantEnabled() {
+            return mInstantEnabled;
         }
     }
 }

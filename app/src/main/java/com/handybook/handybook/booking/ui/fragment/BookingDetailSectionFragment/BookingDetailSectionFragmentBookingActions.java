@@ -86,12 +86,6 @@ public class BookingDetailSectionFragmentBookingActions
     private View.OnClickListener cancelClicked = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            //log that this was clicked.
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.SkipBooking(
-                    BookingDetailsLog.EventType.SELECTED,
-                    booking.getId()
-            )));
-
             BookingDetailFragment parentFragment = (BookingDetailFragment) getParentFragment();
 
             if (parentFragment != null &&
@@ -111,11 +105,10 @@ public class BookingDetailSectionFragmentBookingActions
         @Override
         public void onClick(final View v) {
             //log that this was clicked.
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                    BookingDetailsLog.EventType.SELECTED,
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBookingSelectedLog (
+                    booking.getProvider(),
                     booking.getId(),
-                    booking.getStartDate(),
-                    null
+                    booking.getRecurringId()
             )));
 
             if (getParentFragment() != null) {
