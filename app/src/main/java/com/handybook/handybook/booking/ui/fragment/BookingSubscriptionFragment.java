@@ -71,6 +71,16 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     BookingOptionsCheckboxView mTrialCheckbox;
     @Bind(R.id.booking_subscription_commitment_tooltip)
     ImageView mCommitmentTooltip;
+    @Bind(R.id.booking_subscription_title)
+    TextView mTitle;
+    @Bind(R.id.coupon_banner_container)
+    ViewGroup mCouponBannerContainer;
+    @Bind(R.id.coupon_banner_title)
+    TextView mCouponBannerTitle;
+    @Bind(R.id.coupon_banner_subtitle)
+    TextView mCouponBannerSubtitle;
+    @Bind(R.id.booking_subscription_coupon_disclaimer)
+    TextView mCouponDisclaimer;
 
     private BookingTransaction mBookingTransaction;
     protected BookingOptionsSelectView mCommitmentView;
@@ -115,7 +125,25 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         createSubscriptionOptions();
         initTrial();
         initTooltip();
+        initCoupon();
         return view;
+    }
+
+    private void initCoupon() {
+        final BookingQuote.QuoteCoupon coupon = bookingManager.getCurrentQuote().getCoupon();
+        if (coupon != null) {
+            mCouponBannerContainer.setVisibility(View.VISIBLE);
+            mTitle.setVisibility(View.GONE);
+            mCouponDisclaimer.setVisibility(View.VISIBLE);
+            mCouponBannerTitle.setText(coupon.getTitle());
+            mCouponBannerSubtitle.setText(coupon.getSubtitle());
+            mCouponDisclaimer.setText(coupon.getDisclaimer());
+        }
+        else {
+            mCouponBannerContainer.setVisibility(View.GONE);
+            mTitle.setVisibility(View.VISIBLE);
+            mCouponDisclaimer.setVisibility(View.GONE);
+        }
     }
 
     private void initTooltip() {

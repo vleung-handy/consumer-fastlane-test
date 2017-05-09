@@ -212,6 +212,7 @@ public class BookingQuote extends Observable {
         mCoupon = coupon;
     }
 
+    @Nullable
     public QuoteCoupon getCoupon() {
         return mCoupon;
     }
@@ -732,13 +733,36 @@ public class BookingQuote extends Observable {
         private String mCode;
         @SerializedName("warning")
         private String mWarning;
+        @SerializedName("title")
+        private String mTitle;
+        @SerializedName("subtitle")
+        private String mSubtitle;
+        @SerializedName("disclaimer")
+        private String mDisclaimer;
 
+        @NonNull
         public String getCode() {
             return mCode;
         }
 
+        @Nullable
         public String getWarning() {
             return mWarning;
+        }
+
+        @NonNull
+        public String getTitle() {
+            return mTitle;
+        }
+
+        @NonNull
+        public String getSubtitle() {
+            return mSubtitle;
+        }
+
+        @NonNull
+        public String getDisclaimer() {
+            return mDisclaimer;
         }
     }
 }
