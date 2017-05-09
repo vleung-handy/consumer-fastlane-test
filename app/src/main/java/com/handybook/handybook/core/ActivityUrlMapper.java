@@ -2,9 +2,7 @@ package com.handybook.handybook.core;
 
 import android.os.Bundle;
 
-import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
@@ -17,8 +15,8 @@ import java.util.regex.Pattern;
  * the supplied pattern and mapped to the supplied keys.
  */
 public enum ActivityUrlMapper {
-    NEW_QUOTE(ServiceCategoriesActivity.class, Pattern.compile(".*/quotes/new.*")),
-    ACCOUNT(ProfileActivity.class, Pattern.compile(".*/(?:users|accounts)/(?:me|\\d+)/edit")),
+    NEW_QUOTE(BottomNavActivity.class, Pattern.compile(".*/quotes/new.*")),
+    ACCOUNT(BottomNavActivity.class, Pattern.compile(".*/(?:users|accounts)/(?:me|\\d+)/edit")),
     BOOKINGS(BottomNavActivity.class, Pattern.compile(".*/(?:users|accounts)/(?:me|\\d+)")),
     BOOKING_DETAIL(
             BookingDetailActivity.class,
@@ -56,8 +54,22 @@ public enum ActivityUrlMapper {
                 final String key = mExtrasKeys[i];
                 arguments.putString(key, matcher.group(i + 1));
             }
-            if (this == BOOKINGS) {
-                arguments.putSerializable(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.BOOKINGS);
+            switch (this) {
+                case BOOKINGS:
+                    arguments.putSerializable(
+                            BottomNavActivity.BUNDLE_KEY_TAB,
+                            MainNavTab.BOOKINGS
+                    );
+                    break;
+                case NEW_QUOTE:
+                    arguments.putSerializable(
+                            BottomNavActivity.BUNDLE_KEY_TAB,
+                            MainNavTab.SERVICES
+                    );
+                    break;
+                case ACCOUNT:
+                    arguments.putSerializable(BottomNavActivity.BUNDLE_KEY_TAB, MainNavTab.ACCOUNT);
+                    break;
             }
         }
         return arguments;
