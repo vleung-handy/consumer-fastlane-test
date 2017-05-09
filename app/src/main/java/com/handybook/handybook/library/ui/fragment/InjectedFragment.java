@@ -15,7 +15,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.NavigationManager;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
@@ -29,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 
 public class InjectedFragment extends android.support.v4.app.Fragment {
 
@@ -46,8 +43,6 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     protected DataManager dataManager;
     @Inject
     protected DataManagerErrorHandler dataManagerErrorHandler;
-    @Inject
-    protected NavigationManager navigationManager;
     @Inject
     protected ConfigurationManager mConfigurationManager;
     @Inject
