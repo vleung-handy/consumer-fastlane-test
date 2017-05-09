@@ -63,6 +63,9 @@ public class Configuration implements Serializable {
     @SerializedName("consolidated_quote_flow_enabled")
     private boolean mConsolidateBookingGetQuoteFlowExperimentEnabled;
 
+    @SerializedName("instant_book_reschedules_enabled")
+    private boolean mInstantBookViaRescheduleEnabled;
+
     public ReviewAppBanner getReviewAppBanner() {
         return mReviewAppBanner;
     }
@@ -133,6 +136,12 @@ public class Configuration implements Serializable {
 
     public boolean isNewRatingFlowEnabled() {
         return mNewRatingFlowEnabled;
+    }
+
+    public boolean isInstantBookViaRescheduleEnabled() {
+        return false;
+        //TODO note from Sammy: This is going in ghost until Reschedule Datepicker redesign work is scheduled
+        // mInstantBookViaRescheduleEnabled;
     }
 
     public static class ReviewAppBanner implements Serializable {

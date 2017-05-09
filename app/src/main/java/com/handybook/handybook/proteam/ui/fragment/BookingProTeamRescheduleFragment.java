@@ -106,6 +106,7 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
 
         mAdapter = new ProRescheduleAdapter(
                 mProTeamCategory,
+                mConfigurationManager.getPersistentConfiguration().isInstantBookViaRescheduleEnabled(),
                 new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {

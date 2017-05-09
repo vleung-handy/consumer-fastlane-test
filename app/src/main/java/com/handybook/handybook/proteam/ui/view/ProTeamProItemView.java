@@ -27,7 +27,11 @@ import butterknife.ButterKnife;
 
 import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTANT;
 
-public class ProTeamProConversationItemView extends FrameLayout {
+/**
+ * This custom view is used to display the pro information which may include book instantly, time,
+ * stars, heart to favorite, or none of those
+ */
+public class ProTeamProItemView extends FrameLayout {
 
     @Bind(R.id.conversation_avatar)
     ProAvatarView mProAvatarView;
@@ -72,22 +76,38 @@ public class ProTeamProConversationItemView extends FrameLayout {
     @BindString(R.string.new_conversation_text)
     String mNewConversationMessage;
 
+    @Bind(R.id.book_instantly_icon_text)
+    TextView mBookInstantlyIconText;
+
     private Typeface mBoldTypeFace;
     private Typeface mNormalTypeFace;
     private boolean mHideConversation;
     private String mAssignedProviderId;
+    private boolean mShowInstantBookIndicator;
 
-    public ProTeamProConversationItemView(
+    public ProTeamProItemView(
             @NonNull final Context context,
             final boolean hideConversation,
-            final String assignedProviderId
+            final String assignedProviderId) {
+        this(context, hideConversation, assignedProviderId, false);
+    }
+
+    public ProTeamProItemView(
+            @NonNull final Context context,
+            final boolean hideConversation,
+            final String assignedProviderId,
+            final boolean mShowInstantBookIndicator
 
     ) {
         super(context);
-        init(hideConversation, assignedProviderId);
+        init(hideConversation, assignedProviderId, mShowInstantBookIndicator);
     }
 
-    private void init(final boolean hideConversation, final String assignedProviderId) {
+    private void init(
+            final boolean hideConversation,
+            final String assignedProviderId,
+            final boolean showInstantBookIndicator
+    ) {
         inflate(getContext(), R.layout.layout_pro_team_conversation_item, this);
         ButterKnife.bind(this);
 
@@ -102,6 +122,7 @@ public class ProTeamProConversationItemView extends FrameLayout {
 
         mHideConversation = hideConversation;
         mAssignedProviderId = assignedProviderId;
+        mShowInstantBookIndicator = showInstantBookIndicator;
     }
 
     public void bind(@NonNull final ProTeamProViewModel proTeamProViewModel) {
@@ -117,6 +138,10 @@ public class ProTeamProConversationItemView extends FrameLayout {
             mTextMessage.setTextColor(mHandyTertiaryGray);
             mTextMessage.setTypeface(mNormalTypeFace);
         }
+
+        //Show/hide the book instantly icon/text
+        mBookInstantlyIconText.setVisibility(mShowInstantBookIndicator ? View.VISIBLE : View.GONE);
+
         mTextTitle.setTypeface(mNormalTypeFace);
         mUnreadIndicator.setVisibility(View.INVISIBLE);
 

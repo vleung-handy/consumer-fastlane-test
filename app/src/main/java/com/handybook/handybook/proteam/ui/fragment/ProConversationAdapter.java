@@ -3,20 +3,16 @@ package com.handybook.handybook.proteam.ui.fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
-import com.handybook.handybook.core.ui.view.MiniProProfile;
 import com.handybook.handybook.library.ui.viewholder.SingleViewHolder;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
-import com.handybook.handybook.proteam.holder.ProTeamProHolder;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
+import com.handybook.handybook.proteam.ui.view.ProTeamProItemView;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.handybook.shared.layer.LayerHelper;
 import com.handybook.shared.layer.ui.LayerRecyclerAdapter;
@@ -161,8 +157,8 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == NORMAL) {
-            final ProTeamProConversationItemView itemView =
-                    new ProTeamProConversationItemView(
+            final ProTeamProItemView itemView =
+                    new ProTeamProItemView(
                             parent.getContext(),
                             mHideConversation,
                             null
