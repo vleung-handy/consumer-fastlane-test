@@ -143,21 +143,19 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         final String subtitle = coupon.getSubtitle();
         final String disclaimer = coupon.getDisclaimer();
 
-        mTitle.setVisibility(View.GONE);
-        mCouponBannerContainer.setVisibility(View.VISIBLE);
+        final boolean shouldShowBanner = !TextUtils.isBlank(title) || !TextUtils.isBlank(subtitle);
+        mCouponBannerContainer.setVisibility(shouldShowBanner ? View.VISIBLE : View.GONE);
+        mTitle.setVisibility(shouldShowBanner ? View.GONE : View.VISIBLE);
 
         mCouponBannerTitle.setText(title);
-        mCouponBannerTitle.setVisibility(
-                android.text.TextUtils.isEmpty(title) ? View.GONE : View.VISIBLE
-        );
+        mCouponBannerTitle.setVisibility(TextUtils.isBlank(title) ? View.GONE : View.VISIBLE);
+
         mCouponBannerSubtitle.setText(subtitle);
-        mCouponBannerSubtitle.setVisibility(
-                android.text.TextUtils.isEmpty(subtitle) ? View.GONE : View.VISIBLE
-        );
+        mCouponBannerSubtitle.setVisibility(TextUtils.isBlank(subtitle) ? View.GONE : View.VISIBLE);
+
         mCouponDisclaimer.setText(disclaimer);
-        mCouponDisclaimer.setVisibility(
-                android.text.TextUtils.isEmpty(disclaimer) ? View.GONE : View.VISIBLE
-        );
+        mCouponDisclaimer.setVisibility(TextUtils.isBlank(disclaimer) ? View.GONE : View.VISIBLE);
+
     }
 
     private void initTooltip() {
