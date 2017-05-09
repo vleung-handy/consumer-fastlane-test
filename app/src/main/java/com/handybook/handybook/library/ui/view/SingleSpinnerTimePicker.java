@@ -106,6 +106,7 @@ public class SingleSpinnerTimePicker extends NumberPicker {
         ) {
             mDisplayValues = new ArrayList<>();
             mUnderlyingValues = new ArrayList<>();
+            mIsInstantBookEnabledValues = new ArrayList<>();
             Calendar calendar = Calendar.getInstance();
 
             for (TimeInterval interval : timeIntervals) {
