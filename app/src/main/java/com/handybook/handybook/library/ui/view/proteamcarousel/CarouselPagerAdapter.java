@@ -91,15 +91,15 @@ public class CarouselPagerAdapter extends PagerAdapter {
                .placeholder(R.drawable.img_pro_placeholder)
                .into(image);
 
-//        if(profile.isProfileEnabled()) //todo revert
-//        {
+        if(profile.isProfileEnabled())
+        {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     launchProProfileIntent(profile.getProviderId());
                 }
             });
-//        }
+        }
 
         if (!TextUtils.isBlank(profile.getButtonText())) {
             mButton.setText(profile.getButtonText());

@@ -18,7 +18,7 @@ import com.handybook.handybook.proprofiles.model.ProProfile;
 import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
 import com.handybook.handybook.proprofiles.reviews.ui.ProProfileReviewsContainer;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
  *
  * TODO refactor - make this a fragment? would reduce # of nested callbacks
  */
-public class ProProfileDetailsLayout extends FrameLayout {
+public class ProProfileDetailsTabLayout extends FrameLayout {
 
     @Bind(R.id.pro_profile_details_tab_layout)
     TabLayout mTabLayout;
@@ -38,35 +38,53 @@ public class ProProfileDetailsLayout extends FrameLayout {
     @Bind(R.id.pro_profile_details_tab_layout_view_pager)
     ViewPager mViewPager;
 
-    private PagerAdapter mPagerAdapter;
+    /**
+     * to get its position in the tab layout for logging purposes only
+     */
+    private TabLayout.Tab mFiveStarReviewsTab;
+
+    /**
+     * to get its position in the tab layout for logging purposes only
+     */
+    private TabLayout.Tab mAboutTab;
+
     private TabLayout.OnTabSelectedListener mOnTabSelectedListener;
 
     private OnScrollToBottomListener mOnScrollToBottomListener;
     private RequestReviewsListener mRequestReviewsListener;
+    private ProProfileReviewsContainer mReviewsContainer;
 
     private ProProfileAboutView mProProfileAboutView;
 
-    public ProProfileDetailsLayout(final Context context) {
+    public ProProfileDetailsTabLayout(final Context context) {
         super(context);
         init();
     }
-    private ProProfileReviewsContainer mReviewsContainer;
 
     private void init() {
         View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.layout_pro_profile_details, this);
+                                  .inflate(R.layout.layout_pro_profile_details_tab, this);
         ButterKnife.bind(this, view);
 
         //initialize view pager n stuff
         mReviewsContainer = new ProProfileReviewsContainer(getContext());
         mProProfileAboutView = new ProProfileAboutView(getContext());
 
-        List<View> tabViews = new ArrayList<>();
-        tabViews.add(mReviewsContainer);
-        tabViews.add(mProProfileAboutView);
+        mTabLayout.removeAllTabs();
+        mFiveStarReviewsTab = mTabLayout.newTab().setText(getResources().getString(
+                R.string.pro_profile_five_star_reviews_tab_title));
+        mAboutTab = mTabLayout.newTab().setText(getResources().getString(
+                R.string.pro_profile_about_tab_title));
 
-        mPagerAdapter = new TabAdapter(tabViews);
-        mViewPager.setAdapter(mPagerAdapter);
+        mTabLayout.addTab(mFiveStarReviewsTab);
+        mTabLayout.addTab(mAboutTab);
+
+        //array needed to ensure positions match the tab titles
+        View[] tabViews = new View[mTabLayout.getTabCount()];
+        tabViews[mFiveStarReviewsTab.getPosition()] = mReviewsContainer;
+        tabViews[mAboutTab.getPosition()] = mProProfileAboutView;
+
+        mViewPager.setAdapter(new TabAdapter(Arrays.asList(tabViews)));
         mOnScrollToBottomListener = new OnScrollToBottomListener() {
             @Override
             public void onScrollToBottom() {
@@ -125,12 +143,28 @@ public class ProProfileDetailsLayout extends FrameLayout {
         });
     }
 
-    public ProProfileDetailsLayout(final Context context, final AttributeSet attrs) {
+    /**
+     * for logging purposes only
+     */
+    public int getAboutTabPosition()
+    {
+        return mAboutTab.getPosition();
+    }
+
+    /**
+     * for logging purposes only
+     */
+    public int getFiveStarReviewTabPosition()
+    {
+        return mFiveStarReviewsTab.getPosition();
+    }
+
+    public ProProfileDetailsTabLayout(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ProProfileDetailsLayout(
+    public ProProfileDetailsTabLayout(
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr
@@ -153,6 +187,9 @@ public class ProProfileDetailsLayout extends FrameLayout {
 
     public void updateForProProfile(@NonNull ProProfile proProfile) {
         mProProfileAboutView.updateWithModel(proProfile);
+        mReviewsContainer.updateWithProviderFirstName(
+                proProfile.getProviderInformation() == null ? null :
+                proProfile.getProviderInformation().getFirstName());
     }
 
     @NonNull
@@ -168,12 +205,8 @@ public class ProProfileDetailsLayout extends FrameLayout {
             mReviewsContainer.removeScrollToBottomListener(mOnScrollToBottomListener);
             mOnScrollToBottomListener = null;
             if (!mReviewsContainer.hasReviews()) {
-                /*
-                todo parameterize tab
-                 */
                 //select the About tab if there are no reviews
-                mTabLayout.getTabAt(1).select();
-
+                mTabLayout.getTabAt(getAboutTabPosition()).select();
             }
         }
     }

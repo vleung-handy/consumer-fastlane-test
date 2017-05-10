@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/handy_background_gray"
     android:orientation="vertical"
     android:gravity="center|top"
@@ -25,15 +26,16 @@
         android:layout_height="wrap_content"
         style="@style/TextView.Medium.Bold"
         android:textColor="@color/handy_tertiary_gray"
-        android:text="No Reviews Yet"
+        android:text="@string/pro_profile_no_reviews_title_text"
         />
     <TextView
+        android:id="@+id/pro_profile_no_reviews_body_text"
         android:layout_marginTop="@dimen/default_margin_half"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/handy_tertiary_gray"
         style="@style/TextView.Small"
-        android:text="Let's change that! Book Christina and then share your love here. We back all pros with the Handy Happiness Guarantee."
+        tools:text="Let's change that! Book Christina and then share your love here. We back all pros with the Handy Happiness Guarantee."
         />
 </LinearLayout>

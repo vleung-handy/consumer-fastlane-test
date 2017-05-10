@@ -103,7 +103,7 @@ public class ProProfileAboutView extends FrameLayout{
                     R.drawable.ic_experience_badge
             ));
         }
-        if(stats.getBackgroundChecked())
+        if(stats.getBackgroundChecked() != null && stats.getBackgroundChecked())
         {
             mStatsItemsContainer.addView(createProStatsItem(
                     getResources().getString(R.string.pro_profile_about_page_background_checked),

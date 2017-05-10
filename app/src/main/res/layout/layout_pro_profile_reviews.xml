@@ -14,7 +14,7 @@
         />
 
     <include
-        android:id="@+id/pro_profile_reviews_empty_view"
+        android:id="@+id/pro_profile_reviews_no_reviews_view"
         layout="@layout/layout_pro_profile_no_reviews"
         />
 

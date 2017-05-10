@@ -48,14 +48,17 @@ public class ProProfile implements Serializable {
         @SerializedName("background_checked")
         private Boolean mBackgroundChecked;
 
+        @Nullable
         public String getDurationExperienceHandyFormatted() {
             return mDurationExperienceHandyFormatted;
         }
 
+        @Nullable
         public String getDurationProExperienceFormatted() {
             return mDurationProExperienceFormatted;
         }
 
+        @Nullable
         public Boolean getBackgroundChecked() {
             return mBackgroundChecked;
         }

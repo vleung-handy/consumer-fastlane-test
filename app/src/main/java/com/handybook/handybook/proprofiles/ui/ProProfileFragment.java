@@ -57,15 +57,14 @@ import butterknife.OnClick;
  * possibly put the action buttons and handlers into their own fragment?
  */
 public class ProProfileFragment extends InjectedFragment implements
-        ProProfileDetailsLayout.RequestReviewsListener, ConversationCallback {
+        ProProfileDetailsTabLayout.RequestReviewsListener, ConversationCallback {
 
     public final static String TAG = ProProfileFragment.class.getName();
     private static final float PRO_REVIEWS_MIN_RATING_TO_DISPLAY = 5.0f;
-    private static final int PRO_REVIEWS_PAGE_SIZE = 1;//todo change
+    private static final int PRO_REVIEWS_PAGE_SIZE = 10;
 
-    //todo rename
-    @Bind(R.id.pro_profile_details_layout)
-    ProProfileDetailsLayout mProProfileDetailsLayout;
+    @Bind(R.id.pro_profile_details_tab_container)
+    ProProfileDetailsTabLayout mProProfileDetailsTabLayout;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -90,11 +89,10 @@ public class ProProfileFragment extends InjectedFragment implements
      */
     private String mProviderId;
 
-    /**
-     * todo why do we store this again?
-     */
     private ProProfile mProProfile;
-    //todo refactor and clean up
+    /**
+     * prevent reviews request while one is in progress
+     */
     private boolean mRequestingMoreReviews = false;
 
     public static ProProfileFragment newInstance(
@@ -156,7 +154,7 @@ public class ProProfileFragment extends InjectedFragment implements
 
                                                       @Override
                                                       public void onCallbackError(final DataManager.DataManagerError error) {
-                                                          mProProfileDetailsLayout.getReviewsContainer().showErrorView();
+                                                          mProProfileDetailsTabLayout.getReviewsContainer().showErrorView();
                                                           mRequestingMoreReviews = false;
 
                                                       }
@@ -326,16 +324,13 @@ public class ProProfileFragment extends InjectedFragment implements
     @OnClick(R.id.loading_error_try_again_button)
     public void onLoadingErrorTryAgainButtonClicked()
     {
-        loadProviderProfile();
-
+        loadProProfileAndReviews();
         /*
         even though the error layout only shows when unable to get the ProProfile model,
         also re-fetching the reviews because if we don't it would be a strange
         experience - reviews error layout would still show after profile loaded,
         if error was due to network connectivity
-         */
-        loadInitialProviderReviews();
-    }
+         */}
 
     private void loadProviderProfile()
     {
@@ -360,9 +355,14 @@ public class ProProfileFragment extends InjectedFragment implements
 
     private void loadInitialProviderReviews()
     {
-        //todo parameterize
-        mProProfileDetailsLayout.getReviewsContainer().clearReviews();
+        mProProfileDetailsTabLayout.getReviewsContainer().clearReviews();
         onRequestMoreReviews(null);
+    }
+
+    private void loadProProfileAndReviews()
+    {
+        loadProviderProfile();
+        loadInitialProviderReviews();
     }
 
     @Override
@@ -371,25 +371,22 @@ public class ProProfileFragment extends InjectedFragment implements
     ) {
         super.onViewCreated(view, savedInstanceState);
 
-        loadProviderProfile();
+        loadProProfileAndReviews();
 
-        loadInitialProviderReviews();
-
-        mProProfileDetailsLayout.setRequestReviewsListener(this);
+        mProProfileDetailsTabLayout.setRequestReviewsListener(this);
 
         //this is only for logging purposes
-        mProProfileDetailsLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mProProfileDetailsTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(final TabLayout.Tab tab) {
                 @ProProfileLog.TabPageToggled.ProProfileTabPageType String tabType = null;
-                switch (tab.getPosition()) {
-                    //todo parameterize!
-                    case 0:
-                        tabType = ProProfileLog.TabPageToggled.PAGE_FIVE_STAR_REVIEWS;
-                        break;
-                    case 1:
-                        tabType = ProProfileLog.TabPageToggled.PAGE_ABOUT;
-                        break;
+                if(tab.getPosition() == mProProfileDetailsTabLayout.getAboutTabPosition())
+                {
+                    tabType = ProProfileLog.TabPageToggled.PAGE_ABOUT;
+                }
+                else if(tab.getPosition() == mProProfileDetailsTabLayout.getFiveStarReviewTabPosition())
+                {
+                    tabType = ProProfileLog.TabPageToggled.PAGE_FIVE_STAR_REVIEWS;
                 }
                 bus.post(new LogEvent.AddLogEvent(new ProProfileLog.TabPageToggled(
                         mProviderId,
@@ -409,7 +406,7 @@ public class ProProfileFragment extends InjectedFragment implements
     }
 
     private void updateViewsWithAdditionalProReviews(ProReviews proReviews) {
-        mProProfileDetailsLayout.updateForAdditionalProReviews(proReviews);
+        mProProfileDetailsTabLayout.updateForAdditionalProReviews(proReviews);
     }
 
     private void updateViewsWithProviderProfile(ProProfile proProfile) {
@@ -425,7 +422,7 @@ public class ProProfileFragment extends InjectedFragment implements
 
         mProProfileHeaderView.updateWithModel(proProfile);
 
-        mProProfileDetailsLayout.updateForProProfile(proProfile);
+        mProProfileDetailsTabLayout.updateForProProfile(proProfile);
         mProProfile = proProfile;
     }
 

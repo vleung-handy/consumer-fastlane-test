@@ -42,7 +42,7 @@ public class Provider implements Serializable, Comparable<Provider> {
     private String mLayerUserId;
     @SerializedName("last_seen_at")
     private Date mLastSeenAt;
-    @SerializedName("pro_profile_enabled")
+    @SerializedName("profile_enabled")
     private Boolean mProProfileEnabled;
 
     public Provider(

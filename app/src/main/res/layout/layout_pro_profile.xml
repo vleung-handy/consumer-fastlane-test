@@ -52,8 +52,8 @@
 
             </android.support.design.widget.AppBarLayout>
 
-            <com.handybook.handybook.proprofiles.ui.ProProfileDetailsLayout
-                android:id="@+id/pro_profile_details_layout"
+            <com.handybook.handybook.proprofiles.ui.ProProfileDetailsTabLayout
+                android:id="@+id/pro_profile_details_tab_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <include android:background="@color/handy_bg" layout="@layout/layout_loading_error"/>
+        <include layout="@layout/layout_loading_error"/>
 
     </FrameLayout>
 </LinearLayout>

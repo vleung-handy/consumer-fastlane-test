@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.view.OnScrollToBottomListener;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
 
 import butterknife.Bind;
@@ -34,8 +36,11 @@ public class ProProfileReviewsContainer extends FrameLayout{
     @Bind(R.id.pro_profile_reviews_loading_view)
     View mLoadingView;
 
-    @Bind(R.id.pro_profile_reviews_empty_view)
+    @Bind(R.id.pro_profile_reviews_no_reviews_view)
     View mEmptyView;
+
+    @Bind(R.id.pro_profile_no_reviews_body_text)
+    TextView mNoReviewsBodyText;
 
     @Bind(R.id.loading_error_layout)
     View mLoadingErrorLayout;
@@ -118,6 +123,13 @@ public class ProProfileReviewsContainer extends FrameLayout{
     public void removeScrollToBottomListener(OnScrollToBottomListener onScrollToBottomListener)
     {
         mProReviewsRecyclerView.removeOnScrollListener(onScrollToBottomListener);
+    }
+
+    public void updateWithProviderFirstName(@Nullable String providerFirstName)
+    {
+        mNoReviewsBodyText.setText(getResources().getString(R.string.pro_profile_no_reviews_body_text,
+                                                            providerFirstName));
+        mNoReviewsBodyText.setVisibility(TextUtils.isBlank(providerFirstName) ? GONE : VISIBLE);
     }
 
     public void updateForAdditionalProReviews(@Nullable ProReviews proReviews)
