@@ -154,17 +154,10 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
     public void onRescheduleWithAvailabilitySuccess(BookingEvent.RescheduleBookingWithProAvailabilitySuccess success) {
         removeUiBlockers();
 
-        //todo new logging
-//        mBus.post(new LogEvent.AddLogEvent(new ChatLog.RescheduleBookingSelectedLog(
-//                mProMessageViewModel.getProviderId(),
-//                mBooking.getId(),
-//                String.valueOf(mBooking.getRecurringId())
-//        )));
-
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
         intent.putExtra(BundleKeys.RESCHEDULE_NOTICE, success.getNotice());
-        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.FROM_CHAT);
+        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, BookingDetailFragment.RescheduleType.NORMAL);
         intent.putExtra(BundleKeys.PROVIDER_ID, mSelectedProTeamMember.getProTeamPro().getId());
         intent.putExtra(BundleKeys.PRO_TEAM_PRO, mSelectedProTeamMember);
         intent.putExtra(BundleKeys.PRO_AVAILABILITY, success.getProAvailability());
