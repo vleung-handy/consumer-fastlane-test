@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/handy_background_gray"
     android:orientation="vertical"
     >
@@ -61,13 +62,14 @@
         </android.support.design.widget.CoordinatorLayout>
 
         <com.handybook.handybook.library.ui.view.LoadingLayout
+            tools:visibility="gone"
             android:background="@color/handy_background_gray"
             app:loadingText="@string/loading"
             android:id="@+id/pro_profile_loading_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <include layout="@layout/layout_loading_error"/>
+        <include tools:visibility="gone" layout="@layout/layout_loading_error"/>
 
     </FrameLayout>
 </LinearLayout>

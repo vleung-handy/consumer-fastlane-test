@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/handy_background_gray"
+    android:background="@color/white"
     android:orientation="vertical"
     >
 
@@ -14,7 +14,6 @@
         android:id="@+id/pro_profile_summary_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:paddingBottom="@dimen/default_padding_half"
         android:paddingLeft="@dimen/default_padding"
         android:paddingRight="@dimen/default_padding"
@@ -26,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/white"
+        android:background="@drawable/border_grey_bottom"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/default_padding"
@@ -35,7 +34,7 @@
 
         <com.handybook.handybook.core.ui.view.ImageTextActionButton
             android:id="@+id/pro_profile_message_action_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:drawable="@drawable/ic_action_button_message"
@@ -44,7 +43,7 @@
 
         <com.handybook.handybook.core.ui.view.ImageTextActionButton
             android:id="@+id/pro_profile_book_action_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:drawable="@drawable/ic_action_button_create_booking"
@@ -53,7 +52,7 @@
 
         <com.handybook.handybook.core.ui.view.ImageTextActionButton
             android:id="@+id/pro_profile_recommend_action_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:drawable="@drawable/ic_action_button_recommend"
