@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.library.ui.view.OnScrollToBottomListener;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
@@ -29,9 +30,8 @@ import butterknife.ButterKnife;
  */
 public class ProProfileReviewsContainer extends FrameLayout{
 
-    //todo change to emptiablerecyclerview
     @Bind(R.id.pro_profile_reviews_recycler_view)
-    ProReviewsRecyclerView mProReviewsRecyclerView;
+    EmptiableRecyclerView mProReviewsRecyclerView;
 
     @Bind(R.id.pro_profile_reviews_loading_view)
     View mLoadingView;

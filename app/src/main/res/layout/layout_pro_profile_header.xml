@@ -29,11 +29,11 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding"
         >
 
         <com.handybook.handybook.core.ui.view.ImageTextActionButton
             android:id="@+id/pro_profile_message_action_button"
+            android:background="@drawable/button_image_text_action"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -43,6 +43,7 @@
 
         <com.handybook.handybook.core.ui.view.ImageTextActionButton
             android:id="@+id/pro_profile_book_action_button"
+            android:background="@drawable/button_image_text_action"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -52,6 +53,7 @@
 
         <com.handybook.handybook.core.ui.view.ImageTextActionButton
             android:id="@+id/pro_profile_recommend_action_button"
+            android:background="@drawable/button_image_text_action"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

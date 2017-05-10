@@ -7,7 +7,7 @@
     android:background="@color/white"
     >
 
-    <com.handybook.handybook.proprofiles.reviews.ui.ProReviewsRecyclerView
+    <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
         android:id="@+id/pro_profile_reviews_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

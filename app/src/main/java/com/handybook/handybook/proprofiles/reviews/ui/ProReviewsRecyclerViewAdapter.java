@@ -15,7 +15,6 @@ class ProReviewsRecyclerViewAdapter
 
     private List<ProReviewViewModel> mProReviewViewModels;
 
-    //todo no sending back view models when pro reviews null; it means not loaded state
     private List<ProReviewViewModel> getViewModelsFromProviderReviews(
             @Nullable final ProReviews proReviews)
     {
@@ -31,7 +30,6 @@ class ProReviewsRecyclerViewAdapter
 
     ProReviewsRecyclerViewAdapter(@Nullable final ProReviews proReviews) {
         setHasStableIds(true);
-        //todo when proReviews null, that means not loaded yet. have specific state for that
         mProReviewViewModels = getViewModelsFromProviderReviews(proReviews);
     }
 
@@ -98,6 +96,7 @@ class ProReviewsRecyclerViewAdapter
         {
             mItem = viewModel;
             mView.setRating(viewModel.getRating());
+            //todo use formatter
             mView.setBodyText("\"" + viewModel.getReviewText() + "\"");
             mView.setDateText(viewModel.getDateText());
         }
