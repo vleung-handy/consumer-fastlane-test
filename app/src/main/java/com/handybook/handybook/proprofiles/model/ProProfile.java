@@ -63,6 +63,7 @@ public class ProProfile implements Serializable {
             return mBackgroundChecked;
         }
     }
+
     public static class ProviderInformation implements Serializable {
 
         @SerializedName("id")

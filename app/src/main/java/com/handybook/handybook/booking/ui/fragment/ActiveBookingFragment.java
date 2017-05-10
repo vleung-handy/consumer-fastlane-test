@@ -247,10 +247,12 @@ public class ActiveBookingFragment extends InjectedFragment
                 mProProfile.setProfileImageClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        Intent intent = new Intent(getContext(), ProProfileActivity.class);
-                        intent.putExtra(BundleKeys.PROVIDER_ID, provider.getId());
-                        intent.putExtra(BundleKeys.PAGE_SOURCE, SourcePage.ACTIVE_BOOKING);
-                        startActivity(intent);
+                        //launch pro profiles activity
+                        startActivity(ProProfileActivity.buildIntent(
+                                getContext(),
+                                provider.getId(),
+                                SourcePage.ACTIVE_BOOKING
+                        ));
                     }
                 });
             }

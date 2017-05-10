@@ -31,6 +31,8 @@
         android:paddingBottom="@dimen/default_padding"
         >
 
+        <!--todo these image assets are very similar to the menu icons, but are tinted and have extra padding.
+        consult with designer to consolidate-->
         <com.handybook.handybook.core.ui.view.ImageTextActionButton
             android:id="@+id/pro_profile_message_action_button"
             android:background="@drawable/button_image_text_action"

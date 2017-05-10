@@ -29,7 +29,7 @@ public class ProMessagesViewModel implements Serializable {
     }
 
     public ProMessagesViewModel(
-            @Nullable final String providerId,
+            @NonNull final String providerId,
             @Nullable final String providerName,
             @Nullable final String providerFirstName,
             @Nullable final String imageUrl,
@@ -44,7 +44,7 @@ public class ProMessagesViewModel implements Serializable {
         mIsFavorite = isFavorite;
     }
 
-    @Nullable
+    @NonNull
     public String getProviderId() { return mProviderId; }
 
     @Nullable

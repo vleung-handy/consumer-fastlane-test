@@ -146,16 +146,14 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
     /**
      * for logging purposes only
      */
-    public int getAboutTabPosition()
-    {
+    public int getAboutTabPosition() {
         return mAboutTab.getPosition();
     }
 
     /**
      * for logging purposes only
      */
-    public int getFiveStarReviewTabPosition()
-    {
+    public int getFiveStarReviewTabPosition() {
         return mFiveStarReviewsTab.getPosition();
     }
 
@@ -215,6 +213,7 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
 
         void onRequestMoreReviews(@Nullable Integer mCurrentPageLastReviewId);
     }
+
 
     private class TabAdapter extends PagerAdapter {
 

@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 public abstract class OnScrollToBottomListener extends RecyclerView.OnScrollListener {
 
     /**
-     * note that this gets triggered when the recycler view is first created todo or just updated?
+     * note that this gets triggered when the recycler view is updated even if user didn't actually scroll
      * @param recyclerView
      * @param dx
      * @param dy

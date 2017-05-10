@@ -49,9 +49,9 @@ public class ProReviewsRecyclerViewItem extends FrameLayout {
         init();
     }
 
-    private void init()
-    {
-        LayoutInflater.from(getContext()).inflate(R.layout.layout_pro_review_recycler_view_item, this);
+    private void init() {
+        LayoutInflater.from(getContext())
+                      .inflate(R.layout.layout_pro_review_recycler_view_item, this);
         ButterKnife.bind(this);
         mRatingFlowFiveStarsView.setEnabled(false);
         mRatingFlowFiveStarsView.setClickable(false);
@@ -61,16 +61,18 @@ public class ProReviewsRecyclerViewItem extends FrameLayout {
     /**
      * @param rating expected range: [0.0, 5.0]
      */
-    public void setRating(@Nullable final Float rating)
-    {
-        if(rating == null)
-        {
+    public void setRating(@Nullable final Float rating) {
+        if (rating == null) {
             mRatingFlowFiveStarsView.setVisibility(GONE);
         }
-        else
-        {
-            //the existing custom star ratings view doesn't support float ratings right now
-            mRatingFlowFiveStarsView.selectRating((int) rating.floatValue(), true);
+        else {
+            /*
+            the existing custom star ratings view doesn't support float ratings right now
+
+            currently, we ONLY show 5-star ratings. if we want to support other rating values
+            we must refactor that star ratings view to display non-int values so that it is not misleading.
+             */
+            mRatingFlowFiveStarsView.selectRating(Math.round(rating), true);
             mRatingFlowFiveStarsView.setVisibility(VISIBLE);
         }
     }
@@ -79,8 +81,7 @@ public class ProReviewsRecyclerViewItem extends FrameLayout {
         UiUtils.showTextViewOnlyForNonEmptyValue(mBodyText, bodyText);
     }
 
-    public void setDateText(@NonNull final String dateText)
-    {
+    public void setDateText(@NonNull final String dateText) {
         mDateText.setText(dateText);
     }
 }

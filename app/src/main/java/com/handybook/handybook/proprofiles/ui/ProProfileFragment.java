@@ -26,8 +26,8 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
-import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProProfileLog;
@@ -60,6 +60,10 @@ public class ProProfileFragment extends InjectedFragment implements
         ProProfileDetailsTabLayout.RequestReviewsListener, ConversationCallback {
 
     public final static String TAG = ProProfileFragment.class.getName();
+
+    /**
+     * for now, we ONLY want to show 5-star ratings
+     */
     private static final float PRO_REVIEWS_MIN_RATING_TO_DISPLAY = 5.0f;
     private static final int PRO_REVIEWS_PAGE_SIZE = 10;
 
@@ -133,7 +137,7 @@ public class ProProfileFragment extends InjectedFragment implements
                 PRO_REVIEWS_MIN_RATING_TO_DISPLAY
         );
     }
-    //todo only create the reveiws request here
+
     @Override
     public void onRequestMoreReviews(@Nullable final Integer mCurrentPageLastReviewId) {
         if (mRequestingMoreReviews) { return; }
@@ -154,7 +158,8 @@ public class ProProfileFragment extends InjectedFragment implements
 
                                                       @Override
                                                       public void onCallbackError(final DataManager.DataManagerError error) {
-                                                          mProProfileDetailsTabLayout.getReviewsContainer().showErrorView();
+                                                          mProProfileDetailsTabLayout.getReviewsContainer()
+                                                                                     .showErrorView();
                                                           mRequestingMoreReviews = false;
 
                                                       }
@@ -267,7 +272,6 @@ public class ProProfileFragment extends InjectedFragment implements
         activityPickerIntent.setAction(Intent.ACTION_PICK_ACTIVITY);
         activityPickerIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.share_using));
         activityPickerIntent.putExtra(Intent.EXTRA_INTENT, dummyIntent);
-        //        sendShareButtonTappedLog("", ReferralChannels.CHANNEL_OTHER);
         startActivityForResult(activityPickerIntent, ActivityResult.PICK_ACTIVITY);
     }
 
@@ -282,7 +286,7 @@ public class ProProfileFragment extends InjectedFragment implements
                             mProProfile.getProReferral().getReferralInfo()
                     );
             final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
-            if (ValidationUtils.isNullOrEmpty(extraText)) {
+            if (TextUtils.isBlank(extraText)) {
                 intent.putExtra(
                         Intent.EXTRA_TEXT,
                         mProProfile.getProviderInformation().getReferralCode()
@@ -304,36 +308,33 @@ public class ProProfileFragment extends InjectedFragment implements
         return view;
     }
 
-    private void hideAllOverlays()
-    {
+    private void hideAllOverlays() {
         mLoadingLayout.setVisibility(View.GONE);
         mLoadingErrorLayout.setVisibility(View.GONE);
     }
-    private void showLoadingLayout()
-    {
+
+    private void showLoadingLayout() {
         mLoadingLayout.setVisibility(View.VISIBLE);
         mLoadingErrorLayout.setVisibility(View.GONE);
     }
 
-    private void showErrorLayout()
-    {
+    private void showErrorLayout() {
         mLoadingLayout.setVisibility(View.GONE);
         mLoadingErrorLayout.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.loading_error_try_again_button)
-    public void onLoadingErrorTryAgainButtonClicked()
-    {
+    public void onLoadingErrorTryAgainButtonClicked() {
         loadProProfileAndReviews();
         /*
         even though the error layout only shows when unable to get the ProProfile model,
         also re-fetching the reviews because if we don't it would be a strange
         experience - reviews error layout would still show after profile loaded,
         if error was due to network connectivity
-         */}
+         */
+    }
 
-    private void loadProviderProfile()
-    {
+    private void loadProviderProfile() {
         showLoadingLayout();
         mProProfileManager.getProviderProfile(
                 getContext(),
@@ -353,14 +354,12 @@ public class ProProfileFragment extends InjectedFragment implements
         );
     }
 
-    private void loadInitialProviderReviews()
-    {
+    private void loadInitialProviderReviews() {
         mProProfileDetailsTabLayout.getReviewsContainer().clearReviews();
         onRequestMoreReviews(null);
     }
 
-    private void loadProProfileAndReviews()
-    {
+    private void loadProProfileAndReviews() {
         loadProviderProfile();
         loadInitialProviderReviews();
     }
@@ -380,12 +379,11 @@ public class ProProfileFragment extends InjectedFragment implements
             @Override
             public void onTabSelected(final TabLayout.Tab tab) {
                 @ProProfileLog.TabPageToggled.ProProfileTabPageType String tabType = null;
-                if(tab.getPosition() == mProProfileDetailsTabLayout.getAboutTabPosition())
-                {
+                if (tab.getPosition() == mProProfileDetailsTabLayout.getAboutTabPosition()) {
                     tabType = ProProfileLog.TabPageToggled.PAGE_ABOUT;
                 }
-                else if(tab.getPosition() == mProProfileDetailsTabLayout.getFiveStarReviewTabPosition())
-                {
+                else if (tab.getPosition() ==
+                         mProProfileDetailsTabLayout.getFiveStarReviewTabPosition()) {
                     tabType = ProProfileLog.TabPageToggled.PAGE_FIVE_STAR_REVIEWS;
                 }
                 bus.post(new LogEvent.AddLogEvent(new ProProfileLog.TabPageToggled(

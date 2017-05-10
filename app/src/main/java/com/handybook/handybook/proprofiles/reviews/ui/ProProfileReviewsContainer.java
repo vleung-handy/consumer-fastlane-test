@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  * - error view
  * todo a reusable component to handle that would be ideal, but out of scope for this ticket
  */
-public class ProProfileReviewsContainer extends FrameLayout{
+public class ProProfileReviewsContainer extends FrameLayout {
 
     @Bind(R.id.pro_profile_reviews_recycler_view)
     EmptiableRecyclerView mProReviewsRecyclerView;
@@ -78,8 +78,7 @@ public class ProProfileReviewsContainer extends FrameLayout{
         initReviewsRecyclerView();
     }
 
-    private void initReviewsRecyclerView()
-    {
+    private void initReviewsRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mProReviewsRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -106,8 +105,7 @@ public class ProProfileReviewsContainer extends FrameLayout{
         return mCurrentPageLastReviewId;
     }
 
-    public boolean hasReviews()
-    {
+    public boolean hasReviews() {
         return mProReviewsRecyclerViewAdapter.getItemCount() > 0;
     }
 
@@ -115,27 +113,24 @@ public class ProProfileReviewsContainer extends FrameLayout{
         mProReviewsRecyclerView.addOnScrollListener(onScrollToBottomListener);
     }
 
-    public void setOnLoadingErrorTryAgainButtonClickListener(OnClickListener onClickListener)
-    {
+    public void setOnLoadingErrorTryAgainButtonClickListener(OnClickListener onClickListener) {
         mLoadingErrorTryAgainButton.setOnClickListener(onClickListener);
     }
 
-    public void removeScrollToBottomListener(OnScrollToBottomListener onScrollToBottomListener)
-    {
+    public void removeScrollToBottomListener(OnScrollToBottomListener onScrollToBottomListener) {
         mProReviewsRecyclerView.removeOnScrollListener(onScrollToBottomListener);
     }
 
-    public void updateWithProviderFirstName(@Nullable String providerFirstName)
-    {
-        mNoReviewsBodyText.setText(getResources().getString(R.string.pro_profile_no_reviews_body_text,
-                                                            providerFirstName));
+    public void updateWithProviderFirstName(@Nullable String providerFirstName) {
+        mNoReviewsBodyText.setText(getResources().getString(
+                R.string.pro_profile_no_reviews_body_text,
+                providerFirstName
+        ));
         mNoReviewsBodyText.setVisibility(TextUtils.isBlank(providerFirstName) ? GONE : VISIBLE);
     }
 
-    public void updateForAdditionalProReviews(@Nullable ProReviews proReviews)
-    {
-        if(proReviews != null)
-        {
+    public void updateForAdditionalProReviews(@Nullable ProReviews proReviews) {
+        if (proReviews != null) {
             mCurrentPageLastReviewId = proReviews.getLastReviewId();
         }
         mLoadingErrorLayout.setVisibility(GONE);
@@ -145,8 +140,7 @@ public class ProProfileReviewsContainer extends FrameLayout{
         mProReviewsRecyclerViewAdapter.append(proReviews);
     }
 
-    public void showErrorView()
-    {
+    public void showErrorView() {
         mLoadingErrorLayout.setVisibility(VISIBLE);
     }
 }

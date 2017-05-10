@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * lists information about pro, such as their years of experience
  * and whether they are background-checked
  */
-public class ProProfileAboutView extends FrameLayout{
+public class ProProfileAboutView extends FrameLayout {
 
     @Bind(R.id.pro_profile_stats_items_container)
     LinearLayout mStatsItemsContainer;
@@ -52,42 +52,39 @@ public class ProProfileAboutView extends FrameLayout{
         init();
     }
 
-    private void init()
-    {
+    private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.layout_pro_profile_about, this);
         ButterKnife.bind(this);
     }
 
-    public void updateWithModel(ProProfile proProfile)
-    {
+    public void updateWithModel(ProProfile proProfile) {
         mStatsItemsContainer.removeAllViews();
 
-        if(proProfile == null) return;
+        if (proProfile == null) { return; }
 
         //use stats model, for now, to populate linear layout
         ProProfile.Stats stats = proProfile.getStats();
 
-        if(proProfile.getRegions() != null
-                && proProfile.getRegions().length > 0)
-        {
+        if (proProfile.getRegions() != null
+            && proProfile.getRegions().length > 0) {
             String locationsServed = "";
 
-            for(int i = 0; i<proProfile.getRegions().length; i++)
-            {
+            for (int i = 0; i < proProfile.getRegions().length; i++) {
                 locationsServed += proProfile.getRegions()[i];
-                if(i != proProfile.getRegions().length - 1)
-                {
+                if (i != proProfile.getRegions().length - 1) {
                     locationsServed += ",";
                 }
             }
             mStatsItemsContainer.addView(createProStatsItem(
-                    getResources().getString(R.string.pro_profile_about_page_locations_served_formatted, locationsServed),
+                    getResources().getString(
+                            R.string.pro_profile_about_page_locations_served_formatted,
+                            locationsServed
+                    ),
                     R.drawable.ic_location_pin
             ));
         }
 
-        if(!TextUtils.isBlank(stats.getDurationProExperienceFormatted()))
-        {
+        if (!TextUtils.isBlank(stats.getDurationProExperienceFormatted())) {
             String formattedExperience = stats.getDurationProExperienceFormatted();
             mStatsItemsContainer.addView(createProStatsItem(
                     formattedExperience,
@@ -95,16 +92,14 @@ public class ProProfileAboutView extends FrameLayout{
             ));
         }
 
-        if(!TextUtils.isBlank(stats.getDurationExperienceHandyFormatted()))
-        {
+        if (!TextUtils.isBlank(stats.getDurationExperienceHandyFormatted())) {
             String formattedExperience = stats.getDurationExperienceHandyFormatted();
             mStatsItemsContainer.addView(createProStatsItem(
                     formattedExperience,
                     R.drawable.ic_experience_badge
             ));
         }
-        if(stats.getBackgroundChecked() != null && stats.getBackgroundChecked())
-        {
+        if (stats.getBackgroundChecked() != null && stats.getBackgroundChecked()) {
             mStatsItemsContainer.addView(createProStatsItem(
                     getResources().getString(R.string.pro_profile_about_page_background_checked),
                     R.drawable.ic_background_check
@@ -112,8 +107,7 @@ public class ProProfileAboutView extends FrameLayout{
         }
     }
 
-    private TextView createProStatsItem(String textString, int drawableResourceId)
-    {
+    private TextView createProStatsItem(String textString, int drawableResourceId) {
         TextView textView = new TextView(getContext(), null, R.style.TextView_ProProfileAboutItem);
         textView.setText(textString);
         Drawable iconDrawable = ContextCompat.getDrawable(getContext(), drawableResourceId);
@@ -125,14 +119,15 @@ public class ProProfileAboutView extends FrameLayout{
                 null
         );
 
-        textView.setCompoundDrawablePadding(getResources().getDimensionPixelOffset(R.dimen.pro_profile_about_page_icon_padding))
-        ;
+        textView.setCompoundDrawablePadding(
+                getResources().getDimensionPixelOffset(R.dimen.pro_profile_about_page_icon_padding));
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         );
 
         layoutParams.gravity = Gravity.CENTER_VERTICAL;
-        layoutParams.bottomMargin = getResources().getDimensionPixelSize(R.dimen.default_margin_half);
+        layoutParams.bottomMargin
+                = getResources().getDimensionPixelSize(R.dimen.default_margin_half);
         textView.setLayoutParams(layoutParams);
         return textView;
 

@@ -16,11 +16,10 @@ class ProReviewsRecyclerViewAdapter
     private List<ProReviewViewModel> mProReviewViewModels;
 
     private List<ProReviewViewModel> getViewModelsFromProviderReviews(
-            @Nullable final ProReviews proReviews)
-    {
+            @Nullable final ProReviews proReviews
+    ) {
         final List<ProReviewViewModel> proReviewViewModels = new ArrayList<>();
-        if(proReviews != null)
-        {
+        if (proReviews != null) {
             for (ProReviews.Review review : proReviews.getReviews()) {
                 proReviewViewModels.add(new ProReviewViewModel(review));
             }
@@ -33,22 +32,20 @@ class ProReviewsRecyclerViewAdapter
         mProReviewViewModels = getViewModelsFromProviderReviews(proReviews);
     }
 
-    void append(@Nullable final ProReviews proReviews)
-    {
+    void append(@Nullable final ProReviews proReviews) {
         mProReviewViewModels.addAll(getViewModelsFromProviderReviews(proReviews));
         notifyDataSetChanged();
     }
 
-    public void clear()
-    {
+    public void clear() {
         mProReviewViewModels.clear();
         notifyDataSetChanged();
     }
 
-    public ProReviews.Review getUnderlyingModelAtPosition(int position)
-    {
+    public ProReviews.Review getUnderlyingModelAtPosition(int position) {
         return mProReviewViewModels.get(position).getProviderReview();
     }
+
     @Override
     public long getItemId(final int position) {
         //todo items with same id still get displayed separately; use position instead?
@@ -59,8 +56,10 @@ class ProReviewsRecyclerViewAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ProReviewsRecyclerViewItem view = new ProReviewsRecyclerViewItem(parent.getContext());
 
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                                                     ViewGroup.LayoutParams.WRAP_CONTENT);
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
         view.setLayoutParams(lp);
         return new ViewHolder(view);
     }
@@ -84,6 +83,7 @@ class ProReviewsRecyclerViewAdapter
     //todo refactor
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        //todo refactor, unneeded
         private ProReviewViewModel mItem;
         private final ProReviewsRecyclerViewItem mView;
 
@@ -92,8 +92,7 @@ class ProReviewsRecyclerViewAdapter
             mView = view;
         }
 
-        void updateView(ProReviewViewModel viewModel)
-        {
+        void updateView(ProReviewViewModel viewModel) {
             mItem = viewModel;
             mView.setRating(viewModel.getRating());
             //todo use formatter

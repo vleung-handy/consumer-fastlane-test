@@ -13,7 +13,7 @@ import butterknife.Bind;
  * this needs all the functionality of mini pro profile view so this extends it,
  * but has some layout differences and a new badge
  */
-public class ProProfileSummaryView extends MiniProProfile{
+public class ProProfileSummaryView extends MiniProProfile {
 
     /**
      * this is not in the parent class because
@@ -43,8 +43,7 @@ public class ProProfileSummaryView extends MiniProProfile{
         return R.layout.layout_pro_profile_mini_summary;
     }
 
-    public void setNewToHandyIndicatorVisible(boolean visible)
-    {
+    public void setNewToHandyIndicatorVisible(boolean visible) {
         mNewToHandyIndicator.setVisibility(visible ? VISIBLE : GONE);
     }
 }

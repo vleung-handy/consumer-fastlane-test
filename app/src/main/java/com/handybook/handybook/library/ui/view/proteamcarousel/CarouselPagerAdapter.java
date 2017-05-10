@@ -1,7 +1,6 @@
 package com.handybook.handybook.library.ui.view.proteamcarousel;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
@@ -96,7 +94,11 @@ public class CarouselPagerAdapter extends PagerAdapter {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    launchProProfileIntent(profile.getProviderId());
+                    mContext.startActivity(ProProfileActivity.buildIntent(
+                            mContext,
+                            profile.getProviderId(),
+                            SourcePage.SHARE
+                    ));
                 }
             });
         }
@@ -116,14 +118,6 @@ public class CarouselPagerAdapter extends PagerAdapter {
 
         container.addView(itemView);
         return itemView;
-    }
-
-    private void launchProProfileIntent(@NonNull String providerId)
-    {
-        Intent intent = new Intent(mContext, ProProfileActivity.class);
-        intent.putExtra(BundleKeys.PROVIDER_ID, providerId);
-        intent.putExtra(BundleKeys.PAGE_SOURCE, SourcePage.SHARE);
-        mContext.startActivity(intent);
     }
 
     @Override

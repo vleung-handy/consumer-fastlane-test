@@ -106,18 +106,18 @@ public class ProMessagesActivity extends MessagesListActivity {
         }
 
         updateProAvatar();
-        if(mBooking!= null
-           && mBooking.getProvider() != null
-           && mBooking.getProvider().getProProfileEnabled()) {
+        if (mBooking != null
+            && mBooking.getProvider() != null
+            && mBooking.getProvider().getProProfileEnabled()) {
             mAvatarContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                //launch pro profiles activity
-
-                Intent intent = new Intent(ProMessagesActivity.this, ProProfileActivity.class);
-                intent.putExtra(BundleKeys.PROVIDER_ID, mProMessageViewModel.getProviderId());
-                intent.putExtra(BundleKeys.PAGE_SOURCE, SourcePage.MESSAGES);
-                startActivity(intent);
+                    //launch pro profiles activity
+                    startActivity(ProProfileActivity.buildIntent(
+                            ProMessagesActivity.this,
+                            mProMessageViewModel.getProviderId(),
+                            SourcePage.MESSAGES
+                    ));
                 }
             });
         }

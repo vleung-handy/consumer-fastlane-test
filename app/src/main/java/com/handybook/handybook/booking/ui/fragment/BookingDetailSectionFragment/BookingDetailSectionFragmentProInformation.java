@@ -256,10 +256,12 @@ public class BookingDetailSectionFragmentProInformation extends
             getSectionView().setProProfileImageClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    Intent intent = new Intent(getContext(), ProProfileActivity.class);
-                    intent.putExtra(BundleKeys.PROVIDER_ID, pro.getId());
-                    intent.putExtra(BundleKeys.PAGE_SOURCE, SourcePage.BOOKING_DETAILS);
-                    startActivity(intent);
+                    //launch pro profiles activity
+                    startActivity(ProProfileActivity.buildIntent(
+                            getContext(),
+                            pro.getId(),
+                            SourcePage.BOOKING_DETAILS
+                    ));
                 }
             });
         }
