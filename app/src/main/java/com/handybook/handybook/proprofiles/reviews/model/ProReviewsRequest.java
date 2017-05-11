@@ -13,7 +13,7 @@ public class ProReviewsRequest {
     /**
      * represents the last review id of the current page of reviews
      */
-    private Integer mCurrentPageLastReviewId;
+    private String mCurrentPageLastReviewId;
 
     /**
      * the maximum number of reviews to return
@@ -32,7 +32,7 @@ public class ProReviewsRequest {
     private float mMinRating;
 
     public ProReviewsRequest(
-            Integer currentPageLastReviewId, int maxReviewsPerPage,
+            String currentPageLastReviewId, int maxReviewsPerPage,
             @ProReviewsSortOrder String sortOrder, float minRating
     ) {
         mCurrentPageLastReviewId = currentPageLastReviewId;
@@ -41,7 +41,7 @@ public class ProReviewsRequest {
         mMinRating = minRating;
     }
 
-    public Integer getCurrentPageLastReviewId() {
+    public String getCurrentPageLastReviewId() {
         return mCurrentPageLastReviewId;
     }
 

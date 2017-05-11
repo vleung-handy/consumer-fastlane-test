@@ -129,7 +129,7 @@ public class ProProfileFragment extends InjectedFragment implements
         super.onDestroy();
     }
 
-    private ProReviewsRequest buildReviewsRequest(@Nullable final Integer currentPageLastReviewId) {
+    private ProReviewsRequest buildReviewsRequest(@Nullable final String currentPageLastReviewId) {
         return new ProReviewsRequest(
                 currentPageLastReviewId,
                 PRO_REVIEWS_PAGE_SIZE,
@@ -139,7 +139,7 @@ public class ProProfileFragment extends InjectedFragment implements
     }
 
     @Override
-    public void onRequestMoreReviews(@Nullable final Integer mCurrentPageLastReviewId) {
+    public void onRequestMoreReviews(@Nullable final String mCurrentPageLastReviewId) {
         if (mRequestingMoreReviews) { return; }
         mRequestingMoreReviews = true; //don't request if already requesting
         /*
@@ -439,7 +439,7 @@ public class ProProfileFragment extends InjectedFragment implements
         intent.putExtra(
                 BundleKeys.PRO_MESSAGES_VIEW_MODEL,
                 new ProMessagesViewModel(
-                        String.valueOf(providerInformation.getId()),
+                        providerInformation.getId(),
                         providerInformation.getDisplayName(),
                         providerInformation.getFirstName(),
                         providerInformation.getProfilePhotoUrl(),

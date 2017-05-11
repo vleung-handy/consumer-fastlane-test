@@ -48,7 +48,7 @@ public class ProTeamProViewModel implements Serializable {
             @NonNull final ProviderMatchPreference providerMatchPreference,
             final boolean shouldShowHandymanIndicators
     ) {
-       return from(proTeamPro, providerMatchPreference, shouldShowHandymanIndicators, false);
+        return from(proTeamPro, providerMatchPreference, shouldShowHandymanIndicators, false);
     }
 
     public static ProTeamProViewModel from(

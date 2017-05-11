@@ -52,8 +52,7 @@ class ProReviewsRecyclerViewAdapter
 
     @Override
     public long getItemId(final int position) {
-        //todo items with same id still get displayed separately; use position instead?
-        return getItem(position).getProviderReview().getId();
+        return position;
     }
 
     @Override

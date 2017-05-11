@@ -49,7 +49,7 @@ public class ProProfileReviewsContainer extends FrameLayout {
     Button mLoadingErrorTryAgainButton;
 
     ProReviewsRecyclerViewAdapter mProReviewsRecyclerViewAdapter;
-    private Integer mCurrentPageLastReviewId;
+    private String mCurrentPageLastReviewId;
 
     public ProProfileReviewsContainer(final Context context) {
         super(context);
@@ -101,7 +101,7 @@ public class ProProfileReviewsContainer extends FrameLayout {
         mLoadingView.setVisibility(VISIBLE);//todo dont like this here
     }
 
-    public Integer getCurrentPageLastReviewId() {
+    public String getCurrentPageLastReviewId() {
         return mCurrentPageLastReviewId;
     }
 

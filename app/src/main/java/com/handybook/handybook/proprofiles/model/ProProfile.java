@@ -67,7 +67,7 @@ public class ProProfile implements Serializable {
     public static class ProviderInformation implements Serializable {
 
         @SerializedName("id")
-        private Integer mId;
+        private String mId;
         @SerializedName("name")
         private String mDisplayName;
         @SerializedName("first_name")
@@ -131,7 +131,7 @@ public class ProProfile implements Serializable {
             return mMatchPreference;
         }
 
-        public Integer getId() {
+        public String getId() {
             return mId;
         }
 

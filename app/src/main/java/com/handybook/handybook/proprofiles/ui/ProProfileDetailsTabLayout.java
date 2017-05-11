@@ -211,7 +211,7 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
 
     interface RequestReviewsListener {
 
-        void onRequestMoreReviews(@Nullable Integer mCurrentPageLastReviewId);
+        void onRequestMoreReviews(@Nullable String mCurrentPageLastReviewId);
     }
 
 

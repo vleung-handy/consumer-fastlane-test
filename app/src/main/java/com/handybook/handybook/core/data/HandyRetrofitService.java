@@ -151,7 +151,7 @@ public interface HandyRetrofitService {
 
     @GET("/providers/{id}/reviews")
     void getProviderReviews(@Path("id") String providerId,
-                            @Query("starting_after_id") Integer startingAfterId,
+                            @Query("starting_after_id") String startingAfterId,
                             @Query("limit") Integer pageSizeLimit,
                             @Query("min_rating") Float minRating,
                             @Query("order") String sortOrder,

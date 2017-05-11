@@ -20,7 +20,7 @@ public class ProReviews implements Serializable {
      * in the next {@link ProReviewsRequest} to get the next page of reviews
      */
     @SerializedName("starting_after_id")
-    private Integer mLastReviewId;
+    private String mLastReviewId;
 
     @Nullable
     public Review[] getReviews() {
@@ -28,7 +28,7 @@ public class ProReviews implements Serializable {
     }
 
     @Nullable
-    public Integer getLastReviewId() {
+    public String getLastReviewId() {
         return mLastReviewId;
     }
 
@@ -40,7 +40,7 @@ public class ProReviews implements Serializable {
          * and we cannot parse an int as String
          */
         @SerializedName("id")
-        private Integer mId;
+        private String mId;
         @SerializedName("rating")
         private Float mRating;
         @SerializedName("date")
@@ -51,7 +51,7 @@ public class ProReviews implements Serializable {
         private String mLocationText;
 
         @NonNull
-        public Integer getId() {
+        public String getId() {
             return mId;
         }
 
