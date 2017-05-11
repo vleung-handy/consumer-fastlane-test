@@ -20,8 +20,10 @@
         android:id="@+id/element_image_text_action_button_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:saveEnabled="false"
         style="@style/TextView.Small"
         android:textColor="@color/handy_darkened_blue"
         tools:text="Action"
         />
+    <!--saveEnabled is needed to prevent incorrect text values when view restored, due to conflicts with other instances of this view-->
 </LinearLayout>

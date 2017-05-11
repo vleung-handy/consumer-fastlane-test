@@ -37,11 +37,12 @@
                     app:layout_scrollFlags="scroll|snap"
                     app:scrimVisibleHeightTrigger="0dp"
                     app:titleEnabled="false"
-                    app:toolbarId="@+id/persistent_promo_preview_view"
                     >
 
                     <com.handybook.handybook.proprofiles.ui.ProProfileHeaderView
                         android:id="@+id/pro_profile_header_layout"
+                        android:outlineProvider="bounds"
+                        android:elevation="@dimen/low_elevation"
                         android:layout_width="match_parent"
                         android:layout_marginBottom="@dimen/default_margin"
                         android:layout_height="wrap_content"

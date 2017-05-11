@@ -10,6 +10,10 @@ import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO create a new viewholder footer type, so that we can show a loading indicator
+ * incompatible for use with EmptiableRecyclerView
+ */
 class ProReviewsRecyclerViewAdapter
         extends RecyclerView.Adapter<ProReviewsRecyclerViewAdapter.ViewHolder> {
 
@@ -19,7 +23,7 @@ class ProReviewsRecyclerViewAdapter
             @Nullable final ProReviews proReviews
     ) {
         final List<ProReviewViewModel> proReviewViewModels = new ArrayList<>();
-        if (proReviews != null) {
+        if (proReviews != null && proReviews.getReviews() != null) {
             for (ProReviews.Review review : proReviews.getReviews()) {
                 proReviewViewModels.add(new ProReviewViewModel(review));
             }
@@ -83,8 +87,6 @@ class ProReviewsRecyclerViewAdapter
     //todo refactor
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        //todo refactor, unneeded
-        private ProReviewViewModel mItem;
         private final ProReviewsRecyclerViewItem mView;
 
         public ViewHolder(ProReviewsRecyclerViewItem view) {
@@ -93,10 +95,8 @@ class ProReviewsRecyclerViewAdapter
         }
 
         void updateView(ProReviewViewModel viewModel) {
-            mItem = viewModel;
             mView.setRating(viewModel.getRating());
-            //todo use formatter
-            mView.setBodyText("\"" + viewModel.getReviewText() + "\"");
+            mView.setBodyText(viewModel.getReviewText());
             mView.setDateText(viewModel.getDateText());
         }
     }

@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.library.util.UiUtils;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.ratingflow.ui.RatingFlowFiveStarsView;
 
 import butterknife.Bind;
@@ -78,7 +78,19 @@ public class ProReviewsRecyclerViewItem extends FrameLayout {
     }
 
     public void setBodyText(final String bodyText) {
-        UiUtils.showTextViewOnlyForNonEmptyValue(mBodyText, bodyText);
+        if(TextUtils.isBlank(bodyText))
+        {
+            mBodyText.setVisibility(GONE);
+        }
+        else
+        {
+            /*
+            todo would rather not use formatter here if we have a viewmodel
+            but need to pass context to viewmodel cleanly (it is created from an adapter) first
+             */
+            mBodyText.setText(getResources().getString(R.string.pro_profile_review_body_formatted, bodyText));
+            mBodyText.setVisibility(VISIBLE);
+        }
     }
 
     public void setDateText(@NonNull final String dateText) {

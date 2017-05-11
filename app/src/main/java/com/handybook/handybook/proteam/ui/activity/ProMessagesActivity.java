@@ -106,21 +106,6 @@ public class ProMessagesActivity extends MessagesListActivity {
         }
 
         updateProAvatar();
-        if (mBooking != null
-            && mBooking.getProvider() != null
-            && mBooking.getProvider().getProProfileEnabled()) {
-            mAvatarContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    //launch pro profiles activity
-                    startActivity(ProProfileActivity.buildIntent(
-                            ProMessagesActivity.this,
-                            mProMessageViewModel.getProviderId(),
-                            SourcePage.MESSAGES
-                    ));
-                }
-            });
-        }
 
         mAttachmentViewItemHeight
                 = getResources().getDimensionPixelSize(R.dimen.attachment_item_height);
@@ -183,6 +168,23 @@ public class ProMessagesActivity extends MessagesListActivity {
             avatar.setHeartContainerBackground(R.drawable.bg_circle_blue);
             mAvatarContainer.addView(avatar);
             mAvatarContainer.setVisibility(View.VISIBLE);
+
+            if (mProMessageViewModel.isProProfileEnabled()) {
+                mAvatarContainer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        //launch pro profiles activity
+                        startActivity(ProProfileActivity.buildIntent(
+                                ProMessagesActivity.this,
+                                mProMessageViewModel.getProviderId(),
+                                SourcePage.MESSAGES
+                        ));
+                    }
+                });
+            }
+            else {
+                mAvatarContainer.setOnClickListener(null);
+            }
         }
     }
 

@@ -25,7 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/border_grey_bottom"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/default_padding"

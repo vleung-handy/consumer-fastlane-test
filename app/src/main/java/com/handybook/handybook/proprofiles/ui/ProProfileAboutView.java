@@ -57,10 +57,8 @@ public class ProProfileAboutView extends FrameLayout {
         ButterKnife.bind(this);
     }
 
-    public void updateWithModel(ProProfile proProfile) {
+    public void updateWithModel(@NonNull ProProfile proProfile) {
         mStatsItemsContainer.removeAllViews();
-
-        if (proProfile == null) { return; }
 
         //use stats model, for now, to populate linear layout
         ProProfile.Stats stats = proProfile.getStats();

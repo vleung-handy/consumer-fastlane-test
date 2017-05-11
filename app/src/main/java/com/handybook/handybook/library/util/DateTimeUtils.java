@@ -62,6 +62,9 @@ public class DateTimeUtils {
     public final static SimpleDateFormat LOCAL_TIME_12_HOURS =
             new SimpleDateFormat("h:mmaaa", Locale.getDefault());
 
+    public final static SimpleDateFormat MONTH_YEAR_FORMATTER =
+            new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+
     public final static int HOURS_IN_DAY = 24;
 
     /**

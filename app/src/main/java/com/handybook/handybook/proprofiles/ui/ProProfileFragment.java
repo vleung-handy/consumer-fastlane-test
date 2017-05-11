@@ -146,9 +146,9 @@ public class ProProfileFragment extends InjectedFragment implements
         TODO is it ever possible to get multiple requests for the same id (or id for older page)
         even with the help of this boolean? investigate and handle
          */
-        mProProfileManager.getMoreProviderReviews(getContext(), mProviderId,
-                                                  buildReviewsRequest(mCurrentPageLastReviewId),
-                                                  new FragmentSafeCallback<ProReviews>(this) {
+        mProProfileManager.getProviderReviews(mProviderId,
+                                              buildReviewsRequest(mCurrentPageLastReviewId),
+                                              new FragmentSafeCallback<ProReviews>(this) {
                                                       @Override
                                                       public void onCallbackSuccess(final ProReviews response) {
                                                           updateViewsWithAdditionalProReviews(
@@ -303,7 +303,7 @@ public class ProProfileFragment extends InjectedFragment implements
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.layout_pro_profile, container, false);
+        final View view = inflater.inflate(R.layout.fragment_pro_profile, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -337,7 +337,6 @@ public class ProProfileFragment extends InjectedFragment implements
     private void loadProviderProfile() {
         showLoadingLayout();
         mProProfileManager.getProviderProfile(
-                getContext(),
                 mProviderId,
                 new FragmentSafeCallback<ProProfile>(this) {
                     @Override
@@ -369,6 +368,7 @@ public class ProProfileFragment extends InjectedFragment implements
             final View view, @Nullable final Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
+        setupToolbar(mToolbar, null);
 
         loadProProfileAndReviews();
 
@@ -383,7 +383,7 @@ public class ProProfileFragment extends InjectedFragment implements
                     tabType = ProProfileLog.TabPageToggled.PAGE_ABOUT;
                 }
                 else if (tab.getPosition() ==
-                         mProProfileDetailsTabLayout.getFiveStarReviewTabPosition()) {
+                         mProProfileDetailsTabLayout.getReviewsTabPosition()) {
                     tabType = ProProfileLog.TabPageToggled.PAGE_FIVE_STAR_REVIEWS;
                 }
                 bus.post(new LogEvent.AddLogEvent(new ProProfileLog.TabPageToggled(
@@ -444,7 +444,8 @@ public class ProProfileFragment extends InjectedFragment implements
                         providerInformation.getFirstName(),
                         providerInformation.getProfilePhotoUrl(),
                         providerInformation.getProTeamCategoryType(),
-                        providerInformation.isCustomerFavorite()
+                        providerInformation.isCustomerFavorite(),
+                        true
                 )
         );
         startActivity(intent);

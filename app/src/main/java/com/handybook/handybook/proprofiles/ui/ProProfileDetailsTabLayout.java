@@ -41,7 +41,7 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
     /**
      * to get its position in the tab layout for logging purposes only
      */
-    private TabLayout.Tab mFiveStarReviewsTab;
+    private TabLayout.Tab mReviewsTab;
 
     /**
      * to get its position in the tab layout for logging purposes only
@@ -71,17 +71,17 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
         mProProfileAboutView = new ProProfileAboutView(getContext());
 
         mTabLayout.removeAllTabs();
-        mFiveStarReviewsTab = mTabLayout.newTab().setText(getResources().getString(
-                R.string.pro_profile_five_star_reviews_tab_title));
+        mReviewsTab = mTabLayout.newTab().setText(getResources().getString(
+                R.string.pro_profile_reviews_tab_title));
         mAboutTab = mTabLayout.newTab().setText(getResources().getString(
                 R.string.pro_profile_about_tab_title));
 
-        mTabLayout.addTab(mFiveStarReviewsTab);
+        mTabLayout.addTab(mReviewsTab);
         mTabLayout.addTab(mAboutTab);
 
         //array needed to ensure positions match the tab titles
         View[] tabViews = new View[mTabLayout.getTabCount()];
-        tabViews[mFiveStarReviewsTab.getPosition()] = mReviewsContainer;
+        tabViews[mReviewsTab.getPosition()] = mReviewsContainer;
         tabViews[mAboutTab.getPosition()] = mProProfileAboutView;
 
         mViewPager.setAdapter(new TabAdapter(Arrays.asList(tabViews)));
@@ -153,8 +153,8 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
     /**
      * for logging purposes only
      */
-    public int getFiveStarReviewTabPosition() {
-        return mFiveStarReviewsTab.getPosition();
+    public int getReviewsTabPosition() {
+        return mReviewsTab.getPosition();
     }
 
     public ProProfileDetailsTabLayout(final Context context, final AttributeSet attrs) {

@@ -627,15 +627,18 @@
     <string name="choose_pro_option_subtitle">Select a pro to reschedule based on their availability.</string>
 
     <!--pro profiles-->
-    <string name="pro_profile_about_page_background_checked">Background-checked</string>
-    <string name="pro_profile_toolbar_title_formatted">%1$s\'s profile</string>
+    <string name="pro_profile_toolbar_title_formatted">%1$s\'s Profile</string>
+    <string name="pro_profile_new_to_handy">New to Handy</string>
+
     <string name="pro_profile_about_page_locations_served_formatted">Serving %1$s</string>
-    <string name="pro_profile_reviews_loading">Loading reviews…</string>
-    <string name="pro_profile_five_star_reviews_tab_title">5-Star Reviews</string>
     <string name="pro_profile_about_tab_title">About</string>
+    <string name="pro_profile_about_page_background_checked">Background-checked</string>
+
+    <string name="pro_profile_reviews_tab_title">5-Star Reviews</string>
+    <string name="pro_profile_reviews_loading">Loading reviews…</string>
+    <string name="pro_profile_review_body_formatted">\"%1$s\"</string>
     <string name="pro_profile_no_reviews_title_text">No Reviews Yet</string>
     <string name="pro_profile_no_reviews_body_text">%1$s\'s clients haven\'t gotten around to writing a review yet. Stay tuned.</string>
-    <string name="pro_profile_new_to_handy">New to Handy</string>
 
     <string name="pro_profile_action_button_message">Message</string>
     <string name="pro_profile_action_button_book">Book</string>

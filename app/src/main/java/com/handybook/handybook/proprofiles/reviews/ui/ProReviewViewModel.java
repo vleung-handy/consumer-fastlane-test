@@ -3,14 +3,12 @@ package com.handybook.handybook.proprofiles.reviews.ui;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 class ProReviewViewModel {
 
-    private ProReviews.Review mProviderReview;
+    private final ProReviews.Review mProviderReview;
 
     ProReviewViewModel(@NonNull ProReviews.Review providerReview) {
         mProviderReview = providerReview;
@@ -32,11 +30,7 @@ class ProReviewViewModel {
 
     @NonNull
     String getDateText() {
-        //todo parameterize
-        return new SimpleDateFormat(
-                "MMM yyyy",
-                Locale.getDefault()
-        ).format(mProviderReview.getDate());
+        return DateTimeUtils.MONTH_YEAR_FORMATTER.format(mProviderReview.getDate());
     }
 
     @NonNull

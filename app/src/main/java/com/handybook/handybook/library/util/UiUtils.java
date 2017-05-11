@@ -6,14 +6,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
 public final class UiUtils {
 
@@ -122,17 +119,5 @@ public final class UiUtils {
                 }
             }
         });
-    }
-
-    /**
-     * @param textView VISIBLE only if textValue is not empty. GONE otherwise
-     * @param textValue
-     */
-    public static void showTextViewOnlyForNonEmptyValue(
-            @NonNull TextView textView,
-            @Nullable String textValue)
-    {
-        textView.setText(textValue);
-        textView.setVisibility(TextUtils.isBlank(textValue) ? View.GONE : View.VISIBLE);
     }
 }

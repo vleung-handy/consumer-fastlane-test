@@ -146,5 +146,6 @@
     <dimen name="pro_profile_pro_image_size">72dp</dimen>
     <dimen name="pro_profile_action_button_image_size">38dp</dimen>
     <dimen name="pro_profile_about_page_icon_padding">10dp</dimen>
-
+    <dimen name="pro_profile_review_star_size">15dp</dimen>
+    <dimen name="pro_profile_review_star_margin">2dp</dimen>
 </resources>

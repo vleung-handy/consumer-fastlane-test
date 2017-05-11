@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:clickable="false"
         android:enabled="false"
-        app:starWidth="15dp"
-        app:starHeight="15dp"
-        app:starMargin="2dp"
+        app:starWidth="@dimen/pro_profile_review_star_size"
+        app:starHeight="@dimen/pro_profile_review_star_size"
+        app:starMargin="@dimen/pro_profile_review_star_margin"
         android:layout_marginBottom="@dimen/default_margin_half"
         android:layout_height="wrap_content"/>
 
