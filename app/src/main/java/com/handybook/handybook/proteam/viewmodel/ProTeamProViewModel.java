@@ -22,11 +22,13 @@ public class ProTeamProViewModel implements Serializable {
     private String mImageUrl;
     transient private Conversation mConversation; // Be careful!
     private boolean mIsFavorite;
+    private boolean mIsInstantBookIndicatorEnabled;
 
     private ProTeamProViewModel(
             @NonNull final Provider proTeamPro,
             @NonNull final ProviderMatchPreference providerMatchPreference,
-            final boolean shouldShowHandymanIndicators
+            final boolean shouldShowHandymanIndicators,
+            final boolean shouldShowInstantBookIndicator
     ) {
         mProTeamPro = proTeamPro;
         mProviderMatchPreference = providerMatchPreference;
@@ -36,6 +38,7 @@ public class ProTeamProViewModel implements Serializable {
         mJobsCount = proTeamPro.getBookingCount();
         mIsHandymanIndicatorEnabled = shouldShowHandymanIndicators &&
                                       proTeamPro.getCategoryType() == ProTeamCategoryType.HANDYMEN;
+        mIsInstantBookIndicatorEnabled = shouldShowInstantBookIndicator;
         mImageUrl = proTeamPro.getImageUrl();
         mIsFavorite = proTeamPro.isFavorite();
     }
@@ -45,10 +48,20 @@ public class ProTeamProViewModel implements Serializable {
             @NonNull final ProviderMatchPreference providerMatchPreference,
             final boolean shouldShowHandymanIndicators
     ) {
+       return from(proTeamPro, providerMatchPreference, shouldShowHandymanIndicators, false);
+    }
+
+    public static ProTeamProViewModel from(
+            @NonNull final Provider proTeamPro,
+            @NonNull final ProviderMatchPreference providerMatchPreference,
+            final boolean shouldShowHandymanIndicators,
+            final boolean shouldShowInstantBookIndicator
+    ) {
         return new ProTeamProViewModel(
                 proTeamPro,
                 providerMatchPreference,
-                shouldShowHandymanIndicators
+                shouldShowHandymanIndicators,
+                shouldShowInstantBookIndicator
         );
     }
 
@@ -89,6 +102,10 @@ public class ProTeamProViewModel implements Serializable {
 
     public boolean isHandymanIndicatorEnabled() {
         return mIsHandymanIndicatorEnabled;
+    }
+
+    public boolean isInstantBookIndicatorEnabled() {
+        return mIsInstantBookIndicatorEnabled;
     }
 
     public boolean isFavorite() {

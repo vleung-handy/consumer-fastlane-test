@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
+import com.handybook.handybook.proteam.ui.view.ProTeamProItemView;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.squareup.otto.Subscribe;
 
@@ -299,8 +298,8 @@ public final class BookingDateFragment extends BookingFlowFragment
                 if (mProTeamProViewModel != null) {
                     mSelectedProContainer.setVisibility(View.VISIBLE);
                     mSelectedProContainer.removeAllViews();
-                    final ProTeamProConversationItemView selectedProView =
-                            new ProTeamProConversationItemView(
+                    final ProTeamProItemView selectedProView =
+                            new ProTeamProItemView(
                                     getActivity(),
                                     true,
                                     mRescheduleBooking.getProvider() != null

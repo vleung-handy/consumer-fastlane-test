@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
-import com.handybook.handybook.proteam.ui.view.ProTeamProConversationItemView;
+import com.handybook.handybook.proteam.ui.view.ProTeamProItemView;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final ProTeam.ProTeamCategory mProTeamCategory;
     private final View.OnClickListener mOnClickListener;
     private String mAssignedProviderId;
+    private boolean mShouldShowInstantBookIndicator;
 
     /**
      * We're using this flag to denote the first time conversations became available
@@ -29,10 +30,12 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public ProRescheduleAdapter(
             @Nullable final ProTeam.ProTeamCategory proTeamCategory,
+            final boolean shouldShowInstantBookIndicator,
             @NonNull final View.OnClickListener onClickListener
     ) {
         super();
         mProTeamCategory = proTeamCategory;
+        mShouldShowInstantBookIndicator = shouldShowInstantBookIndicator;
         mOnClickListener = onClickListener;
         initProTeamProViewModels();
     }
@@ -52,7 +55,8 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
                             ProviderMatchPreference.PREFERRED,
-                            false
+                            false,
+                            mShouldShowInstantBookIndicator && eachPro.isInstantBookEnabled()
                     ));
                 }
             }
@@ -63,7 +67,8 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
                     mProTeamProViewModels.add(ProTeamProViewModel.from(
                             eachPro,
                             ProviderMatchPreference.INDIFFERENT,
-                            false
+                            false,
+                            mShouldShowInstantBookIndicator && eachPro.isInstantBookEnabled()
                     ));
                 }
             }
@@ -72,11 +77,12 @@ public class ProRescheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final ProTeamProConversationItemView itemView =
-                new ProTeamProConversationItemView(
+        final ProTeamProItemView itemView =
+                new ProTeamProItemView(
                         parent.getContext(),
                         true,
-                        mAssignedProviderId
+                        mAssignedProviderId,
+                        mShouldShowInstantBookIndicator
                 );
         itemView.setOnClickListener(mOnClickListener);
 
