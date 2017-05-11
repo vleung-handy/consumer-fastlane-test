@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.library.util.TextUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,8 +51,21 @@ public class ImageTextActionButton extends FrameLayout {
             String text = typedArray.getString(R.styleable.ImageTextActionButton_text);
             Drawable drawable = typedArray.getDrawable(R.styleable.ImageTextActionButton_drawable);
 
-            mImageView.setImageDrawable(drawable);
-            mTextView.setText(text);
+            if (drawable == null) {
+                mImageView.setVisibility(GONE);
+            }
+            else {
+                mImageView.setImageDrawable(drawable);
+                mImageView.setVisibility(VISIBLE);
+            }
+
+            if (TextUtils.isBlank(text)) {
+                mTextView.setVisibility(GONE);
+            }
+            else {
+                mTextView.setText(text);
+                mTextView.setVisibility(VISIBLE);
+            }
             typedArray.recycle();
         }
     }

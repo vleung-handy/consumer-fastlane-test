@@ -106,6 +106,7 @@ public class ProMessagesActivity extends MessagesListActivity {
         }
 
         updateProAvatar();
+        setAvatarAndNameClickedListeners();
 
         mAttachmentViewItemHeight
                 = getResources().getDimensionPixelSize(R.dimen.attachment_item_height);
@@ -130,6 +131,34 @@ public class ProMessagesActivity extends MessagesListActivity {
 
         refreshAttachmentMenu();
         initCleaningService();
+    }
+
+    /**
+     * when the avatar or name display is clicked, launch the pro profile page
+     * if pro profiles enabled for this pro
+     */
+    private void setAvatarAndNameClickedListeners() {
+        if (mProMessageViewModel == null) { return; }
+
+        if (mProMessageViewModel.isProProfileEnabled()) {
+            View.OnClickListener onAvatarOrNameClickedListener = new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    //launch pro profiles activity
+                    startActivity(ProProfileActivity.buildIntent(
+                            ProMessagesActivity.this,
+                            mProMessageViewModel.getProviderId(),
+                            SourcePage.MESSAGES
+                    ));
+                }
+            };
+            mAvatarContainer.setOnClickListener(onAvatarOrNameClickedListener);
+            mTitle.setOnClickListener(onAvatarOrNameClickedListener);
+        }
+        else {
+            mAvatarContainer.setOnClickListener(null);
+            mTitle.setOnClickListener(null);
+        }
     }
 
     @Override
@@ -168,23 +197,6 @@ public class ProMessagesActivity extends MessagesListActivity {
             avatar.setHeartContainerBackground(R.drawable.bg_circle_blue);
             mAvatarContainer.addView(avatar);
             mAvatarContainer.setVisibility(View.VISIBLE);
-
-            if (mProMessageViewModel.isProProfileEnabled()) {
-                mAvatarContainer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        //launch pro profiles activity
-                        startActivity(ProProfileActivity.buildIntent(
-                                ProMessagesActivity.this,
-                                mProMessageViewModel.getProviderId(),
-                                SourcePage.MESSAGES
-                        ));
-                    }
-                });
-            }
-            else {
-                mAvatarContainer.setOnClickListener(null);
-            }
         }
     }
 

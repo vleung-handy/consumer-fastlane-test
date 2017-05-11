@@ -24,7 +24,7 @@ public abstract class ProProfileLog extends EventLog {
 
         private static final String EVENT_TYPE = "profile_opened";
 
-        @SerializedName("page_open_source")
+        @SerializedName("source_page")
         private final String mPageOpenSource;
 
         public Shown(final String providerId, @SourcePage.HandyLoggerSourcePage String sourcePage) {

@@ -107,8 +107,8 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView {
         mPreferDifferentProText.setOnClickListener(onClickListener);
     }
 
-    public void setProProfileImageClickListener(OnClickListener onClickListener)
+    public void setProProfileClickListener(OnClickListener onClickListener)
     {
-        mProProfile.setProfileImageClickListener(onClickListener);
+        mProProfile.setOnClickListener(onClickListener);
     }
 }

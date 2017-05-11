@@ -445,7 +445,12 @@ public class ProProfileFragment extends InjectedFragment implements
                         providerInformation.getProfilePhotoUrl(),
                         providerInformation.getProTeamCategoryType(),
                         providerInformation.isCustomerFavorite() != null,
-                        true
+                        false
+                        /*
+                        dont allow user to click into pro profiles from the messages screen
+                        so we don't have multiple pro profiles in the backstack
+                         */
+                        //todo ideally allow the above, but just allow one instance of the pro profiles activity
                 )
         );
         startActivity(intent);

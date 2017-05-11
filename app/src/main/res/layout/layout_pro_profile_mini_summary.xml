@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--pro profiles needs a view similar to the mini pro profiles view, but with some layout
+differences, and later possibly functionality differences, so not simply using the mini profile layout-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -100,24 +102,18 @@
 
         <include layout="@layout/job_count_ratings_layout"/>
 
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/mini_pro_profile_no_reviews_indicator"
+        <TextView
+            android:id="@+id/mini_pro_profile_no_ratings_indicator"
+            android:drawableLeft="@drawable/ic_new_to_handy_badge"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            style="@style/TextView.XSmall"
+            android:textColor="@color/handy_tertiary_gray"
+            android:text="@string/pro_profile_new_to_handy"
+            android:visibility="gone"
             tools:visibility="visible"
-            >
-            <TextView
-                android:drawableLeft="@drawable/ic_new_to_handy_badge"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextView.XSmall"
-                android:textColor="@color/handy_tertiary_gray"
-                android:text="@string/pro_profile_new_to_handy"
-                />
-        </LinearLayout>
+            />
     </LinearLayout>
 </LinearLayout>

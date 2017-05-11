@@ -110,11 +110,6 @@ public class ProProfileHeaderView extends FrameLayout{
         //set up rating/jobs count view and new-to-handy badge
         mMiniProProfile.setRatingAndJobsCount(providerInformation.getAverageRating(),
                                               providerInformation.getBookingCount());
-        if(providerInformation.getBookingCount() == null
-                || providerInformation.getBookingCount() == 0)
-        {
-            mMiniProProfile.setNewToHandyIndicatorVisible(true);
-        }
 
         //pro team indicator
         boolean isProOnProTeam = ProTeamUtils.isProOnProTeam(providerInformation.getMatchPreference());

@@ -8,7 +8,6 @@
     >
 
     <com.handybook.handybook.library.ui.view.EmptiableRecyclerView
-        android:paddingTop="@dimen/default_padding_half"
         android:paddingLeft="@dimen/default_padding_half"
         android:paddingRight="@dimen/default_padding_half"
         android:id="@+id/pro_profile_reviews_recycler_view"

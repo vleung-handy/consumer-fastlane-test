@@ -52,6 +52,7 @@ public class CarouselPagerAdapter extends PagerAdapter {
         FrameLayout heartContainer
                 = (FrameLayout) itemView.findViewById(R.id.carousel_heart_container);
         View ratingContainer = itemView.findViewById(R.id.carousel_ratings_container);
+        View noRatingsContainer = itemView.findViewById(R.id.carousel_no_ratings_indicator);
         TextView name = (TextView) itemView.findViewById(R.id.carousel_name);
         TextView rating = (TextView) itemView.findViewById(R.id.mini_pro_profile_rating);
         TextView jobCount = (TextView) itemView.findViewById(R.id.mini_pro_profile_jobs_count);
@@ -63,6 +64,7 @@ public class CarouselPagerAdapter extends PagerAdapter {
         if (profile.getJobCount() > 0 && profile.getAverageRating() > 0.f) {
 
             ratingContainer.setVisibility(View.VISIBLE);
+            noRatingsContainer.setVisibility(View.GONE);
 
             final String jobCountString = jobCount
                     .getResources()
@@ -79,7 +81,8 @@ public class CarouselPagerAdapter extends PagerAdapter {
             rating.setText(format.format(profile.getAverageRating()));
         }
         else {
-            ratingContainer.setVisibility(View.INVISIBLE);
+            ratingContainer.setVisibility(View.GONE);
+            noRatingsContainer.setVisibility(View.VISIBLE);
         }
 
         name.setText(profile.getDisplayName());
@@ -91,7 +94,7 @@ public class CarouselPagerAdapter extends PagerAdapter {
 
         if(profile.isProfileEnabled())
         {
-            image.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     mContext.startActivity(ProProfileActivity.buildIntent(

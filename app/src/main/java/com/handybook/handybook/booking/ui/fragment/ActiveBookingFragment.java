@@ -244,7 +244,7 @@ public class ActiveBookingFragment extends InjectedFragment
                 mTextText.setVisibility(View.GONE);
             }
             if (provider.getIsProProfileEnabled()) {
-                mProProfile.setProfileImageClickListener(new View.OnClickListener() {
+                mProProfile.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
                         //launch pro profiles activity
