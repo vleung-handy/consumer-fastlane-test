@@ -64,14 +64,10 @@ public class ProProfileAboutView extends FrameLayout {
         ProProfile.ProviderStats providerStats = proProfile.getProviderStats();
 
         if (proProfile.getProviderRegionsServed().length > 0) {
-            String locationsServed = "";
-
-            for (int i = 0; i < proProfile.getProviderRegionsServed().length; i++) {
-                locationsServed += proProfile.getProviderRegionsServed()[i];
-                if (i != proProfile.getProviderRegionsServed().length - 1) {
-                    locationsServed += ",";
-                }
-            }
+            String locationsServed = android.text.TextUtils.join(
+                    ", ",
+                    proProfile.getProviderRegionsServed()
+            );
             mStatsItemsContainer.addView(createProStatsItem(
                     getResources().getString(
                             R.string.pro_profile_about_page_locations_served_formatted,

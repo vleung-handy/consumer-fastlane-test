@@ -112,7 +112,7 @@
     <style name="ProReviewsRecyclerView" parent="android:Widget">
         <item name="android:scrollbars">vertical</item>
     </style>
-    <!--todo rename and move-->
+
     <style name="TextView.ProProfileAboutItem">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">@color/handy_dark_grey</item>

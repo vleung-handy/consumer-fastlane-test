@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * TODO create a new viewholder footer type, so that we can show a loading indicator
- * incompatible for use with EmptiableRecyclerView
+ * ^incompatible for use with EmptiableRecyclerView
  */
 class ProReviewsRecyclerViewAdapter
         extends RecyclerView.Adapter<ProReviewsRecyclerViewAdapter.ViewHolder> {
@@ -44,10 +44,6 @@ class ProReviewsRecyclerViewAdapter
     public void clear() {
         mProReviewViewModels.clear();
         notifyDataSetChanged();
-    }
-
-    public ProReviews.Review getUnderlyingModelAtPosition(int position) {
-        return mProReviewViewModels.get(position).getProviderReview();
     }
 
     @Override
@@ -83,7 +79,6 @@ class ProReviewsRecyclerViewAdapter
         return mProReviewViewModels.size();
     }
 
-    //todo refactor
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ProReviewsRecyclerViewItem mView;

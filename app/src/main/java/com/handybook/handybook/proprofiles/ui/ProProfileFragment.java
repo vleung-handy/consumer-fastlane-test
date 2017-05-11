@@ -146,24 +146,25 @@ public class ProProfileFragment extends InjectedFragment implements
         TODO is it ever possible to get multiple requests for the same id (or id for older page)
         even with the help of this boolean? investigate and handle
          */
-        mProProfileManager.getProviderReviews(mProviderId,
-                                              buildReviewsRequest(mCurrentPageLastReviewId),
-                                              new FragmentSafeCallback<ProReviews>(this) {
-                                                      @Override
-                                                      public void onCallbackSuccess(final ProReviews response) {
-                                                          updateViewsWithAdditionalProReviews(
-                                                                  response);
-                                                          mRequestingMoreReviews = false;
-                                                      }
+        mProProfileManager.getProviderReviews(
+                mProviderId,
+                buildReviewsRequest(mCurrentPageLastReviewId),
+                new FragmentSafeCallback<ProReviews>(this) {
+                    @Override
+                    public void onCallbackSuccess(final ProReviews response) {
+                        updateViewsWithAdditionalProReviews(
+                                response);
+                        mRequestingMoreReviews = false;
+                    }
 
-                                                      @Override
-                                                      public void onCallbackError(final DataManager.DataManagerError error) {
-                                                          mProProfileDetailsTabLayout.getReviewsContainer()
-                                                                                     .showErrorView();
-                                                          mRequestingMoreReviews = false;
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        mProProfileDetailsTabLayout.getReviewsContainer()
+                                                   .showErrorView();
+                        mRequestingMoreReviews = false;
 
-                                                      }
-                                                  }
+                    }
+                }
         );
     }
 
