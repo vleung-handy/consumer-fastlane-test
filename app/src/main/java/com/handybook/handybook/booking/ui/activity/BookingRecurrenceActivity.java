@@ -22,12 +22,12 @@ public final class BookingRecurrenceActivity extends MenuDrawerActivity {
         BookingQuote quote = mBookingManager.getCurrentQuote();
         if (quote.isCommitmentMonthsActive()) {
             mBookingManager.getCurrentTransaction().setCommitmentType(CommitmentType.STRING_MONTHS);
-            return BookingSubscriptionFragment.newInstance();
+            return BookingSubscriptionFragment.newInstance(getIntent().getExtras());
         }
         else {
             mBookingManager.getCurrentTransaction()
                            .setCommitmentType(CommitmentType.STRING_NO_COMMITMENT);
-            return BookingRecurrenceFragment.newInstance();
+            return BookingRecurrenceFragment.newInstance(getIntent().getExtras());
         }
     }
 

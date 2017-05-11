@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -152,7 +151,8 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
                     mEnvironmentModifier.getEnvironment()
             ));
             mEnvLink.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
             mEnvLink.setVisibility(View.GONE);
         }
 
@@ -399,25 +399,20 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         if (service.getChildServices().size() > 0) {
             final Intent intent = new Intent(getActivity(), ServicesActivity.class);
             intent.putExtra(ServicesActivity.EXTRA_SERVICE, service);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                Bundle bundle = null;
-                //This is just for animating the icon from home screen to sub-categories screen
-                if (view != null) {
-                    ImageView transitionImageView
-                            = ((ServicesCategoryHomeAdapter.CategoryViewHolder) view
-                            .getTag()).getIcon();
+            Bundle bundle = null;
+            //This is just for animating the icon from home screen to sub-categories screen
+            if (view != null) {
+                ImageView transitionImageView
+                        = ((ServicesCategoryHomeAdapter.CategoryViewHolder) view
+                        .getTag()).getIcon();
 
-                    ActivityOptionsCompat options
-                            = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            getActivity(), transitionImageView, SHARED_ICON_ELEMENT_NAME
-                    );
-                    bundle = options.toBundle();
-                }
-                getActivity().startActivity(intent, bundle);
+                ActivityOptionsCompat options
+                        = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        getActivity(), transitionImageView, SHARED_ICON_ELEMENT_NAME
+                );
+                bundle = options.toBundle();
             }
-            else {
-                startActivity(intent);
-            }
+            startActivity(intent, bundle);
         }
         else {
             startBookingFlow(service.getId(), service.getUniq());

@@ -15,10 +15,10 @@ import android.widget.Button;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import javax.inject.Inject;
@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class OnboardFragment extends BookingFlowFragment {
+public final class OnboardFragment extends InjectedFragment {
 
     private static final String STATE_ANIMATE_PAGES = "ANIMATED_PAGES";
 

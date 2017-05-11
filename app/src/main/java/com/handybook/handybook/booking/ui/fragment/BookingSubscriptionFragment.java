@@ -3,10 +3,14 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +63,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     ViewGroup mSubscriptionOptionsLayout;
     @Bind(R.id.next_button)
     Button nextButton;
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
     @Bind(R.id.booking_scrollview)
     ScrollView mScrollView;
     @Bind(R.id.booking_subscription_trial_container)
@@ -93,8 +95,10 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     private boolean mIsTrialExpanded = false;
     private boolean mIsMonthsDisabled = false;
 
-    public static BookingSubscriptionFragment newInstance() {
-        return new BookingSubscriptionFragment();
+    public static BookingSubscriptionFragment newInstance(@Nullable final Bundle extras) {
+        BookingSubscriptionFragment fragment = new BookingSubscriptionFragment();
+        fragment.setArguments(extras);
+        return fragment;
     }
 
     @Override
@@ -102,6 +106,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         super.onCreate(savedInstanceState);
         mBookingTransaction = bookingManager.getCurrentTransaction();
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.BookingDetailsShownLog()));
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -172,6 +177,27 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_TRIAL_EXPANDED, mIsTrialExpanded);
         outState.putBoolean(KEY_MONTHS_DISABLED, mIsMonthsDisabled);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.booking_subscription, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.booking_subscription_faq:
+                String faqURL = bookingManager.getCurrentQuote().getCommitmentFaqUrl();
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFAQPressedLog(faqURL)));
+                WebViewFragment fragment = WebViewFragment
+                        .newInstance(faqURL, getString(R.string.booking_subscription_titlebar_faq));
+                FragmentUtils.switchToFragment(this, fragment, true);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void initTrial() {
@@ -278,15 +304,6 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
             return "0";
         } // One time deselects commitment
         return mSubscriptionLengthToKey.get(mCommitmentView.getCurrentValue());
-    }
-
-    @OnClick(R.id.booking_subscription_toolbar_faq)
-    public void onFAQClicked() {
-        String faqURL = bookingManager.getCurrentQuote().getCommitmentFaqUrl();
-        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingFAQPressedLog(faqURL)));
-        WebViewFragment fragment = WebViewFragment
-                .newInstance(faqURL, getString(R.string.booking_subscription_titlebar_faq));
-        FragmentUtils.switchToFragment(this, fragment, true);
     }
 
     private void createFrequencyView() {

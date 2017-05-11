@@ -2,7 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,15 +57,13 @@ public class BookingOptionsFragment extends BookingFlowFragment {
     @Bind(R.id.next_button)
     protected Button nextButton;
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-
     public static BookingOptionsFragment newInstance(
             final ArrayList<BookingOption> options,
             final int page,
             final HashMap<String, Boolean> childDisplayMap,
             final ArrayList<BookingOption> postOptions,
-            final boolean isPost
+            final boolean isPost,
+            @Nullable final Bundle extras
     ) {
         final BookingOptionsFragment fragment = new BookingOptionsFragment();
         final Bundle args = new Bundle();
@@ -75,8 +73,10 @@ public class BookingOptionsFragment extends BookingFlowFragment {
         args.putSerializable(EXTRA_CHILD_DISPLAY_MAP, childDisplayMap);
         args.putInt(EXTRA_PAGE, page);
         args.putBoolean(EXTRA_IS_POST, isPost);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -417,10 +417,12 @@ public class BookingOptionsFragment extends BookingFlowFragment {
                         BundleKeys.POST_OPTIONS,
                         new ArrayList<>(postOptions)
                 );
+                intent.putExtras(createProgressBundle());
                 startActivity(intent);
             }
             else {
                 final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                intent.putExtras(createProgressBundle());
                 intent.putParcelableArrayListExtra(
                         BookingOptionsActivity.EXTRA_OPTIONS,
                         new ArrayList<>(nextOptions)

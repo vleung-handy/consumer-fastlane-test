@@ -21,11 +21,15 @@ public final class BookingRescheduleOptionsActivity extends MenuDrawerActivity {
         final String providerId = getIntent().getStringExtra(BundleKeys.PROVIDER_ID);
         final BookingDetailFragment.RescheduleType type = (BookingDetailFragment.RescheduleType)
                 getIntent().getSerializableExtra(BundleKeys.RESCHEDULE_TYPE);
+        final boolean isInstantBookEnabled
+                = getIntent().getBooleanExtra(BundleKeys.RESCHEDULE_IS_INSTANT_BOOK_ENABLED, false);
         return BookingRescheduleOptionsFragment.newInstance(
                 rescheduleBooking,
                 date,
                 providerId,
-                type
+                type,
+                isInstantBookEnabled,
+                getIntent().getExtras()
         );
     }
 

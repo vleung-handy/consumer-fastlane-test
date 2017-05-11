@@ -93,13 +93,14 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
     public void onSaveButtonClicked() {
         ((OnTimeSetListener) getParentFragment()).OnTimeSet(
                 mSingleSpinnerTimePicker.getCurrentHourOfDay(),
-                mSingleSpinnerTimePicker.getCurrentMinuteOfHour()
+                mSingleSpinnerTimePicker.getCurrentMinuteOfHour(),
+                mSingleSpinnerTimePicker.getCurrentIsInstantBookEnabled()
         );
         dismiss();
     }
 
     public interface OnTimeSetListener {
 
-        void OnTimeSet(int hourOfDay, int minuteOfHour);
+        void OnTimeSet(int hourOfDay, int minuteOfHour, boolean isInstantBookEnabled);
     }
 }

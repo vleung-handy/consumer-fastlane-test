@@ -39,14 +39,15 @@ public final class BookingDateActivity extends MenuDrawerActivity {
                     type,
                     providerId,
                     proTeamProViewModel,
-                    availabilityResponse
+                    availabilityResponse,
+                    getIntent().getExtras()
             );
         }
 
         final ArrayList<BookingOption> postOptions
                 = getIntent().getParcelableArrayListExtra(BundleKeys.POST_OPTIONS);
 
-        return BookingDateFragment.newInstance(postOptions);
+        return BookingDateFragment.newInstance(postOptions, getIntent().getExtras());
     }
 
     @Override

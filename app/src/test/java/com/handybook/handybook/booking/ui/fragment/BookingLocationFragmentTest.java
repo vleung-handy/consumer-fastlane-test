@@ -57,7 +57,7 @@ public class BookingLocationFragmentTest extends RobolectricGradleTestWrapper {
                 .inject(this);
 
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
-        mFragment = BookingLocationFragment.newInstance();
+        mFragment = BookingLocationFragment.newInstance(null);
 
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }

@@ -87,7 +87,7 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper {
         when(mMockQuote.getAndroidPayCouponValueFormatted()).thenReturn("$10");
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
-        mFragment = BookingPaymentFragment.newInstance();
+        mFragment = BookingPaymentFragment.newInstance(null);
         SupportFragmentTestUtil.startFragment(mFragment, AppCompatActivity.class);
     }
 

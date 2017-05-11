@@ -37,7 +37,8 @@ public final class BookingOptionsActivity extends MenuDrawerActivity {
                 page,
                 childDisplayMap,
                 postOptions,
-                isPost
+                isPost,
+                getIntent().getExtras()
         );
     }
 

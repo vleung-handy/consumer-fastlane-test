@@ -26,6 +26,7 @@ import com.handybook.handybook.booking.model.ProviderRequest;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.BookingCancelOptionsActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
+import com.handybook.handybook.booking.ui.activity.BookingReschedulePreferencesActivity;
 import com.handybook.handybook.booking.ui.activity.ReportIssueActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentAddress;
@@ -52,7 +53,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.ViewAvailability
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.ui.activity.ProTeamPerBookingActivity;
+import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.squareup.otto.Subscribe;
@@ -483,7 +484,7 @@ public final class BookingDetailFragment extends InjectedFragment
             bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         }
         else {
-            Intent intent = new Intent(getContext(), ProTeamPerBookingActivity.class);
+            Intent intent = new Intent(getContext(), BookingReschedulePreferencesActivity.class);
             intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mProTeamCategory);
             intent.putExtra(BundleKeys.BOOKING, mBooking);
             startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
@@ -619,7 +620,20 @@ public final class BookingDetailFragment extends InjectedFragment
     }
 
     public enum RescheduleType {
-        NORMAL, FROM_CANCELATION, FROM_CHAT, FROM_PRO_BANNER
+        NORMAL("booking_details_reschedule"),
+        FROM_CANCELATION("booking_details_reschedule"),
+        FROM_CHAT("chat_reschedule_agreement"),
+        FROM_PRO_BANNER("provider_request_response");
+
+        private String mSourceName;
+
+        RescheduleType(String sourceName) {
+            mSourceName = sourceName;
+        }
+
+        public String getSourceName() {
+            return mSourceName;
+        }
     }
 
     private void setProBusyViewVisibility() {

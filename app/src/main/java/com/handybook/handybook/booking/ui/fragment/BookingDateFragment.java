@@ -3,8 +3,8 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -56,6 +56,8 @@ public final class BookingDateFragment extends BookingFlowFragment
     static final String EXTRA_PROVIDER_ID = "com.handy.handy.EXTRA_PROVIDER_ID";
     static final String EXTRA_PRO_TEAM_PRO = "com.handy.handy.EXTRA_PRO_TEAM_PRO";
     private static final String STATE_RESCHEDULE_DATE = "RESCHEDULE_DATE";
+    private static final String STATE_RESCHEDULE_IS_INSTANT_BOOK_ENABLED
+            = "RESCHEDULE_INSTANT_BOOK";
 
     @Bind(R.id.next_button)
     Button mNextButton;
@@ -71,9 +73,6 @@ public final class BookingDateFragment extends BookingFlowFragment
 
     @Bind(R.id.reschedule_cancel_text)
     TextView mRescheduleCancelText;
-
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
 
     private Date mSelectedDateTime;
 
@@ -94,6 +93,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                     );
                     intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
                     intent.putExtra(BundleKeys.RESCHEDULE_TYPE, mRescheduleType);
+                    intent.putExtra(BundleKeys.RESCHEDULE_IS_INSTANT_BOOK_ENABLED, mRescheduleInstantBookEnabled);
                     intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, mSelectedDateTime.getTime());
                     intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
                     startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
@@ -105,7 +105,8 @@ public final class BookingDateFragment extends BookingFlowFragment
                             false,
                             mProviderId,
                             mRescheduleType,
-                            null
+                            null,
+                            mRescheduleInstantBookEnabled
                     );
                 }
             }
@@ -128,6 +129,7 @@ public final class BookingDateFragment extends BookingFlowFragment
 
                 if (mBookingOptions != null && mBookingOptions.size() > 0) {
                     final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
+                    intent.putExtras(createProgressBundle());
                     intent.putParcelableArrayListExtra(
                             BookingOptionsActivity.EXTRA_OPTIONS,
                             new ArrayList<>(mBookingOptions)
@@ -147,15 +149,22 @@ public final class BookingDateFragment extends BookingFlowFragment
         }
     };
     private Date mRescheduleDate;
+    private boolean mRescheduleInstantBookEnabled;
     private String mNotice;
     private BookingDetailFragment.RescheduleType mRescheduleType;
     private String mProviderId;
     private ProTeamProViewModel mProTeamProViewModel;
 
-    public static BookingDateFragment newInstance(final ArrayList<BookingOption> postOptions) {
+    public static BookingDateFragment newInstance(
+            final ArrayList<BookingOption> postOptions,
+            @Nullable final Bundle extras
+    ) {
         final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
         args.putParcelableArrayList(EXTRA_POST_OPTIONS, postOptions);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -166,7 +175,8 @@ public final class BookingDateFragment extends BookingFlowFragment
             BookingDetailFragment.RescheduleType type,
             final String providerId,
             final ProTeamProViewModel proTeamProViewModel,
-            final ProAvailabilityResponse availabilityResponse
+            final ProAvailabilityResponse availabilityResponse,
+            @Nullable final Bundle extras
     ) {
         final BookingDateFragment fragment = new BookingDateFragment();
         final Bundle args = new Bundle();
@@ -176,6 +186,9 @@ public final class BookingDateFragment extends BookingFlowFragment
         args.putString(EXTRA_PROVIDER_ID, providerId);
         args.putSerializable(EXTRA_PRO_TEAM_PRO, proTeamProViewModel);
         args.putSerializable(BundleKeys.PRO_AVAILABILITY, availabilityResponse);
+        if (extras != null) {
+            args.putAll(extras);
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -187,6 +200,10 @@ public final class BookingDateFragment extends BookingFlowFragment
         if (mRescheduleBooking != null) {
             if (savedInstanceState != null) {
                 mRescheduleDate = new Date(savedInstanceState.getLong(STATE_RESCHEDULE_DATE, 0));
+                mRescheduleInstantBookEnabled = savedInstanceState.getBoolean(
+                        STATE_RESCHEDULE_IS_INSTANT_BOOK_ENABLED,
+                        false
+                );
             }
             else {
                 mRescheduleDate = mRescheduleBooking.getStartDate();
@@ -201,12 +218,19 @@ public final class BookingDateFragment extends BookingFlowFragment
 
             mProAvailability = (ProAvailabilityResponse)
                     getArguments().getSerializable(BundleKeys.PRO_AVAILABILITY);
+
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleDatePickerShownLog(
+                    mProviderId,
+                    mRescheduleBooking.getId(),
+                    mRescheduleDate,
+                    mRescheduleType
+            )));
         }
         else {
             mBookingOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
+            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerShownLog()));
         }
 
-        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerShownLog()));
     }
 
     @Override
@@ -259,7 +283,11 @@ public final class BookingDateFragment extends BookingFlowFragment
                 //this is the reschedule flow from cancelation
                 //log that we are here.
                 bus.post(new LogEvent.AddLogEvent(
-                        new BookingDetailsLog.RescheduleInsteadShown(mRescheduleBooking.getId())
+                        new BookingDetailsLog.RescheduleBookingSelectedLog(
+                                mRescheduleBooking.getProvider(),
+                                mRescheduleBooking.getId(),
+                                mRescheduleBooking.getRecurringId()
+                        )
                 ));
 
                 setToolbarTitle(getString(R.string.reschedule_instead));
@@ -282,7 +310,6 @@ public final class BookingDateFragment extends BookingFlowFragment
                     selectedProView.bind(mProTeamProViewModel);
                     final String proFirstName = mProTeamProViewModel.getProTeamPro().getFirstName();
                     mSelectedProContainer.addView(selectedProView);
-                    mLocationText.setGravity(Gravity.START);
                     mNextButton.setText(getString(R.string.request_pro_formatted, proFirstName));
                     toolbarTitle = getString(R.string.pro_x_availability_formatted, proFirstName);
                 }
@@ -315,7 +342,7 @@ public final class BookingDateFragment extends BookingFlowFragment
                 BookingTimeInputDialogFragment.TAG
         );
         transaction.commit();
-        updateBookingRequestDateTime(startDateTime.getTime());
+        updateBookingRequestDateTime(startDateTime.getTime(), false);
     }
 
     @Override
@@ -323,6 +350,10 @@ public final class BookingDateFragment extends BookingFlowFragment
         super.onSaveInstanceState(outState);
         if (mRescheduleDate != null) {
             outState.putLong(STATE_RESCHEDULE_DATE, mRescheduleDate.getTime());
+            outState.putBoolean(
+                    STATE_RESCHEDULE_IS_INSTANT_BOOK_ENABLED,
+                    mRescheduleInstantBookEnabled
+            );
         }
     }
 
@@ -389,9 +420,13 @@ public final class BookingDateFragment extends BookingFlowFragment
      * with the selected date time input
      * for the booking's timezone
      */
-    private void updateBookingRequestDateTime(final Date selectedDateTime) {
+    private void updateBookingRequestDateTime(
+            final Date selectedDateTime,
+            boolean isInstantBookEnabled
+    ) {
         if (mRescheduleBooking != null) {
             mRescheduleDate = selectedDateTime;
+            mRescheduleInstantBookEnabled = isInstantBookEnabled;
         }
         else {
             final BookingRequest request = bookingManager.getCurrentRequest();
@@ -443,7 +478,10 @@ public final class BookingDateFragment extends BookingFlowFragment
     }
 
     @Override
-    public void onSelectedDateTimeUpdatedListener(Calendar selectedDateTime) {
-        updateBookingRequestDateTime(selectedDateTime.getTime());
+    public void onSelectedDateTimeUpdatedListener(
+            Calendar selectedDateTime,
+            boolean isInstantBookEnabled
+    ) {
+        updateBookingRequestDateTime(selectedDateTime.getTime(), isInstantBookEnabled);
     }
 }

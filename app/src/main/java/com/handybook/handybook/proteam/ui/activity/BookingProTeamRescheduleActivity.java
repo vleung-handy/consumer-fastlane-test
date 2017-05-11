@@ -9,7 +9,7 @@ import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
 
-public class ProTeamPerBookingActivity extends MenuDrawerActivity {
+public class BookingProTeamRescheduleActivity extends MenuDrawerActivity {
 
     @Override
     protected Fragment createFragment() {

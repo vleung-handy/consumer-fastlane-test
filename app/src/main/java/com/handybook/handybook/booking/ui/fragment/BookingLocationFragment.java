@@ -3,7 +3,7 @@ package com.handybook.handybook.booking.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +43,10 @@ public final class BookingLocationFragment extends BookingFlowFragment
     @Bind(R.id.next_button)
     Button mNextButton;
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-
-    public static BookingLocationFragment newInstance() {
-        return new BookingLocationFragment();
+    public static BookingLocationFragment newInstance(@Nullable final Bundle extras) {
+        BookingLocationFragment fragment = new BookingLocationFragment();
+        fragment.setArguments(extras);
+        return fragment;
     }
 
     @Override
@@ -169,13 +168,13 @@ public final class BookingLocationFragment extends BookingFlowFragment
                                             getActivity(),
                                             BookingDateActivity.class
                                     );
+                                    intent.putExtras(createProgressBundle());
                                     startActivity(intent);
                                 }
                             }
 
                             @Override
-                            public void onCallbackError(final DataManager.DataManagerError error)
-                            {
+                            public void onCallbackError(final DataManager.DataManagerError error) {
                                 String zipCode = mZipCodeInputTextView.getZipCode();
                                 if (!Strings.isNullOrEmpty(zipCode)) {
                                     bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipErrorLog(
