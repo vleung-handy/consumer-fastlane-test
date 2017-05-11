@@ -136,4 +136,25 @@
         android:textSize="@dimen/text_size_xsmall"
         tools:text="Now"
         />
+
+    <!-- This is used for reschedule pro team list to display the Book instantly icon/text -->
+    <TextView
+        android:id="@+id/book_instantly_icon_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/default_margin_half"
+        android:layout_marginEnd="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:drawableLeft="@drawable/ic_icon_instabook"
+        android:drawablePadding="5dp"
+        android:textSize="@dimen/text_size_xsmall"
+        android:gravity="bottom"
+        android:text="@string/book_instantly"
+        android:textColor="@color/handy_tertiary_gray"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
 </RelativeLayout>

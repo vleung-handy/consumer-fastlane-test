@@ -44,6 +44,8 @@ public class Provider implements Serializable, Comparable<Provider> {
     private Date mLastSeenAt;
     @SerializedName("profile_enabled")
     private Boolean mProProfileEnabled;
+    @SerializedName("instant_book_enabled")
+    private boolean mIsInstantBookEnabled;
 
     public Provider(
             final int status,
@@ -142,6 +144,10 @@ public class Provider implements Serializable, Comparable<Provider> {
     @Nullable
     public ProviderMatchPreference getMatchPreference() {
         return mMatchPreference;
+    }
+
+    public boolean isInstantBookEnabled() {
+        return mIsInstantBookEnabled;
     }
 
     public static final int PROVIDER_STATUS_ASSIGNED = 3;

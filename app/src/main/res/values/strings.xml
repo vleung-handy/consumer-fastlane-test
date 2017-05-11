@@ -102,6 +102,7 @@
     <string name="remove">Remove</string>
     <string name="unfavorite">Unfavorite</string>
     <string name="promo_code">Promo Code</string>
+    <string name="book_instantly">Book instantly</string>
     <string name="reschedule">Reschedule</string>
     <string name="reschedule_instead">Reschedule Instead?</string>
     <string name="reschedule_instead_of_canceling">If you\'d like, we can reschedule this\nbooking instead of canceling.</string>
