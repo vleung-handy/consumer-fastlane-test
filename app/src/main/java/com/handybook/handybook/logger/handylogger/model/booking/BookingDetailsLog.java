@@ -1,6 +1,10 @@
 package com.handybook.handybook.logger.handylogger.model.booking;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.booking.model.Provider;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import java.util.Date;
@@ -94,9 +98,35 @@ public abstract class BookingDetailsLog extends EventLog {
     }
 
 
-    public static class RescheduleBooking extends BookingDetailsLog {
+    public static class RescheduleDatePickerShownLog extends BookingFunnelLog {
 
-        private static final String EVENT_TYPE_PREFIX = "reschedule_booking_";
+        private static final String EVENT_TYPE = "reschedule_date_picker_shown";
+
+        @SerializedName("provider_id")
+        @Nullable
+        private final String mProviderId;
+
+        @SerializedName("booking_id")
+        private final String mBookingId;
+
+        @SerializedName("original_date_start")
+        private final Date mOriginalStartDate;
+
+        @SerializedName("source")
+        private final String mSource;
+
+        public RescheduleDatePickerShownLog(String providerId, String bookingId, Date startDate, BookingDetailFragment.RescheduleType rescheduleType) {
+            super(EVENT_TYPE);
+            mProviderId = providerId;
+            mBookingId = bookingId;
+            mOriginalStartDate = startDate;
+            mSource = rescheduleType.getSourceName();
+        }
+    }
+
+    private static class RescheduleBaseLog extends BookingDetailsLog {
+
+        private static final String EVENT_TYPE_PREFIX = "reschedule_";
 
         @SerializedName("booking_id")
         private final String mBookingId;
@@ -107,54 +137,149 @@ public abstract class BookingDetailsLog extends EventLog {
         @SerializedName("new_date")
         private final Date mNewDate;
 
-        /**
-         * @param eventType has a value of {selected, submitted, success, error}
-         * @param bookingId
-         * @param oldDate
-         * @param newDate
-         */
-        public RescheduleBooking(
-                final EventType eventType,
-                String bookingId,
-                Date oldDate,
-                Date newDate
-        ) {
-            //arguments passed should look like: reschedule_booking_selected, etc.
-            super(EVENT_TYPE_PREFIX + eventType.getValue());
+        @SerializedName("provider_id")
+        @Nullable
+        private final String mProviderId;
 
+        @SerializedName("recurring_id")
+        @Nullable
+        private final String mRecurringId;
+
+        public RescheduleBaseLog(
+                String eventTypeSuffix,
+                @Nullable final String providerId,
+                final String bookingId,
+                @Nullable final Long recurringId,
+                final Date oldDate,
+                final Date newDate
+        ) {
+            this(eventTypeSuffix, providerId, bookingId, recurringId == null ? null : recurringId.toString(), oldDate, newDate);
+        }
+
+        public RescheduleBaseLog(
+                String eventTypeSuffix,
+                @Nullable final String providerId,
+                final String bookingId,
+                @Nullable final String recurringId,
+                final Date oldDate,
+                final Date newDate
+        ) {
+            super(EVENT_TYPE_PREFIX + eventTypeSuffix);
+            mProviderId = providerId;
             mBookingId = bookingId;
+            mRecurringId = recurringId;
             mOldDate = oldDate;
             mNewDate = newDate;
         }
     }
 
 
-    public static class SkipBooking extends BookingDetailsLog {
+    /**
+     * user selects a booking to reschedule
+     */
+    public static class RescheduleBookingSelectedLog extends RescheduleBaseLog {
 
-        private static final String EVENT_TYPE_PREFIX = "skip_booking_";
+        private static final String EVENT_TYPE_SUFFIX = "booking_selected";
 
-        @SerializedName("booking_id")
-        private final String mBookingId;
-
-        public SkipBooking(final EventType eventType, final String bookingId) {
-            //in the form of skip_booking_selected, etc.
-            super(EVENT_TYPE_PREFIX + eventType.getValue());
-            mBookingId = bookingId;
+        public RescheduleBookingSelectedLog(
+                @Nullable final Provider provider,
+                final String bookingId,
+                @Nullable final Long recurringId
+        ) {
+            super(EVENT_TYPE_SUFFIX, provider == null ? null : provider.getId(), bookingId, recurringId, null, null);
         }
     }
 
 
-    public static class RescheduleInsteadShown extends BookingDetailsLog {
+    /**
+     * user submits a reschedule
+     */
+    public static class RescheduleSubmittedLog extends RescheduleBaseLog {
 
-        private static final String EVENT_TYPE = "reschedule_instead_shown";
+        private static final String EVENT_TYPE_SUFFIX = "submitted";
 
+        @SerializedName("source")
+        private final String mSource;
+
+        @SerializedName("is_instant")
+        private final boolean mIsInstantBookEnabled;
+
+        public RescheduleSubmittedLog(
+                @Nullable final String providerId,
+                final String bookingId,
+                final Date oldDate,
+                final Date newDate,
+                @Nullable final String recurringId,
+                final BookingDetailFragment.RescheduleType rescheduleType,
+                final boolean isInstantBookEnabled
+        ) {
+            super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
+            mSource = rescheduleType.getSourceName();
+            mIsInstantBookEnabled = isInstantBookEnabled;
+        }
+    }
+
+
+    /**
+     * user successfully reschedules
+     */
+    public static class RescheduleSuccessLog extends RescheduleBaseLog {
+
+        private static final String EVENT_TYPE_SUFFIX = "success";
+
+        @SerializedName("source")
+        private final String mSource;
+
+        @SerializedName("is_instant")
+        private final boolean mIsInstantBookEnabled;
+
+        public RescheduleSuccessLog(
+                @Nullable final String provider,
+                final String bookingId,
+                final Date oldDate,
+                final Date newDate,
+                @Nullable final String recurringId,
+                final BookingDetailFragment.RescheduleType rescheduleType,
+                final boolean isInstantBookEnabled
+                ) {
+            super(EVENT_TYPE_SUFFIX, provider, bookingId, recurringId, oldDate, newDate);
+            mSource = rescheduleType.getSourceName();
+            mIsInstantBookEnabled = isInstantBookEnabled;
+        }
+    }
+
+
+    /**
+     * user receives an error while rescheduling
+     */
+    public static class RescheduleErrorLog extends RescheduleBaseLog {
+
+        private static final String EVENT_TYPE_SUFFIX = "error";
+
+        public RescheduleErrorLog(
+                @Nullable final String providerId,
+                final String bookingId,
+                final Date oldDate,
+                final Date newDate,
+                @Nullable final String recurringId
+        ) {
+            super(EVENT_TYPE_SUFFIX, providerId, bookingId, recurringId, oldDate, newDate);
+        }
+    }
+
+
+    public static class CancelBooking extends BookingDetailsLog {
+        private static final String EVENT_TYPE = "booking_cancelled";
         @SerializedName("booking_id")
         private final String mBookingId;
 
-        public RescheduleInsteadShown(final String bookingId) {
-            super(EVENT_TYPE);
+        @SerializedName("booking_cancellation_reason")
+        private final String mBookingCancellationReason;
 
+        public CancelBooking(String bookingId, String bookingCancellationReason) {
+            super(EVENT_TYPE);
             mBookingId = bookingId;
+            mBookingCancellationReason = bookingCancellationReason;
         }
     }
 
@@ -197,23 +322,6 @@ public abstract class BookingDetailsLog extends EventLog {
     }
 
 
-    public static class RescheduleProviderSelected extends BookingDetailsLog {
-
-        public static final String EVENT_TYPE = "reschedule_provider_selected";
-
-        @SerializedName("provider_id")
-        private final String mProviderId;
-        @SerializedName("layer_conversation_id")
-        private final String mConversationId;
-
-        public RescheduleProviderSelected(final String providerId, final String conversationId) {
-            super(EVENT_TYPE);
-            mProviderId = providerId;
-            mConversationId = conversationId;
-        }
-    }
-
-
     public static class RescheduleIndifferenceSelected extends BookingDetailsLog {
 
         private static final String EVENT_TYPE = "reschedule_indifferent_selected";
@@ -222,44 +330,5 @@ public abstract class BookingDetailsLog extends EventLog {
             super(EVENT_TYPE);
         }
     }
-
-
-    public static class ConversationCreatedLog extends BookingDetailsLog {
-
-        private static final String EVENT_TYPE = "conversation_created";
-
-        @SerializedName("provider_id")
-        private final String mProviderId;
-        @SerializedName("layer_conversation_id")
-        private final String mConversationId;
-
-        public ConversationCreatedLog(
-                final String providerId,
-                final String conversationId
-        ) {
-            super(EVENT_TYPE);
-            mProviderId = providerId;
-            mConversationId = conversationId;
-        }
-    }
-
-
-    public enum EventType {
-        SELECTED("selected"),
-        SUBMITTED("submitted"),
-        SUCCESS("success"),
-        ERROR("error");
-
-        private String value;
-
-        EventType(final String value) {
-            this.value = value;
-        }
-
-        String getValue() {
-            return value;
-        }
-    }
-
 }
 

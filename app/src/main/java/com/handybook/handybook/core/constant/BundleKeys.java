@@ -46,6 +46,7 @@ public class BundleKeys {
     public static final String RESCHEDULE_NEW_DATE = "reschedule_new_date";
     public static final String RESCHEDULE_NOTICE = "reschedule_notice";
     public static final String RESCHEDULE_PRICE_TABLE = "reschedule_price_table";
+    public static final String RESCHEDULE_IS_INSTANT_BOOK_ENABLED = "reschedule_instant_book";
     public static final String RESCHEDULE_TYPE = "reschedule_type";
     public static final String SERVICES = "services";
     public static final String SHOW_TIPS = "show_tips";

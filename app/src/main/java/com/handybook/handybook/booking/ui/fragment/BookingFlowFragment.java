@@ -396,7 +396,8 @@ public class BookingFlowFragment extends InjectedFragment {
             final boolean rescheduleAll,
             @Nullable final String providerId,
             final BookingDetailFragment.RescheduleType rescheduleType,
-            @Nullable final String recurringId
+            @Nullable final String recurringId,
+            final boolean isInstantBookEnabled
     ) {
         final String newDate = DateTimeUtils.formatDate(
                 date,
@@ -414,16 +415,20 @@ public class BookingFlowFragment extends InjectedFragment {
                     booking.getId(),
                     booking.getStartDate(),
                     date,
-                    recurringId
+                    recurringId,
+                    isInstantBookEnabled
                      ))
             );
         }
         else {
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                             BookingDetailsLog.EventType.SUBMITTED,
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSubmittedLog (
+                             providerId,
                              booking.getId(),
                              booking.getStartDate(),
-                             date
+                             date,
+                             recurringId,
+                             rescheduleType,
+                             isInstantBookEnabled
                      ))
             );
         }
@@ -444,16 +449,20 @@ public class BookingFlowFragment extends InjectedFragment {
                                              booking.getId(),
                                              booking.getStartDate(),
                                              date,
-                                             recurringId
+                                             recurringId,
+                                             isInstantBookEnabled
                                      ))
                             );
                         }
                         else {
-                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                             BookingDetailsLog.EventType.SUCCESS,
-                                             booking.getId(),
-                                             booking.getStartDate(),
-                                             date
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSuccessLog (
+                                    providerId,
+                                    booking.getId(),
+                                    booking.getStartDate(),
+                                    date,
+                                    recurringId,
+                                    rescheduleType,
+                                    isInstantBookEnabled
                                      ))
                             );
                         }
@@ -514,11 +523,12 @@ public class BookingFlowFragment extends InjectedFragment {
                             );
                         }
                         else {
-                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBooking(
-                                             BookingDetailsLog.EventType.ERROR,
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleErrorLog (
+                                             providerId,
                                              booking.getId(),
                                              booking.getStartDate(),
-                                             date
+                                             date,
+                                             recurringId
                                      ))
                             );
                         }

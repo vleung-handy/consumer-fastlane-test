@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -172,10 +171,11 @@ public final class ServicesFragment extends BookingFlowFragment {
      * must be done onCreate()
      * @return
      */
-    @TargetApi(LOLLIPOP)
     private void determineHasIncomingEnterTransition() {
-        mHasInComingEnterTransition = getActivity().getWindow().getSharedElementEnterTransition() !=
-                                      null;
+        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+            mHasInComingEnterTransition =
+                    getActivity().getWindow().getSharedElementEnterTransition() != null;
+        }
     }
 
     /**

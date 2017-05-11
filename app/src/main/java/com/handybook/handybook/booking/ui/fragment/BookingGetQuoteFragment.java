@@ -383,7 +383,8 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
     }
 
     @Override
-    public void onSelectedDateTimeUpdatedListener(final Calendar selectedDateTime) {
+    public void onSelectedDateTimeUpdatedListener(final Calendar selectedDateTime, boolean isInstantBookEnabled) {
+        //Instantbook is only needed on reschedule
         updateBookingRequestDateTime(selectedDateTime.getTime());
     }
 }

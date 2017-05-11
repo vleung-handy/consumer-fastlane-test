@@ -13,6 +13,9 @@ public class ProTimeInterval implements Serializable {
     private String mIntervalStartTime;
     @SerializedName("interval_end")
     private String mIntervalEndTime;
+    //true if instant booking enabled, otherwise false
+    @SerializedName("instant_book_enabled")
+    private boolean mInstantBookEnabled;
 
     public ProTimeInterval(final String intervalStartTime, final String intervalEndTime) {
         mIntervalStartTime = intervalStartTime;
@@ -27,5 +30,9 @@ public class ProTimeInterval implements Serializable {
     @NonNull
     public String getIntervalEndTime() {
         return mIntervalEndTime;
+    }
+
+    public boolean isInstantBookEnabled() {
+        return mInstantBookEnabled;
     }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coupon_banner_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="visible"
+    android:paddingTop="@dimen/default_padding"
+    android:paddingBottom="@dimen/default_padding_half"
+    android:layout_marginBottom="@dimen/default_margin_half"
+    android:background="@color/handy_bg"
+    tools:showIn="@layout/fragment_booking_subscription"
+    >
+
+    <TextView
+        android:id="@+id/coupon_banner_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        style="@style/TextView.Large.Bold"
+        android:textColor="@color/handy_darkened_blue"
+        tools:text="Get 30% off your first cleaning"
+        />
+
+    <TextView
+        android:id="@+id/coupon_banner_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextView.Small"
+        android:textColor="@color/handy_text_gray"
+        android:gravity="center_horizontal"
+        tools:text="when you sign up for a plan"
+        />
+
+</LinearLayout>
+

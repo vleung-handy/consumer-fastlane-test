@@ -18,10 +18,10 @@ android {
             storePassword 'S0H@ndy!'
         }
         debug {
-            keyAlias "handy-debug-key"
-            keyPassword "handy-debug"
-            storeFile file("handy-debug-key.keystore")
-            storePassword "handy-debug"
+            keyAlias 'HandyProdKey'
+            keyPassword 'S0H@ndy!'
+            storeFile file('handy-prod-key.keystore')
+            storePassword 'S0H@ndy!'
         }
     }
     compileSdkVersion 25
@@ -43,7 +43,7 @@ android {
         }
         debug {
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            applicationIdSuffix ".debug"
         }
     }
     productFlavors {
