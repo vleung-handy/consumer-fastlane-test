@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,7 +73,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     @Bind(R.id.booking_subscription_commitment_tooltip)
     ImageView mCommitmentTooltip;
     @Bind(R.id.booking_subscription_title)
-    TextView mTitle;
+    TextView mSubscriptionTitle;
     @Bind(R.id.coupon_banner_container)
     ViewGroup mCouponBannerContainer;
     @Bind(R.id.coupon_banner_title)
@@ -82,7 +81,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     @Bind(R.id.coupon_banner_subtitle)
     TextView mCouponBannerSubtitle;
     @Bind(R.id.booking_subscription_coupon_disclaimer)
-    TextView mCouponDisclaimer;
+    TextView mCouponDisclaimerText;
 
     private BookingTransaction mBookingTransaction;
     protected BookingOptionsSelectView mCommitmentView;
@@ -138,9 +137,9 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         final BookingQuote.QuoteCoupon coupon = bookingManager.getCurrentQuote().getCoupon();
 
         if (coupon == null) {
-            mTitle.setVisibility(View.VISIBLE);
+            mSubscriptionTitle.setVisibility(View.VISIBLE);
             mCouponBannerContainer.setVisibility(View.GONE);
-            mCouponDisclaimer.setVisibility(View.GONE);
+            mCouponDisclaimerText.setVisibility(View.GONE);
             return;
         }
 
@@ -150,7 +149,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
         final boolean shouldShowBanner = !TextUtils.isBlank(title) || !TextUtils.isBlank(subtitle);
         mCouponBannerContainer.setVisibility(shouldShowBanner ? View.VISIBLE : View.GONE);
-        mTitle.setVisibility(shouldShowBanner ? View.GONE : View.VISIBLE);
+        mSubscriptionTitle.setVisibility(shouldShowBanner ? View.GONE : View.VISIBLE);
 
         mCouponBannerTitle.setText(title);
         mCouponBannerTitle.setVisibility(TextUtils.isBlank(title) ? View.GONE : View.VISIBLE);
@@ -158,8 +157,10 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         mCouponBannerSubtitle.setText(subtitle);
         mCouponBannerSubtitle.setVisibility(TextUtils.isBlank(subtitle) ? View.GONE : View.VISIBLE);
 
-        mCouponDisclaimer.setText(disclaimer);
-        mCouponDisclaimer.setVisibility(TextUtils.isBlank(disclaimer) ? View.GONE : View.VISIBLE);
+        mCouponDisclaimerText.setText(disclaimer);
+        mCouponDisclaimerText.setVisibility(
+                TextUtils.isBlank(disclaimer) ? View.GONE : View.VISIBLE
+        );
 
     }
 
