@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -73,6 +72,16 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     BookingOptionsCheckboxView mTrialCheckbox;
     @Bind(R.id.booking_subscription_commitment_tooltip)
     ImageView mCommitmentTooltip;
+    @Bind(R.id.booking_subscription_title)
+    TextView mSubscriptionTitle;
+    @Bind(R.id.coupon_banner_container)
+    ViewGroup mCouponBannerContainer;
+    @Bind(R.id.coupon_banner_title)
+    TextView mCouponBannerTitle;
+    @Bind(R.id.coupon_banner_subtitle)
+    TextView mCouponBannerSubtitle;
+    @Bind(R.id.booking_subscription_coupon_disclaimer)
+    TextView mCouponDisclaimerText;
 
     private BookingTransaction mBookingTransaction;
     protected BookingOptionsSelectView mCommitmentView;
@@ -120,7 +129,39 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         createSubscriptionOptions();
         initTrial();
         initTooltip();
+        initCoupon();
         return view;
+    }
+
+    private void initCoupon() {
+        final BookingQuote.QuoteCoupon coupon = bookingManager.getCurrentQuote().getCoupon();
+
+        if (coupon == null) {
+            mSubscriptionTitle.setVisibility(View.VISIBLE);
+            mCouponBannerContainer.setVisibility(View.GONE);
+            mCouponDisclaimerText.setVisibility(View.GONE);
+            return;
+        }
+
+        final String title = coupon.getTitle();
+        final String subtitle = coupon.getSubtitle();
+        final String disclaimer = coupon.getDisclaimer();
+
+        final boolean shouldShowBanner = !TextUtils.isBlank(title) || !TextUtils.isBlank(subtitle);
+        mCouponBannerContainer.setVisibility(shouldShowBanner ? View.VISIBLE : View.GONE);
+        mSubscriptionTitle.setVisibility(shouldShowBanner ? View.GONE : View.VISIBLE);
+
+        mCouponBannerTitle.setText(title);
+        mCouponBannerTitle.setVisibility(TextUtils.isBlank(title) ? View.GONE : View.VISIBLE);
+
+        mCouponBannerSubtitle.setText(subtitle);
+        mCouponBannerSubtitle.setVisibility(TextUtils.isBlank(subtitle) ? View.GONE : View.VISIBLE);
+
+        mCouponDisclaimerText.setText(disclaimer);
+        mCouponDisclaimerText.setVisibility(
+                TextUtils.isBlank(disclaimer) ? View.GONE : View.VISIBLE
+        );
+
     }
 
     private void initTooltip() {
