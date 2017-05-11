@@ -43,7 +43,7 @@ public class Provider implements Serializable, Comparable<Provider> {
     @SerializedName("last_seen_at")
     private Date mLastSeenAt;
     @SerializedName("profile_enabled")
-    private Boolean mProProfileEnabled;
+    private boolean mProProfileEnabled;
     @SerializedName("instant_book_enabled")
     private boolean mIsInstantBookEnabled;
 
@@ -59,8 +59,8 @@ public class Provider implements Serializable, Comparable<Provider> {
         mPhone = phone;
     }
 
-    public Boolean getProProfileEnabled() {
-        return mProProfileEnabled == null ? false : mProProfileEnabled;
+    public boolean getIsProProfileEnabled() {
+        return mProProfileEnabled;
     }
 
     public final int getStatus() {

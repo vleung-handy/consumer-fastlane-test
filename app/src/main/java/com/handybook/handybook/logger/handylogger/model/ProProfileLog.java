@@ -8,7 +8,6 @@ import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-//todo rename stuff and reorganize
 public abstract class ProProfileLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "pro_profile";
@@ -16,7 +15,7 @@ public abstract class ProProfileLog extends EventLog {
     @SerializedName("provider_id")
     private final String mProviderId;
 
-    public ProProfileLog(final String eventType, final String providerId) {
+    private ProProfileLog(final String eventType, final String providerId) {
         super(eventType, EVENT_CONTEXT);
         mProviderId = providerId;
     }
@@ -68,14 +67,14 @@ public abstract class ProProfileLog extends EventLog {
 
         private static final String EVENT_TYPE = "page_toggled";
 
-        public static final String PAGE_FIVE_STAR_REVIEWS = "5_star_reviews";
-        public static final String PAGE_ABOUT = "about";
+        public static final String TAB_PAGE_FIVE_STAR_REVIEWS = "5_star_reviews";
+        public static final String TAB_PAGE_ABOUT = "about";
 
 
         @Retention(RetentionPolicy.SOURCE)
         @StringDef({
-                           PAGE_FIVE_STAR_REVIEWS,
-                           PAGE_ABOUT
+                           TAB_PAGE_FIVE_STAR_REVIEWS,
+                           TAB_PAGE_ABOUT
                    })
         public @interface ProProfileTabPageType {
         }
@@ -84,9 +83,12 @@ public abstract class ProProfileLog extends EventLog {
         @SerializedName("page_selected")
         private final String mSelectedTabPage;
 
-        public TabPageToggled(final String providerId, @ProProfileTabPageType String tabPageType) {
+        public TabPageToggled(
+                final String providerId,
+                @ProProfileTabPageType String selectedTabPage
+        ) {
             super(EVENT_TYPE, providerId);
-            mSelectedTabPage = tabPageType;
+            mSelectedTabPage = selectedTabPage;
         }
     }
 

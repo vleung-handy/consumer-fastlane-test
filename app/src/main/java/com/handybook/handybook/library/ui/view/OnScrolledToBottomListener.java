@@ -3,7 +3,7 @@ package com.handybook.handybook.library.ui.view;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 
-public abstract class OnScrollToBottomListener extends RecyclerView.OnScrollListener {
+public abstract class OnScrolledToBottomListener extends RecyclerView.OnScrollListener {
 
     /**
      * note that this gets triggered when the recycler view is updated even if user didn't actually scroll
@@ -18,10 +18,10 @@ public abstract class OnScrollToBottomListener extends RecyclerView.OnScrollList
             //can no longer scroll down anymore
             if(!ViewCompat.canScrollVertically(recyclerView, ViewCompat.SCROLL_AXIS_VERTICAL))
             {
-                onScrollToBottom();
+                onScrolledToBottom();
             }
         }
     }
 
-    public abstract void onScrollToBottom();
+    public abstract void onScrolledToBottom();
 }

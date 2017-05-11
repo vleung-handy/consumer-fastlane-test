@@ -16,30 +16,33 @@ public class ProProfile implements Serializable {
     @SerializedName("provider_information")
     private ProviderInformation mProviderInformation;
     @SerializedName("regions")
-    private String[] mRegions;
+    private String[] mProviderRegionsServed;
     @SerializedName("stats")
-    private Stats mStats;
+    private ProviderStats mProviderProviderStats;
     @SerializedName("referral")
-    private ProReferral mProReferral;
+    private ProReferral mReferralInfo;
 
-    public ProReferral getProReferral() {
-        return mProReferral;
+    @NonNull
+    public ProReferral getReferralInfo() {
+        return mReferralInfo;
     }
 
-    public Stats getStats() {
-        return mStats;
+    @NonNull
+    public ProviderStats getProviderStats() {
+        return mProviderProviderStats;
     }
 
+    @NonNull
     public ProviderInformation getProviderInformation() {
         return mProviderInformation;
     }
 
-    public String[] getRegions() {
-        return mRegions;
+    @NonNull
+    public String[] getProviderRegionsServed() {
+        return mProviderRegionsServed;
     }
 
-
-    public static class Stats implements Serializable {
+    public static class ProviderStats implements Serializable {
 
         @SerializedName("years_handy_experience")
         private String mDurationExperienceHandyFormatted;
@@ -103,6 +106,7 @@ public class ProProfile implements Serializable {
             return null;
         }
 
+        @Nullable
         public ProTeamCategoryType getProTeamCategoryType() {
             try
             {
@@ -123,10 +127,12 @@ public class ProProfile implements Serializable {
             return mReferralCode;
         }
 
+        @Nullable
         public Boolean isCustomerFavorite() {
             return mIsCustomerFavorite;
         }
 
+        @NonNull
         public ProviderMatchPreference getMatchPreference() {
             return mMatchPreference;
         }
@@ -147,14 +153,17 @@ public class ProProfile implements Serializable {
             return mLastName;
         }
 
+        @Nullable
         public Float getAverageRating() {
             return mAverageRating;
         }
 
+        @Nullable
         public Integer getBookingCount() {
             return mBookingCount;
         }
 
+        @Nullable
         public ProfileImage[] getProfileImages() {
             return mProfileImages;
         }
@@ -178,10 +187,12 @@ public class ProProfile implements Serializable {
             @SerializedName("type")
             private Type mType;
 
+            @NonNull
             public Type getType() {
                 return mType;
             }
 
+            @Nullable
             public String getUrl() {
                 return mUrl;
             }

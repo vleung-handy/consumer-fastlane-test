@@ -26,7 +26,7 @@ public class ProMessagesViewModel implements Serializable {
                 provider.getImageUrl(),
                 provider.getCategoryType(),
                 provider.isFavorite(),
-                provider.getProProfileEnabled() != null
+                provider.getIsProProfileEnabled()
         );
     }
 
@@ -37,7 +37,7 @@ public class ProMessagesViewModel implements Serializable {
             @Nullable final String imageUrl,
             @Nullable final ProTeamCategoryType proCategoryType,
             final boolean isFavorite,
-            final boolean proProfileEnabled
+            final boolean isProProfileEnabled
     ) {
         mProviderId = providerId;
         mProviderName = providerName;
@@ -45,7 +45,7 @@ public class ProMessagesViewModel implements Serializable {
         mImageUrl = imageUrl;
         mProTeamCategoryType = proCategoryType;
         mIsFavorite = isFavorite;
-        mIsProProfileEnabled = proProfileEnabled;
+        mIsProProfileEnabled = isProProfileEnabled;
     }
 
     public boolean isProProfileEnabled() {

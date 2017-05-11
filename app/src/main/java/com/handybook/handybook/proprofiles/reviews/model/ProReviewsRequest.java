@@ -1,5 +1,7 @@
 package com.handybook.handybook.proprofiles.reviews.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 
 import java.lang.annotation.Retention;
@@ -32,8 +34,10 @@ public class ProReviewsRequest {
     private float mMinRating;
 
     public ProReviewsRequest(
-            String currentPageLastReviewId, int maxReviewsPerPage,
-            @ProReviewsSortOrder String sortOrder, float minRating
+            @Nullable String currentPageLastReviewId,
+            int maxReviewsPerPage,
+            @ProReviewsSortOrder String sortOrder,
+            float minRating
     ) {
         mCurrentPageLastReviewId = currentPageLastReviewId;
         mMaxReviewsPerPage = maxReviewsPerPage;
@@ -41,6 +45,7 @@ public class ProReviewsRequest {
         mMinRating = minRating;
     }
 
+    @Nullable
     public String getCurrentPageLastReviewId() {
         return mCurrentPageLastReviewId;
     }
@@ -49,6 +54,7 @@ public class ProReviewsRequest {
         return mMaxReviewsPerPage;
     }
 
+    @NonNull
     @ProReviewsSortOrder
     public String getSortOrder() {
         return mSortOrder;

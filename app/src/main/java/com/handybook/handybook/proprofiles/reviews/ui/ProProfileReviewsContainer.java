@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
-import com.handybook.handybook.library.ui.view.OnScrollToBottomListener;
+import com.handybook.handybook.library.ui.view.OnScrolledToBottomListener;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
 
@@ -90,15 +90,20 @@ public class ProProfileReviewsContainer extends FrameLayout {
         mLoadingView.setVisibility(VISIBLE);
     }
 
-    /**
-     * resets the state
-     */
-    public void clearReviews()//todo give better name
+    public void clearReviews()
     {
         mCurrentPageLastReviewId = null;
         mProReviewsRecyclerViewAdapter.clear();
+    }
+
+    public void showLoadingLayout() {
         mLoadingErrorLayout.setVisibility(GONE);
-        mLoadingView.setVisibility(VISIBLE);//todo dont like this here
+        mLoadingView.setVisibility(VISIBLE);
+    }
+
+    private void hideAllOverlays() {
+        mLoadingErrorLayout.setVisibility(GONE);
+        mLoadingView.setVisibility(GONE);
     }
 
     public String getCurrentPageLastReviewId() {
@@ -109,16 +114,16 @@ public class ProProfileReviewsContainer extends FrameLayout {
         return mProReviewsRecyclerViewAdapter.getItemCount() > 0;
     }
 
-    public void addOnScrollToBottomListener(@NonNull final OnScrollToBottomListener onScrollToBottomListener) {
-        mProReviewsRecyclerView.addOnScrollListener(onScrollToBottomListener);
+    public void addOnScrollToBottomListener(@NonNull final OnScrolledToBottomListener onScrolledToBottomListener) {
+        mProReviewsRecyclerView.addOnScrollListener(onScrolledToBottomListener);
     }
 
     public void setOnLoadingErrorTryAgainButtonClickListener(OnClickListener onClickListener) {
         mLoadingErrorTryAgainButton.setOnClickListener(onClickListener);
     }
 
-    public void removeScrollToBottomListener(OnScrollToBottomListener onScrollToBottomListener) {
-        mProReviewsRecyclerView.removeOnScrollListener(onScrollToBottomListener);
+    public void removeScrollToBottomListener(OnScrolledToBottomListener onScrolledToBottomListener) {
+        mProReviewsRecyclerView.removeOnScrollListener(onScrolledToBottomListener);
     }
 
     public void updateWithProviderFirstName(@Nullable String providerFirstName) {
@@ -133,8 +138,7 @@ public class ProProfileReviewsContainer extends FrameLayout {
         if (proReviews != null) {
             mCurrentPageLastReviewId = proReviews.getLastReviewId();
         }
-        mLoadingErrorLayout.setVisibility(GONE);
-        mLoadingView.setVisibility(GONE);
+        hideAllOverlays();
 
         //need to call this even if null so that the adapter listener can be notified so that empty view can be triggered
         mProReviewsRecyclerViewAdapter.append(proReviews);

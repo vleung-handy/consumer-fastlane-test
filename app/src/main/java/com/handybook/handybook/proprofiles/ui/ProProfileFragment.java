@@ -283,7 +283,7 @@ public class ProProfileFragment extends InjectedFragment implements
                     ReferralIntentUtil.addReferralIntentExtras(
                             getActivity(),
                             intent,
-                            mProProfile.getProReferral().getReferralInfo()
+                            mProProfile.getReferralInfo().getReferralInfo()
                     );
             final String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
             if (TextUtils.isBlank(extraText)) {
@@ -355,6 +355,7 @@ public class ProProfileFragment extends InjectedFragment implements
 
     private void loadInitialProviderReviews() {
         mProProfileDetailsTabLayout.getReviewsContainer().clearReviews();
+        mProProfileDetailsTabLayout.getReviewsContainer().showLoadingLayout();
         onRequestMoreReviews(null);
     }
 
@@ -380,11 +381,11 @@ public class ProProfileFragment extends InjectedFragment implements
             public void onTabSelected(final TabLayout.Tab tab) {
                 @ProProfileLog.TabPageToggled.ProProfileTabPageType String tabType = null;
                 if (tab.getPosition() == mProProfileDetailsTabLayout.getAboutTabPosition()) {
-                    tabType = ProProfileLog.TabPageToggled.PAGE_ABOUT;
+                    tabType = ProProfileLog.TabPageToggled.TAB_PAGE_ABOUT;
                 }
                 else if (tab.getPosition() ==
                          mProProfileDetailsTabLayout.getReviewsTabPosition()) {
-                    tabType = ProProfileLog.TabPageToggled.PAGE_FIVE_STAR_REVIEWS;
+                    tabType = ProProfileLog.TabPageToggled.TAB_PAGE_FIVE_STAR_REVIEWS;
                 }
                 bus.post(new LogEvent.AddLogEvent(new ProProfileLog.TabPageToggled(
                         mProviderId,
@@ -430,8 +431,6 @@ public class ProProfileFragment extends InjectedFragment implements
      */
     @Override
     public void onCreateConversationSuccess(final String conversationId) {
-
-        //todo test
         ProProfile.ProviderInformation providerInformation
                 = mProProfile.getProviderInformation();
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
@@ -444,7 +443,7 @@ public class ProProfileFragment extends InjectedFragment implements
                         providerInformation.getFirstName(),
                         providerInformation.getProfilePhotoUrl(),
                         providerInformation.getProTeamCategoryType(),
-                        providerInformation.isCustomerFavorite(),
+                        providerInformation.isCustomerFavorite() != null,
                         true
                 )
         );

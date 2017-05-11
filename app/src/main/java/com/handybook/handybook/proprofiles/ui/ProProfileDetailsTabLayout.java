@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.library.ui.view.OnScrollToBottomListener;
+import com.handybook.handybook.library.ui.view.OnScrolledToBottomListener;
 import com.handybook.handybook.proprofiles.model.ProProfile;
 import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
 import com.handybook.handybook.proprofiles.reviews.ui.ProProfileReviewsContainer;
@@ -50,7 +50,7 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
 
     private TabLayout.OnTabSelectedListener mOnTabSelectedListener;
 
-    private OnScrollToBottomListener mOnScrollToBottomListener;
+    private OnScrolledToBottomListener mOnScrolledToBottomListener;
     private RequestReviewsListener mRequestReviewsListener;
     private ProProfileReviewsContainer mReviewsContainer;
 
@@ -85,22 +85,23 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
         tabViews[mAboutTab.getPosition()] = mProProfileAboutView;
 
         mViewPager.setAdapter(new TabAdapter(Arrays.asList(tabViews)));
-        mOnScrollToBottomListener = new OnScrollToBottomListener() {
+        mOnScrolledToBottomListener = new OnScrolledToBottomListener() {
             @Override
-            public void onScrollToBottom() {
+            public void onScrolledToBottom() {
                 if (mRequestReviewsListener != null) {
                     mRequestReviewsListener.onRequestMoreReviews(
                             mReviewsContainer.getCurrentPageLastReviewId());
                 }
             }
         };
-        mReviewsContainer.addOnScrollToBottomListener(mOnScrollToBottomListener);
+        mReviewsContainer.addOnScrollToBottomListener(mOnScrolledToBottomListener);
 
         //todo dont like this
         mReviewsContainer.setOnLoadingErrorTryAgainButtonClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
                 mReviewsContainer.clearReviews();
+                mReviewsContainer.showLoadingLayout();
                 mRequestReviewsListener.onRequestMoreReviews(
                         mReviewsContainer.getCurrentPageLastReviewId());
             }
@@ -200,8 +201,8 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
         mReviewsContainer.updateForAdditionalProReviews(proReviews);
 
         if (proReviews.getReviews() == null || proReviews.getReviews().length == 0) {
-            mReviewsContainer.removeScrollToBottomListener(mOnScrollToBottomListener);
-            mOnScrollToBottomListener = null;
+            mReviewsContainer.removeScrollToBottomListener(mOnScrolledToBottomListener);
+            mOnScrolledToBottomListener = null;
             if (!mReviewsContainer.hasReviews()) {
                 //select the About tab if there are no reviews
                 mTabLayout.getTabAt(getAboutTabPosition()).select();

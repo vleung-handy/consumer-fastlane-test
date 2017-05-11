@@ -61,15 +61,14 @@ public class ProProfileAboutView extends FrameLayout {
         mStatsItemsContainer.removeAllViews();
 
         //use stats model, for now, to populate linear layout
-        ProProfile.Stats stats = proProfile.getStats();
+        ProProfile.ProviderStats providerStats = proProfile.getProviderStats();
 
-        if (proProfile.getRegions() != null
-            && proProfile.getRegions().length > 0) {
+        if (proProfile.getProviderRegionsServed().length > 0) {
             String locationsServed = "";
 
-            for (int i = 0; i < proProfile.getRegions().length; i++) {
-                locationsServed += proProfile.getRegions()[i];
-                if (i != proProfile.getRegions().length - 1) {
+            for (int i = 0; i < proProfile.getProviderRegionsServed().length; i++) {
+                locationsServed += proProfile.getProviderRegionsServed()[i];
+                if (i != proProfile.getProviderRegionsServed().length - 1) {
                     locationsServed += ",";
                 }
             }
@@ -82,22 +81,22 @@ public class ProProfileAboutView extends FrameLayout {
             ));
         }
 
-        if (!TextUtils.isBlank(stats.getDurationProExperienceFormatted())) {
-            String formattedExperience = stats.getDurationProExperienceFormatted();
+        if (!TextUtils.isBlank(providerStats.getDurationProExperienceFormatted())) {
+            String formattedExperience = providerStats.getDurationProExperienceFormatted();
             mStatsItemsContainer.addView(createProStatsItem(
                     formattedExperience,
                     R.drawable.ic_checkbox
             ));
         }
 
-        if (!TextUtils.isBlank(stats.getDurationExperienceHandyFormatted())) {
-            String formattedExperience = stats.getDurationExperienceHandyFormatted();
+        if (!TextUtils.isBlank(providerStats.getDurationExperienceHandyFormatted())) {
+            String formattedExperience = providerStats.getDurationExperienceHandyFormatted();
             mStatsItemsContainer.addView(createProStatsItem(
                     formattedExperience,
                     R.drawable.ic_experience_badge
             ));
         }
-        if (stats.getBackgroundChecked() != null && stats.getBackgroundChecked()) {
+        if (providerStats.getBackgroundChecked() != null && providerStats.getBackgroundChecked()) {
             mStatsItemsContainer.addView(createProStatsItem(
                     getResources().getString(R.string.pro_profile_about_page_background_checked),
                     R.drawable.ic_background_check

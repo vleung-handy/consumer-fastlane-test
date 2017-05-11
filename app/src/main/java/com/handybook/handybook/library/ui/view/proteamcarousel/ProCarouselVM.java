@@ -118,7 +118,7 @@ public class ProCarouselVM implements Serializable {
                 rating,
                 provider.getName(),
                 proReferral.getReferralButtonText(),
-                provider.getProProfileEnabled()
+                provider.getIsProProfileEnabled()
         );
     }
 
@@ -134,7 +134,7 @@ public class ProCarouselVM implements Serializable {
                 provider.getAverageRating() == null ? 0.0f : provider.getAverageRating(),
                 provider.getFirstNameAndLastInitial(),
                 buttonText,
-                provider.getProProfileEnabled()
+                provider.getIsProProfileEnabled()
         );
     }
 }

@@ -35,10 +35,6 @@ public class ProReviews implements Serializable {
 
     public static class Review implements Serializable
     {
-        /**
-         * server unwilling to send String
-         * and we cannot parse an int as String
-         */
         @SerializedName("id")
         private String mId;
         @SerializedName("rating")

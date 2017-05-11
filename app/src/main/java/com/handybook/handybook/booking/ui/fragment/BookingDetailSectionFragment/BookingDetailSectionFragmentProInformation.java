@@ -251,7 +251,7 @@ public class BookingDetailSectionFragmentProInformation extends
         }
 
         //if pro profile enabled, launch pro profile page on profile image click
-        if(pro.getProProfileEnabled())
+        if (pro.getIsProProfileEnabled())
         {
             getSectionView().setProProfileImageClickListener(new View.OnClickListener() {
                 @Override
