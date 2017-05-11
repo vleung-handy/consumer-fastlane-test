@@ -24,6 +24,7 @@ class ProReviewViewModel {
         return mProviderReview.getText();
     }
 
+    @Nullable
     public String getLocationText() {
         return mProviderReview.getLocationText();
     }

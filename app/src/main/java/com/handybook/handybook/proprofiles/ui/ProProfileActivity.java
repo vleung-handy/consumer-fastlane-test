@@ -23,24 +23,21 @@ public final class ProProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentByTag(ProProfileFragment.TAG);
-        if (fragment == null) {
-            if (getIntent().getExtras() != null) {
-                String providerId = getIntent().getExtras().getString(BundleKeys.PROVIDER_ID);
-                @SourcePage.HandyLoggerSourcePage
-                String pageSource = getIntent().getExtras().getString(BundleKeys.PAGE_SOURCE);
-                if (TextUtils.isBlank(providerId)) {
-                    Toast.makeText(this, R.string.default_error_string, Toast.LENGTH_SHORT).show();
-                    Crashlytics.logException(new Exception(
-                            "Provider id is null; unable to show profiles page"));
-                    finish();
-                    return;
-                }
-                FragmentTransaction ft = fm.beginTransaction();
-                fragment = ProProfileFragment.newInstance(providerId, pageSource);
-                ft.add(android.R.id.content, fragment, ProProfileFragment.TAG);
-                ft.commit();
+        if (fragment == null && getIntent().getExtras() != null) {
+            String providerId = getIntent().getExtras().getString(BundleKeys.PROVIDER_ID);
+            @SourcePage.HandyLoggerSourcePage
+            String pageSource = getIntent().getExtras().getString(BundleKeys.PAGE_SOURCE);
+            if (TextUtils.isBlank(providerId)) {
+                Toast.makeText(this, R.string.default_error_string, Toast.LENGTH_SHORT).show();
+                Crashlytics.logException(new Exception(
+                        "Provider id is null; unable to show profiles page"));
+                finish();
+                return;
             }
-
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment = ProProfileFragment.newInstance(providerId, pageSource);
+            ft.add(android.R.id.content, fragment, ProProfileFragment.TAG);
+            ft.commit();
         }
     }
 

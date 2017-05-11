@@ -137,14 +137,17 @@ public class ProProfile implements Serializable {
             return mMatchPreference;
         }
 
+        @NonNull
         public String getId() {
             return mId;
         }
 
+        @Nullable
         public String getDisplayName() {
             return mDisplayName;
         }
 
+        @Nullable
         public String getFirstName() {
             return mFirstName;
         }

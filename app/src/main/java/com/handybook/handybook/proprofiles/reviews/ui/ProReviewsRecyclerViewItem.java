@@ -77,7 +77,7 @@ public class ProReviewsRecyclerViewItem extends FrameLayout {
         }
     }
 
-    public void setBodyText(final String bodyText) {
+    public void setBodyText(@Nullable final String bodyText) {
         if(TextUtils.isBlank(bodyText))
         {
             mBodyText.setVisibility(GONE);

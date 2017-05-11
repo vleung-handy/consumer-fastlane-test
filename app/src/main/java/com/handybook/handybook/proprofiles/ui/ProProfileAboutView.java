@@ -101,7 +101,7 @@ public class ProProfileAboutView extends FrameLayout {
         }
     }
 
-    private TextView createProStatsItem(String textString, int drawableResourceId) {
+    private TextView createProStatsItem(@NonNull String textString, int drawableResourceId) {
         TextView textView = new TextView(getContext(), null, R.style.TextView_ProProfileAboutItem);
         textView.setText(textString);
         Drawable iconDrawable = ContextCompat.getDrawable(getContext(), drawableResourceId);

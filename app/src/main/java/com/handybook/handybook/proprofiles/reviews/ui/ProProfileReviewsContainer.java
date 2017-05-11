@@ -106,6 +106,7 @@ public class ProProfileReviewsContainer extends FrameLayout {
         mLoadingView.setVisibility(GONE);
     }
 
+    @Nullable
     public String getCurrentPageLastReviewId() {
         return mCurrentPageLastReviewId;
     }
