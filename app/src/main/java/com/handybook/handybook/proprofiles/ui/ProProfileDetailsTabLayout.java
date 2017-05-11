@@ -187,7 +187,6 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
     public void updateForProProfile(@NonNull ProProfile proProfile) {
         mProProfileAboutView.updateWithModel(proProfile);
         mReviewsContainer.updateWithProviderFirstName(
-                proProfile.getProviderInformation() == null ? null :
                 proProfile.getProviderInformation().getFirstName());
     }
 
@@ -251,6 +250,7 @@ public class ProProfileDetailsTabLayout extends FrameLayout {
             return mViews.indexOf(object);
         }
 
+        @Nullable
         private View getItemAt(final int position) {
             return mViews.get(position);
         }
