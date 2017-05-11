@@ -37,7 +37,7 @@ public class ProProfile implements Serializable {
         return mProviderInformation;
     }
 
-    @NonNull
+    @Nullable
     public String[] getProviderRegionsServed() {
         return mProviderRegionsServed;
     }

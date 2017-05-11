@@ -35,7 +35,7 @@ public class PersistentPromoManager {
     private PersistentPromo getTestPersistentPromo(Context context) {
         String json = null;
         try {
-            json = IOUtils.loadJSONFromAsset(context, "test_persistent_promo.json");
+            json = IOUtils.loadJSONFromAsset(context, "testdata/test_persistent_promo.json");
         }
         catch (Exception e) {
             e.printStackTrace();

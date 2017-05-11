@@ -60,10 +60,11 @@ public class ProProfileAboutView extends FrameLayout {
     public void updateWithModel(@NonNull ProProfile proProfile) {
         mStatsItemsContainer.removeAllViews();
 
-        //use stats model, for now, to populate linear layout
+        //use provider stats model to populate the layout
         ProProfile.ProviderStats providerStats = proProfile.getProviderStats();
 
-        if (proProfile.getProviderRegionsServed().length > 0) {
+        if (proProfile.getProviderRegionsServed() != null
+            && proProfile.getProviderRegionsServed().length > 0) {
             String locationsServed = android.text.TextUtils.join(
                     ", ",
                     proProfile.getProviderRegionsServed()
