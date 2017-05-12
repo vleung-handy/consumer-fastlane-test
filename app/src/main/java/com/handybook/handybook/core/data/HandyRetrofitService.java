@@ -146,6 +146,17 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
+    @GET("/providers/{id}")
+    void getProviderProfile(@Path("id") String providerId, HandyRetrofitCallback cb);
+
+    @GET("/providers/{id}/reviews")
+    void getProviderReviews(@Path("id") String providerId,
+                            @Query("starting_after_id") String startingAfterId,
+                            @Query("limit") Integer pageSizeLimit,
+                            @Query("min_rating") Float minRating,
+                            @Query("order") String sortOrder,
+                            HandyRetrofitCallback cb);
+
     @GET("/bookings/{id}/milestones")
     void getBookingMilestones(@Path("id") String bookingId, HandyRetrofitCallback cb);
 

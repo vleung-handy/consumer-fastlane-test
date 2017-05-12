@@ -28,6 +28,8 @@ import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
 import com.handybook.handybook.notifications.model.HandyNotification;
 import com.handybook.handybook.promos.persistent.PersistentPromo;
 import com.handybook.handybook.promos.splash.SplashPromo;
+import com.handybook.handybook.proprofiles.model.ProProfile;
+import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
@@ -284,6 +286,21 @@ class ProAvailabilityCallback
     }
 }
 
+class ProProfileCallback
+        extends TypedHandyRetrofitCallback<ProProfile> {
+
+    ProProfileCallback(final DataManager.Callback callback) {
+        super(callback);
+    }
+}
+
+class ProReviewsCallback
+        extends TypedHandyRetrofitCallback<ProReviews> {
+
+    ProReviewsCallback(final DataManager.Callback callback) {
+        super(callback);
+    }
+}
 
 class EmptyHandyRetroFitCallback extends TypedHandyRetrofitCallback<Void> {
 

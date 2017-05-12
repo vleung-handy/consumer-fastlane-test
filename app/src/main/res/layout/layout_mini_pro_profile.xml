@@ -100,5 +100,19 @@
         </LinearLayout>
 
         <include layout="@layout/job_count_ratings_layout"/>
+
+        <TextView
+            android:id="@+id/mini_pro_profile_no_ratings_indicator"
+            android:drawableLeft="@drawable/ic_new_to_handy_badge"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextView.XSmall"
+            android:textColor="@color/handy_tertiary_gray"
+            android:text="@string/pro_profile_new_to_handy"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
     </LinearLayout>
 </LinearLayout>

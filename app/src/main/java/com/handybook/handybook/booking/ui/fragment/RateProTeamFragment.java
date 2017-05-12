@@ -14,6 +14,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.library.ui.view.ImageToggleButton;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
+import com.handybook.handybook.proteam.util.ProTeamUtils;
 
 import butterknife.Bind;
 import butterknife.BindDrawable;
@@ -99,7 +100,7 @@ public class RateProTeamFragment extends Fragment {
         );
 
         // Yes
-        mButtonYes.setChecked(isProAlreadyOnTeam());
+        mButtonYes.setChecked(ProTeamUtils.isProOnProTeam(mInitialMatchPreference));
         mButtonYes.setCheckedText(getString(R.string.yes));
         mButtonYes.setUncheckedText(getString(R.string.yes));
         mButtonYes.setCheckedDrawable(mActiveAddDrawable);
@@ -113,7 +114,7 @@ public class RateProTeamFragment extends Fragment {
             }
         });
         // No
-        mButtonNo.setChecked(!isProAlreadyOnTeam());
+        mButtonNo.setChecked(!ProTeamUtils.isProOnProTeam(mInitialMatchPreference));
         mButtonNo.setCheckedText(getString(R.string.no));
         mButtonNo.setUncheckedText(getString(R.string.no));
         mButtonNo.setCheckedDrawable(mActiveBlockDrawable);
@@ -173,12 +174,4 @@ public class RateProTeamFragment extends Fragment {
         //In theory this should never happen :)
         return ProviderMatchPreference.INDIFFERENT;
     }
-
-    /**
-     * As of today, a pro is considered already on the team if the match preference says "preferred"
-     */
-    private boolean isProAlreadyOnTeam() {
-        return mInitialMatchPreference == ProviderMatchPreference.PREFERRED;
-    }
-
 }

@@ -46,6 +46,7 @@ public abstract class BaseReferralFragment extends InjectedFragment {
                 = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
     }
 
+    //todo put into util
     protected void launchGenericShareIntent() {
         final Intent dummyIntent = new Intent();
         dummyIntent.setAction(Intent.ACTION_SEND);

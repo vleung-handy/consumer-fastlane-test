@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--pro profiles needs a view similar to the mini pro profiles view, but with some layout
+differences, and later possibly functionality differences, so not simply using the mini profile layout-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <RelativeLayout
+        android:id="@+id/mini_pro_profile_image_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin_half"
+        android:layout_marginLeft="@dimen/default_margin_half"
+        android:layout_marginRight="@dimen/default_margin_half"
+        android:layout_marginStart="@dimen/default_margin_half"
+        android:paddingBottom="@dimen/default_padding_half"
+        android:paddingTop="@dimen/default_padding_half"
+        android:visibility="visible"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/mini_pro_profile_image"
+            android:layout_width="@dimen/pro_profile_pro_image_size"
+            android:layout_height="@dimen/pro_profile_pro_image_size"
+            tools:src="@drawable/img_pro_placeholder"
+            />
+
+        <FrameLayout
+            android:id="@+id/mini_pro_profile_pro_team_indicator_image"
+            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_container_size_small"
+            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_container_size_small"
+            android:layout_alignEnd="@id/mini_pro_profile_image"
+            android:layout_alignRight="@id/mini_pro_profile_image"
+            android:background="@drawable/bg_circle_white"
+            android:visibility="gone"
+            tools:visibility="visible"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size_small"
+                android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size_small"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_heart_small"
+                />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/mini_pro_profile_title"
+                style="@style/TextView.XXLarge.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Jonathan P."
+                />
+
+            <ImageView
+                android:id="@+id/mini_pro_profile_handyman_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:src="@drawable/ic_handyman_outline_small"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+            <ImageView
+                android:id="@+id/mini_pro_profile_pro_team_indicator_name"
+                android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size"
+                android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/default_margin_half"
+                android:layout_marginStart="@dimen/default_margin_half"
+                android:src="@drawable/ic_heart_medium"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
+
+        </LinearLayout>
+
+        <include layout="@layout/job_count_ratings_layout"/>
+
+        <TextView
+            android:id="@+id/mini_pro_profile_no_ratings_indicator"
+            android:drawableLeft="@drawable/ic_new_to_handy_badge"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextView.XSmall"
+            android:textColor="@color/handy_tertiary_gray"
+            android:text="@string/pro_profile_new_to_handy"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+    </LinearLayout>
+</LinearLayout>

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.logger.handylogger.constants.SourcePage;
+import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -24,7 +26,6 @@ public class CarouselPagerAdapter extends PagerAdapter {
     private List<ProCarouselVM> mProCarouselVMs;
     private ActionListener mActionListener;
     private Context mContext;
-
 
     public interface ActionListener {
 
@@ -51,6 +52,7 @@ public class CarouselPagerAdapter extends PagerAdapter {
         FrameLayout heartContainer
                 = (FrameLayout) itemView.findViewById(R.id.carousel_heart_container);
         View ratingContainer = itemView.findViewById(R.id.carousel_ratings_container);
+        View noRatingsContainer = itemView.findViewById(R.id.carousel_no_ratings_indicator);
         TextView name = (TextView) itemView.findViewById(R.id.carousel_name);
         TextView rating = (TextView) itemView.findViewById(R.id.mini_pro_profile_rating);
         TextView jobCount = (TextView) itemView.findViewById(R.id.mini_pro_profile_jobs_count);
@@ -62,6 +64,7 @@ public class CarouselPagerAdapter extends PagerAdapter {
         if (profile.getJobCount() > 0 && profile.getAverageRating() > 0.f) {
 
             ratingContainer.setVisibility(View.VISIBLE);
+            noRatingsContainer.setVisibility(View.GONE);
 
             final String jobCountString = jobCount
                     .getResources()
@@ -78,7 +81,8 @@ public class CarouselPagerAdapter extends PagerAdapter {
             rating.setText(format.format(profile.getAverageRating()));
         }
         else {
-            ratingContainer.setVisibility(View.INVISIBLE);
+            ratingContainer.setVisibility(View.GONE);
+            noRatingsContainer.setVisibility(View.VISIBLE);
         }
 
         name.setText(profile.getDisplayName());
@@ -87,6 +91,20 @@ public class CarouselPagerAdapter extends PagerAdapter {
                .load(profile.getImageUrl())
                .placeholder(R.drawable.img_pro_placeholder)
                .into(image);
+
+        if(profile.isProfileEnabled())
+        {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    mContext.startActivity(ProProfileActivity.buildIntent(
+                            mContext,
+                            profile.getProviderId(),
+                            SourcePage.SHARE
+                    ));
+                }
+            });
+        }
 
         if (!TextUtils.isBlank(profile.getButtonText())) {
             mButton.setText(profile.getButtonText());

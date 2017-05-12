@@ -42,6 +42,8 @@ public class Provider implements Serializable, Comparable<Provider> {
     private String mLayerUserId;
     @SerializedName("last_seen_at")
     private Date mLastSeenAt;
+    @SerializedName("profile_enabled")
+    private boolean mProProfileEnabled;
     @SerializedName("instant_book_enabled")
     private boolean mIsInstantBookEnabled;
 
@@ -55,6 +57,10 @@ public class Provider implements Serializable, Comparable<Provider> {
         mFirstName = firstName;
         mLastName = lastName;
         mPhone = phone;
+    }
+
+    public boolean getIsProProfileEnabled() {
+        return mProProfileEnabled;
     }
 
     public final int getStatus() {

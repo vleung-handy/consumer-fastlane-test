@@ -40,6 +40,8 @@ public class MiniProProfile extends FrameLayout {
     View mProTeamIndicatorName;
     @Bind(R.id.mini_pro_profile_handyman_indicator)
     View mHandymanIndicator;
+    @Bind(R.id.mini_pro_profile_no_ratings_indicator)
+    View mNoRatingsIndicator;
 
     private boolean mIsProTeam;
     private boolean mIsProTeamIndicatorEnabled;
@@ -71,8 +73,13 @@ public class MiniProProfile extends FrameLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.layout_mini_pro_profile, this);
+        inflate(getContext(), getLayoutResourceId(), this);
         ButterKnife.bind(this);
+    }
+
+    protected int getLayoutResourceId()
+    {
+        return R.layout.layout_mini_pro_profile;
     }
 
     public void setTitle(final String title) {
@@ -93,6 +100,7 @@ public class MiniProProfile extends FrameLayout {
             @Nullable final Integer jobsCount
     ) {
         if (rating != null && rating > 0.0f && jobsCount != null && jobsCount > 0) {
+            mNoRatingsIndicator.setVisibility(GONE);
             mRatingAndJobsCountContainer.setVisibility(VISIBLE);
 
             final DecimalFormat format = new DecimalFormat();
@@ -102,6 +110,13 @@ public class MiniProProfile extends FrameLayout {
 
             mJobsCountText.setText(
                     getResources().getQuantityString(R.plurals.jobs_count, jobsCount, jobsCount));
+        }
+        else {
+            /*
+            business logic is to show this view when the ratings and jobs count does not show
+             */
+            mRatingAndJobsCountContainer.setVisibility(GONE);
+            mNoRatingsIndicator.setVisibility(VISIBLE);
         }
     }
 

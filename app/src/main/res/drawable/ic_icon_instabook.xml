@@ -3,41 +3,49 @@
         android:width="14dp"
         android:height="15dp"
         android:viewportWidth="14"
-        android:viewportHeight="15">
+        android:viewportHeight="15"
+    >
 
     <group
         android:translateX="-27.000000"
-        android:translateY="-482.000000">
+        android:translateY="-482.000000"
+        >
         <group
             android:translateX="16.000000"
-            android:translateY="472.000000">
+            android:translateY="472.000000"
+            >
             <group
                 android:translateX="11.000000"
-                android:translateY="11.000000">
+                android:translateY="11.000000"
+                >
                 <path
                     android:fillType="evenOdd"
                     android:strokeColor="#8BC53E"
                     android:strokeWidth="1.5"
-                    android:pathData="M 2.75 1.75 L 11.25 1.75 Q 13.25 1.75 13.25 3.75 L 13.25 11.25 Q 13.25 13.25 11.25 13.25 L 2.75 13.25 Q 0.75 13.25 0.75 11.25 L 0.75 3.75 Q 0.75 1.75 2.75 1.75 Z" />
+                    android:pathData="M 2.75 1.75 L 11.25 1.75 Q 13.25 1.75 13.25 3.75 L 13.25 11.25 Q 13.25 13.25 11.25 13.25 L 2.75 13.25 Q 0.75 13.25 0.75 11.25 L 0.75 3.75 Q 0.75 1.75 2.75 1.75 Z"
+                    />
                 <path
                     android:fillType="evenOdd"
                     android:strokeColor="#8BC53E"
                     android:strokeWidth="1.5"
                     android:strokeLineCap="round"
-                    android:pathData="M4.25,0.5 L4.25,3" />
+                    android:pathData="M4.25,0.5 L4.25,3"
+                    />
                 <path
                     android:fillType="evenOdd"
                     android:strokeColor="#8BC53E"
                     android:strokeWidth="1.5"
                     android:strokeLineJoin="round"
                     android:strokeLineCap="round"
-                    android:pathData="M 4.5 7.65305199 L 6.43392285 9.78838995 L 9.94999981 6.30000019 " />
+                    android:pathData="M 4.5 7.65305199 L 6.43392285 9.78838995 L 9.94999981 6.30000019 "
+                    />
                 <path
                     android:fillType="evenOdd"
                     android:strokeColor="#8BC53E"
                     android:strokeWidth="1.5"
                     android:strokeLineCap="round"
-                    android:pathData="M9.75,0.5 L9.75,3" />
+                    android:pathData="M9.75,0.5 L9.75,3"
+                    />
             </group>
         </group>
     </group>
