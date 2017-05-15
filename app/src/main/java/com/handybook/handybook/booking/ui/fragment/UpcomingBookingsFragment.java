@@ -6,6 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,10 +34,13 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.ProviderRequest;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
+import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.core.ui.view.BookingListItem;
 import com.handybook.handybook.core.ui.view.NoBookingsView;
@@ -54,6 +60,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.R.attr.fragment;
 
 /**
  * the new way of doing things. We will only show the upcoming bookings here, and show active
@@ -145,6 +153,14 @@ public class UpcomingBookingsFragment extends InjectedFragment
         return new UpcomingBookingsFragment();
     }
 
+    public static UpcomingBookingsFragment newInstance(boolean shouldShowToolbar) {
+        UpcomingBookingsFragment fragment = new UpcomingBookingsFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(BundleKeys.SHOULD_SHOW_TOOLBAR, shouldShowToolbar);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -165,8 +181,23 @@ public class UpcomingBookingsFragment extends InjectedFragment
         final View view = inflater.inflate(R.layout.fragment_upcoming_bookings, container, false);
         ButterKnife.bind(this, view);
 
-        setupToolbar(mToolbar, getString(R.string.my_bookings));
-        mToolbar.setNavigationIcon(null);
+        /*
+        toolbar will be hidden when the combined upcoming/past bookings tab is enabled
+        not bothering to break this fragment into one without a toolbar
+        because we might just remove the toolbar if that combined fragment
+        is supposed to be permanently on
+         */
+        boolean shouldShowToolbar = getArguments() == null
+                                    || getArguments().getBoolean(BundleKeys.SHOULD_SHOW_TOOLBAR);
+        if (shouldShowToolbar) {
+            setupToolbar(mToolbar, getString(R.string.my_bookings));
+            mToolbar.setNavigationIcon(null);
+            mToolbar.setVisibility(View.VISIBLE);
+        }
+        else {
+            mToolbar.setVisibility(View.GONE);
+        }
+
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -243,7 +274,45 @@ public class UpcomingBookingsFragment extends InjectedFragment
     protected void loadBookings() {
         mBookingsRequestCompleted = false;
         mSwipeRefreshLayout.setRefreshing(true);
-        bus.post(new BookingEvent.RequestBookings(Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING));
+        bookingManager.requestBookings(
+                Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING,
+                new FragmentSafeCallback<UserBookingsWrapper>(this) {
+                    @Override
+                    public void onCallbackSuccess(final UserBookingsWrapper response) {
+                        onReceiveBookingsSuccess(response);
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        onReceiveBookingsError(error);
+                    }
+                }
+        );
+    }
+
+    @VisibleForTesting
+    protected void onReceiveBookingsSuccess(@NonNull final UserBookingsWrapper response) {
+        mFetchErrorView.setVisibility(View.GONE);
+        mBookingsRequestCompleted = true;
+        mBookings = response.getBookings();
+
+        if (response.getRecurringBookings() != null &&
+            !response.getRecurringBookings().isEmpty()) {
+            mRecurringBookings = response.getRecurringBookings();
+            mActivePlanCount = mRecurringBookings.size();
+        }
+        else {
+            mActivePlanCount = 0;
+        }
+
+        setupBookingsView();
+    }
+
+    private void onReceiveBookingsError(@NonNull DataManager.DataManagerError error) {
+        mFetchErrorView.setVisibility(View.VISIBLE);
+        mBookingsRequestCompleted = true;
+        mSwipeRefreshLayout.setRefreshing(false);
+        dataManagerErrorHandler.handleError(getActivity(), error);
     }
 
     private void bindBookingsToList() {
@@ -311,7 +380,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
                                     booking.getId())));
                             Fragment fragment = BookingDetailFragment.newInstance(booking, false);
                             FragmentUtils.switchToFragment(
-                                    UpcomingBookingsFragment.this, fragment, true);
+                                    getActivity(), fragment, true);
                             enableRefresh();
                         }
                     },
@@ -402,39 +471,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
         //we don't really care that the services errored out, we just won't display the
         //services icon.
         mServiceRequestCompleted = true;
-    }
-
-    @Subscribe
-    public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event) {
-        if (isBeingRemoved()) {
-            return;
-        }
-        mFetchErrorView.setVisibility(View.GONE);
-        mBookingsRequestCompleted = true;
-        Log.d(TAG, "onReceiveBookingsSuccess: " + event.getOnlyBookingsValue());
-        mBookings = event.getBookingWrapper().getBookings();
-
-        if (event.getBookingWrapper().getRecurringBookings() != null &&
-            !event.getBookingWrapper().getRecurringBookings().isEmpty()) {
-            mRecurringBookings = event.getBookingWrapper().getRecurringBookings();
-            mActivePlanCount = mRecurringBookings.size();
-        }
-        else {
-            mActivePlanCount = 0;
-        }
-
-        setupBookingsView();
-    }
-
-    @Subscribe
-    public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e) {
-        if (isBeingRemoved()) {
-            return;
-        }
-        mFetchErrorView.setVisibility(View.VISIBLE);
-        mBookingsRequestCompleted = true;
-        mSwipeRefreshLayout.setRefreshing(false);
-        dataManagerErrorHandler.handleError(getActivity(), e.error);
     }
 
     /**

@@ -15,6 +15,7 @@ import android.view.View;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
+import com.handybook.handybook.booking.ui.fragment.UpcomingAndPastBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.core.EnvironmentModifier;
@@ -162,7 +163,15 @@ public class BottomNavActivity extends BaseActivity {
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.bookings:
-                fragment = UpcomingBookingsFragment.newInstance();
+                if(mConfigurationManager.getPersistentConfiguration().isUpcomingAndPastBookingsMergeEnabled())
+                {
+                    fragment = UpcomingAndPastBookingsFragment.newInstance();
+                }
+                else
+                {
+                    //todo check usages of this fragment
+                    fragment = UpcomingBookingsFragment.newInstance();
+                }
                 break;
             case R.id.messages:
                 isProChatCurrentlySelected = true;

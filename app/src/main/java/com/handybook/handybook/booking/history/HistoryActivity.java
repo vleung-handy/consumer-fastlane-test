@@ -14,7 +14,7 @@ public class HistoryActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        return new HistoryFragment();
+        return HistoryFragment.newInstance();
     }
 
     @Override

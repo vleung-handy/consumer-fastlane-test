@@ -9,7 +9,6 @@ import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.data.DataManager;
@@ -58,62 +57,6 @@ public abstract class BookingEvent {
         }
 
     }
-
-
-    public static class RequestBookings extends HandyEvent.RequestEvent {
-
-        @NonNull
-        @Booking.List.OnlyBookingValues
-        final String mOnlyBookingsValue;
-
-        public RequestBookings(
-                @NonNull @Booking.List.OnlyBookingValues String onlyBookingsValue
-        ) {
-            mOnlyBookingsValue = onlyBookingsValue;
-        }
-
-        @NonNull
-        @Booking.List.OnlyBookingValues
-        public String getOnlyBookingsValue() {
-            return mOnlyBookingsValue;
-        }
-    }
-
-
-    public static class ReceiveBookingsSuccess extends HandyEvent.ReceiveSuccessEvent {
-
-        private final UserBookingsWrapper mBookingWrapper;
-
-        @NonNull
-        @Booking.List.OnlyBookingValues
-        private final String mOnlyBookingsValue;
-
-        public ReceiveBookingsSuccess(
-                final UserBookingsWrapper bookingWrapper,
-                @NonNull @Booking.List.OnlyBookingValues String onlyBookingsValue
-        ) {
-            mBookingWrapper = bookingWrapper;
-            mOnlyBookingsValue = onlyBookingsValue;
-        }
-
-        @NonNull
-        public String getOnlyBookingsValue() {
-            return mOnlyBookingsValue;
-        }
-
-        public UserBookingsWrapper getBookingWrapper() {
-            return mBookingWrapper;
-        }
-    }
-
-
-    public static class ReceiveBookingsError extends HandyEvent.ReceiveErrorEvent {
-
-        public ReceiveBookingsError(DataManager.DataManagerError error) {
-            this.error = error;
-        }
-    }
-
 
     public static class PostLowRatingFeedback extends HandyEvent.RequestEvent {
 

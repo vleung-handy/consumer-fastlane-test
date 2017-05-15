@@ -9,7 +9,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Booking;
+import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
@@ -29,7 +30,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.PastBookingsLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.referral.ui.ReferralActivity;
-import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -64,6 +64,19 @@ public class HistoryFragment extends InjectedFragment
     private HistoryListAdapter mAdapter;
     private boolean mBookingsRequestCompleted = false;
 
+    public static HistoryFragment newInstance()
+    {
+        return new HistoryFragment();
+    }
+
+    public static HistoryFragment newInstance(boolean shouldShowToolbar) {
+        HistoryFragment fragment = new HistoryFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(BundleKeys.SHOULD_SHOW_TOOLBAR, shouldShowToolbar);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(
@@ -74,7 +87,21 @@ public class HistoryFragment extends InjectedFragment
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         ButterKnife.bind(this, view);
 
-        setupToolbar(mToolbar, getString(R.string.history));
+        /*
+        toolbar will be hidden when the combined upcoming/past bookings tab is enabled
+        not bothering to break this fragment into one without a toolbar
+        because we might just remove the toolbar if that combined fragment
+        is supposed to be permanently on
+         */
+        boolean shouldShowToolbar = getArguments() == null
+                                    || getArguments().getBoolean(BundleKeys.SHOULD_SHOW_TOOLBAR);
+        if (shouldShowToolbar) {
+            setupToolbar(mToolbar, getString(R.string.history));
+            mToolbar.setVisibility(View.VISIBLE);
+        }
+        else {
+            mToolbar.setVisibility(View.GONE);
+        }
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -110,7 +137,36 @@ public class HistoryFragment extends InjectedFragment
     protected void loadBookings() {
         mBookingsRequestCompleted = false;
         mSwipeRefreshLayout.setRefreshing(true);
-        bus.post(new BookingEvent.RequestBookings(Booking.List.VALUE_ONLY_BOOKINGS_PAST));
+
+        //fixme test
+        bookingManager.requestBookings(
+                Booking.List.VALUE_ONLY_BOOKINGS_PAST,
+                new FragmentSafeCallback<UserBookingsWrapper>(this) {
+                    @Override
+                    public void onCallbackSuccess(final UserBookingsWrapper response) {
+                        onReceiveBookingsSuccess(response);
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        onReceiveBookingsError(error);
+                    }
+                }
+        );
+    }
+
+    private void onReceiveBookingsSuccess(@NonNull final UserBookingsWrapper response) {
+        mBookingsRequestCompleted = true;
+        mBookings = response.getBookings();
+        setupBookingsView();
+    }
+
+    private void onReceiveBookingsError(@NonNull final DataManager.DataManagerError error) {
+        mBookingsRequestCompleted = true;
+        mSwipeRefreshLayout.setRefreshing(false);
+        toast.setText("Error loading bookings, please try again.");
+        toast.show();
+        dataManagerErrorHandler.handleError(getActivity(), error);
     }
 
     private void bindBookingsToList() {
@@ -126,30 +182,13 @@ public class HistoryFragment extends InjectedFragment
                             bus.post(new LogEvent.AddLogEvent(new PastBookingsLog.BookingDetailsTappedLog(
                                     booking.getId())));
                             Fragment fragment = BookingDetailFragment.newInstance(booking, false);
-                            FragmentUtils.switchToFragment(HistoryFragment.this, fragment, true);
+                            FragmentUtils.switchToFragment(getActivity(), fragment, true);
                         }
                     }
             );
 
             mEmptiableRecyclerView.setAdapter(mAdapter);
         }
-    }
-
-    @Subscribe
-    public void onReceiveBookingsSuccess(@NonNull BookingEvent.ReceiveBookingsSuccess event) {
-        mBookingsRequestCompleted = true;
-        Log.d(TAG, "onReceiveBookingsSuccess: " + event.getOnlyBookingsValue());
-        mBookings = event.getBookingWrapper().getBookings();
-        setupBookingsView();
-    }
-
-    @Subscribe
-    public void onReceiveBookingsError(@NonNull final BookingEvent.ReceiveBookingsError e) {
-        mBookingsRequestCompleted = true;
-        mSwipeRefreshLayout.setRefreshing(false);
-        toast.setText("Error loading bookings, please try again.");
-        toast.show();
-        dataManagerErrorHandler.handleError(getActivity(), e.error);
     }
 
     /**

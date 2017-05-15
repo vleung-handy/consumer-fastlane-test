@@ -27,7 +27,6 @@ import static org.junit.Assert.assertEquals;
 public class UpcomingBookingsBaseTest extends RobolectricGradleTestWrapper {
 
     protected UpcomingBookingsFragment mUpcomingBookingsFragment;
-    protected BookingEvent.ReceiveBookingsSuccess mBookingReceiveSuccessfulEvent;
 
     protected void setup() throws Exception {
         mUpcomingBookingsFragment = UpcomingBookingsFragment.newInstance();

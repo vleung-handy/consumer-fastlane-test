@@ -210,28 +210,16 @@ public class BookingManager implements Observer {
         );
     }
 
-    @Subscribe
-    public void onRequestBookings(final BookingEvent.RequestBookings event) {
-        if (null != event.getOnlyBookingsValue()) {
-            mDataManager.getBookings(
-                    null,
-                    event.getOnlyBookingsValue(),
-                    new DataManager.Callback<UserBookingsWrapper>() {
-                        @Override
-                        public void onSuccess(final UserBookingsWrapper result) {
-                            mBus.post(new BookingEvent.ReceiveBookingsSuccess(
-                                    result,
-                                    event.getOnlyBookingsValue()
-                            ));
-                        }
-
-                        @Override
-                        public void onError(DataManager.DataManagerError error) {
-                            mBus.post(new BookingEvent.ReceiveBookingsError(error));
-                        }
-                    }
-            );
-        }
+    public void requestBookings(
+            @Booking.List.OnlyBookingValues
+                    String onlyBookingsValue,
+            DataManager.Callback<UserBookingsWrapper> cb
+    ) {
+        mDataManager.getBookings(
+                null,
+                onlyBookingsValue,
+                cb
+        );
     }
 
     @Subscribe
