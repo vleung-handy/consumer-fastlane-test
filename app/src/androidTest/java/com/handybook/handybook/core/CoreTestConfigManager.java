@@ -26,7 +26,7 @@ public class CoreTestConfigManager extends ConfigurationManager {
         Configuration config = super.getPersistentConfiguration();
 
         // Override the config here
-        config.setOnboardingV2Enabled(false);
+        config.setSaveZipCodeEnabled(false);
         return config;
     }
 

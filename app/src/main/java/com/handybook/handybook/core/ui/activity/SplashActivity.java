@@ -126,7 +126,7 @@ public class SplashActivity extends BaseActivity {
             //TODO investigate  <-- @Xi what is it that we need to investigate?
 
             //This needs to be set to fix an issue with existing users not having their zip set
-            if (config.isOnboardingV2Enabled() &&
+            if (config.isSaveZipCodeEnabled() &&
                 TextUtils.isEmpty(mDefaultPreferencesManager.getString(PrefsKey.ZIP, null)) &&
                 user.getAddress() != null &&
                 !TextUtils.isEmpty(user.getAddress().getZip())) {
@@ -146,7 +146,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     /**
-     * After we did what we need to do, we no longer care about bus events. 
+     * After we did what we need to do, we no longer care about bus events.
      */
     private void unregisterAndFinish() {
         if (mBusEventListener != null) { mBus.unregister(mBusEventListener); }

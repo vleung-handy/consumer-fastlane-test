@@ -51,7 +51,7 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper {
         initMocks(this);
         mTestBaseApplication = ((TestBaseApplication) ShadowApplication.getInstance()
                                                                        .getApplicationContext());
-        when(mConfiguration.isOnboardingV2Enabled()).thenReturn(true);
+        when(mConfiguration.isSaveZipCodeEnabled()).thenReturn(true);
         mTestBaseApplication.inject(this);
     }
 

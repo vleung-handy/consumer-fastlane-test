@@ -35,7 +35,7 @@ public class Configuration implements Serializable {
     @SerializedName("pro_team_profile_pictures_enabled")
     private boolean isProTeamProfilePicturesEnabled;
     @SerializedName("onboarding_zip_email_collection_enabled")
-    private boolean mOnboardingV2Enabled;
+    private boolean mSaveZipCodeEnabled;
 
     //default this to false
     @SerializedName("snow_enabled")
@@ -130,8 +130,8 @@ public class Configuration implements Serializable {
         return mSettingFavoriteProEnabled;
     }
 
-    public boolean isOnboardingV2Enabled() {
-        return mOnboardingV2Enabled;
+    public boolean isSaveZipCodeEnabled() {
+        return mSaveZipCodeEnabled;
     }
 
     public boolean isNewRatingFlowEnabled() {
@@ -166,7 +166,7 @@ public class Configuration implements Serializable {
     }
 
     @VisibleForTesting
-    public void setOnboardingV2Enabled(final boolean onboardingV2Enabled) {
-        mOnboardingV2Enabled = onboardingV2Enabled;
+    public void setSaveZipCodeEnabled(final boolean saveZipCodeEnabled) {
+        mSaveZipCodeEnabled = saveZipCodeEnabled;
     }
 }

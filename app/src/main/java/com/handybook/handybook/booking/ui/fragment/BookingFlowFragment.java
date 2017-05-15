@@ -140,7 +140,7 @@ public class BookingFlowFragment extends InjectedFragment {
         if (config.isConsolidateBookingGetQuoteFlowExperimentEnabled()) {
             startConsolidatedGetQuoteFlow();
         }
-        else if (config.isOnboardingV2Enabled() && !TextUtils.isBlank(zip)) {
+        else if (config.isSaveZipCodeEnabled() && !TextUtils.isBlank(zip)) {
             validateZipAndProceed(zip);
         }
         else {
