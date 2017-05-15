@@ -21,7 +21,7 @@ public class ProCarouselVM implements Serializable {
     private String mDisplayName;
     private String mButtonText;
     private boolean mActionable;
-    private boolean mIsProTeam;
+    private boolean mIsFavorite;
     private boolean mIsProfileEnabled;
 
     /**
@@ -38,7 +38,8 @@ public class ProCarouselVM implements Serializable {
             final float averageRating,
             final String displayName,
             final String buttonText,
-            final boolean isProfileEnabled
+            final boolean isProfileEnabled,
+            final boolean isFavorite
     ) {
         mProviderId = providerId;
         mImageUrl = imageUrl;
@@ -47,7 +48,7 @@ public class ProCarouselVM implements Serializable {
         mDisplayName = displayName;
         mButtonText = buttonText;
         mActionable = true;
-        mIsProTeam = true;
+        mIsFavorite = isFavorite;
         mIsProfileEnabled = isProfileEnabled;
     }
 
@@ -93,11 +94,11 @@ public class ProCarouselVM implements Serializable {
     }
 
     public void setIsProTeam(final boolean proTeam) {
-        mIsProTeam = proTeam;
+        mIsFavorite = proTeam;
     }
 
-    public boolean isProTeam() {
-        return mIsProTeam;
+    public boolean isFavorite() {
+        return mIsFavorite;
     }
 
     public static ProCarouselVM fromProReferral(@NonNull final ProReferral proReferral) {
@@ -118,7 +119,8 @@ public class ProCarouselVM implements Serializable {
                 rating,
                 provider.getName(),
                 proReferral.getReferralButtonText(),
-                provider.getIsProProfileEnabled()
+                provider.getIsProProfileEnabled(),
+                provider.isFavorite()
         );
     }
 
@@ -134,7 +136,8 @@ public class ProCarouselVM implements Serializable {
                 provider.getAverageRating() == null ? 0.0f : provider.getAverageRating(),
                 provider.getFirstNameAndLastInitial(),
                 buttonText,
-                provider.getIsProProfileEnabled()
+                provider.getIsProProfileEnabled(),
+                provider.isFavorite()
         );
     }
 }
