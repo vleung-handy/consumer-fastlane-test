@@ -119,7 +119,7 @@ public class ProProfileHeaderView extends FrameLayout{
         mMiniProProfile.setHandymanIndicatorEnabled(providerInformation.getProTeamCategoryType() == ProTeamCategoryType.HANDYMEN);
 
         //don't show allow user to message pro if pro is not on pro team
-        mMessageActionButton.setVisibility(isProOnProTeam ? View.VISIBLE : View.GONE);
+        mMessageActionButton.setEnabled(isProOnProTeam);
 
         //profile fully loaded; now we can show the profile actions
         mActionButtonsLayout.setVisibility(VISIBLE);

@@ -10,8 +10,8 @@ public class SourcePage {
     public static final String BOOKING_DETAILS = "booking_details";
     public static final String ACTIVE_BOOKING = "active_booking";
     public static final String MESSAGES = "messages";
-    public static final String SHARE = "share";
-    public static final String RATING = "rating";
+    public static final String SHARE = "share_page";
+    public static final String RATING = "rating_flow";
     public static final String SIDE_MENU = "side_menu";
     public static final String ACCOUNT = "account";
 

@@ -7,16 +7,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 
-public final class ProProfileActivity extends AppCompatActivity {
+public final class ProProfileActivity extends BaseActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

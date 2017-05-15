@@ -1,8 +1,12 @@
 package com.handybook.handybook.core.ui.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -51,21 +55,45 @@ public class ImageTextActionButton extends FrameLayout {
             String text = typedArray.getString(R.styleable.ImageTextActionButton_text);
             Drawable drawable = typedArray.getDrawable(R.styleable.ImageTextActionButton_drawable);
 
-            if (drawable == null) {
-                mImageView.setVisibility(GONE);
-            }
-            else {
+            if (drawable != null) {
+                int drawableTintResourceId = typedArray.getResourceId(
+                        R.styleable.ImageTextActionButton_drawableTint,
+                        -1
+                );
+                if (drawableTintResourceId >= 0) {
+                    ColorStateList drawableTint = ContextCompat.getColorStateList(
+                            getContext(),
+                            drawableTintResourceId
+                    );
+                    drawable = DrawableCompat.wrap(drawable.mutate());
+
+                    DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
+                    DrawableCompat.setTintList(drawable, drawableTint);
+                }
                 mImageView.setImageDrawable(drawable);
                 mImageView.setVisibility(VISIBLE);
             }
-
-            if (TextUtils.isBlank(text)) {
-                mTextView.setVisibility(GONE);
-            }
             else {
+                mImageView.setVisibility(GONE);
+            }
+
+            if (!TextUtils.isBlank(text)) {
+                int textTintResourceId
+                        = typedArray.getResourceId(R.styleable.ImageTextActionButton_textTint, -1);
+                if (textTintResourceId >= 0) {
+                    ColorStateList textTint = ContextCompat.getColorStateList(
+                            getContext(),
+                            textTintResourceId
+                    );
+                    mTextView.setTextColor(textTint);
+                }
                 mTextView.setText(text);
                 mTextView.setVisibility(VISIBLE);
             }
+            else {
+                mTextView.setVisibility(GONE);
+            }
+
             typedArray.recycle();
         }
     }
