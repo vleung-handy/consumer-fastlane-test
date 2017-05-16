@@ -126,7 +126,7 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
             }
         });
 
-        mToolbar.setTitle(R.string.reschedule);
+        setupToolbar(mToolbar, getString(R.string.reschedule));
 
         return view;
     }
