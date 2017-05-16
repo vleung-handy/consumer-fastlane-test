@@ -42,7 +42,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     ) {
         mCheckbox.setOnCheckedChangeListener(null);
         mProTeamProViewModel = proTeamProViewModel;
-        if(mProTeamProViewModel.isCheckboxShown()) {
+        if(mProTeamProViewModel.shouldShowCheckbox()) {
             mCheckbox.setVisibility(View.VISIBLE);
             mCheckbox.setChecked(mProTeamProViewModel.isChecked());
             mCheckbox.setOnCheckedChangeListener(this);

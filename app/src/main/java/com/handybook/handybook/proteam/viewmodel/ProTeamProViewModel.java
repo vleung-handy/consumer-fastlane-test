@@ -23,7 +23,7 @@ public class ProTeamProViewModel implements Serializable {
     transient private Conversation mConversation; // Be careful!
     private boolean mIsFavorite;
     private boolean mIsInstantBookIndicatorEnabled;
-    private boolean mIsCheckboxShown;
+    private boolean mShouldShowCheckbox;
 
     private ProTeamProViewModel(
             @NonNull final Provider proTeamPro,
@@ -39,7 +39,7 @@ public class ProTeamProViewModel implements Serializable {
         mJobsCount = proTeamPro.getBookingCount();
         mIsHandymanIndicatorEnabled = shouldShowHandymanIndicators &&
                                       proTeamPro.getCategoryType() == ProTeamCategoryType.HANDYMEN;
-        mIsCheckboxShown = proTeamPro.getCategoryType() == ProTeamCategoryType.CLEANING;
+        mShouldShowCheckbox = proTeamPro.getCategoryType() == ProTeamCategoryType.CLEANING;
         mIsInstantBookIndicatorEnabled = shouldShowInstantBookIndicator;
         mImageUrl = proTeamPro.getImageUrl();
         mIsFavorite = proTeamPro.isFavorite();
@@ -129,7 +129,7 @@ public class ProTeamProViewModel implements Serializable {
         mConversation = conversation;
     }
 
-    public boolean isCheckboxShown() {
-        return mIsCheckboxShown;
+    public boolean shouldShowCheckbox() {
+        return mShouldShowCheckbox;
     }
 }
