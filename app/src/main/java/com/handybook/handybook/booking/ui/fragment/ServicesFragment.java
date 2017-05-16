@@ -53,7 +53,7 @@ public final class ServicesFragment extends BookingFlowFragment {
 
     @Bind(R.id.content)
     ScrollView mContent;
-    @Bind(R.id.toolbar)
+    @Bind(R.id.services_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.header)
     ViewGroup mHeader;
