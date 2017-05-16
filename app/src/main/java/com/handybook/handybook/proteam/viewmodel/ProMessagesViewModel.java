@@ -36,7 +36,7 @@ public class ProMessagesViewModel implements Serializable {
             @Nullable final String providerFirstName,
             @Nullable final String imageUrl,
             @Nullable final ProTeamCategoryType proCategoryType,
-            final boolean isFavorite,
+            final Boolean isFavorite,
             final boolean isProProfileEnabled
     ) {
         mProviderId = providerId;
@@ -44,7 +44,7 @@ public class ProMessagesViewModel implements Serializable {
         mProviderFirstName = providerFirstName;
         mImageUrl = imageUrl;
         mProTeamCategoryType = proCategoryType;
-        mIsFavorite = isFavorite;
+        mIsFavorite = isFavorite != null && isFavorite;
         mIsProProfileEnabled = isProProfileEnabled;
     }
 
