@@ -26,7 +26,10 @@ public class EditPlanFrequencyFragmentTest extends RobolectricGradleTestWrapper 
 
     @Test
     public void shouldDisplayCorrectInfo() {
-        assertEquals(mFragment.getString(R.string.edit_frequency), mFragment.mToolbar.getTitle());
+        assertEquals(
+                mFragment.getString(R.string.edit_plan_edit_frequency_title),
+                mFragment.mToolbar.getTitle()
+        );
 
         FrequencySelectionsView frequencyView = mFragment.mFrequencySelectionsView;
 

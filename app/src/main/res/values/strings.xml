@@ -228,7 +228,9 @@
     <string name="no_booking_card_past_text">You don\'t have any\npast bookings</string>
     <string name="snackbar_recurring_will_be_generated">Bookings are generated 28 days in advance.</string>
     <string name="updated_booking_frequency">Updated booking frequency</string>
-    <string name="edit_frequency">Edit Frequency</string>
+    <string name="edit_plan_edit_frequency_title">Edit Frequency</string>
+    <string name="edit_plan_edit_hours_title">Edit Hours</string>
+    <string name="edit_plan_edit_extras_title">Edit Extras</string>
     <string name="booking_subscription_titlebar">Your Plan</string>
     <string name="booking_subscription_title">Set up your cleaning service.</string>
     <string name="booking_subscription_frequency_title">Select a Frequency</string>
@@ -625,5 +627,6 @@
     <string name="choose_time_option_subtitle">We\'ll request your Pro Team for your preferred time.</string>
     <string name="choose_pro_option_title">Choose from a pro\'s availability</string>
     <string name="choose_pro_option_subtitle">Select a pro to reschedule based on their availability.</string>
+    <string name="template_x_hours">%1$s hours</string>
 </resources>
 

@@ -6,9 +6,13 @@ import com.handybook.handybook.account.ui.EditContactInfoActivity;
 import com.handybook.handybook.account.ui.EditPasswordActivity;
 import com.handybook.handybook.account.ui.EditPlanAddressActivity;
 import com.handybook.handybook.account.ui.EditPlanAddressFragment;
+import com.handybook.handybook.account.ui.EditPlanExtrasActivity;
+import com.handybook.handybook.account.ui.EditPlanExtrasFragment;
 import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.account.ui.EditPlanFrequencyActivity;
 import com.handybook.handybook.account.ui.EditPlanFrequencyFragment;
+import com.handybook.handybook.account.ui.EditPlanHoursActivity;
+import com.handybook.handybook.account.ui.EditPlanHoursFragment;
 import com.handybook.handybook.account.ui.PlansFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
@@ -120,10 +124,10 @@ import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
+import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
-import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
 import com.handybook.handybook.proteam.ui.fragment.NewProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
@@ -268,5 +272,9 @@ import dagger.Module;
                 BookingGetQuoteFragment.class,
                 BookingOptionsInputFragment.class,
                 ReviewAppBannerFragment.class,
+                EditPlanHoursActivity.class,
+                EditPlanHoursFragment.class,
+                EditPlanExtrasActivity.class,
+                EditPlanExtrasFragment.class
         })
 public final class InjectionModule {}

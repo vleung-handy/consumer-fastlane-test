@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin_half"
                 android:text="@string/frequency"
-                android:textColor="@color/black"
+                android:textColor="@color/handy_text_black"
                 android:textSize="@dimen/text_size_large"
                 />
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin_half"
                 android:text="@string/address"
-                android:textColor="@color/black"
+                android:textColor="@color/handy_text_black"
                 android:textSize="@dimen/text_size_large"
                 />
 
@@ -73,6 +73,65 @@
                 android:textColor="@color/handy_tertiary_gray"
                 android:textSize="@dimen/text_size_medium"
                 tools:text="Fake Address, New York, NY 10001"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_plan_hours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_list_entry"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding"
+            >
+
+            <TextView
+                style="@style/TextView.Large.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:text="@string/hours"
+                android:textColor="@color/handy_text_black"
+                android:textSize="@dimen/text_size_large"
+                />
+
+            <TextView
+                android:id="@+id/edit_plan_hours_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/handy_tertiary_gray"
+                android:textSize="@dimen/text_size_medium"
+                tools:text="999"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_plan_extras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_list_entry"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding"
+            android:visibility="gone"
+            >
+
+            <TextView
+                style="@style/TextView.Large.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:text="@string/hours"
+                android:textColor="@color/handy_text_black"
+                android:textSize="@dimen/text_size_large"
+                />
+
+            <TextView
+                android:id="@+id/edit_plan_extras_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/handy_tertiary_gray"
+                android:textSize="@dimen/text_size_medium"
+                tools:text="one extra, two extra, three extra"
                 />
         </LinearLayout>
 

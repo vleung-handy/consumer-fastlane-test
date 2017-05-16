@@ -158,7 +158,7 @@ public interface HandyRetrofitService {
 
     @GET("/bookings/{bookingId}/edit_hours")
     void getEditHoursInfo(
-            @Path("bookingId") int bookingId,
+            @Path("bookingId") long bookingId,
             HandyRetrofitCallback cb
     );
 
@@ -285,6 +285,32 @@ public interface HandyRetrofitService {
     @GET("/recurring_bookings/{recurring_id}/edit_frequency")
     void getRecurringFrequency(
             @Path("recurring_id") String recurringId,
+            HandyRetrofitCallback cb
+    );
+
+    @POST("/recurring_bookings/{recurring_id}/edit_extras")
+    void updateRecurringExtras(
+            @Path("recurring_id") long recurringId,
+            @Body BookingEditExtrasRequest bookingEditExtrasRequest,
+            HandyRetrofitCallback cb
+    );
+
+    @GET("/recurring_bookings/{recurring_id}/edit_extras")
+    void getRecurringExtras(
+            @Path("recurring_id") long recurringId,
+            HandyRetrofitCallback cb
+    );
+
+    @POST("/recurring_bookings/{recurring_id}/edit_hours")
+    void updateRecurringHours(
+            @Path("recurring_id") long recurringId,
+            @Body BookingEditHoursRequest bookingEditHoursRequest,
+            HandyRetrofitCallback cb
+    );
+
+    @GET("/recurring_bookings/{recurring_id}/edit_hours")
+    void getRecurringHours(
+            @Path("recurring_id") long recurringId,
             HandyRetrofitCallback cb
     );
 

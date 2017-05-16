@@ -22,6 +22,8 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditPlanLog;
 
+import java.text.DecimalFormat;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,6 +38,10 @@ public class EditPlanFragment extends InjectedFragment {
     TextView mAddressText;
     @Bind(R.id.edit_plan_next_cleaning_time_text)
     TextView mNextCleaningTimeText;
+    @Bind(R.id.edit_plan_hours_text)
+    TextView mPlanHoursText;
+    @Bind(R.id.edit_plan_extras_text)
+    TextView mPlanExtrasText;
 
     private RecurringBooking mPlan;
 
@@ -92,6 +98,30 @@ public class EditPlanFragment extends InjectedFragment {
         startActivityForResult(intent, RequestCode.EDIT_PLAN_ADDRESS);
     }
 
+    @OnClick(R.id.edit_plan_hours)
+    public void editHours() {
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditHoursTapped(
+                mPlan.getId(),
+                mPlan.getHours()
+        )));
+
+        Intent intent = new Intent(getContext(), EditPlanHoursActivity.class);
+        intent.putExtra(BundleKeys.RECURRING_PLAN, mPlan);
+        startActivityForResult(intent, RequestCode.EDIT_PLAN_HOURS);
+    }
+
+    @OnClick(R.id.edit_plan_extras)
+    public void editExtras() {
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditExtrasTapped(
+                mPlan.getId(),
+                null // FIXME: See if we can get the extras at this point
+        )));
+
+        Intent intent = new Intent(getContext(), EditPlanExtrasActivity.class);
+        intent.putExtra(BundleKeys.RECURRING_PLAN, mPlan);
+        startActivityForResult(intent, RequestCode.EDIT_PLAN_EXTRAS);
+    }
+
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (resultCode == Activity.RESULT_OK) {
@@ -121,6 +151,11 @@ public class EditPlanFragment extends InjectedFragment {
         else {
             mAddressText.setText(mPlan.getFullAddress());
         }
+        mPlanHoursText.setText(getString(
+                R.string.template_x_hours,
+                new DecimalFormat("#.#").format(mPlan.getHours()
+                )
+        ));
         mNextCleaningTimeText.setText(DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(
                 mPlan.getNextBookingDate()));
     }

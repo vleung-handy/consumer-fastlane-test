@@ -416,7 +416,7 @@ public class DataManager {
     }
 
     public final void getEditHoursInfo(
-            final int bookingId,
+            final long bookingId,
             final Callback<BookingEditHoursInfoResponse> cb
     ) {
         mService.getEditHoursInfo(
@@ -972,33 +972,6 @@ public class DataManager {
         );
     }
 
-    public final void updateBookingFrequency(
-            int bookingId,
-            BookingEditFrequencyRequest bookingEditFrequencyRequest,
-            final Callback<Void> cb
-    ) {
-        mService.updateBookingFrequency(
-                bookingId,
-                bookingEditFrequencyRequest,
-                new HandyRetrofitCallback(cb) {
-                    @Override
-                    protected void success(final JSONObject response) {
-                        cb.onSuccess(null);
-                    }
-                }
-        );
-    }
-
-    public final void getBookingPricesForFrequencies(
-            int bookingId,
-            final Callback<BookingEditFrequencyInfoResponse> cb
-    ) {
-        mService.getBookingPricesForFrequencies(
-                bookingId,
-                new BookingPricesForFrequenciesHandyRetroFitCallback(cb)
-        );
-    }
-
     public void updateRecurringFrequency(
             final String recurringId,
             final BookingEditFrequencyRequest bookingEditFrequencyRequest,
@@ -1007,6 +980,62 @@ public class DataManager {
         mService.updateRecurringFrequency(
                 recurringId,
                 bookingEditFrequencyRequest,
+                new HandyRetrofitCallback(cb) {
+                    @Override
+                    protected void success(final JSONObject response) {
+                        cb.onSuccess(null);
+
+                    }
+                }
+        );
+    }
+
+    public void getRecurringExtras(
+            final long recurringId,
+            final Callback<BookingEditExtrasInfoResponse> cb
+    ) {
+        mService.getRecurringExtras(
+                recurringId,
+                new BookingPricesForFrequenciesHandyRetroFitCallback(cb)
+        );
+    }
+
+    public void updateRecurringExtras(
+            final long recurringId,
+            final BookingEditExtrasRequest bookingEditExtrasRequest,
+            final Callback<Void> cb
+    ) {
+        mService.updateRecurringExtras(
+                recurringId,
+                bookingEditExtrasRequest,
+                new HandyRetrofitCallback(cb) {
+                    @Override
+                    protected void success(final JSONObject response) {
+                        cb.onSuccess(null);
+
+                    }
+                }
+        );
+    }
+
+    public void getRecurringHoursInfo(
+            final long recurringId,
+            final Callback<BookingEditHoursInfoResponse> cb
+    ) {
+        mService.getRecurringHours(
+                recurringId,
+                new BookingPricesForFrequenciesHandyRetroFitCallback(cb)
+        );
+    }
+
+    public void updateRecurringHours(
+            final long recurringId,
+            final BookingEditHoursRequest bookingEditHoursRequest,
+            final Callback<Void> cb
+    ) {
+        mService.updateRecurringHours(
+                recurringId,
+                bookingEditHoursRequest,
                 new HandyRetrofitCallback(cb) {
                     @Override
                     protected void success(final JSONObject response) {

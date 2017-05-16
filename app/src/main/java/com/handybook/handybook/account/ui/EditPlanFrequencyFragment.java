@@ -57,7 +57,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
         final View view = inflater
                 .inflate(R.layout.fragment_plan_edit_frequency, container, false);
         ButterKnife.bind(this, view);
-        setupToolbar(mToolbar, getString(R.string.edit_frequency));
+        setupToolbar(mToolbar, getString(R.string.edit_plan_edit_frequency_title));
 
         return view;
     }
