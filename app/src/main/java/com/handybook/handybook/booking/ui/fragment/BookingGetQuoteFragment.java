@@ -180,10 +180,6 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
              */
             zipCode = mDefaultPreferencesManager.getString(PrefsKey.ZIP);
         }
-        else if (user != null && (address = user.getAddress()) != null) {
-            //otherwise populate zip from user address
-            zipCode = address.getZip();
-        }
 
         /*
         always set this even if visibility gone for easy value retrieval later

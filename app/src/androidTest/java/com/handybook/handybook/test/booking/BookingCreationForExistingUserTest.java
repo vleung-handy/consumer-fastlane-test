@@ -8,6 +8,7 @@ import com.handybook.handybook.tool.data.TestUsers;
 import com.handybook.handybook.tool.model.TestUser;
 import com.handybook.handybook.tool.util.AppInteractionUtil;
 import com.handybook.handybook.tool.util.LauncherActivityTestRule;
+import com.handybook.handybook.tool.util.TextViewUtil;
 import com.handybook.handybook.tool.util.ViewMatchers;
 import com.handybook.handybook.tool.util.ViewUtil;
 
@@ -88,14 +89,15 @@ public class BookingCreationForExistingUserTest {
         ViewUtil.waitForViewVisible(R.id.booking_detail_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    private void testGetQuoteFlow(TestUser testUser)
-    {
+    private void testGetQuoteFlow(TestUser testUser) {
         try {
             //check if the consolidated flow is enabled
-            ViewUtil.waitForViewVisible(R.id.fragment_booking_get_quote_container, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+            ViewUtil.waitForViewVisible(
+                    R.id.fragment_booking_get_quote_container,
+                    ViewUtil.SHORT_MAX_WAIT_TIME_MS
+            );
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             //enter zip code
             ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
             clickNextButton();
@@ -113,7 +115,14 @@ public class BookingCreationForExistingUserTest {
 
         //test consolidated flow
 
-        //expecting zip and email to be pre-filled
+        //enter zip code if necessary
+        try {
+            ViewUtil.waitForViewVisible(
+                    R.id.booking_zipcode_input_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+            TextViewUtil.updateEditTextView(
+                    R.id.booking_zipcode_input_text, testUser.getAddress().getZipCode());
+        }
+        catch (Exception e) {}
 
         //use default beds + baths
         ViewUtil.waitForViewVisible(R.id.booking_options_input, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
