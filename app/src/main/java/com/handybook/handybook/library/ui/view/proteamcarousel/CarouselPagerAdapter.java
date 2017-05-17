@@ -60,7 +60,7 @@ public class CarouselPagerAdapter extends PagerAdapter {
                 = (CircleImageView) itemView.findViewById(R.id.carousel_profile_image);
         Button mButton = (Button) itemView.findViewById(R.id.carousel_button);
 
-        heartContainer.setVisibility(profile.isProTeam() ? View.VISIBLE : View.GONE);
+        heartContainer.setVisibility(profile.isFavorite() ? View.VISIBLE : View.GONE);
         if (profile.getJobCount() > 0 && profile.getAverageRating() > 0.f) {
 
             ratingContainer.setVisibility(View.VISIBLE);

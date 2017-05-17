@@ -444,7 +444,7 @@ public class ProProfileFragment extends InjectedFragment implements
                         providerInformation.getFirstName(),
                         providerInformation.getProfilePhotoUrl(),
                         providerInformation.getProTeamCategoryType(),
-                        providerInformation.isCustomerFavorite() != null,
+                        providerInformation.isCustomerFavorite(),
                         false
                         /*
                         dont allow user to click into pro profiles from the messages screen
