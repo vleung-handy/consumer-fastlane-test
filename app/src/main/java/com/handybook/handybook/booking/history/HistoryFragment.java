@@ -215,7 +215,34 @@ public class HistoryFragment extends InjectedFragment
     @Override
     public void onResume() {
         super.onResume();
+        if (getUserVisibleHint()) {
+            loadBookingDataAndViewsIfNecessary();
+        }
+    }
 
+    /**
+     * specifically this is needed because we only want this fragment to request for data
+     * when its viewpager tab is selected, and thus visible, in
+     * {@link com.handybook.handybook.booking.ui.fragment.UpcomingAndPastBookingsFragment}
+     * because the booking history payload can be very large as there is currently no pagination,
+     * and users will likely not want to see it often compared to upcoming bookings
+     *
+     * assuming that this method is only called when the fragment is in a legal state
+     */
+    @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisible() && isVisibleToUser) {
+            loadBookingDataAndViewsIfNecessary();
+        }
+    }
+
+    private void loadBookingDataAndViewsIfNecessary() {
+        /*
+        this logic was just moved from onResume()
+        todo we shouldn't necessarily request bookings
+        when the bookings list is empty because user really might not have any bookings
+         */
         if (mBookings == null || mBookings.isEmpty()) {
             mNoBookingsView.setVisibility(View.GONE);
             loadBookings();

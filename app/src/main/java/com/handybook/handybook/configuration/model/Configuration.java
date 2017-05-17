@@ -73,7 +73,7 @@ public class Configuration implements Serializable {
     private boolean mUpcomingAndPastBookingsMergeEnabled;
 
     public boolean isUpcomingAndPastBookingsMergeEnabled() {
-        return true; //todo revert
+        return mUpcomingAndPastBookingsMergeEnabled;
     }
 
     public ReviewAppBanner getReviewAppBanner() {

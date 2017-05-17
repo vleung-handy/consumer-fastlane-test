@@ -133,6 +133,15 @@ public class AccountFragment extends InjectedFragment {
         and show an error if we are unable to get it
          */
         updateGeneralCreditsView(mUser);
+
+        //set visibility of Booking History link based on config
+        if (mConfigurationManager.getPersistentConfiguration()
+                                 .isUpcomingAndPastBookingsMergeEnabled()) {
+            mHistoryHelpLayout.setVisibility(View.GONE);
+        }
+        else {
+            mHistoryHelpLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

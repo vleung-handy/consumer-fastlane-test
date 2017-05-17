@@ -27,25 +27,11 @@
         android:layout_height="wrap_content"
         android:background="@color/handy_blue"
         app:tabIndicatorColor="@color/white"
-        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorHeight="@dimen/default_tab_indicator_height"
         app:tabSelectedTextColor="@color/white"
         app:tabTextAppearance="@style/TextAppearance.TabText"
         app:tabTextColor="@color/white_trans"
-        >
-
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tab 1"
-            />
-
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tab 2"
-            />
-
-    </android.support.design.widget.TabLayout>
+        />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/upcoming_and_past_bookings_viewpager"
