@@ -30,13 +30,23 @@ public class ProMessagesViewModel implements Serializable {
         );
     }
 
+    /**
+     *
+     * @param providerId
+     * @param providerName
+     * @param providerFirstName
+     * @param imageUrl
+     * @param proCategoryType
+     * @param isFavorite This is boolean because it could be null. Casting to boolean will fail
+     * @param isProProfileEnabled
+     */
     public ProMessagesViewModel(
             @NonNull final String providerId,
             @Nullable final String providerName,
             @Nullable final String providerFirstName,
             @Nullable final String imageUrl,
             @Nullable final ProTeamCategoryType proCategoryType,
-            final boolean isFavorite,
+            @Nullable final Boolean isFavorite,
             final boolean isProProfileEnabled
     ) {
         mProviderId = providerId;
@@ -44,7 +54,7 @@ public class ProMessagesViewModel implements Serializable {
         mProviderFirstName = providerFirstName;
         mImageUrl = imageUrl;
         mProTeamCategoryType = proCategoryType;
-        mIsFavorite = isFavorite;
+        mIsFavorite = isFavorite != null && isFavorite;
         mIsProProfileEnabled = isProProfileEnabled;
     }
 
