@@ -169,7 +169,6 @@ public class BottomNavActivity extends BaseActivity {
                 }
                 else
                 {
-                    //todo check usages of this fragment
                     fragment = UpcomingBookingsFragment.newInstance();
                 }
                 break;

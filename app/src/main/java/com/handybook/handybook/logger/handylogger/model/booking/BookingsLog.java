@@ -24,6 +24,11 @@ public abstract class BookingsLog extends EventLog {
 
     public static class PageToggled extends BookingsLog {
 
+        /*
+        note that these values are different from the ones in
+        AppLog.AppNavigationLog but we cannot yet consolidate them for consistency
+        because iOS currently has these values
+         */
         public static class Page {
 
             public static final String UPCOMING_BOOKINGS = "upcoming";
@@ -33,7 +38,7 @@ public abstract class BookingsLog extends EventLog {
 
         @Retention(RetentionPolicy.SOURCE)
         @StringDef({UPCOMING_BOOKINGS, PAST_BOOKINGS})
-        public @interface BookingsPage {
+        public @interface BookingsLogPage {
         }
 
 
@@ -41,7 +46,7 @@ public abstract class BookingsLog extends EventLog {
         @SerializedName("page_selected")
         private final String mPageSelected;
 
-        public PageToggled(@BookingsPage String pageSelected) {
+        public PageToggled(@BookingsLogPage String pageSelected) {
             super(EVENT_TYPE);
             mPageSelected = pageSelected;
         }

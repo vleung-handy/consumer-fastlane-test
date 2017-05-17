@@ -72,7 +72,7 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
         //for logging purposes only
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            @BookingsLog.PageToggled.BookingsPage
+            @BookingsLog.PageToggled.BookingsLogPage
             private String getPageSelectedForTabPosition(int position) {
                 switch (position) {
                     case TabAdapter.UPCOMING_BOOKINGS_TAB_POSITION:
@@ -83,20 +83,17 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
                 return null;
             }
 
-            //todo test this logging
             @Override
             public void onPageScrolled(
                     final int position,
                     final float positionOffset,
                     final int positionOffsetPixels
             ) {
-                bus.post(new LogEvent.AddLogEvent(new BookingsLog.PageToggled(
-                        getPageSelectedForTabPosition(position)
-                )));
             }
 
             @Override
             public void onPageSelected(final int position) {
+                //this is triggered when the user swipes to this page or selects the relevant tab
                 bus.post(new LogEvent.AddLogEvent(new BookingsLog.PageToggled(
                         getPageSelectedForTabPosition(position)
                 )));
@@ -112,11 +109,10 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
         );
         mViewPager.setAdapter(tabAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-        tabAdapter.notifyDataSetChanged();
 
         //select the upcoming bookings tab by default
         mViewPager.setCurrentItem(TabAdapter.UPCOMING_BOOKINGS_TAB_POSITION);
-        //todo get clarification from PM about this log
+        //log the bookings tab that is initially shown
         bus.post(new LogEvent.AddLogEvent(new AppLog.AppNavigationLog(
                 AppLog.AppNavigationLog.Page.UPCOMING_BOOKINGS
         )));
@@ -128,7 +124,6 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
      */
     private class TabAdapter extends android.support.v4.app.FragmentStatePagerAdapter {
 
-        //todo do better parameterization than this?
         private static final int NUM_ITEMS = 2;
         static final int UPCOMING_BOOKINGS_TAB_POSITION = 0;
         static final int PAST_BOOKINGS_TAB_POSITION = 1;

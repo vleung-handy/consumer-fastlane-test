@@ -8,15 +8,16 @@
     android:orientation="vertical"
     >
 
+    <!--cannot just include the toolbar.xml layout because we don't want elevation-->
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:titleMargin="@dimen/default_margin"
         android:theme="@style/HandyTheme.AppBarOverlay"
         app:contentInsetStart="0dp"
         app:navigationIcon="@drawable/ic_back"
         app:subtitleTextAppearance="@style/Toolbar.SubtitleText"
+        app:titleMargin="@dimen/default_margin"
         app:titleTextAppearance="@style/Toolbar.TitleText"
         />
 
@@ -38,6 +39,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:background="@color/error_red"
         />
 </LinearLayout>
