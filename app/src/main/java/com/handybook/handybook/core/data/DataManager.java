@@ -50,15 +50,15 @@ import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
 import com.handybook.handybook.notifications.model.HandyNotification;
 import com.handybook.handybook.promos.persistent.PersistentPromo;
 import com.handybook.handybook.promos.splash.SplashPromo;
+import com.handybook.handybook.proprofiles.model.ProProfile;
+import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
+import com.handybook.handybook.proprofiles.reviews.model.ProReviewsRequest;
 import com.handybook.handybook.proteam.model.BookingProTeam;
 import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
-import com.handybook.handybook.proprofiles.model.ProProfile;
-import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
-import com.handybook.handybook.proprofiles.reviews.model.ProReviewsRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -917,7 +917,6 @@ public class DataManager {
                     @Override
                     protected void success(final JSONObject response) {
                         cb.onSuccess(null);
-
                     }
                 }
         );
@@ -947,7 +946,6 @@ public class DataManager {
                     @Override
                     protected void success(final JSONObject response) {
                         cb.onSuccess(null);
-
                     }
                 }
         );
