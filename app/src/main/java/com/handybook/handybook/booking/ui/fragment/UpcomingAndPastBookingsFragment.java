@@ -43,11 +43,6 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
         return new UpcomingAndPastBookingsFragment();
     }
 
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(
@@ -104,9 +99,7 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
 
             }
         });
-        TabAdapter tabAdapter = new TabAdapter(
-                getChildFragmentManager()
-        );
+        TabAdapter tabAdapter = new TabAdapter(getChildFragmentManager());
         mViewPager.setAdapter(tabAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
