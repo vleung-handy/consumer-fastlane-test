@@ -48,7 +48,6 @@ import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.promos.splash.SplashPromo;
 import com.handybook.handybook.promos.splash.SplashPromoDialogFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowActivity;
-
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralResponse;
 import com.squareup.otto.Bus;
@@ -116,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
      * @return
      */
     protected boolean requiresOnboardingV2(Configuration config) {
-        return config.isOnboardingV2Enabled()
+        return config.isSaveZipCodeEnabled()
                && !mUserManager.isUserLoggedIn() &&
                (TextUtils.isEmpty(mDefaultPreferencesManager.getString(PrefsKey.ZIP, null))
                 || TextUtils.isEmpty(mDefaultPreferencesManager.getString(

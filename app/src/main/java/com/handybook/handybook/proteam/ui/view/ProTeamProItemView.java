@@ -88,7 +88,8 @@ public class ProTeamProItemView extends FrameLayout {
     public ProTeamProItemView(
             @NonNull final Context context,
             final boolean hideConversation,
-            final String assignedProviderId) {
+            final String assignedProviderId
+    ) {
         this(context, hideConversation, assignedProviderId, false);
     }
 

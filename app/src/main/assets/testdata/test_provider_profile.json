@@ -1,0 +1,86 @@
+{
+  "provider_information": {
+    "id": 12345,
+    "name": "Testy M.",
+    "first_name": "Testy",
+    "last_name": "McTesty",
+    "team_type": "cleaning",
+    "description": "Electrician, Handyman, Plumbing",
+    "last_seen_at": "2017-03-25T16:30:00-04:00",
+    "average_rating": 4.5,
+    "booking_count": 66,
+    "profile_photo_url": null,
+    "profile_images": [],
+    "chat_enabled": true,
+    "layer_user_id": "p12345",
+    "match_preference": "favorite",
+    "is_favorite": true,
+    "referral_code": "TESTY8699",
+    "instant_book_enabled": true,
+    "profile_enabled": true,
+    "service_ids": [
+      3,
+      22,
+      25,
+      26,
+      27,
+      34,
+      35,
+      39,
+      40,
+      42,
+      44,
+      46,
+      48
+    ]
+  },
+  "regions": [
+    "Xanadu"
+  ],
+  "stats": {
+    "years_handy_experience": "1+ years on the Handy platform",
+    "duration_pro_experience_before_handy": null,
+    "background_checked": true
+  },
+  "referral": {
+    "header": "Know someone who\u2019d also love to work with Testy?",
+    "subtitle": "Refer Testy to your friends and they\u2019ll get \u00a320 off their first booking, and you\u2019ll earn $20 in Handy credits.",
+    "share_url": "https://www.handy.com/rp/TESTY8699/TESTY1632/19sF0hZi",
+    "referral_info": {
+      "email": {
+        "share_msg": "Hey, if you're looking for a great cleaner, try my pro Testy. Use this this link to ask for Testy directly - and get \u00a320 off your first cleaning! https://www.handy.com/rp/TESTY8699/TESTY1632/ibke3mS9",
+        "guid": "ibke3mS9",
+        "share_subject": "FYI \u00a320 off a cleaning with my pro Testy"
+      },
+      "gmail": {
+        "share_msg": "Hey, if you're looking for a great cleaner, try my pro Testy. Use this this link to ask for Testy directly - and get \u00a320 off your first cleaning! https://www.handy.com/rp/TESTY8699/TESTY1632/--KqnBHT",
+        "guid": "--KqnBHT",
+        "share_subject": "FYI \u00a320 off a cleaning with my pro Testy"
+      },
+      "gplus": {
+        "share_msg": "Testy is my Handy cleaner and is the best! Get \u00a320 off your first cleaning using this link:",
+        "guid": "H1OTdznB",
+        "share_url": "https://www.handy.com/rp/TESTY8699/TESTY1632/H1OTdznB"
+      },
+      "facebook": {
+        "share_msg": "Testy is my Handy cleaner and is the best! Get \u00a320 off your first cleaning using this link:",
+        "guid": "2-kJRAhs",
+        "share_url": "https://www.handy.com/rp/TESTY8699/TESTY1632/2-kJRAhs"
+      },
+      "facebook_messenger": {
+        "share_msg": "Testy is my Handy cleaner and is the best! Get \u00a320 off your first cleaning using this link:",
+        "guid": "8TQd-bhY",
+        "share_url": "https://www.handy.com/rp/TESTY8699/TESTY1632/8TQd-bhY"
+      },
+      "twitter": {
+        "share_msg": "Need a cleaner in London? Book Testy @Handy \u0026 get \u00a320 off yr first cleaning!",
+        "guid": "DJkwuBVQ",
+        "share_url": "https://www.handy.com/rp/TESTY8699/TESTY1632/DJkwuBVQ"
+      },
+      "sms": {
+        "share_msg": "Hey, if you need a cleaner, try my pro, Testy. Also use this link to get \u00a320 off your first cleaning :) https://www.handy.com/rp/TESTY8699/TESTY1632/W-l5uQqW",
+        "guid": "W-l5uQqW"
+      }
+    }
+  }
+}

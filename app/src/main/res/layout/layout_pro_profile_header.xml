@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--the header that appears at the top of pro profiles that collapses
+    as the reviews or about page is scrolled-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <com.handybook.handybook.proprofiles.ui.ProProfileSummaryView
+        android:id="@+id/pro_profile_summary_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/default_padding_half"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding"
+        android:paddingTop="@dimen/default_padding"
+        />
+
+    <LinearLayout
+        android:id="@+id/pro_profile_action_buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/default_padding"
+        >
+
+        <!--todo these image assets are very similar to the menu icons, but are tinted and have extra padding.
+        consult with designer to consolidate-->
+        <com.handybook.handybook.core.ui.view.ImageTextActionButton
+            android:id="@+id/pro_profile_message_action_button"
+            style="@style/ProProfileActionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:drawable="@drawable/ic_action_button_message"
+            app:text="@string/pro_profile_action_button_message"
+            />
+
+        <com.handybook.handybook.core.ui.view.ImageTextActionButton
+            android:id="@+id/pro_profile_book_action_button"
+            style="@style/ProProfileActionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:drawable="@drawable/ic_action_button_create_booking"
+            app:text="@string/pro_profile_action_button_book"
+            />
+
+        <!--todo not using ProProfileActionButton style because
+         cannot set drawable tint on this button yet because this asset is not tinted
+        and has white where it should be transparent-->
+        <com.handybook.handybook.core.ui.view.ImageTextActionButton
+            android:id="@+id/pro_profile_recommend_action_button"
+            android:background="@drawable/button_image_text_action"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:drawable="@drawable/ic_action_button_recommend"
+            app:text="@string/pro_profile_action_button_recommend"
+            />
+
+    </LinearLayout>
+</LinearLayout>

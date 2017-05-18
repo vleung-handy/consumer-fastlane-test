@@ -27,8 +27,10 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
+import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
+import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
@@ -232,7 +234,7 @@ public class BookingDetailSectionFragmentProInformation extends
     }
 
     @Override
-    public void updateDisplay(@NonNull Booking booking, @NonNull User user) {
+    public void updateDisplay(@NonNull final Booking booking, @NonNull User user) {
         super.updateDisplay(booking, user);
 
         hideAllClassManagedViews();
@@ -247,6 +249,27 @@ public class BookingDetailSectionFragmentProInformation extends
             //show view for pending provider
             showPendingProviderInfo(booking.getProviderAssignmentInfo());
         }
+
+        //if pro profile enabled, launch pro profile page on profile image click
+        if (pro.getIsProProfileEnabled())
+        {
+            getSectionView().setProProfileClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    //launch pro profiles activity
+                    startActivity(ProProfileActivity.buildIntent(
+                            getContext(),
+                            pro.getId(),
+                            SourcePage.BOOKING_DETAILS
+                    ));
+                }
+            });
+        }
+        else
+        {
+            getSectionView().setProProfileClickListener(null);
+        }
+
     }
 
     @Override

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--CTA button supporting image and text. specific to this app-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:padding="@dimen/default_padding_half"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:duplicateParentState="true"
+    >
+
+    <ImageView
+        android:id="@+id/element_image_text_action_button_image_view"
+        android:layout_width="@dimen/pro_profile_action_button_image_size"
+        android:layout_height="@dimen/pro_profile_action_button_image_size"
+        tools:src="@drawable/ic_menu_gift_inactive"
+        android:duplicateParentState="true"
+        />
+    <TextView
+        android:id="@+id/element_image_text_action_button_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:saveEnabled="false"
+        style="@style/TextView.Small"
+        android:textColor="@drawable/button_image_text_action_content"
+        tools:text="Action"
+        android:duplicateParentState="true"
+        />
+    <!--saveEnabled is needed to prevent incorrect text values when view restored, due to conflicts with other instances of this view-->
+</LinearLayout>

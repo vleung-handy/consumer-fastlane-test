@@ -56,6 +56,9 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
+import com.handybook.handybook.proprofiles.model.ProProfile;
+import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
+import com.handybook.handybook.proprofiles.reviews.model.ProReviewsRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -346,6 +349,23 @@ public class DataManager {
         mService.validateBookingZip(serviceId, zipCode, userId, promoCode,
                                     new ZipValidationRetroFitCallback(cb)
         );
+    }
+
+    public void getProviderProfile(final String providerId, final Callback<ProProfile> cb)
+    {
+        mService.getProviderProfile(providerId, new ProProfileCallback(cb));
+    }
+
+    public void getProviderReviews(final String providerId,
+                                   ProReviewsRequest proReviewsRequest,
+                                   final Callback<ProReviews> cb)
+    {
+        mService.getProviderReviews(providerId,
+                                    proReviewsRequest.getCurrentPageLastReviewId(),
+                                    proReviewsRequest.getMaxReviewsPerPage(),
+                                    proReviewsRequest.getMinRating(),
+                                    proReviewsRequest.getSortOrder(),
+                                    new ProReviewsCallback(cb));
     }
 
     public void getBookingMilestones(final String bookingId, final Callback<JobStatus> cb) {

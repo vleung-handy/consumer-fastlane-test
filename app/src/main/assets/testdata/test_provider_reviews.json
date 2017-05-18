@@ -1,0 +1,50 @@
+{
+  "_total_count": 6,
+  "_limit": 10,
+  "reviews": [
+    {
+      "id": 1156224,
+      "rating": 5.0,
+      "date": "2016-03-22T16:11:28-04:00",
+      "text": "wow",
+      "location_text": "Xanadu, AK"
+    },
+    {
+      "id": 1154047,
+      "rating": 5.0,
+      "date": "2016-03-21T15:04:32-04:00",
+      "text": "wow",
+      "location_text": "Xanadu, AK"
+    },
+    {
+      "id": 1118406,
+      "rating": 5.0,
+      "date": "2016-03-05T10:24:54-05:00",
+      "text": "fantastik",
+      "location_text": "Xanadu, AK"
+    },
+    {
+      "id": 1116039,
+      "rating": 5.0,
+      "date": "2016-03-04T09:36:34-05:00",
+      "text": "my mother commented on how clean and organized I have become. I am pleased",
+      "location_text": "Xanadu, AK"
+    },
+    {
+      "id": 1115151,
+      "rating": 5.0,
+      "date": "2016-03-03T21:06:07-05:00",
+      "text": "it was great!",
+      "location_text": "Xanadu, AK"
+    },
+    {
+      "id": 1085334,
+      "rating": 5.0,
+      "date": "2016-02-19T09:37:46-05:00",
+      "text": "Thanks for cleaning my dog too!",
+      "location_text": "Xanadu, AK"
+    }
+  ],
+  "min_rating": 5.0,
+  "starting_after_id": 1085334
+}

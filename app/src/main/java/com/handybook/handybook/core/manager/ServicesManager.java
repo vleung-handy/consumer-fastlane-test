@@ -77,7 +77,7 @@ public class ServicesManager {
     }
 
     public void requestServices(final String zip, boolean useCacheIfExist) {
-        //If this is old onboarding then handle old way
+        // If save zip is not enabled, don't use this api.
         if (useCacheIfExist) {
             //If old way, check if cache is null
             final List<Service> cachedServices = getCachedServices();
@@ -91,8 +91,7 @@ public class ServicesManager {
         mDataManager.getServiceMenu(new DataManager.Callback<JSONArray>() {
             @Override
             public void onSuccess(final JSONArray menuStructure) {
-                //If this is old onboarding then handle old way
-                if (!mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()
+                if (!mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled()
                     && menuStructure == null
                     && getCachedServices() == null) {
                     //we only notify of error if there is not already a cached version returned.
@@ -128,8 +127,8 @@ public class ServicesManager {
         mDataManager.getServices(zip, new DataManager.Callback<JSONArray>() {
             @Override
             public void onSuccess(final JSONArray servicesListJson) {
-                //If this is old onboarding then handle old way
-                if (!mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()
+                // If save zip is not enabled, don't use this api.
+                if (!mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled()
                     && servicesListJson == null) {
                     //we only notify of error if there is not already a cached version returned.
                     onError(new DataManager.DataManagerError(DataManager.Type.SERVER));
@@ -271,11 +270,31 @@ public class ServicesManager {
         return newMostCommonServices;
     }
 
+    /**
+     * @param serviceMachineName see the constants in {@link com.handybook.handybook.booking.model.Booking}
+     *                           they do not have a StringDef but that would be ideal.
+     *                           compared with value returned in getUniq() method of the Service class
+     * @return the cached Service model for the given service machine name
+     */
+    @Nullable
+    public Service getCachedService(String serviceMachineName)
+    {
+        List<Service> cachedServices = getCachedServices();
+        if (cachedServices != null) {
+            for (final Service service : cachedServices) {
+                if (service.getUniq().equalsIgnoreCase(serviceMachineName)) {
+                    return service;
+                }
+            }
+        }
+        return null;
+    }
+
     @Nullable
     public List<Service> getCachedServices() {
         String cachedServicesJson;
         //If this is the old way, then we use the cached services, otherwise we use the session cache
-        if (mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()) {
+        if (mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled()) {
             cachedServicesJson = (String) mSessionManager.getFromSessionCache(CACHE_KEY);
         }
         else {

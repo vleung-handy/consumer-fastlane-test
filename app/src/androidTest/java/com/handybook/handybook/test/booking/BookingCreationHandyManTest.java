@@ -51,7 +51,7 @@ public class BookingCreationHandyManTest {
         ViewUtil.waitForViewVisibility(matchingItemsMatcher, true, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         onView(matchingItemsMatcher).perform(click());
 
-        testGetQuoteFlow();
+        testGetQuoteFlow(testUser);
 
         //use previous address
         ViewUtil.waitForViewVisible(
@@ -82,15 +82,16 @@ public class BookingCreationHandyManTest {
         ViewUtil.waitForViewVisible(R.id.booking_detail_view, ViewUtil.LONG_MAX_WAIT_TIME_MS);
     }
 
-    private void testGetQuoteFlow()
-    {
+    private void testGetQuoteFlow(final TestUser testUser) {
         try {
             //check if the consolidated flow is enabled. If this scully experiment is not enabled
             // Do it previously
-            ViewUtil.waitForViewVisible(R.id.fragment_booking_get_quote_container, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+            ViewUtil.waitForViewVisible(
+                    R.id.fragment_booking_get_quote_container,
+                    ViewUtil.SHORT_MAX_WAIT_TIME_MS
+            );
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             //enter zip code
             ViewUtil.waitForViewVisible(R.id.zip_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
             clickNextButton();
@@ -123,9 +124,17 @@ public class BookingCreationHandyManTest {
 
         //test consolidated flow
 
-        //expecting zip and email to be pre-filled for this user
+        //enter zip code if necessary
+        try {
+            ViewUtil.waitForViewVisible(
+                    R.id.booking_zipcode_input_text, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
+            TextViewUtil.updateEditTextView(
+                    R.id.booking_zipcode_input_text, testUser.getAddress().getZipCode());
+        }
+        catch (Exception e) {}
 
         //select blinds
+        onView(withText("Blinds")).perform(scrollTo());
         ViewUtil.waitForViewVisible(R.id.booking_options_input, ViewUtil.SHORT_MAX_WAIT_TIME_MS);
         Matcher<View> blindsOptionsSpinnerMatcher = allOf(
                 withId(R.id.options_spinner),

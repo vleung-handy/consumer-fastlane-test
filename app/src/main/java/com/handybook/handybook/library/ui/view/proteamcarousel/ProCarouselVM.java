@@ -7,7 +7,6 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.referral.model.ProReferral;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 
 import javax.annotation.Nonnull;
 
@@ -23,14 +22,25 @@ public class ProCarouselVM implements Serializable {
     private String mButtonText;
     private boolean mActionable;
     private boolean mIsProTeam;
+    private boolean mIsProfileEnabled;
+
+    /**
+     * needed for callbacks to identify the provider
+     *
+     * the adapter that uses this view model has no way of getting this otherwise
+     */
+    private String mProviderId;
 
     public ProCarouselVM(
+            final String providerId,
             final String imageUrl,
             final int jobCount,
             final float averageRating,
             final String displayName,
-            final String buttonText
+            final String buttonText,
+            final boolean isProfileEnabled
     ) {
+        mProviderId = providerId;
         mImageUrl = imageUrl;
         mJobCount = jobCount;
         mAverageRating = averageRating;
@@ -38,6 +48,15 @@ public class ProCarouselVM implements Serializable {
         mButtonText = buttonText;
         mActionable = true;
         mIsProTeam = true;
+        mIsProfileEnabled = isProfileEnabled;
+    }
+
+    public boolean isProfileEnabled() {
+        return mIsProfileEnabled;
+    }
+
+    public String getProviderId() {
+        return mProviderId;
     }
 
     public String getImageUrl() {
@@ -93,11 +112,13 @@ public class ProCarouselVM implements Serializable {
                        : provider.getAverageRating();
 
         return new ProCarouselVM(
+                provider.getId(),
                 provider.getImageUrl(),
                 jobCount,
                 rating,
                 provider.getName(),
-                proReferral.getReferralButtonText()
+                proReferral.getReferralButtonText(),
+                provider.getIsProProfileEnabled()
         );
     }
 
@@ -107,11 +128,13 @@ public class ProCarouselVM implements Serializable {
             @Nonnull final String buttonText
     ) {
         return new ProCarouselVM(
+                provider.getId(),
                 provider.getImageUrl(),
                 provider.getBookingCount() == null ? 0 : provider.getBookingCount(),
                 provider.getAverageRating() == null ? 0.0f : provider.getAverageRating(),
                 provider.getFirstNameAndLastInitial(),
-                buttonText
+                buttonText,
+                provider.getIsProProfileEnabled()
         );
     }
 }

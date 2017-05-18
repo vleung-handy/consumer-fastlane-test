@@ -471,7 +471,7 @@ public final class LoginFragment extends BookingFlowFragment {
         final UserDataManager.AuthType authType = event.getAuthType();
         String authTypeForLogger = getAuthTypeForLogger(authType);
 
-        if (mConfigurationManager.getPersistentConfiguration().isOnboardingV2Enabled()) {
+        if (mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled()) {
             //the fact that the user is logged in guarantees at least zip information
             mDefaultPreferencesManager.setString(PrefsKey.ZIP, getUserZip(event.getUser()));
         }

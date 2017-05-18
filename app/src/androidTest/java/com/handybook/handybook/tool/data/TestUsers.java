@@ -24,8 +24,12 @@ public class TestUsers {
 
     public static TestUser EXISTING_USER_BOOKING_CREATION =
             new TestUser(
+                    "Test User",
                     "test+user@handybook.com",
-                    "supersecretpassword"
+                    "supersecretpassword",
+                    new Address("1 Test Drive", "Apt. 13D", "99499"),
+                    "9876543210",
+                    mValidVisaCard
             );
 
     public static TestUser CANCEL_SINGLE_BOOKING_USER =
