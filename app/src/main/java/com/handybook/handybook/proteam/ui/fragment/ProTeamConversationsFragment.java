@@ -52,8 +52,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.handybook.handybook.logger.handylogger.model.LogConstants.PRO_TEAM_CONVERSATIONS;
-
 public class ProTeamConversationsFragment extends InjectedFragment
         implements SwipeRefreshLayout.OnRefreshListener, ConversationCallback {
 
@@ -121,7 +119,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
         mEmptyView.setVisibility(View.GONE);
         initRecyclerView();
 
-        bus.post(new LogEvent.AddLogEvent(new AppLog.AppNavigationLog(PRO_TEAM_CONVERSATIONS)));
+        bus.post(new LogEvent.AddLogEvent(new AppLog.AppNavigationLog(AppLog.AppNavigationLog.Page.PRO_TEAM_CONVERSATIONS)));
 
         return view;
     }

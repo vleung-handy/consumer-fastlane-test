@@ -100,6 +100,7 @@ import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
+import com.handybook.handybook.booking.ui.fragment.UpcomingAndPastBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.ZipFragment;
 import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialogFragment;
@@ -121,10 +122,10 @@ import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselPagerAdapter;
+import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
-import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
 import com.handybook.handybook.proteam.ui.fragment.NewProTeamProListFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
@@ -143,6 +144,7 @@ import dagger.Module;
                 LoginFragment.class,
                 UpcomingBookingsFragment.class,
                 HistoryFragment.class,
+                UpcomingAndPastBookingsFragment.class,
                 ActiveBookingFragment.class,
                 AutoCompleteAddressFragment.class,
                 BookingDetailFragment.class,

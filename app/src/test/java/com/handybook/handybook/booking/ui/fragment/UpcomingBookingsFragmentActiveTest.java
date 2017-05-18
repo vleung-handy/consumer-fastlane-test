@@ -1,8 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment;
 
 import com.google.gson.GsonBuilder;
-import com.handybook.handybook.booking.BookingEvent;
-import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.library.util.IOUtils;
 
@@ -27,11 +25,7 @@ public class UpcomingBookingsFragmentActiveTest extends UpcomingBookingsBaseTest
                                                                            UserBookingsWrapper.class
                                                                    );
 
-        mBookingReceiveSuccessfulEvent = new BookingEvent.ReceiveBookingsSuccess(
-                activeBooking,
-                Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING
-        );
-        mUpcomingBookingsFragment.onReceiveBookingsSuccess(mBookingReceiveSuccessfulEvent);
+        mUpcomingBookingsFragment.onReceiveBookingsSuccess(activeBooking);
     }
 
     /**

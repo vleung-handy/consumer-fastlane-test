@@ -35,12 +35,31 @@ public abstract class AppLog extends EventLog {
 
     public static class AppNavigationLog extends AppLog {
 
+        public static class Page {
+
+            public static final String PRO_TEAM_CONVERSATIONS = "pro_team_conversations";
+            public static final String PAST_BOOKINGS = "past_bookings";
+            public static final String UPCOMING_BOOKINGS = "upcoming_bookings";
+        }
+
+
+        @Retention(RetentionPolicy.SOURCE)
+        @StringDef({
+                           Page.PRO_TEAM_CONVERSATIONS,
+                           Page.PAST_BOOKINGS,
+                           Page.UPCOMING_BOOKINGS
+                   })
+        public @interface AppNavigationLogPage {
+        }
+
         private static final String EVENT_TYPE = "navigation";
 
         @SerializedName("page")
         private final String mPage;
 
-        public AppNavigationLog(final String page) {
+        public AppNavigationLog(
+                @AppNavigationLogPage final String page
+        ) {
             super(EVENT_TYPE);
             mPage = page;
         }
