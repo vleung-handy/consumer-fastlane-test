@@ -80,4 +80,36 @@ public final class BookingPriceInfo {
     final float getDiscountWeeklyPriceDollars() {
         return discountWeeklyPriceDollars;
     }
+
+    final float getPriceCents() {
+        return mPriceDollars * 100;
+    }
+
+    final float getBiMonthlyPriceCents() {
+        return mBiMonthlyPriceDollars * 100;
+    }
+
+    final float getMonthlyPriceCents() {
+        return mMonthlyPriceDollars * 100;
+    }
+
+    final float getWeeklyPriceCents() {
+        return mWeeklyPriceDollars * 100;
+    }
+
+    final float getDiscountPriceCents() {
+        return mDiscountPriceDollars * 100;
+    }
+
+    final float getDiscountBiMonthlyPriceCents() {
+        return mDiscountBiMonthlyPriceDollars * 100;
+    }
+
+    final float getDiscountMonthlyPriceCents() {
+        return mDiscountMonthlyPriceDollars * 100;
+    }
+
+    final float getDiscountWeeklyPriceCents() {
+        return discountWeeklyPriceDollars * 100;
+    }
 }

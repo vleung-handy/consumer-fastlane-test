@@ -411,23 +411,23 @@ public class BookingQuote extends Observable {
         switch (freq) {
             case WEEKLY_PRICE:
                 return new float[]{
-                        info.getWeeklyPriceDollars() * 100,
-                        info.getDiscountWeeklyPriceDollars() * 100
+                        info.getWeeklyPriceCents(),
+                        info.getDiscountWeeklyPriceCents()
                 };
             case BI_MONTHLY_PRICE:
                 return new float[]{
-                        info.getBiMonthlyPriceDollars() * 100,
-                        info.getDiscountBiMonthlyPriceDollars() * 100
+                        info.getBiMonthlyPriceCents(),
+                        info.getDiscountBiMonthlyPriceCents()
                 };
             case MONTHLY_PRICE:
                 return new float[]{
-                        info.getMonthlyPriceDollars() * 100,
-                        info.getDiscountMonthlyPriceDollars() * 100
+                        info.getMonthlyPriceCents(),
+                        info.getDiscountMonthlyPriceCents()
                 };
             default:
                 return new float[]{
-                        info.getPriceDollars() * 100,
-                        info.getDiscountPriceDollars() * 100
+                        info.getPriceCents(),
+                        info.getDiscountPriceCents()
                 };
         }
     }
