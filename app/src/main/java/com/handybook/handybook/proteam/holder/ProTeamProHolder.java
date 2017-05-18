@@ -42,13 +42,19 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     ) {
         mCheckbox.setOnCheckedChangeListener(null);
         mProTeamProViewModel = proTeamProViewModel;
-        mCheckbox.setChecked(mProTeamProViewModel.isChecked());
-        mCheckbox.setOnCheckedChangeListener(this);
+        if(mProTeamProViewModel.shouldShowCheckbox()) {
+            mCheckbox.setVisibility(View.VISIBLE);
+            mCheckbox.setChecked(mProTeamProViewModel.isChecked());
+            mCheckbox.setOnCheckedChangeListener(this);
+        } else {
+            mCheckbox.setVisibility(View.GONE);
+        }
         mProProfile.setTitle(mProTeamProViewModel.getTitle());
         mProProfile.setRatingAndJobsCount(
                 mProTeamProViewModel.getAverageRating(),
                 mProTeamProViewModel.getJobsCount()
         );
+
         mProProfile.setIsProTeam(mProTeamProViewModel.isChecked());
         mProProfile.setProTeamIndicatorEnabled(false);
         mProProfile.setHandymanIndicatorEnabled(mProTeamProViewModel.isHandymanIndicatorEnabled());

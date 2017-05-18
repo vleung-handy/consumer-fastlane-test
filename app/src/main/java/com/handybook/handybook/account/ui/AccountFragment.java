@@ -21,6 +21,7 @@ import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
+import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
@@ -29,7 +30,6 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.UserDataManager;
-import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
 import com.handybook.handybook.core.ui.view.PriceView;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
@@ -349,7 +349,7 @@ public class AccountFragment extends InjectedFragment {
                                 LoginManager.getInstance().logOut();
                                 Intent intent = new Intent(
                                         getContext(),
-                                        SplashActivity.class
+                                        ServiceCategoriesActivity.class
                                 );
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                                                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
