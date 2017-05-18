@@ -1,41 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/handy_bg"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/handy_bg"
+              android:orientation="vertical"
     >
 
     <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/default_padding"
+            android:paddingBottom="@dimen/default_padding_double"
             >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="editing hours"
+                style="@style/TextView.CenteredHeader"
+                android:text="@string/account.plan.edit_hours.pro_assignment_warning"
                 />
 
+            <FrameLayout
+                android:id="@+id/plan_edit_hours_options_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
 
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/plan_edit_hours_detail_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_double"
+                android:orientation="vertical"
+                >
+
+                <include
+                    android:id="@+id/plan_edit_hours_base_time_row"
+                    layout="@layout/element_label_value_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    />
+
+                <include
+                    android:id="@+id/plan_edit_hours_added_time_row"
+                    layout="@layout/element_label_value_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    />
+
+                <include
+                    android:id="@+id/plan_edit_hours_extras_time_row"
+                    layout="@layout/element_label_value_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    />
+
+                <include layout="@layout/element_horizontal_divider"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        style="@style/TextView.Bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/default_margin_half"
+                        android:text="@string/total_due"
+                        android:textAllCaps="true"
+                        android:textColor="@color/handy_text_black"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:id="@+id/plan_edit_hours_booking_duration_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/handy_text_black"
+                        android:textSize="@dimen/text_size_medium"
+                        tools:text="(4 hours)"
+                        />
+
+                    <TextView
+                        android:id="@+id/plan_edit_hours_total_due_text"
+                        style="@style/TextView.Bold"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        android:textColor="@color/handy_text_black"
+                        android:textSize="@dimen/text_size_xxlarge"
+                        android:textStyle="bold"
+                        tools:text="$100"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/plan_edit_hours_billed_on_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:textColor="@color/black_pressed"
+                    android:textSize="@dimen/text_size_medium"
+                    />
+            </LinearLayout>
+
+            <ViewStub
+                android:id="@+id/plan_edit_hours_apply_to_recurring_option_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
         </LinearLayout>
+
     </ScrollView>
 
     <Button
         android:id="@+id/plan_edit_hours_save_button"
         style="@style/Button.Green"
-        android:layout_alignParentBottom="true"
-        android:text="@string/save"
+        android:text="@string/update"
         android:textAllCaps="false"
         />
-</RelativeLayout>
+
+
+</LinearLayout>

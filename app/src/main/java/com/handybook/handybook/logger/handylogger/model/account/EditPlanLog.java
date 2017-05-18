@@ -67,23 +67,6 @@ public class EditPlanLog extends EventLog {
     }
 
 
-    public static class EditHoursSelected extends EditPlanLog {
-
-        private static final String EVENT_TYPE = "edit_hours_selected";
-
-        @SerializedName("recurring_booking_id")
-        private final int mRecurringBookingId;
-        @SerializedName("hours")
-        private final double mHours;
-
-        public EditHoursSelected(int recurringBookingId, double hours) {
-            super(EVENT_TYPE);
-            mRecurringBookingId = recurringBookingId;
-            mHours = hours;
-        }
-    }
-
-
     public static class EditExtrasTapped extends EditPlanLog {
 
         private static final String EVENT_TYPE = "edit_extras_tapped";

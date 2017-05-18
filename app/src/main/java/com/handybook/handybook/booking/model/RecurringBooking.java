@@ -1,5 +1,8 @@
 package com.handybook.handybook.booking.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -12,7 +15,7 @@ public class RecurringBooking implements Serializable {
     @SerializedName("hashed")
     private String mHashed;
     @SerializedName("hours")
-    private float mHours;
+    private double mHours;
     @SerializedName("next_booking_id")
     private int mNextBookingId;
     @SerializedName("next_booking_date")
@@ -27,7 +30,6 @@ public class RecurringBooking implements Serializable {
     private String mCancelUrl;
     @SerializedName("address_components")
     private Booking.Address mAddress;
-    //This is the recurring series id.
     @SerializedName("service_name")
     private String mServiceName;
     @SerializedName("service_machine")
@@ -42,7 +44,7 @@ public class RecurringBooking implements Serializable {
     public RecurringBooking(
             final int id,
             final String hashed,
-            final float hours,
+            final double hours,
             final int nextBookingId,
             final Date nextBookingDate,
             final String fullAddress,
@@ -67,11 +69,12 @@ public class RecurringBooking implements Serializable {
         return mId;
     }
 
+    @NonNull
     public String getHashed() {
         return mHashed;
     }
 
-    public float getHours() {
+    public double getHours() {
         return mHours;
     }
 
@@ -79,44 +82,57 @@ public class RecurringBooking implements Serializable {
         return mNextBookingId;
     }
 
+    @Nullable
     public Date getNextBookingDate() {
         return mNextBookingDate;
     }
 
+    @Nullable
     public String getFullAddress() {
         return mFullAddress;
     }
 
+    @NonNull
     public String getFrequency() {
         return mFrequency;
     }
 
     public int getFrequencyValue() { return mFrequencyValue; }
 
+    @NonNull
     public String getCancelUrl() {
         return mCancelUrl;
     }
 
+    @Nullable
     public Booking.Address getAddress() { return mAddress; }
 
     public void setFrequency(final String frequency) { mFrequency = frequency; }
 
     public void setFrequencyValue(final int frequencyValue) { mFrequencyValue = frequencyValue; }
 
+    public void setHours(final double hours) {
+        mHours = hours;
+    }
+
     public void setAddress(final Booking.Address address) { mAddress = address; }
 
+    @NonNull
     public String getServiceName() {
         return mServiceName;
     }
 
+    @NonNull
     public String getMachineName() {
         return mMachineName;
     }
 
+    @NonNull
     public Date getDateStart() {
         return mDateStart;
     }
 
+    @NonNull
     public String getRecurringStringShort() {
         return mRecurringStringShort;
     }

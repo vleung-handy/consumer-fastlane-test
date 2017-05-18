@@ -520,6 +520,11 @@
     <string name="account.update_password">Update Password</string>
     <string name="account.update_plan_address_success">Your booking address was updated.</string>
     <string name="account.update_plan_address_error">Address updated failed. Please try again.</string>
+    <string name="account.update_plan_hours_success">Your plan hours updated successfully.</string>
+    <string name="account.update_plan_hours_error">Oops, we had a problem updating the hours. Please try again.</string>
+    <string name="account.update_plan_extras_success">Your plan extras updated successfully.</string>
+    <string name="account.update_plan_extras_error">Oops, we had a problem updating the extras. Please try again.</string>
+    <string name="account.plan.edit_hours.pro_assignment_warning">If you have an upcoming booking and your pro  is unable to commit to your edit, another pro will be assigned.</string>
 
     <!-- Nav Drawer -->
     <string name="nav.get_free_cleanings">Get free cleanings!</string>

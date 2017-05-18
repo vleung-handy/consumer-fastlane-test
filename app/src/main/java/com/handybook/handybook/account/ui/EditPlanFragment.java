@@ -3,6 +3,7 @@ package com.handybook.handybook.account.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ public class EditPlanFragment extends InjectedFragment {
 
     private RecurringBooking mPlan;
 
+    @NonNull
     public static EditPlanFragment newInstance(RecurringBooking plan) {
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.RECURRING_PLAN, plan);
@@ -114,7 +116,7 @@ public class EditPlanFragment extends InjectedFragment {
     public void editExtras() {
         bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditExtrasTapped(
                 mPlan.getId(),
-                null // FIXME: See if we can get the extras at this point
+                null // FIXME: See if we can get the extras at this point (when we implement this)
         )));
 
         Intent intent = new Intent(getContext(), EditPlanExtrasActivity.class);

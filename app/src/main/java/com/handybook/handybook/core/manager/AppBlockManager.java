@@ -75,12 +75,6 @@ public class AppBlockManager {
         }
         dataManager.getBlockedWrapper(
                 versionCode,
-                new DataManager.CacheResponse<BlockedWrapper>() {
-                    @Override
-                    public void onResponse(final BlockedWrapper blockedWrapper) {
-                        //Do nothing, what is this even for?
-                    }
-                },
                 new DataManager.Callback<BlockedWrapper>() {
                     @Override
                     public void onSuccess(BlockedWrapper response) {

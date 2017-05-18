@@ -163,8 +163,6 @@ public class BookingEditExtrasViewModel {
     }
 
     /**
-     * @param checkedIndexes
-     * @param context
      * @return the string to display as "Total Due"
      */
     public String getTotalDueText(Integer[] checkedIndexes, Context context) {
@@ -200,7 +198,7 @@ public class BookingEditExtrasViewModel {
         return mBookingEditExtrasInfoResponse.getHourInfo()[optionIndex];
     }
 
-    private String getFormattedHoursForPriceTable(float hours) {
+    private String getFormattedHoursForPriceTable(double hours) {
         //have to do this because the price table returned from the api has key values
         // like 2, 2.5, 3, 3.5, etc
 

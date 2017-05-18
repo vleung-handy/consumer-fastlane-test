@@ -65,7 +65,7 @@ public final class TextUtils {
         }
     }
 
-    public static String formatToAtMostOneDecimalPlaceUSLocale(final float num) {
+    public static String formatToAtMostOneDecimalPlaceUSLocale(final double num) {
         return AT_MOST_ONE_DECIMAL_PLACE_US_LOCALE_FORMAT.format(num);
     }
 
