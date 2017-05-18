@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
-import com.handybook.handybook.core.ui.view.MiniProProfile;
+import com.handybook.handybook.core.ui.view.HorizontalMiniProProfile;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.view.ProTeamSectionListHeaderView;
 
@@ -165,7 +165,7 @@ public class NewProTeamCategoryAdapter
         @Bind(R.id.pro_team_pro_card_checkbox)
         CheckBox mHeartIcon;
         @Bind(R.id.pro_team_pro_card_profile)
-        MiniProProfile mProProfile;
+        HorizontalMiniProProfile mProProfile;
         @Bind(R.id.empty_state_holder)
         ViewGroup mEmptyStateHolder;
         @Bind(R.id.empty_state_title)

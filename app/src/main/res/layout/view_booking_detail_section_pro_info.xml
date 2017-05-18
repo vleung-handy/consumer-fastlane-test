@@ -18,7 +18,7 @@
 
         <include layout="@layout/layout_section_action_text"/>
 
-        <com.handybook.handybook.core.ui.view.MiniProProfile
+        <com.handybook.handybook.core.ui.view.HorizontalMiniProProfile
             android:id="@+id/element_booking_detail_section_pro_info_pro_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

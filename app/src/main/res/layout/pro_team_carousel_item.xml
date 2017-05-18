@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/mini_pro_profile_card_width"
@@ -9,91 +9,21 @@
     android:layout_margin="@dimen/default_margin"
     android:background="@drawable/bg_rounded_white_5"
     android:padding="@dimen/default_padding"
+    android:orientation="vertical"
+    android:id="@+id/pro_team_carousel_item_container"
     >
 
-    <RelativeLayout
-        android:id="@+id/carousel_avatar"
-        android:layout_width="wrap_content"
+    <com.handybook.handybook.core.ui.view.VerticalMiniProProfile
+        android:id="@+id/pro_team_carousel_item_mini_pro_profile_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        >
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/carousel_profile_image"
-            android:layout_width="@dimen/mini_pro_profile_image_size_large"
-            android:layout_height="@dimen/mini_pro_profile_image_size_large"
-            android:contentDescription="Pro Team Image"
-            tools:src="@drawable/img_pro_placeholder"
-            />
-
-
-        <FrameLayout
-            android:id="@+id/carousel_heart_container"
-            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_container_size"
-            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_container_size"
-            android:layout_alignEnd="@id/carousel_profile_image"
-            android:layout_alignRight="@id/carousel_profile_image"
-            android:background="@drawable/bg_circle_white"
-            android:visibility="gone"
-            tools:visibility="visible"
-            >
-
-            <ImageView
-                android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size"
-                android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_heart_small"
-                />
-
-        </FrameLayout>
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/carousel_name"
-        style="@style/TextView.Medium.Bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/carousel_avatar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/default_margin_half"
-        tools:text="Christina P."
-        />
-
-    <include
-        android:id="@+id/carousel_ratings_container"
-        layout="@layout/job_count_ratings_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/carousel_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/default_margin_half"
-        android:layout_marginBottom="@dimen/default_margin"
-        />
-
-    <TextView
-        android:id="@+id/carousel_no_ratings_indicator"
-        style="@style/TextView.XSmall"
-        android:layout_below="@id/carousel_ratings_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_new_to_handy_badge"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="@string/pro_profile_new_to_handy"
-        android:textColor="@color/handy_tertiary_gray"
-        android:layout_marginTop="@dimen/default_margin_half"
-        android:layout_marginBottom="@dimen/default_margin_half"
-        android:visibility="gone"
-        tools:visibility="visible"
         />
 
     <Button
         android:id="@+id/carousel_button"
         style="@style/Button.Green.Round"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
-        android:layout_below="@id/carousel_no_ratings_indicator"
+        android:layout_marginTop="@dimen/default_margin"
         android:minHeight="0dp"
         android:paddingBottom="@dimen/default_padding_half"
         android:paddingEnd="@dimen/default_padding_quarter"
@@ -104,4 +34,4 @@
         android:text="@string/pro_referral_recommend"
         android:textSize="@dimen/text_size_small"
         />
-</RelativeLayout>
+</LinearLayout>
