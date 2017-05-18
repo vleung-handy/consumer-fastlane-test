@@ -53,9 +53,9 @@ public class BookingExtrasFragmentTest extends RobolectricGradleTestWrapper {
         when(mMockOption.getType()).thenReturn("option_type");
         when(mMockQuote.getBookingOption()).thenReturn(mMockOption);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt()))
+        when(mMockQuote.getPricingCents(anyFloat(), anyInt(), anyInt()))
                 .thenReturn(new float[]{0.0f, 0.0f});
-        when(mMockQuote.getPricing(anyString(), anyFloat(), anyInt(), anyInt()))
+        when(mMockQuote.getPricingCents(anyString(), anyFloat(), anyInt(), anyInt()))
                 .thenReturn(new float[]{0.0f, 0.0f});
 
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
