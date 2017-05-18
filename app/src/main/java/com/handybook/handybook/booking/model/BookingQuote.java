@@ -340,8 +340,8 @@ public class BookingQuote extends Observable {
 
     boolean hasRecurring() {
         final BookingPriceInfo info = mPriceTable.get(0);
-        return !(info.getBiMonthlyprice() <= 0 && info.getMonthlyPrice() <= 0
-                 && info.getWeeklyPrice() <= 0);
+        return !(info.getBiMonthlyPriceDollars() <= 0 && info.getMonthlyPriceDollars() <= 0
+                 && info.getWeeklyPriceDollars() <= 0);
     }
 
     /**
@@ -352,12 +352,12 @@ public class BookingQuote extends Observable {
      * there is no {@link CommitmentType} present.
      * @return
      */
-    public float[] getPricing(final float hours, final int freq, final int length) {
-        return getPricing(CommitmentType.STRING_MONTHS, hours, freq, length);
+    public float[] getPricingCents(final float hours, final int freq, final int length) {
+        return getPricingCents(CommitmentType.STRING_MONTHS, hours, freq, length);
     }
 
     @Nullable
-    public float[] getPricing(
+    public float[] getPricingCents(
             @NonNull String commitmentType,
             final float hours,
             final int freq,
@@ -387,12 +387,12 @@ public class BookingQuote extends Observable {
             return new float[]{price.getFullPrice(), price.getAmountDue()};
         }
         else {
-            return getPricing(hours, freq);
+            return getPricingCents(hours, freq);
         }
     }
 
     @Nullable
-    public float[] getPricing(final float hours, final int freq) {
+    public float[] getPricingCents(final float hours, final int freq) {
         final BookingPriceInfo info = getPriceTableMap().get(hours);
         if (info == null) {
             try {
@@ -410,13 +410,25 @@ public class BookingQuote extends Observable {
         }
         switch (freq) {
             case WEEKLY_PRICE:
-                return new float[]{info.getWeeklyPrice(), info.getDiscountWeeklyPrice()};
+                return new float[]{
+                        info.getWeeklyPriceCents(),
+                        info.getDiscountWeeklyPriceCents()
+                };
             case BI_MONTHLY_PRICE:
-                return new float[]{info.getBiMonthlyprice(), info.getDiscountBiMonthlyprice()};
+                return new float[]{
+                        info.getBiMonthlyPriceCents(),
+                        info.getDiscountBiMonthlyPriceCents()
+                };
             case MONTHLY_PRICE:
-                return new float[]{info.getMonthlyPrice(), info.getDiscountMonthlyPrice()};
+                return new float[]{
+                        info.getMonthlyPriceCents(),
+                        info.getDiscountMonthlyPriceCents()
+                };
             default:
-                return new float[]{info.getPrice(), info.getDiscountPrice()};
+                return new float[]{
+                        info.getPriceCents(),
+                        info.getDiscountPriceCents()
+                };
         }
     }
 

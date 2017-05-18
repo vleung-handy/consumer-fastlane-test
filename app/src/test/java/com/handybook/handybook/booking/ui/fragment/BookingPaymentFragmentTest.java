@@ -78,9 +78,9 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper {
                 .inject(this);
         when(mUserManager.getCurrentUser()).thenReturn(mMockUser);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt()))
+        when(mMockQuote.getPricingCents(anyFloat(), anyInt(), anyInt()))
                 .thenReturn(new float[]{0.0f, 0.0f});
-        when(mMockQuote.getPricing(anyString(), anyFloat(), anyInt(), anyInt()))
+        when(mMockQuote.getPricingCents(anyString(), anyFloat(), anyInt(), anyInt()))
                 .thenReturn(new float[]{0.0f, 0.0f});
         when(mMockQuote.isAndroidPayEnabled()).thenReturn(true);
         when(mMockQuote.getAndroidPayCouponCode()).thenReturn("ANDROIDPAY");

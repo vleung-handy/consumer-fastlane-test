@@ -48,11 +48,11 @@ public class BookingRecurrenceFragmentTest extends RobolectricGradleTestWrapper 
         ((TestBaseApplication) ShadowApplication.getInstance().getApplicationContext())
                 .inject(this);
         when(mBookingManager.getCurrentTransaction()).thenReturn(mMockTransaction);
-        when(mMockQuote.getPricing(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{
+        when(mMockQuote.getPricingCents(anyFloat(), anyInt(), anyInt())).thenReturn(new float[]{
                 0.0f,
                 0.0f
         });
-        when(mMockQuote.getPricing(anyString(), anyFloat(), anyInt(), anyInt()))
+        when(mMockQuote.getPricingCents(anyString(), anyFloat(), anyInt(), anyInt()))
                 .thenReturn(new float[]{0.0f, 0.0f});
         when(mMockQuote.getPeakPriceTable()).thenReturn(null);
         when(mMockRequest.getUniq()).thenReturn("home_cleaning");
