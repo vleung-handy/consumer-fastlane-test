@@ -474,6 +474,28 @@ public class UpcomingBookingsFragment extends InjectedFragment
     }
 
     /**
+     * splitting this out from setupBookingsView() for clarity and easier testing
+     */
+    private void updateReviewAppBannerFragmentVisibility() {
+        if (mBookingsRequestCompleted
+            && mServiceRequestCompleted
+            && mActiveBookingContainer.getVisibility() == View.GONE) {
+            /*
+            whether the fragment contents can be displayed, even if this is set,
+            is still dependent on the review app manager
+            */
+            mReviewAppBannerFragmentContainer.setVisibility(View.VISIBLE);
+        }
+        else {
+            /*
+            don't want to show the review app banner while still loading data
+            or when active bookings map is visible
+             */
+            mReviewAppBannerFragmentContainer.setVisibility(View.GONE);
+        }
+    }
+
+    /**
      * Only perform the setup if we got responses from both bookings and get services
      */
     private void setupBookingsView() {
@@ -489,14 +511,9 @@ public class UpcomingBookingsFragment extends InjectedFragment
             }
 
             insertShareBannerView();
-            mReviewAppBannerFragmentContainer.setVisibility(View.VISIBLE);
         }
-        else {
-            /*
-            don't want the review app banner to show while upcoming bookings fragment is still loading
-             */
-            mReviewAppBannerFragmentContainer.setVisibility(View.GONE);
-        }
+
+        updateReviewAppBannerFragmentVisibility();
     }
 
     /**

@@ -63,7 +63,10 @@ public class ReviewAppManager {
         Integer displayDelayDaysAfterDeclined
                 = reviewAppBannerConfig.getDisplayDelayDaysAfterDeclined();
         if (displayDelayDaysAfterDeclined == null) {
-            //if no display delay given act like the delay is infinite
+            /*
+            this should not be null if we want to show the banner.
+            cannot say that min delay has passed if no display delay given
+             */
             return false;
         }
 
