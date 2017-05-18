@@ -273,7 +273,8 @@ import dagger.Module;
                 BookingGetQuoteFragment.class,
                 BookingOptionsInputFragment.class,
                 ReviewAppBannerFragment.class,
-                CarouselPagerAdapter.class//todo this is proteam specific; should put in a proteam module
+                CarouselPagerAdapter.class,
+                //todo this is proteam specific; should put in a proteam module
                 EditPlanHoursActivity.class,
                 EditPlanHoursFragment.class,
                 EditPlanExtrasActivity.class,
