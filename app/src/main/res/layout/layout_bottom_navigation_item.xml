@@ -41,11 +41,21 @@
         android:duplicateParentState="true"
         >
 
+        <!--
+        we are only using saveEnabled=false because this view does not need to save state,
+        and we want to avoid an issue in which the system
+        incorrectly restores the value of this TextView when there are multiple
+        instances of this custom view in a layout (and thus duplicate ids)
+
+        but if we encounter this issue with a view that takes user input (ex. EditText)
+        and we want to save state, we should set unique ids instead
+        -->
         <TextView
             android:id="@+id/smallLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:duplicateParentState="true"
+            android:saveEnabled="false"
             android:singleLine="true"
             android:textSize="@dimen/bottom_nav_inactive_label_text_size"
             />
@@ -55,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:duplicateParentState="true"
+            android:saveEnabled="false"
             android:singleLine="true"
             android:textSize="@dimen/bottom_nav_active_label_text_size"
             android:visibility="invisible"
