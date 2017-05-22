@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Provider;
-import com.handybook.handybook.core.ui.view.MiniProProfile;
+import com.handybook.handybook.core.ui.view.HorizontalMiniProProfile;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,7 +47,7 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView {
      * mini pro profile
      */
     @Bind(R.id.element_booking_detail_section_pro_info_pro_profile)
-    MiniProProfile mProProfile;
+    HorizontalMiniProProfile mProProfile;
 
     public BookingDetailSectionProInfoView(final Context context) {
         super(context);
@@ -85,6 +85,7 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView {
     ) {
         mProProfile.setTitle(provider.getFirstNameAndLastInitial());
         mProProfile.setIsProTeam(providerAssignmentInfo.isProTeamMatch());
+        mProProfile.setIsProTeamFavorite(provider.isFavorite());
         mProProfile.setRatingAndJobsCount(provider.getAverageRating(), provider.getBookingCount());
         if (providerAssignmentInfo.shouldShowProfileImage()) {
             mProProfile.setImage(provider.getImageUrl());

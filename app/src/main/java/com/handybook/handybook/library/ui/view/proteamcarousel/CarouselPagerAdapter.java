@@ -7,19 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.ui.view.VerticalMiniProProfile;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
-import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CarouselPagerAdapter extends PagerAdapter {
 
@@ -49,48 +44,20 @@ public class CarouselPagerAdapter extends PagerAdapter {
                                       .inflate(R.layout.pro_team_carousel_item, container, false);
         final ProCarouselVM profile = mProCarouselVMs.get(position);
 
-        FrameLayout heartContainer
-                = (FrameLayout) itemView.findViewById(R.id.carousel_heart_container);
-        View ratingContainer = itemView.findViewById(R.id.carousel_ratings_container);
-        View noRatingsContainer = itemView.findViewById(R.id.carousel_no_ratings_indicator);
-        TextView name = (TextView) itemView.findViewById(R.id.carousel_name);
-        TextView rating = (TextView) itemView.findViewById(R.id.mini_pro_profile_rating);
-        TextView jobCount = (TextView) itemView.findViewById(R.id.mini_pro_profile_jobs_count);
-        CircleImageView image
-                = (CircleImageView) itemView.findViewById(R.id.carousel_profile_image);
+        VerticalMiniProProfile verticalMiniProProfile
+                = (VerticalMiniProProfile) itemView.findViewById(R.id.pro_team_carousel_item_mini_pro_profile_card);
+
+        verticalMiniProProfile.setProTeamIndicatorEnabled(true);
+        verticalMiniProProfile.setIsProTeam(profile.isProTeam());
+        verticalMiniProProfile.setIsProTeamFavorite(profile.isFavorite());
+        verticalMiniProProfile.setTitle(profile.getDisplayName());
+        verticalMiniProProfile.setImage(profile.getImageUrl());
         Button mButton = (Button) itemView.findViewById(R.id.carousel_button);
 
-        heartContainer.setVisibility(profile.isFavorite() ? View.VISIBLE : View.GONE);
-        if (profile.getJobCount() > 0 && profile.getAverageRating() > 0.f) {
-
-            ratingContainer.setVisibility(View.VISIBLE);
-            noRatingsContainer.setVisibility(View.GONE);
-
-            final String jobCountString = jobCount
-                    .getResources()
-                    .getQuantityString(
-                            R.plurals.jobs_count,
-                            profile.getJobCount(),
-                            profile.getJobCount()
-                    );
-            jobCount.setText(jobCountString);
-
-            final DecimalFormat format = new DecimalFormat();
-            format.setMinimumFractionDigits(1);
-            format.setMaximumFractionDigits(1);
-            rating.setText(format.format(profile.getAverageRating()));
-        }
-        else {
-            ratingContainer.setVisibility(View.GONE);
-            noRatingsContainer.setVisibility(View.VISIBLE);
-        }
-
-        name.setText(profile.getDisplayName());
-
-        Picasso.with(image.getContext())
-               .load(profile.getImageUrl())
-               .placeholder(R.drawable.img_pro_placeholder)
-               .into(image);
+        verticalMiniProProfile.setRatingAndJobsCount(
+                profile.getAverageRating(),
+                profile.getJobCount()
+        );
 
         if(profile.isProfileEnabled())
         {

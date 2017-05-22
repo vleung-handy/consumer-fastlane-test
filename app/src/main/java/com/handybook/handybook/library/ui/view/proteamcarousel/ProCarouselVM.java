@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.handybook.handybook.booking.model.Provider;
+import com.handybook.handybook.proteam.util.ProTeamUtils;
 import com.handybook.handybook.referral.model.ProReferral;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class ProCarouselVM implements Serializable {
     private String mDisplayName;
     private String mButtonText;
     private boolean mActionable;
+    private boolean mIsProTeam;
     private boolean mIsFavorite;
     private boolean mIsProfileEnabled;
 
@@ -39,6 +41,7 @@ public class ProCarouselVM implements Serializable {
             final String displayName,
             final String buttonText,
             final boolean isProfileEnabled,
+            final boolean isProTeam,
             final boolean isFavorite
     ) {
         mProviderId = providerId;
@@ -48,8 +51,13 @@ public class ProCarouselVM implements Serializable {
         mDisplayName = displayName;
         mButtonText = buttonText;
         mActionable = true;
+        mIsProTeam = isProTeam;
         mIsFavorite = isFavorite;
         mIsProfileEnabled = isProfileEnabled;
+    }
+
+    public boolean isProTeam() {
+        return mIsProTeam;
     }
 
     public boolean isProfileEnabled() {
@@ -120,6 +128,7 @@ public class ProCarouselVM implements Serializable {
                 provider.getName(),
                 proReferral.getReferralButtonText(),
                 provider.getIsProProfileEnabled(),
+                ProTeamUtils.isProOnProTeam(provider.getMatchPreference()),
                 provider.isFavorite()
         );
     }
@@ -137,6 +146,7 @@ public class ProCarouselVM implements Serializable {
                 provider.getFirstNameAndLastInitial(),
                 buttonText,
                 provider.getIsProProfileEnabled(),
+                ProTeamUtils.isProOnProTeam(provider.getMatchPreference()),
                 provider.isFavorite()
         );
     }

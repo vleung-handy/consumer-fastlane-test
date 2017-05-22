@@ -115,7 +115,7 @@
                     android:textSize="@dimen/text_size_xsmall"
                     />
 
-                <com.handybook.handybook.core.ui.view.MiniProProfile
+                <com.handybook.handybook.core.ui.view.HorizontalMiniProProfile
                     android:id="@+id/active_booking_provider_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

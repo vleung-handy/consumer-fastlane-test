@@ -20,7 +20,15 @@ import java.text.DecimalFormat;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MiniProProfile extends FrameLayout {
+/**
+ * view for rendering a summarized pro profile, containing
+ * the pro's image, job count/rating, name, service and favorite indicators
+ *
+ * supports different layouts by allowing override of getLayoutId(),
+ * since we have many summarized pro profile views that display the same information
+ * with different layouts and styling
+ */
+public abstract class BaseMiniProProfile extends FrameLayout {
 
     @Bind(R.id.mini_pro_profile_title)
     TextView mTitleText;
@@ -34,8 +42,8 @@ public class MiniProProfile extends FrameLayout {
     ViewGroup mProfileImageContainer;
     @Bind(R.id.mini_pro_profile_image)
     ImageView mProfileImage;
-    @Bind(R.id.mini_pro_profile_pro_team_indicator_image)
-    View mProTeamIndicatorImage;
+    @Bind(R.id.mini_pro_profile_pro_team_favorite_indicator_image)
+    View mProTeamFavoriteIndicatorImage;
     @Bind(R.id.mini_pro_profile_pro_team_indicator_name)
     View mProTeamIndicatorName;
     @Bind(R.id.mini_pro_profile_handyman_indicator)
@@ -43,26 +51,31 @@ public class MiniProProfile extends FrameLayout {
     @Bind(R.id.mini_pro_profile_no_ratings_indicator)
     View mNoRatingsIndicator;
 
+    private boolean mIsProTeamFavorite;
     private boolean mIsProTeam;
     private boolean mIsProTeamIndicatorEnabled;
 
-    public MiniProProfile(final Context context) {
+    public BaseMiniProProfile(final Context context) {
         super(context);
         init();
     }
 
-    public MiniProProfile(final Context context, final AttributeSet attrs) {
+    public BaseMiniProProfile(final Context context, final AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public MiniProProfile(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public BaseMiniProProfile(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr
+    ) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public MiniProProfile(
+    public BaseMiniProProfile(
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr,
@@ -77,10 +90,7 @@ public class MiniProProfile extends FrameLayout {
         ButterKnife.bind(this);
     }
 
-    protected int getLayoutResourceId()
-    {
-        return R.layout.layout_mini_pro_profile;
-    }
+    protected abstract int getLayoutResourceId();
 
     public void setTitle(final String title) {
         mTitleText.setText(title);
@@ -135,17 +145,29 @@ public class MiniProProfile extends FrameLayout {
         updateProTeamIndicator();
     }
 
+    public void setIsProTeamFavorite(final boolean isProTeamFavorite) {
+        mIsProTeamFavorite = isProTeamFavorite;
+        if (isProTeamFavorite) {
+            //also must be on pro team if is a favorite
+            mIsProTeam = true;
+        }
+        updateProTeamIndicator();
+    }
+
     public void setIsProTeam(final boolean isProTeam) {
         mIsProTeam = isProTeam;
         updateProTeamIndicator();
     }
 
     private void updateProTeamIndicator() {
-        mProTeamIndicatorImage.setVisibility(GONE);
+        mProTeamFavoriteIndicatorImage.setVisibility(GONE);
         mProTeamIndicatorName.setVisibility(GONE);
         if (mIsProTeam && mIsProTeamIndicatorEnabled) {
             if (mProfileImageContainer.getVisibility() == VISIBLE) {
-                mProTeamIndicatorImage.setVisibility(VISIBLE);
+                if (mIsProTeamFavorite) {
+                    mProTeamFavoriteIndicatorImage.setVisibility(VISIBLE);
+                }
+                //else if not a pro team favorite, don't show any indicator
             }
             else {
                 mProTeamIndicatorName.setVisibility(VISIBLE);

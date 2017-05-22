@@ -7,7 +7,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.ui.view.MiniProProfile;
+import com.handybook.handybook.core.ui.view.HorizontalMiniProProfile;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
 import butterknife.Bind;
@@ -24,7 +24,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     @Bind(R.id.pro_team_pro_card_checkbox)
     CheckBox mCheckbox;
     @Bind(R.id.pro_team_pro_card_profile)
-    MiniProProfile mProProfile;
+    HorizontalMiniProProfile mProProfile;
 
     public ProTeamProHolder(
             View itemView,
@@ -56,6 +56,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
         );
 
         mProProfile.setIsProTeam(mProTeamProViewModel.isChecked());
+        mProProfile.setIsProTeamFavorite(mProTeamProViewModel.isFavorite());
         mProProfile.setProTeamIndicatorEnabled(false);
         mProProfile.setHandymanIndicatorEnabled(mProTeamProViewModel.isHandymanIndicatorEnabled());
 
@@ -84,6 +85,7 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
         mProTeamProViewModel.setChecked(isChecked);
         mProProfile.setIsProTeam(isChecked);
+        mProProfile.setIsProTeamFavorite(mProTeamProViewModel.isFavorite());
         if (mOnInteractionListener != null) {
             mOnInteractionListener.onCheckedChanged(
                     mProTeamProViewModel.getProTeamPro(),

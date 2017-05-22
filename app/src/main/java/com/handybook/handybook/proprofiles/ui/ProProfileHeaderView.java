@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 public class ProProfileHeaderView extends FrameLayout{
 
     @Bind(R.id.pro_profile_summary_layout)
-    ProProfileSummaryView mMiniProProfile;
+    ProProfileMiniProProfile mMiniProProfile;
 
     @Bind(R.id.pro_profile_action_buttons_layout)
     ViewGroup mActionButtonsLayout;
@@ -115,6 +115,8 @@ public class ProProfileHeaderView extends FrameLayout{
         boolean isProOnProTeam = ProTeamUtils.isProOnProTeam(providerInformation.getMatchPreference());
         mMiniProProfile.setProTeamIndicatorEnabled(isProOnProTeam);
         mMiniProProfile.setIsProTeam(isProOnProTeam);
+        mMiniProProfile.setIsProTeamFavorite(providerInformation.isCustomerFavorite() != null
+                                             && providerInformation.isCustomerFavorite());
 
         mMiniProProfile.setHandymanIndicatorEnabled(providerInformation.getProTeamCategoryType() == ProTeamCategoryType.HANDYMEN);
 
