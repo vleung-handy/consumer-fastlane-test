@@ -6,9 +6,6 @@ import android.util.AttributeSet;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.view.BaseMiniProProfile;
 
-/**
- * currently only used by the share page, but will eventually be also used by the new "my pros" tab
- */
 public class VerticalMiniProProfile extends BaseMiniProProfile {
 
     public VerticalMiniProProfile(final Context context) {
