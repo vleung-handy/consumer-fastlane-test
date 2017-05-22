@@ -14,6 +14,7 @@ public class SourcePage {
     public static final String RATING = "rating_flow";
     public static final String SIDE_MENU = "side_menu";
     public static final String ACCOUNT = "account";
+    public static final String MY_PROS = "my_pros";
 
 
     @Retention(RetentionPolicy.SOURCE)

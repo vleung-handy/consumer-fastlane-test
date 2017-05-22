@@ -38,6 +38,7 @@ public abstract class AppLog extends EventLog {
         public static class Page {
 
             public static final String PRO_TEAM_CONVERSATIONS = "pro_team_conversations";
+            public static final String MY_PROS = "my_pros";
             public static final String PAST_BOOKINGS = "past_bookings";
             public static final String UPCOMING_BOOKINGS = "upcoming_bookings";
         }
@@ -47,7 +48,8 @@ public abstract class AppLog extends EventLog {
         @StringDef({
                            Page.PRO_TEAM_CONVERSATIONS,
                            Page.PAST_BOOKINGS,
-                           Page.UPCOMING_BOOKINGS
+                           Page.UPCOMING_BOOKINGS,
+                           Page.MY_PROS
                    })
         public @interface AppNavigationLogPage {
         }

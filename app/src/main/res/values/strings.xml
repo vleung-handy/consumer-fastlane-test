@@ -645,5 +645,10 @@
     <string name="pro_profile_action_button_book">Book</string>
     <string name="pro_profile_action_button_recommend">Recommend</string>
 
+    <string name="my_pros_tab_title">My Pros</string>
+    <string name="my_pros_pro_team_info">Your Pro Team members are the pros you\'d be happy to work with in the future. We\'ll do our best to pair you with them every time.\n\nYour Favorite Pro is the Team member you set as your first choice for every booking. We\'ll send them your jobs first.</string>
+    <string name="my_pros_pro_team_favorite_indicator">Your Favorite Pro</string>
+    <string name="my_pros_choose_favorite_pro_button">Choose a \nFavorite Pro</string>
+    <string name="my_pros_pro_team_empty">No pros on your team yet. As you meet pros, you\'ll be able to build your pro team. We\'ll always request these pros first.</string>
 </resources>
 
