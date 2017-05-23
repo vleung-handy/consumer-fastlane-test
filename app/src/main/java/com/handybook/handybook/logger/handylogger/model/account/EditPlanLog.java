@@ -52,7 +52,7 @@ public class EditPlanLog extends EventLog {
 
     public static class EditHoursTapped extends EditPlanLog {
 
-        private static final String EVENT_TYPE = "edit_hours_tapped";
+        private static final String EVENT_TYPE = "edit_hours_selected";
 
         @SerializedName("recurring_booking_id")
         private final int mRecurringBookingId;
