@@ -1,5 +1,7 @@
 package com.handybook.handybook.onboarding;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -24,20 +26,25 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
+import com.handybook.handybook.core.BaseApplication;
+import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
+import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
 import com.handybook.handybook.library.util.Utils;
@@ -114,9 +121,10 @@ public class OnboardV2Fragment extends InjectedFragment {
 
     @Inject
     protected ServicesManager mServicesManager;
-
     @Inject
     DefaultPreferencesManager mDefaultPreferencesManager;
+    @Inject
+    EnvironmentModifier mEnvironmentModifier;
 
     private Animation mSlideInFromRight;
     private Animation mSlideOutToLeft;
@@ -176,10 +184,8 @@ public class OnboardV2Fragment extends InjectedFragment {
                     final TextView v,
                     final int actionId,
                     final KeyEvent event
-            )
-            {
-                if (actionId == EditorInfo.IME_ACTION_DONE && mNextButton.isEnabled())
-                {
+            ) {
+                if (actionId == EditorInfo.IME_ACTION_DONE && mNextButton.isEnabled()) {
                     nextClicked();
                     return true;
                 }
@@ -206,10 +212,8 @@ public class OnboardV2Fragment extends InjectedFragment {
                     final TextView v,
                     final int actionId,
                     final KeyEvent event
-            )
-            {
-                if (actionId == EditorInfo.IME_ACTION_DONE && mSubmitButton.isEnabled())
-                {
+            ) {
+                if (actionId == EditorInfo.IME_ACTION_DONE && mSubmitButton.isEnabled()) {
                     emailSubmitClicked();
                     return true;
                 }
@@ -244,6 +248,32 @@ public class OnboardV2Fragment extends InjectedFragment {
         mEditEmail.setText(mDefaultPreferencesManager.getString(PrefsKey.EMAIL));
 
         return view;
+    }
+
+    @OnClick(R.id.onboard_image_logo)
+    public void launchEnvironmentSelector() {
+        if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) {
+            return;
+        }
+        final EditText input = new EditText(getContext());
+        input.setText(mEnvironmentModifier.getEnvironment());
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.set_environment)
+                .setView(input)
+                .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // change the environment and update the menu text
+                        mEnvironmentModifier.setEnvironment(input.getText().toString());
+                        Intent intent = new Intent(getContext(), SplashActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show();
     }
 
     /**
