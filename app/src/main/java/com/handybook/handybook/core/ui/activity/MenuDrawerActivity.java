@@ -41,7 +41,6 @@ import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.logger.handylogger.model.SideMenuLog;
 import com.handybook.handybook.onboarding.OnboardActivity;
-import com.handybook.handybook.onboarding.OnboardV2Fragment;
 import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
 import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.shared.layer.LayerHelper;
@@ -373,7 +372,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
             mDrawerLayout.closeDrawers();
         }
         else if (isTaskRoot() && !(this instanceof ServiceCategoriesActivity)
-                 && !isOnboardingV2Showing()
+                 && !isOnboardingShowing()
                  && getSupportFragmentManager().getBackStackEntryCount() == 0) {
             //if back press results in exiting the app AND this is not the home page
             // AND there is no fragment in the backstack, then bring back to the home page first
@@ -394,8 +393,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
         finish();
     }
 
-    private boolean isOnboardingV2Showing() {
-        return this instanceof OnboardActivity && mActiveFragment instanceof OnboardV2Fragment;
+    private boolean isOnboardingShowing() {
+        return this instanceof OnboardActivity;
 
     }
 
