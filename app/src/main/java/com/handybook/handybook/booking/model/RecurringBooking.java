@@ -38,6 +38,10 @@ public class RecurringBooking implements Serializable {
     private Date mDateStart;
     @SerializedName("recurring_string_short")
     private String mRecurringStringShort;
+    @SerializedName("can_edit_hours")
+    private boolean mCanEditHours;
+    @SerializedName("can_edit_extras")
+    private boolean mCanEditExtras;
 
     public RecurringBooking() { }
 
@@ -135,5 +139,13 @@ public class RecurringBooking implements Serializable {
     @NonNull
     public String getRecurringStringShort() {
         return mRecurringStringShort;
+    }
+
+    public boolean canEditHours() {
+        return mCanEditHours;
+    }
+
+    public boolean canEditExtras() {
+        return mCanEditExtras;
     }
 }
