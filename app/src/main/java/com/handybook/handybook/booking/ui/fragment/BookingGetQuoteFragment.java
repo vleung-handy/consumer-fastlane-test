@@ -180,20 +180,21 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
              */
             zipCode = mDefaultPreferencesManager.getString(PrefsKey.ZIP);
         }
-
+        else if (user != null && (address = user.getAddress()) != null) {
+            //otherwise populate zip from user address
+            zipCode = address.getZip();
+        }
         /*
         always set this even if visibility gone for easy value retrieval later
         (we won't have to check for visibility)
          */
         mZipCodeInputTextView.setText(zipCode);
 
-        if (TextUtils.isBlank(zipCode) || !mZipCodeInputTextView.validate()) {
-            //if we could not resolve a valid zip code, show the zipcode input
-            mBookingZipcodeInputContainer.setVisibility(View.VISIBLE);
+        if (!TextUtils.isBlank(mDefaultPreferencesManager.getString(PrefsKey.ZIP))) {
+            mBookingZipcodeInputContainer.setVisibility(View.GONE);
         }
         else {
-            //if we already have a valid zip code, don't show the zipcode input to the user
-            mBookingZipcodeInputContainer.setVisibility(View.GONE);
+            mBookingZipcodeInputContainer.setVisibility(View.VISIBLE);
         }
 
     }
@@ -379,7 +380,10 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
     }
 
     @Override
-    public void onSelectedDateTimeUpdatedListener(final Calendar selectedDateTime, boolean isInstantBookEnabled) {
+    public void onSelectedDateTimeUpdatedListener(
+            final Calendar selectedDateTime,
+            boolean isInstantBookEnabled
+    ) {
         //Instantbook is only needed on reschedule
         updateBookingRequestDateTime(selectedDateTime.getTime());
     }
