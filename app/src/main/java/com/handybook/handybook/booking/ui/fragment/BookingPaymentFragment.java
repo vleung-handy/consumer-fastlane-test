@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
-import android.text.Html;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.TextWatcher;
@@ -362,11 +361,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     private void initializeTermsOfUseText() {
         if (mCurrentTransaction != null && mCurrentTransaction.getRecurringFrequency() !=
                                            BookingRecurrence.ONE_TIME) {
-            mTermsOfUseText.setText(Html.fromHtml(
+            mTermsOfUseText.setText(TextUtils.fromHtml(
                     getString(R.string.booking_payment_recurring_plan_terms_of_use_agreement)));
         }
         else {
-            mTermsOfUseText.setText(Html.fromHtml(
+            mTermsOfUseText.setText(TextUtils.fromHtml(
                     getString(R.string.booking_payment_terms_of_use_agreement)));
         }
         TextUtils.stripUnderlines(mTermsOfUseText);
@@ -394,7 +393,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
 
                     //get the link at the tap position
                     final ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
-                    if (link.length != 0) {
+                    if (link.length != 0 && off < buffer.length()) {
                         showTermsWebViewModal();
                         return true;
                     }

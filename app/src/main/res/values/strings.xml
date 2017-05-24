@@ -360,10 +360,8 @@
     <string name="apply_promo_code">Apply promo code</string>
     <string name="booking_payment_android_pay_promo_savings_formatted">Use Android Pay to save %1$s now!</string>
     <string name="android_pay_obfuscated_promo_code">ANDROIDPAY\u2022\u2022\u2022\u2022</string>
-    <string name="booking_payment_terms_of_use_agreement">By tapping the button below, I accept &lt;br>Handy\'s
-        &lt;a href="">Terms of Use&lt;/a></string>
-    <string name="booking_payment_recurring_plan_terms_of_use_agreement">By clicking Complete Booking I understand that I am purchasing a recurring cleaning plan subject to Handy\'s Cancellation Policy and
-    &lt;a href="">Terms of Use&lt;/a></string>
+    <string name="booking_payment_terms_of_use_agreement"><![CDATA[By tapping the button below, I accept <br/>Handy\'s <a href="">Terms of Use</a>]]></string>
+    <string name="booking_payment_recurring_plan_terms_of_use_agreement"><![CDATA[By clicking Complete Booking I understand that I am purchasing a recurring cleaning plan subject to Handy\'s Cancellation Policy and <a href="">Terms of Use</a>]]></string>
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
     <string name="scan_credit_card_button">Scan credit card</string>
