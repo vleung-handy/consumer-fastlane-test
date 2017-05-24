@@ -6,15 +6,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasInfoResponse;
+import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditExtrasViewModel;
 import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.ui.widget.CityInputTextView;
-import com.handybook.handybook.core.ui.widget.StateInputTextView;
-import com.handybook.handybook.core.ui.widget.StreetAddressInputTextView;
-import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 
 import butterknife.Bind;
@@ -22,21 +21,11 @@ import butterknife.ButterKnife;
 
 public final class EditPlanExtrasFragment extends InjectedFragment {
 
-    @Bind(R.id.plan_address_street_addr_text)
-    StreetAddressInputTextView mStreetAddressText;
-    @Bind(R.id.plan_address_apt_addr_text)
-    EditText mAptAddressText;
-    @Bind(R.id.plan_address_city_text)
-    CityInputTextView mCityText;
-    @Bind(R.id.plan_address_state_text)
-    StateInputTextView mStateText;
-    @Bind(R.id.plan_address_zip_text)
-    ZipCodeInputTextView mZipCodeText;
-
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
     private RecurringBooking mPlan;
+    private BookingEditExtrasViewModel mBookingEditHoursViewModel;
 
     @NonNull
     public static EditPlanExtrasFragment newInstance(RecurringBooking plan) {
@@ -64,4 +53,27 @@ public final class EditPlanExtrasFragment extends InjectedFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        dataManager.getRecurringExtrasInfo(
+                mPlan.getId(),
+                new FragmentSafeCallback<BookingEditExtrasInfoResponse>(this) {
+                    @Override
+                    public void onCallbackSuccess(final BookingEditExtrasInfoResponse response) {
+                        removeUiBlockers();
+                        mBookingEditHoursViewModel = BookingEditExtrasViewModel.from(response);
+                        //initOptionsView();
+                        //updateUiForOptionSelected();
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        removeUiBlockers();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                }
+        );
+
+    }
 }

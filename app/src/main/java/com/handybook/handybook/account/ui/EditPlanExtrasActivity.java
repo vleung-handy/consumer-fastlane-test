@@ -23,6 +23,6 @@ public final class EditPlanExtrasActivity extends MenuDrawerActivity {
 
     @Override
     protected final String getNavItemTitle() {
-        return getString(R.string.edit_plan_edit_frequency_title);
+        return getString(R.string.edit_plan_edit_extras_title);
     }
 }
