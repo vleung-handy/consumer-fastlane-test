@@ -39,6 +39,10 @@ public class EditPlanFragment extends InjectedFragment {
     TextView mAddressText;
     @Bind(R.id.edit_plan_next_cleaning_time_text)
     TextView mNextCleaningTimeText;
+    @Bind(R.id.edit_plan_hours_container)
+    ViewGroup mEditHoursContainer;
+    @Bind(R.id.edit_plan_extras_container)
+    ViewGroup mEditExtrasContainer;
     @Bind(R.id.edit_plan_hours_text)
     TextView mPlanHoursText;
     @Bind(R.id.edit_plan_extras_text)
@@ -100,9 +104,9 @@ public class EditPlanFragment extends InjectedFragment {
         startActivityForResult(intent, RequestCode.EDIT_PLAN_ADDRESS);
     }
 
-    @OnClick(R.id.edit_plan_hours)
+    @OnClick(R.id.edit_plan_hours_container)
     public void editHours() {
-        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditHoursTapped(
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditHoursSelected(
                 mPlan.getId(),
                 mPlan.getHours()
         )));
@@ -112,9 +116,9 @@ public class EditPlanFragment extends InjectedFragment {
         startActivityForResult(intent, RequestCode.EDIT_PLAN_HOURS);
     }
 
-    @OnClick(R.id.edit_plan_extras)
+    @OnClick(R.id.edit_plan_extras_container)
     public void editExtras() {
-        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditExtrasTapped(
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditExtrasSelected(
                 mPlan.getId(),
                 null // FIXME: See if we can get the extras at this point (when we implement this)
         )));
@@ -160,5 +164,8 @@ public class EditPlanFragment extends InjectedFragment {
         ));
         mNextCleaningTimeText.setText(DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(
                 mPlan.getNextBookingDate()));
+        mEditHoursContainer.setVisibility(mPlan.canEditHours() ? View.VISIBLE : View.GONE);
+        mEditExtrasContainer.setVisibility(mPlan.canEditExtras() ? View.VISIBLE : View.GONE);
+
     }
 }
