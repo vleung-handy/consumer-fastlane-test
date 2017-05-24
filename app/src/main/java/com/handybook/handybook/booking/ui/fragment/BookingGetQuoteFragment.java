@@ -184,13 +184,15 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
             //otherwise populate zip from user address
             zipCode = address.getZip();
         }
+
         /*
         always set this even if visibility gone for easy value retrieval later
         (we won't have to check for visibility)
          */
         mZipCodeInputTextView.setText(zipCode);
 
-        if (!TextUtils.isBlank(mDefaultPreferencesManager.getString(PrefsKey.ZIP))) {
+        if (mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled() &&
+            !TextUtils.isBlank(mDefaultPreferencesManager.getString(PrefsKey.ZIP))) {
             mBookingZipcodeInputContainer.setVisibility(View.GONE);
         }
         else {
