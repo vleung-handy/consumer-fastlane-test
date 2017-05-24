@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class RecurringBooking implements Serializable {
@@ -40,8 +41,14 @@ public class RecurringBooking implements Serializable {
     private String mRecurringStringShort;
     @SerializedName("can_edit_hours")
     private boolean mCanEditHours;
+    @SerializedName("edit_hours_subtext")
+    private String mEditHoursSubtext;
     @SerializedName("can_edit_extras")
     private boolean mCanEditExtras;
+    @SerializedName("extras")
+    private ArrayList<Booking.ExtraInfo> mExtras;
+    @SerializedName("edit_extras_subtext")
+    private String mEditExtrasSubtext;
 
     public RecurringBooking() { }
 
@@ -141,11 +148,35 @@ public class RecurringBooking implements Serializable {
         return mRecurringStringShort;
     }
 
+    @NonNull
+    public ArrayList<Booking.ExtraInfo> getExtras() {
+        return mExtras == null ? new ArrayList<Booking.ExtraInfo>() : mExtras;
+    }
+
+    @NonNull
+    public ArrayList<String> getExtrasLabels() {
+        final ArrayList<String> extrasLabels = new ArrayList<>();
+        for (Booking.ExtraInfo eExtra : getExtras()) {
+            extrasLabels.add(eExtra.getLabel());
+        }
+        return extrasLabels;
+    }
+
     public boolean canEditHours() {
         return mCanEditHours;
     }
 
     public boolean canEditExtras() {
         return mCanEditExtras;
+    }
+
+    @Nullable
+    public String getEditHoursSubtext() {
+        return mEditHoursSubtext;
+    }
+
+    @Nullable
+    public String getEditExtrasSubtext() {
+        return mEditExtrasSubtext;
     }
 }
