@@ -219,7 +219,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
                 bus.post(new LogEvent.AddLogEvent(new UpcomingBookingsLog.UpcomingBookingsShareBannerTappedLog()));
                 Fragment fragment
                         = ReferralV2Fragment.newInstance(ShareModalLog.SRC_UPCOMING_BOOKINGS);
-                FragmentUtils.switchToFragment(UpcomingBookingsFragment.this, fragment, true);
+                FragmentUtils.switchToFragment(getActivity(), fragment, true);
             }
         });
 
