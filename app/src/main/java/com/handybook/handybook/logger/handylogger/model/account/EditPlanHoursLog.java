@@ -7,14 +7,14 @@ public class EditPlanHoursLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "plan_management";
     @SerializedName("recurring_booking_id")
-    private final Integer mRecurringBookingId;
+    private final int mRecurringBookingId;
     @SerializedName("hours")
-    private final Double mHours;
+    private final double mHours;
 
     private EditPlanHoursLog(
             final String eventType,
-            final Integer recurringBookingId,
-            final Double hours
+            final int recurringBookingId,
+            final double hours
     ) {
         super(eventType, EVENT_CONTEXT);
         mRecurringBookingId = recurringBookingId;
