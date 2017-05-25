@@ -123,7 +123,6 @@ public class EditPlanFragment extends InjectedFragment {
 
     @OnClick(R.id.edit_plan_hours_container)
     public void editHours() {
-        if (!mPlan.canEditHours()) { return;}
         bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditHoursSelected(
                 mPlan.getId(),
                 mPlan.getHours()
@@ -136,7 +135,6 @@ public class EditPlanFragment extends InjectedFragment {
 
     @OnClick(R.id.edit_plan_extras_container)
     public void editExtras() {
-        if (!mPlan.canEditExtras()) { return;}
         bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditExtrasSelected(
                 mPlan.getId(),
                 mPlan.getExtrasLabels()
