@@ -189,8 +189,9 @@ public class EditPlanFragment extends InjectedFragment {
         mPlanHoursTitle.setTextColor(getResources().getColor(
                 mPlan.canEditHours() ? R.color.handy_text_black : R.color.handy_text_gray
         ));
+        mEditHoursContainer.setClickable(mPlan.canEditHours());
         final String editHoursSubtext = mPlan.getEditHoursSubtext();
-        mPlanHoursSubtext.setVisibility(editHoursSubtext == null ? View.VISIBLE : View.GONE);
+        mPlanHoursSubtext.setVisibility(editHoursSubtext == null ? View.GONE : View.VISIBLE);
         mPlanHoursSubtext.setText(editHoursSubtext);
     }
 
@@ -198,9 +199,10 @@ public class EditPlanFragment extends InjectedFragment {
         mPlanExtrasTitle.setTextColor(getResources().getColor(
                 mPlan.canEditHours() ? R.color.handy_text_black : R.color.handy_text_gray
         ));
+        mEditExtrasContainer.setClickable(mPlan.canEditExtras());
         mPlanExtrasText.setText(TextUtils.join(", ", mPlan.getExtrasLabels()));
         final String editExtrasSubtext = mPlan.getEditExtrasSubtext();
-        mPlanExtrasSubtext.setVisibility(editExtrasSubtext == null ? View.VISIBLE : View.GONE);
+        mPlanExtrasSubtext.setVisibility(editExtrasSubtext == null ? View.GONE : View.VISIBLE);
         mPlanExtrasSubtext.setText(editExtrasSubtext);
     }
 }
