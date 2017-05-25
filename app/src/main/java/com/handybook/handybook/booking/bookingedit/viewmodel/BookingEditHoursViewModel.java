@@ -123,6 +123,11 @@ public class BookingEditHoursViewModel {
                 + getAddedHours(selectedHours));
     }
 
+    @Nullable
+    public String getTotalSubtext() {
+        return mEditHoursInfo.getTotalSubtext();
+    }
+
     /**
      * @return A formatted string that indicates the date that the booking will be billed for
      */

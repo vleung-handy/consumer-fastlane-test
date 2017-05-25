@@ -28,6 +28,8 @@ public class BookingEditHoursInfoResponse {
     private String mTotalHoursLabel;
     @SerializedName("total_formatted")
     private String mTotalPriceFormattedDollars;
+    @SerializedName("total_subtext")
+    private String mTotalSubtext;
     @SerializedName("paid_status")
     private PaidStatus mPaidStatus;
     @SerializedName("price_table")
@@ -59,6 +61,11 @@ public class BookingEditHoursInfoResponse {
     @Nullable
     public String getTotalPriceFormattedDollars() {
         return mTotalPriceFormattedDollars;
+    }
+
+    @Nullable
+    public String getTotalSubtext() {
+        return mTotalSubtext;
     }
 
     @NonNull

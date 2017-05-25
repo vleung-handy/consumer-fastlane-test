@@ -55,8 +55,8 @@ public final class EditPlanHoursFragment extends InjectedFragment {
     TextView mBookingDurationText;
     @Bind(R.id.plan_edit_hours_options_view_container)
     ViewGroup mOptionsViewContainer;
-    @Bind(R.id.plan_edit_hours_billed_on_text)
-    TextView mBilledOnText;
+    @Bind(R.id.plan_edit_hours_subtext)
+    TextView mTotalSubtext;
     @Bind(R.id.plan_edit_hours_save_button)
     Button mSaveButton;
 
@@ -225,14 +225,9 @@ public final class EditPlanHoursFragment extends InjectedFragment {
                         totalHoursFormatted
                 ));
 
-        mBilledOnText.setText(getResources().getString(
-                R.string.billed_on_date_formatted,
-                mBookingEditHoursViewModel.getFutureBillDateFormatted()
-        ));
-        mBilledOnText.setVisibility(
-                mBookingEditHoursViewModel.hasFutureBillDate()
-                ? View.VISIBLE
-                : View.GONE
+        mTotalSubtext.setText(mBookingEditHoursViewModel.getTotalSubtext());
+        mTotalSubtext.setVisibility(
+                mBookingEditHoursViewModel.getTotalSubtext() == null ? View.GONE : View.VISIBLE
         );
 
         mTotalDueText.setText(mBookingEditHoursViewModel.getTotalDuePriceFormatted(selectedHours));

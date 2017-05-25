@@ -131,7 +131,7 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/plan_edit_hours_billed_on_text"
+                        android:id="@+id/plan_edit_hours_subtext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/default_margin"
