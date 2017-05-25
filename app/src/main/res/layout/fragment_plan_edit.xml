@@ -34,7 +34,7 @@
                 android:layout_marginBottom="@dimen/default_margin_half"
                 android:text="@string/frequency"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_medium"
                 />
 
             <TextView
@@ -63,7 +63,7 @@
                 android:layout_marginBottom="@dimen/default_margin_half"
                 android:text="@string/address"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_medium"
                 />
 
             <TextView
@@ -84,6 +84,8 @@
             android:background="@drawable/background_list_entry"
             android:padding="@dimen/default_padding"
             android:text="@string/account.cancel_plan"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
             />
     </LinearLayout>
 
