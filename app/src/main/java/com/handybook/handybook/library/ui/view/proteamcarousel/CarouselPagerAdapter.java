@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.ui.view.VerticalMiniProProfile;
+import com.handybook.handybook.core.ui.view.LargeVerticalMiniProProfile;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
@@ -44,8 +44,8 @@ public class CarouselPagerAdapter extends PagerAdapter {
                                       .inflate(R.layout.pro_team_carousel_item, container, false);
         final ProCarouselVM profile = mProCarouselVMs.get(position);
 
-        VerticalMiniProProfile verticalMiniProProfile
-                = (VerticalMiniProProfile) itemView.findViewById(R.id.pro_team_carousel_item_mini_pro_profile_card);
+        LargeVerticalMiniProProfile verticalMiniProProfile
+                = (LargeVerticalMiniProProfile) itemView.findViewById(R.id.pro_team_carousel_item_mini_pro_profile_card);
 
         verticalMiniProProfile.setProTeamIndicatorEnabled(true);
         verticalMiniProProfile.setIsProTeam(profile.isProTeam());

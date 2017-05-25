@@ -100,7 +100,7 @@ differences, and later possibly functionality differences, so not simply using t
 
         </LinearLayout>
 
-        <include layout="@layout/job_count_ratings_layout"/>
+        <include layout="@layout/layout_job_count_ratings_large"/>
 
         <TextView
             android:id="@+id/mini_pro_profile_no_ratings_indicator"

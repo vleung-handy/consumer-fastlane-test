@@ -4,19 +4,18 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.ui.view.BaseMiniProProfile;
 
-public class VerticalMiniProProfile extends BaseMiniProProfile {
+public class LargeVerticalMiniProProfile extends BaseMiniProProfile {
 
-    public VerticalMiniProProfile(final Context context) {
+    public LargeVerticalMiniProProfile(final Context context) {
         super(context);
     }
 
-    public VerticalMiniProProfile(final Context context, final AttributeSet attrs) {
+    public LargeVerticalMiniProProfile(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public VerticalMiniProProfile(
+    public LargeVerticalMiniProProfile(
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr
@@ -24,7 +23,7 @@ public class VerticalMiniProProfile extends BaseMiniProProfile {
         super(context, attrs, defStyleAttr);
     }
 
-    public VerticalMiniProProfile(
+    public LargeVerticalMiniProProfile(
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr,
@@ -35,6 +34,6 @@ public class VerticalMiniProProfile extends BaseMiniProProfile {
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.layout_vertical_mini_pro_profile;
+        return R.layout.layout_large_vertical_mini_pro_profile;
     }
 }

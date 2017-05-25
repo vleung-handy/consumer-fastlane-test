@@ -9,36 +9,38 @@
     android:layout_gravity="center"
     android:background="@drawable/button_white"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/default_padding"
-    android:paddingLeft="@dimen/default_padding"
-    android:paddingRight="@dimen/default_padding"
+    android:paddingBottom="@dimen/default_padding_half"
+    android:paddingLeft="@dimen/default_padding_half"
+    android:paddingRight="@dimen/default_padding_half"
     >
 
     <TextView
         android:id="@+id/pro_team_category_text"
-        style="@style/TextView.Small.Bold"
-        android:layout_width="match_parent"
+        style="@style/TextView.XSmall.Bold"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin_half"
         android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_marginLeft="@dimen/default_margin_half"
         android:gravity="left"
         android:textAllCaps="true"
         android:textColor="@color/handy_tertiary_gray"
         tools:text="Cleaning"
         />
 
-    <com.handybook.handybook.core.ui.view.VerticalMiniProProfile
+    <com.handybook.handybook.core.ui.view.SmallVerticalMiniProProfile
         android:id="@+id/pro_team_carousel_item_mini_pro_profile_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         />
 
     <TextView
         android:id="@+id/pro_team_favorite_pro_indicator_text"
-        style="@style/TextView.XSmall"
+        style="@style/TextView.XXSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_quarter"
         android:layout_gravity="center"
         android:text="@string/my_pros_pro_team_favorite_indicator"
         android:textColor="@color/handy_tertiary_gray"

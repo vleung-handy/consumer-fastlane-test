@@ -17,8 +17,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/mini_pro_profile_image"
-            android:layout_width="@dimen/mini_pro_profile_image_size_large"
-            android:layout_height="@dimen/mini_pro_profile_image_size_large"
+            android:layout_width="@dimen/mini_pro_profile_image_size"
+            android:layout_height="@dimen/mini_pro_profile_image_size"
             android:contentDescription="Pro Team Image"
             tools:src="@drawable/img_pro_placeholder"
             />
@@ -26,8 +26,8 @@
 
         <FrameLayout
             android:id="@+id/mini_pro_profile_pro_team_favorite_indicator_image"
-            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_container_size"
-            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_container_size"
+            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_container_size_small"
+            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_container_size_small"
             android:layout_alignEnd="@id/mini_pro_profile_image"
             android:layout_alignRight="@id/mini_pro_profile_image"
             android:background="@drawable/bg_circle_white"
@@ -36,8 +36,8 @@
             >
 
             <ImageView
-                android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size"
-                android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size"
+                android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size_small"
+                android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size_small"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_heart_small"
                 />
@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/mini_pro_profile_title"
-            style="@style/TextView.Medium.Bold"
+            style="@style/TextView.XSmall.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="true"
@@ -78,8 +78,8 @@
 
         <ImageView
             android:id="@+id/mini_pro_profile_pro_team_indicator_name"
-            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size"
-            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size"
+            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size_small"
+            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size_small"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/default_margin_half"
             android:layout_marginStart="@dimen/default_margin_half"
@@ -91,10 +91,10 @@
 
     <include
         android:id="@+id/mini_pro_profile_rating_and_jobs_count_container"
-        layout="@layout/job_count_ratings_layout"
+        layout="@layout/layout_job_count_ratings_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin_half"
+        android:layout_marginTop="@dimen/default_margin_quarter"
         tools:visibility="visible"
         />
 
