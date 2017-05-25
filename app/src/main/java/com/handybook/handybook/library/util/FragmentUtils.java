@@ -81,6 +81,10 @@ public class FragmentUtils {
         return false;
     }
 
+    /**
+     * be careful when using this with nested fragments. consider using
+     * switchToFragment(FragmentActivity activity, ...) instead
+     */
     public static void switchToFragment(
             Fragment currentFragment, Fragment newFragment, boolean addToBackStack
     ) {
