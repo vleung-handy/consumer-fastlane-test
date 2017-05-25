@@ -25,6 +25,7 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.LabelValueView;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditPlanHoursLog;
 
 import butterknife.Bind;
@@ -120,10 +121,10 @@ public final class EditPlanHoursFragment extends InjectedFragment {
      * initializes the option selector view based on the edit hours view model
      */
     private void initOptionsView() {
-        bus.post(new EditPlanHoursLog.Shown(
+        bus.post(new LogEvent.AddLogEvent(new EditPlanHoursLog.Shown(
                 mPlan.getId(),
                 mBookingEditHoursViewModel.getBaseHours()
-        ));
+        )));
 
         mRowBaseTime.setLabelAndValueText(
                 getResources().getString(
@@ -248,7 +249,9 @@ public final class EditPlanHoursFragment extends InjectedFragment {
     public void onSaveButtonPressed() {
         showUiBlockers();
         final double selectedHours = Double.parseDouble(mOptionsView.getCurrentValue());
-        bus.post(new EditPlanHoursLog.Submitted(mPlan.getId(), selectedHours));
+        bus.post(new LogEvent.AddLogEvent(
+                new EditPlanHoursLog.Submitted(mPlan.getId(), selectedHours)
+        ));
 
         BookingEditHoursRequest bookingEditHoursRequest = new BookingEditHoursRequest();
         bookingEditHoursRequest.setNewBaseHrs((float) selectedHours);
@@ -260,7 +263,9 @@ public final class EditPlanHoursFragment extends InjectedFragment {
                     @Override
                     public void onCallbackSuccess(final Void response) {
                         removeUiBlockers();
-                        bus.post(new EditPlanHoursLog.Success(mPlan.getId(), selectedHours));
+                        bus.post(new LogEvent.AddLogEvent(
+                                new EditPlanHoursLog.Success(mPlan.getId(), selectedHours)
+                        ));
                         mPlan.setHours(selectedHours);
                         showToast(getString(R.string.account_update_plan_hours_success));
                         Intent data = new Intent();
@@ -272,7 +277,11 @@ public final class EditPlanHoursFragment extends InjectedFragment {
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
                         removeUiBlockers();
-                        bus.post(new EditPlanHoursLog.Error(mPlan.getId(), selectedHours));
+                        bus.post(new LogEvent.AddLogEvent(new EditPlanHoursLog.Error(
+                                mPlan.getId(),
+                                selectedHours,
+                                error.getMessage()
+                        )));
                         showToast(getString(R.string.account_update_plan_hours_error));
                     }
                 }

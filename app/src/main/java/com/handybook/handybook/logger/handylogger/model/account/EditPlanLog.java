@@ -27,12 +27,24 @@ public class EditPlanLog extends EventLog {
         private final boolean mCanEditHours;
         @SerializedName("can_edit_extras")
         private final boolean mCanEditExtras;
+        @SerializedName("hours")
+        private final double mHours;
+        @SerializedName("frequency")
+        private final int mFrequency;
 
-        public Shown(int recurringBookingId, boolean canEditHours, boolean canEditExtras) {
+        public Shown(
+                int recurringBookingId,
+                boolean canEditHours,
+                boolean canEditExtras,
+                final double hours,
+                final int frequency
+        ) {
             super(EVENT_TYPE);
             mRecurringBookingId = recurringBookingId;
             mCanEditHours = canEditHours;
             mCanEditExtras = canEditExtras;
+            mHours = hours;
+            mFrequency = frequency;
         }
     }
 

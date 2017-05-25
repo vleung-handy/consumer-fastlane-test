@@ -93,8 +93,13 @@ public class EditPlanFragment extends InjectedFragment {
     public void onResume() {
         super.onResume();
         initUi();
-        bus.post(new LogEvent.AddLogEvent(
-                new EditPlanLog.Shown(mPlan.getId(), mPlan.canEditHours(), mPlan.canEditExtras())));
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.Shown(
+                mPlan.getId(),
+                mPlan.canEditHours(),
+                mPlan.canEditExtras(),
+                mPlan.getHours(),
+                mPlan.getFrequencyValue()
+        )));
     }
 
     @OnClick(R.id.edit_plan_frequency)

@@ -57,9 +57,12 @@ public class EditPlanHoursLog extends EventLog {
     public static class Error extends EditPlanHoursLog {
 
         private static final String EVENT_TYPE = "edit_hours_error";
+        @SerializedName("error_info")
+        private final String mErrorInfo;
 
-        public Error(final Integer recurringBookingId, final Double hours) {
+        public Error(final Integer recurringBookingId, final Double hours, final String errorInfo) {
             super(EVENT_TYPE, recurringBookingId, hours);
+            mErrorInfo = errorInfo;
         }
     }
 
