@@ -64,8 +64,8 @@ public final class EditPlanExtrasFragment extends InjectedFragment {
                     public void onCallbackSuccess(final BookingEditExtrasInfoResponse response) {
                         removeUiBlockers();
                         mBookingEditHoursViewModel = BookingEditExtrasViewModel.from(response);
-                        //initOptionsView();
-                        //updateUiForOptionSelected();
+                        //initOptionsView(); // If this isn't obvious.. this is not a functional fragment
+                        //updateUiForOptionSelected(); // It is not reachable from code, don't worry about it
                     }
 
                     @Override
