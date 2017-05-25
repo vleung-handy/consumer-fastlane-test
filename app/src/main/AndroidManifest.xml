@@ -118,6 +118,14 @@
             android:screenOrientation="portrait"
             />
         <activity
+            android:name=".account.ui.EditPlanHoursActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".account.ui.EditPlanExtrasActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name=".proteam.ui.activity.ProTeamEditActivity"
             android:screenOrientation="portrait"
             />

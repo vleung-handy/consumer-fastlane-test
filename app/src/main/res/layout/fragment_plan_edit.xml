@@ -20,6 +20,7 @@
 
         <LinearLayout
             android:id="@+id/edit_plan_frequency"
+            style="@style/TextView.Large.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_list_entry"
@@ -28,21 +29,19 @@
             >
 
             <TextView
-                style="@style/TextView.Large.Bold"
+                style="@style/TextView.Medium.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin_half"
                 android:text="@string/frequency"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textColor="@color/handy_text_black"
                 />
 
             <TextView
                 android:id="@+id/edit_plan_frequency_text"
+                style="@style/TextView.Medium.Grey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/handy_tertiary_gray"
-                android:textSize="@dimen/text_size_medium"
                 tools:text="Monthly"
                 />
         </LinearLayout>
@@ -57,13 +56,12 @@
             >
 
             <TextView
-                style="@style/TextView.Large.Bold"
+                style="@style/TextView.Medium.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin_half"
                 android:text="@string/address"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_large"
+                android:textColor="@color/handy_text_black"
                 />
 
             <TextView
@@ -76,32 +74,112 @@
                 />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/edit_plan_hours_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_list_entry"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding"
+            >
+
+            <TextView
+                android:id="@+id/edit_plan_hours_title"
+                style="@style/TextView.Large.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:text="@string/hours"
+                android:textColor="@color/handy_text_black"
+                />
+
+            <TextView
+                android:id="@+id/edit_plan_hours_text"
+                style="@style/TextView.Medium.Grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="999"
+                />
+
+            <TextView
+                android:id="@+id/edit_plan_hours_subtext"
+                style="@style/TextView.Medium.Grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:visibility="gone"
+                tools:text="Explanation why the user can't edit hours right now that spans two lines"
+                tools:visibility="visible"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/edit_plan_extras_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_list_entry"
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:id="@+id/edit_plan_extras_title"
+                style="@style/TextView.Large.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:text="@string/extras"
+                android:textColor="@color/handy_text_black"
+                />
+
+            <TextView
+                android:id="@+id/edit_plan_extras_text"
+                style="@style/TextView.Medium.Grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="one extra, two extra, three extra"
+                />
+
+            <TextView
+                android:id="@+id/edit_plan_extras_subtext"
+                style="@style/TextView.Medium.Grey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:visibility="gone"
+                tools:text="Explanation why the user can't edit extras right now that spans two lines"
+                tools:visibility="visible"
+                />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/edit_plan_cancel"
-            style="@style/TextView.Large"
+            style="@style/TextView.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_list_entry"
             android:padding="@dimen/default_padding"
             android:text="@string/account.cancel_plan"
+            android:textColor="@color/handy_text_black"
             />
     </LinearLayout>
 
     <TextView
+        style="@style/TextView.Medium.Grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/default_margin_double"
         android:text="@string/account.next_cleaning"
-        android:textColor="@color/handy_tertiary_gray"
         />
 
     <TextView
         android:id="@+id/edit_plan_next_cleaning_time_text"
+        style="@style/TextView.Medium.Grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/handy_tertiary_gray"
         tools:text="Tuesday Aug 6 @ 2:00pm"
         />
 </LinearLayout>

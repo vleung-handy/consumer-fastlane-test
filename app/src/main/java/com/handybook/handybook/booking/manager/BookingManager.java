@@ -88,13 +88,19 @@ public class BookingManager implements Observer {
                         }
                 );
             }
+
             @Override
             public void onError(final DataManager.DataManagerError error) {
                 mBus.post(new BookingEvent.RescheduleBookingWithProAvailabilityError(error));
             }
         };
 
-        mDataManager.getProviderAvailability(providerId, booking.getHours(), source, proAvailabilityCallback);
+        mDataManager.getProviderAvailability(
+                providerId,
+                booking.getHours(),
+                source,
+                proAvailabilityCallback
+        );
     }
 
     // Event listening + sending, half way to updating our managers to work like nortal's managers
@@ -216,7 +222,6 @@ public class BookingManager implements Observer {
             DataManager.Callback<UserBookingsWrapper> cb
     ) {
         mDataManager.getBookings(
-                null,
                 onlyBookingsValue,
                 cb
         );

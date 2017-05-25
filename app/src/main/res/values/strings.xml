@@ -229,7 +229,9 @@
     <string name="no_booking_card_past_text">You don\'t have any\npast bookings</string>
     <string name="snackbar_recurring_will_be_generated">Bookings are generated 28 days in advance.</string>
     <string name="updated_booking_frequency">Updated booking frequency</string>
-    <string name="edit_frequency">Edit Frequency</string>
+    <string name="edit_plan_edit_frequency_title">Edit Frequency</string>
+    <string name="edit_plan_edit_hours_title">Edit Hours</string>
+    <string name="edit_plan_edit_extras_title">Edit Extras</string>
     <string name="booking_subscription_titlebar">Your Plan</string>
     <string name="booking_subscription_title">Set up your cleaning service.</string>
     <string name="booking_subscription_frequency_title">Select a Frequency</string>
@@ -242,7 +244,6 @@
     <string name="clean">clean</string>
     <string name="job">job</string>
     <string name="no_data_indicator">--</string>
-    <string name="total_due">Total Due</string>
     <string name="billed_on_date_formatted">Billed on %1$s</string>
     <string name="environment">Environment</string>
 
@@ -517,6 +518,11 @@
     <string name="account.update_password">Update Password</string>
     <string name="account.update_plan_address_success">Your booking address was updated.</string>
     <string name="account.update_plan_address_error">Address updated failed. Please try again.</string>
+    <string name="account.update_plan_hours_success">Your plan hours updated successfully.</string>
+    <string name="account.update_plan_hours_error">Oops, we had a problem updating the hours. Please try again.</string>
+    <string name="account.update_plan_extras_success">Your plan extras updated successfully.</string>
+    <string name="account.update_plan_extras_error">Oops, we had a problem updating the extras. Please try again.</string>
+    <string name="account.plan.edit_hours.pro_assignment_warning">If you have an upcoming booking and your pro  is unable to commit to your edit, another pro will be assigned.</string>
 
     <!-- Nav Drawer -->
     <string name="nav.get_free_cleanings">Get free cleanings!</string>
@@ -648,5 +654,6 @@
     <string name="my_pros_pro_team_favorite_indicator">Your Favorite Pro</string>
     <string name="my_pros_choose_favorite_pro_button">Choose a \nFavorite Pro</string>
     <string name="my_pros_pro_team_empty">There are no pros on your team yet. As you meet pros, you\'ll be able to build your Pro Team. We\'ll always request these pros first.</string>
+    <string name="hours_formatted">%1$s hours</string>
 </resources>
 

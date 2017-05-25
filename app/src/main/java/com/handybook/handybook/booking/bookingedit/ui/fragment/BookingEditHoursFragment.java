@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.bookingedit.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,7 @@ public final class BookingEditHoursFragment extends InjectedFragment {
     private BookingOptionsSelectView mApplyToRecurringBookingsSelectView;
     private BookingOptionsSpinnerView mOptionsView;
 
+    @NonNull
     public static BookingEditHoursFragment newInstance(Booking booking) {
         final BookingEditHoursFragment fragment = new BookingEditHoursFragment();
         final Bundle args = new Bundle();
@@ -130,7 +132,7 @@ public final class BookingEditHoursFragment extends InjectedFragment {
     @OnClick(R.id.next_button)
     public void onSaveButtonPressed() {
         showUiBlockers();
-        float selectedHours = Float.parseFloat(mOptionsView.getCurrentValue());
+        double selectedHours = Double.parseDouble(mOptionsView.getCurrentValue());
         BookingEditHoursRequest bookingEditHoursRequest = new BookingEditHoursRequest();
         bookingEditHoursRequest.setNewBaseHrs(selectedHours);
         bookingEditHoursRequest.setApplyToRecurring(
@@ -225,11 +227,11 @@ public final class BookingEditHoursFragment extends InjectedFragment {
         bookingOption.setOptions(optionHourStrings);
 
         //by default, the selected option will be the # of base hours in the booking
-        float baseHours = mBookingEditHoursViewModel.getBaseHours();
+        double baseHours = mBookingEditHoursViewModel.getBaseHours();
         //find out which index in the option hour array should be selected
         int selectedIndex = 0;
         for (int i = 0; i < optionHourStrings.length; i++) {
-            if (baseHours == Float.parseFloat(optionHourStrings[i])) {
+            if (baseHours == Double.parseDouble(optionHourStrings[i])) {
                 selectedIndex = i;
                 break;
             }
@@ -237,27 +239,28 @@ public final class BookingEditHoursFragment extends InjectedFragment {
         bookingOption.setDefaultValue(Integer.toString(selectedIndex));
         //for some reason this function only accepts a string, but then the view converts it to an index?
 
-        mOptionsView = new BookingOptionsSpinnerView(getActivity(), bookingOption,
-                                                     new BookingOptionsView.OnUpdatedListener() {
-                                                         @Override
-                                                         public void onUpdate(final BookingOptionsView view) {
-                                                             updateUiForOptionSelected();
-                                                         }
+        mOptionsView = new BookingOptionsSpinnerView(
+                getActivity(), bookingOption,
+                new BookingOptionsView.OnUpdatedListener() {
+                    @Override
+                    public void onUpdate(final BookingOptionsView view) {
+                        updateUiForOptionSelected();
+                    }
 
-                                                         @Override
-                                                         public void onShowChildren(
-                                                                 final BookingOptionsView view,
-                                                                 final String[] items
-                                                         ) {
-                                                         }
+                    @Override
+                    public void onShowChildren(
+                            final BookingOptionsView view,
+                            final String[] items
+                    ) {
+                    }
 
-                                                         @Override
-                                                         public void onHideChildren(
-                                                                 final BookingOptionsView view,
-                                                                 final String[] items
-                                                         ) {
-                                                         }
-                                                     }
+                    @Override
+                    public void onHideChildren(
+                            final BookingOptionsView view,
+                            final String[] items
+                    ) {
+                    }
+                }
         );
 
         ((TextView) mOptionsView.findViewById(R.id.title_text)).setText(

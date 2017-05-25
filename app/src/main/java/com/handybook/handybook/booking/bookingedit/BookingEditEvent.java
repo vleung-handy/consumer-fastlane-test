@@ -2,7 +2,6 @@ package com.handybook.handybook.booking.bookingedit;
 
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditExtrasRequest;
-import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
@@ -51,22 +50,6 @@ public abstract class BookingEditEvent {
     }
 
 
-    //Update the frequency of a booking
-    public static class RequestEditBookingFrequency extends HandyEvent.RequestEvent {
-
-        public final int bookingId;
-        public final BookingEditFrequencyRequest bookingEditFrequencyRequest;
-
-        public RequestEditBookingFrequency(
-                int bookingId,
-                BookingEditFrequencyRequest bookingEditFrequencyRequest
-        ) {
-            this.bookingId = bookingId;
-            this.bookingEditFrequencyRequest = bookingEditFrequencyRequest;
-        }
-    }
-
-
     public static class ReceiveEditBookingFrequencySuccess extends HandyEvent.ReceiveSuccessEvent {
 
         public ReceiveEditBookingFrequencySuccess() {
@@ -78,22 +61,6 @@ public abstract class BookingEditEvent {
 
         public ReceiveEditBookingFrequencyError(DataManager.DataManagerError error) {
             this.error = error;
-        }
-    }
-
-
-    //Update the frequency of a booking
-    public static class RequestUpdateRecurringFrequency extends HandyEvent.RequestEvent {
-
-        public final String recurringId;
-        public final BookingEditFrequencyRequest bookingEditFrequencyRequest;
-
-        public RequestUpdateRecurringFrequency(
-                String recurringId,
-                BookingEditFrequencyRequest bookingEditFrequencyRequest
-        ) {
-            this.recurringId = recurringId;
-            this.bookingEditFrequencyRequest = bookingEditFrequencyRequest;
         }
     }
 
@@ -110,17 +77,6 @@ public abstract class BookingEditEvent {
 
         public ReceiveUpdateRecurringFrequencyError(DataManager.DataManagerError error) {
             this.error = error;
-        }
-    }
-
-
-    //Get the booking prices for each booking frequency
-    public static class RequestGetEditFrequencyViewModel extends HandyEvent.RequestEvent {
-
-        public final int bookingId;
-
-        public RequestGetEditFrequencyViewModel(int bookingId) {
-            this.bookingId = bookingId;
         }
     }
 

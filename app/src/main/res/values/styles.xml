@@ -482,6 +482,11 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
+    <style name="TextView.Medium.Grey">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/handy_tertiary_gray</item>
+    </style>
+
     <style name="TextView.Medium.Bold">
         <item name="fontPath">fonts/CircularStd-Bold.otf</item>
     </style>

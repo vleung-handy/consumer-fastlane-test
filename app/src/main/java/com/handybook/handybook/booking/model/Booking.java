@@ -731,7 +731,7 @@ public class Booking implements Parcelable {
     }
 
 
-    public static class ExtraInfo implements Parcelable {
+    public static class ExtraInfo implements Serializable, Parcelable {
 
         @SerializedName("label")
         private String mLabel;

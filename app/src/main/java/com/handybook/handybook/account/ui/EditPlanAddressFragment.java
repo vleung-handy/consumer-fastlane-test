@@ -111,6 +111,7 @@ public final class EditPlanAddressFragment extends InjectedFragment {
         showUiBlockers();
         UiUtils.dismissKeyboard(getActivity());
         dataManager.editBookingPlanAddress(
+                // TODO: use plan manager instead (oh... no plan manager? Write it then!)
                 mPlan.getId(),
                 request,
                 new FragmentSafeCallback<RecurringPlanWrapper>(this) {

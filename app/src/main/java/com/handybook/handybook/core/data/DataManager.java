@@ -21,13 +21,9 @@ import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
-import com.handybook.handybook.booking.model.BookingGeoStatus;
 import com.handybook.handybook.booking.model.BookingOptionsWrapper;
-import com.handybook.handybook.booking.model.BookingPostInfo;
-import com.handybook.handybook.booking.model.BookingProRequestResponse;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
-import com.handybook.handybook.booking.model.BookingRequestablePros;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
@@ -54,15 +50,15 @@ import com.handybook.handybook.logger.handylogger.model.EventLogResponse;
 import com.handybook.handybook.notifications.model.HandyNotification;
 import com.handybook.handybook.promos.persistent.PersistentPromo;
 import com.handybook.handybook.promos.splash.SplashPromo;
+import com.handybook.handybook.proprofiles.model.ProProfile;
+import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
+import com.handybook.handybook.proprofiles.reviews.model.ProReviewsRequest;
 import com.handybook.handybook.proteam.model.BookingProTeam;
 import com.handybook.handybook.proteam.model.ProTeamWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
-import com.handybook.handybook.proprofiles.model.ProProfile;
-import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
-import com.handybook.handybook.proprofiles.reviews.model.ProReviewsRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -77,8 +73,6 @@ import static com.handybook.handybook.booking.model.Booking.List.VALUE_ONLY_BOOK
 
 public class DataManager {
 
-    private static final String TAG = DataManager.class.getName();
-
     private final HandyRetrofitService mService;
     private final HandyRetrofitEndpoint mEndpoint;
 
@@ -91,27 +85,15 @@ public class DataManager {
         mEndpoint = endpoint;
     }
 
+    @NonNull
     public String getBaseUrl() {
         return mEndpoint.getBaseUrl();
     }
 
     /**
-     * If there is a cached version, return the cache, and updates the cache in the background. If
-     * there was a cached version, then cache update success will not be broadcasted. This is to
-     * prevent a client from having to deal with multiple broadcasts (cache, updates, etc).
-     * Get all services include the subcategories
-     * @param cb
-     */
-    public final void getServices(final Callback<JSONArray> cb) {
-        getServices(null, cb);
-    }
-
-    /**
      * Get all services supported in a zip include the subcategories
-     * @param zip
-     * @param cb
      */
-    public final void getServices(@NonNull final String zip, final Callback<JSONArray> cb) {
+    public final void getServices(@Nullable final String zip, final Callback<JSONArray> cb) {
         HandyRetrofitCallback retrofitCallback = new HandyRetrofitCallback(cb) {
             @Override
             protected void success(JSONObject response) {
@@ -229,7 +211,6 @@ public class DataManager {
 
     public void getBlockedWrapper(
             final int versionCode,
-            final CacheResponse<BlockedWrapper> blockedWrapperCacheResponse,
             final Callback<BlockedWrapper> blockedWrapperCallback
     ) {
         mService.getBlockedWrapper(
@@ -392,18 +373,6 @@ public class DataManager {
     }
 
     public final void getBookings(
-            final User user,
-            final Callback<UserBookingsWrapper> cb
-    ) {
-        mService.getBookings(
-                null,
-                null,
-                new UserBookingsWrapperHandyRetroFitCallback(cb)
-        );
-    }
-
-    public final void getBookings(
-            final User user,
             @NonNull @Booking.List.OnlyBookingValues final String onlyBookingValue,
             final Callback<UserBookingsWrapper> cb
     ) {
@@ -436,7 +405,7 @@ public class DataManager {
     }
 
     public final void getEditHoursInfo(
-            final int bookingId,
+            final long bookingId,
             final Callback<BookingEditHoursInfoResponse> cb
     ) {
         mService.getEditHoursInfo(
@@ -512,18 +481,6 @@ public class DataManager {
         );
     }
 
-    public void addBookingPostInfo(
-            final int bookingId, final BookingPostInfo postInfo,
-            final Callback<Void> cb
-    ) {
-        mService.addBookingPostInfo(bookingId, postInfo, new HandyRetrofitCallback(cb) {
-            @Override
-            protected void success(final JSONObject response) {
-                cb.onSuccess(null);
-            }
-        });
-    }
-
     public void getPreRescheduleInfo(final String bookingId, final Callback<String> cb) {
         mService.getPreRescheduleInfo(bookingId, new HandyRetrofitCallback(cb) {
             @Override
@@ -543,10 +500,7 @@ public class DataManager {
     ) {
 
         //logic dictates, if there is a provider id, that means we're rescheduling from chat, and therefore
-        //rescheduleAll = false, and chatRescheduleAgreement = true;
-        boolean chatRescheduleAgreement = false;
         if (!TextUtils.isEmpty(providerId)) {
-            chatRescheduleAgreement = true;
             rescheduleAll = false;
         }
 
@@ -761,10 +715,8 @@ public class DataManager {
     }
 
     /**
-     * @param updateUserRequest
      * @param authToken         needed because the success callback sets this to the User object it
      *                          creates. ideally, it should not be used this way.
-     * @param cb
      */
     public void updateUser(
             final UpdateUserRequest updateUserRequest,
@@ -807,29 +759,6 @@ public class DataManager {
                              array.isNull(0) ? null : array.optString(0) : null);
             }
         });
-    }
-
-    public final void getRequestProInfo(
-            int bookingId,
-            Callback<BookingRequestablePros> cb
-    ) {
-        mService.getRequestProInfo(
-                bookingId,
-                new BookingRequestableProsResponseHandyRetroFitCallback(cb)
-        );
-    }
-
-    public final void requestProForBooking(
-            int bookingId,
-            int requestedProId,
-            Callback<BookingProRequestResponse> cb
-    ) {
-        mService.requestProForBooking(
-                bookingId,
-                requestedProId,
-                true,
-                new BookingProRequestResponseHandyRetroFitCallback(cb)
-        );
     }
 
     public final void getHelpInfo(
@@ -949,22 +878,6 @@ public class DataManager {
         });
     }
 
-    /**
-     * @param bookingId
-     * @param callback
-     * @deprecated - use getLocationStatus instead.
-     */
-    @Deprecated
-    public void getBookingGeoStatus(
-            final String bookingId,
-            final Callback<BookingGeoStatus> callback
-    ) {
-        mService.getBookingGeoStatus(
-                bookingId,
-                new BookingGeoStatusHandyRetrofitCallback(callback)
-        );
-    }
-
     public void getLocationStatus(
             final String bookingId,
             final Callback<Booking.LocationStatus> callback
@@ -992,13 +905,13 @@ public class DataManager {
         );
     }
 
-    public final void updateBookingFrequency(
-            int bookingId,
-            BookingEditFrequencyRequest bookingEditFrequencyRequest,
+    public void updateRecurringFrequency(
+            final String recurringId,
+            final BookingEditFrequencyRequest bookingEditFrequencyRequest,
             final Callback<Void> cb
     ) {
-        mService.updateBookingFrequency(
-                bookingId,
+        mService.updateRecurringFrequency(
+                recurringId,
                 bookingEditFrequencyRequest,
                 new HandyRetrofitCallback(cb) {
                     @Override
@@ -1009,24 +922,53 @@ public class DataManager {
         );
     }
 
-    public final void getBookingPricesForFrequencies(
-            int bookingId,
-            final Callback<BookingEditFrequencyInfoResponse> cb
+    @SuppressWarnings("unused")
+    public void getRecurringExtrasInfo(
+            final long recurringId,
+            final Callback<BookingEditExtrasInfoResponse> cb
     ) {
-        mService.getBookingPricesForFrequencies(
-                bookingId,
-                new BookingPricesForFrequenciesHandyRetroFitCallback(cb)
+        mService.getRecurringExtras(
+                recurringId,
+                new TypedHandyRetrofitCallback<BookingEditExtrasInfoResponse>(cb) {}
         );
     }
 
-    public void updateRecurringFrequency(
-            final String recurringId,
-            final BookingEditFrequencyRequest bookingEditFrequencyRequest,
+    @SuppressWarnings("unused")
+    public void updateRecurringExtras(
+            final long recurringId,
+            final BookingEditExtrasRequest bookingEditExtrasRequest,
             final Callback<Void> cb
     ) {
-        mService.updateRecurringFrequency(
+        mService.updateRecurringExtras(
                 recurringId,
-                bookingEditFrequencyRequest,
+                bookingEditExtrasRequest,
+                new HandyRetrofitCallback(cb) {
+                    @Override
+                    protected void success(final JSONObject response) {
+                        cb.onSuccess(null);
+                    }
+                }
+        );
+    }
+
+    public void getRecurringHoursInfo(
+            final long recurringId,
+            final Callback<BookingEditHoursInfoResponse> cb
+    ) {
+        mService.getRecurringHours(
+                recurringId,
+                new TypedHandyRetrofitCallback<BookingEditHoursInfoResponse>(cb) {}
+        );
+    }
+
+    public void updateRecurringHours(
+            final long recurringId,
+            final BookingEditHoursRequest bookingEditHoursRequest,
+            final Callback<Void> cb
+    ) {
+        mService.updateRecurringHours(
+                recurringId,
+                bookingEditHoursRequest,
                 new HandyRetrofitCallback(cb) {
                     @Override
                     protected void success(final JSONObject response) {
@@ -1139,11 +1081,14 @@ public class DataManager {
     ) {
         final User user = User.fromJson(response.toString());
 
-        user.setAuthToken(authToken);
-        user.setId(userId);
-        cb.onSuccess(user);
+        if (user != null) {
+            user.setAuthToken(authToken);
+            user.setId(userId);
+            cb.onSuccess(user);
+        }
     }
 
+    @Nullable
     private String parseAlertMessage(final JSONObject response) {
         if (response.optBoolean("alert", false)) {
             final JSONArray array = response.optJSONArray("messages");
@@ -1159,12 +1104,6 @@ public class DataManager {
         void onSuccess(T response);
 
         void onError(DataManagerError error);
-    }
-
-
-    public interface CacheResponse<T> {
-
-        void onResponse(T response);
     }
 
 
@@ -1214,6 +1153,7 @@ public class DataManager {
             return mErrorCode;
         }
 
+        @Nullable
         public final String[] getInvalidInputs() {
             return mInvalidInputs;
         }
@@ -1222,10 +1162,12 @@ public class DataManager {
             mInvalidInputs = inputs;
         }
 
+        @Nullable
         public String getMessage() {
             return mMessage;
         }
 
+        @Nullable
         public Type getType() {
             return mType;
         }

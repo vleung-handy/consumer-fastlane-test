@@ -3,8 +3,10 @@ package com.handybook.handybook.account.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,8 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditPlanLog;
 
+import java.text.DecimalFormat;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,8 +41,27 @@ public class EditPlanFragment extends InjectedFragment {
     @Bind(R.id.edit_plan_next_cleaning_time_text)
     TextView mNextCleaningTimeText;
 
+    @Bind(R.id.edit_plan_hours_container)
+    ViewGroup mEditHoursContainer;
+    @Bind(R.id.edit_plan_hours_text)
+    TextView mPlanHoursText;
+    @Bind(R.id.edit_plan_hours_title)
+    TextView mPlanHoursTitle;
+    @Bind(R.id.edit_plan_hours_subtext)
+    TextView mPlanHoursSubtext;
+
+    @Bind(R.id.edit_plan_extras_container)
+    ViewGroup mEditExtrasContainer;
+    @Bind(R.id.edit_plan_extras_title)
+    TextView mPlanExtrasTitle;
+    @Bind(R.id.edit_plan_extras_text)
+    TextView mPlanExtrasText;
+    @Bind(R.id.edit_plan_extras_subtext)
+    TextView mPlanExtrasSubtext;
+
     private RecurringBooking mPlan;
 
+    @NonNull
     public static EditPlanFragment newInstance(RecurringBooking plan) {
         Bundle args = new Bundle();
         args.putSerializable(BundleKeys.RECURRING_PLAN, plan);
@@ -69,8 +92,14 @@ public class EditPlanFragment extends InjectedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setupDisplay();
-        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.Shown(mPlan.getId())));
+        initUi();
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.Shown(
+                mPlan.getId(),
+                mPlan.canEditHours(),
+                mPlan.canEditExtras(),
+                mPlan.getHours(),
+                mPlan.getFrequencyValue()
+        )));
     }
 
     @OnClick(R.id.edit_plan_frequency)
@@ -92,13 +121,39 @@ public class EditPlanFragment extends InjectedFragment {
         startActivityForResult(intent, RequestCode.EDIT_PLAN_ADDRESS);
     }
 
+    @OnClick(R.id.edit_plan_hours_container)
+    public void editHours() {
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditHoursSelected(
+                mPlan.getId(),
+                mPlan.getHours()
+        )));
+
+        Intent intent = new Intent(getContext(), EditPlanHoursActivity.class);
+        intent.putExtra(BundleKeys.RECURRING_PLAN, mPlan);
+        startActivityForResult(intent, RequestCode.EDIT_PLAN_HOURS);
+    }
+
+    @OnClick(R.id.edit_plan_extras_container)
+    public void editExtras() {
+        bus.post(new LogEvent.AddLogEvent(new EditPlanLog.EditExtrasSelected(
+                mPlan.getId(),
+                mPlan.getExtrasLabels()
+        )));
+        Intent intent = new Intent(getContext(), EditPlanExtrasActivity.class);
+        intent.putExtra(BundleKeys.RECURRING_PLAN, mPlan);
+        startActivityForResult(intent, RequestCode.EDIT_PLAN_EXTRAS);
+    }
+
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case RequestCode.EDIT_PLAN_ADDRESS:
                 case RequestCode.EDIT_PLAN_FREQUENCY:
+                case RequestCode.EDIT_PLAN_HOURS:
+                case RequestCode.EDIT_PLAN_EXTRAS:
                     mPlan = (RecurringBooking) data.getSerializableExtra(BundleKeys.RECURRING_PLAN);
+                    initUi();
                     break;
             }
         }
@@ -112,7 +167,7 @@ public class EditPlanFragment extends InjectedFragment {
         FragmentUtils.switchToFragment(this, fragment, true);
     }
 
-    private void setupDisplay() {
+    private void initUi() {
         mFrequencyText.setText(mPlan.getFrequency());
         Booking.Address address = mPlan.getAddress();
         if (address != null) {
@@ -121,7 +176,36 @@ public class EditPlanFragment extends InjectedFragment {
         else {
             mAddressText.setText(mPlan.getFullAddress());
         }
+
+        mPlanHoursText.setText(getString(
+                R.string.hours_formatted,
+                new DecimalFormat("#.#").format(mPlan.getHours()
+                )
+        ));
         mNextCleaningTimeText.setText(DateTimeUtils.DAY_MONTH_DATE_AT_TIME_FORMATTER.format(
                 mPlan.getNextBookingDate()));
+        initEditHours();
+        initEditExtras();
+    }
+
+    private void initEditHours() {
+        mPlanHoursTitle.setTextColor(getResources().getColor(
+                mPlan.canEditHours() ? R.color.handy_text_black : R.color.handy_text_gray
+        ));
+        mEditHoursContainer.setClickable(mPlan.canEditHours());
+        final String editHoursSubtext = mPlan.getEditHoursSubtext();
+        mPlanHoursSubtext.setVisibility(editHoursSubtext == null ? View.GONE : View.VISIBLE);
+        mPlanHoursSubtext.setText(editHoursSubtext);
+    }
+
+    private void initEditExtras() {
+        mPlanExtrasTitle.setTextColor(getResources().getColor(
+                mPlan.canEditHours() ? R.color.handy_text_black : R.color.handy_text_gray
+        ));
+        mEditExtrasContainer.setClickable(mPlan.canEditExtras());
+        mPlanExtrasText.setText(TextUtils.join(", ", mPlan.getExtrasLabels()));
+        final String editExtrasSubtext = mPlan.getEditExtrasSubtext();
+        mPlanExtrasSubtext.setVisibility(editExtrasSubtext == null ? View.GONE : View.VISIBLE);
+        mPlanExtrasSubtext.setText(editExtrasSubtext);
     }
 }
