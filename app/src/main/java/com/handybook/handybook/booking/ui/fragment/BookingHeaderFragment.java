@@ -124,7 +124,7 @@ public final class BookingHeaderFragment extends InjectedFragment implements Obs
             );
         }
 
-        final float[] pricing = quote.getPricing(
+        final float[] pricingCents = quote.getPricingCents(
                 transaction.getCommitmentType(),
                 hours,
                 transaction.getRecurringFrequency(),
@@ -134,25 +134,10 @@ public final class BookingHeaderFragment extends InjectedFragment implements Obs
 
         priceView.setCurrencySymbol(currChar);
 
-        //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-        if (quote.getCommitmentType() != null || quote.getTrialCommitmentType() != null) {
-            priceView.setPriceCents(Math.round(pricing[1]));
-        }
-        else {
-            priceView.setPriceDollars(pricing[1]);
-        }
+        priceView.setPriceCents(Math.round(pricingCents[1]));
 
-        if (pricing[1] < pricing[0]) {
-            String priceText = "";
-            //if we are doing the new CommitmentType stuff, the prices are actually in "cents", not floats
-            if (quote.getCommitmentType() != null || quote.getTrialCommitmentType() != null) {
-                priceText = TextUtils.formatPriceCents(Math.round(pricing[0]), currChar);
-            }
-            else {
-                priceText = TextUtils.formatPrice(pricing[0], currChar, quote.getCurrencySuffix());
-            }
-
-            discountText.setText(priceText);
+        if (pricingCents[1] < pricingCents[0]) {
+            discountText.setText(TextUtils.formatPriceCents(Math.round(pricingCents[0]), currChar));
             discountText.setVisibility(View.VISIBLE);
         }
         else {

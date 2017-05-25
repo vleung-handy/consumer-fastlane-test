@@ -19,7 +19,6 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.HandyRetrofitCallback;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
@@ -29,6 +28,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.ProTeamPageLog;
 import com.handybook.handybook.proteam.adapter.NewProTeamCategoryAdapter;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
@@ -40,8 +40,6 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.Ac
 import com.handybook.handybook.referral.model.ProReferral;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.squareup.otto.Subscribe;
-
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,6 +55,8 @@ public class NewProTeamProListFragment extends InjectedFragment {
 
     @Inject
     HandyRetrofitService mService;
+    @Inject
+    ProTeamManager mProTeamManager;
 
     @Bind(R.id.edit_my_pros_list_recycler_view)
     EmptiableRecyclerView mRecyclerView;
@@ -204,15 +204,10 @@ public class NewProTeamProListFragment extends InjectedFragment {
 
         final String source = ProTeamEvent.Source.PRO_MANAGEMENT.toString();
         progressDialog.show();
-        mService.editProTeam(currentUser.getId(), new ProTeamEditWrapper(
+        mProTeamManager.editProTeam(currentUser.getId(), new ProTeamEditWrapper(
                 proTeamEdits,
                 source
-        ), new HandyRetrofitCallback(cb) {
-            @Override
-            protected void success(final JSONObject response) {
-                cb.onSuccess(ProTeamWrapper.fromJson(response.toString()));
-            }
-        });
+        ), cb);
 
         bus.post(new LogEvent.AddLogEvent(
                 new ProTeamPageLog.EditProTeamSubmitted(proTeamEdits)));

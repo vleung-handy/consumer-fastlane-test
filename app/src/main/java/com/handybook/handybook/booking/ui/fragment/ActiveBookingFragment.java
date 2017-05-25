@@ -41,8 +41,8 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.ui.view.HorizontalMiniProProfile;
 import com.handybook.handybook.core.ui.view.MapPlaceholderView;
-import com.handybook.handybook.core.ui.view.MiniProProfile;
 import com.handybook.handybook.core.ui.view.MissingLocationView;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
@@ -87,7 +87,7 @@ public class ActiveBookingFragment extends InjectedFragment
     View mMapDivider;
 
     @Bind(R.id.active_booking_provider_profile)
-    MiniProProfile mProProfile;
+    HorizontalMiniProProfile mProProfile;
 
     @Bind(R.id.booking_item_title)
     TextView mTextBookingTitle;
@@ -226,6 +226,7 @@ public class ActiveBookingFragment extends InjectedFragment
             if (providerAssignmentInfo != null) {
                 mProProfile.setProTeamIndicatorEnabled(true);
                 mProProfile.setIsProTeam(providerAssignmentInfo.isProTeamMatch());
+                mProProfile.setIsProTeamFavorite(provider.isFavorite());
                 if (providerAssignmentInfo.shouldShowProfileImage()) {
                     mProProfile.setImage(provider.getImageUrl());
                 }

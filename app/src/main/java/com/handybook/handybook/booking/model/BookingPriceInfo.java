@@ -4,71 +4,112 @@ import com.google.gson.annotations.SerializedName;
 
 public final class BookingPriceInfo {
 
-    @SerializedName("hours") private float hours;
-    @SerializedName("price") private float price;
-    @SerializedName("discount_price") private float discountPrice;
-    @SerializedName("bimonthly_recurring_price") private float biMonthlyprice;
-    @SerializedName("discount_bimonthly_recurring_price") private float discountBiMonthlyprice;
-    @SerializedName("monthly_recurring_price") private float monthlyPrice;
-    @SerializedName("discount_monthly_recurring_price") private float discountMonthlyPrice;
-    @SerializedName("weekly_recurring_price") private float weeklyPrice;
-    @SerializedName("discount_weekly_recurring_price") private float discountWeeklyPrice;
+    @SerializedName("hours")
+    private float hours;
+    @SerializedName("price")
+    private float mPriceDollars;
+    @SerializedName("discount_price")
+    private float mDiscountPriceDollars;
+    @SerializedName("bimonthly_recurring_price")
+    private float mBiMonthlyPriceDollars;
+    @SerializedName("discount_bimonthly_recurring_price")
+    private float mDiscountBiMonthlyPriceDollars;
+    @SerializedName("monthly_recurring_price")
+    private float mMonthlyPriceDollars;
+    @SerializedName("discount_monthly_recurring_price")
+    private float mDiscountMonthlyPriceDollars;
+    @SerializedName("weekly_recurring_price")
+    private float mWeeklyPriceDollars;
+    @SerializedName("discount_weekly_recurring_price")
+    private float discountWeeklyPriceDollars;
 
     public BookingPriceInfo(
             final float hours,
-            final float price,
-            final float discountPrice,
-            final float biMonthlyprice,
-            final float discountBiMonthlyprice,
-            final float monthlyPrice,
-            final float discountMonthlyPrice,
-            final float weeklyPrice,
-            final float discountWeeklyPrice
+            final float mPriceDollars,
+            final float mDiscountPriceDollars,
+            final float mBiMonthlyPriceDollars,
+            final float mDiscountBiMonthlyPriceDollars,
+            final float monthlyPriceDollars,
+            final float mDiscountMonthlyPriceDollars,
+            final float mWeeklyPriceDollar,
+            final float discountWeeklyPriceDollars
     ) {
         this.hours = hours;
-        this.price = price;
-        this.discountPrice = discountPrice;
-        this.biMonthlyprice = biMonthlyprice;
-        this.discountBiMonthlyprice = discountBiMonthlyprice;
-        this.monthlyPrice = monthlyPrice;
-        this.discountMonthlyPrice = discountMonthlyPrice;
-        this.weeklyPrice = weeklyPrice;
-        this.discountWeeklyPrice = discountWeeklyPrice;
+        this.mPriceDollars = mPriceDollars;
+        this.mDiscountPriceDollars = mDiscountPriceDollars;
+        this.mBiMonthlyPriceDollars = mBiMonthlyPriceDollars;
+        this.mDiscountBiMonthlyPriceDollars = mDiscountBiMonthlyPriceDollars;
+        this.mMonthlyPriceDollars = monthlyPriceDollars;
+        this.mDiscountMonthlyPriceDollars = mDiscountMonthlyPriceDollars;
+        this.mWeeklyPriceDollars = mWeeklyPriceDollar;
+        this.discountWeeklyPriceDollars = discountWeeklyPriceDollars;
     }
 
     final float getHours() {
         return hours;
     }
 
-    final float getPrice() {
-        return price;
+    final float getPriceDollars() {
+        return mPriceDollars;
     }
 
-    final float getBiMonthlyprice() {
-        return biMonthlyprice;
+    final float getBiMonthlyPriceDollars() {
+        return mBiMonthlyPriceDollars;
     }
 
-    final float getMonthlyPrice() {
-        return monthlyPrice;
+    final float getMonthlyPriceDollars() {
+        return mMonthlyPriceDollars;
     }
 
-    final float getWeeklyPrice() {
-        return weeklyPrice;
+    final float getWeeklyPriceDollars() {
+        return mWeeklyPriceDollars;
     }
 
-    final float getDiscountPrice() {
-        return discountPrice;
+    final float getDiscountPriceDollars() {
+        return mDiscountPriceDollars;
     }
 
-    final float getDiscountBiMonthlyprice() {
-        return discountBiMonthlyprice;
+    final float getDiscountBiMonthlyPriceDollars() {
+        return mDiscountBiMonthlyPriceDollars;
     }
 
-    final float getDiscountMonthlyPrice() {
-        return discountMonthlyPrice;
+    final float getDiscountMonthlyPriceDollars() {
+        return mDiscountMonthlyPriceDollars;
     }
 
-    final float getDiscountWeeklyPrice() {
-        return discountWeeklyPrice;
+    final float getDiscountWeeklyPriceDollars() {
+        return discountWeeklyPriceDollars;
+    }
+
+    final float getPriceCents() {
+        return mPriceDollars * 100;
+    }
+
+    final float getBiMonthlyPriceCents() {
+        return mBiMonthlyPriceDollars * 100;
+    }
+
+    final float getMonthlyPriceCents() {
+        return mMonthlyPriceDollars * 100;
+    }
+
+    final float getWeeklyPriceCents() {
+        return mWeeklyPriceDollars * 100;
+    }
+
+    final float getDiscountPriceCents() {
+        return mDiscountPriceDollars * 100;
+    }
+
+    final float getDiscountBiMonthlyPriceCents() {
+        return mDiscountBiMonthlyPriceDollars * 100;
+    }
+
+    final float getDiscountMonthlyPriceCents() {
+        return mDiscountMonthlyPriceDollars * 100;
+    }
+
+    final float getDiscountWeeklyPriceCents() {
+        return discountWeeklyPriceDollars * 100;
     }
 }

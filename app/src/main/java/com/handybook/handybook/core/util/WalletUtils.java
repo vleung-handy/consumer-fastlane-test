@@ -103,7 +103,7 @@ public class WalletUtils {
             final BookingTransaction transaction
     ) {
         final float hours = transaction.getHours() + transaction.getExtraHours();
-        final float[] pricing = quote.getPricing(
+        final float[] pricing = quote.getPricingCents(
                 transaction.getCommitmentType(),
                 hours,
                 transaction.getRecurringFrequency(),

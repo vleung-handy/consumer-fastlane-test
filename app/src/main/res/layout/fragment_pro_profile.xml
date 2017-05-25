@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="false"
-                    app:layout_scrollFlags="scroll|snap"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
                     app:scrimVisibleHeightTrigger="0dp"
                     app:titleEnabled="false"
                     >

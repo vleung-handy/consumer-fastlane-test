@@ -13,4 +13,6 @@ public interface EventType {
     String REFERRAL_PAGE_SHOWN = "referral_page_shown";
     String CONVERSATIONS_LOADING_ERROR = "conversations_loading_error";
     String CONVERSATIONS_LOADED = "conversations_loaded";
+    String PRO_TEAM_QUESTION_MARK_TAPPED = "pro_team_question_mark_tapped";
+    String CHOOSE_FAVORITE_PRO_BUTTON_TAPPED = "choose_a_favorite_pro_tapped";
 }

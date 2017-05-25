@@ -638,13 +638,12 @@
         <item name="android:visibility">gone</item>
     </style>
 
-
     <style name="TextAppearance"/>
 
-    <style name="TextAppearance.TabText">
+    <style name="TextAppearance.TabText"
+           parent="TextView.Medium.Bold">
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/text_size_xsmall</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="BookingsCell">

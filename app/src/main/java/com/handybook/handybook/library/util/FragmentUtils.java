@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
@@ -82,6 +81,10 @@ public class FragmentUtils {
         return false;
     }
 
+    /**
+     * be careful when using this with nested fragments. consider using
+     * switchToFragment(FragmentActivity activity, ...) instead
+     */
     public static void switchToFragment(
             Fragment currentFragment, Fragment newFragment, boolean addToBackStack
     ) {
@@ -96,7 +99,7 @@ public class FragmentUtils {
     }
 
     public static void switchToFragment(
-            @NonNull AppCompatActivity activity,
+            @NonNull FragmentActivity activity,
             @NonNull Fragment newFragment,
             boolean addToBackStack
     ) {

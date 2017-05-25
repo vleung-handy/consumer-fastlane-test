@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_my_pros_pro_team_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <include layout="@layout/layout_loading_error"/>
+
+    <include
+        android:id="@+id/fragment_my_pros_pro_team_recycler_view_empty_layout"
+        layout="@layout/layout_my_pros_pro_team_empty"
+        />
+
+    <com.handybook.handybook.library.ui.view.LoadingLayout
+        android:id="@+id/fragment_my_pros_pro_team_recycler_view_loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|top"
+        android:background="@color/handy_bg"
+        android:visibility="gone"
+        app:loadingText="@string/loading"
+        />
+</FrameLayout>

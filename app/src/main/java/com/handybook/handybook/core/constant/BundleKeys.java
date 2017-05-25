@@ -67,5 +67,6 @@ public class BundleKeys {
     public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
     public static final String PROGRESS = "PROGRESS";
     public static final String PAGE_SOURCE = "page_source";
+    public static final String SHOULD_SHOW_TOOLBAR = "should_show_toolbar";
 
 }

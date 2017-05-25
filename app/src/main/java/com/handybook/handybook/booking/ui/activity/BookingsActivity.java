@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.booking.ui.fragment.UpcomingAndPastBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
+import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
+import javax.inject.Inject;
+
 public final class BookingsActivity extends MenuDrawerActivity {
+
+    @Inject
+    ConfigurationManager mConfigurationManager;
 
     @Override
     protected boolean requiresUser() {
@@ -17,7 +24,13 @@ public final class BookingsActivity extends MenuDrawerActivity {
 
     @Override
     protected final Fragment createFragment() {
-        return UpcomingBookingsFragment.newInstance();
+        if (mConfigurationManager.getPersistentConfiguration()
+                                 .isUpcomingAndPastBookingsMergeEnabled()) {
+            return UpcomingAndPastBookingsFragment.newInstance();
+        }
+        else {
+            return UpcomingBookingsFragment.newInstance();
+        }
     }
 
     @Override

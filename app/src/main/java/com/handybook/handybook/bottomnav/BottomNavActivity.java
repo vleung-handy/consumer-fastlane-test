@@ -15,6 +15,7 @@ import android.view.View;
 import com.handybook.handybook.R;
 import com.handybook.handybook.account.ui.AccountFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
+import com.handybook.handybook.booking.ui.fragment.UpcomingAndPastBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.core.EnvironmentModifier;
@@ -22,6 +23,7 @@ import com.handybook.handybook.core.MainNavTab;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.FragmentUtils;
+import com.handybook.handybook.proteam.mypros.MyProsFragment;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 import com.handybook.handybook.referral.ui.ReferralV2Fragment;
 import com.handybook.shared.layer.LayerConstants;
@@ -61,6 +63,18 @@ public class BottomNavActivity extends BaseActivity {
         setContentView(R.layout.activity_bottom_nav);
         ButterKnife.bind(this);
 
+        boolean myProsTabEnabled = mConfigurationManager.getPersistentConfiguration()
+                                                        .isMyProsTabEnabled();
+        if (myProsTabEnabled) {
+            MenuItem menuItem = mBottomNavigationView.getMenu().findItem(R.id.messages);
+            menuItem.setTitle(R.string.my_pros_tab_title);
+            menuItem.setIcon(R.drawable.ic_menu_my_pros);
+
+            /*
+            note: could not simply add another menu item that is hidden because
+            bottom nav menu view only supports max of 5 items
+             */
+        }
         mBottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -162,12 +176,24 @@ public class BottomNavActivity extends BaseActivity {
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.bookings:
-                fragment = UpcomingBookingsFragment.newInstance();
+                if(mConfigurationManager.getPersistentConfiguration().isUpcomingAndPastBookingsMergeEnabled())
+                {
+                    fragment = UpcomingAndPastBookingsFragment.newInstance();
+                }
+                else
+                {
+                    fragment = UpcomingBookingsFragment.newInstance();
+                }
                 break;
             case R.id.messages:
                 isProChatCurrentlySelected = true;
                 mBottomNavigationView.showChatIndicator(false);
-                fragment = ProTeamConversationsFragment.newInstance();
+                if (mConfigurationManager.getPersistentConfiguration().isMyProsTabEnabled()) {
+                    fragment = MyProsFragment.newInstance();
+                }
+                else {
+                    fragment = ProTeamConversationsFragment.newInstance();
+                }
                 break;
             case R.id.add_booking:
                 fragment = ServiceCategoriesHomeFragment.newInstance();

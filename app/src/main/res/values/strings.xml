@@ -361,10 +361,8 @@
     <string name="apply_promo_code">Apply promo code</string>
     <string name="booking_payment_android_pay_promo_savings_formatted">Use Android Pay to save %1$s now!</string>
     <string name="android_pay_obfuscated_promo_code">ANDROIDPAY\u2022\u2022\u2022\u2022</string>
-    <string name="booking_payment_terms_of_use_agreement">By tapping the button below, I accept &lt;br>Handy\'s
-        &lt;a href="">Terms of Use&lt;/a></string>
-    <string name="booking_payment_recurring_plan_terms_of_use_agreement">By clicking Complete Booking I understand that I am purchasing a recurring cleaning plan subject to Handy\'s Cancellation Policy and
-    &lt;a href="">Terms of Use&lt;/a></string>
+    <string name="booking_payment_terms_of_use_agreement"><![CDATA[By tapping the button below, I accept <br/>Handy\'s <a href="">Terms of Use</a>]]></string>
+    <string name="booking_payment_recurring_plan_terms_of_use_agreement"><![CDATA[By clicking Complete Booking I understand that I am purchasing a recurring cleaning plan subject to Handy\'s Cancellation Policy and <a href="">Terms of Use</a>]]></string>
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
     <string name="scan_credit_card_button">Scan credit card</string>
@@ -651,6 +649,11 @@
     <string name="pro_profile_action_button_book">Book</string>
     <string name="pro_profile_action_button_recommend">Recommend</string>
 
+    <string name="my_pros_tab_title">My Pros</string>
+    <string name="my_pros_pro_team_info">Your Pro Team members are the pros you\'d be happy to work with in the future. We\'ll do our best to pair you with them every time.\n\nYour Favorite Pro is the Team member you set as your first choice for every booking. We\'ll send them your jobs first.</string>
+    <string name="my_pros_pro_team_favorite_indicator">Your Favorite Pro</string>
+    <string name="my_pros_choose_favorite_pro_button">Choose a \nFavorite Pro</string>
+    <string name="my_pros_pro_team_empty">No pros on your team yet. As you meet pros, you\'ll be able to build your pro team. We\'ll always request these pros first.</string>
     <string name="hours_formatted">%1$s hours</string>
 </resources>
 

@@ -29,7 +29,7 @@
             >
 
             <TextView
-                style="@style/TextView.Large.Bold"
+                style="@style/TextView.Medium.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin_half"
@@ -56,7 +56,7 @@
             >
 
             <TextView
-                style="@style/TextView.Large.Bold"
+                style="@style/TextView.Medium.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin_half"
@@ -155,12 +155,13 @@
 
         <TextView
             android:id="@+id/edit_plan_cancel"
-            style="@style/TextView.Large.Bold"
+            style="@style/TextView.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_list_entry"
             android:padding="@dimen/default_padding"
             android:text="@string/account.cancel_plan"
+            android:textColor="@color/handy_text_black"
             />
     </LinearLayout>
 
