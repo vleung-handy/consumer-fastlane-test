@@ -437,7 +437,7 @@
     <string name="set_as_favorite_formatted">Set %1$s as your favorite?</string>
     <string name="auto_remove_as_favorite_warning_formatted">This will move %1$s to your Pro Team.</string>
     <string name="block_formatted">Block %1$s?</string>
-    <string name="messages_empty_state_subtitle">You can only message members of your Pro Team. Come back again when you add someone new!</string>
+    <string name="messages_empty_state_subtitle">You can only message members of your Pro Team and pros assigned to your upcoming bookings. Messages will appear here.</string>
     <string name="messages_empty_state_title">You have no messages</string>
     <string name="favorite_pro_help_message">This is the pro you set as your first choice to complete every booking. If they\'re not available we\'ll request another top-rated pro for you.</string>
     <string name="pro_team_help_message">Your Pro Team are all the pros you\'d be happy to work with in the future. If your Favorite Pro is not available, they are next in line to complete your booking!</string>
