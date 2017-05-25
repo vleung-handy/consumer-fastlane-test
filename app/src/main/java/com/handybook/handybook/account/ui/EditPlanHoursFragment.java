@@ -87,6 +87,7 @@ public final class EditPlanHoursFragment extends InjectedFragment {
         super.onResume();
         initUI();
         dataManager.getRecurringHoursInfo(
+                // TODO: use plan manager instead (oh... no plan manager? Write it then!)
                 mPlan.getId(),
                 new FragmentSafeCallback<BookingEditHoursInfoResponse>(this) {
                     @Override
@@ -257,6 +258,7 @@ public final class EditPlanHoursFragment extends InjectedFragment {
         bookingEditHoursRequest.setNewBaseHrs((float) selectedHours);
         bookingEditHoursRequest.setApplyToRecurring(true);
         dataManager.updateRecurringHours(
+                // TODO: use plan manager instead (oh... no plan manager? Write it then!)
                 mPlan.getId(),
                 bookingEditHoursRequest,
                 new FragmentSafeCallback<Void>(this) {

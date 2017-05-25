@@ -57,6 +57,7 @@ public final class EditPlanExtrasFragment extends InjectedFragment {
     public void onResume() {
         super.onResume();
         dataManager.getRecurringExtrasInfo(
+                // TODO: use plan manager instead (oh... no plan manager? Write it then!)
                 mPlan.getId(),
                 new FragmentSafeCallback<BookingEditExtrasInfoResponse>(this) {
                     @Override

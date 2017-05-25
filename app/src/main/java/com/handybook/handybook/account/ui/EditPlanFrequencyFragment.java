@@ -72,6 +72,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
         showUiBlockers();
 
         dataManager.getRecurringFrequency(
+                // TODO: use plan manager instead (oh... no plan manager? Write it then!)
                 Integer.toString(mPlan.getId()),
                 new FragmentSafeCallback<BookingEditFrequencyInfoResponse>(this) {
                     @Override
@@ -119,6 +120,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
         BookingEditFrequencyRequest editFrequencyRequest = new BookingEditFrequencyRequest();
         editFrequencyRequest.setRecurringFrequency(mFrequencySelectionsView.getCurrentlySelectedFrequency());
         dataManager.updateRecurringFrequency(
+                // TODO: use plan manager instead (oh... no plan manager? Write it then!)
                 Integer.toString(mPlan.getId()),
                 editFrequencyRequest,
                 new FragmentSafeCallback<Void>(this) {
