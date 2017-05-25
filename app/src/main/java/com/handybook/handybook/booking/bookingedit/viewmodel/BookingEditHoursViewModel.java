@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.bookingedit.viewmodel;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursInfoResponse;
 import com.handybook.handybook.booking.model.PriceInfo;
@@ -34,13 +35,17 @@ public class BookingEditHoursViewModel {
         mEditHoursInfo = editHoursInfo;
     }
 
-    public static BookingEditHoursViewModel from(@NonNull final BookingEditHoursInfoResponse editHoursInfo) {
+    @NonNull
+    public static BookingEditHoursViewModel from(
+            @NonNull final BookingEditHoursInfoResponse editHoursInfo
+    ) {
         return new BookingEditHoursViewModel(editHoursInfo);
     }
 
     /**
      * @return A formatted string that indicates the number of base hours in the original booking
      */
+    @NonNull
     public String getBaseHoursFormatted() {
         return getHoursFormatted(mEditHoursInfo.getBaseHours());
     }
@@ -48,6 +53,7 @@ public class BookingEditHoursViewModel {
     /**
      * @return A formatted string that indicates the base price of the original booking
      */
+    @Nullable
     public String getBasePriceFormatted() {
         return getTotalDuePriceFormatted(getBaseHoursFormatted());
     }
@@ -55,6 +61,7 @@ public class BookingEditHoursViewModel {
     /**
      * @return A formatted string that indicates the number of hours allocated for service extras in the original booking
      */
+    @NonNull
     public String getExtrasHoursFormatted() {
         return getHoursFormatted(mEditHoursInfo.getExtrasHours());
     }
@@ -62,70 +69,78 @@ public class BookingEditHoursViewModel {
     /**
      * @return A formatted string that indicates the total price of the service extras in the original booking
      */
+    @Nullable
     public String getExtrasPriceFormatted() {
-        return mEditHoursInfo.getExtrasPrice() == null ? null :
-               mEditHoursInfo.getExtrasPrice().getFormattedPrice();
+        return mEditHoursInfo.getExtrasPrice().getFormattedPrice();
     }
 
-    public boolean isSelectedHoursLessThanBaseHours(final float selectedHours) {
+    public boolean isSelectedHoursLessThanBaseHours(final double selectedHours) {
         return selectedHours < mEditHoursInfo.getBaseHours();
     }
 
     /**
      *
-     * @param selectedHours
      * @return A formatted string that indicates the number of hours the user has selected
      */
-    public String getSelectedHoursFormatted(final float selectedHours) {
+    @NonNull
+    public String getSelectedHoursFormatted(final double selectedHours) {
         return getHoursFormatted(selectedHours);
     }
 
     /**
      *
-     * @param selectedHours
      * @return A formatted string that indicates the difference between the selected hours and the base hours in the original booking
      */
-    public String getAddedHoursPriceFormatted(final float selectedHours) {
+    @Nullable
+    public String getAddedHoursPriceFormatted(final double selectedHours) {
         return getPriceDifferenceFormatted(getSelectedHoursFormatted(selectedHours));
     }
 
     /**
      * @return A formatted string that indicates the new total price of the booking
      */
-    public String getTotalDuePriceFormatted(final float selectedHours) {
+    @Nullable
+    public String getTotalDuePriceFormatted(final double selectedHours) {
         return getTotalDuePriceFormatted(getTotalHoursFormatted(selectedHours));
     }
 
     /**
      * @return A formatted string that indicates the number of hours that the user is adding to the original booking
      */
-    public String getAddedHoursFormatted(final float selectedHours) {
+    @NonNull
+    public String getAddedHoursFormatted(final double selectedHours) {
         return getHoursFormatted(getAddedHours(selectedHours));
     }
 
     /**
      * @return A formatted string that indicates the new total hours of the booking
      */
-    public String getTotalHoursFormatted(final float selectedHours) {
+    @NonNull
+    public String getTotalHoursFormatted(final double selectedHours) {
         return getHoursFormatted(
                 mEditHoursInfo.getBaseHours()
                 + mEditHoursInfo.getExtrasHours()
                 + getAddedHours(selectedHours));
     }
 
+    @Nullable
+    public String getTotalSubtext() {
+        return mEditHoursInfo.getTotalSubtext();
+    }
+
     /**
      * @return A formatted string that indicates the date that the booking will be billed for
      */
+    @Nullable
     public String getFutureBillDateFormatted() {
         return mEditHoursInfo.getPaidStatus().getFutureBillDateFormatted();
     }
 
     /**
      *
-     * @param selectedHours
      * @return The difference in hours between the base hours in the original booking, and the number of hours that the user has selected
      */
-    private float getAddedHours(final float selectedHours) {
+    private double getAddedHours(final double selectedHours) {
         return selectedHours - mEditHoursInfo.getBaseHours();
     }
 
@@ -133,7 +148,7 @@ public class BookingEditHoursViewModel {
      *
      * @return The number of base hours (this excludes extras) in the original booking
      */
-    public float getBaseHours() {
+    public double getBaseHours() {
         return mEditHoursInfo.getBaseHours();
     }
 
@@ -143,6 +158,7 @@ public class BookingEditHoursViewModel {
      *
      * @return A string array that contains numerically sorted hours that the user can select from
      */
+    @NonNull
     public String[] getSelectableHoursArray() {
         String optionHourStrings[] = mEditHoursInfo.getPriceMap().keySet().toArray(new String[]{});
         //BookingOption.setOptions() only accepts an array of strings
@@ -151,27 +167,34 @@ public class BookingEditHoursViewModel {
     }
 
     //TODO: will rename these later
+    // Easter egg
 
     /**
-     * @param hours
      * @return A string that represents the given number of hours, with 0-1 decimal points. For example, 3.0 becomes 3
      */
-    private String getHoursFormatted(float hours) {
+    @NonNull
+    private String getHoursFormatted(double hours) {
         //have to do this because the price table returned from the api has key values like 2, 2.5, 3, 3.5, etc
         //round to one decimal place in case there are floating point rounding errors
         hours = MathUtils.roundToDecimalPlaces(hours, 1);
         return TextUtils.formatToAtMostOneDecimalPlaceUSLocale(hours);
     }
 
+    @Nullable
     private String getTotalDuePriceFormatted(final String key) {
         Map<String, PriceInfo> priceMap = mEditHoursInfo.getTotalPriceMap();
         return ValidationUtils.isMapKeyEntryValid(key, priceMap) ?
                priceMap.get(key).getTotalDueFormatted() : null;
     }
 
+    @Nullable
     private String getPriceDifferenceFormatted(final String key) {
         Map<String, PriceInfo> priceMap = mEditHoursInfo.getPriceMap();
         return ValidationUtils.isMapKeyEntryValid(key, priceMap) ?
                priceMap.get(key).getPriceDifferenceFormatted() : null;
+    }
+
+    public boolean hasFutureBillDate() {
+        return mEditHoursInfo.getPaidStatus().hasFutureBillDate();
     }
 }

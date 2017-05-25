@@ -109,11 +109,6 @@ public class BookingUtil {
     /**
      * Given a booking, this returns the parent service machine name. ie., if light_fixtures is passed in,
      * the return will be: electrician
-     *
-     * @param booking
-     * @param services
-     * @return
-     *
      * @deprecated - use getIconForService directly, as a booking should already include the parent service
      */
     public static String findParentService(Booking booking, @Nonnull List<Service> services) {
@@ -153,9 +148,6 @@ public class BookingUtil {
 
     /**
      * Traverses the service tree to find the service node we're looking for using BFS
-     *
-     * @param nameToMatch
-     * @return
      */
     public static Service findMatchingService(Service service, String nameToMatch) {
         if (service.getUniq().equalsIgnoreCase(nameToMatch)) {
@@ -187,10 +179,6 @@ public class BookingUtil {
 
     /**
      * Returns in the form of 3:00 pm - 7:00 pm
-     *
-     * @param booking
-     * @param context
-     * @return
      */
     public static String getSubtitle(Booking booking, Context context) {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
@@ -223,7 +211,7 @@ public class BookingUtil {
     }
 
     /*
-    formats: "3.5 hours", "1 hour"
+     * formats: "3.5 hours", "1 hour"
      */
     public static String getNumHoursDisplayString(float hours, Context context) {
         return TextUtils.formatDecimal(hours, "#.#") + " "
@@ -236,10 +224,6 @@ public class BookingUtil {
      * <p>
      * Returns in the form of 3:00 pm (up to 3 hours) if the hours clarification experiment is
      * enabled Otherwise returns in the form 3:00 pm - 6:00 pm
-     *
-     * @param booking
-     * @param context
-     * @return
      */
     public static String getSubtitle(
             Booking booking,
@@ -256,10 +240,6 @@ public class BookingUtil {
 
     /**
      * Returns in the form of 3:00 pm (up to 3 hours)
-     *
-     * @param booking
-     * @param context
-     * @return
      */
     public static String getSubtitleForHoursClarificationExperiment(
             Booking booking,
@@ -283,9 +263,6 @@ public class BookingUtil {
 
     /**
      * Returns in the form of "Monday, August 15"
-     *
-     * @param booking
-     * @return
      */
     public static String getTitle(Booking booking) {
         return TextUtils.formatDate(booking.getStartDate(), TITLE_DATE_FORMAT);
@@ -293,9 +270,6 @@ public class BookingUtil {
 
     /**
      * Return in the form of Monday, Aug 1 @ 2:00pm
-     *
-     * @param rb
-     * @return
      */
     public static String getRecurrenceSubTitle(RecurringBooking rb) {
         return DateTimeUtils.getDayShortMonthDay(rb.getDateStart()) + " @ "
@@ -304,9 +278,6 @@ public class BookingUtil {
 
     /**
      * Return in the form of 2:00pm - 3 hours
-     *
-     * @param rb
-     * @return
      */
     public static String getRecurrenceSubTitle2(RecurringBooking rb) {
         return DateTimeUtils.getTime(rb.getDateStart()) + " - " + rb.getHours() + " hours";

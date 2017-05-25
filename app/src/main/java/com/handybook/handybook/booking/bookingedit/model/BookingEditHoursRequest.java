@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName;
 public final class BookingEditHoursRequest {
 
     @SerializedName("new_hrs")
-    private float mNewBaseHrs;
+    private double mNewBaseHrs;
     @SerializedName("apply_to_recurring")
     private boolean mApplyToRecurring;
 
-    public void setNewBaseHrs(final float newBaseHrs) {
+    public void setNewBaseHrs(final double newBaseHrs) {
         mNewBaseHrs = newBaseHrs;
     }
 

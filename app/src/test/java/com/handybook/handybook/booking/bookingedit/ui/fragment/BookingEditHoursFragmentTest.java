@@ -67,7 +67,7 @@ public class BookingEditHoursFragmentTest extends RobolectricGradleTestWrapper {
         when(mBookingEditHoursViewModel.getSelectableHoursArray()).thenReturn(new String[]{
                 "1.0", "2.0", "3.0"
         });
-        when(mBookingEditHoursViewModel.getBaseHours()).thenReturn(1f);
+        when(mBookingEditHoursViewModel.getBaseHours()).thenReturn(1.0);
 
         mFragment.onReceiveEditHoursInfoSuccess(new BookingEditEvent.ReceiveEditHoursInfoViewModelSuccess(
                 mBookingEditHoursViewModel));

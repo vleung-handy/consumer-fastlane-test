@@ -10,7 +10,6 @@ import com.handybook.handybook.booking.bookingedit.model.BookingEditFrequencyReq
 import com.handybook.handybook.booking.bookingedit.model.BookingEditHoursRequest;
 import com.handybook.handybook.booking.bookingedit.model.BookingUpdateNoteToProTransaction;
 import com.handybook.handybook.booking.bookingedit.model.EditAddressRequest;
-import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
@@ -51,13 +50,6 @@ public interface HandyRetrofitService {
     @POST("/bookings/{id}/address_update")
     void editBookingAddress(
             @Path("id") int bookingId,
-            @Body EditAddressRequest editAddressRequest,
-            HandyRetrofitCallback cb
-    );
-
-    @POST("/recurring_bookings/{id}/update_address")
-    void editBookingPlanAddress(
-            @Path("id") int planId,
             @Body EditAddressRequest editAddressRequest,
             HandyRetrofitCallback cb
     );
@@ -169,7 +161,7 @@ public interface HandyRetrofitService {
 
     @GET("/bookings/{bookingId}/edit_hours")
     void getEditHoursInfo(
-            @Path("bookingId") int bookingId,
+            @Path("bookingId") long bookingId,
             HandyRetrofitCallback cb
     );
 
@@ -224,12 +216,6 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
-    @POST("/bookings/{booking}/after_booking_update")
-    void addBookingPostInfo(
-            @Path("booking") int bookingId, @Body BookingPostInfo info,
-            HandyRetrofitCallback cb
-    );
-
     @POST("/bookings/{booking}/description_update")
         //points to same endpoint as update entry info but that is because the endpoint currently does too much
     void updateBookingNoteToPro(
@@ -265,24 +251,19 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
-    /**
-     * @deprecated use /recurring_bookings/{recurring_id}/edit_frequency instead
-     */
-    @Deprecated
-    @POST("/bookings/{booking}/edit_frequency")
-    void updateBookingFrequency(
-            @Path("booking") int bookingId,
-            @Body BookingEditFrequencyRequest bookingEditFrequencyRequest,
+    @GET("/recurring_bookings")
+    void getRecurringBookings(HandyRetrofitCallback cb);
+
+    @POST("/recurring_bookings/{id}/update_address")
+    void editBookingPlanAddress(
+            @Path("id") int planId,
+            @Body EditAddressRequest editAddressRequest,
             HandyRetrofitCallback cb
     );
 
-    /**
-     * @deprecated use /recurring_bookings/{recurring_id}/edit_frequency instead
-     */
-    @Deprecated
-    @GET("/bookings/{booking}/edit_frequency")
-    void getBookingPricesForFrequencies(
-            @Path("booking") int bookingId,
+    @GET("/recurring_bookings/{recurring_id}/edit_frequency")
+    void getRecurringFrequency(
+            @Path("recurring_id") String recurringId,
             HandyRetrofitCallback cb
     );
 
@@ -293,9 +274,29 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
-    @GET("/recurring_bookings/{recurring_id}/edit_frequency")
-    void getRecurringFrequency(
-            @Path("recurring_id") String recurringId,
+    @GET("/recurring_bookings/{recurring_id}/edit_extras")
+    void getRecurringExtras(
+            @Path("recurring_id") long recurringId,
+            HandyRetrofitCallback cb
+    );
+
+    @POST("/recurring_bookings/{recurring_id}/edit_extras")
+    void updateRecurringExtras(
+            @Path("recurring_id") long recurringId,
+            @Body BookingEditExtrasRequest bookingEditExtrasRequest,
+            HandyRetrofitCallback cb
+    );
+
+    @GET("/recurring_bookings/{recurring_id}/edit_hours")
+    void getRecurringHours(
+            @Path("recurring_id") long recurringId,
+            HandyRetrofitCallback cb
+    );
+
+    @POST("/recurring_bookings/{recurring_id}/edit_hours")
+    void updateRecurringHours(
+            @Path("recurring_id") long recurringId,
+            @Body BookingEditHoursRequest bookingEditHoursRequest,
             HandyRetrofitCallback cb
     );
 
@@ -349,12 +350,6 @@ public interface HandyRetrofitService {
     void addLaundry(
             @Path("booking") int bookingId, HandyRetrofitCallback cb
     );
-
-    @GET("/recurring_bookings")
-    void getRecurringBookings(HandyRetrofitCallback cb);
-
-    @GET("/bookings/{booking_id}/geo_status")
-    void getBookingGeoStatus(@Path("booking_id") String bookingId, HandyRetrofitCallback cb);
 
     @GET("/bookings/{booking_id}/location_status")
     void getLocationStatus(@Path("booking_id") String bookingId, HandyRetrofitCallback cb);
@@ -419,24 +414,6 @@ public interface HandyRetrofitService {
 
     @GET("/password_resets/new")
     void requestPasswordReset(@Query("email") String email, HandyRetrofitCallback cb);
-
-    //Request a list of requestable pros for this booking. Example response :
-    //{requestable_jobs: [{:name=>"Jason Jones", :id=>2462}, {:name=>"FakeJake Eubank", :id=>2746}]}
-    @GET("/bookings/{booking}/request_pro_info")
-    void getRequestProInfo(
-            @Path("booking") int bookingId,
-            HandyRetrofitCallback cb
-    );
-
-    //Request a specific pro for a specific booking.
-    @FormUrlEncoded
-    @POST("/bookings/{booking}/request_pro")
-    void requestProForBooking(
-            @Path("booking") int bookingId,
-            @Field("requested_pro") int requestedProId,
-            @Field("fail_on_conflict") boolean failOnConflict,
-            HandyRetrofitCallback cb
-    );
 
     //Help Center Self Service Center
 

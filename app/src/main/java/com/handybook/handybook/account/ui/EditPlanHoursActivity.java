@@ -7,7 +7,7 @@ import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 
-public final class EditPlanFrequencyActivity extends MenuDrawerActivity {
+public final class EditPlanHoursActivity extends MenuDrawerActivity {
 
     @Override
     protected boolean requiresUser() {
@@ -18,11 +18,11 @@ public final class EditPlanFrequencyActivity extends MenuDrawerActivity {
     protected final Fragment createFragment() {
         RecurringBooking recurringBooking =
                 (RecurringBooking) getIntent().getSerializableExtra(BundleKeys.RECURRING_PLAN);
-        return EditPlanFrequencyFragment.newInstance(recurringBooking);
+        return EditPlanHoursFragment.newInstance(recurringBooking);
     }
 
     @Override
     protected final String getNavItemTitle() {
-        return getString(R.string.edit_plan_edit_frequency_title);
+        return getString(R.string.edit_plan_edit_hours_title);
     }
 }

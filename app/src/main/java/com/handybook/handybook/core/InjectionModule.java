@@ -6,9 +6,13 @@ import com.handybook.handybook.account.ui.EditContactInfoActivity;
 import com.handybook.handybook.account.ui.EditPasswordActivity;
 import com.handybook.handybook.account.ui.EditPlanAddressActivity;
 import com.handybook.handybook.account.ui.EditPlanAddressFragment;
+import com.handybook.handybook.account.ui.EditPlanExtrasActivity;
+import com.handybook.handybook.account.ui.EditPlanExtrasFragment;
 import com.handybook.handybook.account.ui.EditPlanFragment;
 import com.handybook.handybook.account.ui.EditPlanFrequencyActivity;
 import com.handybook.handybook.account.ui.EditPlanFrequencyFragment;
+import com.handybook.handybook.account.ui.EditPlanHoursActivity;
+import com.handybook.handybook.account.ui.EditPlanHoursFragment;
 import com.handybook.handybook.account.ui.PlansFragment;
 import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.account.ui.ProfilePasswordFragment;
@@ -121,6 +125,7 @@ import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
+import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselPagerAdapter;
 import com.handybook.handybook.proteam.mypros.MyProsFragment;
 import com.handybook.handybook.proteam.mypros.ProTeamInfoFragment;
 import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
@@ -273,6 +278,12 @@ import dagger.Module;
                 BookingOptionsInputFragment.class,
                 ReviewAppBannerFragment.class,
                 MyProsFragment.class,
-                ProTeamInfoFragment.class
+                ProTeamInfoFragment.class,
+                CarouselPagerAdapter.class,
+                //todo this is proteam specific; should put in a proteam module
+                EditPlanHoursActivity.class,
+                EditPlanHoursFragment.class,
+                EditPlanExtrasActivity.class,
+                EditPlanExtrasFragment.class
         })
 public final class InjectionModule {}
