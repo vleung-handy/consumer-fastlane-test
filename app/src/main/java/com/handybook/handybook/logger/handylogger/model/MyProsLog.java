@@ -1,28 +1,25 @@
 package com.handybook.handybook.logger.handylogger.model;
 
+import com.handybook.handybook.logger.handylogger.constants.EventContext;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
+
 public abstract class MyProsLog extends EventLog {
 
-    private static final String EVENT_CONTEXT = "my_pros";
-
     private MyProsLog(final String eventType) {
-        super(eventType, EVENT_CONTEXT);
+        super(eventType, EventContext.MY_PROS);
     }
 
     public static class ProTeamQuestionMarkButtonTapped extends MyProsLog {
 
-        private static final String EVENT_TYPE = "pro_team_question_mark_tapped";
-
         public ProTeamQuestionMarkButtonTapped() {
-            super(EVENT_TYPE);
+            super(EventType.PRO_TEAM_QUESTION_MARK_TAPPED);
         }
     }
 
     public static class ChooseFavoriteProButtonTapped extends MyProsLog {
 
-        private static final String EVENT_TYPE = "choose_a_favorite_pro_tapped";
-
         public ChooseFavoriteProButtonTapped() {
-            super(EVENT_TYPE);
+            super(EventType.CHOOSE_FAVORITE_PRO_BUTTON_TAPPED);
         }
     }
 }

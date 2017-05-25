@@ -10,4 +10,5 @@ public interface EventContext {
     String PROTEAM_MANAGEMENT = "pro_team_management";
     String RATING_FLOW = "rating_flow";
     String CONVERSATIONS = "pro_team_converations";
+    String MY_PROS = "my_pros";
 }
