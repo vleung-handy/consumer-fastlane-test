@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
@@ -38,6 +39,10 @@ public final class EditPlanHoursFragment extends InjectedFragment {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+    @Bind(R.id.plan_edit_hours_container)
+    ViewGroup mContainer;
+    @Bind(R.id.plan_edit_hours_progressbar)
+    ProgressBar mProgressBar;
     @Bind(R.id.plan_edit_hours_base_time_row)
     LabelValueView mRowBaseTime;
     @Bind(R.id.plan_edit_hours_added_time_row)
@@ -79,25 +84,36 @@ public final class EditPlanHoursFragment extends InjectedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        showUiBlockers();
+        initUI();
         dataManager.getRecurringHoursInfo(
                 mPlan.getId(),
                 new FragmentSafeCallback<BookingEditHoursInfoResponse>(this) {
                     @Override
                     public void onCallbackSuccess(final BookingEditHoursInfoResponse response) {
-                        removeUiBlockers();
                         mBookingEditHoursViewModel = BookingEditHoursViewModel.from(response);
-                        initOptionsView();
-                        updateUiForOptionSelected();
+                        initUI();
                     }
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        removeUiBlockers();
                         dataManagerErrorHandler.handleError(getActivity(), error);
+                        getActivity().onBackPressed();
                     }
                 }
         );
+    }
+
+    private void initUI() {
+        if (mBookingEditHoursViewModel == null) {
+            mProgressBar.setVisibility(View.VISIBLE);
+            mContainer.setVisibility(View.GONE);
+            mSaveButton.setEnabled(false);
+            return;
+        }
+        mProgressBar.setVisibility(View.GONE);
+        mContainer.setVisibility(View.VISIBLE);
+        mSaveButton.setEnabled(true);
+        initOptionsView();
     }
 
     /**
@@ -174,6 +190,8 @@ public final class EditPlanHoursFragment extends InjectedFragment {
 
         mOptionsViewContainer.removeAllViews();
         mOptionsViewContainer.addView(mOptionsView);
+        updateUiForOptionSelected();
+
     }
 
     /**
