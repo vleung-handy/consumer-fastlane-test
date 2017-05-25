@@ -222,7 +222,6 @@ public class BookingManager implements Observer {
             DataManager.Callback<UserBookingsWrapper> cb
     ) {
         mDataManager.getBookings(
-                null,
                 onlyBookingsValue,
                 cb
         );
