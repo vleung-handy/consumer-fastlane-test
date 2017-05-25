@@ -19,6 +19,7 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/transparent"
             app:elevation="0dp"
             >
 
@@ -78,6 +79,7 @@
                     </RelativeLayout>
 
                     <FrameLayout
+                        android:layout_marginBottom="@dimen/default_margin_half"
                         android:id="@+id/fragment_my_pros_pro_team_info_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -100,7 +102,6 @@
                 style="@style/TextView.Medium.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin_half"
                 android:background="@drawable/border_grey_body_white"
                 android:padding="@dimen/default_padding"
                 android:text="@string/messages"

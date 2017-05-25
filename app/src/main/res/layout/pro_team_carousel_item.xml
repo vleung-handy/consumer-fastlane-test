@@ -13,7 +13,7 @@
     android:id="@+id/pro_team_carousel_item_container"
     >
 
-    <com.handybook.handybook.core.ui.view.VerticalMiniProProfile
+    <com.handybook.handybook.core.ui.view.LargeVerticalMiniProProfile
         android:id="@+id/pro_team_carousel_item_mini_pro_profile_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

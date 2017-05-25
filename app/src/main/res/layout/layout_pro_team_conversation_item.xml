@@ -78,7 +78,7 @@
 
         <include
             android:id="@+id/conversation_job_count_ratings"
-            layout="@layout/job_count_ratings_layout"
+            layout="@layout/layout_job_count_ratings_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/conversation_title"

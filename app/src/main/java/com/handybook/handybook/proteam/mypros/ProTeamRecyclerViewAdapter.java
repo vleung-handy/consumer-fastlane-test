@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Provider;
-import com.handybook.handybook.core.ui.view.VerticalMiniProProfile;
+import com.handybook.handybook.core.ui.view.SmallVerticalMiniProProfile;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
 import com.handybook.handybook.logger.handylogger.model.MyProsLog;
@@ -232,8 +232,8 @@ class ProTeamRecyclerViewAdapter
         }
 
         void updateView(final ProTeamRecyclerViewItemVM viewModel, int position) {
-            VerticalMiniProProfile verticalMiniProProfile
-                    = (VerticalMiniProProfile) mView.findViewById(R.id.pro_team_carousel_item_mini_pro_profile_card);
+            SmallVerticalMiniProProfile verticalMiniProProfile
+                    = (SmallVerticalMiniProProfile) mView.findViewById(R.id.pro_team_carousel_item_mini_pro_profile_card);
 
             verticalMiniProProfile.setProTeamIndicatorEnabled(true);
             verticalMiniProProfile.setIsProTeam(viewModel.isProTeam());
@@ -245,7 +245,7 @@ class ProTeamRecyclerViewAdapter
                     = mView.findViewById(R.id.pro_team_favorite_pro_indicator_text);
             favoriteProIndicatorText.setVisibility(viewModel.isFavorite()
                                                    ? View.VISIBLE
-                                                   : View.GONE);
+                                                   : View.INVISIBLE);
 
             //show the pro team category text if this item is the first in category
             TextView proTeamCategoryText

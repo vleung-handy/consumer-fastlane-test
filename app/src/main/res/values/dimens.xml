@@ -38,6 +38,7 @@
     <dimen name="default_padding_4x">64dp</dimen>
     <dimen name="default_padding_half">8dp</dimen>
     <dimen name="default_text_size">16sp</dimen>
+    <dimen name="text_size_xxsmall">10sp</dimen>
     <dimen name="text_size_xsmall">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
@@ -82,8 +83,9 @@
 
     <!-- Mini Pro Profiles -->
     <dimen name="mini_pro_profile_image_size_large">72dp</dimen>
-    <dimen name="mini_pro_profile_star_size_small">12dp</dimen>
     <dimen name="mini_pro_profile_image_size">56dp</dimen>
+    <dimen name="mini_pro_profile_star_size_small">12dp</dimen>
+    <dimen name="mini_pro_profile_star_size_xsmall">10dp</dimen>
     <dimen name="mini_pro_profile_pro_team_indicator_size">12dp</dimen>
     <dimen name="mini_pro_profile_pro_team_indicator_size_small">8dp</dimen>
     <dimen name="mini_pro_profile_pro_team_indicator_container_size">20dp</dimen>

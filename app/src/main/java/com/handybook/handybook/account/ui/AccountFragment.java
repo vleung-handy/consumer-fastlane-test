@@ -73,6 +73,8 @@ public class AccountFragment extends InjectedFragment {
     TextView mSavedCleaningsTitle;
     @Bind(R.id.account_active_plans_saved_cleanings_message)
     TextView mSavedCleaningsMessage;
+    @Bind(R.id.account_pro_team_layout)
+    View mProTeamLayout;
 
     @Bind(R.id.account_pro_team_subtext)
     TextView mProTeamSubtext;
@@ -118,6 +120,10 @@ public class AccountFragment extends InjectedFragment {
         else {
             mProTeamSubtext.setText(R.string.account_work_with_pros_you_love);
         }
+
+        mProTeamLayout.setVisibility(mConfigurationManager.getPersistentConfiguration()
+                                                          .isMyProsTabEnabled() ?
+                                     View.GONE : View.VISIBLE);
 
         return view;
     }
