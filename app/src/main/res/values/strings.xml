@@ -651,6 +651,6 @@
     <string name="pro_profile_action_button_book">Book</string>
     <string name="pro_profile_action_button_recommend">Recommend</string>
 
-    <string name="template_x_hours">%1$s hours</string>
+    <string name="hours_formatted">%1$s hours</string>
 </resources>
 

@@ -180,7 +180,7 @@ public class EditPlanFragment extends InjectedFragment {
         }
 
         mPlanHoursText.setText(getString(
-                R.string.template_x_hours,
+                R.string.hours_formatted,
                 new DecimalFormat("#.#").format(mPlan.getHours()
                 )
         ));
