@@ -105,28 +105,31 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_down_drop"
-        />
-
-    <GridView
-        android:id="@+id/fragment_service_categories_home_services_list"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="-22dp"
         android:layout_weight="1"
-        android:animateLayoutChanges="true"
-        android:clipToPadding="false"
-        android:horizontalSpacing="@dimen/service_home_padding"
-        android:numColumns="2"
-        android:paddingBottom="@dimen/default_padding"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding"
-        android:verticalSpacing="@dimen/service_home_padding"
-        />
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_down_drop"
+            />
+
+        <GridView
+            android:id="@+id/fragment_service_categories_home_services_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
+            android:clipToPadding="false"
+            android:horizontalSpacing="@dimen/service_home_padding"
+            android:numColumns="2"
+            android:padding="@dimen/default_padding"
+            android:verticalSpacing="@dimen/service_home_padding"
+            />
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/fragment_service_categories_home_promo_container"
