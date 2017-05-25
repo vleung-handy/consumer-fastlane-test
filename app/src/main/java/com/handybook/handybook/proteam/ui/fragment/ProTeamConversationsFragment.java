@@ -32,6 +32,7 @@ import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
+import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
@@ -55,6 +56,8 @@ import butterknife.OnClick;
 public class ProTeamConversationsFragment extends InjectedFragment
         implements SwipeRefreshLayout.OnRefreshListener, ConversationCallback {
 
+    private static final String BUNDLE_KEY_SHOW_TOOLBAR = "BUNDLE_KEY_SHOW_TOOLBAR";
+
     @Bind(R.id.pro_team_toolbar)
     Toolbar mToolbar;
 
@@ -67,10 +70,15 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Bind(R.id.messages_empty_view)
     View mEmptyView;
 
+    @Inject
+    ProTeamManager mProTeamManager;
+
     ProConversationAdapter mAdapter;
 
     private ProTeam mProTeam;
     private ProTeamProViewModel mSelectedProTeamMember;
+
+    private long mProTeamResponseLastReceivedTimestampMs = 0;
 
     private BroadcastReceiver mPushNotificationReceiver = new BroadcastReceiver() {
         @Override
@@ -91,6 +99,14 @@ public class ProTeamConversationsFragment extends InjectedFragment
 
     public static ProTeamConversationsFragment newInstance() {
         return new ProTeamConversationsFragment();
+    }
+
+    public static ProTeamConversationsFragment newInstance(boolean showToolbar) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(BUNDLE_KEY_SHOW_TOOLBAR, showToolbar);
+        ProTeamConversationsFragment fragment = new ProTeamConversationsFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Nullable
@@ -268,11 +284,30 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Override
     public void onResume() {
         super.onResume();
-        setupToolbar(mToolbar, getString(R.string.messages));
-        mToolbar.setNavigationIcon(null);
-        if (mProTeam == null) {
+        boolean showToolbar = getArguments() == null ||
+                              getArguments().getBoolean(BUNDLE_KEY_SHOW_TOOLBAR, true);
+        /*
+        toolbar will be hidden when the my pros tab is enabled
+        not bothering to break this fragment into one without a toolbar
+        because we might just remove the toolbar if the my pros
+        is supposed to be permanently on
+         */
+        if (showToolbar) {
+            setupToolbar(mToolbar, getString(R.string.messages));
+            mToolbar.setNavigationIcon(null);
+            mToolbar.setVisibility(View.VISIBLE);
+        }
+        else {
+            mToolbar.setVisibility(View.GONE);
+        }
+
+        //pro team has definitely been updated
+        if (mProTeam == null
+            || mProTeamManager.isProTeamResponseDefinitelyOutdated(
+                mProTeamResponseLastReceivedTimestampMs)) {
             requestProTeam();
         }
+
         if (mAdapter != null) {
             clearNotifications();
         }
@@ -287,6 +322,8 @@ public class ProTeamConversationsFragment extends InjectedFragment
 
     @Subscribe
     public void onReceiveProTeamSuccess(final ProTeamEvent.ReceiveProTeamSuccess event) {
+        mProTeamResponseLastReceivedTimestampMs = System.currentTimeMillis();
+
         mProTeam = event.getProTeam();
         mSwipeRefreshLayout.setRefreshing(false);
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(

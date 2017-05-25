@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/mini_pro_profile_card_width"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
@@ -58,7 +58,10 @@
             style="@style/TextView.Medium.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Christina P."
+            android:includeFontPadding="true"
+            tools:text="Asupersupersuperupser long name"
+            android:ellipsize="end"
+            android:maxLines="1"
             />
 
         <ImageView

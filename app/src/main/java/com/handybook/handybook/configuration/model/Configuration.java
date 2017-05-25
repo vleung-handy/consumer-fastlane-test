@@ -66,6 +66,12 @@ public class Configuration implements Serializable {
     @SerializedName("instant_book_reschedules_enabled")
     private boolean mInstantBookViaRescheduleEnabled;
 
+    @SerializedName("my_pros_tab_enabled")
+    private boolean mMyProsTabEnabled;
+
+    public boolean isMyProsTabEnabled() {
+        return mMyProsTabEnabled;
+    }
     /**
      * if true, the "my bookings" tab will show both upcoming and past bookings
      * else it will just show upcoming bookings

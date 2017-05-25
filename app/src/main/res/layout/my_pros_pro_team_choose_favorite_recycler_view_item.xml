@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/mini_pro_profile_image_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/button_white"
+    android:paddingBottom="@dimen/default_padding"
+    android:paddingLeft="@dimen/default_padding"
+    android:paddingRight="@dimen/default_padding"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    >
+
+    <!--hacky way to make this have exactly the
+    same top space as the normal recycler view item-->
+    <TextView
+        android:id="@+id/pro_team_category_text"
+        style="@style/TextView.Small.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin_half"
+        android:gravity="left"
+        android:textAllCaps="true"
+        android:textColor="@color/handy_tertiary_gray"
+        android:visibility="invisible"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+
+        <ImageView
+            android:id="@+id/choose_favorite_pro_image"
+            android:layout_width="@dimen/mini_pro_profile_image_size_large"
+            android:layout_height="@dimen/mini_pro_profile_image_size_large"
+            android:src="@drawable/button_choose_favorite_pro"
+            />
+
+
+        <FrameLayout
+            android:id="@+id/mini_pro_profile_pro_team_favorite_indicator_image"
+            android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_container_size"
+            android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_container_size"
+            android:layout_alignEnd="@id/choose_favorite_pro_image"
+            android:layout_alignRight="@id/choose_favorite_pro_image"
+            android:background="@drawable/bg_circle_white"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/mini_pro_profile_pro_team_indicator_size"
+                android:layout_height="@dimen/mini_pro_profile_pro_team_indicator_size"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_heart_small"
+                />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        style="@style/TextView.Small"
+        android:textColor="@color/handy_blue"
+        android:text="@string/my_pros_choose_favorite_pro_button"
+        />
+</LinearLayout>

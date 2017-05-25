@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/handy_bg"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/toolbar"/>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp"
+            >
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="false"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:scrimVisibleHeightTrigger="0dp"
+                app:titleEnabled="false"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_grey_body_white"
+                        android:paddingBottom="@dimen/default_padding"
+                        android:paddingLeft="@dimen/default_padding"
+                        android:paddingRight="@dimen/default_padding"
+                        android:paddingTop="@dimen/default_padding"
+                        >
+
+                        <TextView
+                            android:id="@+id/fragment_my_pros_pro_team_title"
+                            style="@style/TextView.Medium.Bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="@string/pro_team"
+                            />
+
+                        <ImageView
+                            android:id="@+id/fragment_my_pros_pro_team_tooltip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/fragment_my_pros_pro_team_title"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/default_padding_half"
+                            android:src="@drawable/ic_question_mark_tooltip"
+                            />
+
+                        <TextView
+                            android:id="@+id/fragment_my_pros_edit_pro_team_button"
+                            style="@style/TextView.Medium.Bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="@string/edit_pro_team"
+                            android:textColor="@color/handy_blue"
+                            />
+                    </RelativeLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fragment_my_pros_pro_team_info_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        />
+                </LinearLayout>
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
+            <TextView
+                android:id="@+id/fragment_my_pros_messages_title"
+                style="@style/TextView.Medium.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:background="@drawable/border_grey_body_white"
+                android:padding="@dimen/default_padding"
+                android:text="@string/messages"
+                />
+
+            <FrameLayout
+                android:id="@+id/fragment_my_pros_pro_team_conversations_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                />
+        </LinearLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>
