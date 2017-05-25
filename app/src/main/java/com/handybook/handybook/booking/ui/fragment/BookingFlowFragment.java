@@ -39,7 +39,7 @@ import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.fragment.LoginFragment;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -57,7 +57,7 @@ import butterknife.Bind;
 
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_OPTIONS;
 
-public class BookingFlowFragment extends InjectedFragment {
+public class BookingFlowFragment extends ProgressSpinnerFragment {
 
     // TODO: We are assuming there are no more than 12 steps in the booking flow. We should refactor this into controller.
     public static final int MAX_PROGRESS = 100;

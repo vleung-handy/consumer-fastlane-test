@@ -22,7 +22,7 @@ import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
@@ -53,7 +53,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProTeamConversationsFragment extends InjectedFragment
+public class ProTeamConversationsFragment extends ProgressSpinnerFragment
         implements SwipeRefreshLayout.OnRefreshListener, ConversationCallback {
 
     private static final String BUNDLE_KEY_SHOW_TOOLBAR = "BUNDLE_KEY_SHOW_TOOLBAR";
@@ -116,11 +116,8 @@ public class ProTeamConversationsFragment extends InjectedFragment
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(
-                R.layout.fragment_pro_team_conversations,
-                container,
-                false
-        );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_pro_team_conversations, container, false));
         ButterKnife.bind(this, view);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -277,7 +274,6 @@ public class ProTeamConversationsFragment extends InjectedFragment
     }
 
     private void requestProTeam() {
-        mSwipeRefreshLayout.setRefreshing(true);
         bus.post(new ProTeamEvent.RequestProTeam());
     }
 
@@ -305,6 +301,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
         if (mProTeam == null
             || mProTeamManager.isProTeamResponseDefinitelyOutdated(
                 mProTeamResponseLastReceivedTimestampMs)) {
+            showProgressSpinner();
             requestProTeam();
         }
 
@@ -325,6 +322,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
         mProTeamResponseLastReceivedTimestampMs = System.currentTimeMillis();
 
         mProTeam = event.getProTeam();
+        hideProgressSpinner();
         mSwipeRefreshLayout.setRefreshing(false);
         bus.post(new LogEvent.AddLogEvent(new ProTeamPageLog.PageOpened(
                 mProTeam.getCount(ProTeamCategoryType.CLEANING, ProviderMatchPreference.PREFERRED),
@@ -372,6 +370,7 @@ public class ProTeamConversationsFragment extends InjectedFragment
     @Override
     public void onPause() {
         getActivity().unregisterReceiver(mPushNotificationReceiver);
+        hideProgressSpinner();
         mSwipeRefreshLayout.setRefreshing(false);
         super.onPause();
     }

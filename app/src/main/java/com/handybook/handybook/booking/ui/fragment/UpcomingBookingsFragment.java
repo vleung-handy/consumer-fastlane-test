@@ -7,15 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +42,7 @@ import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.core.ui.view.BookingListItem;
 import com.handybook.handybook.core.ui.view.NoBookingsView;
 import com.handybook.handybook.core.ui.view.ShareBannerView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
@@ -61,13 +58,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.fragment;
-
 /**
  * the new way of doing things. We will only show the upcoming bookings here, and show active
  * bookings.
  */
-public class UpcomingBookingsFragment extends InjectedFragment
+public class UpcomingBookingsFragment extends ProgressSpinnerFragment
         implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String mOverlayFragmentTag
@@ -178,7 +173,8 @@ public class UpcomingBookingsFragment extends InjectedFragment
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_upcoming_bookings, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_upcoming_bookings, container, false));
         ButterKnife.bind(this, view);
 
         /*
@@ -197,7 +193,6 @@ public class UpcomingBookingsFragment extends InjectedFragment
         else {
             mToolbar.setVisibility(View.GONE);
         }
-
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -273,7 +268,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
 
     protected void loadBookings() {
         mBookingsRequestCompleted = false;
-        mSwipeRefreshLayout.setRefreshing(true);
+        showProgressSpinner();
         bookingManager.requestBookings(
                 Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING,
                 new FragmentSafeCallback<UserBookingsWrapper>(this) {
@@ -312,6 +307,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
         mFetchErrorView.setVisibility(View.VISIBLE);
         mBookingsRequestCompleted = true;
         mSwipeRefreshLayout.setRefreshing(false);
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), error);
     }
 
@@ -501,6 +497,7 @@ public class UpcomingBookingsFragment extends InjectedFragment
     private void setupBookingsView() {
         if (mBookingsRequestCompleted && mServiceRequestCompleted) {
             mSwipeRefreshLayout.setRefreshing(false);
+            hideProgressSpinner();
 
             bindBookingsToList();
             updateVisibilityState();

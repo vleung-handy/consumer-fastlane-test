@@ -23,7 +23,7 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -39,7 +39,7 @@ import butterknife.OnClick;
 
 /**
  */
-public class HistoryFragment extends InjectedFragment
+public class HistoryFragment extends ProgressSpinnerFragment
         implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = HistoryFragment.class.getName();
@@ -64,8 +64,7 @@ public class HistoryFragment extends InjectedFragment
     private HistoryListAdapter mAdapter;
     private boolean mBookingsRequestCompleted = false;
 
-    public static HistoryFragment newInstance()
-    {
+    public static HistoryFragment newInstance() {
         return new HistoryFragment();
     }
 
@@ -84,7 +83,8 @@ public class HistoryFragment extends InjectedFragment
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        View view = inflater.inflate(R.layout.fragment_history, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_history, container, false));
         ButterKnife.bind(this, view);
 
         /*
@@ -136,7 +136,6 @@ public class HistoryFragment extends InjectedFragment
 
     protected void loadBookings() {
         mBookingsRequestCompleted = false;
-        mSwipeRefreshLayout.setRefreshing(true);
 
         //fixme test
         bookingManager.requestBookings(
@@ -164,6 +163,7 @@ public class HistoryFragment extends InjectedFragment
     private void onReceiveBookingsError(@NonNull final DataManager.DataManagerError error) {
         mBookingsRequestCompleted = true;
         mSwipeRefreshLayout.setRefreshing(false);
+        hideProgressSpinner();
         toast.setText("Error loading bookings, please try again.");
         toast.show();
         dataManagerErrorHandler.handleError(getActivity(), error);
@@ -197,6 +197,7 @@ public class HistoryFragment extends InjectedFragment
     private void setupBookingsView() {
         if (mBookingsRequestCompleted) {
             mSwipeRefreshLayout.setRefreshing(false);
+            hideProgressSpinner();
             bindBookingsToList();
         }
     }
@@ -245,6 +246,7 @@ public class HistoryFragment extends InjectedFragment
          */
         if (mBookings == null || mBookings.isEmpty()) {
             mNoBookingsView.setVisibility(View.GONE);
+            showProgressSpinner();
             loadBookings();
         }
         else {
@@ -258,6 +260,7 @@ public class HistoryFragment extends InjectedFragment
     public void onPause() {
         super.onPause();
         mSwipeRefreshLayout.setRefreshing(false);
+        hideProgressSpinner();
     }
 
     @Override
