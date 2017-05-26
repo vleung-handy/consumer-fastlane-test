@@ -11,6 +11,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.R;
+import com.handybook.handybook.library.util.StringUtils;
 
 import java.io.Serializable;
 import java.lang.annotation.Retention;
@@ -660,7 +661,14 @@ public class Booking implements Parcelable {
 
         @Override
         public String toString() {
-            return address1 + " " + address2 + "\n" + city + " " + state + " " + zip;
+            final StringBuilder builder = new StringBuilder();
+            StringUtils.appendIfPresent(builder, address1);
+            StringUtils.appendIfPresent(builder, ", ", address2);
+            builder.append("\n");
+            StringUtils.appendIfPresent(builder, city);
+            StringUtils.appendIfPresent(builder, ", ", state);
+            StringUtils.appendIfPresent(builder, " ", zip);
+            return builder.toString();
         }
     }
 
