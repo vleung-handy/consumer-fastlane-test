@@ -30,7 +30,7 @@ android {
         applicationId 'com.handy.handy'
         minSdkVersion 16
         targetSdkVersion 25
-        versionName '1.53.0'
+        versionName '1.53.1'
         versionCode computeVersionCode(versionName)
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
