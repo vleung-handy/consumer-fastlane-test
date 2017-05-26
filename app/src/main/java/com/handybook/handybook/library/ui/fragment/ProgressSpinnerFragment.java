@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 
 import com.handybook.handybook.R;
 
-public class ProgressSpinnerFragment extends InjectedFragment {
+public abstract class ProgressSpinnerFragment extends InjectedFragment {
 
     private ProgressBar mProgressSpinner;
 
