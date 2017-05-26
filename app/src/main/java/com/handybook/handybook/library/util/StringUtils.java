@@ -2,6 +2,7 @@ package com.handybook.handybook.library.util;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.handybook.handybook.R;
 
@@ -39,6 +40,24 @@ public class StringUtils {
                 return context.getString(R.string.every_four_weeks);
             default:
                 return "";
+        }
+    }
+
+    public static void appendIfPresent(
+            final StringBuilder builder,
+            final String stringToAppend
+    ) {
+        appendIfPresent(builder, "", stringToAppend);
+    }
+
+    public static void appendIfPresent(
+            final StringBuilder builder,
+            final String prefix,
+            final String stringToAppend
+    ) {
+        if (!TextUtils.isEmpty(stringToAppend)) {
+            builder.append(prefix);
+            builder.append(stringToAppend);
         }
     }
 }
