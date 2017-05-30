@@ -20,7 +20,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.BookingCancellationData;
 import com.handybook.handybook.core.HandyWebViewClient;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.HandyWebView;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -30,7 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingCancelWarningFragment extends InjectedFragment {
+public final class BookingCancelWarningFragment extends ProgressSpinnerFragment {
 
     public static final String EXTRA_BOOKING_CANCELLATION_DATA
             = "com.handy.handy.EXTRA_BOOKING_CANCELLATION_DATA";
@@ -90,9 +90,9 @@ public final class BookingCancelWarningFragment extends InjectedFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity()
-                .getLayoutInflater()
-                .inflate(R.layout.fragment_booking_cancel_warning, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_cancel_warning, container, false));
+
         ButterKnife.bind(this, view);
         if (mPreCancellationInfo.hasUrl()) { initWebUi(); }
         else { initUi(); }
@@ -117,19 +117,19 @@ public final class BookingCancelWarningFragment extends InjectedFragment {
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity()) {
             @Override
             public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
-                showUiBlockers();
+                showProgressSpinner();
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
-                showUiBlockers();
+                hideProgressSpinner();
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
             @Override
             public void onPageFinished(final WebView view, final String url) {
-                removeUiBlockers();
+                hideProgressSpinner();
                 super.onPageFinished(view, url);
             }
 

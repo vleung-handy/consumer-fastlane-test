@@ -1,39 +1,25 @@
 package com.handybook.handybook.helpcenter.ui.fragment;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
-import com.handybook.handybook.core.HandyWebViewClient;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.library.ui.view.HandyWebView;
+import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
-public class HelpWebViewFragment extends InjectedFragment {
+public class HelpWebViewFragment extends WebViewFragment {
 
     private static final String REDIRECT_TO = "redirect_to";
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-    @Bind(R.id.web_view)
-    HandyWebView mWebView;
     private String mHelpCenterUrl;
     private String mId;
     private String mLinkType;
@@ -67,40 +53,10 @@ public class HelpWebViewFragment extends InjectedFragment {
         }
     }
 
-    @Nullable
     @Override
-    public View onCreateView(
-            final LayoutInflater inflater,
-            final ViewGroup container,
-            final Bundle savedInstanceState
-    ) {
-        final View view = inflater.inflate(R.layout.fragment_help_web_view, container, false);
-        ButterKnife.bind(this, view);
-
-        setupToolbar(mToolbar, getString(R.string.help));
-
-        mWebView.setWebViewClient(new HandyWebViewClient(getActivity()) {
-            @Override
-            public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
-                showUiBlockers();
-                super.onPageStarted(view, url, favicon);
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
-                showUiBlockers();
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-
-            @Override
-            public void onPageFinished(final WebView view, final String url) {
-                removeUiBlockers();
-                super.onPageFinished(view, url);
-            }
-        });
-        mWebView.getSettings().setJavaScriptEnabled(true);
-
-        return view;
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setToolbarTitle(getString(R.string.help));
     }
 
     @Override
@@ -162,6 +118,6 @@ public class HelpWebViewFragment extends InjectedFragment {
                                 .appendQueryParameter(REDIRECT_TO, mLinkType + mId)
                                 .build().toString();
         }
-        mWebView.loadUrl(mHelpCenterUrl);
+        loadURL(mHelpCenterUrl);
     }
 }

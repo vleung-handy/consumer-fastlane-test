@@ -18,7 +18,7 @@ import com.handybook.handybook.library.ui.view.HandyWebView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class WebViewFragment extends InjectedFragment {
+public class WebViewFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.handy_web_view)
     HandyWebView mWebView;
@@ -50,7 +50,9 @@ public class WebViewFragment extends InjectedFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_web_view, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_web_view, container, false));
+
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getArguments().getString(BundleKeys.TITLE));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -72,19 +74,19 @@ public class WebViewFragment extends InjectedFragment {
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity()) {
             @Override
             public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
-                showUiBlockers();
+                showProgressSpinner();
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
-                showUiBlockers();
+                hideProgressSpinner();
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
             @Override
             public void onPageFinished(final WebView view, final String url) {
-                removeUiBlockers();
+                hideProgressSpinner();
                 super.onPageFinished(view, url);
             }
         });
@@ -92,5 +94,9 @@ public class WebViewFragment extends InjectedFragment {
 
         String uri = getArguments().getString(BundleKeys.TARGET_URL);
         mWebView.loadUrl(uri);
+    }
+
+    protected void loadURL(String url) {
+        mWebView.loadUrl(url);
     }
 }

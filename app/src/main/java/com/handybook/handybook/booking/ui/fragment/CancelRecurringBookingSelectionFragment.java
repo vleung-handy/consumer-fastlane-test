@@ -20,6 +20,7 @@ import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataSynchronizer;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -112,18 +113,14 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
         if (mConfiguration.shouldUseCancelRecurringWebview()) {
             removeUiBlockers();
             final String cancelUrl = recurringBooking.getCancelUrl();
-            final Fragment fragment = CancelRecurringBookingFragment.newInstance(cancelUrl);
-            final FragmentTransaction transaction = getFragmentManager().beginTransaction()
-                                                                        .setCustomAnimations(
-                                                                                R.anim.slide_up,
-                                                                                0,
-                                                                                0,
-                                                                                R.anim.slide_down
-                                                                        )
-                                                                        .add(
-                                                                                R.id.fragment_container,
-                                                                                fragment
-                                                                        );
+            final Fragment fragment = WebViewFragment.newInstance(
+                    cancelUrl,
+                    getString(R.string.cancel_recurring_booking_title)
+            );
+            final FragmentTransaction transaction = getFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
+                    .add(R.id.fragment_container, fragment);
             if (isFromSelection) {
                 transaction.addToBackStack(null);
             }
