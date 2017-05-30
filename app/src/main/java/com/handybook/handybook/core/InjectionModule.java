@@ -124,6 +124,7 @@ import com.handybook.handybook.core.ui.fragment.BlockingUpdateFragment;
 import com.handybook.handybook.core.ui.fragment.LoginFragment;
 import com.handybook.handybook.core.ui.fragment.NavbarWebViewDialogFragment;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselPagerAdapter;
 import com.handybook.handybook.proteam.mypros.MyProsFragment;
@@ -284,6 +285,8 @@ import dagger.Module;
                 EditPlanHoursActivity.class,
                 EditPlanHoursFragment.class,
                 EditPlanExtrasActivity.class,
-                EditPlanExtrasFragment.class
+                EditPlanExtrasFragment.class,
+                ProTeamInfoFragment.class,
+                ProgressSpinnerFragment.class,
         })
 public final class InjectionModule {}

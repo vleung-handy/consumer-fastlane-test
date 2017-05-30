@@ -11,7 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * If the proteam exists, then it'll display the {@link ProReferralFragment} otherwise, it'll
  * fall back to the existing {@link ReferralFragment}
  */
-public class ReferralV2Fragment extends InjectedFragment {
+public class ReferralV2Fragment extends ProgressSpinnerFragment {
 
     public static final String EXTRA_REQUEST_COMPLETED = "request-completed";
 
@@ -45,19 +45,17 @@ public class ReferralV2Fragment extends InjectedFragment {
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState != null) {
             mReferralDescriptor
                     = (ReferralDescriptor) savedInstanceState.getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
             mRequestCompleted = savedInstanceState.getBoolean(EXTRA_REQUEST_COMPLETED);
         }
-
         if (mReferralDescriptor == null) {
             fetchData();
         }
-
     }
 
     @Nullable
@@ -67,7 +65,9 @@ public class ReferralV2Fragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        View view = inflater.inflate(R.layout.fragment_referral_v2, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_referral_v2, container, false));
+
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.free_cleanings));
@@ -132,25 +132,26 @@ public class ReferralV2Fragment extends InjectedFragment {
     }
 
     private void fetchData() {
-        progressDialog.show();
+        showProgressSpinner();
         dataManager.requestPrepareReferrals(
                 true,
                 new FragmentSafeCallback<ReferralResponse>(this) {
-            @Override
-            public void onCallbackSuccess(final ReferralResponse response) {
-                progressDialog.dismiss();
-                mReferralDescriptor = response.getReferralDescriptor();
-                mRequestCompleted = true;
-                updateDisplay();
-            }
+                    @Override
+                    public void onCallbackSuccess(final ReferralResponse response) {
+                        hideProgressSpinner();
+                        mReferralDescriptor = response.getReferralDescriptor();
+                        mRequestCompleted = true;
+                        updateDisplay();
+                    }
 
-            @Override
-            public void onCallbackError(final DataManager.DataManagerError error) {
-                progressDialog.dismiss();
-                mRequestCompleted = true;
-                showLegacyReferral();
-            }
-        });
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        hideProgressSpinner();
+                        mRequestCompleted = true;
+                        showLegacyReferral();
+                    }
+                }
+        );
     }
 
     @Override

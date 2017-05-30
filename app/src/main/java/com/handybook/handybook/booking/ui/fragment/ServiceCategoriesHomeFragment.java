@@ -125,12 +125,8 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_service_categories_home,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_service_categories_home, container, false));
         ButterKnife.bind(this, view);
 
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -287,7 +283,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     }
 
     private void loadServices() {
-        progressDialog.show();
+        showProgressSpinner();
         mUsedCache = false;
         bus.post(new BookingEvent.RequestServices());
     }
@@ -337,7 +333,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
             mAdapter.refreshData(mServices);
         }
 
-        progressDialog.dismiss();
+        hideProgressSpinner();
     }
 
     @Subscribe
@@ -345,7 +341,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         if (!allowCallbacks || mUsedCache) {
             return;
         }
-        progressDialog.dismiss();
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
