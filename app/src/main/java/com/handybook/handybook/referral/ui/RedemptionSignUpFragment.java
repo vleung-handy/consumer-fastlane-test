@@ -18,7 +18,7 @@ import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.LeftIconButton;
 import com.squareup.otto.Subscribe;
 
@@ -26,7 +26,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RedemptionSignUpFragment extends InjectedFragment {
+public class RedemptionSignUpFragment extends ProgressSpinnerFragment {
 
     private static final String FACEBOOK_PERMISSION_EMAIL = "email";
     private static final String KEY_RECEIVER_COUPON_AMOUNT = "receiver_coupon_amount";
@@ -120,7 +120,9 @@ public class RedemptionSignUpFragment extends InjectedFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_redemption_sign_up, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_redemption_sign_up, container, false));
+
         ButterKnife.bind(this, view);
 
         mTitle.setText(getString(R.string.redemption_title_formatted, mSenderName,
@@ -148,12 +150,12 @@ public class RedemptionSignUpFragment extends InjectedFragment {
     @Subscribe
     public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event) {
         // RedemptionFragment handles post authentication procedures
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     @Subscribe
     public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     private FacebookCallback<LoginResult> mFacebookCallback =

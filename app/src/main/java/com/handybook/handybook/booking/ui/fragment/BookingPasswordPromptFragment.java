@@ -60,14 +60,11 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_password_prompt,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_password_prompt, container, false));
 
         ButterKnife.bind(this, view);
+
         if (bookingManager.getCurrentFinalizeBookingPayload() == null) {
             bookingManager.setCurrentFinalizeBookingRequestPayload(
                     new FinalizeBookingRequestPayload()
@@ -152,7 +149,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
             //discourage user from pressing button twice
             //note that this doesn't prevent super fast clicks
             disableInputs();
-            progressDialog.show();
+            showBlockingProgressSpinner();
             mFinalizeBookingRequestPayload.setPassword(mPasswordText.getPassword());
             bus.post(
                     new BookingEvent.RequestFinalizeBooking(
@@ -212,7 +209,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
         String bookingId = Integer.toString(bookingManager.getCurrentTransaction().getBookingId());
         showBookingDetails(bookingId);
         enableInputs();
-        progressDialog.dismiss();
+        hideProgressSpinner();
     }
 
     @Subscribe()
@@ -222,7 +219,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
         }
         showToast(R.string.error_setting_password);
         enableInputs();
-        progressDialog.dismiss();
+        hideProgressSpinner();
     }
 
     private void showBookingDetails(String bookingId) {

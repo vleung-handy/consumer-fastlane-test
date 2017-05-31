@@ -25,7 +25,7 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -44,7 +44,8 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class ReportIssueFragment extends InjectedFragment implements ConversationCallback {
+public final class ReportIssueFragment extends ProgressSpinnerFragment
+        implements ConversationCallback {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -61,57 +62,67 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
 
     private Booking mBooking;
     private JobStatus mJobStatus;
-    private View.OnClickListener mCallButtonOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
-                    EventContext.ISSUE_RESOLUTION, mBooking.getId(), ProContactedLog.PHONE)));
-            final String phone = mBooking.getProvider().getPhone();
-            Intent intent =
-                    new Intent(
-                            Intent.ACTION_DIAL,
-                            Uri.fromParts("tel", phone, null)
-                    );
-            Utils.safeLaunchIntent(intent, getContext());
-        }
-    };
-    private View.OnClickListener mTextButtonOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            if (mBooking.getChatOptions() != null &&
-                mBooking.getChatOptions().shouldDirectToInAppChat()) {
-                progressDialog.show();
+    private View.OnClickListener mCallButtonOnClickListener;
+    private View.OnClickListener mTextButtonOnClickListener;
+
+    // initialization block
+    {
+        mCallButtonOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
                 bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
-                        EventContext.ISSUE_RESOLUTION, mBooking.getId(), ProContactedLog.CHAT)));
-                HandyLibrary.getInstance()
-                            .getHandyService()
-                            .createConversation(
-                                    mBooking.getProvider().getId(),
-                                    userManager.getCurrentUser().getAuthToken(),
-                                    "",
-                                    new ConversationCallbackWrapper(ReportIssueFragment.this)
-                            );
-            }
-            else {
-                bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
-                        EventContext.ISSUE_RESOLUTION,
-                        mBooking.getId(),
-                        ProContactedLog.SMS
-                )));
+                        EventContext.ISSUE_RESOLUTION, mBooking.getId(), ProContactedLog.PHONE)));
                 final String phone = mBooking.getProvider().getPhone();
                 Intent intent =
                         new Intent(
-                                Intent.ACTION_SENDTO,
-                                Uri.fromParts("sms", phone, null)
+                                Intent.ACTION_DIAL,
+                                Uri.fromParts("tel", phone, null)
                         );
                 Utils.safeLaunchIntent(intent, getContext());
             }
-        }
-    };
+        };
+
+        mTextButtonOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (mBooking.getChatOptions() != null &&
+                    mBooking.getChatOptions().shouldDirectToInAppChat()) {
+                    showBlockingProgressSpinner();
+                    bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                            EventContext.ISSUE_RESOLUTION,
+                            mBooking.getId(),
+                            ProContactedLog.CHAT
+                    )));
+                    HandyLibrary.getInstance()
+                                .getHandyService()
+                                .createConversation(
+                                        mBooking.getProvider().getId(),
+                                        userManager.getCurrentUser().getAuthToken(),
+                                        "",
+                                        new ConversationCallbackWrapper(ReportIssueFragment.this)
+                                );
+                }
+                else {
+                    bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
+                            EventContext.ISSUE_RESOLUTION,
+                            mBooking.getId(),
+                            ProContactedLog.SMS
+                    )));
+                    final String phone = mBooking.getProvider().getPhone();
+                    Intent intent =
+                            new Intent(
+                                    Intent.ACTION_SENDTO,
+                                    Uri.fromParts("sms", phone, null)
+                            );
+                    Utils.safeLaunchIntent(intent, getContext());
+                }
+            }
+        };
+    }
 
     @Override
     public void onCreateConversationSuccess(@Nullable final String conversationId) {
-        progressDialog.dismiss();
+        hideProgressSpinner();
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
         intent.putExtra(
@@ -123,7 +134,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
 
     @Override
     public void onCreateConversationError() {
-        progressDialog.dismiss();
+        hideProgressSpinner();
         showToast(R.string.an_error_has_occurred);
     }
 
@@ -160,8 +171,11 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_report_issue, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_report_issue, container, false));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.help));
         //Add the booking id to the subtitle
         ((AppCompatActivity) getActivity()).getSupportActionBar()
@@ -294,9 +308,9 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
                     else if (JobStatus.DeepLinkWrapper.TYPE_RESCHEDULE.equals(deepLinkWrapper.getType())) {
                         // show reschedule page
                         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBookingSelectedLog(
-                                        mBooking.getProvider(),
-                                         mBooking.getId(),
-                                         mBooking.getRecurringId()
+                                mBooking.getProvider(),
+                                mBooking.getId(),
+                                mBooking.getRecurringId()
                                  ))
                         );
 
@@ -332,7 +346,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     public void onReceiveBookingCancellationDataSuccess(
             final BookingEvent.ReceiveBookingCancellationDataSuccess event
     ) {
-        removeUiBlockers();
+        hideProgressSpinner();
         BookingCancellationData bookingCancellationData = event.result;
         final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
         intent.putExtra(BundleKeys.BOOKING_CANCELLATION_DATA, bookingCancellationData);
@@ -344,13 +358,13 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
     public void onReceiveBookingCancellationDataError(
             final BookingEvent.ReceiveBookingCancellationDataError event
     ) {
-        removeUiBlockers();
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @Subscribe
     public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event) {
-        removeUiBlockers();
+        hideProgressSpinner();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
@@ -362,7 +376,7 @@ public final class ReportIssueFragment extends InjectedFragment implements Conve
 
     @Subscribe
     public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 }

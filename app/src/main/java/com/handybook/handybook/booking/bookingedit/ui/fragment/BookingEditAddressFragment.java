@@ -17,14 +17,14 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditAddressFragment extends InjectedFragment {
+public final class BookingEditAddressFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
@@ -56,9 +56,11 @@ public final class BookingEditAddressFragment extends InjectedFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater
-                .inflate(R.layout.fragment_edit_booking_address, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_edit_booking_address, container, false));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.booking_edit_address_title));
 
         mAutoCompleteFragment
@@ -115,7 +117,7 @@ public final class BookingEditAddressFragment extends InjectedFragment {
                 mAutoCompleteFragment.getCity(),
                 mAutoCompleteFragment.getState()
         );
-        showUiBlockers();
+        showBlockingProgressSpinner();
         bus.post(new BookingEditEvent.RequestEditBookingAddress(
                 Integer.parseInt(mBooking.getId()),
                 bookingEditAddressRequest
@@ -135,7 +137,7 @@ public final class BookingEditAddressFragment extends InjectedFragment {
 
     @Subscribe
     public final void onReceiveEditBookingAddressSuccess(BookingEditEvent.ReceiveEditBookingAddressSuccess event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         showToast(getString(R.string.updated_booking_address));
 
         //save the new zip in to shared prefs for the user going forward.
@@ -148,7 +150,7 @@ public final class BookingEditAddressFragment extends InjectedFragment {
     @Subscribe
     public final void onReceiveEditBookingAddressError(BookingEditEvent.ReceiveEditBookingAddressError event) {
         dataManagerErrorHandler.handleError(getActivity(), event.error);
-        removeUiBlockers(); //allow user to try again
+        hideProgressSpinner(); //allow user to try again
     }
 
 }

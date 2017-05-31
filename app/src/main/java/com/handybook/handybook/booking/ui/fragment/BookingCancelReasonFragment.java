@@ -21,14 +21,14 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class BookingCancelReasonFragment extends InjectedFragment {
+public final class BookingCancelReasonFragment extends ProgressSpinnerFragment {
 
     public static final String EXTRA_BOOKING_CANCELLATION_DATA
             = "com.handy.handy.EXTRA_BOOKING_CANCELLATION_DATA";
@@ -76,10 +76,11 @@ public final class BookingCancelReasonFragment extends InjectedFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity()
-                .getLayoutInflater()
-                .inflate(R.layout.fragment_booking_cancel_options, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_cancel_options, container, false));
+
         ButterKnife.bind(this, view);
+
         initUI();
         return view;
     }
@@ -105,7 +106,7 @@ public final class BookingCancelReasonFragment extends InjectedFragment {
             @Override
             public void onClick(final View v) {
                 disableInputs();
-                progressDialog.show();
+                showBlockingProgressSpinner();
 
                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.CancelBooking(
                         mBooking.getId(),
@@ -118,7 +119,7 @@ public final class BookingCancelReasonFragment extends InjectedFragment {
                     @Override
                     public void onCallbackSuccess(final String message) {
                         if (!allowCallbacks) { return; }
-                        progressDialog.dismiss();
+                        hideProgressSpinner();
                         enableInputs();
                         if (!TextUtils.isEmpty(message)) { showToast(message); }
                         getActivity().setResult(ActivityResult.BOOKING_CANCELED, new Intent());
@@ -128,7 +129,7 @@ public final class BookingCancelReasonFragment extends InjectedFragment {
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
                         if (!allowCallbacks) { return; }
-                        progressDialog.dismiss();
+                        hideProgressSpinner();
                         enableInputs();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }

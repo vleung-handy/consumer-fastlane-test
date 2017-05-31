@@ -396,7 +396,7 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
                                         )
                                 )));
 
-                                progressDialog.show();
+                                showBlockingProgressSpinner();
                                 bookingManager.rescheduleBookingWithProAvailability(
                                         providerRequest.getProvider().getId(),
                                         booking,
@@ -633,7 +633,7 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
 
     @Subscribe
     public void onRescheduleWithAvailabilitySuccess(BookingEvent.RescheduleBookingWithProAvailabilitySuccess success) {
-        progressDialog.dismiss();
+        hideProgressSpinner();
 
         final Intent intent = new Intent(getContext(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, success.getBooking());
@@ -652,7 +652,7 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
 
     @Subscribe
     public void onRescheduleWithAvailabilityError(BookingEvent.RescheduleBookingWithProAvailabilityError error) {
-        progressDialog.dismiss();
+        hideProgressSpinner();
         Toast.makeText(getContext(), R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
     }
 }

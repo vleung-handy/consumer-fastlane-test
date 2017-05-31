@@ -71,7 +71,9 @@ public class ReferralFragment extends BaseReferralFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_referral, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_referral, container, false));
+
         ButterKnife.bind(this, view);
         mSnowView.setVisibility(mConfigurationManager.getPersistentConfiguration().isSnowEnabled()
                                 ? View.VISIBLE
@@ -104,13 +106,13 @@ public class ReferralFragment extends BaseReferralFragment {
 
     @Override
     public void onPause() {
-        removeUiBlockers();
+        hideProgressSpinner();
         super.onPause();
     }
 
     @OnClick(R.id.error_retry_button)
     public void requestPrepareReferrals() {
-        showUiBlockers();
+        showBlockingProgressSpinner();
         mReferralContent.setVisibility(View.GONE);
         bus.post(new ReferralsEvent.RequestPrepareReferrals(
                 false,
@@ -138,7 +140,7 @@ public class ReferralFragment extends BaseReferralFragment {
                 ReferralDescriptor.SOURCE_REFERRAL_PAGE
         );
         removeErrorLayout();
-        removeUiBlockers();
+        hideProgressSpinner();
         mReferralContent.setVisibility(View.VISIBLE);
         showReferralDetails();
     }
@@ -169,7 +171,7 @@ public class ReferralFragment extends BaseReferralFragment {
         }
         mReferralContent.setVisibility(View.GONE);
         showErrorLayout(message);
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     @OnClick(R.id.fragment_referral_cta_more)

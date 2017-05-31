@@ -18,9 +18,7 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
-import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.squareup.otto.Bus;
 
@@ -32,7 +30,6 @@ import javax.inject.Inject;
 public class InjectedFragment extends android.support.v4.app.Fragment {
 
     protected boolean allowCallbacks;
-    protected ProgressDialog progressDialog; //TODO: we should take this out of this class
     protected Toast toast;
 
     @Inject
@@ -59,11 +56,6 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
 
         toast = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
-
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setDelay(400);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(getString(R.string.loading));
     }
 
     /**
@@ -203,24 +195,15 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
         return validated;
     }
 
-    //TODO: why is the progress dialog in this class?
-    protected void postBlockingEvent(HandyEvent event) {
-        showUiBlockers();
-        bus.post(event);
-    }
-
     protected void showUiBlockers() {
         disableInputs();
-        progressDialog.show();
     }
 
     protected void removeUiBlockers() {
         enableInputs();
-        progressDialog.dismiss();
     }
 
     protected void showErrorDialog(final String errorMessage, final DialogCallback callback) {
-        removeUiBlockers();
         String displayMessage = errorMessage;
         if (ValidationUtils.isNullOrEmpty(displayMessage)) {
             displayMessage = getString(R.string.an_error_has_occurred);

@@ -45,7 +45,6 @@ public final class PromosFragment extends BookingFlowFragment {
     View mPromoTextClearImage;
     @Bind(R.id.promotions_scroll_view)
     ScrollView mPromoScrollView;
-
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -74,11 +73,13 @@ public final class PromosFragment extends BookingFlowFragment {
 
     @Override
     public final View onCreateView(
-            final LayoutInflater inflater, final ViewGroup container,
+            final LayoutInflater inflater,
+            final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity()
-                .getLayoutInflater().inflate(R.layout.fragment_promos, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_promos, container, false));
+
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.promotions));
@@ -161,7 +162,7 @@ public final class PromosFragment extends BookingFlowFragment {
 
         if (promoCode.trim().length() > 0) {
             disableInputs();
-            progressDialog.show();
+            showBlockingProgressSpinner();
 
             bus.post(new CodeRedemptionLog.CodeRedemptionPromoSubmittedLog(promoCode));
             dataManager.getPreBookingPromo(promoCode, new FragmentSafeCallback<PromoCode>(this) {
@@ -169,7 +170,7 @@ public final class PromosFragment extends BookingFlowFragment {
                 public void onCallbackSuccess(final PromoCode code) {
                     if (!allowCallbacks) { return; }
 
-                    progressDialog.dismiss();
+                    hideProgressSpinner();
                     enableInputs();
                     if (code.getType() == PromoCode.Type.VOUCHER) {
                         bus.post(new CodeRedemptionLog.CodeRedemptionPromoSuccessLog(
@@ -198,7 +199,7 @@ public final class PromosFragment extends BookingFlowFragment {
 
                     bus.post(new CodeRedemptionLog.CodeRedemptionPromoErrorLog(promoCode));
 
-                    progressDialog.dismiss();
+                    hideProgressSpinner();
                     enableInputs();
                     dataManagerErrorHandler.handleError(getActivity(), error);
                 }

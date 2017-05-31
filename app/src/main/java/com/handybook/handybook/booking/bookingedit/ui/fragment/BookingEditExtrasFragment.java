@@ -22,7 +22,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.squareup.otto.Subscribe;
 
@@ -35,7 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditExtrasFragment extends InjectedFragment {
+public final class BookingEditExtrasFragment extends ProgressSpinnerFragment {
 
     //TODO: use ViewModel
     @Bind(R.id.toolbar)
@@ -83,7 +83,7 @@ public final class BookingEditExtrasFragment extends InjectedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        showUiBlockers();
+        showBlockingProgressSpinner();
         bus.post(new BookingEditEvent.RequestEditBookingExtrasViewModel(
                 Integer.parseInt(mBooking.getId())));
     }
@@ -93,12 +93,8 @@ public final class BookingEditExtrasFragment extends InjectedFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_edit_extras,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_edit_extras, container, false));
 
         ButterKnife.bind(this, view);
 
@@ -153,7 +149,7 @@ public final class BookingEditExtrasFragment extends InjectedFragment {
         BookingEditExtrasRequest bookingEditExtrasRequest = new BookingEditExtrasRequest();
         bookingEditExtrasRequest.setAddedExtras(addedExtras.toArray(new String[]{}));
         bookingEditExtrasRequest.setRemovedExtras(removedExtras.toArray(new String[]{}));
-        showUiBlockers();
+        showBlockingProgressSpinner();
         bus.post(new BookingEditEvent.RequestEditBookingExtras(
                 Integer.parseInt(mBooking.getId()), bookingEditExtrasRequest));
     }
@@ -272,13 +268,13 @@ public final class BookingEditExtrasFragment extends InjectedFragment {
 
     @Override
     protected void showUiBlockers() {
-        super.showUiBlockers();
+        super.showBlockingProgressSpinner();
         setSaveButtonEnabled(false);
     }
 
     @Override
     protected void removeUiBlockers() {
-        super.removeUiBlockers();
+        super.hideProgressSpinner();
         mContentContainer.setVisibility(View.VISIBLE);
         setSaveButtonEnabled(true);
     }
@@ -292,7 +288,7 @@ public final class BookingEditExtrasFragment extends InjectedFragment {
         createOptionsView();
         updateBookingSummaryText();
         updateBookingSummaryViewForOptionsSelected();
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     @Subscribe
@@ -314,6 +310,6 @@ public final class BookingEditExtrasFragment extends InjectedFragment {
     @Subscribe
     public final void onReceiveEditBookingExtrasError(BookingEditEvent.ReceiveEditExtrasError event) {
         dataManagerErrorHandler.handleError(getActivity(), event.error);
-        removeUiBlockers(); //allow user to try again
+        hideProgressSpinner(); //allow user to try again
     }
 }

@@ -168,11 +168,12 @@ public final class LoginFragment extends BookingFlowFragment {
 
     @Override
     public final View onCreateView(
-            final LayoutInflater inflater, final ViewGroup container,
+            final LayoutInflater inflater,
+            final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(R.layout.fragment_login, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_login, container, false));
 
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.sign_in), true, R.drawable.ic_back);
@@ -223,7 +224,7 @@ public final class LoginFragment extends BookingFlowFragment {
             @Override
             public void onError(FacebookException exception) {
                 Crashlytics.logException(exception);
-                progressDialog.dismiss();
+                hideProgressSpinner();
                 enableInputs();
                 toast.setText(R.string.default_error_string);
                 toast.show();
@@ -339,7 +340,7 @@ public final class LoginFragment extends BookingFlowFragment {
         public void onClick(final View view) {
             if (validateFields()) {
                 disableInputs();
-                progressDialog.show();
+                showBlockingProgressSpinner();
 
                 final String email = mEmailText.getEmail();
                 if (mIsFromBookingFunnel) {
@@ -381,7 +382,7 @@ public final class LoginFragment extends BookingFlowFragment {
                                                 ActivityResult.LOGIN_FINISH
                                         );
 
-                                        progressDialog.dismiss();
+                                        hideProgressSpinner();
                                         enableInputs();
                                     }
                                     else {
@@ -406,7 +407,7 @@ public final class LoginFragment extends BookingFlowFragment {
                                             error
                                     );
                                     enableInputs();
-                                    progressDialog.dismiss();
+                                    hideProgressSpinner();
 
                                 }
                             }
@@ -426,7 +427,7 @@ public final class LoginFragment extends BookingFlowFragment {
             mPasswordText.unHighlight();
             if (mEmailText.validate()) {
                 disableInputs();
-                progressDialog.show();
+                showBlockingProgressSpinner();
 
                 dataManager.requestPasswordReset(
                         mEmailText.getText().toString(),
@@ -434,7 +435,7 @@ public final class LoginFragment extends BookingFlowFragment {
                             @Override
                             public void onCallbackSuccess(final String response) {
                                 if (!allowCallbacks) { return; }
-                                progressDialog.dismiss();
+                                hideProgressSpinner();
                                 enableInputs();
 
                                 toast.setText(Html.fromHtml(response).toString());
@@ -444,7 +445,7 @@ public final class LoginFragment extends BookingFlowFragment {
                             @Override
                             public void onCallbackError(final DataManager.DataManagerError error) {
                                 if (!allowCallbacks) { return; }
-                                progressDialog.dismiss();
+                                hideProgressSpinner();
                                 enableInputs();
                                 dataManagerErrorHandler.handleError(getActivity(), error);
                             }
@@ -501,7 +502,7 @@ public final class LoginFragment extends BookingFlowFragment {
             return;
         }
 
-        progressDialog.dismiss();
+        hideProgressSpinner();
         enableInputs();
 
         //in case bottom nav config flag gets set to true after LoginFragment
@@ -578,7 +579,7 @@ public final class LoginFragment extends BookingFlowFragment {
                             .getMessage()
             )));
         }
-        progressDialog.dismiss();
+        hideProgressSpinner();
         enableInputs();
 
 /*

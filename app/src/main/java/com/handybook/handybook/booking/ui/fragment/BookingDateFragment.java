@@ -80,81 +80,94 @@ public final class BookingDateFragment extends BookingFlowFragment
     private ArrayList<BookingOption> mBookingOptions;
     private Booking mRescheduleBooking;
     private ProAvailabilityResponse mProAvailability;
-    private final View.OnClickListener nextClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(final View view) {
-            if (mRescheduleBooking != null) {
-                //we only do recurring reschedules if not coming from chat.
-                if ((mRescheduleBooking.isRecurring()
-                     && (mRescheduleType == null ||
-                         mRescheduleType != BookingDetailFragment.RescheduleType.FROM_CHAT))) {
-                    final Intent intent = new Intent(
-                            getActivity(),
-                            BookingRescheduleOptionsActivity.class
-                    );
-                    intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
-                    intent.putExtra(BundleKeys.RESCHEDULE_TYPE, mRescheduleType);
-                    intent.putExtra(BundleKeys.RESCHEDULE_IS_INSTANT_BOOK_ENABLED, mRescheduleInstantBookEnabled);
-                    intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, mSelectedDateTime.getTime());
-                    intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
-                    startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
-                }
-                else {
-                    rescheduleBooking(
-                            mRescheduleBooking,
-                            mSelectedDateTime,
-                            false,
-                            mProviderId,
-                            mRescheduleType,
-                            null,
-                            mRescheduleInstantBookEnabled
-                    );
-                }
-            }
-            else {
-                BookingRequest bookingRequest = bookingManager.getCurrentRequest();
-                if (bookingRequest != null) {
-                    Date dateStart = bookingRequest.getStartDate();
-                    String timezone = bookingRequest.getTimeZone();
-                    if (dateStart != null && !Strings.isNullOrEmpty(timezone)) {
-                        String dateString = DateTimeUtils.formatDate(
-                                dateStart,
-                                DateTimeUtils.UNIVERSAL_DATE_FORMAT,
-                                timezone
-                        );
-                        bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerSubmittedLog(
-                                dateString)));
-                    }
-
-                }
-
-                if (mBookingOptions != null && mBookingOptions.size() > 0) {
-                    final Intent intent = new Intent(getActivity(), BookingOptionsActivity.class);
-                    intent.putExtras(createProgressBundle());
-                    intent.putParcelableArrayListExtra(
-                            BookingOptionsActivity.EXTRA_OPTIONS,
-                            new ArrayList<>(mBookingOptions)
-                    );
-                    intent.putExtra(
-                            BookingOptionsActivity.EXTRA_PAGE,
-                            mBookingOptions.get(0).getPage()
-                    );
-                    intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
-                    startActivity(intent);
-                }
-                else {
-                    continueBookingFlow();
-                }
-            }
-
-        }
-    };
     private Date mRescheduleDate;
     private boolean mRescheduleInstantBookEnabled;
     private String mNotice;
     private BookingDetailFragment.RescheduleType mRescheduleType;
     private String mProviderId;
     private ProTeamProViewModel mProTeamProViewModel;
+    private final View.OnClickListener nextClicked;
+
+    {
+        nextClicked = new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if (mRescheduleBooking != null) {
+                    //we only do recurring reschedules if not coming from chat.
+                    if ((mRescheduleBooking.isRecurring()
+                         && (mRescheduleType == null ||
+                             mRescheduleType != BookingDetailFragment.RescheduleType.FROM_CHAT))) {
+                        final Intent intent = new Intent(
+                                getActivity(),
+                                BookingRescheduleOptionsActivity.class
+                        );
+                        intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mRescheduleBooking);
+                        intent.putExtra(BundleKeys.RESCHEDULE_TYPE, mRescheduleType);
+                        intent.putExtra(
+                                BundleKeys.RESCHEDULE_IS_INSTANT_BOOK_ENABLED,
+                                mRescheduleInstantBookEnabled
+                        );
+                        intent.putExtra(
+                                BundleKeys.RESCHEDULE_NEW_DATE,
+                                mSelectedDateTime.getTime()
+                        );
+                        intent.putExtra(BundleKeys.PROVIDER_ID, mProviderId);
+                        startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
+                    }
+                    else {
+                        rescheduleBooking(
+                                mRescheduleBooking,
+                                mSelectedDateTime,
+                                false,
+                                mProviderId,
+                                mRescheduleType,
+                                null,
+                                mRescheduleInstantBookEnabled
+                        );
+                    }
+                }
+                else {
+                    BookingRequest bookingRequest = bookingManager.getCurrentRequest();
+                    if (bookingRequest != null) {
+                        Date dateStart = bookingRequest.getStartDate();
+                        String timezone = bookingRequest.getTimeZone();
+                        if (dateStart != null && !Strings.isNullOrEmpty(timezone)) {
+                            String dateString = DateTimeUtils.formatDate(
+                                    dateStart,
+                                    DateTimeUtils.UNIVERSAL_DATE_FORMAT,
+                                    timezone
+                            );
+                            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingSchedulerSubmittedLog(
+                                    dateString)));
+                        }
+
+                    }
+
+                    if (mBookingOptions != null && mBookingOptions.size() > 0) {
+                        final Intent intent = new Intent(
+                                getActivity(),
+                                BookingOptionsActivity.class
+                        );
+                        intent.putExtras(createProgressBundle());
+                        intent.putParcelableArrayListExtra(
+                                BookingOptionsActivity.EXTRA_OPTIONS,
+                                new ArrayList<>(mBookingOptions)
+                        );
+                        intent.putExtra(
+                                BookingOptionsActivity.EXTRA_PAGE,
+                                mBookingOptions.get(0).getPage()
+                        );
+                        intent.putExtra(BookingOptionsActivity.EXTRA_IS_POST, true);
+                        startActivity(intent);
+                    }
+                    else {
+                        continueBookingFlow();
+                    }
+                }
+
+            }
+        };
+    }
 
     public static BookingDateFragment newInstance(
             final ArrayList<BookingOption> postOptions,
@@ -283,8 +296,9 @@ public final class BookingDateFragment extends BookingFlowFragment
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(R.layout.fragment_booking_date, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_date, container, false));
+
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.time));
@@ -462,7 +476,7 @@ public final class BookingDateFragment extends BookingFlowFragment
      */
     @Subscribe
     public void onReceivePreCancelationInfoSuccess(BookingEvent.ReceiveBookingCancellationDataSuccess event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         BookingCancellationData bookingCancellationData = event.result;
 
         final Intent intent = new Intent(getActivity(), BookingCancelOptionsActivity.class);
@@ -473,7 +487,7 @@ public final class BookingDateFragment extends BookingFlowFragment
 
     @Subscribe
     public void onReceivePreCancelationInfoError(BookingEvent.ReceiveBookingCancellationDataError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
@@ -482,7 +496,7 @@ public final class BookingDateFragment extends BookingFlowFragment
      */
     @OnClick(R.id.reschedule_cancel_text)
     public void cancelClicked() {
-        showUiBlockers();
+        showBlockingProgressSpinner();
         if (mRescheduleBooking != null) {
             bus.post(new LogEvent.AddLogEvent(
                     new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId())

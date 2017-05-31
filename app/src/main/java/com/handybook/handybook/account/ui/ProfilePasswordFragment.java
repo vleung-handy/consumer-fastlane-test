@@ -18,7 +18,7 @@ import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.event.UserEvent;
 import com.handybook.handybook.core.model.request.UpdateUserRequest;
 import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.squareup.otto.Subscribe;
@@ -26,7 +26,7 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProfilePasswordFragment extends InjectedFragment
+public class ProfilePasswordFragment extends ProgressSpinnerFragment
         implements TextWatcher, View.OnClickListener {
 
     @Bind(R.id.toolbar)
@@ -67,12 +67,8 @@ public class ProfilePasswordFragment extends InjectedFragment
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view =
-                LayoutInflater.from(getContext()).inflate(
-                        R.layout.fragment_profile_password,
-                        container,
-                        false
-                );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_profile_password, container, false));
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.account_update_password));
 
@@ -153,7 +149,7 @@ public class ProfilePasswordFragment extends InjectedFragment
 
         if (validateFields()) {
             disableInputs();
-            progressDialog.show();
+            showBlockingProgressSpinner();
 
             UpdateUserRequest updateUserRequest = new UpdateUserRequest();
             updateUserRequest.setUserId(user.getId());
@@ -253,7 +249,7 @@ public class ProfilePasswordFragment extends InjectedFragment
         userManager.setCurrentUser(user);
         user = userManager.getCurrentUser();
         clearPasswordFields();
-        progressDialog.dismiss();
+        hideProgressSpinner();
         enableInputs();
 
         if (updatingInfo) {
@@ -267,7 +263,7 @@ public class ProfilePasswordFragment extends InjectedFragment
         if (!allowCallbacks) { return; }
 
         loadedUserInfo = true;
-        progressDialog.dismiss();
+        hideProgressSpinner();
         enableInputs();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }

@@ -12,7 +12,7 @@ import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.widget.EmailInputTextView;
 import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
@@ -20,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RedemptionEmailSignUpFragment extends InjectedFragment {
+public class RedemptionEmailSignUpFragment extends ProgressSpinnerFragment {
 
     private static final String KEY_REFERRAL_GUID = "referral_guid";
 
@@ -54,7 +54,7 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment {
     public void onSignUpButtonClicked() {
         if (mEmailInput.validate() && mPasswordInput.validate()) {
             UiUtils.dismissKeyboard(getActivity());
-            showUiBlockers();
+            showBlockingProgressSpinner();
 
             final String email = mEmailInput.getEmail();
             final String password = mPasswordInput.getPassword();
@@ -75,8 +75,13 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view =
-                inflater.inflate(R.layout.fragment_redemption_email_sign_up, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(
+                R.layout.fragment_redemption_email_sign_up,
+                container,
+                false
+        ));
+
         ButterKnife.bind(this, view);
 
         return view;
@@ -92,11 +97,11 @@ public class RedemptionEmailSignUpFragment extends InjectedFragment {
     @Subscribe
     public void onReceiveAuthUserSuccess(final HandyEvent.ReceiveAuthUserSuccess event) {
         // RedemptionFragment handles post authentication procedures
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     @Subscribe
     public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 }

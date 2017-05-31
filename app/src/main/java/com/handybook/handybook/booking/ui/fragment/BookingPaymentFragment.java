@@ -267,8 +267,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_booking_payment, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_payment, container, false));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.payment));
         showBookingWarningIfApplicable(mCurrentQuote);
         if (mCurrentQuote.hasCouponWarning()) {
@@ -536,7 +539,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         }
         enableInputs();
         mNextButton.setClickable(true);
-        progressDialog.dismiss();
+        hideProgressSpinner();
     }
 
     @Override
@@ -650,19 +653,19 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     private void checkAndShowPaymentMethodSelection() {
-        progressDialog.show();
+        showBlockingProgressSpinner();
         if (mGoogleApiClient.isConnected()) {
             Wallet.Payments.isReadyToPay(mGoogleApiClient).setResultCallback(
                     new ResultCallback<BooleanResult>() {
                         public void onResult(@NonNull BooleanResult result) {
                             showPaymentMethodSelection(result);
-                            progressDialog.dismiss();
+                            hideProgressSpinner();
                         }
                     });
         }
         else {
             showPaymentMethodSelection(null);
-            progressDialog.dismiss();
+            hideProgressSpinner();
         }
     }
 
@@ -733,7 +736,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     public void onCompleteBookingClicked() {
         if (validateFields()) {
             disableInputs();
-            progressDialog.show();
+            showBlockingProgressSpinner();
             if (mUseAndroidPay) {
                 final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
                         mCurrentQuote,
@@ -767,7 +770,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     @Subscribe
     public void onReceiveCreateTokenError(StripeEvent.ReceiveCreateTokenError event) {
         enableInputs();
-        progressDialog.dismiss();
+        hideProgressSpinner();
 
         if (event.getError() instanceof CardException) {
             toast.setText(event.getError().getMessage());
@@ -915,7 +918,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                         );
                         startActivity(intent);
                         enableInputs();
-                        progressDialog.dismiss();
+                        hideProgressSpinner();
                     }
 
                     @Override
@@ -926,7 +929,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                         if (!allowCallbacks) { return; }
                         enableInputs();
                         checkAndShowPaymentMethodSelection();
-                        progressDialog.dismiss();
+                        hideProgressSpinner();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 }

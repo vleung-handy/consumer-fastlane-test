@@ -16,7 +16,7 @@ import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditPlanFrequencyLog;
@@ -25,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class EditPlanFrequencyFragment extends InjectedFragment {
+public final class EditPlanFrequencyFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.plan_frequency_options_layout)
     FrequencySelectionsView mFrequencySelectionsView;
@@ -54,9 +54,11 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater
-                .inflate(R.layout.fragment_plan_edit_frequency, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_plan_edit_frequency, container, false));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.edit_plan_edit_frequency_title));
 
         return view;
@@ -69,7 +71,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog
                 .Shown(mPlan.getId(), mPlan.getFrequencyValue())));
 
-        showUiBlockers();
+        showBlockingProgressSpinner();
 
         dataManager.getRecurringFrequency(
                 // TODO: use plan manager instead (oh... no plan manager? Write it then!)
@@ -78,13 +80,13 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
                     @Override
                     public void onCallbackSuccess(final BookingEditFrequencyInfoResponse response) {
                         mFrequencyInfo = response;
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         setupDisplay();
                     }
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 }
@@ -116,7 +118,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
                 mFrequencyInfo.getCurrentFrequency(),
                 mFrequencySelectionsView.getCurrentlySelectedFrequency()
         )));
-        showUiBlockers();
+        showBlockingProgressSpinner();
         BookingEditFrequencyRequest editFrequencyRequest = new BookingEditFrequencyRequest();
         editFrequencyRequest.setRecurringFrequency(mFrequencySelectionsView.getCurrentlySelectedFrequency());
         dataManager.updateRecurringFrequency(
@@ -148,7 +150,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
     }
 
     private void updateSuccess() {
-        removeUiBlockers();
+        hideProgressSpinner();
         showToast(R.string.updated_booking_frequency);
         mPlan.setFrequency(StringUtils.getFrequencyText(
                 getContext(), mFrequencySelectionsView.getCurrentlySelectedFrequency()));
@@ -161,7 +163,7 @@ public final class EditPlanFrequencyFragment extends InjectedFragment {
     }
 
     private void updateError(DataManager.DataManagerError error) {
-        removeUiBlockers();
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), error);
     }
 }

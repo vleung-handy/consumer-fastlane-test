@@ -172,7 +172,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
     }
 
     private void startConsolidatedGetQuoteFlow() {
-        showUiBlockers();
+        showBlockingProgressSpinner();
         final BookingRequest request = bookingManager.getCurrentRequest();
         final User user = userManager.getCurrentUser();
         final String userId = user != null ? user.getId() : null;
@@ -182,7 +182,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                 new FragmentSafeCallback<BookingOptionsWrapper>(BookingFlowFragment.this) {
                     @Override
                     public void onCallbackSuccess(final BookingOptionsWrapper options) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
 
                         List<BookingOption> bookingOptions = options.getBookingOptions();
                         final Intent intent = new Intent(
@@ -200,7 +200,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
                         if (!allowCallbacks) { return; }
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 }
@@ -228,7 +228,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
      * "zip validation" step, so we can have the proper time zone setup
      */
     private void validateZipAndProceed(final String zipCode) {
-        showUiBlockers();
+        showBlockingProgressSpinner();
         final BookingRequest request = bookingManager.getCurrentRequest();
         final User user = userManager.getCurrentUser();
         final String userId = user != null ? user.getId() : null;
@@ -249,7 +249,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                             displayBookingOptions();
                         }
                         else {
-                            removeUiBlockers();
+                            hideProgressSpinner();
                             //if we're in a promotional flow, we go straight to the date selection
                             final Intent intent = new Intent(
                                     getActivity(),
@@ -262,7 +262,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 }
@@ -285,7 +285,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                     @Override
                     public void onCallbackSuccess(final BookingOptionsWrapper options) {
                         if (!allowCallbacks) { return; }
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         List<BookingOption> bookingOptions = options.getBookingOptions();
                         final Intent intent = new Intent(
                                 getActivity(),
@@ -308,7 +308,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
                         if (!allowCallbacks) { return; }
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 }
@@ -331,7 +331,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
         // user selected new time, reload quote
         if (this instanceof PeakPricingTableFragment) {
             disableInputs();
-            progressDialog.show();
+            showBlockingProgressSpinner();
 
             final BookingQuote quote = bookingManager.getCurrentQuote();
             dataManager.updateQuoteDate(
@@ -367,7 +367,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
             request.setEmail(mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null));
         }
         disableInputs();
-        progressDialog.show();
+        showBlockingProgressSpinner();
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestSubmitted()));
         dataManager.createQuote(request, bookingQuoteCallback);
     }
@@ -406,7 +406,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
         );
         final User user = userManager.getCurrentUser();
         disableInputs();
-        progressDialog.show();
+        showBlockingProgressSpinner();
 
         //log submitted
         if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT) {
@@ -471,7 +471,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                             return;
                         }
                         enableInputs();
-                        progressDialog.dismiss();
+                        hideProgressSpinner();
                         final String message = response.first;
                         if (message != null) {
                             toast.setText(message);
@@ -537,7 +537,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                             return;
                         }
                         enableInputs();
-                        progressDialog.dismiss();
+                        hideProgressSpinner();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                         // go back to date screen if error occurs on options screen
                         if (BookingFlowFragment.this instanceof BookingRescheduleOptionsFragment) {
@@ -631,7 +631,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
             getActivity().finish();
         }
         enableInputs();
-        progressDialog.dismiss();
+        hideProgressSpinner();
     }
 
     private DataManager.Callback<BookingQuote> bookingQuoteCallback
@@ -708,7 +708,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
             return;
         }
         enableInputs();
-        progressDialog.dismiss();
+        hideProgressSpinner();
 
         /*
         even though this log is already in BookingLocationFragment,
@@ -843,7 +843,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
     }
 
     protected void onReceiveErrorEvent(HandyEvent.ReceiveErrorEvent event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 }

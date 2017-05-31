@@ -55,15 +55,11 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
     @Bind(R.id.booking_email_input)
     EmailInputTextView mEmailInputTextView;
 
-    /**
-     * hidden if user already logged in
-     */
+    // hidden if user already logged in
     @Bind(R.id.booking_email_input_container)
     ViewGroup mBookingEmailInputContainer;
 
-    /**
-     * hidden if valid zip already present
-     */
+    // hidden if valid zip already present
     @Bind(R.id.booking_zipcode_input_container)
     ViewGroup mBookingZipcodeInputContainer;
 
@@ -104,14 +100,11 @@ public class BookingGetQuoteFragment extends BookingFlowFragment implements
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_get_quote,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_get_quote, container, false));
 
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.details));
         updateOptionsInput();
         updateDateTimeInput();

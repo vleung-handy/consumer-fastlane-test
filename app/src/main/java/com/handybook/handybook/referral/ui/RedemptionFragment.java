@@ -12,7 +12,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.event.HandyEvent;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.referral.event.ReferralsEvent;
@@ -23,7 +23,7 @@ import java.io.InvalidObjectException;
 
 import butterknife.ButterKnife;
 
-public class RedemptionFragment extends InjectedFragment {
+public class RedemptionFragment extends ProgressSpinnerFragment {
 
     private static final String KEY_REFERRAL_GUID = "referral_guid";
     private String mReferralGuid;
@@ -54,7 +54,9 @@ public class RedemptionFragment extends InjectedFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_redemption, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_redemption, container, false));
+
         ButterKnife.bind(this, view);
 
         requestRedemptionDetails();
@@ -63,7 +65,7 @@ public class RedemptionFragment extends InjectedFragment {
     }
 
     private void requestRedemptionDetails() {
-        showUiBlockers();
+        showBlockingProgressSpinner();
         bus.post(new ReferralsEvent.RequestRedemptionDetails(mReferralGuid));
     }
 
@@ -71,7 +73,7 @@ public class RedemptionFragment extends InjectedFragment {
     public void onReceiveRedemptionDetailsSuccess(
             final ReferralsEvent.ReceiveRedemptionDetailsSuccess event
     ) {
-        removeUiBlockers();
+        hideProgressSpinner();
         final RedemptionDetails redemptionDetails = event.getRedemptionDetails();
         final String currencySymbol = redemptionDetails.getLocalizationData().getCurrencySymbol();
         final int receiverCouponAmount = redemptionDetails.getReceiverCouponAmount();
@@ -117,7 +119,7 @@ public class RedemptionFragment extends InjectedFragment {
     }
 
     private void requestUser() {
-        showUiBlockers();
+        showBlockingProgressSpinner();
         bus.post(new HandyEvent.RequestUser(mUser.getId(), mUser.getAuthToken(), null));
     }
 
@@ -142,7 +144,7 @@ public class RedemptionFragment extends InjectedFragment {
 
     @Subscribe
     public void onReceiveAuthUserError(final HandyEvent.ReceiveAuthUserError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         String displayMessage = event.error.getMessage();
         if (ValidationUtils.isNullOrEmpty(displayMessage)) {
             displayMessage = getString(R.string.an_error_has_occurred);

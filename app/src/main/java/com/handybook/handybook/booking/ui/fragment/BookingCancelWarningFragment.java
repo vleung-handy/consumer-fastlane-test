@@ -149,7 +149,7 @@ public final class BookingCancelWarningFragment extends ProgressSpinnerFragment 
                 if (request.getUrl().getEncodedSchemeSpecificPart().equals(
                         Uri.parse(view.getUrl()).getEncodedSchemeSpecificPart()
                 )) {
-                    removeUiBlockers();
+                    hideProgressSpinner();
                     onNextClicked();
                 }
             }
@@ -168,7 +168,7 @@ public final class BookingCancelWarningFragment extends ProgressSpinnerFragment 
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 // Page failed to load (>400 AFAIK)
                 if (failingUrl.equals(view.getUrl())) {
-                    removeUiBlockers();
+                    hideProgressSpinner();
                     onNextClicked();
                 }
             }

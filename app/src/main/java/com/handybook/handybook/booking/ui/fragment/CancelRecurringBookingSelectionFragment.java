@@ -19,7 +19,7 @@ import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataSynchronizer;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.squareup.otto.Subscribe;
 
@@ -32,7 +32,7 @@ import butterknife.OnClick;
 /**
  * Used to display a selection of recurring bookings that the user may want to cancel.
  */
-public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
+public class CancelRecurringBookingSelectionFragment extends ProgressSpinnerFragment {
 
     public static final int INITIAL_REQUEST_COUNT = 2;
 
@@ -60,7 +60,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
 
     public void onResume() {
         super.onResume();
-        showUiBlockers();
+        showBlockingProgressSpinner();
         mDataSynchronizer = new DataSynchronizer(
                 INITIAL_REQUEST_COUNT,
                 new DataSynchronizer.Callback() {
@@ -86,12 +86,12 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_cancel_recurring_booking_selection,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(
+                R.layout.fragment_cancel_recurring_booking_selection,
+                container,
+                false
+        ));
 
         ButterKnife.bind(this, view);
 
@@ -111,7 +111,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
             final boolean isFromSelection
     ) {
         if (mConfiguration.shouldUseCancelRecurringWebview()) {
-            removeUiBlockers();
+            hideProgressSpinner();
             final String cancelUrl = recurringBooking.getCancelUrl();
             final Fragment fragment = WebViewFragment.newInstance(
                     cancelUrl,
@@ -128,7 +128,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
         }
         else {
             //send the cancel recurring booking email for the series that the user selected
-            showUiBlockers();
+            showBlockingProgressSpinner();
             int recurringId = recurringBooking.getId();
             bus.post(new BookingEvent.RequestSendCancelRecurringBookingEmail(recurringId));
         }
@@ -172,7 +172,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
     }
 
     protected void removeUiBlockersAndShowContent() {
-        super.removeUiBlockers();
+        super.hideProgressSpinner();
         setContentViewVisible(true);
     }
 
@@ -180,7 +180,7 @@ public class CancelRecurringBookingSelectionFragment extends InjectedFragment {
     public void onReceiveSendCancelRecurringBookingEmailSuccess(
             final BookingEvent.ReceiveSendCancelRecurringBookingEmailSuccess event
     ) {
-        removeUiBlockers();
+        hideProgressSpinner();
         showEmailSentConfirmationDialog();
     }
 

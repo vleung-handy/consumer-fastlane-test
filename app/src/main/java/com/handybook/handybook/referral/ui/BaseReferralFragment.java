@@ -14,7 +14,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
@@ -30,7 +30,7 @@ import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
 import static com.handybook.handybook.logger.handylogger.constants.EventContext.NATIVE_SHARE;
 
-public abstract class BaseReferralFragment extends InjectedFragment {
+public abstract class BaseReferralFragment extends ProgressSpinnerFragment {
 
     public static final String BASE_REFERRAL_URL = "handy.com/r/";
     public static final String BASE_REFERRAL_URL_SCHEME = "https://";
