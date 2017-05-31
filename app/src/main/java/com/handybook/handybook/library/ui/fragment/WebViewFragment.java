@@ -80,7 +80,7 @@ public class WebViewFragment extends ProgressSpinnerFragment {
 
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
-                hideProgressSpinner();
+                showProgressSpinner();
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
