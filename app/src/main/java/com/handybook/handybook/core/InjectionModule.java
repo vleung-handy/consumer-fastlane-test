@@ -87,7 +87,6 @@ import com.handybook.handybook.booking.ui.fragment.BookingRecurrenceFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingRescheduleOptionsFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingReschedulePreferencesFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingSubscriptionFragment;
-import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingFragment;
 import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelectionFragment;
 import com.handybook.handybook.booking.ui.fragment.EmailCancellationDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.LaundryDropOffDialogFragment;
@@ -226,7 +225,6 @@ import dagger.Module;
                 TipDialogFragment.class,
                 CancelRecurringBookingActivity.class,
                 CancelRecurringBookingSelectionFragment.class,
-                CancelRecurringBookingFragment.class,
                 EmailCancellationDialogFragment.class,
                 UpdatePaymentActivity.class,
                 UpdatePaymentFragment.class,
