@@ -97,8 +97,15 @@ public abstract class BookingDetailsLog extends EventLog {
         }
     }
 
+    public static class ReschedulePreferTimeOrProLog extends BookingDetailsLog {
+        private static final String EVENT_TYPE = "reschedule_prefer_time_or_pro";
 
-    public static class RescheduleDatePickerShownLog extends BookingFunnelLog {
+        public ReschedulePreferTimeOrProLog() {
+            super(EVENT_TYPE);
+        }
+    }
+
+    public static class RescheduleDatePickerShownLog extends BookingDetailsLog {
 
         private static final String EVENT_TYPE = "reschedule_date_picker_shown";
 

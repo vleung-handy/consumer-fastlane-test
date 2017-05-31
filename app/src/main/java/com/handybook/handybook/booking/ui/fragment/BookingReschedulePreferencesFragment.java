@@ -59,6 +59,8 @@ public class BookingReschedulePreferencesFragment extends InjectedFragment {
             mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
             mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
         }
+
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ReschedulePreferTimeOrProLog()));
     }
 
     @Override

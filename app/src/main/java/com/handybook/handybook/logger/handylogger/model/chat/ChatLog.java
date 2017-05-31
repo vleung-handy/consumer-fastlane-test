@@ -140,6 +140,31 @@ public class ChatLog extends EventLog {
         }
     }
 
+    public static class RescheduleDatePickerShownLog extends ChatLog {
+
+        private static final String EVENT_TYPE = "reschedule_date_picker_shown";
+
+        @SerializedName("provider_id")
+        @Nullable
+        private final String mProviderId;
+
+        @SerializedName("booking_id")
+        private final String mBookingId;
+
+        @SerializedName("original_date_start")
+        private final Date mOriginalStartDate;
+
+        @SerializedName("source")
+        private final String mSource;
+
+        public RescheduleDatePickerShownLog(String providerId, String bookingId, Date startDate, BookingDetailFragment.RescheduleType rescheduleType) {
+            super(EVENT_TYPE);
+            mProviderId = providerId;
+            mBookingId = bookingId;
+            mOriginalStartDate = startDate;
+            mSource = rescheduleType.getSourceName();
+        }
+    }
 
     private static class RescheduleBaseLog extends ChatLog {
 
