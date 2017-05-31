@@ -95,6 +95,7 @@ public class ProMessagesActivity extends MessagesListActivity {
         super.onCreate(savedInstanceState);
 
         ((BaseApplication) getApplication()).inject(this);
+        initMessageBar();
 
         mBooking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
 
@@ -131,6 +132,19 @@ public class ProMessagesActivity extends MessagesListActivity {
 
         refreshAttachmentMenu();
         initCleaningService();
+    }
+
+    /**
+     * This message bar is the bottom bar where a user can type their messages, hit send, and tap the
+     * action option on left side
+     */
+    private void initMessageBar() {
+        //Change default text to "Send"
+        Button button = (Button) findViewById(R.id.send_button);
+        button.setText(R.string.send);
+        //Update hint
+        EditText messageEditText = (EditText) findViewById(R.id.message_edit_text);
+        messageEditText.setHint(R.string.type_something);
     }
 
     /**
