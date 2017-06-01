@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import java.util.Date;
@@ -97,10 +98,14 @@ public abstract class BookingDetailsLog extends EventLog {
         }
     }
 
+    public static class ReschedulePreferTimeOrProLog extends BookingDetailsLog {
 
-    public static class RescheduleDatePickerShownLog extends BookingFunnelLog {
+        public ReschedulePreferTimeOrProLog() {
+            super(EventType.RESCHEDULE_PREFER_TIME_OR_PRO_SHOWN);
+        }
+    }
 
-        private static final String EVENT_TYPE = "reschedule_date_picker_shown";
+    public static class RescheduleDatePickerShownLog extends BookingDetailsLog {
 
         @SerializedName("provider_id")
         @Nullable
@@ -116,7 +121,7 @@ public abstract class BookingDetailsLog extends EventLog {
         private final String mSource;
 
         public RescheduleDatePickerShownLog(String providerId, String bookingId, Date startDate, BookingDetailFragment.RescheduleType rescheduleType) {
-            super(EVENT_TYPE);
+            super(EventType.RESCHEDULE_DATE_PICKER_SHOWN);
             mProviderId = providerId;
             mBookingId = bookingId;
             mOriginalStartDate = startDate;

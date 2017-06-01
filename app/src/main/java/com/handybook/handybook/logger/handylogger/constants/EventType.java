@@ -15,4 +15,6 @@ public interface EventType {
     String CONVERSATIONS_LOADED = "conversations_loaded";
     String PRO_TEAM_QUESTION_MARK_TAPPED = "pro_team_question_mark_tapped";
     String CHOOSE_FAVORITE_PRO_BUTTON_TAPPED = "choose_a_favorite_pro_tapped";
+    String RESCHEDULE_DATE_PICKER_SHOWN = "reschedule_date_picker_shown";
+    String RESCHEDULE_PREFER_TIME_OR_PRO_SHOWN = "reschedule_prefer_time_or_pro";
 }

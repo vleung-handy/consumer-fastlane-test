@@ -29,8 +29,10 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.logger.handylogger.model.EventLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
+import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.ui.view.ProTeamProItemView;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.squareup.otto.Subscribe;
@@ -218,12 +220,25 @@ public final class BookingDateFragment extends BookingFlowFragment
             mProAvailability = (ProAvailabilityResponse)
                     getArguments().getSerializable(BundleKeys.PRO_AVAILABILITY);
 
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleDatePickerShownLog(
-                    mProviderId,
-                    mRescheduleBooking.getId(),
-                    mRescheduleDate,
-                    mRescheduleType
-            )));
+            EventLog eventLog;
+
+            if (mRescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT) {
+                eventLog = new ChatLog.RescheduleDatePickerShownLog(
+                        mProviderId,
+                        mRescheduleBooking.getId(),
+                        mRescheduleDate,
+                        mRescheduleType
+                );
+            }
+            else {
+                eventLog = new BookingDetailsLog.RescheduleDatePickerShownLog(
+                        mProviderId,
+                        mRescheduleBooking.getId(),
+                        mRescheduleDate,
+                        mRescheduleType
+                );
+            }
+            bus.post(new LogEvent.AddLogEvent(eventLog));
         }
         else {
             mBookingOptions = getArguments().getParcelableArrayList(EXTRA_POST_OPTIONS);
