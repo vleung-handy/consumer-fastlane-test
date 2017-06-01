@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
@@ -95,6 +97,7 @@ public class ProMessagesActivity extends MessagesListActivity {
         super.onCreate(savedInstanceState);
 
         ((BaseApplication) getApplication()).inject(this);
+        initMessageBar();
 
         mBooking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
 
@@ -131,6 +134,21 @@ public class ProMessagesActivity extends MessagesListActivity {
 
         refreshAttachmentMenu();
         initCleaningService();
+    }
+
+    /**
+     * This message bar is the bottom bar where a user can type their messages, hit send, and tap the
+     * action option on left side
+     */
+    private void initMessageBar() {
+        //Change default text to "Send"
+        Button button = (Button) findViewById(R.id.send_button);
+        button.setText(R.string.send);
+        //Update hint
+        EditText messageEditText = (EditText) findViewById(R.id.message_edit_text);
+        messageEditText.setHint(R.string.type_something);
+        //Set the default image button on left of message box
+        getAttachmentButton().setImageResource(R.drawable.ic_plus);
     }
 
     /**
@@ -284,8 +302,6 @@ public class ProMessagesActivity extends MessagesListActivity {
     }
 
     private void setupCustomAttachmentMenus() {
-        getAttachmentButton().setImageResource(R.drawable.ic_calendar_plus);
-
         mRescheduleButton = getRescheduleView();
         mNewBookingButton = getNewBookingView();
 
