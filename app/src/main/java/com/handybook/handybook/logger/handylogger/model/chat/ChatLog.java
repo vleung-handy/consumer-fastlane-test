@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
+import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 import java.util.Date;
@@ -142,8 +143,6 @@ public class ChatLog extends EventLog {
 
     public static class RescheduleDatePickerShownLog extends ChatLog {
 
-        private static final String EVENT_TYPE = "reschedule_date_picker_shown";
-
         @SerializedName("provider_id")
         @Nullable
         private final String mProviderId;
@@ -158,7 +157,7 @@ public class ChatLog extends EventLog {
         private final String mSource;
 
         public RescheduleDatePickerShownLog(String providerId, String bookingId, Date startDate, BookingDetailFragment.RescheduleType rescheduleType) {
-            super(EVENT_TYPE);
+            super(EventType.RESCHEDULE_DATE_PICKER_SHOWN);
             mProviderId = providerId;
             mBookingId = bookingId;
             mOriginalStartDate = startDate;
