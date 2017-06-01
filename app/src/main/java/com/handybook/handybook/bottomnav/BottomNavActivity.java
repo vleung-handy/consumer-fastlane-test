@@ -54,18 +54,13 @@ public class BottomNavActivity extends BaseActivity {
 
     private BroadcastReceiver mChatNotificationReceiver;
 
-    //This is used for the Handy pro chat indicator
-    private boolean isProChatCurrentlySelected;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_nav);
         ButterKnife.bind(this);
 
-        boolean myProsTabEnabled = mConfigurationManager.getPersistentConfiguration()
-                                                        .isMyProsTabEnabled();
-        if (myProsTabEnabled) {
+        if (mConfigurationManager.getPersistentConfiguration().isMyProsTabEnabled()) {
             MenuItem menuItem = mBottomNavigationView.getMenu().findItem(R.id.messages);
             menuItem.setTitle(R.string.my_pros_tab_title);
             menuItem.setIcon(R.drawable.ic_menu_my_pros);
@@ -91,7 +86,7 @@ public class BottomNavActivity extends BaseActivity {
         mChatNotificationReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
-                if (!isProChatCurrentlySelected && mBottomNavigationView != null) {
+                if (mBottomNavigationView != null) {
                     mBottomNavigationView.showChatIndicator(true);
                 }
             }
@@ -117,6 +112,7 @@ public class BottomNavActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mBottomNavigationView.showChatIndicator(mLayerHelper.getUnreadConversationsCount() > 0);
         registerChatNotificationReceiver();
     }
 
@@ -176,18 +172,15 @@ public class BottomNavActivity extends BaseActivity {
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.bookings:
-                if(mConfigurationManager.getPersistentConfiguration().isUpcomingAndPastBookingsMergeEnabled())
-                {
+                if (mConfigurationManager.getPersistentConfiguration()
+                                         .isUpcomingAndPastBookingsMergeEnabled()) {
                     fragment = UpcomingAndPastBookingsFragment.newInstance();
                 }
-                else
-                {
+                else {
                     fragment = UpcomingBookingsFragment.newInstance();
                 }
                 break;
             case R.id.messages:
-                isProChatCurrentlySelected = true;
-                mBottomNavigationView.showChatIndicator(false);
                 if (mConfigurationManager.getPersistentConfiguration().isMyProsTabEnabled()) {
                     fragment = MyProsFragment.newInstance();
                 }
