@@ -99,10 +99,9 @@ public abstract class BookingDetailsLog extends EventLog {
     }
 
     public static class ReschedulePreferTimeOrProLog extends BookingDetailsLog {
-        private static final String EVENT_TYPE = "reschedule_prefer_time_or_pro";
 
         public ReschedulePreferTimeOrProLog() {
-            super(EVENT_TYPE);
+            super(EventType.RESCHEDULE_PREFER_TIME_OR_PRO_SHOWN);
         }
     }
 
