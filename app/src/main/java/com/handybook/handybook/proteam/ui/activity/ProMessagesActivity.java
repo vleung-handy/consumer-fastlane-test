@@ -148,7 +148,7 @@ public class ProMessagesActivity extends MessagesListActivity {
         button.setText(R.string.send);
         button.setAllCaps(false);
         button.setTypeface(button.getTypeface(), Typeface.NORMAL);
-        button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.default_text_size));
         //Update hint
         EditText messageEditText = (EditText) findViewById(R.id.message_edit_text);
         messageEditText.setHint(R.string.type_something);
