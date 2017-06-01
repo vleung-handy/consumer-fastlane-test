@@ -1,8 +1,10 @@
 package com.handybook.handybook.proteam.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -141,9 +143,12 @@ public class ProMessagesActivity extends MessagesListActivity {
      * action option on left side
      */
     private void initMessageBar() {
-        //Change default text to "Send"
+        //Change default text and style
         Button button = (Button) findViewById(R.id.send_button);
         button.setText(R.string.send);
+        button.setAllCaps(false);
+        button.setTypeface(button.getTypeface(), Typeface.NORMAL);
+        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.default_text_size));
         //Update hint
         EditText messageEditText = (EditText) findViewById(R.id.message_edit_text);
         messageEditText.setHint(R.string.type_something);
