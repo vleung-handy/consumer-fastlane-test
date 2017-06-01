@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.handybook.handybook.R;
@@ -145,6 +147,8 @@ public class ProMessagesActivity extends MessagesListActivity {
         //Update hint
         EditText messageEditText = (EditText) findViewById(R.id.message_edit_text);
         messageEditText.setHint(R.string.type_something);
+        //Set the default image button on left of message box
+        getAttachmentButton().setImageResource(R.drawable.ic_plus);
     }
 
     /**
@@ -298,8 +302,6 @@ public class ProMessagesActivity extends MessagesListActivity {
     }
 
     private void setupCustomAttachmentMenus() {
-        getAttachmentButton().setImageResource(R.drawable.ic_calendar_plus);
-
         mRescheduleButton = getRescheduleView();
         mNewBookingButton = getNewBookingView();
 
