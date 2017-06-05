@@ -99,6 +99,7 @@ public class BookingManager implements Observer {
                 providerId,
                 booking.getHours(),
                 source,
+                booking.getId(),
                 proAvailabilityCallback
         );
     }
