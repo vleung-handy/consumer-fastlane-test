@@ -106,7 +106,7 @@ public final class BookingCancelReasonFragment extends ProgressSpinnerFragment {
             @Override
             public void onClick(final View v) {
                 disableInputs();
-                showBlockingProgressSpinner();
+                showProgressSpinner(true);
 
                 bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.CancelBooking(
                         mBooking.getId(),

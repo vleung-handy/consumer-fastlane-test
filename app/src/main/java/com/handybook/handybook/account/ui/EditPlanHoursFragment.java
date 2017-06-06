@@ -252,7 +252,7 @@ public final class EditPlanHoursFragment extends ProgressSpinnerFragment {
 
     @OnClick(R.id.plan_edit_hours_save_button)
     public void onSaveButtonPressed() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         final double selectedHours = Double.parseDouble(mOptionsView.getCurrentValue());
         bus.post(new LogEvent.AddLogEvent(
                 new EditPlanHoursLog.Submitted(mPlan.getId(), selectedHours)
@@ -296,7 +296,7 @@ public final class EditPlanHoursFragment extends ProgressSpinnerFragment {
 
     @Override
     protected void showUiBlockers() {
-        super.showBlockingProgressSpinner();
+        super.showProgressSpinner(true);
         mSaveButton.setEnabled(false);
     }
 

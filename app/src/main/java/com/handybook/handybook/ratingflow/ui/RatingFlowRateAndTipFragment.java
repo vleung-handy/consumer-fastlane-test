@@ -129,7 +129,7 @@ public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
             return;
         }
         Utils.hideSoftKeyboard(getActivity(), mCustomTip);
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         dataManager.ratePro(
                 Integer.parseInt(mBooking.getId()),
                 mSelectedRating,

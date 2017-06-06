@@ -162,7 +162,7 @@ public final class PromosFragment extends BookingFlowFragment {
 
         if (promoCode.trim().length() > 0) {
             disableInputs();
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
 
             bus.post(new CodeRedemptionLog.CodeRedemptionPromoSubmittedLog(promoCode));
             dataManager.getPreBookingPromo(promoCode, new FragmentSafeCallback<PromoCode>(this) {

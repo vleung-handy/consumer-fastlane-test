@@ -67,7 +67,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
 
                 //discourage user from pressing button twice
                 //note that this doesn't prevent super fast clicks
-                showBlockingProgressSpinner();
+                showProgressSpinner(true);
                 if (mInstructions != null) {
                     mFinalizeBookingRequestPayload.setBookingInstructions(
                             mInstructions.getBookingInstructions()

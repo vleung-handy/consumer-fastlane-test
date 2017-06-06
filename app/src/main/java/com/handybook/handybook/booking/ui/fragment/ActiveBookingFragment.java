@@ -724,7 +724,7 @@ public class ActiveBookingFragment extends ProgressSpinnerFragment
     public void textClicked() {
         if (mBooking.getChatOptions() != null &&
             mBooking.getChatOptions().shouldDirectToInAppChat()) {
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                     EventContext.ACTIVE_BOOKING,
                     mBooking.getId(),

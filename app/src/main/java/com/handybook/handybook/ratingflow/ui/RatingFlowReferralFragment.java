@@ -197,7 +197,7 @@ public class RatingFlowReferralFragment extends ProgressSpinnerFragment {
 
     private void initProTeamCarousel() {
         if (mRecommendedProviders == null && mMode == Mode.FEEDBACK) {
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             dataManager.getRecommendedProviders(
                     userManager.getCurrentUser().getId(),
                     mBooking.getService().getId(),

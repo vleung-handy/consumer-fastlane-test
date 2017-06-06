@@ -108,7 +108,7 @@ public class HelpWebViewFragment extends WebViewFragment {
     }
 
     private void requestConfiguration() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         bus.post(new ConfigurationEvent.RequestConfiguration());
     }
 

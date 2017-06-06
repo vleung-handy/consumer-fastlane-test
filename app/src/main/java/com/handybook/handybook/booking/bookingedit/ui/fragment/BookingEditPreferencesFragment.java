@@ -195,7 +195,7 @@ public final class BookingEditPreferencesFragment extends ProgressSpinnerFragmen
     @OnClick(R.id.next_button)
     public void onNextButtonClick() {
         disableInputs();
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         int bookingId = Integer.parseInt(mBooking.getId());
         bus.post(new BookingEditEvent.RequestEditPreferences(
                 bookingId,

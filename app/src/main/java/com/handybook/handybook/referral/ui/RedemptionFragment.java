@@ -65,7 +65,7 @@ public class RedemptionFragment extends ProgressSpinnerFragment {
     }
 
     private void requestRedemptionDetails() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         bus.post(new ReferralsEvent.RequestRedemptionDetails(mReferralGuid));
     }
 
@@ -119,7 +119,7 @@ public class RedemptionFragment extends ProgressSpinnerFragment {
     }
 
     private void requestUser() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         bus.post(new HandyEvent.RequestUser(mUser.getId(), mUser.getAuthToken(), null));
     }
 

@@ -117,7 +117,7 @@ public final class BookingEditAddressFragment extends ProgressSpinnerFragment {
                 mAutoCompleteFragment.getCity(),
                 mAutoCompleteFragment.getState()
         );
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         bus.post(new BookingEditEvent.RequestEditBookingAddress(
                 Integer.parseInt(mBooking.getId()),
                 bookingEditAddressRequest

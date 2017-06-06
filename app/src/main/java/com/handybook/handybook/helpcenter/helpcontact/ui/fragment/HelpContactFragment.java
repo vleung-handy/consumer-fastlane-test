@@ -180,7 +180,7 @@ public final class HelpContactFragment extends ProgressSpinnerFragment {
             body = null;
         }
 
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
 
         bus.post(new HelpEvent.RequestNotifyHelpContact(body));
     }

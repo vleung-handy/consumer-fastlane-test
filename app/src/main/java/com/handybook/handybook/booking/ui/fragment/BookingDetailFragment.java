@@ -189,7 +189,7 @@ public final class BookingDetailFragment extends ProgressSpinnerFragment
                     new View.OnClickListener() {
                         @Override
                         public void onClick(final View v) {
-                            showBlockingProgressSpinner();
+                            showProgressSpinner(true);
                             bus.post(new LogEvent.AddLogEvent(new ViewAvailabilityLog(
                                     EventContext.BOOKING_DETAILS,
                                     mBooking.getId(),
@@ -219,7 +219,7 @@ public final class BookingDetailFragment extends ProgressSpinnerFragment
     public void onResume() {
         super.onResume();
         if (mBooking == null) {
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             bus.post(new BookingEvent.RequestBookingDetails(mBookingId));
         }
 
@@ -253,7 +253,7 @@ public final class BookingDetailFragment extends ProgressSpinnerFragment
         //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
         if (requestCode == ActivityResult.RESCHEDULE_NEW_DATE &&
             resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             bus.post(new BookingEvent.RequestBookingDetails(mBooking.getId()));
         }
         else if (resultCode == ActivityResult.BOOKING_CANCELED) {
@@ -262,7 +262,7 @@ public final class BookingDetailFragment extends ProgressSpinnerFragment
         }
         else if (resultCode == ActivityResult.BOOKING_UPDATED) {
             //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             bus.post(new BookingEvent.RequestBookingDetails(mBooking.getId()));
             //setting the updated result with the new booking when we receive the new booking data
         }
@@ -293,7 +293,7 @@ public final class BookingDetailFragment extends ProgressSpinnerFragment
     // expose to child fragment
     @Override
     public void showUiBlockers() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
     }
 
     // expose to child fragment

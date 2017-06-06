@@ -149,7 +149,7 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
             //discourage user from pressing button twice
             //note that this doesn't prevent super fast clicks
             disableInputs();
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             mFinalizeBookingRequestPayload.setPassword(mPasswordText.getPassword());
             bus.post(
                     new BookingEvent.RequestFinalizeBooking(

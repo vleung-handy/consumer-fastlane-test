@@ -160,7 +160,7 @@ public class UpdatePaymentFragment extends ProgressSpinnerFragment {
 
         if (areFieldsValid()) {
             disableInputs();
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                                        mExpText.getExpYear(), mCvcText.getCVC()
             );

@@ -87,7 +87,7 @@ public final class ReportIssueFragment extends ProgressSpinnerFragment
             public void onClick(final View v) {
                 if (mBooking.getChatOptions() != null &&
                     mBooking.getChatOptions().shouldDirectToInAppChat()) {
-                    showBlockingProgressSpinner();
+                    showProgressSpinner(true);
                     bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                             EventContext.ISSUE_RESOLUTION,
                             mBooking.getId(),

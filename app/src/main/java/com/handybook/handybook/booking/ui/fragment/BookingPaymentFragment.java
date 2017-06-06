@@ -653,7 +653,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     }
 
     private void checkAndShowPaymentMethodSelection() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         if (mGoogleApiClient.isConnected()) {
             Wallet.Payments.isReadyToPay(mGoogleApiClient).setResultCallback(
                     new ResultCallback<BooleanResult>() {
@@ -736,7 +736,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     public void onCompleteBookingClicked() {
         if (validateFields()) {
             disableInputs();
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             if (mUseAndroidPay) {
                 final FullWalletRequest fullWalletRequest = WalletUtils.createFullWalletRequest(
                         mCurrentQuote,

@@ -36,7 +36,7 @@ public class BookingDetailSectionFragmentBookingActions
     @Override
     public void onPause() {
         super.onPause();
-        hideProgressSpinner();
+        hideBlockingProgressSpinner();
     }
 
     @Override

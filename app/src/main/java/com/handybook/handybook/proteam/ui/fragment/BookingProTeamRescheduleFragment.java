@@ -117,7 +117,7 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
 
                         mSelectedProTeamMember = mAdapter.getItem(position);
 
-                        showBlockingProgressSpinner();
+                        showProgressSpinner(true);
                         //Go to date picker
                         mBookingManager.rescheduleBookingWithProAvailability(
                                 mSelectedProTeamMember.getProTeamPro().getId(),

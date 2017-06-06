@@ -112,7 +112,7 @@ public class ReferralFragment extends BaseReferralFragment {
 
     @OnClick(R.id.error_retry_button)
     public void requestPrepareReferrals() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         mReferralContent.setVisibility(View.GONE);
         bus.post(new ReferralsEvent.RequestPrepareReferrals(
                 false,

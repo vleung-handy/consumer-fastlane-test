@@ -114,7 +114,7 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
 
     @OnClick(R.id.choose_time_option)
     public void onChooseTimeOptionClicked() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
 
         bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleIndifferenceSelected()));

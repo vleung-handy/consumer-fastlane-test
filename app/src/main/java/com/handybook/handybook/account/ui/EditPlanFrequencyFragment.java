@@ -71,7 +71,7 @@ public final class EditPlanFrequencyFragment extends ProgressSpinnerFragment {
         bus.post(new LogEvent.AddLogEvent(new EditPlanFrequencyLog
                 .Shown(mPlan.getId(), mPlan.getFrequencyValue())));
 
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
 
         dataManager.getRecurringFrequency(
                 // TODO: use plan manager instead (oh... no plan manager? Write it then!)
@@ -118,7 +118,7 @@ public final class EditPlanFrequencyFragment extends ProgressSpinnerFragment {
                 mFrequencyInfo.getCurrentFrequency(),
                 mFrequencySelectionsView.getCurrentlySelectedFrequency()
         )));
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         BookingEditFrequencyRequest editFrequencyRequest = new BookingEditFrequencyRequest();
         editFrequencyRequest.setRecurringFrequency(mFrequencySelectionsView.getCurrentlySelectedFrequency());
         dataManager.updateRecurringFrequency(

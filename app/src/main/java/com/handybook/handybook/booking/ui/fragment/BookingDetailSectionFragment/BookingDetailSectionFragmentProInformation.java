@@ -427,7 +427,7 @@ public class BookingDetailSectionFragmentProInformation extends
 
     @Override
     public void onCreateConversationSuccess(@Nullable final String conversationId) {
-        hideProgressSpinner();
+        hideBlockingProgressSpinner();
         Intent intent = new Intent(getContext(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
         intent.putExtra(
@@ -439,7 +439,7 @@ public class BookingDetailSectionFragmentProInformation extends
 
     @Override
     public void onCreateConversationError() {
-        hideProgressSpinner();
+        hideBlockingProgressSpinner();
         showToast(R.string.an_error_has_occurred);
     }
 }

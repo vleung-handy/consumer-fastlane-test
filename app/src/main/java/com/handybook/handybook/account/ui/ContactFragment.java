@@ -87,7 +87,7 @@ public class ContactFragment extends ProgressSpinnerFragment {
 
         if (validateFields()) {
             disableInputs();
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
 
             UpdateUserRequest updateUserRequest = new UpdateUserRequest();
             updateUserRequest.setUserId(mUser.getId());

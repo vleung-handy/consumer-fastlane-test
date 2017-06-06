@@ -396,7 +396,7 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
                                         )
                                 )));
 
-                                showBlockingProgressSpinner();
+                                showProgressSpinner(true);
                                 bookingManager.rescheduleBookingWithProAvailability(
                                         providerRequest.getProvider().getId(),
                                         booking,

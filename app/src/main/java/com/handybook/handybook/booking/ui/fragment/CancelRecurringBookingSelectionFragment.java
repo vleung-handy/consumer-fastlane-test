@@ -60,7 +60,7 @@ public class CancelRecurringBookingSelectionFragment extends ProgressSpinnerFrag
 
     public void onResume() {
         super.onResume();
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         mDataSynchronizer = new DataSynchronizer(
                 INITIAL_REQUEST_COUNT,
                 new DataSynchronizer.Callback() {
@@ -128,7 +128,7 @@ public class CancelRecurringBookingSelectionFragment extends ProgressSpinnerFrag
         }
         else {
             //send the cancel recurring booking email for the series that the user selected
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
             int recurringId = recurringBooking.getId();
             bus.post(new BookingEvent.RequestSendCancelRecurringBookingEmail(recurringId));
         }

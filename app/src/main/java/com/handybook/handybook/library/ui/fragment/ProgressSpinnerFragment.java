@@ -26,16 +26,17 @@ public abstract class ProgressSpinnerFragment extends InjectedFragment {
         return view;
     }
 
-    protected void showBlockingProgressSpinner() {
-        mOverlay.bringToFront();
-        mOverlay.setVisibility(View.VISIBLE);
+    protected void showProgressSpinner(boolean isBlocking) {
+        if (isBlocking) {
+            mOverlay.bringToFront();
+            mOverlay.setVisibility(View.VISIBLE);
+        }
         mProgressSpinner.bringToFront();
         mProgressSpinner.setVisibility(View.VISIBLE);
     }
 
     protected void showProgressSpinner() {
-        mProgressSpinner.bringToFront();
-        mProgressSpinner.setVisibility(View.VISIBLE);
+        showProgressSpinner(false);
     }
 
     protected void hideProgressSpinner() {

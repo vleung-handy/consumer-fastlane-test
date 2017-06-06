@@ -172,7 +172,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
     }
 
     private void startConsolidatedGetQuoteFlow() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         final BookingRequest request = bookingManager.getCurrentRequest();
         final User user = userManager.getCurrentUser();
         final String userId = user != null ? user.getId() : null;
@@ -228,7 +228,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
      * "zip validation" step, so we can have the proper time zone setup
      */
     private void validateZipAndProceed(final String zipCode) {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         final BookingRequest request = bookingManager.getCurrentRequest();
         final User user = userManager.getCurrentUser();
         final String userId = user != null ? user.getId() : null;
@@ -331,7 +331,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
         // user selected new time, reload quote
         if (this instanceof PeakPricingTableFragment) {
             disableInputs();
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
 
             final BookingQuote quote = bookingManager.getCurrentQuote();
             dataManager.updateQuoteDate(
@@ -367,7 +367,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
             request.setEmail(mDefaultPreferencesManager.getString(PrefsKey.EMAIL, null));
         }
         disableInputs();
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingQuoteRequestSubmitted()));
         dataManager.createQuote(request, bookingQuoteCallback);
     }
@@ -406,7 +406,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
         );
         final User user = userManager.getCurrentUser();
         disableInputs();
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
 
         //log submitted
         if (rescheduleType == BookingDetailFragment.RescheduleType.FROM_CHAT) {

@@ -340,7 +340,7 @@ public final class LoginFragment extends BookingFlowFragment {
         public void onClick(final View view) {
             if (validateFields()) {
                 disableInputs();
-                showBlockingProgressSpinner();
+                showProgressSpinner(true);
 
                 final String email = mEmailText.getEmail();
                 if (mIsFromBookingFunnel) {
@@ -427,7 +427,7 @@ public final class LoginFragment extends BookingFlowFragment {
             mPasswordText.unHighlight();
             if (mEmailText.validate()) {
                 disableInputs();
-                showBlockingProgressSpinner();
+                showProgressSpinner(true);
 
                 dataManager.requestPasswordReset(
                         mEmailText.getText().toString(),

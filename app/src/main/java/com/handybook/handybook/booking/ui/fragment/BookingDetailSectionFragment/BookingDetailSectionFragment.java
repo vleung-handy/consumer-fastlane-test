@@ -226,7 +226,7 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
         }
     }
 
-    protected void hideProgressSpinner() {
+    protected void hideBlockingProgressSpinner() {
         if (getParentFragment() != null && getParentFragment() instanceof BookingDetailFragment) {
             ((BookingDetailFragment) getParentFragment()).removeUiBlockers();
         }

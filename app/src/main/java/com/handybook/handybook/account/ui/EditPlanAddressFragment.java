@@ -109,7 +109,7 @@ public final class EditPlanAddressFragment extends ProgressSpinnerFragment {
                 mCityText.getCity(),
                 mStateText.getState()
         );
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         UiUtils.dismissKeyboard(getActivity());
         dataManager.editBookingPlanAddress(
                 // TODO: use plan manager instead (oh... no plan manager? Write it then!)

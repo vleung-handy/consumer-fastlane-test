@@ -86,10 +86,10 @@ public final class BookingDateFragment extends BookingFlowFragment
     private BookingDetailFragment.RescheduleType mRescheduleType;
     private String mProviderId;
     private ProTeamProViewModel mProTeamProViewModel;
-    private final View.OnClickListener nextClicked;
+    private final View.OnClickListener mNextClicked;
 
     {
-        nextClicked = new View.OnClickListener() {
+        mNextClicked = new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 if (mRescheduleBooking != null) {
@@ -350,7 +350,7 @@ public final class BookingDateFragment extends BookingFlowFragment
             }
         }
         initializeDateTimeInput();
-        mNextButton.setOnClickListener(nextClicked);
+        mNextButton.setOnClickListener(mNextClicked);
         return view;
     }
 
@@ -496,7 +496,7 @@ public final class BookingDateFragment extends BookingFlowFragment
      */
     @OnClick(R.id.reschedule_cancel_text)
     public void cancelClicked() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         if (mRescheduleBooking != null) {
             bus.post(new LogEvent.AddLogEvent(
                     new BookingDetailsLog.ContinueSkipSelected(mRescheduleBooking.getId())

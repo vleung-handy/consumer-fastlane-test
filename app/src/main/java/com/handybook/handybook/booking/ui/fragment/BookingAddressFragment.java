@@ -153,7 +153,7 @@ public final class BookingAddressFragment extends BookingFlowFragment {
     };
 
     private void updateQuote() {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         dataManager.updateQuote(
                 transaction.getBookingId(),

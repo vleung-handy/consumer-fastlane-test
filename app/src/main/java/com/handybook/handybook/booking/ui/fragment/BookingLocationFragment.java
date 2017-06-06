@@ -133,7 +133,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                 }
 
                 disableInputs();
-                showBlockingProgressSpinner();
+                showProgressSpinner(true);
 
                 final BookingRequest request = bookingManager.getCurrentRequest();
                 final User user = userManager.getCurrentUser();

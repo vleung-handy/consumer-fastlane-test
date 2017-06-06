@@ -203,7 +203,7 @@ public class NewProTeamProListFragment extends ProgressSpinnerFragment {
                 };
 
         final String source = ProTeamEvent.Source.PRO_MANAGEMENT.toString();
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         mProTeamManager.editProTeam(currentUser.getId(), new ProTeamEditWrapper(
                 proTeamEdits,
                 source

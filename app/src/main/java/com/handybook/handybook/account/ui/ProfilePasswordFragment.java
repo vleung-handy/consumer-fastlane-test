@@ -149,7 +149,7 @@ public class ProfilePasswordFragment extends ProgressSpinnerFragment
 
         if (validateFields()) {
             disableInputs();
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
 
             UpdateUserRequest updateUserRequest = new UpdateUserRequest();
             updateUserRequest.setUserId(user.getId());

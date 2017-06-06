@@ -83,7 +83,7 @@ public final class BookingEditExtrasFragment extends ProgressSpinnerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         bus.post(new BookingEditEvent.RequestEditBookingExtrasViewModel(
                 Integer.parseInt(mBooking.getId())));
     }
@@ -149,7 +149,7 @@ public final class BookingEditExtrasFragment extends ProgressSpinnerFragment {
         BookingEditExtrasRequest bookingEditExtrasRequest = new BookingEditExtrasRequest();
         bookingEditExtrasRequest.setAddedExtras(addedExtras.toArray(new String[]{}));
         bookingEditExtrasRequest.setRemovedExtras(removedExtras.toArray(new String[]{}));
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         bus.post(new BookingEditEvent.RequestEditBookingExtras(
                 Integer.parseInt(mBooking.getId()), bookingEditExtrasRequest));
     }
@@ -268,7 +268,7 @@ public final class BookingEditExtrasFragment extends ProgressSpinnerFragment {
 
     @Override
     protected void showUiBlockers() {
-        super.showBlockingProgressSpinner();
+        super.showProgressSpinner(true);
         setSaveButtonEnabled(false);
     }
 

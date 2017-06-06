@@ -54,7 +54,7 @@ public class RedemptionEmailSignUpFragment extends ProgressSpinnerFragment {
     public void onSignUpButtonClicked() {
         if (mEmailInput.validate() && mPasswordInput.validate()) {
             UiUtils.dismissKeyboard(getActivity());
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
 
             final String email = mEmailInput.getEmail();
             final String password = mPasswordInput.getPassword();

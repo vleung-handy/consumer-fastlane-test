@@ -101,7 +101,7 @@ public class HelpFragment extends ProgressSpinnerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         bus.post(new HelpEvent.RequestHelpCenter());
     }
 
@@ -131,7 +131,7 @@ public class HelpFragment extends ProgressSpinnerFragment {
     @OnClick(R.id.report_an_issue_text)
     public void reportAnIssueClicked() {
         if (mBooking != null) {
-            showBlockingProgressSpinner();
+            showProgressSpinner(true);
 
             final String bookingId = mBooking.getId();
             if (!Strings.isNullOrEmpty(bookingId)) {

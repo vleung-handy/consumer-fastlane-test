@@ -286,7 +286,7 @@ public class ProTeamEditFragment extends ProgressSpinnerFragment implements
                 mCleanersToRemove.size() + mHandymenToRemove.size(),
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
     }
 
     /**
@@ -340,7 +340,7 @@ public class ProTeamEditFragment extends ProgressSpinnerFragment implements
                         ProviderMatchPreference.NEVER,
                         ProTeamPageLog.Context.MAIN_MANAGEMENT
                 ));
-                showBlockingProgressSpinner();
+                showProgressSpinner(true);
             }
         }
     }

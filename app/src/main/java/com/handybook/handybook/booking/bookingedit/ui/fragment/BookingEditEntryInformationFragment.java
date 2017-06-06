@@ -88,7 +88,7 @@ public final class BookingEditEntryInformationFragment extends ProgressSpinnerFr
      * updates the view on callback success
      */
     private void requestAvailableEntryMethodsInfo(String bookingId) {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         mBookingEditManager.getEntryMethodsInfo(
                 bookingId,
                 new FragmentSafeCallback<EntryMethodsInfo>(this) {
@@ -188,7 +188,7 @@ public final class BookingEditEntryInformationFragment extends ProgressSpinnerFr
             String bookingId,
             BookingEditEntryInformationRequest editEntryInformationRequest
     ) {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
         mBookingEditManager.updateEntryMethodsInfo(
                 bookingId,
                 editEntryInformationRequest,

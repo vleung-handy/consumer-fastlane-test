@@ -236,7 +236,7 @@ public class ProTeamConversationsFragment extends ProgressSpinnerFragment
      * happen
      */
     private void createNewConversation(String providerId) {
-        showBlockingProgressSpinner();
+        showProgressSpinner(true);
 
         HandyLibrary.getInstance()
                     .getHandyService()
