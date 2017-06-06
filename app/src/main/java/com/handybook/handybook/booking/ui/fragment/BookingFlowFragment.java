@@ -789,8 +789,9 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
         }
 
         //note that this response is currently only being used by the consolidated quote flow
-        ZipValidationResponse zipValidationResponse = quote.getZipValidationResponse();
-        if (zipValidationResponse != null && zipValidationResponse.getZipArea() != null) {
+        if (mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled()) {
+            ZipValidationResponse zipValidationResponse = quote.getZipValidationResponse();
+            if (zipValidationResponse != null && zipValidationResponse.getZipArea() != null) {
             /*
             note that this is logged in BookingLocationFragment
             but logging this here to cover the consolidated quote flow experiment.
@@ -799,11 +800,12 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
             so not bothering to only log this if consolidated quote flow config is on
             because that would make this more confusing
             */
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(
-                    zipValidationResponse.getZipArea().getZip()
-            )));
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(
+                        zipValidationResponse.getZipArea().getZip()
+                )));
+            }
+            updateCurrentBookingRequest(zipValidationResponse);
         }
-        updateCurrentBookingRequest(zipValidationResponse);
 
         // persist extras since api doesn't return them on quote update calls
         final BookingQuote oldQuote = bookingManager.getCurrentQuote();
