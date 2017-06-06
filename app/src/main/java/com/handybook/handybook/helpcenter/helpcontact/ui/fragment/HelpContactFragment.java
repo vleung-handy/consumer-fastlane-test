@@ -17,7 +17,7 @@ import com.handybook.handybook.helpcenter.helpcontact.ui.view.HelpContactView;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.helpcenter.ui.view.HelpBannerView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedInput;
 
-public final class HelpContactFragment extends InjectedFragment {
+public final class HelpContactFragment extends ProgressSpinnerFragment {
 
     private static final String HELP_CONTACT_FORM_DISPOSITION = "help-contact-form-disposition";
     private static final String HELP_CONTACT_FORM_NAME = "name";
@@ -43,7 +43,6 @@ public final class HelpContactFragment extends InjectedFragment {
 
     @Bind(R.id.help_contact_view)
     HelpContactView helpContactView;
-
     @Bind(R.id.help_banner_view)
     HelpBannerView helpBannerView;
 
@@ -67,11 +66,12 @@ public final class HelpContactFragment extends InjectedFragment {
 
     @Override
     public final View onCreateView(
-            final LayoutInflater inflater, final ViewGroup container,
+            final LayoutInflater inflater,
+            final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(R.layout.fragment_help_contact, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_help_contact, container, false));
 
         ButterKnife.bind(this, view);
 
@@ -180,7 +180,7 @@ public final class HelpContactFragment extends InjectedFragment {
             body = null;
         }
 
-        progressDialog.show();
+        showProgressSpinner(true);
 
         bus.post(new HelpEvent.RequestNotifyHelpContact(body));
     }
@@ -212,7 +212,7 @@ public final class HelpContactFragment extends InjectedFragment {
     //Event Listeners
     @Subscribe
     public void onReceiveNotifyHelpContactSuccess(HelpEvent.ReceiveNotifyHelpContactSuccess event) {
-        progressDialog.dismiss();
+        hideProgressSpinner();
         //        if (bookingId == null || bookingId.isEmpty())
         {
             returnToHomeScreen();
@@ -227,7 +227,7 @@ public final class HelpContactFragment extends InjectedFragment {
 
     @Subscribe
     public void onReceiveNotifyHelpContactError(HelpEvent.ReceiveNotifyHelpContactError event) {
-        progressDialog.dismiss();
+        hideProgressSpinner();
         showToast(getString(R.string.an_error_has_occurred));
     }
 }

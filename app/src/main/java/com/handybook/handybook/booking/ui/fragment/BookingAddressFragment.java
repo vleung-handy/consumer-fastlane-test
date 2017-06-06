@@ -60,14 +60,11 @@ public final class BookingAddressFragment extends BookingFlowFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity()
-                .getLayoutInflater()
-                .inflate(
-                        R.layout.fragment_booking_address,
-                        container,
-                        false
-                );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_address, container, false));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.address));
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -156,7 +153,7 @@ public final class BookingAddressFragment extends BookingFlowFragment {
     };
 
     private void updateQuote() {
-        showUiBlockers();
+        showProgressSpinner(true);
         final BookingTransaction transaction = bookingManager.getCurrentTransaction();
         dataManager.updateQuote(
                 transaction.getBookingId(),
@@ -164,7 +161,7 @@ public final class BookingAddressFragment extends BookingFlowFragment {
                 new FragmentSafeCallback<BookingQuote>(this) {
                     @Override
                     public void onCallbackSuccess(final BookingQuote newQuote) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         transaction.setBookingId(newQuote.getBookingId());
 
                         if (newQuote.getCoupon() != null) {
@@ -198,7 +195,7 @@ public final class BookingAddressFragment extends BookingFlowFragment {
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
                         // Fail silently and proceed to payment screen without bill - Mngmnt.
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         startPaymentActivity();
                     }
                 }

@@ -25,7 +25,7 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -42,7 +42,7 @@ import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RatingFlowRateAndTipFragment extends InjectedFragment {
+public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
 
     public static final String CUSTOM_TIP_AMOUNT_PATTERN = "^\\$?([0-9]+(?:\\.[0-9]{1,2})?)$";
 
@@ -129,7 +129,7 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
             return;
         }
         Utils.hideSoftKeyboard(getActivity(), mCustomTip);
-        showUiBlockers();
+        showProgressSpinner(true);
         dataManager.ratePro(
                 Integer.parseInt(mBooking.getId()),
                 mSelectedRating,
@@ -138,7 +138,7 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
                 new FragmentSafeCallback<Void>(this) {
                     @Override
                     public void onCallbackSuccess(final Void response) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         if (getActivity() instanceof RatingFlowActivity) {
                             ((RatingFlowActivity) getActivity())
                                     .finishStepWithProRating(mSelectedRating);
@@ -153,7 +153,7 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         showToast(R.string.default_error_string);
                         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RatingError(
                                 mSelectedRating,
@@ -197,12 +197,15 @@ public class RatingFlowRateAndTipFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(
                 R.layout.fragment_rating_flow_rate_and_tip,
                 container,
                 false
-        );
+        ));
+
         ButterKnife.bind(this, view);
+
         return view;
     }
 

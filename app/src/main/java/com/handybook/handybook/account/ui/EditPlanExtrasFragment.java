@@ -14,12 +14,12 @@ import com.handybook.handybook.booking.model.RecurringBooking;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public final class EditPlanExtrasFragment extends InjectedFragment {
+public final class EditPlanExtrasFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -44,11 +44,15 @@ public final class EditPlanExtrasFragment extends InjectedFragment {
 
     @Override
     public final View onCreateView(
-            final LayoutInflater inflater, final ViewGroup container,
+            final LayoutInflater inflater,
+            final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_plan_edit_extras, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_plan_edit_extras, container, false));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.edit_plan_edit_extras_title));
         return view;
     }
@@ -62,7 +66,7 @@ public final class EditPlanExtrasFragment extends InjectedFragment {
                 new FragmentSafeCallback<BookingEditExtrasInfoResponse>(this) {
                     @Override
                     public void onCallbackSuccess(final BookingEditExtrasInfoResponse response) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         mBookingEditHoursViewModel = BookingEditExtrasViewModel.from(response);
                         //initOptionsView(); // If this isn't obvious.. this is not a functional fragment
                         //updateUiForOptionSelected(); // It is not reachable from code, don't worry about it
@@ -70,7 +74,7 @@ public final class EditPlanExtrasFragment extends InjectedFragment {
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 }

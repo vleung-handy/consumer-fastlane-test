@@ -21,7 +21,7 @@ import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -51,7 +51,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class NewProTeamProListFragment extends InjectedFragment {
+public class NewProTeamProListFragment extends ProgressSpinnerFragment {
 
     @Inject
     HandyRetrofitService mService;
@@ -174,7 +174,7 @@ public class NewProTeamProListFragment extends InjectedFragment {
                 new FragmentSafeCallback<ProTeamWrapper>(this) {
                     @Override
                     public void onCallbackSuccess(final ProTeamWrapper proTeamWrapper) {
-                        progressDialog.dismiss();
+                        hideProgressSpinner();
                         showToast(R.string.pro_team_update_successful);
                         final ProTeam proTeam = proTeamWrapper.getProTeam();
                         if (proTeam != null) {
@@ -194,7 +194,7 @@ public class NewProTeamProListFragment extends InjectedFragment {
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        progressDialog.dismiss();
+                        hideProgressSpinner();
                         showToast(!TextUtils.isEmpty(error.getMessage()) ? error.getMessage() :
                                   getString(R.string.default_error_string));
                         bus.post(new LogEvent.AddLogEvent(
@@ -203,7 +203,7 @@ public class NewProTeamProListFragment extends InjectedFragment {
                 };
 
         final String source = ProTeamEvent.Source.PRO_MANAGEMENT.toString();
-        progressDialog.show();
+        showProgressSpinner(true);
         mProTeamManager.editProTeam(currentUser.getId(), new ProTeamEditWrapper(
                 proTeamEdits,
                 source
@@ -251,12 +251,11 @@ public class NewProTeamProListFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(
-                R.layout.fragment_new_pro_team_pro_list,
-                container,
-                false
-        );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_new_pro_team_pro_list, container, false));
+
         ButterKnife.bind(this, view);
+
         return view;
     }
 

@@ -65,13 +65,11 @@ public final class BookingLocationFragment extends BookingFlowFragment
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_location,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_location, container, false));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.location));
         final User user = userManager.getCurrentUser();
         final User.Address address;
@@ -135,7 +133,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                 }
 
                 disableInputs();
-                progressDialog.show();
+                showProgressSpinner(true);
 
                 final BookingRequest request = bookingManager.getCurrentRequest();
                 final User user = userManager.getCurrentUser();
@@ -161,7 +159,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
                                 request.setTimeZone(response.getTimeZone());
                                 if (!allowCallbacks) { return; }
                                 enableInputs();
-                                progressDialog.dismiss();
+                                hideProgressSpinner();
                                 if (!isPromoFlow) { displayBookingOptions(); }
                                 else {
                                     final Intent intent = new Intent(
@@ -183,7 +181,7 @@ public final class BookingLocationFragment extends BookingFlowFragment
 
                                 if (!allowCallbacks) { return; }
                                 enableInputs();
-                                progressDialog.dismiss();
+                                hideProgressSpinner();
                                 final HashMap<String, InputTextField> inputMap = new HashMap<>();
                                 inputMap.put(KEY_ZIPCODE, mZipCodeInputTextView);
                                 dataManagerErrorHandler.handleError(getActivity(), error, inputMap);

@@ -20,7 +20,7 @@ import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.widget.InstructionListView;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public final class BookingEditPreferencesFragment extends InjectedFragment {
+public final class BookingEditPreferencesFragment extends ProgressSpinnerFragment {
 
     private Booking mBooking;
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload
@@ -80,13 +80,15 @@ public final class BookingEditPreferencesFragment extends InjectedFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_edit_preferences,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(
+                R.layout.fragment_booking_edit_preferences,
+                container,
+                false
+        ));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.booking_edit_preferences_title));
         if (mBooking.isRecurring()) {
             mFinalizeBookingRequestPayload.setShouldApplyToAll(true);
@@ -175,7 +177,7 @@ public final class BookingEditPreferencesFragment extends InjectedFragment {
             BookingEditEvent.ReceiveEditPreferencesSuccess event
     ) {
         enableInputs();
-        progressDialog.dismiss();
+        hideProgressSpinner();
         showToast(R.string.updated_preferences);
         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
         getActivity().finish();
@@ -186,14 +188,14 @@ public final class BookingEditPreferencesFragment extends InjectedFragment {
             BookingEditEvent.ReceiveEditPreferencesError event
     ) {
         enableInputs();
-        progressDialog.dismiss();
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @OnClick(R.id.next_button)
     public void onNextButtonClick() {
         disableInputs();
-        progressDialog.show();
+        showProgressSpinner(true);
         int bookingId = Integer.parseInt(mBooking.getId());
         bus.post(new BookingEditEvent.RequestEditPreferences(
                 bookingId,

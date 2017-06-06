@@ -13,6 +13,7 @@ import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.constant.BookingActionButtonType;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Provider;
+import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.booking.ui.view.BookingActionButton;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionView;
 import com.handybook.handybook.core.User;
@@ -218,4 +219,17 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
             }
         }
     }
+
+    protected void showBlockingProgressSpinner() {
+        if (getParentFragment() != null && getParentFragment() instanceof BookingDetailFragment) {
+            ((BookingDetailFragment) getParentFragment()).showUiBlockers();
+        }
+    }
+
+    protected void hideBlockingProgressSpinner() {
+        if (getParentFragment() != null && getParentFragment() instanceof BookingDetailFragment) {
+            ((BookingDetailFragment) getParentFragment()).removeUiBlockers();
+        }
+    }
+
 }

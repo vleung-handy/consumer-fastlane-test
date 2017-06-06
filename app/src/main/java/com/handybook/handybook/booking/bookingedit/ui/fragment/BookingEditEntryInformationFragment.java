@@ -23,7 +23,7 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
@@ -37,7 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditEntryInformationFragment extends InjectedFragment {
+public final class BookingEditEntryInformationFragment extends ProgressSpinnerFragment {
 
     private Booking booking;
     @Bind(R.id.next_button)
@@ -72,12 +72,9 @@ public final class BookingEditEntryInformationFragment extends InjectedFragment 
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_edit_entry_info,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_edit_entry_info, container, false));
+
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.entry_info));
@@ -91,7 +88,7 @@ public final class BookingEditEntryInformationFragment extends InjectedFragment 
      * updates the view on callback success
      */
     private void requestAvailableEntryMethodsInfo(String bookingId) {
-        showUiBlockers();
+        showProgressSpinner(true);
         mBookingEditManager.getEntryMethodsInfo(
                 bookingId,
                 new FragmentSafeCallback<EntryMethodsInfo>(this) {
@@ -100,12 +97,12 @@ public final class BookingEditEntryInformationFragment extends InjectedFragment 
                     public void onCallbackSuccess(final EntryMethodsInfo response) {
                         mEntryMethodsInfoView.updateViewForModel(response, getContext());
                         onEntryMethodsViewUpdated(response);
-                        removeUiBlockers();
+                        hideProgressSpinner();
                     }
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         showToast(R.string.default_error_string);
                     }
                 }
@@ -191,14 +188,14 @@ public final class BookingEditEntryInformationFragment extends InjectedFragment 
             String bookingId,
             BookingEditEntryInformationRequest editEntryInformationRequest
     ) {
-        showUiBlockers();
+        showProgressSpinner(true);
         mBookingEditManager.updateEntryMethodsInfo(
                 bookingId,
                 editEntryInformationRequest,
                 new FragmentSafeCallback<Void>(this) {
                     @Override
                     public void onCallbackSuccess(final Void response) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         showToast(R.string.updated_entry_information);
                         getActivity().setResult(ActivityResult.BOOKING_UPDATED, new Intent());
                         getActivity().finish();
@@ -207,7 +204,7 @@ public final class BookingEditEntryInformationFragment extends InjectedFragment 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
 
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }
                 }

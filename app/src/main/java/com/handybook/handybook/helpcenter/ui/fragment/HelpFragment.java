@@ -23,7 +23,7 @@ import com.handybook.handybook.core.model.response.HelpCenterResponse;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.view.HelpCenterActionItemView;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HelpCenterLog;
@@ -37,7 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class HelpFragment extends InjectedFragment {
+public class HelpFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.native_help_center_layout)
     ViewGroup mNativeHelpCenterLayout;
@@ -85,9 +85,9 @@ public class HelpFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(R.layout.fragment_help, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_help, container, false));
+
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.help));
@@ -101,13 +101,13 @@ public class HelpFragment extends InjectedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        showUiBlockers();
+        showProgressSpinner(true);
         bus.post(new HelpEvent.RequestHelpCenter());
     }
 
     @Override
     public void onPause() {
-        removeUiBlockers();
+        hideProgressSpinner();
         super.onPause();
     }
 
@@ -131,7 +131,7 @@ public class HelpFragment extends InjectedFragment {
     @OnClick(R.id.report_an_issue_text)
     public void reportAnIssueClicked() {
         if (mBooking != null) {
-            showUiBlockers();
+            showProgressSpinner(true);
 
             final String bookingId = mBooking.getId();
             if (!Strings.isNullOrEmpty(bookingId)) {
@@ -144,7 +144,7 @@ public class HelpFragment extends InjectedFragment {
                     new DataManager.Callback<JobStatus>() {
                         @Override
                         public void onSuccess(JobStatus status) {
-                            removeUiBlockers();
+                            hideProgressSpinner();
                             Intent intent = new Intent(getContext(), ReportIssueActivity.class);
                             intent.putExtra(BundleKeys.BOOKING, mBooking);
                             intent.putExtra(BundleKeys.PRO_JOB_STATUS, status);
@@ -153,7 +153,7 @@ public class HelpFragment extends InjectedFragment {
 
                         @Override
                         public void onError(final DataManager.DataManagerError error) {
-                            removeUiBlockers();
+                            hideProgressSpinner();
                             if (!Strings.isNullOrEmpty(error.getMessage())) {
                                 showToast(error.getMessage());
                             }
@@ -180,7 +180,7 @@ public class HelpFragment extends InjectedFragment {
 
     @Subscribe
     public void onReceiveHelpCenterSuccess(HelpEvent.ReceiveHelpCenterSuccess event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         HelpCenterResponse response = event.helpCenterResponse;
         if (response != null) {
             mBooking = response.getBooking();
@@ -247,7 +247,7 @@ public class HelpFragment extends InjectedFragment {
 
     @Subscribe
     public void onReceiveHelpCenterError(HelpEvent.ReceiveHelpCenterError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         hideDynamicElements();
     }
 

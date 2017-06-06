@@ -236,7 +236,7 @@ public class ProTeamConversationsFragment extends ProgressSpinnerFragment
      * happen
      */
     private void createNewConversation(String providerId) {
-        progressDialog.show();
+        showProgressSpinner(true);
 
         HandyLibrary.getInstance()
                     .getHandyService()
@@ -264,12 +264,12 @@ public class ProTeamConversationsFragment extends ProgressSpinnerFragment
                 mSelectedProTeamMember.getProviderMatchPreference()
         );
 
-        progressDialog.dismiss();
+        hideProgressSpinner();
     }
 
     @Override
     public void onCreateConversationError() {
-        progressDialog.dismiss();
+        hideProgressSpinner();
         Toast.makeText(getContext(), R.string.an_error_has_occurred, Toast.LENGTH_SHORT).show();
     }
 

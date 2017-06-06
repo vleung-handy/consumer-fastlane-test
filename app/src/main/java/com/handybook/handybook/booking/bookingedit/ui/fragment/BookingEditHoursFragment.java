@@ -24,7 +24,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsSpinnerView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
@@ -33,7 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingEditHoursFragment extends InjectedFragment {
+public final class BookingEditHoursFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -82,7 +82,7 @@ public final class BookingEditHoursFragment extends InjectedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        showUiBlockers();
+        showProgressSpinner(true);
         bus.post(new BookingEditEvent.RequestEditHoursInfoViewModel(Integer.parseInt(mBooking.getId())));
     }
 
@@ -91,12 +91,8 @@ public final class BookingEditHoursFragment extends InjectedFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_edit_hours,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_edit_hours, container, false));
 
         ButterKnife.bind(this, view);
 
@@ -131,7 +127,7 @@ public final class BookingEditHoursFragment extends InjectedFragment {
 
     @OnClick(R.id.next_button)
     public void onSaveButtonPressed() {
-        showUiBlockers();
+        showProgressSpinner(true);
         double selectedHours = Double.parseDouble(mOptionsView.getCurrentValue());
         BookingEditHoursRequest bookingEditHoursRequest = new BookingEditHoursRequest();
         bookingEditHoursRequest.setNewBaseHrs(selectedHours);
@@ -277,13 +273,13 @@ public final class BookingEditHoursFragment extends InjectedFragment {
 
     @Override
     protected void showUiBlockers() {
-        super.showUiBlockers();
+        super.showProgressSpinner(true);
         setSaveButtonEnabled(false);
     }
 
     @Override
     protected void removeUiBlockers() {
-        super.removeUiBlockers();
+        super.hideProgressSpinner();
         mContainer.setVisibility(View.VISIBLE);
         setSaveButtonEnabled(true);
     }
@@ -293,7 +289,7 @@ public final class BookingEditHoursFragment extends InjectedFragment {
         mBookingEditHoursViewModel = event.editHoursInfoViewModel;
         initializeUiForEditHoursInfo();
         updateUiForOptionSelected();
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     @Subscribe
@@ -313,7 +309,7 @@ public final class BookingEditHoursFragment extends InjectedFragment {
     @Subscribe
     public final void onReceiveEditHoursError(BookingEditEvent.ReceiveEditHoursError event) {
         dataManagerErrorHandler.handleError(getActivity(), event.error);
-        removeUiBlockers(); //allow user to try again
+        hideProgressSpinner(); //allow user to try again
     }
 
 }

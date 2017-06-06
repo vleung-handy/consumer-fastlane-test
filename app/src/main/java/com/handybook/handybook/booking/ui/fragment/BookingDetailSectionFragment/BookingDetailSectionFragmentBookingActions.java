@@ -36,9 +36,7 @@ public class BookingDetailSectionFragmentBookingActions
     @Override
     public void onPause() {
         super.onPause();
-        if (getParentFragment() != null) {
-            ((BookingDetailFragment) getParentFragment()).removeUiBlockers();
-        }
+        hideBlockingProgressSpinner();
     }
 
     @Override
@@ -105,14 +103,14 @@ public class BookingDetailSectionFragmentBookingActions
         @Override
         public void onClick(final View v) {
             //log that this was clicked.
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBookingSelectedLog (
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleBookingSelectedLog(
                     booking.getProvider(),
                     booking.getId(),
                     booking.getRecurringId()
             )));
 
             if (getParentFragment() != null) {
-                ((BookingDetailFragment) getParentFragment()).showUiBlockers();
+                showBlockingProgressSpinner();
                 ((BookingDetailFragment) getParentFragment()).setRescheduleType(
                         BookingDetailFragment.RescheduleType.NORMAL);
                 ((BookingDetailFragment) getParentFragment()).onRescheduleClicked();

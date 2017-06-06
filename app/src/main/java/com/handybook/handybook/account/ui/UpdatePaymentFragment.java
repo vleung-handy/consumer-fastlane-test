@@ -29,7 +29,7 @@ import com.handybook.handybook.core.ui.widget.CreditCardCVCInputTextView;
 import com.handybook.handybook.core.ui.widget.CreditCardExpDateInputTextView;
 import com.handybook.handybook.core.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.core.ui.widget.CreditCardNumberInputTextView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.card.payment.CardIOActivity;
 
-public class UpdatePaymentFragment extends InjectedFragment {
+public class UpdatePaymentFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -66,8 +66,6 @@ public class UpdatePaymentFragment extends InjectedFragment {
     ImageView mLockIcon;
     @Bind(R.id.scan_card_button)
     TextView mScanCardButton;
-
-    private View mView;
 
     //TODO: this fragment duplicates a lots of logic in BookingPaymentFragment; we should consolidate
     //as a consequence of not doing the above, we have lots of repeated code between
@@ -162,7 +160,7 @@ public class UpdatePaymentFragment extends InjectedFragment {
 
         if (areFieldsValid()) {
             disableInputs();
-            progressDialog.show();
+            showProgressSpinner(true);
             final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                                        mExpText.getExpYear(), mCvcText.getCVC()
             );
@@ -182,7 +180,7 @@ public class UpdatePaymentFragment extends InjectedFragment {
     @Subscribe
     public void onReceiveCreateTokenError(StripeEvent.ReceiveCreateTokenError event) {
         enableInputs();
-        progressDialog.dismiss();
+        hideProgressSpinner();
         if (event.getError() instanceof CardException) {
             showToast(event.getError().getMessage());
         }
@@ -195,15 +193,13 @@ public class UpdatePaymentFragment extends InjectedFragment {
     public void onReceiveUpdatePaymentSuccess(HandyEvent.ReceiveUpdatePaymentSuccess event) {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.PaymentMethodUpdateSuccess()));
 
-        progressDialog.dismiss();
+        hideProgressSpinner();
         ((BaseApplication) getActivity().getApplication()).updateUser();
         final Card card = new Card(mCreditCardText.getCardNumber(), mExpText.getExpMonth(),
                                    mExpText.getExpYear(), mCvcText.getCVC()
         );
         freezeCardInput(card.getType(), card.getLast4());
-        if (mView != null) {
-            Utils.hideSoftKeyboard(getActivity(), mView);
-        }
+        Utils.hideSoftKeyboard(getActivity(), getView());
         showToast(R.string.update_successful);
     }
 
@@ -211,18 +207,21 @@ public class UpdatePaymentFragment extends InjectedFragment {
     public void onReceiveUpdatePaymentError(HandyEvent.ReceiveUpdatePaymentError event) {
         bus.post(new LogEvent.AddLogEvent(new AccountLog.PaymentMethodUpdateError()));
 
-        progressDialog.dismiss();
+        hideProgressSpinner();
         showToast(R.string.default_error_string);
     }
 
     @Nullable
     @Override
     public View onCreateView(
-            final LayoutInflater inflater, final ViewGroup container,
+            final LayoutInflater inflater,
+            final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        mView = inflater.inflate(R.layout.fragment_update_payment, container, false);
-        ButterKnife.bind(this, mView);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_update_payment, container, false));
+
+        ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.payment));
 
@@ -263,7 +262,7 @@ public class UpdatePaymentFragment extends InjectedFragment {
             }
         });
 
-        return mView;
+        return view;
     }
 
     private boolean areFieldsValid() {

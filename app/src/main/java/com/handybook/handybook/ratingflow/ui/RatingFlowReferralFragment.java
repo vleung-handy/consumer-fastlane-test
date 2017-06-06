@@ -23,7 +23,7 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitCallback;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.proteamcarousel.CarouselPagerAdapter;
 import com.handybook.handybook.library.ui.view.proteamcarousel.ProCarouselVM;
 import com.handybook.handybook.library.ui.view.proteamcarousel.ProTeamCarouselView;
@@ -57,7 +57,7 @@ import butterknife.BindInt;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RatingFlowReferralFragment extends InjectedFragment {
+public class RatingFlowReferralFragment extends ProgressSpinnerFragment {
 
     @Inject
     HandyRetrofitService mService;
@@ -145,11 +145,9 @@ public class RatingFlowReferralFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(
-                R.layout.fragment_rating_flow_referral,
-                container,
-                false
-        );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_rating_flow_referral, container, false));
+
         ButterKnife.bind(this, view);
 
         if (mMode == Mode.REVIEW) {
@@ -199,7 +197,7 @@ public class RatingFlowReferralFragment extends InjectedFragment {
 
     private void initProTeamCarousel() {
         if (mRecommendedProviders == null && mMode == Mode.FEEDBACK) {
-            showUiBlockers();
+            showProgressSpinner(true);
             dataManager.getRecommendedProviders(
                     userManager.getCurrentUser().getId(),
                     mBooking.getService().getId(),
@@ -208,12 +206,12 @@ public class RatingFlowReferralFragment extends InjectedFragment {
                         public void onCallbackSuccess(final RecommendedProvidersWrapper response) {
                             mRecommendedProviders = response.getRecommendedProviders();
                             initProTeamCarousel();
-                            removeUiBlockers();
+                            hideProgressSpinner();
                         }
 
                         @Override
                         public void onCallbackError(final DataManager.DataManagerError error) {
-                            removeUiBlockers();
+                            hideProgressSpinner();
                         }
                     }
             );

@@ -14,7 +14,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.proteam.model.ProTeam;
@@ -25,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BookingReschedulePreferencesFragment extends InjectedFragment {
+public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -69,12 +69,15 @@ public class BookingReschedulePreferencesFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(
                 R.layout.fragment_booking_reschedule_preferences,
                 container,
                 false
-        );
+        ));
+
         ButterKnife.bind(this, view);
+
         return view;
     }
 
@@ -111,7 +114,7 @@ public class BookingReschedulePreferencesFragment extends InjectedFragment {
 
     @OnClick(R.id.choose_time_option)
     public void onChooseTimeOptionClicked() {
-        showUiBlockers();
+        showProgressSpinner(true);
 
         bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleIndifferenceSelected()));
@@ -127,7 +130,7 @@ public class BookingReschedulePreferencesFragment extends InjectedFragment {
 
     @Subscribe
     public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event) {
-        removeUiBlockers();
+        hideProgressSpinner();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
@@ -139,7 +142,7 @@ public class BookingReschedulePreferencesFragment extends InjectedFragment {
 
     @Subscribe
     public void onReceivePreRescheduleInfoError(BookingEvent.ReceivePreRescheduleInfoError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
 
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }

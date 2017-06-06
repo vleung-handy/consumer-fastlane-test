@@ -46,14 +46,13 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.model.booking.ViewAvailabilityLog;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.squareup.otto.Subscribe;
@@ -70,7 +69,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class BookingDetailFragment extends InjectedFragment
+public final class BookingDetailFragment extends ProgressSpinnerFragment
         implements PopupMenu.OnMenuItemClickListener {
 
     private static final String STATE_UPDATED_BOOKING = "STATE_UPDATED_BOOKING";
@@ -164,8 +163,11 @@ public final class BookingDetailFragment extends InjectedFragment
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_booking_detail, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_detail, container, false));
+
         ButterKnife.bind(this, view);
+
         if (mBooking != null) {
             setupForBooking(mBooking);
         }
@@ -187,7 +189,7 @@ public final class BookingDetailFragment extends InjectedFragment
                     new View.OnClickListener() {
                         @Override
                         public void onClick(final View v) {
-                            progressDialog.show();
+                            showProgressSpinner(true);
                             bus.post(new LogEvent.AddLogEvent(new ViewAvailabilityLog(
                                     EventContext.BOOKING_DETAILS,
                                     mBooking.getId(),
@@ -217,7 +219,7 @@ public final class BookingDetailFragment extends InjectedFragment
     public void onResume() {
         super.onResume();
         if (mBooking == null) {
-            showUiBlockers();
+            showProgressSpinner(true);
             bus.post(new BookingEvent.RequestBookingDetails(mBookingId));
         }
 
@@ -251,7 +253,8 @@ public final class BookingDetailFragment extends InjectedFragment
         //TODO: Should be checking and setting results codes not just request code in case we have functionality that returns to this page on failure
         if (requestCode == ActivityResult.RESCHEDULE_NEW_DATE &&
             resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
-            postBlockingEvent(new BookingEvent.RequestBookingDetails(mBooking.getId()));
+            showProgressSpinner(true);
+            bus.post(new BookingEvent.RequestBookingDetails(mBooking.getId()));
         }
         else if (resultCode == ActivityResult.BOOKING_CANCELED) {
             setCanceledBookingResult();
@@ -259,7 +262,8 @@ public final class BookingDetailFragment extends InjectedFragment
         }
         else if (resultCode == ActivityResult.BOOKING_UPDATED) {
             //various fields could have been updated like note to pro or entry information, request booking details for this booking and redisplay them
-            postBlockingEvent(new BookingEvent.RequestBookingDetails(mBooking.getId()));
+            showProgressSpinner(true);
+            bus.post(new BookingEvent.RequestBookingDetails(mBooking.getId()));
             //setting the updated result with the new booking when we receive the new booking data
         }
     }
@@ -289,13 +293,13 @@ public final class BookingDetailFragment extends InjectedFragment
     // expose to child fragment
     @Override
     public void showUiBlockers() {
-        super.showUiBlockers();
+        showProgressSpinner(true);
     }
 
     // expose to child fragment
     @Override
     public void removeUiBlockers() {
-        super.removeUiBlockers();
+        hideProgressSpinner();
     }
 
     @OnClick(R.id.nav_help)
@@ -441,7 +445,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onReceivePreRescheduleInfoSuccess(BookingEvent.ReceivePreRescheduleInfoSuccess event) {
-        removeUiBlockers();
+        hideProgressSpinner();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
@@ -459,7 +463,7 @@ public final class BookingDetailFragment extends InjectedFragment
             bus.post(new BookingEvent.RequestBookingCancellationData(mBooking.getId()));
         }
         else {
-            removeUiBlockers();
+            hideProgressSpinner();
             dataManagerErrorHandler.handleError(getActivity(), event.error);
         }
     }
@@ -507,7 +511,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onReceivePreCancellationInfoSuccess(BookingEvent.ReceiveBookingCancellationDataSuccess event) {
-        removeUiBlockers();
+        hideProgressSpinner();
 
         BookingCancellationData bcd = event.result;
 
@@ -519,13 +523,13 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onReceivePreCancellationInfoError(BookingEvent.ReceiveBookingCancellationDataError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
 
     @Subscribe
     public void onReceiveBookingDetailsSuccess(BookingEvent.ReceiveBookingDetailsSuccess event) {
-        removeUiBlockers();
+        hideProgressSpinner();
 
         mBooking = event.booking;
         getArguments().putParcelable(BundleKeys.BOOKING, event.booking);
@@ -536,7 +540,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onReceiveBookingDetailsError(BookingEvent.ReceiveBookingDetailsError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
 
         dataManagerErrorHandler.handleError(getActivity(), event.error);
     }
@@ -591,7 +595,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onRescheduleWithAvailabilitySuccess(BookingEvent.RescheduleBookingWithProAvailabilitySuccess success) {
-        progressDialog.dismiss();
+        hideProgressSpinner();
 
         final Intent intent = new Intent(getContext(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);
@@ -607,7 +611,7 @@ public final class BookingDetailFragment extends InjectedFragment
 
     @Subscribe
     public void onRescheduleWithAvailabilityError(BookingEvent.RescheduleBookingWithProAvailabilityError error) {
-        progressDialog.dismiss();
+        hideProgressSpinner();
         Toast.makeText(getContext(), R.string.reschedule_try_again, Toast.LENGTH_SHORT).show();
     }
 

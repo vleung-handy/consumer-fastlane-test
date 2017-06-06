@@ -64,8 +64,8 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(R.layout.fragment_booking_extras, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_extras, container, false));
 
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.extras));

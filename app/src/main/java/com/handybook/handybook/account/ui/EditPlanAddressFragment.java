@@ -21,7 +21,7 @@ import com.handybook.handybook.core.ui.widget.CityInputTextView;
 import com.handybook.handybook.core.ui.widget.StateInputTextView;
 import com.handybook.handybook.core.ui.widget.StreetAddressInputTextView;
 import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditAddressLog;
@@ -30,7 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class EditPlanAddressFragment extends InjectedFragment {
+public final class EditPlanAddressFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.plan_address_street_addr_text)
     StreetAddressInputTextView mStreetAddressText;
@@ -68,8 +68,9 @@ public final class EditPlanAddressFragment extends InjectedFragment {
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = inflater
-                .inflate(R.layout.fragment_plan_edit_address, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_plan_edit_address, container, false));
+
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.booking_edit_address_title));
 
@@ -108,7 +109,7 @@ public final class EditPlanAddressFragment extends InjectedFragment {
                 mCityText.getCity(),
                 mStateText.getState()
         );
-        showUiBlockers();
+        showProgressSpinner(true);
         UiUtils.dismissKeyboard(getActivity());
         dataManager.editBookingPlanAddress(
                 // TODO: use plan manager instead (oh... no plan manager? Write it then!)
@@ -135,7 +136,7 @@ public final class EditPlanAddressFragment extends InjectedFragment {
     }
 
     private void onReceiveEditBookingAddressSuccess(RecurringPlanWrapper planWrapper) {
-        removeUiBlockers();
+        hideProgressSpinner();
         mPlan.setAddress(planWrapper.getRecurringBooking().getAddress());
         showToast(getString(R.string.account_update_plan_address_success));
 
@@ -146,7 +147,7 @@ public final class EditPlanAddressFragment extends InjectedFragment {
     }
 
     private void onReceiveEditBookingAddressError(DataManager.DataManagerError error) {
-        removeUiBlockers();
+        hideProgressSpinner();
         showToast(getString(R.string.account_update_plan_address_error));
     }
 

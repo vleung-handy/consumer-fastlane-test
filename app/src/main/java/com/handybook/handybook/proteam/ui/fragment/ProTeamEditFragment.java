@@ -25,6 +25,7 @@ import com.handybook.handybook.core.constant.RequestCode;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -56,7 +57,7 @@ import static com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewM
  * A simple {@link Fragment} subclass. Use the {@link ProTeamEditFragment#newInstance} factory
  * method to create an instance of this fragment.
  */
-public class ProTeamEditFragment extends InjectedFragment implements
+public class ProTeamEditFragment extends ProgressSpinnerFragment implements
         ProTeamProListFragment.OnProInteraction {
 
     @Bind(R.id.pro_team_toolbar)
@@ -94,8 +95,11 @@ public class ProTeamEditFragment extends InjectedFragment implements
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_pro_team_edit, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_pro_team_edit, container, false));
+
         ButterKnife.bind(this, view);
+
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.handy_service_handyman,
                 R.color.handy_service_electrician,
@@ -226,7 +230,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
             mProTeamListFragment.setProTeam(mProTeam);
         }
         clearEditHolders();
-        removeUiBlockers();
+        hideProgressSpinner();
         showToast(R.string.pro_team_update_successful);
         setActivityResult();
         bus.post(new ProTeamEvent.ProTeamUpdated(mProTeam));
@@ -255,7 +259,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
 
     @Subscribe
     public void onReceiveProTeamEditError(final ProTeamEvent.ReceiveProTeamEditError event) {
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     @OnClick(R.id.pro_team_toolbar_save_button)
@@ -282,7 +286,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
                 mCleanersToRemove.size() + mHandymenToRemove.size(),
                 ProTeamPageLog.Context.MAIN_MANAGEMENT
         )));
-        showUiBlockers();
+        showProgressSpinner(true);
     }
 
     /**
@@ -336,7 +340,7 @@ public class ProTeamEditFragment extends InjectedFragment implements
                         ProviderMatchPreference.NEVER,
                         ProTeamPageLog.Context.MAIN_MANAGEMENT
                 ));
-                showUiBlockers();
+                showProgressSpinner(true);
             }
         }
     }

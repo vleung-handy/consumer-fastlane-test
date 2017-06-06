@@ -386,7 +386,7 @@ public class BookingDetailSectionFragmentProInformation extends
         public void onClick(final View v) {
             if (booking.getChatOptions() != null &&
                 booking.getChatOptions().shouldDirectToInAppChat()) {
-                progressDialog.show();
+                showBlockingProgressSpinner();
                 bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                         EventContext.BOOKING_DETAILS, booking.getId(), ProContactedLog.CHAT)));
                 HandyLibrary.getInstance()
@@ -427,7 +427,7 @@ public class BookingDetailSectionFragmentProInformation extends
 
     @Override
     public void onCreateConversationSuccess(@Nullable final String conversationId) {
-        progressDialog.dismiss();
+        hideBlockingProgressSpinner();
         Intent intent = new Intent(getContext(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
         intent.putExtra(
@@ -439,7 +439,7 @@ public class BookingDetailSectionFragmentProInformation extends
 
     @Override
     public void onCreateConversationError() {
-        progressDialog.dismiss();
+        hideBlockingProgressSpinner();
         showToast(R.string.an_error_has_occurred);
     }
 }

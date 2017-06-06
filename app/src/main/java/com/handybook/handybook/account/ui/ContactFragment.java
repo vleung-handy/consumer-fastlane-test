@@ -16,7 +16,7 @@ import com.handybook.handybook.core.model.request.UpdateUserRequest;
 import com.handybook.handybook.core.ui.widget.EmailInputTextView;
 import com.handybook.handybook.core.ui.widget.FullNameInputTextView;
 import com.handybook.handybook.core.ui.widget.PhoneInputTextView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 
@@ -24,7 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ContactFragment extends InjectedFragment {
+public class ContactFragment extends ProgressSpinnerFragment {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -53,9 +53,11 @@ public class ContactFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(R.layout.fragment_update_contact, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_update_contact, container, false));
+
         ButterKnife.bind(this, view);
+
         return view;
     }
 
@@ -85,7 +87,7 @@ public class ContactFragment extends InjectedFragment {
 
         if (validateFields()) {
             disableInputs();
-            progressDialog.show();
+            showProgressSpinner(true);
 
             UpdateUserRequest updateUserRequest = new UpdateUserRequest();
             updateUserRequest.setUserId(mUser.getId());
@@ -105,7 +107,7 @@ public class ContactFragment extends InjectedFragment {
                             userManager.setCurrentUser(user);
                             mUser = userManager.getCurrentUser();
                             updateDisplay();
-                            progressDialog.dismiss();
+                            hideProgressSpinner();
                             Toast.makeText(
                                     getContext(),
                                     R.string.info_updated,
@@ -117,7 +119,7 @@ public class ContactFragment extends InjectedFragment {
                         public void onCallbackError(final DataManager.DataManagerError error) {
                             bus.post(new LogEvent.AddLogEvent(new AccountLog.ContactInfoUpdateError()));
 
-                            progressDialog.dismiss();
+                            hideProgressSpinner();
                             dataManagerErrorHandler.handleError(
                                     getActivity(),
                                     error

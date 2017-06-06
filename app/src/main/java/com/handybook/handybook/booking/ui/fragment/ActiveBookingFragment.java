@@ -44,7 +44,7 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.ui.view.HorizontalMiniProProfile;
 import com.handybook.handybook.core.ui.view.MapPlaceholderView;
 import com.handybook.handybook.core.ui.view.MissingLocationView;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.library.util.PlayServicesUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -72,7 +72,7 @@ import butterknife.OnClick;
  * location information periodically. Also shows the provider's name, and allows calling/texting to
  * the provider.
  */
-public class ActiveBookingFragment extends InjectedFragment
+public class ActiveBookingFragment extends ProgressSpinnerFragment
         implements OnMapReadyCallback, ConversationCallback {
 
     private static final String KEY_BOOKING = "booking";
@@ -171,7 +171,9 @@ public class ActiveBookingFragment extends InjectedFragment
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        View view = inflater.inflate(R.layout.fragment_active_booking, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_active_booking, container, false));
+
         ButterKnife.bind(this, view);
 
         if (getArguments() != null) {
@@ -722,7 +724,7 @@ public class ActiveBookingFragment extends InjectedFragment
     public void textClicked() {
         if (mBooking.getChatOptions() != null &&
             mBooking.getChatOptions().shouldDirectToInAppChat()) {
-            progressDialog.show();
+            showProgressSpinner(true);
             bus.post(new LogEvent.AddLogEvent(new ProContactedLog(
                     EventContext.ACTIVE_BOOKING,
                     mBooking.getId(),
@@ -746,7 +748,7 @@ public class ActiveBookingFragment extends InjectedFragment
 
     @Override
     public void onCreateConversationSuccess(@Nullable final String conversationId) {
-        progressDialog.hide();
+        hideProgressSpinner();
         Intent intent = new Intent(getActivity(), ProMessagesActivity.class);
         intent.putExtra(LayerConstants.LAYER_CONVERSATION_KEY, Uri.parse(conversationId));
         intent.putExtra(
@@ -758,7 +760,7 @@ public class ActiveBookingFragment extends InjectedFragment
 
     @Override
     public void onCreateConversationError() {
-        progressDialog.hide();
+        hideProgressSpinner();
         showToast(R.string.an_error_has_occurred);
     }
 

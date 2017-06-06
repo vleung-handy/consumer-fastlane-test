@@ -23,7 +23,7 @@ import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditPlanHoursLog;
@@ -32,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public final class EditPlanHoursFragment extends InjectedFragment {
+public final class EditPlanHoursFragment extends ProgressSpinnerFragment {
 
     private RecurringBooking mPlan;
     private BookingEditHoursViewModel mBookingEditHoursViewModel;
@@ -72,12 +72,16 @@ public final class EditPlanHoursFragment extends InjectedFragment {
 
     @Override
     public final View onCreateView(
-            final LayoutInflater inflater, final ViewGroup container,
+            final LayoutInflater inflater,
+            final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        mPlan = (RecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_PLAN);
-        final View view = inflater.inflate(R.layout.fragment_plan_edit_hours, container, false);
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_plan_edit_hours, container, false));
+
         ButterKnife.bind(this, view);
+
+        mPlan = (RecurringBooking) getArguments().getSerializable(BundleKeys.RECURRING_PLAN);
         setupToolbar(mToolbar, getString(R.string.edit_plan_edit_hours_title));
         return view;
     }
@@ -248,7 +252,7 @@ public final class EditPlanHoursFragment extends InjectedFragment {
 
     @OnClick(R.id.plan_edit_hours_save_button)
     public void onSaveButtonPressed() {
-        showUiBlockers();
+        showProgressSpinner(true);
         final double selectedHours = Double.parseDouble(mOptionsView.getCurrentValue());
         bus.post(new LogEvent.AddLogEvent(
                 new EditPlanHoursLog.Submitted(mPlan.getId(), selectedHours)
@@ -264,7 +268,7 @@ public final class EditPlanHoursFragment extends InjectedFragment {
                 new FragmentSafeCallback<Void>(this) {
                     @Override
                     public void onCallbackSuccess(final Void response) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         bus.post(new LogEvent.AddLogEvent(
                                 new EditPlanHoursLog.Success(mPlan.getId(), selectedHours)
                         ));
@@ -278,7 +282,7 @@ public final class EditPlanHoursFragment extends InjectedFragment {
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        removeUiBlockers();
+                        hideProgressSpinner();
                         bus.post(new LogEvent.AddLogEvent(new EditPlanHoursLog.Error(
                                 mPlan.getId(),
                                 selectedHours,
@@ -292,13 +296,13 @@ public final class EditPlanHoursFragment extends InjectedFragment {
 
     @Override
     protected void showUiBlockers() {
-        super.showUiBlockers();
+        super.showProgressSpinner(true);
         mSaveButton.setEnabled(false);
     }
 
     @Override
     protected void removeUiBlockers() {
-        super.removeUiBlockers();
+        super.hideProgressSpinner();
         mSaveButton.setEnabled(true);
     }
 

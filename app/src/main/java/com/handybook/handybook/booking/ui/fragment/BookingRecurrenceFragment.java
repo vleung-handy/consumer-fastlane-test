@@ -62,13 +62,11 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_recurrence,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_recurrence, container, false));
+
         ButterKnife.bind(this, view);
+
         setupToolbar(mToolbar, getString(R.string.how_often));
         final BookingHeaderFragment header = new BookingHeaderFragment();
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

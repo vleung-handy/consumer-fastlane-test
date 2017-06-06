@@ -19,7 +19,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BookingProTeamRescheduleFragment extends InjectedFragment {
+public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
 
     @Inject
     ProTeamManager mProTeamManager;
@@ -80,11 +80,13 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(
                 R.layout.fragment_booking_pro_team_conversations,
                 container,
                 false
-        );
+        ));
+
         ButterKnife.bind(this, view);
 
         initRecyclerView();
@@ -115,7 +117,7 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
 
                         mSelectedProTeamMember = mAdapter.getItem(position);
 
-                        showUiBlockers();
+                        showProgressSpinner(true);
                         //Go to date picker
                         mBookingManager.rescheduleBookingWithProAvailability(
                                 mSelectedProTeamMember.getProTeamPro().getId(),
@@ -153,7 +155,7 @@ public class BookingProTeamRescheduleFragment extends InjectedFragment {
 
     @Subscribe
     public void onRescheduleWithAvailabilitySuccess(BookingEvent.RescheduleBookingWithProAvailabilitySuccess success) {
-        removeUiBlockers();
+        hideProgressSpinner();
 
         final Intent intent = new Intent(getActivity(), BookingDateActivity.class);
         intent.putExtra(BundleKeys.RESCHEDULE_BOOKING, mBooking);

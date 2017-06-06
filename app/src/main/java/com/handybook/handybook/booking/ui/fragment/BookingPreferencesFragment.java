@@ -67,7 +67,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
 
                 //discourage user from pressing button twice
                 //note that this doesn't prevent super fast clicks
-                showUiBlockers();
+                showProgressSpinner(true);
                 if (mInstructions != null) {
                     mFinalizeBookingRequestPayload.setBookingInstructions(
                             mInstructions.getBookingInstructions()
@@ -91,7 +91,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                             mIsNewUser
                     );
                     startActivity(intent);
-                    removeUiBlockers();
+                    hideProgressSpinner();
                 }
                 else {
                     bus.post(
@@ -137,12 +137,8 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
-                                       .inflate(
-                                               R.layout.fragment_booking_preferences,
-                                               container,
-                                               false
-                                       );
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(inflater.inflate(R.layout.fragment_booking_preferences, container, false));
 
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getString(R.string.job_details));
@@ -236,7 +232,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
                 bookingManager.getCurrentTransaction().getBookingId()
         );
         showBookingDetails(bookingId);
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     @Subscribe()
@@ -245,7 +241,7 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
             return;
         }
         showToast(R.string.error_sending_preferences);
-        removeUiBlockers();
+        hideProgressSpinner();
     }
 
     private void showBookingDetails(String bookingId) {
