@@ -417,11 +417,10 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                     date,
                     recurringId,
                     isInstantBookEnabled
-                     ))
-            );
+            )));
         }
         else {
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSubmittedLog (
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSubmittedLog(
                              providerId,
                              booking.getId(),
                              booking.getStartDate(),
@@ -455,7 +454,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                             );
                         }
                         else {
-                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSuccessLog (
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSuccessLog(
                                     providerId,
                                     booking.getId(),
                                     booking.getStartDate(),
@@ -463,8 +462,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                                     recurringId,
                                     rescheduleType,
                                     isInstantBookEnabled
-                                     ))
-                            );
+                            )));
                         }
 
                         if (!allowCallbacks) {
@@ -523,7 +521,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                             );
                         }
                         else {
-                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleErrorLog (
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleErrorLog(
                                              providerId,
                                              booking.getId(),
                                              booking.getStartDate(),
@@ -789,7 +787,8 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
         }
 
         //note that this response is currently only being used by the consolidated quote flow
-        if (mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled()) {
+        if (mConfigurationManager.getPersistentConfiguration()
+                                 .isConsolidateBookingGetQuoteFlowExperimentEnabled()) {
             ZipValidationResponse zipValidationResponse = quote.getZipValidationResponse();
             if (zipValidationResponse != null && zipValidationResponse.getZipArea() != null) {
             /*
