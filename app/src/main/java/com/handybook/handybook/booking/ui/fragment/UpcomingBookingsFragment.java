@@ -263,12 +263,12 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
 
     @OnClick(R.id.try_again_button)
     public void reFetch() {
+        showProgressSpinner();
         loadBookings();
     }
 
     protected void loadBookings() {
         mBookingsRequestCompleted = false;
-        showProgressSpinner();
         bookingManager.requestBookings(
                 Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING,
                 new FragmentSafeCallback<UserBookingsWrapper>(this) {
@@ -328,13 +328,10 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
 
                     mActiveBookingContainer.removeAllViews();
                     //important here to use booking id as TAG, so that there aren't conflicts with multiple active bookings.
-                    getChildFragmentManager().beginTransaction()
-                                             .add(
-                                                     R.id.active_booking_container,
-                                                     frag,
-                                                     booking.getId()
-                                             )
-                                             .commit();
+                    getChildFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.active_booking_container, frag, booking.getId())
+                            .commit();
 
                     //must executePendingTransactions now, otherwise the insertion of the share banner into this
                     //container will have an unpredictable location (due to commit being async)
@@ -589,6 +586,7 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
         super.onResume();
 
         if (mBookings == null || mBookings.isEmpty()) {
+            showProgressSpinner();
             loadBookings();
         }
         else {

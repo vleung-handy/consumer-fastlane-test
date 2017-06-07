@@ -71,6 +71,7 @@
 
 #Facebook
 -keep class com.facebook.** { *; }
+-dontwarn com.facebook.**
 -keepattributes Signature
 
 #RxJava
