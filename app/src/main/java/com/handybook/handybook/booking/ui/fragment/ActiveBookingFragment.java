@@ -1,6 +1,5 @@
 package com.handybook.handybook.booking.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -275,6 +274,7 @@ public class ActiveBookingFragment extends ProgressSpinnerFragment
      */
     private void toggleMapServicesAvailability(Bundle savedInstanceState) {
         if (PlayServicesUtils.hasPlayServices(getActivity())) {
+            mFirstZoom = true;
             mMapView.onCreate(savedInstanceState);
             mMapView.getMapAsync(this);
             mMapView.setVisibility(View.VISIBLE);
@@ -680,15 +680,7 @@ public class ActiveBookingFragment extends ProgressSpinnerFragment
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        if (mGoogleMap == null) {
-            mGoogleMap = googleMap;
-            initializeMap();
-        }
-    }
-
-    @Override
-    public void onAttach(final Context context) {
-        super.onAttach(context);
+        mGoogleMap = googleMap;
         initializeMap();
     }
 
@@ -799,6 +791,9 @@ public class ActiveBookingFragment extends ProgressSpinnerFragment
 
     @Override
     public void onPause() {
+        if (isMapBeingShown()) {
+            mMapView.onPause();
+        }
         super.onPause();
 
         //make sure this step is done, otherwise there will be a memory leak.
@@ -809,11 +804,11 @@ public class ActiveBookingFragment extends ProgressSpinnerFragment
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         if (isMapBeingShown()) {
             mMapView.onDestroy();
         }
-        super.onDestroy();
+        super.onDestroyView();
     }
 
     @Override
