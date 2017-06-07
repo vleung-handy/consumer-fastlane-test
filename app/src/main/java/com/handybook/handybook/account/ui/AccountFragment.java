@@ -78,8 +78,8 @@ public class AccountFragment extends InjectedFragment {
 
     @Bind(R.id.account_pro_team_subtext)
     TextView mProTeamSubtext;
-    @Bind(R.id.account_history_help_layout)
-    ViewGroup mHistoryHelpLayout;
+    @Bind(R.id.account_booking_history_layout)
+    View mHistoryLayout;
     @Bind(R.id.horizontal_progress_bar)
     ProgressBar mHorizontalProgressBar;
 
@@ -143,10 +143,10 @@ public class AccountFragment extends InjectedFragment {
         //set visibility of Booking History link based on config
         if (mConfigurationManager.getPersistentConfiguration()
                                  .isUpcomingAndPastBookingsMergeEnabled()) {
-            mHistoryHelpLayout.setVisibility(View.GONE);
+            mHistoryLayout.setVisibility(View.GONE);
         }
         else {
-            mHistoryHelpLayout.setVisibility(View.VISIBLE);
+            mHistoryLayout.setVisibility(View.VISIBLE);
         }
     }
 
