@@ -482,6 +482,7 @@ public interface HandyRetrofitService {
             @Path("provider_id") String providerId,
             @Query("duration") float durationHour,
             @Query("source") String source,
+            @Query("ignore_booking_id") String ignoreBookingId,
             HandyRetrofitCallback cb
     );
 

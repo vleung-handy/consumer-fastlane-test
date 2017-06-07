@@ -1039,12 +1039,14 @@ public class DataManager {
             final String providerId,
             final float durationHour,
             final String source,
+            final String ignoreBookingId,
             final Callback<ProAvailabilityResponse> cb
     ) {
         mService.getProviderAvailability(
                 providerId,
                 durationHour,
                 source,
+                ignoreBookingId,
                 new ProAvailabilityCallback(cb)
         );
     }
