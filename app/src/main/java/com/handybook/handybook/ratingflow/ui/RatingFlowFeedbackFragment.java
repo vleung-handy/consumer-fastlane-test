@@ -27,6 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.handybook.handybook.proteam.model.ProviderMatchPreference.FAVORITE;
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.NEVER;
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
 
@@ -213,7 +214,8 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                 //elected to work with pro again.
                 return mProRating >= GOOD_PRO_RATING &&
                        mPrerateProInfo.getProReferralInfo() != null &&
-                       mSelectedPreference == PREFERRED;
+                       (mSelectedPreference == PREFERRED ||
+                        mSelectedPreference == FAVORITE);
             default:
                 return false;
         }
