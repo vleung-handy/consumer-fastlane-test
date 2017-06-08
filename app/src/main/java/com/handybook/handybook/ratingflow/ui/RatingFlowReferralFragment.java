@@ -150,23 +150,6 @@ public class RatingFlowReferralFragment extends ProgressSpinnerFragment {
 
         ButterKnife.bind(this, view);
 
-        if (mMode == Mode.REVIEW) {
-            //setup the review fragment to be displayed later.
-            mReviewFragment
-                    = (RatingFlowReviewFragment) getChildFragmentManager().findFragmentByTag(
-                    RatingFlowReviewFragment.class.getName());
-            if (mReviewFragment == null) {
-                mReviewFragment = RatingFlowReviewFragment.newInstance(mBooking);
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .add(
-                                R.id.rating_flow_review_section,
-                                mReviewFragment,
-                                RatingFlowReviewFragment.class.getName()
-                        ).commit();
-            }
-        }
-
         return view;
     }
 
