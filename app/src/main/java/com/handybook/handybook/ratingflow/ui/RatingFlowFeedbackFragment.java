@@ -37,7 +37,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
 
 
     private enum Step {
-        MATCH_PREFERENCE, IMPROVEMENT, REVIEW_OR_SHARE_PROVIDER
+        MATCH_PREFERENCE, IMPROVEMENT, REVIEW_PROVIDER, SHARE_PROVIDER
     }
 
 
@@ -204,11 +204,16 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     private boolean shouldDisplayStep(@NonNull final Step step) {
         switch (step) {
             case MATCH_PREFERENCE:
+            case REVIEW_PROVIDER:
                 return true;
             case IMPROVEMENT:
                 return mProRating < GOOD_PRO_RATING;
-            case REVIEW_OR_SHARE_PROVIDER:
-                return mProRating >= GOOD_PRO_RATING;
+            case SHARE_PROVIDER:
+                //should return true when it's a high rating, has pro information, and user
+                //elected to work with pro again.
+                return mProRating >= GOOD_PRO_RATING &&
+                       mPrerateProInfo.getProReferralInfo() != null &&
+                       mSelectedPreference == PREFERRED;
             default:
                 return false;
         }
@@ -227,21 +232,14 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                         Lists.newArrayList(mPrerateProInfo.getReasons()),
                         new RateImprovementFeedback(mBooking.getId())
                 );
-            case REVIEW_OR_SHARE_PROVIDER:
-                if (mPrerateProInfo.getProReferralInfo() == null ||
-                    mSelectedPreference != PREFERRED) {
-                    return RatingFlowReviewFragment.newInstance(mBooking);
-                }
-                else {
-                    //should be here only when it's a high rating, has pro information, and user
-                    //elected to work with pro again.
-                    return RatingFlowShareProFragment.newInstance(
-                            mPrerateProInfo.getProReferralInfo(),
-                            mReferralDescriptor,
-                            mBooking.getProvider()
-                    );
-                }
-
+            case REVIEW_PROVIDER:
+                return RatingFlowReviewFragment.newInstance(mBooking);
+            case SHARE_PROVIDER:
+                return RatingFlowShareProFragment.newInstance(
+                        mPrerateProInfo.getProReferralInfo(),
+                        mReferralDescriptor,
+                        mBooking.getProvider()
+                );
 
             default:
                 return null;
