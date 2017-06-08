@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="fontPath" format="string" />
+    <attr name="fontPath"
+          format="string"/>
 
     <declare-styleable name="BasicInputTextView">
-        <attr name="minLength" format="integer"/>
+        <attr name="minLength"
+              format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="ThinIconButton">
-        <attr name="iconResourceId" format="reference" />
+        <attr name="iconResourceId"
+              format="reference"/>
     </declare-styleable>
     <declare-styleable name="BookingInstructionView">
-        <attr name="prefsState" >
-            <enum name="requested" value="0"/>
-            <enum name="declined" value="1"/>
+        <attr name="prefsState">
+            <enum name="requested"
+                  value="0"/>
+            <enum name="declined"
+                  value="1"/>
         </attr>
-        <attr name="prefsTitle" format="string"/>
-        <attr name="prefsText" format="string"/>
+        <attr name="prefsTitle"
+              format="string"/>
+        <attr name="prefsText"
+              format="string"/>
     </declare-styleable>
     <declare-styleable name="DragAndDropVerticalLinearLayout">
-        <attr name="dragAndDropEnabled" format="boolean"/>
+        <attr name="dragAndDropEnabled"
+              format="boolean"/>
     </declare-styleable>
     <declare-styleable name="SwipeableViewPager">
         <attr name="swipeable"
@@ -60,9 +68,12 @@
 
     <!-- Rating Flow -->
     <declare-styleable name="RatingFlowFiveStarsView">
-        <attr name="starWidth" format="dimension"/>
-        <attr name="starHeight" format="dimension"/>
-        <attr name="starMargin" format="dimension"/>
+        <attr name="starWidth"
+              format="dimension"/>
+        <attr name="starHeight"
+              format="dimension"/>
+        <attr name="starMargin"
+              format="dimension"/>
     </declare-styleable>
 
     <!--image text action button-->
@@ -78,6 +89,19 @@
     </declare-styleable>
 
     <declare-styleable name="LoadingLayout">
-        <attr name="loadingText" format="string"/>
+        <attr name="loadingText"
+              format="string"/>
+    </declare-styleable>
+    <declare-styleable name="ScratchView">
+        <attr name="overlayColor"
+              format="color"/>
+        <attr name="revealSize"
+              format="dimension"/>
+        <attr name="antiAlias"
+              format="boolean"/>
+        <attr name="scratchable"
+              format="boolean"/>
+        <attr name="scratchDrawable"
+              format="reference"/>
     </declare-styleable>
 </resources>
