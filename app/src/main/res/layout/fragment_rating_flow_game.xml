@@ -1,48 +1,70 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
 
-    <TextView
-        android:id="@+id/rfgf_percentage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/rfgf_scratch_view"
-        android:layout_centerHorizontal="true"
-        android:textColor="#000000"
-        tools:text="0%"
-        />
+    <include layout="@layout/layout_particle_emitters"/>
 
-    <ImageView
-        android:id="@+id/rfgf_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/img_clean_home"
-        />
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
 
-    <com.handybook.handybook.vegas.ui.view.ScratchView
-        android:id="@+id/rfgf_scratch_view"
-        xmlns:wsv="http://schemas.android.com/apk/res-auto"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        wsv:antiAlias="true"
-        wsv:revealSize="20dp"
-        wsv:scratchDrawable="@drawable/img_dirty_home"
-        wsv:scratchable="true"
-        />
+        <TextView
+            android:id="@+id/rfgf_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rfgf_scratch_view"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000"
+            tools:text="0%"
+            />
 
-    <Button
-        android:id="@+id/rfgf_reset_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="14dp"
-        android:text="Reset"
-        />
+        <ImageView
+            android:id="@+id/rfgf_image"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/img_clean_home"
+            />
 
-</RelativeLayout>
+        <com.handybook.handybook.vegas.ui.view.ScratchView
+            android:id="@+id/rfgf_scratch_view"
+            xmlns:wsv="http://schemas.android.com/apk/res-auto"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            wsv:antiAlias="true"
+            wsv:revealSize="20dp"
+            wsv:scratchDrawable="@drawable/img_dirty_home"
+            wsv:scratchable="true"
+            />
+
+        <Button
+            android:id="@+id/rfgf_reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:text="Reset"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/rfgf_percentage"
+            android:layout_toStartOf="@+id/rfgf_percentage"
+            />
+
+        <Button
+            android:id="@+id/rfgf_blast_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Blast"
+            android:layout_alignBaseline="@+id/rfgf_reset_button"
+            android:layout_alignBottom="@+id/rfgf_reset_button"
+            android:layout_toRightOf="@+id/rfgf_percentage"
+            android:layout_toEndOf="@+id/rfgf_percentage"
+            />
+
+    </RelativeLayout>
+
+</FrameLayout>
