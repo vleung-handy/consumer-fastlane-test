@@ -89,10 +89,6 @@ public class RatingFlowGameFragment extends InjectedFragment {
 
             @Override
             public void onDetach(boolean fingerDetach) {
-                if (mRevealedPercentage > 60) {
-                    mScratchView.setScratchAll(true);
-                    updatePercentage(100);
-                }
             }
         });
 
@@ -102,15 +98,22 @@ public class RatingFlowGameFragment extends InjectedFragment {
 
     protected void updatePercentage(double percentage) {
         mRevealedPercentage = percentage;
+        if (percentage > 60) {
+            mScratchView.revealAll();
+            rollDownShades();
+        }
         String percentage2decimal = String.format(Locale.getDefault(), "%.2f", percentage) + " %";
         mPercentage.setText(percentage2decimal);
+    }
+
+    private void rollDownShades() {
+
     }
 
     @OnClick(R.id.rfgf_reset_button)
     void onReset() {
         mScratchView.resetView();
-        mScratchView.setScratchAll(false);
-        updatePercentage(0f);
+        updatePercentage(0);
     }
 
     @OnClick(R.id.rfgf_blast_button)

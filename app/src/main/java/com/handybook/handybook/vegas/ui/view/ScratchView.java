@@ -13,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -53,9 +54,7 @@ public class ScratchView extends SurfaceView
     private Canvas mScratchedTestCanvas;
     private OnScratchCallback mOnScratchCallback;
 
-    //Enable scratch all area if mClearCanvas is true
-    private boolean mClearCanvas = false;
-    //Enable click on WScratchView if mIsClickable is true
+    private boolean mIsFullyRevealed = false;
     private boolean mIsClickable = false;
 
     public ScratchView(Context ctx, AttributeSet attrs) {
@@ -118,6 +117,9 @@ public class ScratchView extends SurfaceView
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setFilterBitmap(true);
         mBitmapPaint.setDither(true);
+        if (isInEditMode()) {
+
+        }
     }
 
     @Override
@@ -125,7 +127,7 @@ public class ScratchView extends SurfaceView
         super.onDraw(canvas);
 
         //Clear all area if mClearCanvas is true
-        if (mClearCanvas) {
+        if (mIsFullyRevealed) {
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
             return;
         }
@@ -146,16 +148,14 @@ public class ScratchView extends SurfaceView
         for (Path path : mPathList) {
             mOverlayPaint.setAntiAlias(mIsAntiAlias);
             mOverlayPaint.setStrokeWidth(mRevealSize);
-
             canvas.drawPath(path, mOverlayPaint);
         }
-
 
     }
 
     private void updateScratchedPercentage() {
         if (mOnScratchCallback == null) { return; }
-        mOnScratchCallback.onScratch(getScratchedRatio());
+        mOnScratchCallback.onScratch(getRevealedRatio());
     }
 
     @Override
@@ -247,22 +247,23 @@ public class ScratchView extends SurfaceView
 
     }
 
-    class ScratchViewThread extends Thread {
+    private class ScratchViewThread extends Thread {
 
-        private SurfaceHolder mSurfaceHolder;
+        private final SurfaceHolder mSurfaceHolder;
         private ScratchView mView;
         private boolean mRun = false;
 
-        public ScratchViewThread(SurfaceHolder surfaceHolder, ScratchView view) {
+        ScratchViewThread(@NonNull SurfaceHolder surfaceHolder, ScratchView view) {
             mSurfaceHolder = surfaceHolder;
             mView = view;
         }
 
-        public void setRunning(boolean run) {
+        void setRunning(boolean run) {
             mRun = run;
         }
 
-        public SurfaceHolder getSurfaceHolder() {
+        @NonNull
+        SurfaceHolder getSurfaceHolder() {
             return mSurfaceHolder;
         }
 
@@ -292,6 +293,7 @@ public class ScratchView extends SurfaceView
     public void resetView() {
         synchronized (mThread.getSurfaceHolder()) {
             mPathList.clear();
+            mIsFullyRevealed = false;
         }
     }
 
@@ -311,8 +313,8 @@ public class ScratchView extends SurfaceView
     }
 
     @Override
-    public void setRevealSize(int size) {
-        mRevealSize = size;
+    public void setBrushRadius(int radiusPx) {
+        mRevealSize = radiusPx;
     }
 
     @Override
@@ -334,12 +336,12 @@ public class ScratchView extends SurfaceView
     }
 
     @Override
-    public float getScratchedRatio() {
-        return getScratchedRatio(DEFAULT_SCRATCH_TEST_SPEED);
+    public float getRevealedRatio() {
+        return getRevealedRatio(DEFAULT_SCRATCH_TEST_SPEED);
     }
 
     @Override
-    public float getScratchedRatio(int speed) {
+    public float getRevealedRatio(int speed) {
         if (null == mScratchedTestBitmap) {
             return 0;
         }
@@ -364,13 +366,11 @@ public class ScratchView extends SurfaceView
         mOnScratchCallback = callback;
     }
 
-    //Set the mClearCanvas
     @Override
-    public void setScratchAll(boolean scratchAll) {
-        mClearCanvas = scratchAll;
+    public void revealAll() {
+        mIsFullyRevealed = true;
     }
 
-    //Set the WScartchView clickable
     @Override
     public void setBackgroundClickable(boolean clickable) {
         mIsClickable = clickable;

@@ -104,4 +104,23 @@
         <attr name="scratchDrawable"
               format="reference"/>
     </declare-styleable>
+    <declare-styleable name="GameSymbolView">
+        <attr name="symbol"
+              format="enum">
+            <enum name="dustpan"
+                  value="0"/>
+            <enum name="bucket_green"
+                  value="1"/>
+            <enum name="handy_logo"
+                  value="2"/>
+            <enum name="heart"
+                  value="3"/>
+            <enum name="piggy_bank"
+                  value="4"/>
+            <enum name="soap_bottle"
+                  value="5"/>
+            <enum name="star"
+                  value="6"/>
+        </attr>
+    </declare-styleable>
 </resources>

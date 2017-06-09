@@ -21,24 +21,17 @@ public interface ScratchableInterface {
     void setScratchable(boolean flag);
 
     /**
-     * Set the color of overlay
+     * Set the radius of the brush (in pixels)
      *
-     * @param ResId - resources identifier for color in INT type
+     * @param radiusPx - radius radiusPx of circle in pixel unit
      */
-    void setOverlayColor(int ResId);
+    void setBrushRadius(int radiusPx);
 
     /**
-     * Set the radius size of the circle to be revealed
-     *
-     * @param size - radius size of circle in pixel unit
-     */
-    void setRevealSize(int size);
-
-    /**
-     * Set turn on/off effect of anti alias of circle revealed
+     * Togle anti-aliasing of brush
      * By default, anti alias is turn off
      *
-     * @param flag - set true to turn on anti alias
+     * @param flag - set true to turn on anti-alias
      */
     void setAntiAlias(boolean flag);
 
@@ -47,6 +40,13 @@ public interface ScratchableInterface {
      *
      */
     void resetView();
+
+    /**
+     * Set the color of overlay
+     *
+     * @param ResId - resources identifier for color in INT type
+     */
+    void setOverlayColor(int ResId);
 
     /**
      * Set drawable for scratch view
@@ -67,7 +67,7 @@ public interface ScratchableInterface {
      *
      * @return float - return Scratched ratio
      */
-    float getScratchedRatio();
+    float getRevealedRatio();
 
     /**
      * Get scratched ratio (contribution from daveyfong)
@@ -75,11 +75,11 @@ public interface ScratchableInterface {
      * @param speed - Scratch speed
      * @return float - return Scratched ratio
      */
-    float getScratchedRatio(int speed);
+    float getRevealedRatio(int speed);
 
     void setOnScratchCallback(OnScratchCallback callback);
 
-    void setScratchAll(boolean scratchAll);
+    void revealAll();
 
     void setBackgroundClickable(boolean clickable);
 
