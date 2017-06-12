@@ -40,6 +40,10 @@ public abstract class ProgressSpinnerFragment extends InjectedFragment {
     }
 
     protected void hideProgressSpinner() {
+        //If this is null, it means it wasn't initialized, so ignore
+        if(mProgressSpinner == null) {
+            return;
+        }
         mProgressSpinner.setVisibility(View.GONE);
         mOverlay.setVisibility(View.GONE);
     }
