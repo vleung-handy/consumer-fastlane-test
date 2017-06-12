@@ -15,6 +15,9 @@ public abstract class ProgressSpinnerFragment extends InjectedFragment {
     private View mOverlay;
 
     @Override
+    /**
+     * This should be overridden if you want to display the Progress Spinner
+     */
     public View onCreateView(
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
@@ -40,6 +43,12 @@ public abstract class ProgressSpinnerFragment extends InjectedFragment {
     }
 
     protected void hideProgressSpinner() {
+        //If this is null, it means it wasn't initialized, so ignore
+        //Show progress spinner was left alone, because if we want to show it, let it crash to know
+        // to override onCreateView
+        if(mProgressSpinner == null) {
+            return;
+        }
         mProgressSpinner.setVisibility(View.GONE);
         mOverlay.setVisibility(View.GONE);
     }
