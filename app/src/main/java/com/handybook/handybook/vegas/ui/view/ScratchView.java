@@ -31,7 +31,7 @@ public class ScratchView extends SurfaceView
 
     // default value constants
     private static final int DEFAULT_COLOR = 0xff444444; // default color is dark gray
-    private static final int DEFAULT_REVEAL_SIZE = 30;
+    private static final int DEFAULT_REVEAL_SIZE = 60;
 
     public static final int DEFAULT_SCRATCH_TEST_SPEED = 4;
 
@@ -105,7 +105,7 @@ public class ScratchView extends SurfaceView
         mOverlayPaint = new Paint();
         mOverlayPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         mOverlayPaint.setStyle(Paint.Style.STROKE);
-        mOverlayPaint.setStrokeCap(Paint.Cap.ROUND);
+        mOverlayPaint.setStrokeCap(Paint.Cap.BUTT);
         mOverlayPaint.setStrokeJoin(Paint.Join.ROUND);
 
         // convert drawable to bitmap if drawable already set in xml
@@ -145,9 +145,9 @@ public class ScratchView extends SurfaceView
             canvas.drawColor(mOverlayColor);
         }
 
+        mOverlayPaint.setAntiAlias(mIsAntiAlias);
+        mOverlayPaint.setStrokeWidth(mRevealSize);
         for (Path path : mPathList) {
-            mOverlayPaint.setAntiAlias(mIsAntiAlias);
-            mOverlayPaint.setStrokeWidth(mRevealSize);
             canvas.drawPath(path, mOverlayPaint);
         }
 
