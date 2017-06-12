@@ -79,7 +79,9 @@ public class GameSymbolView extends android.support.v7.widget.AppCompatImageView
                 .obtainStyledAttributes(attrs, R.styleable.GameSymbolView, 0, 0);
 
         try {
-            setSymbol(RESOURCE_IDS_TO_SYMBOLS.get(ta.getInt(R.styleable.GameSymbolView_symbol, 0)));
+            setSymbol(RESOURCE_IDS_TO_SYMBOLS.get(
+                    RESOURCE_IDS[ta.getInt(R.styleable.GameSymbolView_symbol, 0)]
+            ));
         }
         finally {
             ta.recycle();
