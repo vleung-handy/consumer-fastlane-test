@@ -88,12 +88,13 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
             final LayoutInflater inflater, final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        final View view = getActivity().getLayoutInflater()
+        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
+        view.addView(getActivity().getLayoutInflater()
                                        .inflate(
                                                R.layout.fragment_booking_reschedule_options,
                                                container,
                                                false
-                                       );
+                                       ));
 
         ButterKnife.bind(this, view);
 
