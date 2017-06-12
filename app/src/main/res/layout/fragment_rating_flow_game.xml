@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     >
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_game_background_sparkle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <View
         android:id="@+id/particle_emitter_a"
         android:layout_width="0dp"
@@ -57,72 +70,180 @@
         />
 
 
-    <ImageView
-        android:id="@+id/rfgf_image"
+    <FrameLayout
         android:layout_width="339dp"
         android:layout_height="379dp"
-        android:background="@drawable/img_scratch_off_window_clean"
+
+        >
+
+        <ImageView
+            android:id="@+id/rfgf_scratch_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cropToPadding="false"
+            app:srcCompat="@drawable/img_scratch_off_window_clean"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="52dp"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                >
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    >
+
+                    <com.handybook.handybook.vegas.ui.view.GameSymbolView
+
+                        android:id="@+id/rfgf_scratch_symbol_top_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:symbol="bucket_green"
+                        tools:layout_editor_absoluteX="106dp"
+                        tools:layout_editor_absoluteY="146dp"
+                        />
+                </FrameLayout>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent"
+                    />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    >
+
+                    <com.handybook.handybook.vegas.ui.view.GameSymbolView
+                        android:id="@+id/rfgf_scratch_symbol_top_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:symbol="dustpan"
+                        tools:layout_editor_absoluteX="180dp"
+                        tools:layout_editor_absoluteY="146dp"
+                        />
+                </FrameLayout>
+
+
+            </LinearLayout>
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                >
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    >
+
+                    <com.handybook.handybook.vegas.ui.view.GameSymbolView
+                        android:id="@+id/rfgf_scratch_symbol_bottom_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:symbol="piggy_bank"
+                        tools:layout_editor_absoluteX="106dp"
+                        tools:layout_editor_absoluteY="359dp"
+                        />
+                </FrameLayout>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent"
+                    />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    >
+
+                    <com.handybook.handybook.vegas.ui.view.GameSymbolView
+                        android:id="@+id/rfgf_scratch_symbol_bottom_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:symbol="heart"
+                        tools:layout_editor_absoluteX="180dp"
+                        tools:layout_editor_absoluteY="358dp"
+                        />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.handybook.handybook.vegas.ui.view.ScratchView
+            android:id="@+id/rfgf_scratch_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scratchDrawable="@drawable/img_scratch_off_window_suds"
+            />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/rfgf_banner_bottom"
+        style="@style/TextView.Large.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/handy_blue"
+        android:gravity="center"
+        android:padding="@dimen/default_padding"
+        android:textColor="@color/handy_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <com.handybook.handybook.vegas.ui.view.GameSymbolView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:symbol="bucket_green"
-        />
-
-    <com.handybook.handybook.vegas.ui.view.GameSymbolView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:symbol="dustpan"
-        />
-
-    <com.handybook.handybook.vegas.ui.view.GameSymbolView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:symbol="piggy_bank"
-        />
-
-    <com.handybook.handybook.vegas.ui.view.GameSymbolView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:symbol="heart"
-        />
-
-    <com.handybook.handybook.vegas.ui.view.ScratchView
-        android:id="@+id/rfgf_scratch_view"
-        android:layout_width="339dp"
-        android:layout_height="379dp"
-        app:layout_constraintLeft_toLeftOf="@+id/rfgf_image"
-        app:layout_constraintRight_toRightOf="@+id/rfgf_image"
-        app:layout_constraintTop_toTopOf="@+id/rfgf_image"
+        tools:text="The more icons you match, the bigger your reward!"
         />
 
     <Button
         android:id="@+id/rfgf_reset_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:text="Reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         />
 
     <Button
         android:id="@+id/rfgf_blast_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Blast"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Blast"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         />
 
     <TextView
@@ -130,8 +251,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
