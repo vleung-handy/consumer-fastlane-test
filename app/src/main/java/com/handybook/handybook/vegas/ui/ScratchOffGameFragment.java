@@ -53,7 +53,6 @@ public class ScratchOffGameFragment extends InjectedFragment {
     private boolean mIsSpongeAttached;
     private boolean mIsResultSheetVisible;
     private TranslateAnimation mSpongeAnimation;
-    private int[] mSpongeLoc = {0, 0};
 
     @Bind(R.id.rfgf_background_image) ImageView mBackground;
     @Bind(R.id.rfgf_scratch_symbol_top_left) GameSymbolView mSymbolTL;
@@ -62,7 +61,8 @@ public class ScratchOffGameFragment extends InjectedFragment {
     @Bind(R.id.rfgf_scratch_symbol_bottom_right) GameSymbolView mSymbolBR;
     @Bind(R.id.rfgf_scratchoff_view) ScratchOffView mScratchOffView;
     @Bind(R.id.rfgf_bucket) ImageView mBucket;
-    @Bind(R.id.rfgf_sponge) ImageView mSponge;
+    @Bind(R.id.rfgf_sponge_actor) ImageView mSpongeActor;
+    @Bind(R.id.rfgf_sponge_placeholder) ImageView mSpongePlaceholder;
     @Bind(R.id.rfgf_result_sheet) ViewGroup mResultSheet;
     @Bind(R.id.rfgf_result_title) TextView mResultTitle;
     @Bind(R.id.rfgf_result_subtitle) TextView mResultSubtitle;
@@ -123,33 +123,27 @@ public class ScratchOffGameFragment extends InjectedFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSponge.getLocationOnScreen(mSpongeLoc);
     }
 
     private float getSpongeX(final float x) {
-        final float newX = x - mSponge.getWidth() / 2;
-        return mScratchOffView.getX() + newX;
+        final float newX = x - mSpongeActor.getWidth() * 0.65f;
+        return newX - mScratchOffView.getX();
     }
 
     private float getSpongeY(final float y) {
-        final float newY = y + mSponge.getHeight() / 2;
-        return mScratchOffView.getY() + newY;
+        final float newY = y - mSpongeActor.getHeight() * 0.75f;
+        return newY - mScratchOffView.getY();
     }
 
     private void attachSponge(final float x, final float y) {
-        mSponge.bringToFront();
+        mSpongeActor.bringToFront();
         mSpongeAnimation = new TranslateAnimation(
-                Animation.ABSOLUTE,
-                mSpongeLoc[0],
-                Animation.ABSOLUTE,
+                mSpongePlaceholder.getX(),
                 getSpongeX(x),
-                Animation.ABSOLUTE,
-                mSpongeLoc[1],
-                Animation.ABSOLUTE,
+                mSpongePlaceholder.getY(),
                 getSpongeY(y)
         );
-        mSpongeAnimation.setDuration(500);
-        mSpongeAnimation.setFillAfter(true);
+        mSpongeAnimation.setDuration(700);
         mSpongeAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(final Animation animation) {
@@ -166,17 +160,21 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
             }
         });
-        mSponge.startAnimation(mSpongeAnimation);
+        mSpongeActor.startAnimation(mSpongeAnimation);
     }
 
     private void moveSponge(final float x, final float y) {
         if (mIsSpongeAttached) {
-            mSponge.setX(x);
-            mSponge.setY(y);
+            mSpongeActor.setX(getSpongeX(x));
+            mSpongeActor.setY(getSpongeY(y));
         }
     }
 
     private void detachSponge(final float x, final float y) {
+        mSpongeActor.setX(mSpongePlaceholder.getX());
+        mSpongeActor.setY(mSpongePlaceholder.getY());
+        mIsSpongeAttached = false;
+/*
         mSpongeAnimation = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF,
                 0,
@@ -187,7 +185,7 @@ public class ScratchOffGameFragment extends InjectedFragment {
                 Animation.ABSOLUTE,
                 mSpongeLoc[1]
         );
-        mSpongeAnimation.setDuration(500);
+        mSpongeAnimation.setDuration(200);
         mSpongeAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(final Animation animation) {
@@ -204,7 +202,8 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
             }
         });
-        mSponge.startAnimation(mSpongeAnimation);
+        mSpongeActor.startAnimation(mSpongeAnimation);
+*/
 
     }
 

@@ -125,21 +125,21 @@ public class ScratchOffView extends AppCompatImageView {
         path.lineTo(event.getX(), event.getY());
         mPaths.add(path);
         if (mOnScratchListener != null) {
-            mOnScratchListener.onScratchStart(event.getX(), event.getY());
+            mOnScratchListener.onScratchStart(event.getRawX(), event.getRawY());
         }
     }
 
     private void continueScratch(final MotionEvent event) {
         mPath.lineTo(event.getX(), event.getY());
         if (mOnScratchListener != null) {
-            mOnScratchListener.onScratchMove(event.getX(), event.getY());
+            mOnScratchListener.onScratchMove(event.getRawX(), event.getRawY());
         }
     }
 
     private void stopScratch(final MotionEvent event) {
         mIsScratching = false;
         if (mOnScratchListener != null) {
-            mOnScratchListener.onScratchStop(event.getX(), event.getY());
+            mOnScratchListener.onScratchStop(event.getRawX(), event.getRawY());
         }
 
     }
