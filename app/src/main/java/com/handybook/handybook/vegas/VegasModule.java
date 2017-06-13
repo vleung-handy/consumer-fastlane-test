@@ -1,5 +1,6 @@
 package com.handybook.handybook.vegas;
 
+import com.handybook.handybook.vegas.ui.PreGameFragment;
 import com.handybook.handybook.vegas.ui.RatingFlowGameFragment;
 import com.handybook.handybook.vegas.ui.VegasDevActivity;
 
@@ -10,8 +11,8 @@ import dagger.Module;
         complete = false,
         injects = {
                 VegasDevActivity.class,
-                RatingFlowGameFragment.class
-
+                RatingFlowGameFragment.class,
+                PreGameFragment.class
         })
 public class VegasModule {
 }
