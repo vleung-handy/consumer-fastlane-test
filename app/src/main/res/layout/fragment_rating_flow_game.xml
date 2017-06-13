@@ -14,198 +14,312 @@
         android:scaleType="centerCrop"
         android:src="@drawable/img_game_background_sparkle"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         />
 
-    <View
-        android:id="@+id/particle_emitter_a"
+    <TextView
+        android:id="@+id/rfgf_title"
+        style="@style/TextView.XLarge"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="@+id/particle_emitter_e"
-        app:layout_constraintLeft_toRightOf="@+id/particle_emitter_e"
-        app:layout_constraintRight_toLeftOf="@+id/particle_emitter_d"
-        />
-
-    <View
-        android:id="@+id/particle_emitter_b"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="@+id/particle_emitter_d"
-        app:layout_constraintLeft_toRightOf="@+id/particle_emitter_d"
-        app:layout_constraintRight_toRightOf="parent"
-        />
-
-    <View
-        android:id="@+id/particle_emitter_c"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/particle_emitter_e"
-        tools:layout_editor_absoluteY="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Clean to Win"
         />
 
-    <View
-        android:id="@+id/particle_emitter_d"
+    <TextView
+        android:id="@+id/rfgf_subtitle"
+        style="@style/TextView.Medium"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="@+id/particle_emitter_a"
-        app:layout_constraintLeft_toRightOf="@+id/particle_emitter_a"
-        app:layout_constraintRight_toLeftOf="@+id/particle_emitter_b"
-        />
-
-    <View
-        android:id="@+id/particle_emitter_e"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="@+id/particle_emitter_c"
-        app:layout_constraintLeft_toRightOf="@+id/particle_emitter_c"
-        app:layout_constraintRight_toLeftOf="@+id/particle_emitter_a"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rfgf_title"
+        tools:text="Use the sponge to clean the window and reveal rewards."
         />
 
 
-    <FrameLayout
+    <ImageButton
+        android:id="@+id/rfgf_button_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/transparent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/rfgf_window_constraint"
         android:layout_width="339dp"
         android:layout_height="379dp"
-
+        android:layout_marginTop="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rfgf_subtitle"
         >
 
         <ImageView
             android:id="@+id/rfgf_scratch_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:cropToPadding="false"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/img_scratch_off_window_clean"
             />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="40dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="52dp"
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_h_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="196dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="220dp"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_v_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            tools:layout_editor_absoluteX="170dp"
+            tools:layout_editor_absoluteY="25dp"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_h_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="29dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="375dp"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_v_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="50dp"
+            tools:layout_editor_absoluteX="289dp"
+            tools:layout_editor_absoluteY="25dp"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_h_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="41dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="65dp"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_v_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="50dp"
+            tools:layout_editor_absoluteX="50dp"
+            tools:layout_editor_absoluteY="25dp"
+            />
+
+
+        <com.handybook.handybook.vegas.ui.view.GameSymbolView
+            android:id="@+id/rfgf_scratch_symbol_bottom_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/gl_h_bottom"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_v_left"
+            app:layout_constraintRight_toLeftOf="@+id/gl_v_center"
+            app:layout_constraintTop_toTopOf="@+id/gl_h_center"
+            app:symbol="piggy_bank"
+            />
+
+        <com.handybook.handybook.vegas.ui.view.GameSymbolView
+            android:id="@+id/rfgf_scratch_symbol_top_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/gl_h_center"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_v_center"
+            app:layout_constraintRight_toLeftOf="@+id/gl_v_right"
+            app:layout_constraintTop_toTopOf="@+id/gl_h_top"
+            app:symbol="dustpan"
+            />
+
+        <com.handybook.handybook.vegas.ui.view.GameSymbolView
+
+            android:id="@+id/rfgf_scratch_symbol_top_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/gl_h_center"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_v_left"
+            app:layout_constraintRight_toLeftOf="@+id/gl_v_center"
+            app:layout_constraintTop_toTopOf="@+id/gl_h_top"
+            app:symbol="bucket_green"
+            />
+
+        <com.handybook.handybook.vegas.ui.view.GameSymbolView
+            android:id="@+id/rfgf_scratch_symbol_bottom_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/gl_h_bottom"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_v_center"
+            app:layout_constraintRight_toLeftOf="@+id/gl_v_right"
+            app:layout_constraintTop_toTopOf="@+id/gl_h_center"
+            app:symbol="heart"
+            />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="1px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             >
 
-            <LinearLayout
+            <com.handybook.handybook.vegas.ui.view.ScratchOffView
+                android:id="@+id/rfgf_scratchoff_view"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                >
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    >
-
-                    <com.handybook.handybook.vegas.ui.view.GameSymbolView
-
-                        android:id="@+id/rfgf_scratch_symbol_top_left"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:layout_constraintHorizontal_chainStyle="spread_inside"
-                        app:symbol="bucket_green"
-                        tools:layout_editor_absoluteX="106dp"
-                        tools:layout_editor_absoluteY="146dp"
-                        />
-                </FrameLayout>
-
-                <android.support.v4.widget.Space
-                    android:layout_width="16dp"
-                    android:layout_height="match_parent"
-                    />
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    >
-
-                    <com.handybook.handybook.vegas.ui.view.GameSymbolView
-                        android:id="@+id/rfgf_scratch_symbol_top_right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:symbol="dustpan"
-                        tools:layout_editor_absoluteX="180dp"
-                        tools:layout_editor_absoluteY="146dp"
-                        />
-                </FrameLayout>
-
-
-            </LinearLayout>
-
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/img_scratch_off_window_suds"
                 />
 
-            <LinearLayout
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/rfgf_result_sheet"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/handy_blue"
+            android:orientation="vertical"
+            android:paddingEnd="36dp"
+            android:paddingLeft="36dp"
+            android:paddingRight="36dp"
+            android:paddingStart="36dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            >
+
+            <TextView
+                android:id="@+id/rfgf_result_header"
+                style="@style/TextView.XLarge.Bold"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:gravity="center_horizontal"
+                android:text="WINNER!"
+                android:textColor="@color/handy_white"
+                />
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    >
+            <com.handybook.handybook.vegas.ui.view.GameSymbolView
+                android:id="@+id/rfgf_result_symbol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:symbol="star"
+                />
 
-                    <com.handybook.handybook.vegas.ui.view.GameSymbolView
-                        android:id="@+id/rfgf_scratch_symbol_bottom_left"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:symbol="piggy_bank"
-                        tools:layout_editor_absoluteX="106dp"
-                        tools:layout_editor_absoluteY="359dp"
-                        />
-                </FrameLayout>
+            <TextView
+                android:id="@+id/rfgf_result_title"
+                style="@style/TextView.XXLarge.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:gravity="center_horizontal"
+                android:lineSpacingMultiplier="1.1"
+                android:text="$5 in Handy credit"
+                android:textColor="@color/handy_white"
+                />
 
-                <android.support.v4.widget.Space
-                    android:layout_width="16dp"
-                    android:layout_height="match_parent"
-                    />
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    >
-
-                    <com.handybook.handybook.vegas.ui.view.GameSymbolView
-                        android:id="@+id/rfgf_scratch_symbol_bottom_right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:symbol="heart"
-                        tools:layout_editor_absoluteX="180dp"
-                        tools:layout_editor_absoluteY="358dp"
-                        />
-                </FrameLayout>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/rfgf_result_subtitle"
+                style="@style/TextView.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:gravity="center_horizontal"
+                android:lineSpacingMultiplier="1.1"
+                android:text="This reward has been credited to your account. See you next time!"
+                android:textColor="@color/handy_white"
+                />
         </LinearLayout>
 
-        <com.handybook.handybook.vegas.ui.view.ScratchView
-            android:id="@+id/rfgf_scratch_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:scratchDrawable="@drawable/img_scratch_off_window_suds"
-            />
-    </FrameLayout>
+    </android.support.constraint.ConstraintLayout>
 
+
+    <Button
+        android:id="@+id/rfgf_submit_button"
+        style="@style/Button.Green"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="See you next booking!"
+        />
+
+    <ImageView
+        android:id="@+id/rfgf_sponge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="51dp"
+        android:elevation="2px"
+        app:layout_constraintBottom_toBottomOf="@+id/rfgf_bucket"
+        app:layout_constraintLeft_toLeftOf="@+id/rfgf_bucket"
+        app:layout_constraintRight_toRightOf="@+id/rfgf_bucket"
+        app:srcCompat="@drawable/img_game_sponge"
+        />
+
+    <ImageView
+        android:id="@+id/rfgf_bucket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="2px"
+        app:layout_constraintBottom_toTopOf="@+id/rfgf_banner_bottom"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/img_game_bucket_red"
+        />
 
     <TextView
         android:id="@+id/rfgf_banner_bottom"
