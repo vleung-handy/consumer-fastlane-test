@@ -92,6 +92,7 @@
         <attr name="loadingText"
               format="string"/>
     </declare-styleable>
+
     <declare-styleable name="GameSymbolView">
         <attr name="symbol"
               format="enum">

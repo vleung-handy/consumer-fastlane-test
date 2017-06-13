@@ -656,5 +656,11 @@
     <string name="my_pros_choose_favorite_pro_button">Choose a \nFavorite Pro</string>
     <string name="my_pros_pro_team_empty">There are no pros on your team yet. As you meet pros, you\'ll be able to build your Pro Team. We\'ll always request these pros first.</string>
     <string name="hours_formatted">%1$s hours</string>
+
+    <string name="reset">reset</string>
+    <string name="blast">blast</string>
+    <string name="cd.background_image">Game Background</string>
+    <string name="cd.screen_background">Screen Background</string>
+    <string name="shade">shade</string>
 </resources>
 

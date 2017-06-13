@@ -15,10 +15,10 @@ public class VegasDevActivity extends BaseActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentByTag(RatingFlowGameFragment.TAG);
+        Fragment fragment = fm.findFragmentByTag(ScratchOffGameFragment.TAG);
         if (fragment == null) {
             FragmentTransaction ft = fm.beginTransaction();
-            fragment = RatingFlowGameFragment.newInstance(GameResponse.demo());
+            fragment = ScratchOffGameFragment.newInstance(GameResponse.demo());
             ft.add(android.R.id.content, fragment, ProProfileFragment.TAG);
             ft.commit();
         }

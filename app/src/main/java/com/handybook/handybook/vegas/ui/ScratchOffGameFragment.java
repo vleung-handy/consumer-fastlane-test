@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.vegas.model.GameResponse;
+import com.handybook.handybook.vegas.model.ScratchOffViewModel;
+import com.handybook.handybook.vegas.ui.view.GameSymbolView;
 import com.handybook.handybook.vegas.ui.view.ScratchOffView;
 import com.plattysoft.leonids.ParticleSystem;
 
@@ -23,13 +26,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RatingFlowGameFragment extends InjectedFragment {
+public class ScratchOffGameFragment extends InjectedFragment {
 
-    public static final String TAG = RatingFlowGameFragment.class.getName();
+    public static final String TAG = ScratchOffGameFragment.class.getName();
 
-    private static final String KEY_GAME = "key::game";
+    private static final String KEY_GAME_VM = "key::game_view_model";
 
-    private String mGame;
+    private ScratchOffViewModel mGameViewModel;
     private double mRevealedPercentage = 0;
     private int[] mParticleIds = {
             R.drawable.confetti_1,
@@ -47,21 +50,36 @@ public class RatingFlowGameFragment extends InjectedFragment {
 
     };
 
-    @Bind(R.id.rfgf_percentage) TextView mPercentage;
-    @Bind(R.id.rfgf_scratchoff_view) ScratchOffView mScratchOffView;
-    @Bind(R.id.rfgf_sponge) ImageView mSponge;
     private boolean mIsSpongeAttached;
+    private boolean mIsResultSheetVisible;
     private TranslateAnimation mSpongeAnimation;
     private int[] mSpongeLoc = {0, 0};
 
-    public RatingFlowGameFragment() {
+    @Bind(R.id.rfgf_background_image) ImageView mBackground;
+    @Bind(R.id.rfgf_scratch_symbol_top_left) GameSymbolView mSymbolTL;
+    @Bind(R.id.rfgf_scratch_symbol_top_right) GameSymbolView mSymbolTR;
+    @Bind(R.id.rfgf_scratch_symbol_bottom_left) GameSymbolView mSymbolBL;
+    @Bind(R.id.rfgf_scratch_symbol_bottom_right) GameSymbolView mSymbolBR;
+    @Bind(R.id.rfgf_scratchoff_view) ScratchOffView mScratchOffView;
+    @Bind(R.id.rfgf_bucket) ImageView mBucket;
+    @Bind(R.id.rfgf_sponge) ImageView mSponge;
+    @Bind(R.id.rfgf_result_sheet) ViewGroup mResultSheet;
+    @Bind(R.id.rfgf_result_title) TextView mResultTitle;
+    @Bind(R.id.rfgf_result_subtitle) TextView mResultSubtitle;
+    @Bind(R.id.rfgf_result_header) TextView mResultHeader;
+    @Bind(R.id.rfgf_result_symbol) GameSymbolView mResultSymbol;
+
+    //TODO: Remove below
+    @Bind(R.id.rfgf_percentage) TextView mPercentage;
+
+    public ScratchOffGameFragment() {
     }
 
     @NonNull
-    public static RatingFlowGameFragment newInstance(GameResponse game) {
-        RatingFlowGameFragment fragment = new RatingFlowGameFragment();
+    public static ScratchOffGameFragment newInstance(GameResponse game) {
+        ScratchOffGameFragment fragment = new ScratchOffGameFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_GAME, game);
+        args.putSerializable(KEY_GAME_VM, game);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,7 +88,7 @@ public class RatingFlowGameFragment extends InjectedFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mGame = getArguments().getString(KEY_GAME);
+            mGameViewModel = (ScratchOffViewModel) getArguments().getSerializable(KEY_GAME_VM);
         }
     }
 
@@ -205,14 +223,26 @@ public class RatingFlowGameFragment extends InjectedFragment {
         int partsPerSec = 4;
         int emitTime = 2000;
         int maxParts = 400;
-        int timeToLive = 10000;
+        int timeToLive = 5000;
         final DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         final int scrW = metrics.widthPixels;
         for (final int drawableId : mParticleIds) {
             for (int x = 0; x <= scrW; x += scrW / 5) {
-                emitFromXY(x, -50, partsPerSec, emitTime, maxParts, timeToLive, drawableId);
+                emitFromXY(x, -10, partsPerSec, emitTime, maxParts, timeToLive, drawableId);
             }
+        }
+    }
+
+    @OnClick(R.id.rfgf_shades_button)
+    void toggleShades() {
+        if (mIsResultSheetVisible) {
+            collapseView(mResultSheet);
+            mIsResultSheetVisible = false;
+        }
+        else {
+            expandView(mResultSheet);
+            mIsResultSheetVisible = true;
         }
     }
 
@@ -231,6 +261,38 @@ public class RatingFlowGameFragment extends InjectedFragment {
                 .setAcceleration(0.000685f, 90)
                 .setScaleRange(0.3f, 0.5f)
                 .emit(x, y, partNumPerSecond, emitTime);
+    }
+
+    public void expandView(final View v) {
+        TranslateAnimation anim = null;
+        anim = new TranslateAnimation(0.0f, 0.0f, -v.getHeight(), 0.0f);
+        v.setVisibility(View.VISIBLE);
+        anim.setDuration(300);
+        anim.setInterpolator(new AccelerateInterpolator(0.5f));
+        v.startAnimation(anim);
+    }
+
+    public void collapseView(final View v) {
+        TranslateAnimation anim = null;
+        anim = new TranslateAnimation(0.0f, 0.0f, 0.0f, -v.getHeight());
+        Animation.AnimationListener collapselistener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setVisibility(View.GONE);
+            }
+        };
+        anim.setAnimationListener(collapselistener);
+        anim.setDuration(300);
+        anim.setInterpolator(new AccelerateInterpolator(0.5f));
+        v.startAnimation(anim);
     }
 
 }

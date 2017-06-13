@@ -10,6 +10,7 @@
         android:id="@+id/rfgf_background_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@string/cd.screen_background"
         android:elevation="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/img_game_background_sparkle"
@@ -19,6 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
+        tools:targetApi="lollipop"
         />
 
     <TextView
@@ -32,11 +34,11 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
+        android:text="Clean to Win"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Clean to Win"
         />
 
     <TextView
@@ -50,11 +52,11 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
+        android:text="Use the sponge to clean the window and reveal rewards."
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rfgf_title"
-        tools:text="Use the sponge to clean the window and reveal rewards."
         />
 
 
@@ -85,6 +87,7 @@
             android:id="@+id/rfgf_scratch_background"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:contentDescription="@string/cd.background_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -98,8 +101,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="196dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="220dp"
             />
 
         <android.support.constraint.Guideline
@@ -108,8 +109,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5"
-            tools:layout_editor_absoluteX="170dp"
-            tools:layout_editor_absoluteY="25dp"
             />
 
         <android.support.constraint.Guideline
@@ -118,8 +117,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_end="29dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="375dp"
             />
 
         <android.support.constraint.Guideline
@@ -128,8 +125,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_end="50dp"
-            tools:layout_editor_absoluteX="289dp"
-            tools:layout_editor_absoluteY="25dp"
             />
 
         <android.support.constraint.Guideline
@@ -138,8 +133,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="41dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="65dp"
             />
 
         <android.support.constraint.Guideline
@@ -148,8 +141,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="50dp"
-            tools:layout_editor_absoluteX="50dp"
-            tools:layout_editor_absoluteY="25dp"
             />
 
 
@@ -199,91 +190,84 @@
             app:symbol="heart"
             />
 
-        <FrameLayout
+        <com.handybook.handybook.vegas.ui.view.ScratchOffView
+            android:id="@+id/rfgf_scratchoff_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:elevation="1px"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-
-            <com.handybook.handybook.vegas.ui.view.ScratchOffView
-                android:id="@+id/rfgf_scratchoff_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/img_scratch_off_window_suds"
-                />
-
-        </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/rfgf_result_sheet"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/handy_blue"
-            android:orientation="vertical"
-            android:paddingEnd="36dp"
-            android:paddingLeft="36dp"
-            android:paddingRight="36dp"
-            android:paddingStart="36dp"
-            android:visibility="gone"
+            android:src="@drawable/img_scratch_off_window_suds"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             >
 
-            <TextView
-                android:id="@+id/rfgf_result_header"
-                style="@style/TextView.XLarge.Bold"
+            <LinearLayout
+                android:id="@+id/rfgf_result_sheet"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:gravity="center_horizontal"
-                android:text="WINNER!"
-                android:textColor="@color/handy_white"
-                />
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:background="@color/handy_blue"
+                android:orientation="vertical"
+                android:visibility="visible"
+                >
 
-            <com.handybook.handybook.vegas.ui.view.GameSymbolView
-                android:id="@+id/rfgf_result_symbol"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:symbol="star"
-                />
+                <TextView
+                    android:id="@+id/rfgf_result_header"
+                    style="@style/TextView.XLarge.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:gravity="center_horizontal"
+                    android:text="WINNER!"
+                    android:textColor="@color/handy_white"
+                    />
 
-            <TextView
-                android:id="@+id/rfgf_result_title"
-                style="@style/TextView.XXLarge.Bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:gravity="center_horizontal"
-                android:lineSpacingMultiplier="1.1"
-                android:text="$5 in Handy credit"
-                android:textColor="@color/handy_white"
-                />
+                <com.handybook.handybook.vegas.ui.view.GameSymbolView
+                    android:id="@+id/rfgf_result_symbol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:symbol="star"
+                    />
 
-            <TextView
-                android:id="@+id/rfgf_result_subtitle"
-                style="@style/TextView.Large"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:gravity="center_horizontal"
-                android:lineSpacingMultiplier="1.1"
-                android:text="This reward has been credited to your account. See you next time!"
-                android:textColor="@color/handy_white"
-                />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/rfgf_result_title"
+                    style="@style/TextView.XXLarge.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="$5 in Handy credit"
+                    android:textColor="@color/handy_white"
+                    />
+
+                <TextView
+                    android:id="@+id/rfgf_result_subtitle"
+                    style="@style/TextView.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="This reward has been credited to your account. See you next time!"
+                    android:textColor="@color/handy_white"
+                    />
+            </LinearLayout>
+        </FrameLayout>
 
     </android.support.constraint.ConstraintLayout>
 
@@ -293,10 +277,10 @@
         style="@style/Button.Green"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="See you next booking!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:text="See you next booking!"
         />
 
     <ImageView
@@ -304,73 +288,88 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="51dp"
-        android:elevation="2px"
+        android:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/rfgf_bucket"
         app:layout_constraintLeft_toLeftOf="@+id/rfgf_bucket"
         app:layout_constraintRight_toRightOf="@+id/rfgf_bucket"
         app:srcCompat="@drawable/img_game_sponge"
+        tools:targetApi="lollipop"
         />
 
     <ImageView
         android:id="@+id/rfgf_bucket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="2px"
+        android:elevation="2dp"
         app:layout_constraintBottom_toTopOf="@+id/rfgf_banner_bottom"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/img_game_bucket_red"
+        tools:targetApi="lollipop"
         />
 
     <TextView
         android:id="@+id/rfgf_banner_bottom"
         style="@style/TextView.Large.Bold"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="-1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="0dp"
         android:background="@color/handy_blue"
         android:gravity="center"
         android:padding="@dimen/default_padding"
+        android:text="The more icons you match, the bigger your reward!"
         android:textColor="@color/handy_white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:text="The more icons you match, the bigger your reward!"
         />
 
     <Button
         android:id="@+id/rfgf_reset_button"
+        style="@android:style/Widget.Holo.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:text="Reset"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/reset"
+        app:layout_constraintBottom_toTopOf="@+id/rfgf_submit_button"
         app:layout_constraintLeft_toLeftOf="parent"
         />
 
     <Button
         android:id="@+id/rfgf_blast_button"
+        style="@android:style/Widget.Holo.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Blast"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/blast"
+        app:layout_constraintBottom_toTopOf="@+id/rfgf_reset_button"
+        app:layout_constraintLeft_toLeftOf="@+id/rfgf_reset_button"
+        />
+
+    <Button
+        android:id="@+id/rfgf_shades_button"
+        style="@android:style/Widget.Holo.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shade"
+        app:layout_constraintBottom_toTopOf="@+id/rfgf_blast_button"
+        app:layout_constraintLeft_toLeftOf="@+id/rfgf_blast_button"
         />
 
     <TextView
         android:id="@+id/rfgf_percentage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="0%"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/rfgf_reset_button"
         app:layout_constraintLeft_toRightOf="@+id/rfgf_reset_button"
-        app:layout_constraintRight_toLeftOf="@+id/rfgf_blast_button"
-        tools:text="0%"
         />
 
 
