@@ -101,6 +101,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="196dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="221dp"
             />
 
         <android.support.constraint.Guideline
@@ -109,6 +111,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5"
+            tools:layout_editor_absoluteX="169dp"
+            tools:layout_editor_absoluteY="25dp"
             />
 
         <android.support.constraint.Guideline
@@ -117,6 +121,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_end="29dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="375dp"
             />
 
         <android.support.constraint.Guideline
@@ -125,6 +131,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_end="50dp"
+            tools:layout_editor_absoluteX="289dp"
+            tools:layout_editor_absoluteY="25dp"
             />
 
         <android.support.constraint.Guideline
@@ -133,6 +141,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="41dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="66dp"
             />
 
         <android.support.constraint.Guideline
@@ -141,6 +151,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="50dp"
+            tools:layout_editor_absoluteX="50dp"
+            tools:layout_editor_absoluteY="25dp"
             />
 
 
@@ -203,13 +215,28 @@
             app:layout_constraintVertical_bias="0.0"
             />
 
+        <android.support.v4.widget.Space
+            android:id="@+id/rfgf_background_image_bottom_spacer"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rfgf_scratch_background"
+            />
+
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/rfgf_result_sheet_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rfgf_background_image_bottom_spacer"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -219,10 +246,14 @@
                 android:id="@+id/rfgf_result_sheet"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="-32dp"
                 android:animateLayoutChanges="true"
                 android:background="@color/handy_blue"
                 android:orientation="vertical"
-                android:visibility="visible"
+                android:paddingLeft="@dimen/default_padding_double"
+                android:paddingRight="@dimen/default_padding_double"
+                android:visibility="gone"
+                tools:visibility="visible"
                 >
 
                 <TextView
@@ -230,7 +261,7 @@
                     style="@style/TextView.XLarge.Bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginTop="72dp"
                     android:gravity="center_horizontal"
                     android:text="WINNER!"
                     android:textColor="@color/handy_white"
@@ -240,6 +271,7 @@
                     android:id="@+id/rfgf_result_symbol"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
                     app:symbol="star"
                     />
 
@@ -312,7 +344,6 @@
         style="@style/TextView.Large.Bold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-1dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="0dp"
         android:background="@color/handy_blue"

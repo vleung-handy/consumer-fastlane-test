@@ -6,8 +6,8 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -116,28 +116,39 @@ public class ScratchOffGameFragment extends InjectedFragment {
                 detachSponge(x, y);
             }
         });
-        mSponge.getLocationOnScreen(mSpongeLoc);
         updatePercentage(0);
         return view;
     }
 
-    private float getSpongeX(final float x) {return x - mSponge.getWidth() / 2;}
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSponge.getLocationOnScreen(mSpongeLoc);
+    }
 
-    private float getSpongeY(final float y) {return y + mSponge.getHeight() / 2;}
+    private float getSpongeX(final float x) {
+        final float newX = x - mSponge.getWidth() / 2;
+        return mScratchOffView.getX() + newX;
+    }
+
+    private float getSpongeY(final float y) {
+        final float newY = y + mSponge.getHeight() / 2;
+        return mScratchOffView.getY() + newY;
+    }
 
     private void attachSponge(final float x, final float y) {
         mSponge.bringToFront();
         mSpongeAnimation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF,
-                0,
+                Animation.ABSOLUTE,
+                mSpongeLoc[0],
                 Animation.ABSOLUTE,
                 getSpongeX(x),
-                Animation.RELATIVE_TO_SELF,
-                0,
+                Animation.ABSOLUTE,
+                mSpongeLoc[1],
                 Animation.ABSOLUTE,
                 getSpongeY(y)
         );
-        mSpongeAnimation.setDuration(1000);
+        mSpongeAnimation.setDuration(500);
         mSpongeAnimation.setFillAfter(true);
         mSpongeAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -160,8 +171,8 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
     private void moveSponge(final float x, final float y) {
         if (mIsSpongeAttached) {
-            mSponge.setX(getSpongeX(x));
-            mSponge.setY(getSpongeY(y));
+            mSponge.setX(x);
+            mSponge.setY(y);
         }
     }
 
@@ -176,8 +187,7 @@ public class ScratchOffGameFragment extends InjectedFragment {
                 Animation.ABSOLUTE,
                 mSpongeLoc[1]
         );
-        mSpongeAnimation.setDuration(1000);
-        mSpongeAnimation.setFillAfter(true);
+        mSpongeAnimation.setDuration(500);
         mSpongeAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(final Animation animation) {
@@ -258,24 +268,24 @@ public class ScratchOffGameFragment extends InjectedFragment {
         new ParticleSystem(getActivity(), maxParticles, drawableId, timeToLive)
                 .setSpeedModuleAndAngleRange(0.1f, 0.3f, 225, 315)
                 .setRotationSpeed(144)
-                .setAcceleration(0.000685f, 90)
+                .setAcceleration(0.000785f, 90)
                 .setScaleRange(0.3f, 0.5f)
                 .emit(x, y, partNumPerSecond, emitTime);
     }
 
-    public void expandView(final View v) {
-        TranslateAnimation anim = null;
-        anim = new TranslateAnimation(0.0f, 0.0f, -v.getHeight(), 0.0f);
-        v.setVisibility(View.VISIBLE);
+    public void expandView(final View view) {
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation anim = new TranslateAnimation(0.0f, 0.0f, -view.getHeight(), 0.0f);
         anim.setDuration(300);
-        anim.setInterpolator(new AccelerateInterpolator(0.5f));
-        v.startAnimation(anim);
+        anim.setInterpolator(new AnticipateOvershootInterpolator());
+        view.startAnimation(anim);
     }
 
-    public void collapseView(final View v) {
-        TranslateAnimation anim = null;
-        anim = new TranslateAnimation(0.0f, 0.0f, 0.0f, -v.getHeight());
-        Animation.AnimationListener collapselistener = new Animation.AnimationListener() {
+    public void collapseView(final View view) {
+        TranslateAnimation anim = new TranslateAnimation(0.0f, 0.0f, 0.0f, -view.getHeight());
+        anim.setDuration(300);
+        anim.setInterpolator(new AnticipateOvershootInterpolator());
+        anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
             }
@@ -286,13 +296,10 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                v.setVisibility(View.GONE);
+                view.setVisibility(View.GONE);
             }
-        };
-        anim.setAnimationListener(collapselistener);
-        anim.setDuration(300);
-        anim.setInterpolator(new AccelerateInterpolator(0.5f));
-        v.startAnimation(anim);
+        });
+        view.startAnimation(anim);
     }
 
 }
