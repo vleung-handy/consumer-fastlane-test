@@ -365,7 +365,7 @@
             />
 
         <TextView
-            android:id="@+id/rfgf_banner_bottom"
+            android:id="@+id/rfgf_banner_bottom_text"
             style="@style/TextView.Large.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
