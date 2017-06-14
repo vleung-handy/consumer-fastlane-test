@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,31 +8,13 @@
     android:orientation="vertical"
     >
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/HandyTheme.AppBarOverlay"
-        >
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/pro_team_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/HandyTheme.AppBarOverlay"
-            android:title="@string/title_activity_pro_team"
-            app:contentInsetStart="0dp"
-            app:layout_scrollFlags="enterAlways"
-            app:navigationIcon="@drawable/ic_back"
-            app:titleMargin="@dimen/default_margin"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            />
-    </android.support.design.widget.AppBarLayout>
-
     <TextView
         style="@style/TextView.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:paddingEnd="@dimen/default_padding"
+        android:paddingStart="@dimen/default_padding"
         android:padding="@dimen/default_padding"
         android:text="@string/which_pro"
         />
