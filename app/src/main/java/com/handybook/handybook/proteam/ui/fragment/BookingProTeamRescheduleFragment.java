@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.manager.BookingManager;
 import com.handybook.handybook.booking.model.Booking;
-import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
@@ -24,6 +22,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
+import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.squareup.otto.Subscribe;
 
@@ -40,9 +39,6 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
     @Inject
     BookingManager mBookingManager;
 
-    @Bind(R.id.pro_team_toolbar)
-    Toolbar mToolbar;
-
     @Bind(R.id.pro_team_recycler_view)
     RecyclerView mRecyclerView;
 
@@ -50,14 +46,17 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
     private ProTeamProViewModel mSelectedProTeamMember;
     private ProRescheduleAdapter mAdapter;
     private Booking mBooking;
+    private boolean mIsInNestedScrollView;
 
     public static BookingProTeamRescheduleFragment newInstance(
             ProTeam.ProTeamCategory category,
-            Booking booking
+            Booking booking,
+            boolean isInNestedScrollView
     ) {
         Bundle args = new Bundle();
         args.putParcelable(BundleKeys.PRO_TEAM_CATEGORY, category);
         args.putParcelable(BundleKeys.BOOKING, booking);
+        args.putBoolean(BundleKeys.IS_IN_NESTED_SCROLLVIEW, isInNestedScrollView);
 
         BookingProTeamRescheduleFragment fragment = new BookingProTeamRescheduleFragment();
         fragment.setArguments(args);
@@ -71,6 +70,7 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
         if (getArguments() != null) {
             mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
             mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
+            mIsInNestedScrollView = getArguments().getBoolean(BundleKeys.IS_IN_NESTED_SCROLLVIEW);
         }
     }
 
@@ -103,9 +103,14 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
     private void initRecyclerView() {
         if (mRecyclerView == null || mProTeamCategory == null) { return; }
 
+        //If it's in nested scrollview, these are required so it scrolls correctly and starts
+        //  at top
+        if(mIsInNestedScrollView) {
+            mRecyclerView.setNestedScrollingEnabled(false);
+            mRecyclerView.setFocusable(false);
+        }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
-
         mAdapter = new ProRescheduleAdapter(
                 mProTeamCategory,
                 mConfigurationManager.getPersistentConfiguration()
@@ -131,12 +136,6 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
         mAdapter.setAssignedProviderId(mBooking.getProvider().getId());
 
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setupToolbar(mToolbar, getString(R.string.choose_a_pro));
     }
 
     @Override

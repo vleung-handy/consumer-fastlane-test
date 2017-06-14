@@ -19,6 +19,7 @@ public class BundleKeys {
     public static final String HELP_NODE = "help_node";
     public static final String HELP_NODE_ID = "help_node_id";
     public static final String IS_FROM_BOOKING_FLOW = "is_from_booking_flow";
+    public static final String IS_IN_NESTED_SCROLLVIEW = "is_in_nested_scrollview";
     public static final String PATH = "path";
     public static final String POST_OPTIONS = "post_options";
     public static final String PRERATE_PRO_INFO = "prerate_pro_info";
