@@ -23,6 +23,7 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.vegas.model.GameResponse;
 import com.handybook.handybook.vegas.model.ScratchOffViewModel;
 import com.handybook.handybook.vegas.ui.view.GameSymbolView;
+import com.handybook.handybook.vegas.ui.view.MaybeScrollView;
 import com.handybook.handybook.vegas.ui.view.ScratchOffView;
 import com.plattysoft.leonids.ParticleSystem;
 
@@ -61,6 +62,7 @@ public class ScratchOffGameFragment extends InjectedFragment {
     private TranslateAnimation mSpongeAnimation;
 
     @Bind(R.id.rfgf_background_image) ImageView mBackground;
+    @Bind(R.id.rfgf_scroll_container) MaybeScrollView mScrollView;
     @Bind(R.id.rfgf_scratch_symbol_top_left) GameSymbolView mSymbolTL;
     @Bind(R.id.rfgf_scratch_symbol_top_right) GameSymbolView mSymbolTR;
     @Bind(R.id.rfgf_scratch_symbol_bottom_left) GameSymbolView mSymbolBL;
@@ -73,6 +75,8 @@ public class ScratchOffGameFragment extends InjectedFragment {
     @Bind(R.id.rfgf_result_subtitle) TextView mResultSubtitle;
     @Bind(R.id.rfgf_result_header) TextView mResultHeader;
     @Bind(R.id.rfgf_result_symbol) GameSymbolView mResultSymbol;
+    @Bind(R.id.rfgf_banner_bottom_container) ViewGroup mBottomBannerContainer;
+    @Bind(R.id.rfgf_banner_bottom_text) TextView mBottomBannerText;
 
     //TODO: Remove below
     @Bind(R.id.rfgf_percentage) TextView mPercentage;
@@ -107,6 +111,7 @@ public class ScratchOffGameFragment extends InjectedFragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_rating_flow_game, container, false);
         ButterKnife.bind(this, view);
+        mScrollView.requestDisallowInterceptTouchEvent(true);
         mScratchOffView.setOnScratchListener(new ScratchOffView.OnScratchListener() {
             @Override
             public void onScratchStart(final float x, final float y) {
@@ -141,15 +146,16 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
     private float getSpongeX(final float x) {
         final float newX = x - mSpongeActor.getWidth() * 0.65f;
-        return newX - mScratchOffView.getX();
+        return newX - mScratchOffView.getLeft();
     }
 
     private float getSpongeY(final float y) {
         final float newY = y - mSpongeActor.getHeight() * 0.75f;
-        return newY - mScratchOffView.getY();
+        return newY - mScratchOffView.getTop();
     }
 
     private void attachSponge(final float x, final float y) {
+        mScrollView.setScrollingEnabled(false);
         mSpongeActor.animate()
                     .setDuration(100)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -192,6 +198,8 @@ public class ScratchOffGameFragment extends InjectedFragment {
     }
 
     private void detachSponge(final float x, final float y) {
+        updatePercentage(mScratchOffView.getScratchedOffRatio(10));
+        mScrollView.setScrollingEnabled(true);
         mSpongeActor.animate()
                     .setDuration(100)
                     .x(mSpongeStartX)
@@ -221,18 +229,29 @@ public class ScratchOffGameFragment extends InjectedFragment {
                     .start();
     }
 
-    protected void updatePercentage(double percentage) {
-        mRevealedPercentage = percentage;
-        if (percentage > 60) {
+    protected void updatePercentage(double ratio) {
+        mRevealedPercentage = ratio;
+        String txt = String.format(Locale.getDefault(), "ScratchedOff ratio: %.3f", ratio);
+        mPercentage.setText(txt);
+        if (ratio > .8) {
             mScratchOffView.scratchOffAll();
             rollDownShades();
+            swipeRightBucket();
+            swipeRightSponge();
+            swipeDownBottomBanner();
         }
-        String percentage2decimal = String.format(Locale.getDefault(), "%.2f", percentage) + " %";
-        mPercentage.setText(percentage2decimal);
     }
 
-    private void rollDownShades() {
+    private void swipeRightBucket() {
+        animateView(mBucket, R.animator.vegas_swipe_out_right);
+    }
 
+    private void swipeRightSponge() {
+        animateView(mSpongeActor, R.animator.vegas_swipe_out_right);
+    }
+
+    private void swipeDownBottomBanner() {
+        animateView(mBottomBannerContainer, R.animator.vegas_swipe_out_down);
     }
 
     @OnClick(R.id.rfgf_reset_button)
@@ -260,13 +279,21 @@ public class ScratchOffGameFragment extends InjectedFragment {
     @OnClick(R.id.rfgf_shades_button)
     void toggleShades() {
         if (mIsResultSheetVisible) {
-            collapseView(mResultSheet);
-            mIsResultSheetVisible = false;
+            rollUpShades();
         }
         else {
-            expandView(mResultSheet);
-            mIsResultSheetVisible = true;
+            rollDownShades();
         }
+    }
+
+    private void rollDownShades() {
+        expandView(mResultSheet);
+        mIsResultSheetVisible = true;
+    }
+
+    private void rollUpShades() {
+        collapseView(mResultSheet);
+        mIsResultSheetVisible = false;
     }
 
     @NonNull

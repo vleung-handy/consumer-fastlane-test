@@ -22,7 +22,7 @@ public class ScratchOffView extends AppCompatImageView {
 
     private static final String TAG = ScratchOffView.class.getSimpleName();
 
-    private static final float MIN_SCRATCH_DISTANCE = 5;
+    private static final float MIN_SCRATCH_DISTANCE = 1;
     private static final int DEFAULT_STROKE_WIDTH = 72;
 
     private OnScratchListener mOnScratchListener;
@@ -53,6 +53,7 @@ public class ScratchOffView extends AppCompatImageView {
     }
 
     private void init(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+        setDrawingCacheEnabled(true);
         setBackgroundColor(Color.TRANSPARENT);
 
         if (getDrawable() != null) {
@@ -146,7 +147,7 @@ public class ScratchOffView extends AppCompatImageView {
 
     private boolean shouldStartScratch(float oldX, float x, float oldY, float y) {
         float distance = (float) Math.sqrt(Math.pow(oldX - x, 2) + Math.pow(oldY - y, 2));
-        return distance > MIN_SCRATCH_DISTANCE;
+        return distance >= MIN_SCRATCH_DISTANCE;
     }
 
     public void setOnScratchListener(final OnScratchListener listener) {
@@ -155,6 +156,27 @@ public class ScratchOffView extends AppCompatImageView {
 
     public void scratchOffAll() {
         mIsFullyScratchedOff = true;
+    }
+
+    public double getScratchedOffRatio(final int pixelDelta) {
+        destroyDrawingCache();
+        buildDrawingCache();
+        Bitmap b = getDrawingCache();
+        final int w = b.getWidth();
+        final int h = b.getHeight();
+        int numTransparent = 0, numOpaque = 0;
+
+        for (int y = 0; y < h; y += pixelDelta) {
+            for (int x = 0; x < w; x += pixelDelta) {
+                if ((b.getPixel(x, y) >>> 24) == 0) { // completely transparent
+                    numTransparent++;
+                }
+                else {
+                    numOpaque++;
+                }
+            }
+        }
+        return (double) numTransparent / (numTransparent + numOpaque);
     }
 
     @Override
