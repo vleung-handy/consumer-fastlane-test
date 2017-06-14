@@ -112,4 +112,9 @@
                   value="6"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="MaybeScrollView">
+        <attr name="scrollingEnabled"
+              format="boolean"/>
+    </declare-styleable>
 </resources>
