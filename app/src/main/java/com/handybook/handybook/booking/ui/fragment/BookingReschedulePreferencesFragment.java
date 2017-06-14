@@ -115,6 +115,8 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
     }
 
     @Override
+    //NOTE: This is also called in BookingProTeamRescheduleFragment and that seems to have
+    // precedence over this onActivityResult method
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
@@ -122,9 +124,7 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
-            if (requestCode == ActivityResult.START_RESCHEDULE) {
-                getActivity().finish();
-            }
+            getActivity().finish();
         }
     }
 
