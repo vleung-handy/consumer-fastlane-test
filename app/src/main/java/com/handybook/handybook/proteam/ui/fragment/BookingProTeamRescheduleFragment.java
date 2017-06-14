@@ -146,9 +146,7 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
-            if (requestCode == ActivityResult.START_RESCHEDULE) {
-                getActivity().finish();
-            }
+            getActivity().finish();
         }
     }
 
