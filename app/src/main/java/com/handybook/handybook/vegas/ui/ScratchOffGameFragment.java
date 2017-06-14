@@ -1,11 +1,17 @@
 package com.handybook.handybook.vegas.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.os.Bundle;
+import android.support.annotation.AnimatorRes;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -62,7 +68,6 @@ public class ScratchOffGameFragment extends InjectedFragment {
     @Bind(R.id.rfgf_scratchoff_view) ScratchOffView mScratchOffView;
     @Bind(R.id.rfgf_bucket) ImageView mBucket;
     @Bind(R.id.rfgf_sponge_actor) ImageView mSpongeActor;
-    @Bind(R.id.rfgf_sponge_placeholder) ImageView mSpongePlaceholder;
     @Bind(R.id.rfgf_result_sheet) ViewGroup mResultSheet;
     @Bind(R.id.rfgf_result_title) TextView mResultTitle;
     @Bind(R.id.rfgf_result_subtitle) TextView mResultSubtitle;
@@ -71,6 +76,8 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
     //TODO: Remove below
     @Bind(R.id.rfgf_percentage) TextView mPercentage;
+    private float mSpongeStartX;
+    private float mSpongeStartY;
 
     public ScratchOffGameFragment() {
     }
@@ -116,13 +123,20 @@ public class ScratchOffGameFragment extends InjectedFragment {
                 detachSponge(x, y);
             }
         });
+        mSpongeActor.getViewTreeObserver()
+                    .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            mSpongeActor.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            mSpongeStartX = mSpongeActor.getX();
+                            mSpongeStartY = mSpongeActor.getY();
+                            animateView(mSpongeActor, R.animator.vegas_sponge_restless);
+                        }
+                    });
+        animateView(mSymbolTR, R.animator.vegas_symbol_winning);
+        animateView(mSymbolBR, R.animator.vegas_symbol_winning);
         updatePercentage(0);
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private float getSpongeX(final float x) {
@@ -136,75 +150,75 @@ public class ScratchOffGameFragment extends InjectedFragment {
     }
 
     private void attachSponge(final float x, final float y) {
-        mSpongeActor.bringToFront();
-        mSpongeAnimation = new TranslateAnimation(
-                mSpongePlaceholder.getX(),
-                getSpongeX(x),
-                mSpongePlaceholder.getY(),
-                getSpongeY(y)
-        );
-        mSpongeAnimation.setDuration(700);
-        mSpongeAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(final Animation animation) {
+        mSpongeActor.animate()
+                    .setDuration(100)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .x(getSpongeX(x))
+                    .y(getSpongeY(y))
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(final Animator animation) {
+                            mSpongeActor.setAlpha(1f);
+                            mSpongeActor.setTranslationY(0f);
+                            final AnimatorSet set = (AnimatorSet) mSpongeActor.getTag();
+                            if (set != null) {
+                                set.end();
+                            }
+                        }
 
-            }
+                        @Override
+                        public void onAnimationEnd(final Animator animation) {
 
-            @Override
-            public void onAnimationEnd(final Animation animation) {
-                mIsSpongeAttached = true;
-            }
+                        }
 
-            @Override
-            public void onAnimationRepeat(final Animation animation) {
+                        @Override
+                        public void onAnimationCancel(final Animator animation) {
 
-            }
-        });
-        mSpongeActor.startAnimation(mSpongeAnimation);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(final Animator animation) {
+
+                        }
+                    })
+                    .start();
     }
 
     private void moveSponge(final float x, final float y) {
-        if (mIsSpongeAttached) {
-            mSpongeActor.setX(getSpongeX(x));
-            mSpongeActor.setY(getSpongeY(y));
-        }
+        //        if (mIsSpongeAttached) {
+        mSpongeActor.setX(getSpongeX(x));
+        mSpongeActor.setY(getSpongeY(y));
+        //        }
     }
 
     private void detachSponge(final float x, final float y) {
-        mSpongeActor.setX(mSpongePlaceholder.getX());
-        mSpongeActor.setY(mSpongePlaceholder.getY());
-        mIsSpongeAttached = false;
-/*
-        mSpongeAnimation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF,
-                0,
-                Animation.ABSOLUTE,
-                mSpongeLoc[0],
-                Animation.RELATIVE_TO_SELF,
-                0,
-                Animation.ABSOLUTE,
-                mSpongeLoc[1]
-        );
-        mSpongeAnimation.setDuration(200);
-        mSpongeAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(final Animation animation) {
+        mSpongeActor.animate()
+                    .setDuration(100)
+                    .x(mSpongeStartX)
+                    .y(mSpongeStartY)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(final Animator animation) {
 
-            }
+                        }
 
-            @Override
-            public void onAnimationEnd(final Animation animation) {
-                mIsSpongeAttached = false;
-            }
+                        @Override
+                        public void onAnimationEnd(final Animator animation) {
+                            animateView(mSpongeActor, R.animator.vegas_sponge_restless);
+                        }
 
-            @Override
-            public void onAnimationRepeat(final Animation animation) {
+                        @Override
+                        public void onAnimationCancel(final Animator animation) {
 
-            }
-        });
-        mSpongeActor.startAnimation(mSpongeAnimation);
-*/
+                        }
 
+                        @Override
+                        public void onAnimationRepeat(final Animator animation) {
+
+                        }
+                    })
+                    .start();
     }
 
     protected void updatePercentage(double percentage) {
@@ -253,6 +267,18 @@ public class ScratchOffGameFragment extends InjectedFragment {
             expandView(mResultSheet);
             mIsResultSheetVisible = true;
         }
+    }
+
+    @NonNull
+    private AnimatorSet animateView(final View view, final @AnimatorRes int resId) {
+        final AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(
+                getContext(),
+                resId
+        );
+        set.setTarget(view);
+        set.start();
+        view.setTag(set);
+        return set;
     }
 
     private void emitFromXY(

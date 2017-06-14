@@ -22,7 +22,7 @@ public class ScratchOffView extends AppCompatImageView {
 
     private static final String TAG = ScratchOffView.class.getSimpleName();
 
-    private static final float MIN_SCRATCH_DISTANCE = 10;
+    private static final float MIN_SCRATCH_DISTANCE = 5;
     private static final int DEFAULT_STROKE_WIDTH = 72;
 
     private OnScratchListener mOnScratchListener;
