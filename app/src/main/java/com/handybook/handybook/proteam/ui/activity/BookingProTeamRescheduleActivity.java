@@ -24,8 +24,7 @@ public class BookingProTeamRescheduleActivity extends BaseActivity {
 
         setContentView(R.layout.activity_pro_team_reschedule_list);
         ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
-        setTitle(R.string.choose_a_pro);
+        setSupportActionBar(mToolbar, getString(R.string.choose_a_pro), true, R.drawable.ic_back);
 
         //Set the fragment
         ProTeam.ProTeamCategory category
