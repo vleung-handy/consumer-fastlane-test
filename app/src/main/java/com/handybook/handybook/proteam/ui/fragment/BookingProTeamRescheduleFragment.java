@@ -46,17 +46,14 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
     private ProTeamProViewModel mSelectedProTeamMember;
     private ProRescheduleAdapter mAdapter;
     private Booking mBooking;
-    private boolean mIsInNestedScrollView;
 
     public static BookingProTeamRescheduleFragment newInstance(
             ProTeam.ProTeamCategory category,
-            Booking booking,
-            boolean isInNestedScrollView
+            Booking booking
     ) {
         Bundle args = new Bundle();
         args.putParcelable(BundleKeys.PRO_TEAM_CATEGORY, category);
         args.putParcelable(BundleKeys.BOOKING, booking);
-        args.putBoolean(BundleKeys.IS_IN_NESTED_SCROLLVIEW, isInNestedScrollView);
 
         BookingProTeamRescheduleFragment fragment = new BookingProTeamRescheduleFragment();
         fragment.setArguments(args);
@@ -70,7 +67,6 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
         if (getArguments() != null) {
             mProTeamCategory = getArguments().getParcelable(BundleKeys.PRO_TEAM_CATEGORY);
             mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-            mIsInNestedScrollView = getArguments().getBoolean(BundleKeys.IS_IN_NESTED_SCROLLVIEW);
         }
     }
 
@@ -102,13 +98,6 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
 
     private void initRecyclerView() {
         if (mRecyclerView == null || mProTeamCategory == null) { return; }
-
-        //If it's in nested scrollview, these are required so it scrolls correctly and starts
-        //  at top
-        if(mIsInNestedScrollView) {
-            mRecyclerView.setNestedScrollingEnabled(false);
-            mRecyclerView.setFocusable(false);
-        }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         mAdapter = new ProRescheduleAdapter(

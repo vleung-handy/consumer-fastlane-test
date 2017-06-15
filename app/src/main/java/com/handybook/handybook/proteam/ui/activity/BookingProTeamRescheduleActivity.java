@@ -31,7 +31,7 @@ public class BookingProTeamRescheduleActivity extends BaseActivity {
         ProTeam.ProTeamCategory category
                 = getIntent().getParcelableExtra(BundleKeys.PRO_TEAM_CATEGORY);
         Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
-        Fragment fragment = BookingProTeamRescheduleFragment.newInstance(category, booking, false);
+        Fragment fragment = BookingProTeamRescheduleFragment.newInstance(category, booking);
 
         getSupportFragmentManager()
                 .beginTransaction()

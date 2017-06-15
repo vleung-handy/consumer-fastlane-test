@@ -30,14 +30,9 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.or_separator)
-    View mOrSeparator;
     //Layout of the pro team list including the separator at top
     @Bind(R.id.reschedule_pro_team_list_layout)
     View mProTeamListLayout;
-
-    //This is the fragment
-    BookingProTeamRescheduleFragment mBookingProTeamRescheduleFragment;
 
     private ProTeamProListFragment mProTeamListFragment;
     private ProTeam.ProTeamCategory mProTeamCategory;
@@ -96,10 +91,9 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
         }
         else {
             mProTeamListLayout.setVisibility(View.VISIBLE);
-            mBookingProTeamRescheduleFragment = BookingProTeamRescheduleFragment.newInstance(
+            BookingProTeamRescheduleFragment mBookingProTeamRescheduleFragment = BookingProTeamRescheduleFragment.newInstance(
                     mProTeamCategory,
-                    mBooking,
-                    true
+                    mBooking
             );
             getChildFragmentManager()
                     .beginTransaction()
