@@ -12,13 +12,15 @@ import java.util.HashMap;
 public class GameSymbolView extends android.support.v7.widget.AppCompatImageView {
 
     public static final int[] RESOURCE_IDS = {
-            R.drawable.img_game_scratch_off_dustpan,
-            R.drawable.img_game_symbol_bucket,
+            R.drawable.img_game_symbol_dustpan,
+            R.drawable.img_game_symbol_bucket_green,
             R.drawable.img_game_symbol_logo_handy,
             R.drawable.img_game_symbol_heart,
             R.drawable.img_game_symbol_piggy_bank,
             R.drawable.img_game_symbol_soap_bottle,
-            R.drawable.img_game_symbol_star
+            R.drawable.img_game_symbol_star,
+            R.drawable.img_game_symbol_sponge_crying
+
 
     };
     public static final GameSymbol[] SYMBOLS = {
