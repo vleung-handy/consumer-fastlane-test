@@ -2,25 +2,15 @@ package com.handybook.handybook.vegas.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.StringDef;
 import android.util.AttributeSet;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.vegas.model.GameSymbol;
 
-import java.lang.annotation.Retention;
 import java.util.HashMap;
-
-import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 public class GameSymbolView extends android.support.v7.widget.AppCompatImageView {
 
-    public static final String SYMBOL_DUSTPAN = "dustpan";
-    public static final String SYMBOL_BUCKET_GREEN = "bucket_green";
-    public static final String SYMBOL_HANDY_LOGO = "handy_logo";
-    public static final String SYMBOL_HEART = "heart";
-    public static final String SYMBOL_PIGGY_BANK = "piggy_bank";
-    public static final String SYMBOL_SOAP_BOTTLE = "soap_bottle";
-    public static final String SYMBOL_STAR = "star";
     public static final int[] RESOURCE_IDS = {
             R.drawable.img_game_scratch_off_dustpan,
             R.drawable.img_game_symbol_bucket,
@@ -31,20 +21,20 @@ public class GameSymbolView extends android.support.v7.widget.AppCompatImageView
             R.drawable.img_game_symbol_star
 
     };
-    public static final
-    @Symbol String[] SYMBOLS = {
-            SYMBOL_DUSTPAN,
-            SYMBOL_BUCKET_GREEN,
-            SYMBOL_HANDY_LOGO,
-            SYMBOL_HEART,
-            SYMBOL_PIGGY_BANK,
-            SYMBOL_SOAP_BOTTLE,
-            SYMBOL_STAR
+    public static final GameSymbol[] SYMBOLS = {
+            GameSymbol.DUSTPAN,
+            GameSymbol.BUCKET_GREEN,
+            GameSymbol.HANDY_LOGO,
+            GameSymbol.HEART,
+            GameSymbol.PIGGY_BANK,
+            GameSymbol.SOAP_BOTTLE,
+            GameSymbol.STAR,
+            GameSymbol.CRYING_SPONGE
     };
-    public static final HashMap<String, Integer> SYMBOLS_TO_RESOURCE_IDS = new HashMap<>();
-    public static final HashMap<Integer, String> RESOURCE_IDS_TO_SYMBOLS = new HashMap<>();
+    public static final HashMap<GameSymbol, Integer> SYMBOLS_TO_RESOURCE_IDS = new HashMap<>();
+    public static final HashMap<Integer, GameSymbol> RESOURCE_IDS_TO_SYMBOLS = new HashMap<>();
 
-    private String mSymbol;
+    private GameSymbol mSymbol;
 
     static {
         for (int i = 0; i < SYMBOLS.length; i++) {
@@ -95,26 +85,13 @@ public class GameSymbolView extends android.support.v7.widget.AppCompatImageView
         setImageResource(gerResourceId(mSymbol));
     }
 
-    public void setSymbol(final String symbol) {
+    public void setSymbol(final GameSymbol symbol) {
         mSymbol = symbol;
         update();
     }
 
-    public static int gerResourceId(final String symbol) {
+    private static int gerResourceId(final GameSymbol symbol) {
         return SYMBOLS_TO_RESOURCE_IDS.get(symbol);
-    }
-
-    @Retention(SOURCE)
-    @StringDef({
-                       SYMBOL_DUSTPAN,
-                       SYMBOL_BUCKET_GREEN,
-                       SYMBOL_HANDY_LOGO,
-                       SYMBOL_HEART,
-                       SYMBOL_PIGGY_BANK,
-                       SYMBOL_SOAP_BOTTLE, SYMBOL_STAR
-               })
-    public @interface Symbol {
-
     }
 
 }

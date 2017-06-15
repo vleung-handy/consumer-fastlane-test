@@ -9,28 +9,28 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.handybook.handybook.core.ui.activity.BaseActivity;
-import com.handybook.handybook.vegas.model.GameViewModel;
+import com.handybook.handybook.vegas.model.VegasGame;
 
 public class VegasActivity extends BaseActivity {
 
     private static final String EXTRA_GAME_VIEW_MODEL = "extra::game_view_model";
 
     private State mNextState = State.PRE_GAME;
-    private GameViewModel mGameViewModel;
+    private VegasGame mVegasGame;
 
     @NonNull
-    public static Intent getIntent(Activity activity, GameViewModel gameViewModel) {
+    public static Intent getIntent(Activity activity, VegasGame vegasGame) {
         Intent intent = new Intent(activity, VegasActivity.class);
-        intent.putExtra(EXTRA_GAME_VIEW_MODEL, gameViewModel);
+        intent.putExtra(EXTRA_GAME_VIEW_MODEL, vegasGame);
         return intent;
     }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //        mGameViewModel = (GameViewModel) getIntent().getSerializableExtra(EXTRA_GAME_VIEW_MODEL);
-        mGameViewModel = GameViewModel.demo(); //FIXME: Replace this line with above
-        if (mGameViewModel == null || mGameViewModel.isInvalid()) {
+        //        mVegasGame = (VegasGame) getIntent().getSerializableExtra(EXTRA_GAME_VIEW_MODEL);
+        mVegasGame = VegasGame.demo(); //FIXME: Replace this line with above
+        if (mVegasGame == null || mVegasGame.isInvalid()) {
             finish();
             return;
         }
@@ -45,16 +45,16 @@ public class VegasActivity extends BaseActivity {
             case PRE_GAME:
                 fragment = fm.findFragmentByTag(PreGameFragment.TAG);
                 if (fragment == null) {
-                    fragment = PreGameFragment.newInstance(mGameViewModel);
+                    fragment = PreGameFragment.newInstance(mVegasGame);
                     ft.add(android.R.id.content, fragment, PreGameFragment.TAG);
                 }
                 mNextState = State.GAME;
                 break;
             case GAME:
-                fragment = fm.findFragmentByTag(ScratchOffGameFragment.TAG);
+                fragment = fm.findFragmentByTag(GameFragment.TAG);
                 if (fragment == null) {
-                    fragment = ScratchOffGameFragment.newInstance(mGameViewModel);
-                    ft.add(android.R.id.content, fragment, ScratchOffGameFragment.TAG);
+                    fragment = GameFragment.newInstance(mVegasGame);
+                    ft.add(android.R.id.content, fragment, GameFragment.TAG);
                 }
                 mNextState = State.END;
                 break;

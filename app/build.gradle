@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
 apply plugin: 'io.fabric'
 apply plugin: 'com.getkeepsafe.dexcount'
 
@@ -35,6 +34,9 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //can't use CoreTestRunner for now because it prevents animations from being disabled on AWS
+    }
+    dataBinding {
+        enabled = true
     }
     buildTypes {
         release {
@@ -93,7 +95,7 @@ android {
 
 ext {
     supportLibraryVersion = '25.3.1'
-    googlePlayServicesVersion = '10.2.4'
+    googlePlayServicesVersion = '11.0.1'
     firebaseVersion = '10.2.4'
 }
 
@@ -151,7 +153,8 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     // Jake Wharton
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 
@@ -163,6 +166,7 @@ dependencies {
     compile 'com.scottyab:secure-preferences-lib:0.1.1'
     compile 'com.facebook.android:facebook-android-sdk:4.16.1'
     compile 'com.airbnb:deeplinkdispatch:1.5.0'
+    annotationProcessor 'com.airbnb:deeplinkdispatch-processor:1.5.0'
     compile 'com.usebutton:android-sdk:5.0.1'
     compile 'org.apmem.tools:layouts:1.10@aar'
 
@@ -189,7 +193,6 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
-    apt 'com.airbnb:deeplinkdispatch-processor:1.5.0'
 
     //Testing
     testCompile 'org.robolectric:robolectric:3.3.2'

@@ -1,7 +1,7 @@
 package com.handybook.handybook.vegas;
 
+import com.handybook.handybook.vegas.ui.GameFragment;
 import com.handybook.handybook.vegas.ui.PreGameFragment;
-import com.handybook.handybook.vegas.ui.ScratchOffGameFragment;
 import com.handybook.handybook.vegas.ui.VegasActivity;
 
 import dagger.Module;
@@ -11,7 +11,7 @@ import dagger.Module;
         complete = false,
         injects = {
                 VegasActivity.class,
-                ScratchOffGameFragment.class,
+                GameFragment.class,
                 PreGameFragment.class
         })
 public class VegasModule {

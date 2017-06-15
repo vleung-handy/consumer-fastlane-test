@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.vegas.model.GameViewModel;
+import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.view.GameSymbolView;
 import com.handybook.handybook.vegas.ui.view.MaybeScrollView;
 import com.handybook.handybook.vegas.ui.view.ScratchOffView;
@@ -32,13 +32,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScratchOffGameFragment extends InjectedFragment {
+public class GameFragment extends InjectedFragment {
 
-    public static final String TAG = ScratchOffGameFragment.class.getName();
+    public static final String TAG = GameFragment.class.getName();
 
     private static final String KEY_GAME_VM = "key::game_view_model";
 
-    private GameViewModel mGameViewModel;
+    private VegasGame mVegasGame;
     private double mRevealedPercentage = 0;
     private int[] mParticleIds = {
             R.drawable.confetti_1,
@@ -82,14 +82,14 @@ public class ScratchOffGameFragment extends InjectedFragment {
     //TODO: Remove below
     @Bind(R.id.rfgf_percentage) TextView mPercentage;
 
-    public ScratchOffGameFragment() {
+    public GameFragment() {
     }
 
     @NonNull
-    public static ScratchOffGameFragment newInstance(GameViewModel gameViewModel) {
-        ScratchOffGameFragment fragment = new ScratchOffGameFragment();
+    public static GameFragment newInstance(VegasGame vegasGame) {
+        GameFragment fragment = new GameFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_GAME_VM, gameViewModel);
+        args.putSerializable(KEY_GAME_VM, vegasGame);
         fragment.setArguments(args);
         return fragment;
     }
@@ -98,7 +98,7 @@ public class ScratchOffGameFragment extends InjectedFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mGameViewModel = (GameViewModel) getArguments().getSerializable(KEY_GAME_VM);
+            mVegasGame = (VegasGame) getArguments().getSerializable(KEY_GAME_VM);
         }
     }
 

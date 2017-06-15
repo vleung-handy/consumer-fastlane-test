@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.common.collect.Lists;
-import com.google.gson.JsonElement;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Provider;
@@ -33,8 +32,8 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
-import com.handybook.handybook.vegas.model.GameViewModel;
 import com.handybook.handybook.vegas.model.RewardsWrapper;
+import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.VegasActivity;
 
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class RatingFlowActivity extends BaseActivity {
     private ProviderMatchPreference mSelectedPreference;
     private ArrayList<Provider> mRecommendedProviders;
     private boolean mIsFetchingRecommendedProviders = false;
-    private GameViewModel mGameViewModel;
+    private VegasGame mVegasGame;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -110,12 +109,12 @@ public class RatingFlowActivity extends BaseActivity {
                 );
                 break;
             case GAME_STEP:
-                if (mGameViewModel == null) {
+                if (mVegasGame == null) {
                     finish();
                     return;
                 }
                 finish();
-                startActivity(VegasActivity.getIntent(this, mGameViewModel));
+                startActivity(VegasActivity.getIntent(this, mVegasGame));
                 return;
             default:
                 finish();
@@ -286,13 +285,15 @@ public class RatingFlowActivity extends BaseActivity {
                 new ActivitySafeCallback<RewardsWrapper, RatingFlowActivity>(this) {
                     @Override
                     public void onCallbackSuccess(final RewardsWrapper response) {
-                        final ArrayList<JsonElement> games = response.getGames();
+                        final VegasGame[] games = response.games;
                         if (games == null) {
                             return;
                         }
-                        for (JsonElement game : games) {
-                            mGameViewModel = GameViewModel.from(game);
-                            if (mGameViewModel.isValid()) { break; } // First game we can show goes
+                        for (VegasGame game : games) {
+                            if (game.isValid()) {
+                                mVegasGame = game;
+                                break; // First game we can show goes
+                            }
                         }
                     }
 
