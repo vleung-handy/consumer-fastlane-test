@@ -14,16 +14,16 @@ import android.widget.LinearLayout;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.model.bill.Bill;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BillSectionView extends FrameLayout {
 
     private Bill.BillSection mBillSection;
 
-    @Bind(R.id.bill_view_section_line_item_root)
+    @BindView(R.id.bill_view_section_line_item_root)
     LinearLayout mLineItemContainer;
-    @Bind(R.id.bill_view_section_horizontal_separator)
+    @BindView(R.id.bill_view_section_horizontal_separator)
     View mSeparator;
 
     private String mCurrencySymbol = "";

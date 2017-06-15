@@ -32,7 +32,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -43,7 +43,7 @@ public class BottomNavActivity extends BaseActivity {
 
     public static final String BUNDLE_KEY_TAB = "key_tab";
 
-    @Bind(R.id.bottom_navigation)
+    @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigationView;
 
     @Inject

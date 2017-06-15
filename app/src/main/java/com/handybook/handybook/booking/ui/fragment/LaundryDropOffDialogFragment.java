@@ -26,7 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LaundryDropOffDialogFragment extends BaseDialogFragment {
@@ -40,17 +40,17 @@ public class LaundryDropOffDialogFragment extends BaseDialogFragment {
     @Inject
     DataManager dataManager;
 
-    @Bind(R.id.title_text)
+    @BindView(R.id.title_text)
     TextView titleText;
-    @Bind(R.id.message_text)
+    @BindView(R.id.message_text)
     TextView messageText;
-    @Bind(R.id.date_spinner)
+    @BindView(R.id.date_spinner)
     Spinner dateSpinner;
-    @Bind(R.id.time_spinner)
+    @BindView(R.id.time_spinner)
     Spinner timeSpinner;
-    @Bind(R.id.submit_button)
+    @BindView(R.id.submit_button)
     Button submitButton;
-    @Bind(R.id.submit_progress)
+    @BindView(R.id.submit_progress)
     ProgressBar submitProgress;
 
     public static LaundryDropOffDialogFragment newInstance(

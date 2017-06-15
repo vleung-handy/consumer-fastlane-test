@@ -31,7 +31,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -54,9 +54,9 @@ public class BookingDateTimeInputFragment extends InjectedFragment
 
     private SimpleDateFormat mEditDateButtonFormatter;
     private DateFormat mEditTimeButtonFormatter;
-    @Bind(R.id.booking_edit_date_button)
+    @BindView(R.id.booking_edit_date_button)
     Button mBookingEditDateButton;
-    @Bind(R.id.booking_edit_time_button)
+    @BindView(R.id.booking_edit_time_button)
     Button mBookingEditTimeButton;
     private DatePickerDialog mDatePickerDialog;
     private ProAvailabilityResponse mProAvailability;

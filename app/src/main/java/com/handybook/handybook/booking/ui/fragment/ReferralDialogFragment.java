@@ -25,7 +25,7 @@ import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,7 +33,7 @@ public class ReferralDialogFragment extends BaseDialogFragment {
 
     public static final String TAG = ReferralDialogFragment.class.getSimpleName();
 
-    @Bind(R.id.dialog_referral_subtitle)
+    @BindView(R.id.dialog_referral_subtitle)
     TextView mSubtitle;
 
     private static final String REFERRAL_DESCRIPTOR = "referral_descriptor";

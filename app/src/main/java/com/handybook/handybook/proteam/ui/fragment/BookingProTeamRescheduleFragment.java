@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
@@ -40,10 +39,7 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
     @Inject
     BookingManager mBookingManager;
 
-    @Bind(R.id.pro_team_toolbar)
-    Toolbar mToolbar;
-
-    @Bind(R.id.pro_team_recycler_view)
+    @BindView(R.id.pro_team_recycler_view)
     RecyclerView mRecyclerView;
 
     private ProTeam.ProTeamCategory mProTeamCategory;
@@ -102,10 +98,8 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
 
     private void initRecyclerView() {
         if (mRecyclerView == null || mProTeamCategory == null) { return; }
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
-
         mAdapter = new ProRescheduleAdapter(
                 mProTeamCategory,
                 mConfigurationManager.getPersistentConfiguration()
@@ -134,12 +128,6 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setupToolbar(mToolbar, getString(R.string.choose_a_pro));
-    }
-
-    @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
@@ -147,9 +135,7 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
-            if (requestCode == ActivityResult.START_RESCHEDULE) {
-                getActivity().finish();
-            }
+            getActivity().finish();
         }
     }
 

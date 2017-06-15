@@ -21,21 +21,21 @@ import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ReferralFragment extends BaseReferralFragment {
 
-    @Bind(R.id.fragment_referral_content)
+    @BindView(R.id.fragment_referral_content)
     View mReferralContent;
-    @Bind(R.id.fragment_referral_title)
+    @BindView(R.id.fragment_referral_title)
     TextView mTitle;
-    @Bind(R.id.fragment_referral_subtitle)
+    @BindView(R.id.fragment_referral_subtitle)
     TextView mSubtitle;
-    @Bind(R.id.fragment_referral_toolbar)
+    @BindView(R.id.fragment_referral_toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.fragment_referral_snowview)
+    @BindView(R.id.fragment_referral_snowview)
     SnowView mSnowView;
 
     private ReferralChannels mReferralChannels;

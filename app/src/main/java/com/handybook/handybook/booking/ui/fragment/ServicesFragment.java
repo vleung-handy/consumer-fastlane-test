@@ -39,7 +39,7 @@ import com.handybook.handybook.library.util.TransitionListenerAdapter;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
@@ -51,23 +51,23 @@ public final class ServicesFragment extends BookingFlowFragment {
 
     private Service mService;
 
-    @Bind(R.id.content)
+    @BindView(R.id.content)
     ScrollView mContent;
-    @Bind(R.id.services_toolbar)
+    @BindView(R.id.services_toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.header)
+    @BindView(R.id.header)
     ViewGroup mHeader;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ViewGroup mList;
-    @Bind(R.id.icon)
+    @BindView(R.id.icon)
     ImageView mIcon;
-    @Bind(R.id.toolbar_icon)
+    @BindView(R.id.toolbar_icon)
     ImageView mToolbarIcon;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTitle;
-    @Bind(R.id.subtitle)
+    @BindView(R.id.subtitle)
     TextView mSubtitle;
-    @Bind(R.id.list_wrapper)
+    @BindView(R.id.list_wrapper)
     LinearLayout mListWrapper;
 
     Interpolator mInterpolator;

@@ -21,7 +21,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -29,13 +29,13 @@ public class SplashPromoDialogFragment extends BaseDialogFragment {
 
     private static final String BUNDLE_KEY_SPLASH_PROMO = "SPLASH_PROMO";
 
-    @Bind(R.id.splash_promo_header_image)
+    @BindView(R.id.splash_promo_header_image)
     ImageView mUrlImageView;
-    @Bind(R.id.splash_promo_subtitle)
+    @BindView(R.id.splash_promo_subtitle)
     TextView mSubtitle;
-    @Bind(R.id.splash_promo_title)
+    @BindView(R.id.splash_promo_title)
     TextView mTitle;
-    @Bind(R.id.splash_promo_action_button)
+    @BindView(R.id.splash_promo_action_button)
     Button mActionButton;
 
     private SplashPromo mSplashPromo;

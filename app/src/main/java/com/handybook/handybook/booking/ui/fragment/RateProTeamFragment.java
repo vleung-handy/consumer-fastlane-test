@@ -16,7 +16,7 @@ import com.handybook.handybook.library.ui.view.ImageToggleButton;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.util.ProTeamUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
@@ -28,14 +28,14 @@ public class RateProTeamFragment extends Fragment {
     private static final String KEY_MATCH_PREFERENCE = "match-preference";
     private static final String KEY_PROVIDER_NAME = "provider-name";
 
-    @Bind(R.id.rate_pro_team_buttons_title)
+    @BindView(R.id.rate_pro_team_buttons_title)
     TextView mButtonsTitle;
-    @Bind(R.id.rate_pro_team_button_yes)
+    @BindView(R.id.rate_pro_team_button_yes)
     ImageToggleButton mButtonYes;
-    @Bind(R.id.rate_pro_team_button_no)
+    @BindView(R.id.rate_pro_team_button_no)
     ImageToggleButton mButtonNo;
 
-    @Bind(R.id.rate_pro_team_container)
+    @BindView(R.id.rate_pro_team_container)
     ViewGroup mRootContainer;
 
     @BindDrawable(R.drawable.ic_checkbox_heart_checked)

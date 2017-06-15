@@ -45,7 +45,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -59,28 +59,28 @@ public class AccountFragment extends InjectedFragment {
     @Inject
     DefaultPreferencesManager mDefaultPreferencesManager;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.fragment_account_credits_view)
+    @BindView(R.id.fragment_account_credits_view)
     PriceView mCreditsView;
-    @Bind(R.id.account_active_plans_text)
+    @BindView(R.id.account_active_plans_text)
     TextView mActivePlansText;
-    @Bind(R.id.account_active_plans_layout)
+    @BindView(R.id.account_active_plans_layout)
     ViewGroup mActivePlansLayout;
-    @Bind(R.id.account_active_plans_saved_cleanings_container)
+    @BindView(R.id.account_active_plans_saved_cleanings_container)
     ViewGroup mSavedCleaningsContainer;
-    @Bind(R.id.account_active_plans_saved_cleanings_title)
+    @BindView(R.id.account_active_plans_saved_cleanings_title)
     TextView mSavedCleaningsTitle;
-    @Bind(R.id.account_active_plans_saved_cleanings_message)
+    @BindView(R.id.account_active_plans_saved_cleanings_message)
     TextView mSavedCleaningsMessage;
-    @Bind(R.id.account_pro_team_layout)
+    @BindView(R.id.account_pro_team_layout)
     View mProTeamLayout;
 
-    @Bind(R.id.account_pro_team_subtext)
+    @BindView(R.id.account_pro_team_subtext)
     TextView mProTeamSubtext;
-    @Bind(R.id.account_history_help_layout)
-    ViewGroup mHistoryHelpLayout;
-    @Bind(R.id.horizontal_progress_bar)
+    @BindView(R.id.account_booking_history_layout)
+    View mHistoryLayout;
+    @BindView(R.id.horizontal_progress_bar)
     ProgressBar mHorizontalProgressBar;
 
     //This counter is used to remove the horizontal progress bar when counter is 0
@@ -143,10 +143,10 @@ public class AccountFragment extends InjectedFragment {
         //set visibility of Booking History link based on config
         if (mConfigurationManager.getPersistentConfiguration()
                                  .isUpcomingAndPastBookingsMergeEnabled()) {
-            mHistoryHelpLayout.setVisibility(View.GONE);
+            mHistoryLayout.setVisibility(View.GONE);
         }
         else {
-            mHistoryHelpLayout.setVisibility(View.VISIBLE);
+            mHistoryLayout.setVisibility(View.VISIBLE);
         }
     }
 

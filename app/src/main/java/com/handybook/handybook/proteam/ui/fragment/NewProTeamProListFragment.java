@@ -48,7 +48,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewProTeamProListFragment extends ProgressSpinnerFragment {
@@ -58,13 +58,13 @@ public class NewProTeamProListFragment extends ProgressSpinnerFragment {
     @Inject
     ProTeamManager mProTeamManager;
 
-    @Bind(R.id.edit_my_pros_list_recycler_view)
+    @BindView(R.id.edit_my_pros_list_recycler_view)
     EmptiableRecyclerView mRecyclerView;
-    @Bind(R.id.pro_team_empty_view)
+    @BindView(R.id.pro_team_empty_view)
     View mEmptyView;
-    @Bind(R.id.pro_team_empty_view_title)
+    @BindView(R.id.pro_team_empty_view_title)
     TextView mEmptyViewTitle;
-    @Bind(R.id.pro_team_empty_view_text)
+    @BindView(R.id.pro_team_empty_view_text)
     TextView mEmptyViewText;
 
     private ProTeam.ProTeamCategory mProTeamCategory;

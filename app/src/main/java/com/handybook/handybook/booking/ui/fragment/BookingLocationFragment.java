@@ -27,7 +27,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog
 
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingLocationFragment extends BookingFlowFragment
@@ -38,9 +38,9 @@ public final class BookingLocationFragment extends BookingFlowFragment
 
     private boolean isPromoFlow;
 
-    @Bind(R.id.zip_text)
+    @BindView(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mNextButton;
 
     public static BookingLocationFragment newInstance(@Nullable final Bundle extras) {

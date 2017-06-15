@@ -13,16 +13,16 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.core.ui.descriptor.ServiceCategoryListDescriptor;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class ServiceCategorySimpleView extends TableRow {
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTitle;
-    @Bind(R.id.icon)
+    @BindView(R.id.icon)
     ImageView mIcon;
 
     public ServiceCategorySimpleView(final Context context) {

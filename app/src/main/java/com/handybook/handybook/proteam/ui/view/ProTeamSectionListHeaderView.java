@@ -8,14 +8,14 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProTeamSectionListHeaderView extends FrameLayout {
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTitle;
-    @Bind(R.id.help_icon)
+    @BindView(R.id.help_icon)
     ImageView mHelpIcon;
 
     public ProTeamSectionListHeaderView(final Context context) {

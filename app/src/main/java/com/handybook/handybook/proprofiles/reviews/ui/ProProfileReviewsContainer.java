@@ -17,7 +17,7 @@ import com.handybook.handybook.library.ui.view.OnScrolledToBottomListener;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.proprofiles.reviews.model.ProReviews;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -30,22 +30,22 @@ import butterknife.ButterKnife;
  */
 public class ProProfileReviewsContainer extends FrameLayout {
 
-    @Bind(R.id.pro_profile_reviews_recycler_view)
+    @BindView(R.id.pro_profile_reviews_recycler_view)
     EmptiableRecyclerView mProReviewsRecyclerView;
 
-    @Bind(R.id.pro_profile_reviews_loading_view)
+    @BindView(R.id.pro_profile_reviews_loading_view)
     View mLoadingView;
 
-    @Bind(R.id.pro_profile_reviews_no_reviews_view)
+    @BindView(R.id.pro_profile_reviews_no_reviews_view)
     View mEmptyView;
 
-    @Bind(R.id.pro_profile_no_reviews_body_text)
+    @BindView(R.id.pro_profile_no_reviews_body_text)
     TextView mNoReviewsBodyText;
 
-    @Bind(R.id.loading_error_layout)
+    @BindView(R.id.loading_error_layout)
     View mLoadingErrorLayout;
 
-    @Bind(R.id.loading_error_try_again_button)
+    @BindView(R.id.loading_error_try_again_button)
     Button mLoadingErrorTryAgainButton;
 
     ProReviewsRecyclerViewAdapter mProReviewsRecyclerViewAdapter;

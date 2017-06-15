@@ -13,7 +13,7 @@ import com.handybook.handybook.library.ui.view.SingleSpinnerTimePicker;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -34,7 +34,7 @@ public class BookingTimeInputDialogFragment extends BaseDialogFragment {
     private static final String BUNDLE_KEY_TIME_INTERVALS
             = "BUNDLE_KEY_TIME_INTERVALS";
 
-    @Bind(R.id.fragment_dialog_booking_time_input_picker)
+    @BindView(R.id.fragment_dialog_booking_time_input_picker)
     SingleSpinnerTimePicker mSingleSpinnerTimePicker;
 
     public static BookingTimeInputDialogFragment newInstance(

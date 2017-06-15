@@ -33,20 +33,20 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class BookingEditEntryInformationFragment extends ProgressSpinnerFragment {
 
     private Booking booking;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button nextButton;
 
-    @Bind(R.id.entry_method_input_view)
+    @BindView(R.id.entry_method_input_view)
     EntryMethodsInfoView mEntryMethodsInfoView;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @Inject

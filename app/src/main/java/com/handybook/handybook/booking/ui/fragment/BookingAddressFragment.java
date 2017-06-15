@@ -24,20 +24,20 @@ import com.handybook.handybook.core.ui.widget.PhoneInputTextView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingAddressFragment extends BookingFlowFragment {
 
-    @Bind(R.id.booking_address_main_container)
+    @BindView(R.id.booking_address_main_container)
     View mMainContainer;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mButtonNext;
-    @Bind(R.id.booking_address_fullname)
+    @BindView(R.id.booking_address_fullname)
     FullNameInputTextView mTextFullName;
-    @Bind(R.id.booking_address_phone_prefix)
+    @BindView(R.id.booking_address_phone_prefix)
     TextView mTextPhonePrefix;
-    @Bind(R.id.booking_address_phone)
+    @BindView(R.id.booking_address_phone)
     PhoneInputTextView mTextPhone;
 
     AutoCompleteAddressFragment mAutoCompleteFragment;

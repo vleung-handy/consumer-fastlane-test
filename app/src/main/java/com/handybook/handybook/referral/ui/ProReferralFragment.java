@@ -21,7 +21,7 @@ import com.handybook.handybook.referral.model.ReferralInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,16 +30,16 @@ import butterknife.OnClick;
  */
 public class ProReferralFragment extends BaseReferralFragment {
 
-    @Bind(R.id.pro_referral_carousel)
+    @BindView(R.id.pro_referral_carousel)
     ProTeamCarouselView mCarousel;
 
-    @Bind(R.id.pro_referral_subtitle)
+    @BindView(R.id.pro_referral_subtitle)
     TextView mSubtitle;
 
-    @Bind(R.id.pro_referral_title)
+    @BindView(R.id.pro_referral_title)
     TextView mTitle;
 
-    @Bind(R.id.pro_referral_share_link)
+    @BindView(R.id.pro_referral_share_link)
     TextView mShareUrl;
 
     private List<ProCarouselVM> mCarouselVMs;

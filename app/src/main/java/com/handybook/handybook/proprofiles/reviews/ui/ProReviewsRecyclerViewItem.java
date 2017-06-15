@@ -13,18 +13,18 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.ratingflow.ui.RatingFlowFiveStarsView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProReviewsRecyclerViewItem extends FrameLayout {
 
-    @Bind(R.id.pro_review_recycler_view_item_star_rating_view)
+    @BindView(R.id.pro_review_recycler_view_item_star_rating_view)
     RatingFlowFiveStarsView mRatingFlowFiveStarsView;
 
-    @Bind(R.id.pro_review_recycler_view_item_body_text)
+    @BindView(R.id.pro_review_recycler_view_item_body_text)
     TextView mBodyText;
 
-    @Bind(R.id.pro_review_recycler_review_item_date_text)
+    @BindView(R.id.pro_review_recycler_review_item_date_text)
     TextView mDateText;
 
     public ProReviewsRecyclerViewItem(@NonNull final Context context) {

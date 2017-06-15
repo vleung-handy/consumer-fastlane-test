@@ -29,7 +29,7 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -46,15 +46,15 @@ public class ProTeamProListFragment extends InjectedFragment {
     private static final String KEY_PROTEAM_CATEGORY_TYPE = "ProTeamProList:CategoryType";
     private static final String KEY_SAVE_BUTTON_ENABLED = "ProTeamProList:SaveButtonEnabled";
 
-    @Bind(R.id.pro_team_pro_list_recycler_view)
+    @BindView(R.id.pro_team_pro_list_recycler_view)
     EmptiableRecyclerView mRecyclerView;
-    @Bind(R.id.pro_team_pro_list_save_button)
+    @BindView(R.id.pro_team_pro_list_save_button)
     Button mSaveButton;
-    @Bind(R.id.pro_team_empty_view)
+    @BindView(R.id.pro_team_empty_view)
     View mEmptyView;
-    @Bind(R.id.pro_team_empty_view_title)
+    @BindView(R.id.pro_team_empty_view_title)
     TextView mEmptyViewTitle;
-    @Bind(R.id.pro_team_empty_view_text)
+    @BindView(R.id.pro_team_empty_view_text)
     TextView mEmptyViewText;
 
     private ProTeam mProTeam;

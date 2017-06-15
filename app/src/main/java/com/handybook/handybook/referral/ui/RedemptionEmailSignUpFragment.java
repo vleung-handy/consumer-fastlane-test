@@ -16,7 +16,7 @@ import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -24,9 +24,9 @@ public class RedemptionEmailSignUpFragment extends ProgressSpinnerFragment {
 
     private static final String KEY_REFERRAL_GUID = "referral_guid";
 
-    @Bind(R.id.email)
+    @BindView(R.id.email)
     EmailInputTextView mEmailInput;
-    @Bind(R.id.password)
+    @BindView(R.id.password)
     PasswordInputTextView mPasswordInput;
 
     private String mReferralGuid;

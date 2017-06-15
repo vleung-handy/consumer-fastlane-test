@@ -20,7 +20,7 @@ import com.handybook.handybook.proteam.ui.view.ProTeamSectionListHeaderView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewProTeamCategoryAdapter
@@ -160,17 +160,17 @@ public class NewProTeamCategoryAdapter
     static class ProViewHolder extends BaseViewHolder {
 
         private final ActionCallbacks mActionCallbacks;
-        @Bind(R.id.pro_team_pro_card_holder)
+        @BindView(R.id.pro_team_pro_card_holder)
         ViewGroup mProTeamProCardHolder;
-        @Bind(R.id.pro_team_pro_card_checkbox)
+        @BindView(R.id.pro_team_pro_card_checkbox)
         CheckBox mHeartIcon;
-        @Bind(R.id.pro_team_pro_card_profile)
+        @BindView(R.id.pro_team_pro_card_profile)
         HorizontalMiniProProfile mProProfile;
-        @Bind(R.id.empty_state_holder)
+        @BindView(R.id.empty_state_holder)
         ViewGroup mEmptyStateHolder;
-        @Bind(R.id.empty_state_title)
+        @BindView(R.id.empty_state_title)
         TextView mEmptyStateTitle;
-        @Bind(R.id.empty_state_subtitle)
+        @BindView(R.id.empty_state_subtitle)
         TextView mEmptyStateSubtitle;
 
         ProViewHolder(final View itemView, @NonNull final ActionCallbacks actionCallbacks) {

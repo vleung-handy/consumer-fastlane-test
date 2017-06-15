@@ -49,7 +49,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -58,16 +58,16 @@ public class ProTeamConversationsFragment extends ProgressSpinnerFragment
 
     private static final String BUNDLE_KEY_SHOW_TOOLBAR = "BUNDLE_KEY_SHOW_TOOLBAR";
 
-    @Bind(R.id.pro_team_toolbar)
+    @BindView(R.id.pro_team_toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.pro_team_swipe_refresh)
+    @BindView(R.id.pro_team_swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Bind(R.id.pro_team_recycler_view)
+    @BindView(R.id.pro_team_recycler_view)
     EmptiableRecyclerView mRecyclerView;
 
-    @Bind(R.id.messages_empty_view)
+    @BindView(R.id.messages_empty_view)
     View mEmptyView;
 
     @Inject

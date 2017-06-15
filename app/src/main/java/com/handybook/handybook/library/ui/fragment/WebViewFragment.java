@@ -15,14 +15,14 @@ import com.handybook.handybook.core.HandyWebViewClient;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.view.HandyWebView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WebViewFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.handy_web_view)
+    @BindView(R.id.handy_web_view)
     HandyWebView mWebView;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     public static WebViewFragment newInstance(@NonNull final String uri) {

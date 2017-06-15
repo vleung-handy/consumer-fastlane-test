@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -20,7 +20,7 @@ public class EmailCancellationDialogFragment extends BaseDialogFragment {
 
     private static final String BUNDLE_KEY_USER_EMAIL_ADDRESS = "USER_EMAIL_ADDRESS";
 
-    @Bind(R.id.email_cancellation_info_text)
+    @BindView(R.id.email_cancellation_info_text)
     TextView mInfoText;
 
     public static EmailCancellationDialogFragment newInstance(String userEmailAddress) {

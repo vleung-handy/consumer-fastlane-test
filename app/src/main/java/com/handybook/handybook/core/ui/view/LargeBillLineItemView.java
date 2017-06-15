@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Large line item usees bigger fonts and PriceView widget to show price
@@ -19,13 +19,13 @@ public class LargeBillLineItemView extends AbstractBillLineItemView {
 
     private static final String TAG = "LargeBillLineItemView";
 
-    @Bind(R.id.bill_view_large_line_item_label)
+    @BindView(R.id.bill_view_large_line_item_label)
     TextView mLabel;
-    @Bind(R.id.bill_view_large_line_item_question_mark)
+    @BindView(R.id.bill_view_large_line_item_question_mark)
     ImageView mQuestionMark;
-    @Bind(R.id.bill_view_large_line_item_amount)
+    @BindView(R.id.bill_view_large_line_item_amount)
     PriceView mPrice;
-    @Bind(R.id.bill_view_large_line_item_amount_override)
+    @BindView(R.id.bill_view_large_line_item_amount_override)
     TextView mPriceOverride;
 
     public LargeBillLineItemView(final Context context) {

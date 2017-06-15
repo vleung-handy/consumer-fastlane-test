@@ -20,7 +20,7 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -34,12 +34,12 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout {
      * the expanded persistent promo view that is behind the app bar layout
      * and is gradually revealed as the app bar layout is dragged down
      */
-    @Bind(R.id.persistent_promo_expanded_view)
+    @BindView(R.id.persistent_promo_expanded_view)
     PersistentPromoExpandedLayout mPersistentPromoExpandedLayout;
     /**
      * contains the persistent promo preview toolbar and functionality for it to expand and collapse
      */
-    @Bind(R.id.persistent_promo_appbar_layout)
+    @BindView(R.id.persistent_promo_appbar_layout)
     PersistentPromoAppBarLayout mPersistentPromoAppBarLayout;
 
     /**

@@ -16,7 +16,7 @@ import com.handybook.handybook.proprofiles.model.ProProfile;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.util.ProTeamUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -31,19 +31,19 @@ import butterknife.ButterKnife;
  */
 public class ProProfileHeaderView extends FrameLayout{
 
-    @Bind(R.id.pro_profile_summary_layout)
+    @BindView(R.id.pro_profile_summary_layout)
     ProProfileMiniProProfile mMiniProProfile;
 
-    @Bind(R.id.pro_profile_action_buttons_layout)
+    @BindView(R.id.pro_profile_action_buttons_layout)
     ViewGroup mActionButtonsLayout;
 
-    @Bind(R.id.pro_profile_message_action_button)
+    @BindView(R.id.pro_profile_message_action_button)
     View mMessageActionButton;
 
-    @Bind(R.id.pro_profile_book_action_button)
+    @BindView(R.id.pro_profile_book_action_button)
     View mBookActionButton;
 
-    @Bind(R.id.pro_profile_recommend_action_button)
+    @BindView(R.id.pro_profile_recommend_action_button)
     View mRecommendActionButton;
 
     public ProProfileHeaderView(@NonNull final Context context) {

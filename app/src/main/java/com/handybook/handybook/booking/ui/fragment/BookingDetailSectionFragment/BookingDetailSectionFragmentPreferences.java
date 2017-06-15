@@ -20,11 +20,11 @@ import com.handybook.handybook.core.constant.BundleKeys;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class BookingDetailSectionFragmentPreferences extends BookingDetailSectionFragment {
 
-    @Bind(R.id.preferences_section)
+    @BindView(R.id.preferences_section)
     public LinearLayout preferencesSection;
 
     @StringRes

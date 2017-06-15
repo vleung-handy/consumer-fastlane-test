@@ -24,7 +24,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLo
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -34,13 +34,13 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
     private List<RecurrenceOption> mRecurrenceOptions;
     private BookingOptionsSelectView mOptionsView;
 
-    @Bind(R.id.options_layout)
+    @BindView(R.id.options_layout)
     LinearLayout optionsLayout;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button nextButton;
-    @Bind(R.id.fragment_booking_recurrence_show_more_options_button)
+    @BindView(R.id.fragment_booking_recurrence_show_more_options_button)
     View mShowMoreOptionsButton;
-    @Bind(R.id.fragment_booking_recurrence_disclaimer_text)
+    @BindView(R.id.fragment_booking_recurrence_disclaimer_text)
     TextView mDisclaimerText;
 
     public static BookingRecurrenceFragment newInstance(@Nullable final Bundle extras) {

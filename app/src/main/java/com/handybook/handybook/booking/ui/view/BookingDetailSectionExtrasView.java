@@ -9,12 +9,12 @@ import com.handybook.handybook.booking.model.Booking;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingDetailSectionExtrasView extends BookingDetailSectionView {
 
-    @Bind(R.id.extras_section)
+    @BindView(R.id.extras_section)
     public LinearLayout extrasSection;
 
     public BookingDetailSectionExtrasView(final Context context) {

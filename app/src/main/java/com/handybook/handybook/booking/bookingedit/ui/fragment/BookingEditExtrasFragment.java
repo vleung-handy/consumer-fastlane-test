@@ -31,30 +31,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class BookingEditExtrasFragment extends ProgressSpinnerFragment {
 
     //TODO: use ViewModel
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.booking_edit_extras_content_container)
+    @BindView(R.id.booking_edit_extras_content_container)
     ScrollView mContentContainer;
-    @Bind(R.id.options_layout)
+    @BindView(R.id.options_layout)
     LinearLayout mOptionsLayout;
-    @Bind(R.id.booking_edit_extras_booking_label_row)
+    @BindView(R.id.booking_edit_extras_booking_label_row)
     LabelValueView mBookingTableRow;
-    @Bind(R.id.booking_edit_extras_booking_duration_text)
+    @BindView(R.id.booking_edit_extras_booking_duration_text)
     TextView mBookingDurationText;
-    @Bind(R.id.booking_edit_extras_total_due_text)
+    @BindView(R.id.booking_edit_extras_total_due_text)
     TextView mTotalDueText;
-    @Bind(R.id.booking_edit_extras_billed_on_text)
+    @BindView(R.id.booking_edit_extras_billed_on_text)
     TextView mBilledOnText;
-    @Bind(R.id.booking_extras_price_table)
+    @BindView(R.id.booking_extras_price_table)
     LinearLayout mBookingExtrasPriceTableLayout;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mSaveButton;
 
     private Booking mBooking;

@@ -22,7 +22,7 @@ import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.LeftIconButton;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,13 +33,13 @@ public class RedemptionSignUpFragment extends ProgressSpinnerFragment {
     private static final String KEY_SENDER_NAME = "sender_name";
     private static final String KEY_REFERRAL_GUID = "referral_guid";
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTitle;
-    @Bind(R.id.subtitle)
+    @BindView(R.id.subtitle)
     TextView mSubtitle;
-    @Bind(R.id.facebook_register_button)
+    @BindView(R.id.facebook_register_button)
     LeftIconButton mFacebookRegisterButton;
-    @Bind(R.id.email_register_button)
+    @BindView(R.id.email_register_button)
     LeftIconButton mEmailRegisterButton;
 
     private String mReferralGuid;

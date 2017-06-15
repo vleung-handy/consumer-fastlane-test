@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -44,7 +44,7 @@ public class RateImprovementDialogFragment extends BaseDialogFragment
     static final String EXTRA_FIRST_FRAGMENT = "first_fragment";
     private static final String TAG = RateImprovementDialogFragment.class.getName();
 
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     SwipeableViewPager mPager;
 
     private WizardPagerAdapter mAdapter;

@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class FavProReferralDialogFragment extends InjectedDialogFragment {
 
-    @Bind(R.id.fav_pro_referral_avatar)
+    @BindView(R.id.fav_pro_referral_avatar)
     CircleImageView mAvatar;
 
     private ProReferral mProReferral;

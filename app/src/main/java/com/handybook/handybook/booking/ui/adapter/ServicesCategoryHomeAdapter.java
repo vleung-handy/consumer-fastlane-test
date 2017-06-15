@@ -13,7 +13,7 @@ import com.handybook.handybook.core.ui.descriptor.ServiceCategoryListDescriptor;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -74,11 +74,11 @@ public class ServicesCategoryHomeAdapter extends BaseAdapter {
 
     public class CategoryViewHolder {
 
-        @Bind(R.id.icon)
+        @BindView(R.id.icon)
         ImageView mIcon;
-        @Bind(R.id.text)
+        @BindView(R.id.text)
         TextView mText;
-        @Bind(R.id.sub_text)
+        @BindView(R.id.sub_text)
         TextView mSubText;
 
         public CategoryViewHolder(View view) {

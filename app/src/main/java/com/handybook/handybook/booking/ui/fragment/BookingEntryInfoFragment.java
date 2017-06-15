@@ -29,7 +29,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog
 
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingEntryInfoFragment extends BookingFlowFragment
@@ -42,12 +42,12 @@ public final class BookingEntryInfoFragment extends BookingFlowFragment
     private boolean mIsNewUser;
 
     private Instructions mInstructions;
-    @Bind(R.id.header_text)
+    @BindView(R.id.header_text)
     TextView mHeaderText;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mNextButton;
 
-    @Bind(R.id.entry_method_input_view)
+    @BindView(R.id.entry_method_input_view)
     EntryMethodsInfoView mEntryMethodsInfoView;
 
     public static BookingEntryInfoFragment newInstance(

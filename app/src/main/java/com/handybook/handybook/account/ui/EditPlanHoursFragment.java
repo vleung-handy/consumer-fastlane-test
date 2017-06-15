@@ -28,7 +28,7 @@ import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditPlanHoursLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -38,27 +38,27 @@ public final class EditPlanHoursFragment extends ProgressSpinnerFragment {
     private BookingEditHoursViewModel mBookingEditHoursViewModel;
     private BookingOptionsSpinnerView mOptionsView;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.plan_edit_hours_container)
+    @BindView(R.id.plan_edit_hours_container)
     ViewGroup mContainer;
-    @Bind(R.id.plan_edit_hours_progressbar)
+    @BindView(R.id.plan_edit_hours_progressbar)
     ProgressBar mProgressBar;
-    @Bind(R.id.plan_edit_hours_base_time_row)
+    @BindView(R.id.plan_edit_hours_base_time_row)
     LabelValueView mRowBaseTime;
-    @Bind(R.id.plan_edit_hours_added_time_row)
+    @BindView(R.id.plan_edit_hours_added_time_row)
     LabelValueView mRowAddedTime;
-    @Bind(R.id.plan_edit_hours_extras_time_row)
+    @BindView(R.id.plan_edit_hours_extras_time_row)
     LabelValueView mRowExtras;
-    @Bind(R.id.plan_edit_hours_total_due_text)
+    @BindView(R.id.plan_edit_hours_total_due_text)
     TextView mTotalDueText;
-    @Bind(R.id.plan_edit_hours_booking_duration_text)
+    @BindView(R.id.plan_edit_hours_booking_duration_text)
     TextView mBookingDurationText;
-    @Bind(R.id.plan_edit_hours_options_view_container)
+    @BindView(R.id.plan_edit_hours_options_view_container)
     ViewGroup mOptionsViewContainer;
-    @Bind(R.id.plan_edit_hours_subtext)
+    @BindView(R.id.plan_edit_hours_subtext)
     TextView mTotalSubtext;
-    @Bind(R.id.plan_edit_hours_save_button)
+    @BindView(R.id.plan_edit_hours_save_button)
     Button mSaveButton;
 
     @NonNull

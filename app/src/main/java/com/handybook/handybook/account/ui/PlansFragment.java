@@ -21,14 +21,14 @@ import com.handybook.handybook.logger.handylogger.model.account.PlanSelectionLog
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PlansFragment extends InjectedFragment {
 
-    @Bind(R.id.plans_layout)
+    @BindView(R.id.plans_layout)
     LinearLayout mPlansLayout;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private ArrayList<RecurringBooking> mPlans;

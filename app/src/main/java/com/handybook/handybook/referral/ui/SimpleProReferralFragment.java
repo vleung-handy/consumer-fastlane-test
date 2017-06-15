@@ -24,7 +24,7 @@ import com.handybook.handybook.referral.model.ReferralChannels;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralInfo;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -34,16 +34,16 @@ import butterknife.OnClick;
  */
 public class SimpleProReferralFragment extends BaseReferralFragment {
 
-    @Bind(R.id.simple_pro_header)
+    @BindView(R.id.simple_pro_header)
     TextView mShareHeader;
 
-    @Bind(R.id.simple_pro_subtitle)
+    @BindView(R.id.simple_pro_subtitle)
     TextView mShareSubTitle;
 
-    @Bind(R.id.simple_pro_url)
+    @BindView(R.id.simple_pro_url)
     TextView mShareUrl;
 
-    @Bind(R.id.simple_pro_copy_container)
+    @BindView(R.id.simple_pro_copy_container)
     LinearLayout mCopyContainer;
 
     private Provider mProvider;

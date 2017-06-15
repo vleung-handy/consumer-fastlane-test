@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -35,9 +35,9 @@ public class TipDialogFragment extends BaseDialogFragment {
     @Inject
     UserManager mUserManager;
 
-    @Bind(R.id.title_text)
+    @BindView(R.id.title_text)
     TextView mTitleText;
-    @Bind(R.id.tip_notice)
+    @BindView(R.id.tip_notice)
     View mTipNotice;
 
     private String mProName;

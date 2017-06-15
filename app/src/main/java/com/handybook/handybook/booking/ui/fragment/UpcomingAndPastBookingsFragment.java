@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,14 @@ import android.view.ViewGroup;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.history.HistoryFragment;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingsLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 /**
  * currently this will show in {@link com.handybook.handybook.booking.ui.activity.BookingsActivity}
@@ -26,13 +29,13 @@ import butterknife.ButterKnife;
  */
 public class UpcomingAndPastBookingsFragment extends InjectedFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.upcoming_and_past_bookings_tab_layout)
+    @BindView(R.id.upcoming_and_past_bookings_tab_layout)
     TabLayout mTabLayout;
 
-    @Bind(R.id.upcoming_and_past_bookings_viewpager)
+    @BindView(R.id.upcoming_and_past_bookings_viewpager)
     ViewPager mViewPager;
 
     public UpcomingAndPastBookingsFragment() {
@@ -50,7 +53,11 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState
     ) {
-        final View view = inflater.inflate(R.layout.fragment_upcoming_and_past_bookings, container, false);
+        final View view = inflater.inflate(
+                R.layout.fragment_upcoming_and_past_bookings,
+                container,
+                false
+        );
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.my_bookings));
@@ -60,8 +67,7 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
         return view;
     }
 
-    private void initTabs()
-    {
+    private void initTabs() {
         mTabLayout.removeAllTabs();
 
         //for logging purposes only
@@ -127,14 +133,27 @@ public class UpcomingAndPastBookingsFragment extends InjectedFragment {
 
         @Override
         public CharSequence getPageTitle(final int position) {
-            switch(position)
-            {
+            final CharSequence text;
+            switch (position) {
                 case UPCOMING_BOOKINGS_TAB_POSITION:
-                    return getResources().getString(R.string.upcoming);
+                    text = getString(R.string.upcoming);
+                    break;
                 case PAST_BOOKINGS_TAB_POSITION:
-                    return getResources().getString(R.string.past);
+                    text = getString(R.string.past);
+                    break;
                 default:
-                    return null;
+                    text = null;
+                    break;
+            }
+            if (text != null) {
+                final CalligraphyTypefaceSpan titleType = new CalligraphyTypefaceSpan(
+                        TextUtils.get(getContext(), TextUtils.Fonts.CIRCULAR_BOOK));
+                final SpannableStringBuilder stringBuilder = new SpannableStringBuilder(text);
+                stringBuilder.setSpan(titleType, 0, text.length(), 0);
+                return stringBuilder;
+            }
+            else {
+                return null;
             }
         }
 

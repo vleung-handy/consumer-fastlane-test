@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -24,7 +24,7 @@ import butterknife.OnClick;
 public class PersistentPromoAppBarLayout extends AppBarLayout
         implements AppBarLayout.OnOffsetChangedListener {
 
-    @Bind(R.id.persistent_promo_preview_view)
+    @BindView(R.id.persistent_promo_preview_view)
     PersistentPromoPreviewToolbar mPersistentPromoPreviewToolbar;
 
     private OnPersistentPromoFullyExpandedListener mOnPersistentPromoFullyExpandedListener;

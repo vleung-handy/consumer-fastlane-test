@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class OnboardPageFragment extends InjectedFragment {
@@ -23,25 +23,25 @@ public final class OnboardPageFragment extends InjectedFragment {
     private int page;
     private boolean animated;
 
-    @Bind(R.id.image)
+    @BindView(R.id.image)
     View image;
     @Nullable
-    @Bind(R.id.icon_clean)
+    @BindView(R.id.icon_clean)
     ImageView cleanIcon;
     @Nullable
-    @Bind(R.id.icon_handy)
+    @BindView(R.id.icon_handy)
     ImageView handyIcon;
     @Nullable
-    @Bind(R.id.icon_paint)
+    @BindView(R.id.icon_paint)
     ImageView paintIcon;
     @Nullable
-    @Bind(R.id.image_pro_1)
+    @BindView(R.id.image_pro_1)
     ImageView proImage1;
     @Nullable
-    @Bind(R.id.image_pro_3)
+    @BindView(R.id.image_pro_3)
     ImageView proImage3;
     @Nullable
-    @Bind(R.id.image_pro_4)
+    @BindView(R.id.image_pro_4)
     ImageView proImage4;
 
     public static OnboardPageFragment newInstance(final int page, final boolean animate) {

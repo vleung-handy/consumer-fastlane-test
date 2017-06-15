@@ -61,7 +61,7 @@ import com.handybook.shared.layer.LayerConstants;
 
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -82,52 +82,52 @@ public class ActiveBookingFragment extends ProgressSpinnerFragment
     private static final float MAP_CLOSEUP_ZOOM_LEVEL = 16;
     private static final float ANCHOR_MID_POINT = 0.5f;
 
-    @Bind(R.id.active_booking_map_divider)
+    @BindView(R.id.active_booking_map_divider)
     View mMapDivider;
 
-    @Bind(R.id.active_booking_provider_profile)
+    @BindView(R.id.active_booking_provider_profile)
     HorizontalMiniProProfile mProProfile;
 
-    @Bind(R.id.booking_item_title)
+    @BindView(R.id.booking_item_title)
     TextView mTextBookingTitle;
 
-    @Bind(R.id.booking_item_subtitle)
+    @BindView(R.id.booking_item_subtitle)
     TextView mTextBookingSubtitle;
 
-    @Bind(R.id.active_booking_profile_container)
+    @BindView(R.id.active_booking_profile_container)
     View mProfileContainer;
 
-    @Bind(R.id.active_booking_profile_container_divider)
+    @BindView(R.id.active_booking_profile_container_divider)
     View mProfileContainerDivider;
 
-    @Bind(R.id.active_booking_call)
+    @BindView(R.id.active_booking_call)
     TextView mTextCall;
 
-    @Bind(R.id.active_booking_text)
+    @BindView(R.id.active_booking_text)
     TextView mTextText;
 
-    @Bind(R.id.booking_item_container)
+    @BindView(R.id.booking_item_container)
     View mBookingItemContainer;
 
-    @Bind(R.id.active_booking_report_an_issue_container)
+    @BindView(R.id.active_booking_report_an_issue_container)
     View mReportIssueContainer;
 
-    @Bind(R.id.active_booking_map_view)
+    @BindView(R.id.active_booking_map_view)
     MapView mMapView;
 
-    @Bind(R.id.active_booking_transparent_image)
+    @BindView(R.id.active_booking_transparent_image)
     ImageView mTransparentImage;
 
-    @Bind(R.id.active_booking_pro_location_time)
+    @BindView(R.id.active_booking_pro_location_time)
     TextView mTextLocationTime;
 
-    @Bind(R.id.active_booking_milestone_status)
+    @BindView(R.id.active_booking_milestone_status)
     TextView mTextMilestoneStatus;
 
-    @Bind(R.id.active_booking_map_place_holder)
+    @BindView(R.id.active_booking_map_place_holder)
     MapPlaceholderView mMapPlaceHolderView;
 
-    @Bind(R.id.active_booking_missing_location_view)
+    @BindView(R.id.active_booking_missing_location_view)
     MissingLocationView mMissingLocationView;
 
     private GoogleMap mGoogleMap;

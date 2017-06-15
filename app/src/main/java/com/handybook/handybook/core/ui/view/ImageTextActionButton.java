@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.TextUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -23,10 +23,10 @@ import butterknife.ButterKnife;
  */
 public class ImageTextActionButton extends FrameLayout {
 
-    @Bind(R.id.element_image_text_action_button_image_view)
+    @BindView(R.id.element_image_text_action_button_image_view)
     ImageView mImageView;
 
-    @Bind(R.id.element_image_text_action_button_text_view)
+    @BindView(R.id.element_image_text_action_button_text_view)
     TextView mTextView;
 
     public ImageTextActionButton(final Context context) {

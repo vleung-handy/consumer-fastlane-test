@@ -53,7 +53,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_OPTIONS;
 
@@ -68,9 +68,9 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
     // Range from 0 to 100
     protected int mProgress;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     protected Toolbar mToolbar;
-    @Bind(R.id.horizontal_progress_bar)
+    @BindView(R.id.horizontal_progress_bar)
     protected ProgressBar mProgressBar;
 
     @Inject
@@ -417,11 +417,10 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                     date,
                     recurringId,
                     isInstantBookEnabled
-                     ))
-            );
+            )));
         }
         else {
-            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSubmittedLog (
+            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSubmittedLog(
                              providerId,
                              booking.getId(),
                              booking.getStartDate(),
@@ -455,7 +454,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                             );
                         }
                         else {
-                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSuccessLog (
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSuccessLog(
                                     providerId,
                                     booking.getId(),
                                     booking.getStartDate(),
@@ -463,8 +462,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                                     recurringId,
                                     rescheduleType,
                                     isInstantBookEnabled
-                                     ))
-                            );
+                            )));
                         }
 
                         if (!allowCallbacks) {
@@ -523,7 +521,7 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
                             );
                         }
                         else {
-                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleErrorLog (
+                            bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleErrorLog(
                                              providerId,
                                              booking.getId(),
                                              booking.getStartDate(),
@@ -789,8 +787,10 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
         }
 
         //note that this response is currently only being used by the consolidated quote flow
-        ZipValidationResponse zipValidationResponse = quote.getZipValidationResponse();
-        if (zipValidationResponse != null && zipValidationResponse.getZipArea() != null) {
+        if (mConfigurationManager.getPersistentConfiguration()
+                                 .isConsolidateBookingGetQuoteFlowExperimentEnabled()) {
+            ZipValidationResponse zipValidationResponse = quote.getZipValidationResponse();
+            if (zipValidationResponse != null && zipValidationResponse.getZipArea() != null) {
             /*
             note that this is logged in BookingLocationFragment
             but logging this here to cover the consolidated quote flow experiment.
@@ -799,11 +799,12 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
             so not bothering to only log this if consolidated quote flow config is on
             because that would make this more confusing
             */
-            bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(
-                    zipValidationResponse.getZipArea().getZip()
-            )));
+                bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingZipSuccessLog(
+                        zipValidationResponse.getZipArea().getZip()
+                )));
+            }
+            updateCurrentBookingRequest(zipValidationResponse);
         }
-        updateCurrentBookingRequest(zipValidationResponse);
 
         // persist extras since api doesn't return them on quote update calls
         final BookingQuote oldQuote = bookingManager.getCurrentQuote();

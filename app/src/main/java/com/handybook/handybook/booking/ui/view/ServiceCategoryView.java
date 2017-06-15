@@ -13,18 +13,18 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.core.ui.descriptor.ServiceCategoryListDescriptor;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class ServiceCategoryView extends FrameLayout {
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTitle;
-    @Bind(R.id.subtitle)
+    @BindView(R.id.subtitle)
     TextView mSubtitle;
-    @Bind(R.id.icon)
+    @BindView(R.id.icon)
     ImageView mIcon;
-    @Bind(R.id.image)
+    @BindView(R.id.image)
     ImageView mImage;
 
     public ServiceCategoryView(final Context context) {

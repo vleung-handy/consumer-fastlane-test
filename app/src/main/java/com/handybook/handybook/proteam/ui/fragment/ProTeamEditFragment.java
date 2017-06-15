@@ -46,7 +46,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
@@ -60,17 +60,17 @@ import static com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewM
 public class ProTeamEditFragment extends ProgressSpinnerFragment implements
         ProTeamProListFragment.OnProInteraction {
 
-    @Bind(R.id.pro_team_toolbar)
+    @BindView(R.id.pro_team_toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.pro_team_swipe_refresh_layout)
+    @BindView(R.id.pro_team_swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.pro_team_view_pager)
+    @BindView(R.id.pro_team_view_pager)
     ViewPager mViewPager;
-    @Bind(R.id.pro_team_pro_list_holder)
+    @BindView(R.id.pro_team_pro_list_holder)
     ViewGroup mListHolder;
-    @Bind(R.id.pro_team_tab_layout)
+    @BindView(R.id.pro_team_tab_layout)
     TabLayout mTabLayout;
-    @Bind(R.id.pro_team_toolbar_save_button)
+    @BindView(R.id.pro_team_toolbar_save_button)
     View mToolbarSaveButton;
 
     private ProTeam mProTeam;

@@ -14,18 +14,18 @@ import com.handybook.handybook.R;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FrequencyOptionView extends FrameLayout {
 
-    @Bind(R.id.frequency_option_radio)
+    @BindView(R.id.frequency_option_radio)
     RadioButton mRadioButton;
-    @Bind(R.id.frequency_option_title_text)
+    @BindView(R.id.frequency_option_title_text)
     TextView mTitleText;
-    @Bind(R.id.frequency_option_subtitle_text)
+    @BindView(R.id.frequency_option_subtitle_text)
     TextView mCurrentText;
-    @Bind(R.id.frequency_option_right_title_text)
+    @BindView(R.id.frequency_option_right_title_text)
     TextView mPriceText;
 
     private List<FrequencyOptionView> mAllFrequencyOptions;

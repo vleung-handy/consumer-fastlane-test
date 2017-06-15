@@ -25,7 +25,7 @@ import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -36,9 +36,9 @@ public class CancelRecurringBookingSelectionFragment extends ProgressSpinnerFrag
 
     public static final int INITIAL_REQUEST_COUNT = 2;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.options_layout)
+    @BindView(R.id.options_layout)
     LinearLayout optionsLayout; //TODO: can we use a stub or replaceview for this instead?
 
     BookingOptionsSelectView mOptionsView;

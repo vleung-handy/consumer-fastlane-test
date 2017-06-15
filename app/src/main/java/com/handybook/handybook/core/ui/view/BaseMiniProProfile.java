@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -30,25 +30,25 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseMiniProProfile extends FrameLayout {
 
-    @Bind(R.id.mini_pro_profile_title)
+    @BindView(R.id.mini_pro_profile_title)
     TextView mTitleText;
-    @Bind(R.id.mini_pro_profile_rating_and_jobs_count_container)
+    @BindView(R.id.mini_pro_profile_rating_and_jobs_count_container)
     ViewGroup mRatingAndJobsCountContainer;
-    @Bind(R.id.mini_pro_profile_rating)
+    @BindView(R.id.mini_pro_profile_rating)
     TextView mRatingText;
-    @Bind(R.id.mini_pro_profile_jobs_count)
+    @BindView(R.id.mini_pro_profile_jobs_count)
     TextView mJobsCountText;
-    @Bind(R.id.mini_pro_profile_image_container)
+    @BindView(R.id.mini_pro_profile_image_container)
     ViewGroup mProfileImageContainer;
-    @Bind(R.id.mini_pro_profile_image)
+    @BindView(R.id.mini_pro_profile_image)
     ImageView mProfileImage;
-    @Bind(R.id.mini_pro_profile_pro_team_favorite_indicator_image)
+    @BindView(R.id.mini_pro_profile_pro_team_favorite_indicator_image)
     View mProTeamFavoriteIndicatorImage;
-    @Bind(R.id.mini_pro_profile_pro_team_indicator_name)
+    @BindView(R.id.mini_pro_profile_pro_team_indicator_name)
     View mProTeamIndicatorName;
-    @Bind(R.id.mini_pro_profile_handyman_indicator)
+    @BindView(R.id.mini_pro_profile_handyman_indicator)
     View mHandymanIndicator;
-    @Bind(R.id.mini_pro_profile_no_ratings_indicator)
+    @BindView(R.id.mini_pro_profile_no_ratings_indicator)
     View mNoRatingsIndicator;
 
     private boolean mIsProTeamFavorite;

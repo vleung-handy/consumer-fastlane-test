@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TipFragment extends Fragment {
@@ -29,14 +29,14 @@ public class TipFragment extends Fragment {
     static final String EXTRA_DEFAULT_TIP_AMOUNTS = "com.handy.handy.EXTRA_DEFAULT_TIP_AMOUNTS";
     static final String EXTRA_CURRENCY_CHAR = "com.handy.handy.EXTRA_CURRENCY_CHAR";
 
-    @Bind(R.id.tip_amount_radio_group)
+    @BindView(R.id.tip_amount_radio_group)
     RadioGroup mTipAmountRadioGroup;
-    @Bind(R.id.custom_tip_amount_wrapper)
+    @BindView(R.id.custom_tip_amount_wrapper)
     LinearLayout mCustomTipAmountWrapperLayout;
-    @Bind(R.id.custom_tip_amount)
+    @BindView(R.id.custom_tip_amount)
     EditText mCustomTipAmountText;
 
-    @Bind(R.id.tv_tip_amount)
+    @BindView(R.id.tv_tip_amount)
     TextView mTvTipAmount;
 
     private int mTipAmount;

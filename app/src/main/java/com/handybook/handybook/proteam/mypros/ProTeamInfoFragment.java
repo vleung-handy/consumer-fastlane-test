@@ -19,7 +19,7 @@ import com.handybook.handybook.proteam.model.ProTeamWrapper;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -28,16 +28,16 @@ import butterknife.OnClick;
  */
 public class ProTeamInfoFragment extends InjectedFragment {
 
-    @Bind(R.id.loading_error_layout)
+    @BindView(R.id.loading_error_layout)
     View mLoadingErrorLayout;
 
-    @Bind(R.id.fragment_my_pros_pro_team_recycler_view_empty_layout)
+    @BindView(R.id.fragment_my_pros_pro_team_recycler_view_empty_layout)
     View mProTeamEmptyLayout;
 
-    @Bind(R.id.fragment_my_pros_pro_team_recycler_view_loading_layout)
+    @BindView(R.id.fragment_my_pros_pro_team_recycler_view_loading_layout)
     LoadingLayout mLoadingLayout;
 
-    @Bind(R.id.fragment_my_pros_pro_team_recycler_view)
+    @BindView(R.id.fragment_my_pros_pro_team_recycler_view)
     RecyclerView mProTeamRecyclerView;
 
     @Inject

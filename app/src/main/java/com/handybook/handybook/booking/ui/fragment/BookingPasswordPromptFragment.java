@@ -24,7 +24,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingPasswordPromptFragment extends BookingFlowFragment
@@ -35,11 +35,11 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
 
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload;
 
-    @Bind(R.id.header_text)
+    @BindView(R.id.header_text)
     TextView mHeaderText;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.password_text)
+    @BindView(R.id.password_text)
     PasswordInputTextView mPasswordText;
 
     public static BookingPasswordPromptFragment newInstance(@Nullable final Bundle extras) {

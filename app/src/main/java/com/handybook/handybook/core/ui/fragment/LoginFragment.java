@@ -49,7 +49,7 @@ import com.handybook.handybook.logger.handylogger.model.user.UserContactLog;
 import com.handybook.handybook.logger.handylogger.model.user.UserLoginLog;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class LoginFragment extends BookingFlowFragment {
@@ -74,25 +74,25 @@ public final class LoginFragment extends BookingFlowFragment {
 
     Class<? extends Activity> mDestinationClass;
 
-    @Bind(R.id.login_button)
+    @BindView(R.id.login_button)
     Button mLoginButton;
-    @Bind(R.id.forgot_button)
+    @BindView(R.id.forgot_button)
     Button mForgotButton;
-    @Bind(R.id.email_text)
+    @BindView(R.id.email_text)
     EmailInputTextView mEmailText;
-    @Bind(R.id.password_text)
+    @BindView(R.id.password_text)
     PasswordInputTextView mPasswordText;
-    //@Bind(R.id.fb_button)
+    //@BindView(R.id.fb_button)
     //LoginButton fbButton;
-    @Bind(R.id.fb_login_button)
+    @BindView(R.id.fb_login_button)
     LoginButton mFbLoginButton;
-    @Bind(R.id.fb_layout)
+    @BindView(R.id.fb_layout)
     View mFbLayout;
-    @Bind(R.id.or_text)
+    @BindView(R.id.or_text)
     TextView mOrText;
-    @Bind(R.id.welcome_text)
+    @BindView(R.id.welcome_text)
     TextView mWelcomeText;
-    @Bind(R.id.login_scroll_view)
+    @BindView(R.id.login_scroll_view)
     ScrollView mLoginScrollView;
 
     private ViewTreeObserver.OnGlobalLayoutListener mAutoScrollListener;

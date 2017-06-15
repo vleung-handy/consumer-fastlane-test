@@ -43,7 +43,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.TimeZone;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -60,19 +60,19 @@ public final class BookingDateFragment extends BookingFlowFragment
     private static final String STATE_RESCHEDULE_IS_INSTANT_BOOK_ENABLED
             = "RESCHEDULE_INSTANT_BOOK";
 
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mNextButton;
 
-    @Bind(R.id.notice_text)
+    @BindView(R.id.notice_text)
     TextView mNoticeTextView;
 
-    @Bind(R.id.location_text)
+    @BindView(R.id.location_text)
     TextView mLocationText;
 
-    @Bind(R.id.selected_pro_container)
+    @BindView(R.id.selected_pro_container)
     ViewGroup mSelectedProContainer;
 
-    @Bind(R.id.reschedule_cancel_text)
+    @BindView(R.id.reschedule_cancel_text)
     TextView mRescheduleCancelText;
 
     private Date mSelectedDateTime;
