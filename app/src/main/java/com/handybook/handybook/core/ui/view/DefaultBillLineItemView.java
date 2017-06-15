@@ -11,7 +11,7 @@ import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.util.TextUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /***
  * Standard issue line item in BillSectionView, small title small value
@@ -20,11 +20,11 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView {
 
     private static final String TAG = "DefaultBillLineItemView";
 
-    @Bind(R.id.bill_view_default_line_item_label)
+    @BindView(R.id.bill_view_default_line_item_label)
     TextView mLabel;
-    @Bind(R.id.bill_view_default_line_item_question_mark)
+    @BindView(R.id.bill_view_default_line_item_question_mark)
     ImageView mQuestionMarkImage;
-    @Bind(R.id.bill_view_default_line_item_amount)
+    @BindView(R.id.bill_view_default_line_item_amount)
     TextView mAmount;
 
     public DefaultBillLineItemView(final Context context) {

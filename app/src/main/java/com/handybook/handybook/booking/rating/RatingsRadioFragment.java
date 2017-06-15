@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -29,10 +29,10 @@ public class RatingsRadioFragment extends BaseWizardFragment {
     private static final String TAG = RatingsRadioFragment.class.getName();
     public static final String KEY_SELECTED = "key_selected";
 
-    @Bind(R.id.rating_radio_group)
+    @BindView(R.id.rating_radio_group)
     RadioGroup mRadioGroup;
 
-    @Bind(R.id.ratings_late_submit_button)
+    @BindView(R.id.ratings_late_submit_button)
     Button mSubmitButton;
 
     Map<String, String> mValuesToKeys;

@@ -48,7 +48,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -62,10 +62,10 @@ public abstract class MenuDrawerActivity extends BaseActivity
     protected static final String EXTRA_SHOW_NAV_FOR_TRANSITION = "EXTRA_SHOW_NAV_FOR_TRANSITION";
     public static final String EXTRA_SHOW_SELECTED_MENU_ITEM = "EXTRA_SHOW_SELECTED_MENU_ITEM";
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     protected DrawerLayout mDrawerLayout;
 
-    @Bind(R.id.navigation)
+    @BindView(R.id.navigation)
     protected NavigationView mNavigationView;
 
     @Inject

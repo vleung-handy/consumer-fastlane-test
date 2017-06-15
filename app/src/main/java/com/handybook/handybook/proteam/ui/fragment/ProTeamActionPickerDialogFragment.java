@@ -21,20 +21,20 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class ProTeamActionPickerDialogFragment extends SlideUpDialogFragment {
 
     private static final String KEY_VIEW_MODEL = "pro_team_action_picker_view_model";
 
-    @Bind(R.id.pro_image)
+    @BindView(R.id.pro_image)
     ImageView mProImage;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTitle;
-    @Bind(R.id.subtitle)
+    @BindView(R.id.subtitle)
     TextView mSubtitle;
-    @Bind(R.id.options_holder)
+    @BindView(R.id.options_holder)
     ViewGroup mOptionsHolder;
     private ProTeamActionPickerViewModel mViewModel;
 

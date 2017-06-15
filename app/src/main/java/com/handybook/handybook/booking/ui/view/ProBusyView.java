@@ -13,16 +13,16 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProBusyView extends FrameLayout {
 
-    @Bind(R.id.pro_busy_profile_image)
+    @BindView(R.id.pro_busy_profile_image)
     ImageView mProfileImage;
-    @Bind(R.id.pro_busy_text)
+    @BindView(R.id.pro_busy_text)
     TextView mProBusyText;
-    @Bind(R.id.pro_busy_availability_text)
+    @BindView(R.id.pro_busy_availability_text)
     TextView mAvailabilityText;
 
     public ProBusyView(final Context context) {

@@ -17,25 +17,25 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingOptionsCheckboxView extends FrameLayout implements
         CompoundButton.OnCheckedChangeListener {
 
-    @Bind(R.id.booking_select_checkbox_left_title)
+    @BindView(R.id.booking_select_checkbox_left_title)
     TextView mLeftTitle;
-    @Bind(R.id.booking_select_checkbox_left_text)
+    @BindView(R.id.booking_select_checkbox_left_text)
     TextView mLeftText;
-    @Bind(R.id.booking_select_checkbox_right_title)
+    @BindView(R.id.booking_select_checkbox_right_title)
     TextView mRightTitle;
-    @Bind(R.id.booking_select_checkbox_right_text)
+    @BindView(R.id.booking_select_checkbox_right_text)
     TextView mRightText;
-    @Bind(R.id.booking_select_checkbox_checkbox)
+    @BindView(R.id.booking_select_checkbox_checkbox)
     CheckBox mCheckBox;
-    @Bind(R.id.booking_select_checkbox_left_indicator)
+    @BindView(R.id.booking_select_checkbox_left_indicator)
     ImageView mLeftIndicator;
-    @Bind(R.id.booking_select_checkbox_super_text)
+    @BindView(R.id.booking_select_checkbox_super_text)
     TextView mSuperText;
     private CompoundButton.OnCheckedChangeListener mOutsideListener;
 

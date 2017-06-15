@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -29,11 +29,11 @@ import butterknife.ButterKnife;
  */
 public final class EntryMethodsInfoView extends LinearLayout {
 
-    @Bind(R.id.booking_entry_methods_info_options_layout)
+    @BindView(R.id.booking_entry_methods_info_options_layout)
     LinearLayout mEntryInfoOptionsLayout;
-    @Bind(R.id.booking_entry_methods_info_instructions)
+    @BindView(R.id.booking_entry_methods_info_instructions)
     TextView mEntryInfoInstructions;
-    @Bind(R.id.booking_entry_methods_info_input_form_layout)
+    @BindView(R.id.booking_entry_methods_info_input_form_layout)
     LinearLayout mEntryInfoInputFormLayout;
 
     /**

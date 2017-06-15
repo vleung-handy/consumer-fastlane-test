@@ -13,7 +13,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -24,24 +24,24 @@ public class RateImprovementConfirmationDialogFragment extends BaseDialogFragmen
 
     public static final String EXTRA_BOOKING_ID = "booking_id";
 
-    @Bind(R.id.title_text)
+    @BindView(R.id.title_text)
     TextView mTitleText;
-    @Bind(R.id.message_text)
+    @BindView(R.id.message_text)
     TextView mMessageText;
 
-    @Bind(R.id.submit_button)
+    @BindView(R.id.submit_button)
     Button mSubmitButton;
 
-    @Bind(R.id.skip_button)
+    @BindView(R.id.skip_button)
     Button mSkipButton;
 
-    @Bind(R.id.service_icon)
+    @BindView(R.id.service_icon)
     ImageView mServiceIcon;
 
-    @Bind(R.id.service_icon_img)
+    @BindView(R.id.service_icon_img)
     ImageView mServiceIconImg;
 
-    @Bind(R.id.img_icon_success)
+    @BindView(R.id.img_icon_success)
     ImageView mSuccessIcon;
 
     private int mBookingId;

@@ -33,29 +33,29 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HelpFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.native_help_center_layout)
+    @BindView(R.id.native_help_center_layout)
     ViewGroup mNativeHelpCenterLayout;
-    @Bind(R.id.recent_booking_actions_layout)
+    @BindView(R.id.recent_booking_actions_layout)
     ViewGroup mRecentBookingActionsLayout;
-    @Bind(R.id.fragment_referral_toolbar)
+    @BindView(R.id.fragment_referral_toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.help_dynamic_layout)
+    @BindView(R.id.help_dynamic_layout)
     ViewGroup mHelpDynamicLayout;
-    @Bind(R.id.help_booking_image)
+    @BindView(R.id.help_booking_image)
     ImageView mHelpBookingImage;
-    @Bind(R.id.recent_booking_date_text)
+    @BindView(R.id.recent_booking_date_text)
     TextView mRecentBookingDateText;
-    @Bind(R.id.recent_booking_time_text)
+    @BindView(R.id.recent_booking_time_text)
     TextView mRecentBookingTimeText;
-    @Bind(R.id.report_an_issue_layout)
+    @BindView(R.id.report_an_issue_layout)
     ViewGroup mReportAnIssueLayout;
-    @Bind(R.id.suggested_actions_layout)
+    @BindView(R.id.suggested_actions_layout)
     ViewGroup mSuggestedActionsLayout;
 
     private String mHelpCenterUrl;

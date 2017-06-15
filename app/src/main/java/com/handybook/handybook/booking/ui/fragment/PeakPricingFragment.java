@@ -31,7 +31,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingHighDeman
 import java.util.ArrayList;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class PeakPricingFragment extends BookingFlowFragment {
@@ -50,19 +50,19 @@ public final class PeakPricingFragment extends BookingFlowFragment {
     private boolean mIsForRescheduleAll;
     private Booking mBookingToReschedule;
 
-    @Bind(R.id.skip_button)
+    @BindView(R.id.skip_button)
     Button mSkipButton;
-    @Bind(R.id.date_text)
+    @BindView(R.id.date_text)
     TextView mDateText;
-    @Bind(R.id.header_text)
+    @BindView(R.id.header_text)
     TextView mHeaderText;
-    @Bind(R.id.footer_text)
+    @BindView(R.id.footer_text)
     TextView mFooterText;
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     ViewPager mDatePager;
-    @Bind(R.id.arrow_left)
+    @BindView(R.id.arrow_left)
     ImageView mArrowLeft;
-    @Bind(R.id.arrow_right)
+    @BindView(R.id.arrow_right)
     ImageView mArrowRight;
     private BookingTransaction mTransaction;
 

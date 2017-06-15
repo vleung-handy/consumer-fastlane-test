@@ -20,16 +20,16 @@ import com.handybook.handybook.core.ui.widget.ZipCodeInputTextView;
 import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class BookingEditAddressFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.zip_text)
+    @BindView(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private Booking mBooking;

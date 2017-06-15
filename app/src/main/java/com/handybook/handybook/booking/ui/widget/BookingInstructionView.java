@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingInstruction;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingInstructionView extends FrameLayout {
@@ -26,9 +26,9 @@ public class BookingInstructionView extends FrameLayout {
     private String mTitle;
     private String mText;
 
-    @Bind(R.id.customer_preference_checkbox)
+    @BindView(R.id.customer_preference_checkbox)
     AppCompatCheckBox mCheckBox;
-    @Bind(R.id.customer_preference_text)
+    @BindView(R.id.customer_preference_text)
     TextView mTextView;
 
     {

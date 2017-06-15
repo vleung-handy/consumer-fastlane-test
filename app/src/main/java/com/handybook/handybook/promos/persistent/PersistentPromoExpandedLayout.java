@@ -18,7 +18,7 @@ import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -26,17 +26,17 @@ import butterknife.ButterKnife;
  */
 public class PersistentPromoExpandedLayout extends FrameLayout {
 
-    @Bind(R.id.persistent_promo_expanded_title)
+    @BindView(R.id.persistent_promo_expanded_title)
     TextView mTitleText;
-    @Bind(R.id.persistent_promo_expanded_subtitle)
+    @BindView(R.id.persistent_promo_expanded_subtitle)
     TextView mSubtitleText;
-    @Bind(R.id.persistent_promo_expanded_header_image)
+    @BindView(R.id.persistent_promo_expanded_header_image)
     ImageView mHeaderImage;
-    @Bind(R.id.persistent_promo_expanded_action_button)
+    @BindView(R.id.persistent_promo_expanded_action_button)
     Button mActionButton;
-    @Bind(R.id.persistent_promo_expanded_dismiss_button)
+    @BindView(R.id.persistent_promo_expanded_dismiss_button)
     View mDismissButton;
-    @Bind(R.id.persistent_promo_expanded_text_content_layout)
+    @BindView(R.id.persistent_promo_expanded_text_content_layout)
     View mTextContentLayout;
 
     private OnActionButtonClickedListener mOnActionButtonClickedListener;

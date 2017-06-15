@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedInput;
@@ -41,9 +41,9 @@ public final class HelpContactFragment extends ProgressSpinnerFragment {
 
     private static final String SALESFORCE_DATA_WRAPPER_KEY = "salesforce_data";
 
-    @Bind(R.id.help_contact_view)
+    @BindView(R.id.help_contact_view)
     HelpContactView helpContactView;
-    @Bind(R.id.help_banner_view)
+    @BindView(R.id.help_banner_view)
     HelpBannerView helpBannerView;
 
     private HelpNode associatedNode;

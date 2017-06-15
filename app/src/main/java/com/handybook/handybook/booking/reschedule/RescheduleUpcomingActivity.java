@@ -27,7 +27,7 @@ import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -37,10 +37,10 @@ import butterknife.ButterKnife;
  */
 public class RescheduleUpcomingActivity extends BaseActivity {
 
-    @Bind(R.id.reschedule_recycler_view)
+    @BindView(R.id.reschedule_recycler_view)
     RecyclerView mRecyclerView;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private BookingListAdapter mAdapter;

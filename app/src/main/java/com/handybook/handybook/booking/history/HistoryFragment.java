@@ -33,7 +33,7 @@ import com.handybook.handybook.referral.ui.ReferralActivity;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -44,19 +44,19 @@ public class HistoryFragment extends ProgressSpinnerFragment
 
     private static final String TAG = HistoryFragment.class.getName();
 
-    @Bind(R.id.history_swipe_refresh_layout)
+    @BindView(R.id.history_swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Bind(R.id.history_recycler_view)
+    @BindView(R.id.history_recycler_view)
     EmptiableRecyclerView mEmptiableRecyclerView;
 
-    @Bind(R.id.card_empty)
+    @BindView(R.id.card_empty)
     View mNoBookingsView;
 
-    @Bind(R.id.card_empty_text)
+    @BindView(R.id.card_empty_text)
     TextView mNoBookingsText;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private List<Booking> mBookings;

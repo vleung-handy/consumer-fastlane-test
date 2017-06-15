@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscriber;
@@ -53,15 +53,15 @@ public class AutoCompleteAddressFragment extends InjectedFragment {
     private static final String KEY_SHOW_CITY_STATE = "show-city-state";
     private static final String KEY_CONFIGURATION = "configuration";
 
-    @Bind(R.id.autocomplete_address_text_street)
+    @BindView(R.id.autocomplete_address_text_street)
     StreetAddressInputTextView mStreet;
-    @Bind(R.id.autocomplete_address_text_other)
+    @BindView(R.id.autocomplete_address_text_other)
     EditText mApt;
-    @Bind(R.id.autocomplete_address_text_city)
+    @BindView(R.id.autocomplete_address_text_city)
     CityInputTextView mCity;
-    @Bind(R.id.autocomplete_address_text_state)
+    @BindView(R.id.autocomplete_address_text_state)
     StateInputTextView mState;
-    @Bind(R.id.autocomplete_address_city_state_container)
+    @BindView(R.id.autocomplete_address_city_state_container)
     ViewGroup mCityStateContainer;
 
     @Inject

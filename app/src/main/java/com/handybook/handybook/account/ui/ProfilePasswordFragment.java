@@ -23,21 +23,21 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProfilePasswordFragment extends ProgressSpinnerFragment
         implements TextWatcher, View.OnClickListener {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.profile_old_password_text)
+    @BindView(R.id.profile_old_password_text)
     PasswordInputTextView oldPasswordtext;
-    @Bind(R.id.profile_new_password_text)
+    @BindView(R.id.profile_new_password_text)
     PasswordInputTextView newPasswordtext;
-    @Bind(R.id.profile_new_password_confirmation_text)
+    @BindView(R.id.profile_new_password_confirmation_text)
     PasswordInputTextView newPasswordConfirmationText;
-    @Bind(R.id.profile_password_update_button)
+    @BindView(R.id.profile_password_update_button)
     Button mPasswordUpdateButton;
 
     private static final String STATE_OLD_PWD_HIGHLIGHT = "OLD_PWD_HIGHLIGHT";

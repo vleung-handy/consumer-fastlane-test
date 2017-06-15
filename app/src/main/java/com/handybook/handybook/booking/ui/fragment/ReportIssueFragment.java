@@ -41,23 +41,23 @@ import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class ReportIssueFragment extends ProgressSpinnerFragment
         implements ConversationCallback {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.report_issue_date)
+    @BindView(R.id.report_issue_date)
     TextView mDateText;
-    @Bind(R.id.report_issue_time)
+    @BindView(R.id.report_issue_time)
     TextView mTimeText;
-    @Bind(R.id.report_issue_provider)
+    @BindView(R.id.report_issue_provider)
     TextView mProviderText;
-    @Bind(R.id.report_issue_milestones)
+    @BindView(R.id.report_issue_milestones)
     LinearLayout mMilestonesLayout;
-    @Bind(R.id.report_issue_links)
+    @BindView(R.id.report_issue_links)
     LinearLayout mDeepLinksLayout;
 
     private Booking mBooking;

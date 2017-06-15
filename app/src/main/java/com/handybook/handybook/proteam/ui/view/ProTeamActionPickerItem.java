@@ -7,12 +7,12 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProTeamActionPickerItem extends FrameLayout {
 
-    @Bind(R.id.action)
+    @BindView(R.id.action)
     TextView mAction;
 
     public ProTeamActionPickerItem(

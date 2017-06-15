@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AddLaundryDialogFragment extends BaseDialogFragment {
@@ -33,13 +33,13 @@ public class AddLaundryDialogFragment extends BaseDialogFragment {
 
     @Inject DataManager dataManager;
 
-    @Bind(R.id.submit_button)
+    @BindView(R.id.submit_button)
     Button submitButton;
-    @Bind(R.id.close_img)
+    @BindView(R.id.close_img)
     ImageView closeImage;
-    @Bind(R.id.submit_progress)
+    @BindView(R.id.submit_progress)
     ProgressBar submitProgress;
-    @Bind(R.id.booking_info)
+    @BindView(R.id.booking_info)
     TextView bookingInfo;
 
     public static AddLaundryDialogFragment newInstance(final Booking booking) {

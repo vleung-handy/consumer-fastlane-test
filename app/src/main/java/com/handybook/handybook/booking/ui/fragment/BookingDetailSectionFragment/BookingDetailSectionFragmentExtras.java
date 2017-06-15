@@ -13,11 +13,11 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class BookingDetailSectionFragmentExtras extends BookingDetailSectionFragment {
 
-    @Bind(R.id.booking_detail_section_view)
+    @BindView(R.id.booking_detail_section_view)
     protected BookingDetailSectionExtrasView view;
 
     @Override

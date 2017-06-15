@@ -25,7 +25,7 @@ import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingCancelReasonFragment extends ProgressSpinnerFragment {
@@ -39,15 +39,15 @@ public final class BookingCancelReasonFragment extends ProgressSpinnerFragment {
     private Booking mBooking;
     private BookingCancellationData mBookingCancellationData;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.booking_cancel_reason_title)
+    @BindView(R.id.booking_cancel_reason_title)
     TextView mTitle;
-    @Bind(R.id.booking_cancel_reason_warning)
+    @BindView(R.id.booking_cancel_reason_warning)
     TextView mWarning;
-    @Bind(R.id.booking_cancel_reason_button)
+    @BindView(R.id.booking_cancel_reason_button)
     Button mButton;
-    @Bind(R.id.booking_cancel_reason_options)
+    @BindView(R.id.booking_cancel_reason_options)
     FrameLayout mOptionsContainer;
 
     public static BookingCancelReasonFragment newInstance(

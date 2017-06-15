@@ -17,7 +17,7 @@ import com.handybook.handybook.logger.handylogger.model.user.ReferralLog;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -33,7 +33,7 @@ public class ReferralV2Fragment extends ProgressSpinnerFragment {
     private String mSource;
     private boolean mRequestCompleted = false;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     public static ReferralV2Fragment newInstance(String source) {

@@ -27,7 +27,7 @@ import com.squareup.otto.Bus;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
@@ -40,7 +40,7 @@ public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
     @Inject
     Bus mBus;
 
-    @Bind(R.id.rating_flow_help_text)
+    @BindView(R.id.rating_flow_help_text)
     EditText mHelpTextField;
 
     private boolean mSubmitted;

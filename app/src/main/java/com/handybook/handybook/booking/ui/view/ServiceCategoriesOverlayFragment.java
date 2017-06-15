@@ -22,7 +22,7 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,11 +33,11 @@ public class ServiceCategoriesOverlayFragment extends BookingFlowFragment {
     private static final int SERVICE_CATEGORIES_ANIMATION_DELAY_MILLIS = 200;
     private static final int FRAGMENT_DISMISSAL_DELAY_MILLIS = 200;
 
-    @Bind(R.id.close_services_button_wrapper)
+    @BindView(R.id.close_services_button_wrapper)
     View mCloseButtonWrapper;
-    @Bind(R.id.close_button)
+    @BindView(R.id.close_button)
     View mCloseButton;
-    @Bind(R.id.services_wrapper)
+    @BindView(R.id.services_wrapper)
     ViewGroup mServicesWrapper;
     List<ServiceCategorySimpleView> mServiceCategorySimpleViews;
 

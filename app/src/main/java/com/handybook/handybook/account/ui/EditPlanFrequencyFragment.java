@@ -21,15 +21,15 @@ import com.handybook.handybook.library.util.StringUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditPlanFrequencyLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class EditPlanFrequencyFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.plan_frequency_options_layout)
+    @BindView(R.id.plan_frequency_options_layout)
     FrequencySelectionsView mFrequencySelectionsView;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private RecurringBooking mPlan;

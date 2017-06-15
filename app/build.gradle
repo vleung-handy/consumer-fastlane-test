@@ -150,7 +150,8 @@ dependencies {
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 
     // Jake Wharton
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 

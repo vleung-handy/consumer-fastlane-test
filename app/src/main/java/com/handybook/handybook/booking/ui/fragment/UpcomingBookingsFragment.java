@@ -54,7 +54,7 @@ import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -69,43 +69,43 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
             = ServiceCategoriesOverlayFragment.class.getSimpleName();
     private static final String TAG = UpcomingBookingsFragment.class.getName();
 
-    @Bind(R.id.add_booking_button)
+    @BindView(R.id.add_booking_button)
     FloatingActionButton mAddBookingButton;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.swipe_refresh_layout)
+    @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @Bind(R.id.scroll_view)
+    @BindView(R.id.scroll_view)
     ScrollView mScrollView;
 
-    @Bind(R.id.main_container)
+    @BindView(R.id.main_container)
     LinearLayout mMainContainer;
 
-    @Bind(R.id.bookings_container)
+    @BindView(R.id.bookings_container)
     LinearLayout mBookingsContainer;
 
-    @Bind(R.id.parent_bookings_container)
+    @BindView(R.id.parent_bookings_container)
     LinearLayout mParentBookingsContainer;
 
-    @Bind(R.id.active_booking_container)
+    @BindView(R.id.active_booking_container)
     LinearLayout mActiveBookingContainer;
 
-    @Bind(R.id.no_booking_view)
+    @BindView(R.id.no_booking_view)
     NoBookingsView mNoBookingsView;
 
-    @Bind(R.id.text_upcoming_bookings)
+    @BindView(R.id.text_upcoming_bookings)
     TextView mTextUpcomingBookings;
 
-    @Bind(R.id.upcoming_bookings_padding_view)
+    @BindView(R.id.upcoming_bookings_padding_view)
     View mPaddingView;
 
-    @Bind(R.id.fetch_error_view)
+    @BindView(R.id.fetch_error_view)
     ViewGroup mFetchErrorView;
 
-    @Bind(R.id.fragment_upcoming_bookings_review_app_banner_fragment_container)
+    @BindView(R.id.fragment_upcoming_bookings_review_app_banner_fragment_container)
     FrameLayout mReviewAppBannerFragmentContainer;
 
     private List<Booking> mBookings;

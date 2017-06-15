@@ -53,7 +53,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -69,23 +69,23 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     private List<Service> mServices;
     private boolean mUsedCache;
 
-    @Bind(R.id.fragment_service_categories_home_toolbar)
+    @BindView(R.id.fragment_service_categories_home_toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.fragment_service_categories_home_services_list)
+    @BindView(R.id.fragment_service_categories_home_services_list)
     GridView mGridView;
-    @Bind(R.id.fragment_service_categories_home_change_zip_container)
+    @BindView(R.id.fragment_service_categories_home_change_zip_container)
     ViewGroup mChangeZipContainer;
-    @Bind(R.id.fragment_service_categories_home_promo_container)
+    @BindView(R.id.fragment_service_categories_home_promo_container)
     ViewGroup mPromoContainer;
-    @Bind(R.id.fragment_service_categories_home_promo_image)
+    @BindView(R.id.fragment_service_categories_home_promo_image)
     ImageView mPromoImage;
-    @Bind(R.id.fragment_service_categories_home_promo_text)
+    @BindView(R.id.fragment_service_categories_home_promo_text)
     TextView mPromoText;
-    @Bind(R.id.fragment_service_categories_home_not_in_zip)
+    @BindView(R.id.fragment_service_categories_home_not_in_zip)
     TextView mNotInZip;
-    @Bind(R.id.fragment_service_categories_home_sign_in_text)
+    @BindView(R.id.fragment_service_categories_home_sign_in_text)
     TextView mSignInLink;
-    @Bind(R.id.fragment_service_categories_home_env_button)
+    @BindView(R.id.fragment_service_categories_home_env_button)
     TextView mEnvLink;
 
     @Inject

@@ -21,16 +21,16 @@ import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
     //Layout of the pro team list including the separator at top
-    @Bind(R.id.reschedule_pro_team_list_layout)
+    @BindView(R.id.reschedule_pro_team_list_layout)
     View mProTeamListLayout;
 
     private ProTeam.ProTeamCategory mProTeamCategory;

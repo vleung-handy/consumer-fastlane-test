@@ -19,7 +19,7 @@ import com.handybook.handybook.core.constant.BundleKeys;
 
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingRescheduleOptionsFragment extends BookingFlowFragment {
@@ -37,9 +37,9 @@ public final class BookingRescheduleOptionsFragment extends BookingFlowFragment 
     private Date date;
     private String mProviderId;
 
-    @Bind(R.id.options_layout)
+    @BindView(R.id.options_layout)
     FrameLayout optionsLayout;
-    @Bind(R.id.reschedule_button)
+    @BindView(R.id.reschedule_button)
     Button rescheduleButton;
     BookingDetailFragment.RescheduleType mRescheduleType;
     boolean mIsInstantBookEnabled;

@@ -14,7 +14,7 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.core.ui.view.HorizontalMiniProProfile;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingDetailSectionProInfoView extends BookingDetailSectionView {
@@ -23,30 +23,30 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView {
      * fallback that is shown when there is no pro assigned AND no provider assignment state object
      * AND pro teams enabled
      */
-    @Bind(R.id.element_booking_detail_section_pro_info_no_pro_view)
+    @BindView(R.id.element_booking_detail_section_pro_info_no_pro_view)
     View mLegacyNoProView;
 
     /**
      * part of the fallback no pro view
      */
-    @Bind(R.id.element_booking_detail_section_pro_info_no_pro_view_pro_team_button)
+    @BindView(R.id.element_booking_detail_section_pro_info_no_pro_view_pro_team_button)
     Button mLegacyNoProViewProTeamButton;
 
-    @Bind(R.id.action_buttons_layout_slot_1)
+    @BindView(R.id.action_buttons_layout_slot_1)
     public LinearLayout actionButtonsLayoutSlot1;
 
-    @Bind(R.id.action_buttons_layout_slot_2)
+    @BindView(R.id.action_buttons_layout_slot_2)
     public LinearLayout actionButtonsLayoutSlot2;
 
-    @Bind(R.id.element_booking_detail_section_pro_info_prefer_diff_pro_layout)
+    @BindView(R.id.element_booking_detail_section_pro_info_prefer_diff_pro_layout)
     ViewGroup mPreferDifferentProLayout;
-    @Bind(R.id.element_booking_detail_section_pro_info_prefer_diff_pro_text)
+    @BindView(R.id.element_booking_detail_section_pro_info_prefer_diff_pro_text)
     TextView mPreferDifferentProText;
 
     /**
      * mini pro profile
      */
-    @Bind(R.id.element_booking_detail_section_pro_info_pro_profile)
+    @BindView(R.id.element_booking_detail_section_pro_info_pro_profile)
     HorizontalMiniProProfile mProProfile;
 
     public BookingDetailSectionProInfoView(final Context context) {

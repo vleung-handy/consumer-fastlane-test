@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * A horizontal linear layout with two columns, which display the label and value of a field
@@ -16,9 +16,9 @@ import butterknife.Bind;
 public class LabelValueView extends InjectedLinearLayout //TODO: rename this to something better
 {
 
-    @Bind(R.id.label_value_view_label_text)
+    @BindView(R.id.label_value_view_label_text)
     TextView mLabelText;
-    @Bind(R.id.label_value_view_value_text)
+    @BindView(R.id.label_value_view_value_text)
     TextView mValueText;
 
     public LabelValueView(final Context context) {

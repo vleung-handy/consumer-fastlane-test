@@ -13,7 +13,7 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -25,7 +25,7 @@ public class ServiceNotSupportedActivity extends BaseActivity {
 
     public static final String EXTRA_FROM_ZIP = "extra-from-zip";
 
-    @Bind(R.id.not_supported_zip)
+    @BindView(R.id.not_supported_zip)
     TextView mTextZip;
 
     @Inject

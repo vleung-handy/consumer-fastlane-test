@@ -18,7 +18,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.proprofiles.model.ProProfile;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  */
 public class ProProfileAboutView extends FrameLayout {
 
-    @Bind(R.id.pro_profile_stats_items_container)
+    @BindView(R.id.pro_profile_stats_items_container)
     LinearLayout mStatsItemsContainer;
 
     public ProProfileAboutView(@NonNull final Context context) {

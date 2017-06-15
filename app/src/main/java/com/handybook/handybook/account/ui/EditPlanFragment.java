@@ -26,37 +26,37 @@ import com.handybook.handybook.logger.handylogger.model.account.EditPlanLog;
 
 import java.text.DecimalFormat;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class EditPlanFragment extends InjectedFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.edit_plan_frequency_text)
+    @BindView(R.id.edit_plan_frequency_text)
     TextView mFrequencyText;
-    @Bind(R.id.edit_plan_address_text)
+    @BindView(R.id.edit_plan_address_text)
     TextView mAddressText;
-    @Bind(R.id.edit_plan_next_cleaning_time_text)
+    @BindView(R.id.edit_plan_next_cleaning_time_text)
     TextView mNextCleaningTimeText;
 
-    @Bind(R.id.edit_plan_hours_container)
+    @BindView(R.id.edit_plan_hours_container)
     ViewGroup mEditHoursContainer;
-    @Bind(R.id.edit_plan_hours_text)
+    @BindView(R.id.edit_plan_hours_text)
     TextView mPlanHoursText;
-    @Bind(R.id.edit_plan_hours_title)
+    @BindView(R.id.edit_plan_hours_title)
     TextView mPlanHoursTitle;
-    @Bind(R.id.edit_plan_hours_subtext)
+    @BindView(R.id.edit_plan_hours_subtext)
     TextView mPlanHoursSubtext;
 
-    @Bind(R.id.edit_plan_extras_container)
+    @BindView(R.id.edit_plan_extras_container)
     ViewGroup mEditExtrasContainer;
-    @Bind(R.id.edit_plan_extras_title)
+    @BindView(R.id.edit_plan_extras_title)
     TextView mPlanExtrasTitle;
-    @Bind(R.id.edit_plan_extras_text)
+    @BindView(R.id.edit_plan_extras_text)
     TextView mPlanExtrasText;
-    @Bind(R.id.edit_plan_extras_subtext)
+    @BindView(R.id.edit_plan_extras_subtext)
     TextView mPlanExtrasSubtext;
 
     private RecurringBooking mPlan;

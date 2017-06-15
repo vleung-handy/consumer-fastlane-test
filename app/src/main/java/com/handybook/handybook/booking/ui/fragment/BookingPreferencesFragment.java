@@ -28,7 +28,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingPreferencesFragment extends BookingFlowFragment
@@ -42,11 +42,11 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
     private Instructions mInstructions;
     private final View.OnClickListener mOnNextClickedListener;
 
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.preferences_note_to_pro)
+    @BindView(R.id.preferences_note_to_pro)
     BasicInputTextView mNoteToProTextView;
-    @Bind(R.id.instructions_layout)
+    @BindView(R.id.instructions_layout)
     InstructionListView mInstructionListView;
 
     private boolean mIsPreferenceDragged, mIsPreferenceToggled;

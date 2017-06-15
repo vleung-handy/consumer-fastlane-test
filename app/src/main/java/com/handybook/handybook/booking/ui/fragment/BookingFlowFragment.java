@@ -53,7 +53,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFragment.EXTRA_OPTIONS;
 
@@ -68,9 +68,9 @@ public class BookingFlowFragment extends ProgressSpinnerFragment {
     // Range from 0 to 100
     protected int mProgress;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     protected Toolbar mToolbar;
-    @Bind(R.id.horizontal_progress_bar)
+    @BindView(R.id.horizontal_progress_bar)
     protected ProgressBar mProgressBar;
 
     @Inject
