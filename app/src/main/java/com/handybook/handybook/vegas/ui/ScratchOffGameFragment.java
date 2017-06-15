@@ -60,6 +60,8 @@ public class ScratchOffGameFragment extends InjectedFragment {
     private boolean mIsSpongeAttached;
     private boolean mIsResultSheetVisible;
     private TranslateAnimation mSpongeAnimation;
+    private float mSpongeStartX;
+    private float mSpongeStartY;
 
     @Bind(R.id.rfgf_background_image) ImageView mBackground;
     @Bind(R.id.rfgf_scroll_container) MaybeScrollView mScrollView;
@@ -80,8 +82,6 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
     //TODO: Remove below
     @Bind(R.id.rfgf_percentage) TextView mPercentage;
-    private float mSpongeStartX;
-    private float mSpongeStartY;
 
     public ScratchOffGameFragment() {
     }
@@ -111,6 +111,11 @@ public class ScratchOffGameFragment extends InjectedFragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_rating_flow_game, container, false);
         ButterKnife.bind(this, view);
+        init();
+        return view;
+    }
+
+    private void init() {
         mScrollView.requestDisallowInterceptTouchEvent(true);
         mScratchOffView.setOnScratchListener(new ScratchOffView.OnScratchListener() {
             @Override
@@ -141,7 +146,6 @@ public class ScratchOffGameFragment extends InjectedFragment {
         animateView(mSymbolTR, R.animator.vegas_symbol_winning);
         animateView(mSymbolBR, R.animator.vegas_symbol_winning);
         updatePercentage(0);
-        return view;
     }
 
     private float getSpongeX(final float x) {
@@ -231,9 +235,9 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
     protected void updatePercentage(double ratio) {
         mRevealedPercentage = ratio;
-        String txt = String.format(Locale.getDefault(), "ScratchedOff ratio: %.3f", ratio);
+        String txt = String.format(Locale.getDefault(), "%.2f", ratio);
         mPercentage.setText(txt);
-        if (ratio > .8) {
+        if (ratio > .7) {
             mScratchOffView.scratchOffAll();
             rollDownShades();
             swipeRightBucket();

@@ -126,7 +126,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintGuide_begin="196dp"
                     tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="221dp"
+                    tools:layout_editor_absoluteY="196dp"
                     />
 
                 <android.support.constraint.Guideline
@@ -135,8 +135,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.5"
-                    tools:layout_editor_absoluteX="169dp"
-                    tools:layout_editor_absoluteY="25dp"
+                    tools:layout_editor_absoluteX="170dp"
+                    tools:layout_editor_absoluteY="0dp"
                     />
 
                 <android.support.constraint.Guideline
@@ -146,7 +146,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintGuide_end="29dp"
                     tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="375dp"
+                    tools:layout_editor_absoluteY="382dp"
                     />
 
                 <android.support.constraint.Guideline
@@ -156,7 +156,7 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_end="50dp"
                     tools:layout_editor_absoluteX="289dp"
-                    tools:layout_editor_absoluteY="25dp"
+                    tools:layout_editor_absoluteY="0dp"
                     />
 
                 <android.support.constraint.Guideline
@@ -166,7 +166,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintGuide_begin="41dp"
                     tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="66dp"
+                    tools:layout_editor_absoluteY="41dp"
                     />
 
                 <android.support.constraint.Guideline
@@ -176,7 +176,7 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_begin="50dp"
                     tools:layout_editor_absoluteX="50dp"
-                    tools:layout_editor_absoluteY="25dp"
+                    tools:layout_editor_absoluteY="0dp"
                     />
 
 
@@ -231,10 +231,10 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:src="@drawable/img_scratch_off_window_suds"
-                    app:layout_constraintBottom_toBottomOf="@id/rfgf_scratch_background"
-                    app:layout_constraintLeft_toLeftOf="@id/rfgf_scratch_background"
-                    app:layout_constraintRight_toRightOf="@id/rfgf_scratch_background"
-                    app:layout_constraintTop_toTopOf="@id/rfgf_scratch_background"
+                    app:layout_constraintBottom_toBottomOf="@+id/rfgf_scratch_background"
+                    app:layout_constraintLeft_toLeftOf="@+id/rfgf_scratch_background"
+                    app:layout_constraintRight_toRightOf="@+id/rfgf_scratch_background"
+                    app:layout_constraintTop_toTopOf="@+id/rfgf_scratch_background"
                     />
 
 
@@ -247,10 +247,10 @@
                     android:layout_marginRight="32dp"
                     android:layout_marginStart="32dp"
                     android:paddingTop="8dp"
-                    app:layout_constraintTop_toTopOf="@id/rfgf_scratch_background"
-                    app:layout_constraintLeft_toLeftOf="@id/rfgf_scratch_background"
-                    app:layout_constraintRight_toRightOf="@id/rfgf_scratch_background"
                     app:layout_constraintBottom_toBottomOf="@+id/rfgf_background_image_bottom_spacer"
+                    app:layout_constraintLeft_toLeftOf="@+id/rfgf_scratch_background"
+                    app:layout_constraintRight_toRightOf="@+id/rfgf_scratch_background"
+                    app:layout_constraintTop_toTopOf="@+id/rfgf_scratch_background"
                     >
 
                     <LinearLayout
@@ -316,6 +316,70 @@
 
             </android.support.constraint.ConstraintLayout>
 
+            <Button
+                android:id="@+id/rfgf_submit_button"
+                style="@style/Button.Green"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="See you next booking!"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
+            <Button
+                android:id="@+id/rfgf_reset_button"
+                style="@android:style/Widget.Holo.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="-1dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/reset"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <Button
+                android:id="@+id/rfgf_blast_button"
+                style="@android:style/Widget.Holo.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="0dp"
+                android:text="@string/blast"
+                app:layout_constraintBottom_toTopOf="@+id/rfgf_reset_button"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
+            <Button
+                android:id="@+id/rfgf_shades_button"
+                style="@android:style/Widget.Holo.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="0dp"
+                android:text="@string/shade"
+                app:layout_constraintBottom_toTopOf="@+id/rfgf_blast_button"
+                app:layout_constraintRight_toRightOf="@+id/rfgf_reset_button"
+                />
+
+            <TextView
+                android:id="@+id/rfgf_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/rfgf_shades_button"
+                app:layout_constraintRight_toRightOf="@+id/rfgf_reset_button"
+                tools:text="0.00"
+                />
+
 
         </android.support.constraint.ConstraintLayout>
     </com.handybook.handybook.vegas.ui.view.MaybeScrollView>
@@ -326,17 +390,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
         >
-
-        <Button
-            android:id="@+id/rfgf_submit_button"
-            style="@style/Button.Green"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="See you next booking!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            />
 
         <ImageView
             android:id="@+id/rfgf_sponge_actor"
@@ -356,7 +409,6 @@
             android:id="@+id/rfgf_bucket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
             android:elevation="2dp"
             app:layout_constraintBottom_toTopOf="@+id/rfgf_banner_bottom_text"
             app:layout_constraintRight_toRightOf="parent"
@@ -380,52 +432,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            />
-
-        <Button
-            android:id="@+id/rfgf_reset_button"
-            style="@android:style/Widget.Holo.Button.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/reset"
-            app:layout_constraintBottom_toTopOf="@+id/rfgf_submit_button"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-        <Button
-            android:id="@+id/rfgf_blast_button"
-            style="@android:style/Widget.Holo.Button.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/blast"
-            app:layout_constraintBottom_toTopOf="@+id/rfgf_reset_button"
-            app:layout_constraintLeft_toLeftOf="@+id/rfgf_reset_button"
-            />
-
-        <Button
-            android:id="@+id/rfgf_shades_button"
-            style="@android:style/Widget.Holo.Button.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/shade"
-            app:layout_constraintBottom_toTopOf="@+id/rfgf_blast_button"
-            app:layout_constraintLeft_toLeftOf="@+id/rfgf_blast_button"
-            />
-
-        <TextView
-            android:id="@+id/rfgf_percentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:text="0%"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/rfgf_reset_button"
-            app:layout_constraintLeft_toRightOf="@+id/rfgf_reset_button"
             />
 
     </android.support.constraint.ConstraintLayout>
