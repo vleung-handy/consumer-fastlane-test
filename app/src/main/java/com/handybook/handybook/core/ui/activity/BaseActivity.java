@@ -5,13 +5,18 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.handybook.handybook.BuildConfig;
+import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LaundryDropInfo;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
@@ -59,6 +64,8 @@ import javax.inject.Inject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.handybook.handybook.R.string.set;
+
 public abstract class BaseActivity extends AppCompatActivity implements RequiredModalsLauncher {
 
     private static final String YOZIO_DEEPLINK_HOST = "deeplink.yoz.io";
@@ -105,6 +112,50 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Yozio.YOZIO_ENABLE_LOGGING = false;
         }
+    }
+
+    //Note: If we want to override the parent setSupportActionBar(Toolbar toolbar), we have to take
+    // into account that it won't break existing behavior for all Activities that call
+    // setSupportActionBar. Also, InjectedFragment calls activity.setSupportActionBar, and will
+    // need to test those fragments also
+    /**
+     * This method will be used by those that actually have a toolbar
+     *
+     * @param title
+     */
+    public void setSupportActionBar(Toolbar toolbar, String title) {
+        setSupportActionBar(toolbar, title, false);
+    }
+
+    public void setSupportActionBar(Toolbar toolbar, String title, boolean setDisplayHomeAsUp) {
+        setSupportActionBar(toolbar, title, setDisplayHomeAsUp, Integer.MIN_VALUE);
+    }
+
+    public void setSupportActionBar(
+            final Toolbar toolbar,
+            final String title,
+            final boolean setDisplayHomeAsUp,
+            final @DrawableRes int navigationIcon) {
+
+        super.setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(title);
+        actionBar.setDisplayShowTitleEnabled(true);
+        if (setDisplayHomeAsUp) {
+            if (navigationIcon == Integer.MIN_VALUE) {
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_x_white);
+            }
+            else {
+                actionBar.setHomeAsUpIndicator(navigationIcon);
+            }
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     /**

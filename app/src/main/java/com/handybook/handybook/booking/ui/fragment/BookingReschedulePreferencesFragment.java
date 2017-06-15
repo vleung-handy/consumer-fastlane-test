@@ -18,7 +18,7 @@ import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.proteam.model.ProTeam;
-import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
+import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -29,10 +29,9 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.choose_pro_option)
-    View mChooseProOption;
-    @Bind(R.id.or_separator)
-    View mOrSeparator;
+    //Layout of the pro team list including the separator at top
+    @Bind(R.id.reschedule_pro_team_list_layout)
+    View mProTeamListLayout;
 
     private ProTeam.ProTeamCategory mProTeamCategory;
     private Booking mBooking;
@@ -75,7 +74,6 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
                 container,
                 false
         ));
-
         ButterKnife.bind(this, view);
 
         return view;
@@ -87,8 +85,18 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
         if (mProTeamCategory == null
             || mProTeamCategory.getPreferred() == null
             || mProTeamCategory.getPreferred().isEmpty()) {
-            mOrSeparator.setVisibility(View.GONE);
-            mChooseProOption.setVisibility(View.GONE);
+            mProTeamListLayout.setVisibility(View.GONE);
+        }
+        else {
+            mProTeamListLayout.setVisibility(View.VISIBLE);
+            BookingProTeamRescheduleFragment mBookingProTeamRescheduleFragment = BookingProTeamRescheduleFragment.newInstance(
+                    mProTeamCategory,
+                    mBooking
+            );
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.reschedule_pro_team_list_container, mBookingProTeamRescheduleFragment)
+                    .commit();
         }
     }
 
@@ -99,6 +107,8 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
     }
 
     @Override
+    //NOTE: This is also called in BookingProTeamRescheduleFragment and that seems to have
+    // precedence over this onActivityResult method
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
@@ -106,9 +116,7 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
             final Intent intent = new Intent();
             intent.putExtra(BundleKeys.RESCHEDULE_NEW_DATE, date);
             getActivity().setResult(ActivityResult.RESCHEDULE_NEW_DATE, intent);
-            if (requestCode == ActivityResult.START_RESCHEDULE) {
-                getActivity().finish();
-            }
+            getActivity().finish();
         }
     }
 
@@ -118,14 +126,6 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
 
         bus.post(new BookingEvent.RequestPreRescheduleInfo(mBooking.getId()));
         bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleIndifferenceSelected()));
-    }
-
-    @OnClick(R.id.choose_pro_option)
-    public void onChooseProOptionClicked() {
-        Intent intent = new Intent(getContext(), BookingProTeamRescheduleActivity.class);
-        intent.putExtra(BundleKeys.PRO_TEAM_CATEGORY, mProTeamCategory);
-        intent.putExtra(BundleKeys.BOOKING, mBooking);
-        startActivityForResult(intent, ActivityResult.RESCHEDULE_NEW_DATE);
     }
 
     @Subscribe

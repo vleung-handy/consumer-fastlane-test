@@ -160,7 +160,8 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ActivityResult.BOOKING_UPDATED
-            || resultCode == ActivityResult.BOOKING_CANCELED) {
+            || resultCode == ActivityResult.BOOKING_CANCELED
+            || resultCode == ActivityResult.RESCHEDULE_NEW_DATE) {
             //this happens before onResume, so we just have to null out the bookings and it'll reload onResume.
             enableRefresh();
         }
