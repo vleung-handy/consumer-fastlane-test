@@ -19,7 +19,6 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
-import com.handybook.handybook.proteam.ui.fragment.ProTeamProListFragment;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -34,7 +33,6 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
     @Bind(R.id.reschedule_pro_team_list_layout)
     View mProTeamListLayout;
 
-    private ProTeamProListFragment mProTeamListFragment;
     private ProTeam.ProTeamCategory mProTeamCategory;
     private Booking mBooking;
 
