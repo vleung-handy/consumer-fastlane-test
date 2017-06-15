@@ -568,7 +568,7 @@
             android:name=".booking.ui.activity.ZipActivity"
             android:windowSoftInputMode="adjustResize"
             />
-        <activity android:name=".vegas.ui.VegasDevActivity">
+        <activity android:name=".vegas.ui.VegasActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

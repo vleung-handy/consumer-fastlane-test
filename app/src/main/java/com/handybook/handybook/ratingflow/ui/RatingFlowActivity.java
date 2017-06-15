@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.common.collect.Lists;
+import com.google.gson.JsonElement;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Provider;
@@ -32,6 +33,9 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
+import com.handybook.handybook.vegas.model.GameViewModel;
+import com.handybook.handybook.vegas.model.RewardsWrapper;
+import com.handybook.handybook.vegas.ui.VegasActivity;
 
 import java.util.ArrayList;
 
@@ -50,6 +54,7 @@ public class RatingFlowActivity extends BaseActivity {
     private static final int RATE_TIP_STEP = 0;
     private static final int FEEDBACK_STEP = 1;
     private static final int REFERRAL_STEP = 2;
+    private static final int GAME_STEP = 3;
 
     private Booking mBooking;
     private PrerateProInfo mPrerateProInfo;
@@ -60,6 +65,7 @@ public class RatingFlowActivity extends BaseActivity {
     private ProviderMatchPreference mSelectedPreference;
     private ArrayList<Provider> mRecommendedProviders;
     private boolean mIsFetchingRecommendedProviders = false;
+    private GameViewModel mGameViewModel;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -69,6 +75,7 @@ public class RatingFlowActivity extends BaseActivity {
         startRatingFlow();
         fetchPrerateInfo();
         fetchReferralInfo();
+        fetchRewardInfo();
     }
 
     private void startRatingFlow() {
@@ -102,6 +109,14 @@ public class RatingFlowActivity extends BaseActivity {
                         mRecommendedProviders
                 );
                 break;
+            case GAME_STEP:
+                if (mGameViewModel == null) {
+                    finish();
+                    return;
+                }
+                finish();
+                startActivity(VegasActivity.getIntent(this, mGameViewModel));
+                return;
             default:
                 finish();
                 return;
@@ -264,6 +279,28 @@ public class RatingFlowActivity extends BaseActivity {
                 new VoidRetrofitCallback()
         );
         fetchRecommendedProvidersIfNecessary();
+    }
+
+    private void fetchRewardInfo() {
+        mDataManager.getReward(
+                new ActivitySafeCallback<RewardsWrapper, RatingFlowActivity>(this) {
+                    @Override
+                    public void onCallbackSuccess(final RewardsWrapper response) {
+                        final ArrayList<JsonElement> games = response.getGames();
+                        if (games == null) {
+                            return;
+                        }
+                        for (JsonElement game : games) {
+                            mGameViewModel = GameViewModel.from(game);
+                            if (mGameViewModel.isValid()) { break; } // First game we can show goes
+                        }
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                    }
+                }
+        );
     }
 
     private synchronized void fetchRecommendedProvidersIfNecessary() {

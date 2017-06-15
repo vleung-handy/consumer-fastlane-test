@@ -20,8 +20,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.vegas.model.GameResponse;
-import com.handybook.handybook.vegas.model.ScratchOffViewModel;
+import com.handybook.handybook.vegas.model.GameViewModel;
 import com.handybook.handybook.vegas.ui.view.GameSymbolView;
 import com.handybook.handybook.vegas.ui.view.MaybeScrollView;
 import com.handybook.handybook.vegas.ui.view.ScratchOffView;
@@ -39,7 +38,7 @@ public class ScratchOffGameFragment extends InjectedFragment {
 
     private static final String KEY_GAME_VM = "key::game_view_model";
 
-    private ScratchOffViewModel mGameViewModel;
+    private GameViewModel mGameViewModel;
     private double mRevealedPercentage = 0;
     private int[] mParticleIds = {
             R.drawable.confetti_1,
@@ -87,10 +86,10 @@ public class ScratchOffGameFragment extends InjectedFragment {
     }
 
     @NonNull
-    public static ScratchOffGameFragment newInstance(GameResponse game) {
+    public static ScratchOffGameFragment newInstance(GameViewModel gameViewModel) {
         ScratchOffGameFragment fragment = new ScratchOffGameFragment();
         Bundle args = new Bundle();
-        args.putSerializable(KEY_GAME_VM, game);
+        args.putSerializable(KEY_GAME_VM, gameViewModel);
         fragment.setArguments(args);
         return fragment;
     }
@@ -99,7 +98,7 @@ public class ScratchOffGameFragment extends InjectedFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mGameViewModel = (ScratchOffViewModel) getArguments().getSerializable(KEY_GAME_VM);
+            mGameViewModel = (GameViewModel) getArguments().getSerializable(KEY_GAME_VM);
         }
     }
 
@@ -288,6 +287,11 @@ public class ScratchOffGameFragment extends InjectedFragment {
         else {
             rollDownShades();
         }
+    }
+
+    @OnClick(R.id.rfgf_submit_button)
+    void submitRewardClaim() {
+        ((VegasActivity) getActivity()).continueFlow();
     }
 
     private void rollDownShades() {
