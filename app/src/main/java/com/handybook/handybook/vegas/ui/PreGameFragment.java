@@ -56,7 +56,7 @@ public class PreGameFragment extends Fragment {
 
     }
 
-    void onClick(View v) {
+    public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pre_game_x_button:
                 ((VegasActivity) getActivity()).finish();

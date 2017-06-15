@@ -28,7 +28,7 @@ import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -62,25 +62,25 @@ public class GameFragment extends InjectedFragment {
     private float mSpongeStartX;
     private float mSpongeStartY;
 
-    @Bind(R.id.rfgf_background_image) ImageView mBackground;
-    @Bind(R.id.rfgf_scroll_container) MaybeScrollView mScrollView;
-    @Bind(R.id.rfgf_scratch_symbol_top_left) GameSymbolView mSymbolTL;
-    @Bind(R.id.rfgf_scratch_symbol_top_right) GameSymbolView mSymbolTR;
-    @Bind(R.id.rfgf_scratch_symbol_bottom_left) GameSymbolView mSymbolBL;
-    @Bind(R.id.rfgf_scratch_symbol_bottom_right) GameSymbolView mSymbolBR;
-    @Bind(R.id.rfgf_scratchoff_view) ScratchOffView mScratchOffView;
-    @Bind(R.id.rfgf_bucket) ImageView mBucket;
-    @Bind(R.id.rfgf_sponge_actor) ImageView mSpongeActor;
-    @Bind(R.id.rfgf_result_sheet) ViewGroup mResultSheet;
-    @Bind(R.id.rfgf_result_title) TextView mResultTitle;
-    @Bind(R.id.rfgf_result_subtitle) TextView mResultSubtitle;
-    @Bind(R.id.rfgf_result_header) TextView mResultHeader;
-    @Bind(R.id.rfgf_result_symbol) GameSymbolView mResultSymbol;
-    @Bind(R.id.rfgf_banner_bottom_container) ViewGroup mBottomBannerContainer;
-    @Bind(R.id.rfgf_banner_bottom_text) TextView mBottomBannerText;
+    @BindView(R.id.rfgf_background_image) ImageView mBackground;
+    @BindView(R.id.rfgf_scroll_container) MaybeScrollView mScrollView;
+    @BindView(R.id.rfgf_scratch_symbol_top_left) GameSymbolView mSymbolTL;
+    @BindView(R.id.rfgf_scratch_symbol_top_right) GameSymbolView mSymbolTR;
+    @BindView(R.id.rfgf_scratch_symbol_bottom_left) GameSymbolView mSymbolBL;
+    @BindView(R.id.rfgf_scratch_symbol_bottom_right) GameSymbolView mSymbolBR;
+    @BindView(R.id.rfgf_scratchoff_view) ScratchOffView mScratchOffView;
+    @BindView(R.id.rfgf_bucket) ImageView mBucket;
+    @BindView(R.id.rfgf_sponge_actor) ImageView mSpongeActor;
+    @BindView(R.id.rfgf_result_sheet) ViewGroup mResultSheet;
+    @BindView(R.id.rfgf_result_title) TextView mResultTitle;
+    @BindView(R.id.rfgf_result_subtitle) TextView mResultSubtitle;
+    @BindView(R.id.rfgf_result_header) TextView mResultHeader;
+    @BindView(R.id.rfgf_result_symbol) GameSymbolView mResultSymbol;
+    @BindView(R.id.rfgf_banner_bottom_container) ViewGroup mBottomBannerContainer;
+    @BindView(R.id.rfgf_banner_bottom_text) TextView mBottomBannerText;
 
     //TODO: Remove below
-    @Bind(R.id.rfgf_percentage) TextView mPercentage;
+    @BindView(R.id.rfgf_percentage) TextView mPercentage;
 
     public GameFragment() {
     }
