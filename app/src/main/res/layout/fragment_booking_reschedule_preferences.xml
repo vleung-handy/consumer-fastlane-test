@@ -1,163 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/handy_bg"
-    android:orientation="vertical"
     >
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/HandyTheme.AppBarOverlay"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:theme="@style/HandyTheme.AppBarOverlay"
-            android:title="@string/reschedule"
-            app:contentInsetStart="0dp"
-            app:layout_scrollFlags="enterAlways"
-            app:navigationIcon="@drawable/ic_back"
-            app:titleMargin="@dimen/default_margin"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            />
-    </android.support.design.widget.AppBarLayout>
-
-    <TextView
-        style="@style/TextView.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/default_padding"
-        android:text="@string/select_your_preference"
-        />
-
-    <LinearLayout
-        android:id="@+id/choose_time_option"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:padding="@dimen/default_padding"
-        >
-
-        <ImageView
-            android:layout_width="@dimen/mini_pro_profile_image_size"
-            android:layout_height="@dimen/mini_pro_profile_image_size"
-            android:src="@drawable/img_calendar"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:orientation="vertical"
             >
 
-            <TextView
-                style="@style/TextView.Medium"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/choose_time_option_title"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/HandyTheme.AppBarOverlay"
+                android:title="@string/reschedule"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="enterAlways"
+                app:navigationIcon="@drawable/ic_back"
+                app:titleMargin="@dimen/default_margin"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
                 />
-
-            <TextView
-                style="@style/TextView.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin_quarter"
-                android:lineSpacingMultiplier="1"
-                android:text="@string/choose_time_option_subtitle"
-                android:textColor="@color/handy_tertiary_gray"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/or_separator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/default_padding"
-        >
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:background="@color/handy_dark_divider_line"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/handy_bg"
-            android:paddingBottom="@dimen/default_padding_half"
-            android:paddingEnd="@dimen/default_padding"
-            android:paddingLeft="@dimen/default_padding"
-            android:paddingRight="@dimen/default_padding"
-            android:paddingStart="@dimen/default_padding"
-            android:paddingTop="@dimen/default_padding_half"
-            android:text="@string/or"
-            android:textColor="@color/handy_tertiary_gray"
-            />
-
-    </FrameLayout>
-
-
-    <LinearLayout
-        android:id="@+id/choose_pro_option"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal"
-        android:padding="@dimen/default_padding"
-        >
-
-        <ImageView
-            android:layout_width="@dimen/mini_pro_profile_image_size"
-            android:layout_height="@dimen/mini_pro_profile_image_size"
-            android:src="@drawable/img_pro_placeholder"
-            />
+        </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
+            android:id="@+id/choose_time_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:orientation="vertical"
+            android:background="@color/white"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="@dimen/default_padding"
             >
 
-            <TextView
-                style="@style/TextView.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/choose_pro_option_title"
+            <ImageView
+                android:layout_width="@dimen/mini_pro_profile_image_size"
+                android:layout_height="@dimen/mini_pro_profile_image_size"
+                android:src="@drawable/img_calendar"
                 />
 
-            <TextView
-                style="@style/TextView.Small"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin_quarter"
-                android:lineSpacingMultiplier="1"
-                android:text="@string/choose_pro_option_subtitle"
-                android:textColor="@color/handy_tertiary_gray"
-                />
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:orientation="vertical"
+                >
 
+                <TextView
+                    style="@style/TextView.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_time_option_title"
+                    />
+
+                <TextView
+                    style="@style/TextView.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin_quarter"
+                    android:lineSpacingMultiplier="1"
+                    android:text="@string/choose_time_option_subtitle"
+                    android:textColor="@color/handy_tertiary_gray"
+                    />
+            </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/reschedule_pro_team_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:descendantFocusability="blocksDescendants"
+            >
+
+            <FrameLayout
+                android:id="@+id/or_separator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/default_padding"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:paddingStart="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:background="@color/handy_dark_divider_line"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/handy_bg"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:paddingLeft="@dimen/default_padding"
+                    android:paddingRight="@dimen/default_padding"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding_half"
+                    android:text="@string/or"
+                    android:textColor="@color/handy_tertiary_gray"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/reschedule_pro_team_list_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>
