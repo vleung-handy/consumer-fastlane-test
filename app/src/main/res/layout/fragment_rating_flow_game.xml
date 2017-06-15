@@ -101,8 +101,8 @@
 
                 <ImageView
                     android:id="@+id/rfgf_scratch_background"
-                    android:layout_width="339dp"
-                    android:layout_height="379dp"
+                    android:layout_width="380dp"
+                    android:layout_height="380dp"
                     android:contentDescription="@string/cd.background_image"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -120,6 +120,14 @@
                     />
 
                 <android.support.constraint.Guideline
+                    android:id="@+id/gl_h_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="42dp"
+                    />
+
+                <android.support.constraint.Guideline
                     android:id="@+id/gl_h_center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,6 +135,22 @@
                     app:layout_constraintGuide_begin="196dp"
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="196dp"
+                    />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/gl_h_bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_end="62dp"
+                    />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/gl_v_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="70dp"
                     />
 
                 <android.support.constraint.Guideline
@@ -140,43 +164,11 @@
                     />
 
                 <android.support.constraint.Guideline
-                    android:id="@+id/gl_h_bottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_end="29dp"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="382dp"
-                    />
-
-                <android.support.constraint.Guideline
                     android:id="@+id/gl_v_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_end="50dp"
-                    tools:layout_editor_absoluteX="289dp"
-                    tools:layout_editor_absoluteY="0dp"
-                    />
-
-                <android.support.constraint.Guideline
-                    android:id="@+id/gl_h_top"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="41dp"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="41dp"
-                    />
-
-                <android.support.constraint.Guideline
-                    android:id="@+id/gl_v_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_begin="50dp"
-                    tools:layout_editor_absoluteX="50dp"
-                    tools:layout_editor_absoluteY="0dp"
+                    app:layout_constraintGuide_end="70dp"
                     />
 
 
@@ -240,17 +232,19 @@
 
                 <FrameLayout
                     android:id="@+id/rfgf_result_sheet_container"
-                    android:layout_width="0dp"
+                    android:layout_width="277dp"
                     android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
                     android:layout_marginStart="32dp"
+                    android:layout_marginTop="0dp"
                     android:paddingTop="8dp"
                     app:layout_constraintBottom_toBottomOf="@+id/rfgf_background_image_bottom_spacer"
                     app:layout_constraintLeft_toLeftOf="@+id/rfgf_scratch_background"
                     app:layout_constraintRight_toRightOf="@+id/rfgf_scratch_background"
-                    app:layout_constraintTop_toTopOf="@+id/rfgf_scratch_background"
+                    app:layout_constraintTop_toTopOf="@+id/rfgf_scratchoff_view"
                     >
 
                     <LinearLayout
@@ -373,6 +367,7 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/rfgf_shades_button"
