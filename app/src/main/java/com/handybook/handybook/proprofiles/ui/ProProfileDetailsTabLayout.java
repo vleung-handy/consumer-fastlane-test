@@ -21,7 +21,7 @@ import com.handybook.handybook.proprofiles.reviews.ui.ProProfileReviewsContainer
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -32,10 +32,10 @@ import butterknife.ButterKnife;
  */
 public class ProProfileDetailsTabLayout extends FrameLayout {
 
-    @Bind(R.id.pro_profile_details_tab_layout)
+    @BindView(R.id.pro_profile_details_tab_layout)
     TabLayout mTabLayout;
 
-    @Bind(R.id.pro_profile_details_tab_layout_view_pager)
+    @BindView(R.id.pro_profile_details_tab_layout_view_pager)
     ViewPager mViewPager;
 
     /**

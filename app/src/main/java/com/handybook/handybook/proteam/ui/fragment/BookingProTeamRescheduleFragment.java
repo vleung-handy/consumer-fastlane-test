@@ -28,7 +28,7 @@ import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
@@ -39,7 +39,7 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
     @Inject
     BookingManager mBookingManager;
 
-    @Bind(R.id.pro_team_recycler_view)
+    @BindView(R.id.pro_team_recycler_view)
     RecyclerView mRecyclerView;
 
     private ProTeam.ProTeamCategory mProTeamCategory;

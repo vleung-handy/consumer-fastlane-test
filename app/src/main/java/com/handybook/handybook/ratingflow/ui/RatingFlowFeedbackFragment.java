@@ -23,7 +23,7 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -42,11 +42,11 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     }
 
 
-    @Bind(R.id.rating_flow_pro_image)
+    @BindView(R.id.rating_flow_pro_image)
     ImageView mProImage;
-    @Bind(R.id.rating_flow_stars)
+    @BindView(R.id.rating_flow_stars)
     RatingFlowFiveStarsView mStars;
-    @Bind(R.id.rating_flow_next_button)
+    @BindView(R.id.rating_flow_next_button)
     Button mNextButton;
 
     private Booking mBooking;

@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LeftIconButton extends FrameLayout {
 
-    @Bind(R.id.label)
+    @BindView(R.id.label)
     TextView mLabel;
-    @Bind(R.id.icon)
+    @BindView(R.id.icon)
     ImageView mIcon;
 
     public LeftIconButton(final Context context) {

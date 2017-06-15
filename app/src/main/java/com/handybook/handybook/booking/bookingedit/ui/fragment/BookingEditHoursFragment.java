@@ -29,33 +29,33 @@ import com.handybook.handybook.library.ui.view.LabelValueView;
 import com.handybook.handybook.library.util.UiUtils;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class BookingEditHoursFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.booking_edit_hours_base_time_row)
+    @BindView(R.id.booking_edit_hours_base_time_row)
     LabelValueView mBaseTimeDetailsView;
-    @Bind(R.id.booking_edit_hours_added_time_row)
+    @BindView(R.id.booking_edit_hours_added_time_row)
     LabelValueView mAddedTimeDetailsView;
-    @Bind(R.id.booking_edit_hours_extras_time_row)
+    @BindView(R.id.booking_edit_hours_extras_time_row)
     LabelValueView mExtrasTimeDetailsView;
-    @Bind(R.id.booking_edit_hours_total_due_text)
+    @BindView(R.id.booking_edit_hours_total_due_text)
     TextView mTotalDueText;
-    @Bind(R.id.booking_edit_hours_booking_duration_text)
+    @BindView(R.id.booking_edit_hours_booking_duration_text)
     TextView mBookingDurationText;
-    @Bind(R.id.booking_edit_hours_options_view_container)
+    @BindView(R.id.booking_edit_hours_options_view_container)
     LinearLayout mOptionsViewContainer; //TODO: can we use a stub, or replaceView instead?
-    @Bind(R.id.booking_edit_hours_billed_on_text)
+    @BindView(R.id.booking_edit_hours_billed_on_text)
     TextView mBilledOnText;
-    @Bind(R.id.booking_edit_hours_container)
+    @BindView(R.id.booking_edit_hours_container)
     ScrollView mContainer;
-    @Bind(R.id.booking_edit_hours_apply_to_recurring_option_placeholder)
+    @BindView(R.id.booking_edit_hours_apply_to_recurring_option_placeholder)
     ViewStub mApplyToRecurringOptionPlaceholder;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mSaveButton;
 
     private Booking mBooking;

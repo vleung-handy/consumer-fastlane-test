@@ -20,18 +20,18 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HelpCenterLog;
 import com.squareup.otto.Bus;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HelpCenterActionItemView extends FrameLayout implements View.OnClickListener {
 
-    @Bind(R.id.help_center_action_layout)
+    @BindView(R.id.help_center_action_layout)
     ViewGroup mHelpCenterActionLayout;
-    @Bind(R.id.help_action_image)
+    @BindView(R.id.help_action_image)
     ImageView mHelpActionImage;
-    @Bind(R.id.help_action_title)
+    @BindView(R.id.help_action_title)
     TextView mHelpActionTitle;
-    @Bind(R.id.help_action_subtitle)
+    @BindView(R.id.help_action_subtitle)
     TextView mHelpActionSubtitle;
 
     private String mDeepLink;

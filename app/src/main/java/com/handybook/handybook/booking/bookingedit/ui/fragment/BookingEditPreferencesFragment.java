@@ -24,7 +24,7 @@ import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.BasicInputTextView;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
@@ -35,17 +35,17 @@ public final class BookingEditPreferencesFragment extends ProgressSpinnerFragmen
     private FinalizeBookingRequestPayload mFinalizeBookingRequestPayload
             = new FinalizeBookingRequestPayload();
 
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.edit_preferences_instructions_layout)
+    @BindView(R.id.edit_preferences_instructions_layout)
     InstructionListView mInstructionListView;
-    @Bind(R.id.edit_preferences_scrollview)
+    @BindView(R.id.edit_preferences_scrollview)
     ScrollView mScrollView;
-    @Bind(R.id.edit_preferences_note_to_pro)
+    @BindView(R.id.edit_preferences_note_to_pro)
     BasicInputTextView mNoteToProTextView;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.edit_preferences_apply_to_all_container)
+    @BindView(R.id.edit_preferences_apply_to_all_container)
     View mApplyToAllContainer;
 
     private boolean mIsPreferenceDragged, mIsPreferenceToggled;

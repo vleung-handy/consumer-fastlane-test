@@ -15,15 +15,15 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ImageToggleButton extends LinearLayout implements View.OnClickListener, Checkable {
 
-    @Bind(R.id.image)
+    @BindView(R.id.image)
     ImageView mImage;
 
-    @Bind(R.id.text)
+    @BindView(R.id.text)
     TextView mText;
 
     private Drawable mCheckedDrawable;

@@ -26,7 +26,7 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -40,17 +40,17 @@ public final class BookingCancelWarningFragment extends ProgressSpinnerFragment 
     private BookingCancellationData mBookingCancellationData;
     private BookingCancellationData.PreCancellationInfo mPreCancellationInfo;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.fragment_booking_cancel_warning_warning)
+    @BindView(R.id.fragment_booking_cancel_warning_warning)
     TextView mWarning;
-    @Bind(R.id.fragment_booking_cancel_warning_title)
+    @BindView(R.id.fragment_booking_cancel_warning_title)
     TextView mTitle;
-    @Bind(R.id.fragment_booking_cancel_warning_message)
+    @BindView(R.id.fragment_booking_cancel_warning_message)
     TextView mMessage;
-    @Bind(R.id.fragment_booking_cancel_warning_button)
+    @BindView(R.id.fragment_booking_cancel_warning_button)
     Button mButton;
-    @Bind(R.id.fragment_booking_cancel_warning_webview)
+    @BindView(R.id.fragment_booking_cancel_warning_webview)
     HandyWebView mWebView;
 
     @NonNull

@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -56,31 +56,31 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     private static final String KEY_MONTHS_DISABLED = "key:months_disabled";
     public static final String TAG_COMMITMENT_FAQ = "dialog:commitment:faq";
 
-    @Bind(R.id.booking_frequency_options_spinner_view)
+    @BindView(R.id.booking_frequency_options_spinner_view)
     ViewGroup mFrequencyLayout;
-    @Bind(R.id.booking_subscription_option_layout)
+    @BindView(R.id.booking_subscription_option_layout)
     ViewGroup mSubscriptionOptionsLayout;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button nextButton;
-    @Bind(R.id.booking_scrollview)
+    @BindView(R.id.booking_scrollview)
     ScrollView mScrollView;
-    @Bind(R.id.booking_subscription_trial_container)
+    @BindView(R.id.booking_subscription_trial_container)
     LinearLayout mTrialContainer;
-    @Bind(R.id.booking_subscription_trial_cta)
+    @BindView(R.id.booking_subscription_trial_cta)
     TextView mTrialCta;
-    @Bind(R.id.booking_subscription_trial_option_checkbox)
+    @BindView(R.id.booking_subscription_trial_option_checkbox)
     BookingOptionsCheckboxView mTrialCheckbox;
-    @Bind(R.id.booking_subscription_commitment_tooltip)
+    @BindView(R.id.booking_subscription_commitment_tooltip)
     ImageView mCommitmentTooltip;
-    @Bind(R.id.booking_subscription_title)
+    @BindView(R.id.booking_subscription_title)
     TextView mSubscriptionTitle;
-    @Bind(R.id.coupon_banner_container)
+    @BindView(R.id.coupon_banner_container)
     ViewGroup mCouponBannerContainer;
-    @Bind(R.id.coupon_banner_title)
+    @BindView(R.id.coupon_banner_title)
     TextView mCouponBannerTitle;
-    @Bind(R.id.coupon_banner_subtitle)
+    @BindView(R.id.coupon_banner_subtitle)
     TextView mCouponBannerSubtitle;
-    @Bind(R.id.booking_subscription_coupon_disclaimer)
+    @BindView(R.id.booking_subscription_coupon_disclaimer)
     TextView mCouponDisclaimerText;
 
     private BookingTransaction mBookingTransaction;

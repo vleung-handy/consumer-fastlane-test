@@ -24,7 +24,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingRequestPr
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -51,9 +51,9 @@ public class BookingOptionsInputFragment extends InjectedFragment {
     protected HashMap<String, Integer> optionIndexMap;
     protected HashMap<String, BookingOptionsView> optionsViewMap;
 
-    @Bind(R.id.booking_options_input)
+    @BindView(R.id.booking_options_input)
     protected LinearLayout optionsLayout;
-    @Bind(R.id.booking_options_input_instructions)
+    @BindView(R.id.booking_options_input_instructions)
     protected TextView mInstructionsText;
 
     public static BookingOptionsInputFragment newInstance(

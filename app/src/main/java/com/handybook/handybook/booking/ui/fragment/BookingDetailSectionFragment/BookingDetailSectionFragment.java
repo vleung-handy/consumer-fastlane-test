@@ -25,7 +25,7 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.handybook.handybook.booking.constant.BookingAction.ACTION_CONTACT_PHONE;
@@ -36,7 +36,7 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
 
     protected Booking booking;
 
-    @Bind(R.id.booking_detail_section_view)
+    @BindView(R.id.booking_detail_section_view)
     protected BookingDetailSectionView view;
 
     protected T getSectionView() {

@@ -12,16 +12,16 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.descriptor.ServiceDescriptor;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ServiceView extends FrameLayout {
 
-    @Bind(R.id.icon)
+    @BindView(R.id.icon)
     ImageView mIcon;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTitle;
-    @Bind(R.id.subtitle)
+    @BindView(R.id.subtitle)
     TextView mSubtitle;
 
     public ServiceView(Context context) {

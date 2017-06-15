@@ -16,23 +16,23 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ProTeamFacebookHolder extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.pro_team_facebook_log_in_layout)
+    @BindView(R.id.pro_team_facebook_log_in_layout)
     ViewGroup mFacebookLogInLayout;
-    @Bind(R.id.pro_team_dismiss_facebook_button)
+    @BindView(R.id.pro_team_dismiss_facebook_button)
     View mDismissFacebookButton;
-    @Bind(R.id.pro_team_facebook_log_in_button)
+    @BindView(R.id.pro_team_facebook_log_in_button)
     LoginButton mFacebookLogInButton;
-    @Bind(R.id.pro_team_facebook_ok_button)
+    @BindView(R.id.pro_team_facebook_ok_button)
     Button mFacebookOkButton;
-    @Bind(R.id.pro_team_facebook_title)
+    @BindView(R.id.pro_team_facebook_title)
     TextView mFacebookTitleText;
-    @Bind(R.id.pro_team_facebook_subtitle)
+    @BindView(R.id.pro_team_facebook_subtitle)
     TextView mFacebookSubtitleText;
 
     private Fragment mContainerFragment;

@@ -9,16 +9,16 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by cdavis on 9/1/15.
  */
 public class BookingDetailSectionImageItemView extends InjectedRelativeLayout {
 
-    @Bind(R.id.extra_title)
+    @BindView(R.id.extra_title)
     public TextView extraTitle;
-    @Bind(R.id.extra_image)
+    @BindView(R.id.extra_image)
     public ImageView extraImage;
 
 

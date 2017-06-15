@@ -23,14 +23,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
 
-    @Bind(R.id.pay_lines_section)
+    @BindView(R.id.pay_lines_section)
     public LinearLayout paymentLinesSection;
-    @Bind(R.id.total_text)
+    @BindView(R.id.total_text)
     public TextView totalText;
 
     public BookingDetailSectionPaymentView(final Context context) {

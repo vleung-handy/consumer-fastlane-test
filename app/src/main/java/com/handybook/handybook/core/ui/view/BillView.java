@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.model.bill.Bill;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -23,17 +23,17 @@ public class BillView extends FrameLayout {
     private boolean mIsExpanded;
     private Bill mBill;
 
-    @Bind(R.id.bill_view_header_title)
+    @BindView(R.id.bill_view_header_title)
     TextView mHeaderTitle;
-    @Bind(R.id.bill_view_header_text)
+    @BindView(R.id.bill_view_header_text)
     TextView mHeaderText;
-    @Bind(R.id.bill_view_header_price)
+    @BindView(R.id.bill_view_header_price)
     PriceView mHeaderPrice;
-    @Bind(R.id.bill_view_section_container)
+    @BindView(R.id.bill_view_section_container)
     LinearLayout mSectionContainer;
-    @Bind(R.id.bill_view_expand_target_container)
+    @BindView(R.id.bill_view_expand_target_container)
     ViewGroup mExpandTargetContainer;
-    @Bind(R.id.bill_view_expand_target_label)
+    @BindView(R.id.bill_view_expand_target_label)
     TextView mExpandTargetViewLabel;
 
     public BillView(final Context context) {

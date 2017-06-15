@@ -19,7 +19,7 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingsLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
@@ -29,13 +29,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
  */
 public class UpcomingAndPastBookingsFragment extends InjectedFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.upcoming_and_past_bookings_tab_layout)
+    @BindView(R.id.upcoming_and_past_bookings_tab_layout)
     TabLayout mTabLayout;
 
-    @Bind(R.id.upcoming_and_past_bookings_viewpager)
+    @BindView(R.id.upcoming_and_past_bookings_viewpager)
     ViewPager mViewPager;
 
     public UpcomingAndPastBookingsFragment() {

@@ -37,7 +37,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,19 +46,19 @@ public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
 
     public static final String CUSTOM_TIP_AMOUNT_PATTERN = "^\\$?([0-9]+(?:\\.[0-9]{1,2})?)$";
 
-    @Bind(R.id.rating_flow_pro_image)
+    @BindView(R.id.rating_flow_pro_image)
     ImageView mProImage;
-    @Bind(R.id.rating_flow_rate_prompt)
+    @BindView(R.id.rating_flow_rate_prompt)
     TextView mRatePrompt;
-    @Bind(R.id.rating_flow_stars)
+    @BindView(R.id.rating_flow_stars)
     RatingFlowFiveStarsView mStars;
-    @Bind(R.id.rating_flow_tip_section)
+    @BindView(R.id.rating_flow_tip_section)
     ViewGroup mTipSection;
-    @Bind(R.id.rating_flow_tip_options)
+    @BindView(R.id.rating_flow_tip_options)
     ViewGroup mTipOptions;
-    @Bind(R.id.rating_flow_custom_tip)
+    @BindView(R.id.rating_flow_custom_tip)
     EditText mCustomTip;
-    @Bind(R.id.rating_flow_next_button)
+    @BindView(R.id.rating_flow_next_button)
     Button mNextButton;
     @BindString(R.string.other)
     String mOther;

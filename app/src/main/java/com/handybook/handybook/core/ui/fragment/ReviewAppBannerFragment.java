@@ -17,7 +17,7 @@ import com.handybook.handybook.logger.handylogger.model.ReviewAppPromptLog;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -35,13 +35,13 @@ public class ReviewAppBannerFragment extends InjectedFragment {
 
     public static final String TAG = ReviewAppBannerFragment.class.getName();
 
-    @Bind(R.id.review_app_banner_title)
+    @BindView(R.id.review_app_banner_title)
     TextView mTitle;
 
-    @Bind(R.id.review_app_banner_button_negative)
+    @BindView(R.id.review_app_banner_button_negative)
     Button mNegativeButton;
 
-    @Bind(R.id.review_app_banner_button_positive)
+    @BindView(R.id.review_app_banner_button_positive)
     Button mPositiveButton;
 
     @Inject

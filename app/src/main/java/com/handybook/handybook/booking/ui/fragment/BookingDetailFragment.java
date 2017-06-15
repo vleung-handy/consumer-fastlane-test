@@ -65,7 +65,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -76,11 +76,11 @@ public final class BookingDetailFragment extends ProgressSpinnerFragment
     private static final String STATE_SERVICES = "STATE_SERVICES";
     private static final String STATE_CATEGORY = "STATE_CATEGORY";
 
-    @Bind(R.id.booking_detail_pro_busy_view)
+    @BindView(R.id.booking_detail_pro_busy_view)
     ProBusyView mProBusyView;
-    @Bind(R.id.booking_detail_view)
+    @BindView(R.id.booking_detail_view)
     BookingDetailView mBookingDetailView;
-    @Bind(R.id.nav_help)
+    @BindView(R.id.nav_help)
     TextView mNavHelpText;
 
     @Inject

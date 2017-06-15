@@ -12,22 +12,22 @@ import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.view.ProBusyView;
 import com.handybook.handybook.booking.util.BookingUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingListItem extends FrameLayout {
 
     private Booking mBooking;
 
-    @Bind(R.id.booking_item_image_icon)
+    @BindView(R.id.booking_item_image_icon)
     ImageView mImageIcon;
-    @Bind(R.id.booking_item_title)
+    @BindView(R.id.booking_item_title)
     TextView mTextBookingTitle;
-    @Bind(R.id.booking_item_subtitle)
+    @BindView(R.id.booking_item_subtitle)
     TextView mTextBookingSubtitle;
-    @Bind(R.id.booking_item_pro_busy_banner)
+    @BindView(R.id.booking_item_pro_busy_banner)
     ProBusyView mProBusyView;
-    @Bind(R.id.booking_item_container)
+    @BindView(R.id.booking_item_container)
     View mBookingItemContainer;
 
     private View.OnClickListener mOnClickListener;

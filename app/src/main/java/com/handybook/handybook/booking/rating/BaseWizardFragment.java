@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  *
@@ -27,13 +27,13 @@ public abstract class BaseWizardFragment extends InjectedFragment implements Ser
 
     protected WizardCallback mCallback;
 
-    @Bind(R.id.tv_rating_title)
+    @BindView(R.id.tv_rating_title)
     TextView mTvTitle;
 
-    @Bind(R.id.tv_rating_anonymous)
+    @BindView(R.id.tv_rating_anonymous)
     TextView mTvAnonymous;
 
-    @Bind(R.id.tv_rating_all_apply)
+    @BindView(R.id.tv_rating_all_apply)
     TextView mTvAllApply;
 
     @Override

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
  */
 public class PersistentPromoPreviewToolbar extends android.support.v7.widget.Toolbar {
 
-    @Bind(R.id.persistent_promo_preview_text)
+    @BindView(R.id.persistent_promo_preview_text)
     TextView mPreviewText;
 
     public PersistentPromoPreviewToolbar(Context context) {

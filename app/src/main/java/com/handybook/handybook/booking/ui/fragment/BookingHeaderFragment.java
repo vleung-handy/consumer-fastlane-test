@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingHeaderFragment extends InjectedFragment implements Observer {
@@ -34,13 +34,13 @@ public final class BookingHeaderFragment extends InjectedFragment implements Obs
     private BookingTransaction transaction;
     private BookingQuote quote;
 
-    @Bind(R.id.date_text)
+    @BindView(R.id.date_text)
     TextView dateText;
-    @Bind(R.id.time_text)
+    @BindView(R.id.time_text)
     TextView timeText;
-    @Bind(R.id.price_text)
+    @BindView(R.id.price_text)
     PriceView priceView;
-    @Bind(R.id.discount_text)
+    @BindView(R.id.discount_text)
     TextView discountText;
 
     static BookingHeaderFragment newInstance() {

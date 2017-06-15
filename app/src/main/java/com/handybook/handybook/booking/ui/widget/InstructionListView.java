@@ -18,7 +18,7 @@ import com.handybook.handybook.library.ui.view.DragAndDropVerticalLinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class InstructionListView extends FrameLayout {
@@ -32,9 +32,9 @@ public class InstructionListView extends FrameLayout {
     private ScrollView mParentScrollView;
 
     private BookingInstructionView.OnStateChangedListener mInstructionStateListener;
-    @Bind(R.id.preferences_container)
+    @BindView(R.id.preferences_container)
     DragAndDropVerticalLinearLayout mDnDLinearLayout;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTitle;
 
     {

@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ConversationTipsView extends FrameLayout {
 
-    @Bind(R.id.conversation_tips_title_text)
+    @BindView(R.id.conversation_tips_title_text)
     TextView mTitleText;
-    @Bind(R.id.conversation_tips_body_text)
+    @BindView(R.id.conversation_tips_body_text)
     TextView mBodyText;
 
     public ConversationTipsView(final Context context) {

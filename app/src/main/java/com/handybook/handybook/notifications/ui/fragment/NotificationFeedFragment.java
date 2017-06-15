@@ -17,7 +17,7 @@ import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.notifications.model.HandyNotification;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NotificationFeedFragment extends InjectedFragment
@@ -26,15 +26,15 @@ public class NotificationFeedFragment extends InjectedFragment
     private static final String ARG_NOTIFICATIONS = "NOTIFICATIONS";
     private HandyNotification.List mNotifications;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.notification_feed_srl)
+    @BindView(R.id.notification_feed_srl)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.notifications_feed_rv)
+    @BindView(R.id.notifications_feed_rv)
     EmptiableRecyclerView mEmptiableRecyclerView;
-    @Bind(R.id.card_empty)
+    @BindView(R.id.card_empty)
     View mEmptyView;
-    @Bind(R.id.card_empty_text)
+    @BindView(R.id.card_empty_text)
     TextView mNoBookingsText;
     private NotificationRecyclerViewAdapter mNotificationRecyclerViewAdapter;
 

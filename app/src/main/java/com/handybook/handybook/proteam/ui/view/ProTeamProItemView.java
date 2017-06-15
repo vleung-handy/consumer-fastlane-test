@@ -20,7 +20,7 @@ import com.layer.sdk.messaging.Message;
 
 import java.text.DecimalFormat;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.ButterKnife;
@@ -33,34 +33,34 @@ import static com.handybook.handybook.booking.model.Service.PREFIX_CLEAN_CONSTAN
  */
 public class ProTeamProItemView extends FrameLayout {
 
-    @Bind(R.id.conversation_avatar)
+    @BindView(R.id.conversation_avatar)
     ProAvatarView mProAvatarView;
 
-    @Bind(R.id.conversation_unread_indicator)
+    @BindView(R.id.conversation_unread_indicator)
     ImageView mUnreadIndicator;
 
-    @Bind(R.id.conversation_title)
+    @BindView(R.id.conversation_title)
     TextView mTextTitle;
 
-    @Bind(R.id.conversation_message)
+    @BindView(R.id.conversation_message)
     TextView mTextMessage;
 
-    @Bind(R.id.conversation_timestamp)
+    @BindView(R.id.conversation_timestamp)
     TextView mTextTimestamp;
 
-    @Bind(R.id.conversation_currently_assigned)
+    @BindView(R.id.conversation_currently_assigned)
     TextView mTextCurrent;
 
-    @Bind(R.id.conversation_type_indicator)
+    @BindView(R.id.conversation_type_indicator)
     ImageView mServiceTypeIndicator;
 
-    @Bind(R.id.conversation_job_count_ratings)
+    @BindView(R.id.conversation_job_count_ratings)
     ViewGroup mRatingAndJobsCountContainer;
 
-    @Bind(R.id.mini_pro_profile_rating)
+    @BindView(R.id.mini_pro_profile_rating)
     TextView mRatingText;
 
-    @Bind(R.id.mini_pro_profile_jobs_count)
+    @BindView(R.id.mini_pro_profile_jobs_count)
     TextView mJobsCountText;
 
     private ProTeamProViewModel mProTeamProViewModel;
@@ -76,7 +76,7 @@ public class ProTeamProItemView extends FrameLayout {
     @BindString(R.string.new_conversation_text)
     String mNewConversationMessage;
 
-    @Bind(R.id.book_instantly_icon_text)
+    @BindView(R.id.book_instantly_icon_text)
     TextView mBookInstantlyIconText;
 
     private Typeface mBoldTypeFace;

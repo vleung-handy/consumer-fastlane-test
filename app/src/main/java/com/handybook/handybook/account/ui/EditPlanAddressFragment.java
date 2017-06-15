@@ -26,24 +26,24 @@ import com.handybook.handybook.library.util.UiUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.EditAddressLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public final class EditPlanAddressFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.plan_address_street_addr_text)
+    @BindView(R.id.plan_address_street_addr_text)
     StreetAddressInputTextView mStreetAddressText;
-    @Bind(R.id.plan_address_apt_addr_text)
+    @BindView(R.id.plan_address_apt_addr_text)
     EditText mAptAddressText;
-    @Bind(R.id.plan_address_city_text)
+    @BindView(R.id.plan_address_city_text)
     CityInputTextView mCityText;
-    @Bind(R.id.plan_address_state_text)
+    @BindView(R.id.plan_address_state_text)
     StateInputTextView mStateText;
-    @Bind(R.id.plan_address_zip_text)
+    @BindView(R.id.plan_address_zip_text)
     ZipCodeInputTextView mZipCodeText;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private RecurringBooking mPlan;

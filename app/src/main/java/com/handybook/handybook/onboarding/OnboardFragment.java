@@ -23,7 +23,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class OnboardFragment extends InjectedFragment {
@@ -34,15 +34,15 @@ public final class OnboardFragment extends InjectedFragment {
     private boolean[] animatePages;
     private int count = 4;
 
-    @Bind(R.id.layout)
+    @BindView(R.id.layout)
     View layout;
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     ViewPager pager;
-    @Bind(R.id.start_button)
+    @BindView(R.id.start_button)
     Button startButton;
-    @Bind(R.id.login_button)
+    @BindView(R.id.login_button)
     Button loginButton;
-    @Bind(R.id.indicator)
+    @BindView(R.id.indicator)
     CirclePageIndicator indicator;
 
     @Inject

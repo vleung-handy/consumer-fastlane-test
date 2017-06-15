@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -26,19 +26,19 @@ import butterknife.ButterKnife;
  */
 public class NoBookingsView extends FrameLayout {
 
-    @Bind(R.id.text_date)
+    @BindView(R.id.text_date)
     TextView mTextDate;
 
-    @Bind(R.id.text_time)
+    @BindView(R.id.text_time)
     TextView mTextTime;
 
-    @Bind(R.id.container_recurrence_booking)
+    @BindView(R.id.container_recurrence_booking)
     LinearLayout mContainerRecurrenceBooking;
 
-    @Bind(R.id.container_regular_booking)
+    @BindView(R.id.container_regular_booking)
     LinearLayout mContainerRegularBooking;
 
-    @Bind(R.id.image_main)
+    @BindView(R.id.image_main)
     ImageView mImageMain;
 
     public NoBookingsView(final Context context, final AttributeSet attrs) {

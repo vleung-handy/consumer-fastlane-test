@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LaundryInfoDialogFragment extends BaseDialogFragment {
@@ -35,11 +35,11 @@ public class LaundryInfoDialogFragment extends BaseDialogFragment {
     @Inject
     DefaultPreferencesManager mDefaultPreferencesManager;
 
-    @Bind(R.id.submit_button)
+    @BindView(R.id.submit_button)
     Button submitButton;
-    @Bind(R.id.price_link)
+    @BindView(R.id.price_link)
     TextView priceLink;
-    @Bind(R.id.close_img)
+    @BindView(R.id.close_img)
     ImageView closeImage;
 
     public static LaundryInfoDialogFragment newInstance(final Booking booking) {

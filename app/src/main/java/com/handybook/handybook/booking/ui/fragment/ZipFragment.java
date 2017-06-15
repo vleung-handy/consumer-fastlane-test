@@ -27,7 +27,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -40,10 +40,10 @@ import butterknife.OnClick;
  */
 public class ZipFragment extends InjectedFragment {
 
-    @Bind(R.id.zip_text)
+    @BindView(R.id.zip_text)
     ZipCodeInputTextView mZipCodeInputTextView;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @Inject

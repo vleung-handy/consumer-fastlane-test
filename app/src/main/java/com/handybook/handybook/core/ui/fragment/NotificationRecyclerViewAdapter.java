@@ -13,7 +13,7 @@ import com.handybook.handybook.notifications.model.HandyNotification;
 import com.handybook.handybook.notifications.viewmodel.HandyNotificationViewModel;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NotificationRecyclerViewAdapter
@@ -75,17 +75,17 @@ public class NotificationRecyclerViewAdapter
         public HandyNotificationViewModel mItem;
         public final View mView;
 
-        @Bind(R.id.notification_card_title)
+        @BindView(R.id.notification_card_title)
         public TextView title;
-        @Bind(R.id.notification_card_body)
+        @BindView(R.id.notification_card_body)
         public TextView body;
-        @Bind(R.id.notification_card_icon)
+        @BindView(R.id.notification_card_icon)
         public ImageView image;
-        @Bind(R.id.notification_card_link_container)
+        @BindView(R.id.notification_card_link_container)
         public LinearLayout linkContainer;
-        @Bind(R.id.notification_card_button_container)
+        @BindView(R.id.notification_card_button_container)
         public LinearLayout buttonContainer;
-        @Bind(R.id.notification_card_timestamp)
+        @BindView(R.id.notification_card_timestamp)
         public TextView timestamp;
 
         public ViewHolder(View view) {

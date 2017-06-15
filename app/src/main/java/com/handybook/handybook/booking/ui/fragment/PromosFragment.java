@@ -29,7 +29,7 @@ import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.user.CodeRedemptionLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -37,15 +37,15 @@ public final class PromosFragment extends BookingFlowFragment {
 
     public static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
 
-    @Bind(R.id.promotions_apply_button)
+    @BindView(R.id.promotions_apply_button)
     Button mApplyButton;
-    @Bind(R.id.promotions_coupon_text)
+    @BindView(R.id.promotions_coupon_text)
     EditText mPromoText;
-    @Bind(R.id.promotions_coupon_text_clear)
+    @BindView(R.id.promotions_coupon_text_clear)
     View mPromoTextClearImage;
-    @Bind(R.id.promotions_scroll_view)
+    @BindView(R.id.promotions_scroll_view)
     ScrollView mPromoScrollView;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private String mPromoCoupon;

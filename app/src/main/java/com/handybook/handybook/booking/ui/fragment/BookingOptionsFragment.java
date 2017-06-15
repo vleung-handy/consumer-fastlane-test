@@ -29,7 +29,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingRequestPr
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingOptionsFragment extends BookingFlowFragment {
@@ -50,11 +50,11 @@ public class BookingOptionsFragment extends BookingFlowFragment {
     private int page;
     protected boolean isPost;
 
-    @Bind(R.id.options_layout)
+    @BindView(R.id.options_layout)
     protected LinearLayout optionsLayout;
-    @Bind(R.id.header_text)
+    @BindView(R.id.header_text)
     protected TextView headerText;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     protected Button nextButton;
 
     public static BookingOptionsFragment newInstance(

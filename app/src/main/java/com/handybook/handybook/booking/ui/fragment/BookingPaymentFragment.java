@@ -73,7 +73,7 @@ import com.stripe.exception.CardException;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.card.payment.CardIOActivity;
@@ -90,45 +90,45 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     @Inject
     ServicesManager mServicesManager;
 
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mNextButton;
-    @Bind(R.id.payment_fragment_promo_button)
+    @BindView(R.id.payment_fragment_promo_button)
     Button mPromoButton;
-    @Bind(R.id.credit_card_text)
+    @BindView(R.id.credit_card_text)
     CreditCardNumberInputTextView mCreditCardText;
-    @Bind(R.id.exp_text)
+    @BindView(R.id.exp_text)
     CreditCardExpDateInputTextView mExpText;
-    @Bind(R.id.cvc_text)
+    @BindView(R.id.cvc_text)
     CreditCardCVCInputTextView mCvcText;
-    @Bind(R.id.payment_fragment_promo_text)
+    @BindView(R.id.payment_fragment_promo_text)
     FreezableInputTextView mPromoText;
-    @Bind(R.id.lock_icon)
+    @BindView(R.id.lock_icon)
     ImageView mLockIcon;
-    @Bind(R.id.card_icon)
+    @BindView(R.id.card_icon)
     CreditCardIconImageView mCreditCardIcon;
-    @Bind(R.id.card_extras_layout)
+    @BindView(R.id.card_extras_layout)
     LinearLayout mCardExtrasLayout;
-    @Bind(R.id.payment_fragment_promo_progress)
+    @BindView(R.id.payment_fragment_promo_progress)
     ProgressBar mPromoProgress;
-    @Bind(R.id.payment_fragment_promo_container)
+    @BindView(R.id.payment_fragment_promo_container)
     LinearLayout mPromoLayout;
-    @Bind(R.id.payment_fragment_select_payment_method_container)
+    @BindView(R.id.payment_fragment_select_payment_method_container)
     View mSelectPaymentLayout;
-    @Bind(R.id.payment_fragment_credit_card_info_container)
+    @BindView(R.id.payment_fragment_credit_card_info_container)
     View mInfoPaymentLayout;
-    @Bind(R.id.payment_fragment_apply_promo_cta)
+    @BindView(R.id.payment_fragment_apply_promo_cta)
     View mApplyPromoButton;
-    @Bind(R.id.change_button)
+    @BindView(R.id.change_button)
     View mChangeButton;
-    @Bind(R.id.booking_select_payment_promo_text)
+    @BindView(R.id.booking_select_payment_promo_text)
     TextView mSelectPaymentPromoText;
-    @Bind(R.id.payment_fragment_terms_of_use_text)
+    @BindView(R.id.payment_fragment_terms_of_use_text)
     TextView mTermsOfUseText;
-    @Bind(R.id.scan_card_button)
+    @BindView(R.id.scan_card_button)
     TextView mScanCardButton;
-    @Bind(R.id.payment_fragment_bill)
+    @BindView(R.id.payment_fragment_bill)
     BillView mBillView;
-    @Bind(R.id.payment_fragment_price_header_container)
+    @BindView(R.id.payment_fragment_price_header_container)
     View mHeaderContainer;
 
     private boolean mUseExistingCard;

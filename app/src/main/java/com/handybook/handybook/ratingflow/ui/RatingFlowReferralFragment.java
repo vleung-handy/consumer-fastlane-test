@@ -52,7 +52,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.BindInt;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -70,27 +70,27 @@ public class RatingFlowReferralFragment extends ProgressSpinnerFragment {
     private ArrayList<Provider> mRecommendedProviders;
     private List<ProCarouselVM> mProTeamCarouselViewModels;
 
-    @Bind(R.id.rating_flow_referral_scroll_view)
+    @BindView(R.id.rating_flow_referral_scroll_view)
     ScrollView mScrollView;
-    @Bind(R.id.rating_flow_referral_subtitle)
+    @BindView(R.id.rating_flow_referral_subtitle)
     TextView mSubtitle;
-    @Bind(R.id.rating_flow_referral_header)
+    @BindView(R.id.rating_flow_referral_header)
     View mHeader;
-    @Bind(R.id.rating_flow_referral_header_icon)
+    @BindView(R.id.rating_flow_referral_header_icon)
     View mHeaderIcon;
-    @Bind(R.id.rating_flow_referral_header_text)
+    @BindView(R.id.rating_flow_referral_header_text)
     View mHeaderText;
-    @Bind(R.id.rating_flow_referral_header_divider)
+    @BindView(R.id.rating_flow_referral_header_divider)
     View mHeaderDivider;
-    @Bind(R.id.rating_flow_referral_content)
+    @BindView(R.id.rating_flow_referral_content)
     View mReferralContent;
-    @Bind(R.id.rating_flow_review_section)
+    @BindView(R.id.rating_flow_review_section)
     View mReviewSection;
-    @Bind(R.id.rating_flow_referral_help_button)
+    @BindView(R.id.rating_flow_referral_help_button)
     View mHelpButton;
-    @Bind(R.id.referral_flow_pro_team_section)
+    @BindView(R.id.referral_flow_pro_team_section)
     ViewGroup mProTeamSection;
-    @Bind(R.id.referral_flow_pro_team_carousel)
+    @BindView(R.id.referral_flow_pro_team_carousel)
     ProTeamCarouselView mProTeamCarousel;
 
     @BindInt(R.integer.anim_duration_medium)

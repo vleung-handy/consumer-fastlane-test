@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -35,7 +35,7 @@ public class RatingsGridFragment extends BaseWizardFragment {
 
     private static final String EXTRA_SELECTED_ITEMS = "selected_items";
 
-    @Bind(R.id.grid_view)
+    @BindView(R.id.grid_view)
     GridView mGridView;
 
     private List<GridDisplayItem> mDisplayedItems;

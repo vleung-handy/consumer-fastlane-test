@@ -38,7 +38,7 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RateServiceDialogFragment extends BaseDialogFragment {
@@ -53,43 +53,43 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
     private static final String RATE_SERVICE_CONFIRM_DIALOG_FRAGMENT
             = "RateServiceConfirmDialogFragment";
 
-    @Bind(R.id.rate_dialog_service_icon)
+    @BindView(R.id.rate_dialog_service_icon)
     ImageView mServiceIcon;
-    @Bind(R.id.rate_dialog_title_text)
+    @BindView(R.id.rate_dialog_title_text)
     TextView mTitleText;
-    @Bind(R.id.rate_dialog_pro_team_member)
+    @BindView(R.id.rate_dialog_pro_team_member)
     TextView mTextProTeamMember;
-    @Bind(R.id.rate_dialog_submit_button)
+    @BindView(R.id.rate_dialog_submit_button)
     Button mSubmitButton;
-    @Bind(R.id.rate_dialog_skip_button)
+    @BindView(R.id.rate_dialog_skip_button)
     Button mSkipButton;
-    @Bind(R.id.rate_dialog_submit_progress)
+    @BindView(R.id.rate_dialog_submit_progress)
     ProgressBar mSubmitProgress;
-    @Bind(R.id.rate_dialog_ratings_layout)
+    @BindView(R.id.rate_dialog_ratings_layout)
     LinearLayout mRatingsLayout;
 
     /**
      * This layout also contains the pro team layout
      */
-    @Bind(R.id.rate_dialog_submit_button_layout)
+    @BindView(R.id.rate_dialog_submit_button_layout)
     View mSubmitButtonLayout;
-    @Bind(R.id.rate_dialog_star_1)
+    @BindView(R.id.rate_dialog_star_1)
     ImageView mStar1;
-    @Bind(R.id.rate_dialog_star_2)
+    @BindView(R.id.rate_dialog_star_2)
     ImageView mStar2;
-    @Bind(R.id.rate_dialog_star_3)
+    @BindView(R.id.rate_dialog_star_3)
     ImageView mStar3;
-    @Bind(R.id.rate_dialog_star_4)
+    @BindView(R.id.rate_dialog_star_4)
     ImageView mStar4;
-    @Bind(R.id.rate_dialog_star_5)
+    @BindView(R.id.rate_dialog_star_5)
     ImageView mStar5;
-    @Bind(R.id.rate_dialog_tip_section)
+    @BindView(R.id.rate_dialog_tip_section)
     View mTipSection;
-    @Bind(R.id.rate_dialog_pro_team_section)
+    @BindView(R.id.rate_dialog_pro_team_section)
     ViewGroup mProTeamSection;
-    @Bind(R.id.rate_dialog_scrollview)
+    @BindView(R.id.rate_dialog_scrollview)
     ScrollView mScroll;
-    @Bind(R.id.rate_pro_team_tip_divider)
+    @BindView(R.id.rate_pro_team_tip_divider)
     View mTipDivider;
 
     private Configuration mConfiguration;

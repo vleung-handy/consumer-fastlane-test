@@ -12,16 +12,16 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 import com.layer.atlas.util.picasso.transformations.CircleTransform;
 import com.squareup.picasso.Picasso;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProAvatarView extends RelativeLayout {
 
-    @Bind(R.id.avatar_image_profile)
+    @BindView(R.id.avatar_image_profile)
     CircleImageView mCircleImageView;
 
-    @Bind(R.id.avatar_heart_container)
+    @BindView(R.id.avatar_heart_container)
     FrameLayout mHeartContainer;
 
     public ProAvatarView(final Context context, final int mImageSize) {

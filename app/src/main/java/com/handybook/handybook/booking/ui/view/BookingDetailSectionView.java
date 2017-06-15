@@ -11,20 +11,20 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BookingDetailSectionView extends FrameLayout {
 
-    @Bind(R.id.entry_sep)
+    @BindView(R.id.entry_sep)
     View mSeparator;
-    @Bind(R.id.entry_title)
+    @BindView(R.id.entry_title)
     TextView mEntryTitle;
-    @Bind(R.id.entry_text)
+    @BindView(R.id.entry_text)
     TextView mEntryText;
-    @Bind(R.id.entry_action_text)
+    @BindView(R.id.entry_action_text)
     TextView mEntryActionText;
-    @Bind(R.id.action_buttons_layout)
+    @BindView(R.id.action_buttons_layout)
     LinearLayout mActionButtonsLayout;
 
     public BookingDetailSectionView(final Context context) {

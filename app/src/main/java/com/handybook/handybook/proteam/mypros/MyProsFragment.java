@@ -18,7 +18,7 @@ import com.handybook.handybook.logger.handylogger.model.MyProsLog;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
 import com.handybook.handybook.proteam.ui.fragment.ProTeamConversationsFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -31,7 +31,7 @@ import butterknife.OnClick;
  */
 public class MyProsFragment extends InjectedFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     public static MyProsFragment newInstance() {

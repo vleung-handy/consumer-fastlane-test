@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class BookingExtrasFragment extends BookingFlowFragment {
@@ -36,9 +36,9 @@ public final class BookingExtrasFragment extends BookingFlowFragment {
 
     @Inject
     SecurePreferencesManager mSecurePreferencesManager;
-    @Bind(R.id.options_layout)
+    @BindView(R.id.options_layout)
     LinearLayout mOptionsLayout;
-    @Bind(R.id.next_button)
+    @BindView(R.id.next_button)
     Button mNextButton;
 
     public static BookingExtrasFragment newInstance(@Nullable final Bundle extras) {

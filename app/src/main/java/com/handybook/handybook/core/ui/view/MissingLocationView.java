@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -17,10 +17,10 @@ import butterknife.ButterKnife;
  */
 public class MissingLocationView extends FrameLayout {
 
-    @Bind(R.id.text_error_message)
+    @BindView(R.id.text_error_message)
     TextView mTextErrorMessage;
 
-    @Bind(R.id.image_error_icon)
+    @BindView(R.id.image_error_icon)
     ImageView mImageError;
 
     public MissingLocationView(final Context context, final AttributeSet attrs) {

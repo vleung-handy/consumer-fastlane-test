@@ -23,7 +23,7 @@ import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
@@ -34,23 +34,23 @@ public class RateServiceConfirmDialogFragment extends BaseDialogFragment {
     private int rating;
     private int booking;
 
-    @Bind(R.id.service_icon)
+    @BindView(R.id.service_icon)
     ImageView serviceIcon;
-    @Bind(R.id.service_icon_img)
+    @BindView(R.id.service_icon_img)
     ImageView serviceIconImage;
-    @Bind(R.id.title_text)
+    @BindView(R.id.title_text)
     TextView titleText;
-    @Bind(R.id.message_text)
+    @BindView(R.id.message_text)
     TextView messageText;
-    @Bind(R.id.feedback_text)
+    @BindView(R.id.feedback_text)
     LimitedEditText feedbackText;
-    @Bind(R.id.submit_button)
+    @BindView(R.id.submit_button)
     Button submitButton;
-    @Bind(R.id.submit_progress)
+    @BindView(R.id.submit_progress)
     ProgressBar submitProgress;
-    @Bind(R.id.skip_button)
+    @BindView(R.id.skip_button)
     Button skipButton;
-    @Bind(R.id.submit_button_layout)
+    @BindView(R.id.submit_button_layout)
     View submitButtonLayout;
 
     public static RateServiceConfirmDialogFragment newInstance(

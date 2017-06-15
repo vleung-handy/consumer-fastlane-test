@@ -11,7 +11,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedDialogFragment;
 import com.handybook.handybook.library.ui.view.HandyWebView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -21,10 +21,10 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment {
     private final static String BUNDLE_KEY_WEBVIEW_URL = "WEBVIEW_URL";
     private final static String BUNDLE_KEY_NAVBAR_TITLE = "NAVBAR_TITLE";
 
-    @Bind(R.id.handy_webview)
+    @BindView(R.id.handy_webview)
     protected HandyWebView mHandyWebView;
 
-    @Bind(R.id.nav_text)
+    @BindView(R.id.nav_text)
     protected TextView mTitleText;
 
     private String mWebViewUrl;

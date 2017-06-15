@@ -20,19 +20,19 @@ import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ContactFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.contact_name_text)
+    @BindView(R.id.contact_name_text)
     FullNameInputTextView mFullNameText;
-    @Bind(R.id.contact_email_text)
+    @BindView(R.id.contact_email_text)
     EmailInputTextView mEmailText;
-    @Bind(R.id.contact_phone_text)
+    @BindView(R.id.contact_phone_text)
     PhoneInputTextView mPhoneText;
 
     private User mUser;

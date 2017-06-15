@@ -57,7 +57,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -80,43 +80,43 @@ public class OnboardV2Fragment extends InjectedFragment {
     // Threshold for minimal keyboard height.
     final int MIN_KEYBOARD_HEIGHT_PX = 150;
 
-    @Bind(R.id.onboard_toolbar)
+    @BindView(R.id.onboard_toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.onboard_appbar)
+    @BindView(R.id.onboard_appbar)
     AppBarLayout mAppBar;
 
-    @Bind(R.id.onboard_collapsing_toolbar)
+    @BindView(R.id.onboard_collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
 
-    @Bind(R.id.onboard_already_have_account)
+    @BindView(R.id.onboard_already_have_account)
     TextView mAlreadyHaveAccount;
 
-    @Bind(R.id.onboard_edit_zip)
+    @BindView(R.id.onboard_edit_zip)
     TextInputEditText mEditZip;
 
-    @Bind(R.id.onboard_edit_email)
+    @BindView(R.id.onboard_edit_email)
     TextInputEditText mEditEmail;
 
-    @Bind(R.id.onboard_view_switcher)
+    @BindView(R.id.onboard_view_switcher)
     ViewSwitcher mViewSwitcher;
 
-    @Bind(R.id.pinned_layout)
+    @BindView(R.id.pinned_layout)
     LinearLayout mPinnedLayout;
 
-    @Bind(R.id.onboard_signin)
+    @BindView(R.id.onboard_signin)
     Button mButtonSignIn;
 
-    @Bind(R.id.onboard_button_next)
+    @BindView(R.id.onboard_button_next)
     Button mNextButton;
 
-    @Bind(R.id.onboard_button_submit)
+    @BindView(R.id.onboard_button_submit)
     Button mSubmitButton;
 
-    @Bind(R.id.onboard_email)
+    @BindView(R.id.onboard_email)
     View mEmailView;
 
-    @Bind(R.id.onboard_zip)
+    @BindView(R.id.onboard_zip)
     View mZipView;
 
     @Inject

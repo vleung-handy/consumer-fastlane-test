@@ -24,32 +24,32 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 // TODO: Continue chopping this class up into fragments so all the elements in BookingDetailFragment
 // are BookingDetailSectionFragments
 public final class BookingDetailView extends InjectedRelativeLayout {
 
-    @Bind(R.id.date_text)
+    @BindView(R.id.date_text)
     TextView dateText;
-    @Bind(R.id.time_text)
+    @BindView(R.id.time_text)
     TextView timeText;
-    @Bind(R.id.freq_text)
+    @BindView(R.id.freq_text)
     TextView freqText;
-    @Bind(R.id.freq_layout)
+    @BindView(R.id.freq_layout)
     View freqLayout;
-    @Bind(R.id.service_icon)
+    @BindView(R.id.service_icon)
     ServiceIconImageView serviceIcon;
-    @Bind(R.id.booking_text)
+    @BindView(R.id.booking_text)
     TextView bookingText;
-    @Bind(R.id.nav_text)
+    @BindView(R.id.nav_text)
     TextView navText;
-    @Bind(R.id.add_to_calendar_image)
+    @BindView(R.id.add_to_calendar_image)
     ImageView mAddToCalendarImage;
-    @Bind(R.id.booking_report_issue_button)
+    @BindView(R.id.booking_report_issue_button)
     Button mReportIssueButton;
-    @Bind(R.id.back_button)
+    @BindView(R.id.back_button)
     public ImageButton backButton;
 
     private static final String HANDY_BOOKING = "Handy Booking";

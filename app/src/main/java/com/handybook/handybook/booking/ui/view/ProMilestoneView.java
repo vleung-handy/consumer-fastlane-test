@@ -14,24 +14,24 @@ import com.google.common.base.Strings;
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.TextUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProMilestoneView extends FrameLayout {
 
-    @Bind(R.id.pro_milestone_dot)
+    @BindView(R.id.pro_milestone_dot)
     View mDot;
-    @Bind(R.id.pro_milestone_line)
+    @BindView(R.id.pro_milestone_line)
     View mLine;
-    @Bind(R.id.pro_milestone_title)
+    @BindView(R.id.pro_milestone_title)
     TextView mTitleText;
-    @Bind(R.id.pro_milestone_body)
+    @BindView(R.id.pro_milestone_body)
     TextView mBodyText;
-    @Bind(R.id.pro_milestone_time)
+    @BindView(R.id.pro_milestone_time)
     TextView mTimeText;
-    @Bind(R.id.pro_milestone_call)
+    @BindView(R.id.pro_milestone_call)
     Button mCallButton;
-    @Bind(R.id.pro_milestone_text)
+    @BindView(R.id.pro_milestone_text)
     Button mTextButton;
 
     public ProMilestoneView(final Context context) {

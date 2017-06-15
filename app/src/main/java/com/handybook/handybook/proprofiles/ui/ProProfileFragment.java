@@ -45,7 +45,7 @@ import com.handybook.shared.layer.LayerConstants;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -67,19 +67,19 @@ public class ProProfileFragment extends InjectedFragment implements
     private static final float PRO_REVIEWS_MIN_RATING_TO_DISPLAY = 5.0f;
     private static final int PRO_REVIEWS_PAGE_SIZE = 10;
 
-    @Bind(R.id.pro_profile_details_tab_container)
+    @BindView(R.id.pro_profile_details_tab_container)
     ProProfileDetailsTabLayout mProProfileDetailsTabLayout;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.pro_profile_header_layout)
+    @BindView(R.id.pro_profile_header_layout)
     ProProfileHeaderView mProProfileHeaderView;
 
-    @Bind(R.id.pro_profile_loading_layout)
+    @BindView(R.id.pro_profile_loading_layout)
     View mLoadingLayout;
 
-    @Bind(R.id.loading_error_layout)
+    @BindView(R.id.loading_error_layout)
     View mLoadingErrorLayout;
 
     @Inject

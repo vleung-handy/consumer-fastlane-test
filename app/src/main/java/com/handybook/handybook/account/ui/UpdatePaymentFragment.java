@@ -37,34 +37,34 @@ import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.card.payment.CardIOActivity;
 
 public class UpdatePaymentFragment extends ProgressSpinnerFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.credit_card_text)
+    @BindView(R.id.credit_card_text)
     CreditCardNumberInputTextView mCreditCardText;
-    @Bind(R.id.exp_text)
+    @BindView(R.id.exp_text)
     CreditCardExpDateInputTextView mExpText;
-    @Bind(R.id.cvc_text)
+    @BindView(R.id.cvc_text)
     CreditCardCVCInputTextView mCvcText;
-    @Bind(R.id.card_icon)
+    @BindView(R.id.card_icon)
     CreditCardIconImageView mCreditCardIcon;
-    @Bind(R.id.update_button)
+    @BindView(R.id.update_button)
     Button mUpdateButton;
-    @Bind(R.id.change_button)
+    @BindView(R.id.change_button)
     Button mChangeButton;
-    @Bind(R.id.card_extras_layout)
+    @BindView(R.id.card_extras_layout)
     ViewGroup mCardExtrasLayout;
-    @Bind(R.id.cancel_button)
+    @BindView(R.id.cancel_button)
     View mCancelButton;
-    @Bind(R.id.lock_icon)
+    @BindView(R.id.lock_icon)
     ImageView mLockIcon;
-    @Bind(R.id.scan_card_button)
+    @BindView(R.id.scan_card_button)
     TextView mScanCardButton;
 
     //TODO: this fragment duplicates a lots of logic in BookingPaymentFragment; we should consolidate

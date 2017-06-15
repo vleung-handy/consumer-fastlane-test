@@ -13,13 +13,13 @@ import com.handybook.handybook.library.ui.view.ViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProTeamCarouselView extends RelativeLayout
         implements CarouselPagerAdapter.ActionListener {
 
-    @Bind(R.id.carousel_pager)
+    @BindView(R.id.carousel_pager)
     ViewPager mViewPager;
 
     private List<ProCarouselVM> mProfiles;

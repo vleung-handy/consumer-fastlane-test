@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
  */
 public class LoadingLayout extends FrameLayout {
 
-    @Bind(R.id.layout_loading_text)
+    @BindView(R.id.layout_loading_text)
     TextView mLoadingText;
 
     public LoadingLayout(final Context context) {

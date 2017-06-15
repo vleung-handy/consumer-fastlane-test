@@ -12,7 +12,7 @@ import com.handybook.handybook.booking.util.BookingUtil;
 
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -22,11 +22,11 @@ public class BookingCardHolder extends RecyclerView.ViewHolder {
 
     private Booking mBooking;
 
-    @Bind(R.id.booking_item_image_icon)
+    @BindView(R.id.booking_item_image_icon)
     ImageView mImageIcon;
-    @Bind(R.id.booking_item_title)
+    @BindView(R.id.booking_item_title)
     TextView mTextBookingTitle;
-    @Bind(R.id.booking_item_subtitle)
+    @BindView(R.id.booking_item_subtitle)
     TextView mTextBookingSubtitle;
 
     View.OnClickListener mOnClickListener;

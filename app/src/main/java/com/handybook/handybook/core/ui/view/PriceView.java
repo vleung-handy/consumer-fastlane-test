@@ -11,14 +11,14 @@ import com.handybook.handybook.R;
 
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PriceView extends FrameLayout {
 
-    @Bind(R.id.price_view_cardinal_tv)
+    @BindView(R.id.price_view_cardinal_tv)
     TextView mCardinal;
-    @Bind(R.id.price_view_decimal_tv)
+    @BindView(R.id.price_view_decimal_tv)
     TextView mDecimal;
 
     private String mCurrencySymbol;

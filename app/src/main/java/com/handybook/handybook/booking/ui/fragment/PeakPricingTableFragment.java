@@ -22,7 +22,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog
 import java.util.ArrayList;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class PeakPricingTableFragment extends BookingFlowFragment {
@@ -42,7 +42,7 @@ public final class PeakPricingTableFragment extends BookingFlowFragment {
     private boolean mIsForRescheduleAll;
 
     private Booking mBookingToReschedule;
-    @Bind(R.id.peak_pricing_table_container)
+    @BindView(R.id.peak_pricing_table_container)
     LinearLayout mTimeSlotContainer;
     private String mCurrencyCharacter;
     private User mUser;

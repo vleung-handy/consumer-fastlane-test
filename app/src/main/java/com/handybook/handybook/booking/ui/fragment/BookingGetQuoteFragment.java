@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.TimeZone;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -49,21 +49,21 @@ import static com.handybook.handybook.booking.ui.fragment.BookingOptionsInputFra
 public class BookingGetQuoteFragment extends BookingFlowFragment implements
         BookingDateTimeInputFragment.OnSelectedDateTimeUpdatedListener {
 
-    @Bind(R.id.booking_zipcode_input_text)
+    @BindView(R.id.booking_zipcode_input_text)
     ZipCodeInputTextView mZipCodeInputTextView;
 
-    @Bind(R.id.booking_email_input)
+    @BindView(R.id.booking_email_input)
     EmailInputTextView mEmailInputTextView;
 
     // hidden if user already logged in
-    @Bind(R.id.booking_email_input_container)
+    @BindView(R.id.booking_email_input_container)
     ViewGroup mBookingEmailInputContainer;
 
     // hidden if valid zip already present
-    @Bind(R.id.booking_zipcode_input_container)
+    @BindView(R.id.booking_zipcode_input_container)
     ViewGroup mBookingZipcodeInputContainer;
 
-    @Bind(R.id.fragment_booking_get_quote_next_button)
+    @BindView(R.id.fragment_booking_get_quote_next_button)
     Button mNextButton;
 
     /**

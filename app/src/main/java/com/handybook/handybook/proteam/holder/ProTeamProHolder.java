@@ -10,7 +10,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.view.HorizontalMiniProProfile;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -21,9 +21,9 @@ public class ProTeamProHolder extends RecyclerView.ViewHolder
     private ProTeamProViewModel mProTeamProViewModel;
     private boolean mShowProImage;
     private ProTeamProViewModel.OnInteractionListener mOnInteractionListener;
-    @Bind(R.id.pro_team_pro_card_checkbox)
+    @BindView(R.id.pro_team_pro_card_checkbox)
     CheckBox mCheckbox;
-    @Bind(R.id.pro_team_pro_card_profile)
+    @BindView(R.id.pro_team_pro_card_profile)
     HorizontalMiniProProfile mProProfile;
 
     public ProTeamProHolder(

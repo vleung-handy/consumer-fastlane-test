@@ -13,20 +13,20 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public abstract class RatingFlowFeedbackChildFragment extends InjectedFragment {
 
-    @Bind(R.id.rating_flow_section_title)
+    @BindView(R.id.rating_flow_section_title)
     TextView mSectionTitle;
-    @Bind(R.id.rating_flow_section_subtitle)
+    @BindView(R.id.rating_flow_section_subtitle)
     TextView mSectionSubtitle;
-    @Bind(R.id.rating_flow_section_container)
+    @BindView(R.id.rating_flow_section_container)
     ViewGroup mSectionContainer;
-    @Bind(R.id.rating_flow_section_helper_text)
+    @BindView(R.id.rating_flow_section_helper_text)
     TextView mSectionHelperText;
-    @Bind(R.id.rating_flow_section_helper_container)
+    @BindView(R.id.rating_flow_section_helper_container)
     ViewGroup mSectionHelperContainer;
 
     @Nullable
