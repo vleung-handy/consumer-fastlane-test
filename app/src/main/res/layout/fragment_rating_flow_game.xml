@@ -236,16 +236,19 @@
                     android:layout_height="0dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="0dp"
                     android:paddingTop="8dp"
                     app:layout_constraintBottom_toBottomOf="@+id/rfgf_background_image_bottom_spacer"
                     app:layout_constraintLeft_toLeftOf="@+id/rfgf_scratch_background"
                     app:layout_constraintRight_toRightOf="@+id/rfgf_scratch_background"
                     app:layout_constraintTop_toTopOf="@+id/rfgf_scratchoff_view"
                     >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:src="@drawable/bg_vegas_result_sheet"
+                        />
 
                     <LinearLayout
                         android:id="@+id/rfgf_result_sheet"
@@ -254,7 +257,7 @@
                         android:layout_marginBottom="32dp"
                         android:layout_marginTop="-48dp"
                         android:animateLayoutChanges="true"
-                        android:background="@color/handy_blue"
+                        android:background="@drawable/bg_vegas_result_sheet"
                         android:orientation="vertical"
                         android:paddingLeft="@dimen/default_padding_double"
                         android:paddingRight="@dimen/default_padding_double"
