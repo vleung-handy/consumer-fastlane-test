@@ -229,8 +229,7 @@ public class BookingDetailSectionFragmentProInformation extends
 
         //If there is a provider assignment info and they're not on your pro team
         if (booking.getProviderAssignmentInfo() != null &&
-            !booking.getProviderAssignmentInfo().isProTeamMatch() &&
-            mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleEnabled()) {
+            !booking.getProviderAssignmentInfo().isProTeamMatch()) {
             getSectionView().showPreferDifferentProLayout(true);
             getSectionView().setPreferDifferentProOnClickListener(new View.OnClickListener() {
                 @Override
