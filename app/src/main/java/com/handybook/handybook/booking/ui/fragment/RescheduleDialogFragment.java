@@ -25,6 +25,10 @@ public class RescheduleDialogFragment extends BaseDialogFragment {
     private ProTeam.ProTeamCategory mCategory;
     private Booking mBooking;
 
+    public static RescheduleDialogFragment newInstance(final Booking booking) {
+        return newInstance(null, booking);
+    }
+
     public static RescheduleDialogFragment newInstance(
             final ProTeam.ProTeamCategory category,
             final Booking booking
