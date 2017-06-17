@@ -144,7 +144,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) {
             mEnvLink.setText(getString(
                     R.string.environment_name,
-                    mEnvironmentModifier.getEnvironment()
+                    mEnvironmentModifier.getEnvironmentPrefix()
             ));
             mEnvLink.setVisibility(View.VISIBLE);
         }
@@ -188,7 +188,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     @OnClick(R.id.fragment_service_categories_home_env_button)
     public void onEnvButtonClicked() {
         final EditText input = new EditText(getContext());
-        input.setText(mEnvironmentModifier.getEnvironment());
+        input.setText(mEnvironmentModifier.getEnvironmentPrefix());
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.set_environment)
                 .setView(input)
@@ -196,7 +196,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // change the environment and update the menu text
-                        mEnvironmentModifier.setEnvironment(input.getText().toString());
+                        mEnvironmentModifier.setEnvironmentPrefix(input.getText().toString());
                         mEnvLink.setText(getString(
                                 R.string.environment_name,
                                 input.getText().toString()

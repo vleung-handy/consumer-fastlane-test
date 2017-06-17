@@ -256,7 +256,7 @@ public class OnboardV2Fragment extends InjectedFragment {
             return;
         }
         final EditText input = new EditText(getContext());
-        input.setText(mEnvironmentModifier.getEnvironment());
+        input.setText(mEnvironmentModifier.getEnvironmentPrefix());
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.set_environment)
                 .setView(input)
@@ -264,7 +264,7 @@ public class OnboardV2Fragment extends InjectedFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // change the environment and update the menu text
-                        mEnvironmentModifier.setEnvironment(input.getText().toString());
+                        mEnvironmentModifier.setEnvironmentPrefix(input.getText().toString());
                         Intent intent = new Intent(getContext(), SplashActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                                         Intent.FLAG_ACTIVITY_CLEAR_TASK);

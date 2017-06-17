@@ -247,6 +247,7 @@
     <string name="no_data_indicator">--</string>
     <string name="billed_on_date_formatted">Billed on %1$s</string>
     <string name="environment">Environment</string>
+    <string name="select_environment">Select Environment</string>
 
     <!-- Tools -->
     <string name="dash_formatted">%1$s \u2013 %2$s</string>

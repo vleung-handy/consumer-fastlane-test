@@ -129,10 +129,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Subscribe
             public void userAuthUpdated(final UserLoggedInEvent event) {
                 checkLayerInitiation();
-                if (!event.isLoggedIn())
-                {
-                    if (requiresOnboardingV2(mConfigurationManager.getPersistentConfiguration()))
-                    {
+                if (!event.isLoggedIn()) {
+                    if (requiresOnboardingV2(mConfigurationManager.getPersistentConfiguration())) {
                         //upon logout, if onboarding is enabled, then we bring user back to onboarding screen.
                         final Intent intent = new Intent(
                                 MenuDrawerActivity.this,
@@ -251,7 +249,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
         envButton.setText(String.format(
                 getString(R.string.env_format),
-                mEnvironmentModifier.getEnvironment(),
+                mEnvironmentModifier.getEnvironmentPrefix(),
                 BuildConfig.VERSION_NAME,
                 Integer.valueOf(BuildConfig.VERSION_CODE).toString()
                           )
@@ -263,14 +261,15 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Override
             public void onClick(View view) {
                 final EditText input = new EditText(MenuDrawerActivity.this);
-                input.setText(mEnvironmentModifier.getEnvironment());
+                input.setText(mEnvironmentModifier.getEnvironmentPrefix());
                 new AlertDialog.Builder(MenuDrawerActivity.this)
                         .setTitle(R.string.set_environment)
                         .setView(input)
                         .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mEnvironmentModifier.setEnvironment(input.getText().toString());
+                                mEnvironmentModifier.setEnvironmentPrefix(input.getText()
+                                                                               .toString());
                             }
                         })
                         .setNegativeButton(R.string.cancel, null)
