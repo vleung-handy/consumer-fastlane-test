@@ -218,7 +218,6 @@
     <string name="no_information">No information</string>
     <string name="image_content_description_handy_logo">Handy Icon</string>
     <string name="invalid_pro_phone_number">The phone number for this provider could not be found</string>
-    <string name="set_environment">Set Environment</string>
     <string name="set">Set</string>
     <string name="cancel">Cancel</string>
     <string name="image_content_description_icon_recurring">Recurring Icon</string>
@@ -246,8 +245,15 @@
     <string name="job">job</string>
     <string name="no_data_indicator">--</string>
     <string name="billed_on_date_formatted">Billed on %1$s</string>
+
+    <!-- Environment-->
     <string name="environment">Environment</string>
     <string name="select_environment">Select Environment</string>
+    <string name="environment_name">%1$s: %2$s</string>
+    <string name="env_modifier_dialog_title_namespace">Enter Namespace</string>
+    <string name="env_modifier_dialog_title_domain">Enter Domain or IP Address</string>
+    <string name="env_modifier_dialog_input_hint_namespace">e.g. test01</string>
+    <string name="env_modifier_dialog_input_hint_domain">e.g. 127.0.0.1</string>
 
     <!-- Tools -->
     <string name="dash_formatted">%1$s \u2013 %2$s</string>
@@ -595,7 +601,6 @@
     <string name="account_active_plans_saved_cleanings_title_template"><![CDATA[<strong>Saved cleanings: </strong>%s]]></string>
     <string name="account_active_plans_saved_cleanings_message_template"><![CDATA[Use your saved cleaning by booking \nany one-time service. <a href="%s">Learn More</a>]]></string>
     <string name="account_active_plans_saved_cleanings_faq_url">https://handy.com/faq/subscription_credits</string>
-    <string name="environment_name">[Ns: %1$s]</string>
     <plurals name="pro_referral_title">
         <item quantity="one">Recommend Your Pro</item>
         <item quantity="other">Recommend Your Pros</item>

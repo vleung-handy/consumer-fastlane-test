@@ -84,4 +84,9 @@ public class EnvironmentModifier {
 
         mBus.post(new EnvironmentUpdatedEvent(environmentPrefix, previousEnvironmentPrefix));
     }
+
+    public interface OnEnvironmentChangedListener {
+
+        void onEnvironmentChanged(String newEnvironment, String newEnvironmentPrefix);
+    }
 }

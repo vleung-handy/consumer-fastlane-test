@@ -1,7 +1,5 @@
 package com.handybook.handybook.booking.ui.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +40,7 @@ import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
+import com.handybook.handybook.library.util.EnvironmentUtils;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
@@ -144,6 +142,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) {
             mEnvLink.setText(getString(
                     R.string.environment_name,
+                    mEnvironmentModifier.getEnvironment(),
                     mEnvironmentModifier.getEnvironmentPrefix()
             ));
             mEnvLink.setVisibility(View.VISIBLE);
@@ -187,19 +186,19 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
 
     @OnClick(R.id.fragment_service_categories_home_env_button)
     public void onEnvButtonClicked() {
-        final EditText input = new EditText(getContext());
-        input.setText(mEnvironmentModifier.getEnvironmentPrefix());
-        new AlertDialog.Builder(getContext())
-                .setTitle(R.string.set_environment)
-                .setView(input)
-                .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
+        EnvironmentUtils.showEnvironmentModifierDialog(
+                mEnvironmentModifier,
+                getContext(),
+                new EnvironmentModifier.OnEnvironmentChangedListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // change the environment and update the menu text
-                        mEnvironmentModifier.setEnvironmentPrefix(input.getText().toString());
+                    public void onEnvironmentChanged(
+                            final String newEnvironment,
+                            final String newEnvironmentPrefix
+                    ) {
                         mEnvLink.setText(getString(
                                 R.string.environment_name,
-                                input.getText().toString()
+                                newEnvironment,
+                                newEnvironmentPrefix
                         ));
                         //Log user out
                         mConfigurationManager.invalidateCache();
@@ -214,10 +213,8 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
                                         Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .create()
-                .show();
+                }
+        );
     }
 
     @Override

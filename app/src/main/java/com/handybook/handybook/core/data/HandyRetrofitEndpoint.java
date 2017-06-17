@@ -39,26 +39,26 @@ public class HandyRetrofitEndpoint implements Endpoint {
 
     @Override
     public final String getUrl() {
-        if (mEnvironmentModifier.isProduction()) {
-            return mApiEndpoint;
+        if (mEnvironmentModifier.isNamespace()) {
+            return mApiEndpointNamespace.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
         }
         else if (mEnvironmentModifier.isLocal()) {
-            return mApiEndpointLocal;
+            return mApiEndpointLocal.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
         }
         else {
-            return mApiEndpointNamespace.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
+            return mApiEndpoint;
         }
     }
 
     public final String getBaseUrl() {
-        if (mEnvironmentModifier.isProduction()) {
-            return mBaseUrl;
+        if (mEnvironmentModifier.isNamespace()) {
+            return mBaseUrlNamespace.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
         }
         else if (mEnvironmentModifier.isLocal()) {
-            return mBaseUrlLocal;
+            return mBaseUrlLocal.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
         }
         else {
-            return mBaseUrlNamespace.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
+            return mBaseUrl;
         }
     }
 

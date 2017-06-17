@@ -1,7 +1,5 @@
 package com.handybook.handybook.onboarding;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -26,7 +24,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -46,6 +43,7 @@ import com.handybook.handybook.core.model.response.UserExistsResponse;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.library.util.EnvironmentUtils;
 import com.handybook.handybook.library.util.TextWatcherAdapter;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -255,25 +253,22 @@ public class OnboardV2Fragment extends InjectedFragment {
         if (!BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_STAGE)) {
             return;
         }
-        final EditText input = new EditText(getContext());
-        input.setText(mEnvironmentModifier.getEnvironmentPrefix());
-        new AlertDialog.Builder(getContext())
-                .setTitle(R.string.set_environment)
-                .setView(input)
-                .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
+        EnvironmentUtils.showEnvironmentModifierDialog(
+                mEnvironmentModifier,
+                getContext(),
+                new EnvironmentModifier.OnEnvironmentChangedListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // change the environment and update the menu text
-                        mEnvironmentModifier.setEnvironmentPrefix(input.getText().toString());
+                    public void onEnvironmentChanged(
+                            final String newEnvironment,
+                            final String newEnvironmentPrefix
+                    ) {
                         Intent intent = new Intent(getContext(), SplashActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                                         Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .create()
-                .show();
+                }
+        );
     }
 
     /**
