@@ -55,6 +55,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.
 import com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment.BookingDetailSectionFragmentProInformationTest;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingExtrasFragmentTest;
+import com.handybook.handybook.booking.ui.fragment.BookingFlowFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingHeaderFragmentTest;
 import com.handybook.handybook.booking.ui.fragment.BookingLocationFragment;
@@ -71,6 +72,7 @@ import com.handybook.handybook.booking.ui.fragment.CancelRecurringBookingSelecti
 import com.handybook.handybook.booking.ui.fragment.OnboardingTest;
 import com.handybook.handybook.booking.ui.fragment.PromosFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
+import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.booking.ui.fragment.dialog.BookingTimeInputDialogFragment;
@@ -225,6 +227,9 @@ import static org.mockito.Mockito.when;
         BookingTimeInputDialogFragment.class,
         ReviewAppBannerFragment.class,
         BottomNavActivity.class,
+        BookingFlowFragment.class,
+        ServiceCategoriesHomeFragment.class,
+
 }, library = true)
 public class TestApplicationModule {
 
