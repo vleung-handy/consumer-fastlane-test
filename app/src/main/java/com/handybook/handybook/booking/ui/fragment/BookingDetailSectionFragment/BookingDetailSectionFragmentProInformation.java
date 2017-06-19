@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
@@ -234,8 +236,8 @@ public class BookingDetailSectionFragmentProInformation extends
             getSectionView().setPreferDifferentProOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                RescheduleDialogFragment fragment = RescheduleDialogFragment.newInstance(booking);
-                fragment.show(getFragmentManager(), null);
+                DialogFragment fragment = RescheduleDialogFragment.newInstance(booking);
+                FragmentUtils.safeLaunchDialogFragment(fragment, getFragmentManager(), null);
                 }
             });
         }

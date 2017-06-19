@@ -66,7 +66,7 @@ public class FragmentUtils {
      *
      * @return true if the DialogFragment was successfully launched
      */
-    private static boolean safeLaunchDialogFragment(
+    public static boolean safeLaunchDialogFragment(
             @NonNull DialogFragment dialogFragment,
             @NonNull FragmentManager fragmentManager,
             String dialogFragmentTag
