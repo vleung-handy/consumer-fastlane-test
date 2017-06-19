@@ -498,4 +498,10 @@ public interface HandyRetrofitService {
 
     @GET("/rewards")
     void getRewards(HandyRetrofitCallback cb);
+
+    @POST("/rewards/{reward_id}/claim")
+    void claimReward(
+            @Path("reward_id") long rewardId,
+            HandyRetrofitCallback cb
+    );
 }

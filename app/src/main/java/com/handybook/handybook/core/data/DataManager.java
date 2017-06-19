@@ -59,7 +59,6 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
-import com.handybook.handybook.vegas.model.RewardsWrapper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -1050,12 +1049,6 @@ public class DataManager {
                 ignoreBookingId,
                 new ProAvailabilityCallback(cb)
         );
-    }
-
-    public void getReward(
-            final Callback<RewardsWrapper> cb
-    ) {
-        mService.getRewards(new RecommendedProvidersHandyRetrofitCallback(cb));
     }
 
     public void getHelpCenterInfo(final Callback<HelpCenterResponse> cb) {
