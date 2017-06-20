@@ -7,9 +7,9 @@ import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
+import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
-import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.deeplink.DeepLinkParams;
 
 import javax.inject.Inject;
@@ -31,7 +31,7 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity {
     protected void onResume() {
         super.onResume();
         if (mUserManager.isUserLoggedIn()) {
-            startActivity(new Intent(this, SplashActivity.class));
+            startActivity(new Intent(this, BottomNavActivity.class));
             finish();
         }
     }
