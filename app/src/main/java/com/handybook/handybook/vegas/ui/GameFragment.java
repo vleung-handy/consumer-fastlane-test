@@ -239,6 +239,7 @@ public class GameFragment extends InjectedFragment {
         if (ratio > .7) {
             mScratchOffView.scratchOffAll();
             rollDownShades();
+            blastConfetti();
             swipeRightBucket();
             swipeRightSponge();
             swipeDownBottomBanner();
@@ -265,9 +266,9 @@ public class GameFragment extends InjectedFragment {
 
     @OnClick(R.id.rfgf_blast_button)
     void blastConfetti() {
-        int partsPerSec = 4;
-        int emitTime = 2000;
-        int maxParts = 400;
+        int partsPerSec = 6;
+        int emitTime = 1000;
+        int maxParts = 300;
         int timeToLive = 5000;
         final DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);

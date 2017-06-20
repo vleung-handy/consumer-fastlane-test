@@ -1,6 +1,5 @@
 package com.handybook.handybook.vegas;
 
-import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitCallback;
 import com.handybook.handybook.core.data.HandyRetrofitService;
@@ -13,18 +12,10 @@ import javax.inject.Inject;
 public class VegasManager {
 
     private final HandyRetrofitService mService;
-    private final DataManager mDataManager;
-    private final UserManager mUserManager;
 
     @Inject
-    public VegasManager(
-            HandyRetrofitService service,
-            DataManager dataManager,
-            UserManager userManager
-    ) {
+    public VegasManager(HandyRetrofitService service) {
         mService = service;
-        mDataManager = dataManager;
-        mUserManager = userManager;
     }
 
     public void getReward(

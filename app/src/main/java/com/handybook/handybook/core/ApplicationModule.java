@@ -477,12 +477,8 @@ public final class ApplicationModule {
     @Provides
     @Singleton
     @NonNull
-    final VegasManager provideVegasManager(
-            final HandyRetrofitService service,
-            final DataManager dataManager,
-            final UserManager userDataManager
-    ) {
-        return new VegasManager(service, dataManager, userDataManager);
+    final VegasManager provideVegasManager(final HandyRetrofitService service) {
+        return new VegasManager(service);
     }
 
     @Provides

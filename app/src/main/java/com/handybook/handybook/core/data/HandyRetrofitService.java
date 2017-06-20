@@ -500,8 +500,5 @@ public interface HandyRetrofitService {
     void getRewards(HandyRetrofitCallback cb);
 
     @POST("/rewards/{reward_id}/claim")
-    void claimReward(
-            @Path("reward_id") long rewardId,
-            HandyRetrofitCallback cb
-    );
+    void claimReward(@Path("reward_id") long rewardId, HandyRetrofitCallback cb);
 }

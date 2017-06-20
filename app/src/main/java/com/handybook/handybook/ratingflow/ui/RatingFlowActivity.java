@@ -32,6 +32,7 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
+import com.handybook.handybook.vegas.VegasManager;
 import com.handybook.handybook.vegas.model.RewardsWrapper;
 import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.VegasActivity;
@@ -47,6 +48,9 @@ public class RatingFlowActivity extends BaseActivity {
 
     @Inject
     HandyRetrofitService mService;
+
+    @Inject
+    VegasManager mVegasManager;
 
     private static final int EXCELLENT_PRO_RATING = 5;
 
@@ -281,7 +285,7 @@ public class RatingFlowActivity extends BaseActivity {
     }
 
     private void fetchRewardInfo() {
-        mDataManager.getReward(
+        mVegasManager.getReward(
                 new ActivitySafeCallback<RewardsWrapper, RatingFlowActivity>(this) {
                     @Override
                     public void onCallbackSuccess(final RewardsWrapper response) {
