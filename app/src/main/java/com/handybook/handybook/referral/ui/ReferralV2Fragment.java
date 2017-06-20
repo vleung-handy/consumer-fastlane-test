@@ -104,8 +104,10 @@ public class ReferralV2Fragment extends ProgressSpinnerFragment {
     }
 
     private void showProTeamReferral() {
+        //isResumed is needed otherwise it can cause a crash with the fragment transaction on certain
+        //  scenarios, like putting the app in the background while loading info
         if (getChildFragmentManager().findFragmentByTag(ProReferralFragment.class.getName()) ==
-            null) {
+            null && isResumed()) {
             getChildFragmentManager()
                     .beginTransaction()
                     .replace(
@@ -119,7 +121,10 @@ public class ReferralV2Fragment extends ProgressSpinnerFragment {
     }
 
     private void showLegacyReferral() {
-        if (getChildFragmentManager().findFragmentByTag(ReferralFragment.class.getName()) == null) {
+        //isResumed is needed otherwise it can cause a crash with the fragment transaction on certain
+        //  scenarios, like putting the app in the background while loading info
+        if (getChildFragmentManager().findFragmentByTag(ReferralFragment.class.getName()) == null
+            && isResumed()) {
             getChildFragmentManager()
                     .beginTransaction()
                     .replace(
