@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
     public LinearLayout paymentLinesSection;
     @BindView(R.id.total_text)
     public TextView totalText;
+    @BindView(R.id.total_price_footnote_text)
+    TextView mTotalPriceFootnoteText;
 
     public BookingDetailSectionPaymentView(final Context context) {
         super(context);
@@ -56,8 +60,16 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
     }
 
     //TODO: Clean this up
-    public void updatePaymentDisplay(final Booking booking, final User user) {
+    public void updatePaymentDisplay(
+            final Booking booking,
+            final User user,
+            @Nullable final String totalPriceFootnote
+    ) {
         totalText.setText(booking.formatPrice(user.getCurrencyChar()));
+        mTotalPriceFootnoteText.setVisibility(TextUtils.isBlank(totalPriceFootnote)
+                                              ? GONE
+                                              : VISIBLE);
+        mTotalPriceFootnoteText.setText(totalPriceFootnote);
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
 
