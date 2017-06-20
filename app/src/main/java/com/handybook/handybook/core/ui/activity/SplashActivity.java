@@ -76,7 +76,7 @@ public class SplashActivity extends BaseActivity {
                     final ConfigurationEvent.ReceiveConfigurationSuccess event
             ) {
                 if (event != null) {
-                    determineStartPage(event.getConfiguration());
+                    goToStartPage(event.getConfiguration());
                 }
                 else {
                     navigateToServiceCategoriesActivity();
@@ -88,9 +88,7 @@ public class SplashActivity extends BaseActivity {
         mBusErrorEventListener = new Object() {
             @Subscribe
             public void onReceiveConfigurationError(ConfigurationEvent.ReceiveConfigurationError event) {
-                //on all errors, default to home page.
-                navigateToServiceCategoriesActivity();
-                unregisterAndFinish();
+                goToStartPage(mConfigurationManager.getPersistentConfiguration());
             }
         };
 
@@ -106,23 +104,10 @@ public class SplashActivity extends BaseActivity {
      * @param config
      */
     @VisibleForTesting
-    public void determineStartPage(Configuration config) {
+    public void goToStartPage(Configuration config) {
         final User user = userManager.getCurrentUser();
 
-        //if onboarding is enabled, and we haven't collected email and zip yet, then show the onboarding page
-        if (requiresOnboardingV2(config)) {
-            startActivity(new Intent(this, OnboardActivity.class));
-            unregisterAndFinish();
-        }
-        else if (!mDefaultPreferencesManager.getBoolean(
-                PrefsKey.APP_ONBOARD_SHOWN,
-                false
-        ) && user == null) {
-            final Intent intent = new Intent(this, OnboardActivity.class);
-            startActivity(intent);
-            unregisterAndFinish();
-        }
-        else if (user != null) {
+        if (user != null) {
             //TODO investigate  <-- @Xi what is it that we need to investigate?
 
             //This needs to be set to fix an issue with existing users not having their zip set
@@ -136,13 +121,18 @@ public class SplashActivity extends BaseActivity {
 
             final Intent intent = new Intent(this, BottomNavActivity.class);
             startActivity(intent);
-            unregisterAndFinish();
+        }
+        //if onboarding is enabled, and we haven't collected email and zip yet, then show the onboarding page
+        else if (requiresOnboardingV2(config) ||
+                !mDefaultPreferencesManager.getBoolean(PrefsKey.APP_ONBOARD_SHOWN, false)) {
+            startActivity(new Intent(this, OnboardActivity.class));
         }
         else {
             //all else, go to home page
             navigateToServiceCategoriesActivity();
-            unregisterAndFinish();
         }
+        //At the end always unregister and finish
+        unregisterAndFinish();
     }
 
     /**

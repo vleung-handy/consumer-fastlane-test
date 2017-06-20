@@ -66,7 +66,7 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper {
         ActivityController<SplashActivity> activityController = Robolectric.buildActivity(
                 SplashActivity.class);
         activityController.create();
-        activityController.get().determineStartPage(mConfiguration);
+        activityController.get().goToStartPage(mConfiguration);
         Intent nextStartedActivity = shadowOf(activityController.get()).getNextStartedActivity();
         assertThat(
                 nextStartedActivity.getComponent().getClassName(),
@@ -88,7 +88,7 @@ public class SplashActivityTest extends RobolectricGradleTestWrapper {
         ActivityController<SplashActivity> activityController = Robolectric.buildActivity(
                 SplashActivity.class);
         activityController.create();
-        activityController.get().determineStartPage(mConfiguration);
+        activityController.get().goToStartPage(mConfiguration);
         Intent nextStartedActivity = shadowOf(activityController.get()).getNextStartedActivity();
         assertThat(
                 nextStartedActivity.getComponent().getClassName(),
