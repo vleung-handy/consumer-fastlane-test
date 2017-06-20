@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,7 +19,6 @@ import android.widget.TextView;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.core.User;
-import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.Utils;
 
 import java.util.ArrayList;
@@ -34,8 +34,8 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
     public LinearLayout paymentLinesSection;
     @BindView(R.id.total_text)
     public TextView totalText;
-    @BindView(R.id.total_price_footnote_text)
-    TextView mTotalPriceFootnoteText;
+    @BindView(R.id.total_price_sub_text)
+    TextView mTotalPriceSubText;
 
     public BookingDetailSectionPaymentView(final Context context) {
         super(context);
@@ -63,13 +63,13 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
     public void updatePaymentDisplay(
             final Booking booking,
             final User user,
-            @Nullable final String totalPriceFootnote
+            @Nullable final String totalPriceSubText
     ) {
         totalText.setText(booking.formatPrice(user.getCurrencyChar()));
-        mTotalPriceFootnoteText.setVisibility(TextUtils.isBlank(totalPriceFootnote)
+        mTotalPriceSubText.setVisibility(TextUtils.isEmpty(totalPriceSubText)
                                               ? GONE
                                               : VISIBLE);
-        mTotalPriceFootnoteText.setText(totalPriceFootnote);
+        mTotalPriceSubText.setText(totalPriceSubText);
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
 

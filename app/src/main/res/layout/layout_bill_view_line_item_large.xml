@@ -47,12 +47,31 @@
         app:priceDecimal="50"
         />
 
-    <TextView
-        android:id="@+id/bill_view_large_line_item_amount_override"
-        style="@style/TextView.XXLarge.Bold"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label"
-        />
+        android:gravity="right"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/bill_view_large_line_item_amount_override"
+            style="@style/TextView.XXLarge.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label"
+            />
+
+        <TextView
+            android:id="@+id/bill_view_large_line_item_amount_override_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/value_added_tax_included_indicator"
+            style="@style/TextView.Small"
+            android:textColor="@color/handy_tertiary_gray"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+    </LinearLayout>
 
 </LinearLayout>

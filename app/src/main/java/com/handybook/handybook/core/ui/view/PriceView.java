@@ -2,6 +2,7 @@ package com.handybook.handybook.core.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -20,6 +21,8 @@ public class PriceView extends FrameLayout {
     TextView mCardinal;
     @BindView(R.id.price_view_decimal_tv)
     TextView mDecimal;
+    @BindView(R.id.price_view_sub_text)
+    TextView mSubText;
 
     private String mCurrencySymbol;
     private String mCardinalText;
@@ -133,6 +136,11 @@ public class PriceView extends FrameLayout {
         setCardinal(getCardinalValue(priceCents));
         setDecimal(getDecimalValue(priceCents));
 
+    }
+
+    public void setSubText(@Nullable String subText) {
+        mSubText.setVisibility(TextUtils.isEmpty(subText) ? GONE : VISIBLE);
+        mSubText.setText(subText);
     }
 
     private static int getCardinalValue(final int cents) {

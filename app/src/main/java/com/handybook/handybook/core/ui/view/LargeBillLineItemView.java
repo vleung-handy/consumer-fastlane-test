@@ -27,6 +27,8 @@ public class LargeBillLineItemView extends AbstractBillLineItemView {
     PriceView mPrice;
     @BindView(R.id.bill_view_large_line_item_amount_override)
     TextView mPriceOverride;
+    @BindView(R.id.bill_view_large_line_item_amount_override_sub_text)
+    TextView mAmountOverrideSubText;
 
     public LargeBillLineItemView(final Context context) {
         super(context);
@@ -45,9 +47,15 @@ public class LargeBillLineItemView extends AbstractBillLineItemView {
         updateLabel();
         updatePrice();
         updateHelpText();
+        updateAmountSubtext();
         mLabel.setId(hashCode());
         mPrice.setId(hashCode());
         mPriceOverride.setId(hashCode());
+    }
+
+    public void updateAmountSubtext() {
+        mPrice.setSubText(getBillLineItem().getAmountSubText());
+        mAmountOverrideSubText.setText(getBillLineItem().getAmountSubText());
     }
 
     private void updateLabel() {

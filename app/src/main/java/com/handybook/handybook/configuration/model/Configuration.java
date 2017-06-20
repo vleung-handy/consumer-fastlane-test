@@ -69,11 +69,11 @@ public class Configuration implements Serializable {
     @SerializedName("my_pros_tab_enabled")
     private boolean mMyProsTabEnabled;
 
-    @SerializedName("vat_indicator_enabled")
-    private boolean mVatIndicatorEnabled;
+    @SerializedName("show_uk_vat_copy")
+    private boolean mUkVatIndicatorEnabled;
 
-    public boolean isVatIndicatorEnabled() {
-        return true;
+    public boolean isUkVatIndicatorEnabled() {
+        return mUkVatIndicatorEnabled;
     }
 
     public boolean isMyProsTabEnabled() {

@@ -26,6 +26,8 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView {
     ImageView mQuestionMarkImage;
     @BindView(R.id.bill_view_default_line_item_amount)
     TextView mAmount;
+    @BindView(R.id.bill_view_default_line_item_amount_sub_text)
+    TextView mAmountSubText;
 
     public DefaultBillLineItemView(final Context context) {
         super(context);
@@ -44,8 +46,13 @@ public class DefaultBillLineItemView extends AbstractBillLineItemView {
         updateLabel();
         updatePrice();
         updateHelpText();
+        updateAmountSubtext();
         mLabel.setId(hashCode());
         mAmount.setId(hashCode());
+    }
+
+    public void updateAmountSubtext() {
+        mAmountSubText.setText(getBillLineItem().getAmountSubText());
     }
 
     private void updateLabel() {

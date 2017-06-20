@@ -3,27 +3,46 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:orientation="horizontal"
               android:animateLayoutChanges="true"
+              android:gravity="right"
+              android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/price_view_cardinal_tv"
-        style="@style/TextView.XXLarge.Bold"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        tools:text="$100"
-        />
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/price_view_cardinal_tv"
+            style="@style/TextView.XXLarge.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            tools:text="$10"
+            />
+
+        <TextView
+            android:id="@+id/price_view_decimal_tv"
+            style="@style/TextView.Large.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="3dp"
+            android:maxLines="1"
+            tools:text="50"
+            />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/price_view_decimal_tv"
-        style="@style/TextView.Large.Bold"
+        android:id="@+id/price_view_sub_text"
+        style="@style/TextView.Small"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="3dp"
-        android:layout_marginLeft="1dp"
-        android:maxLines="1"
-        tools:text="50"
+        android:layout_height="wrap_content"
+        android:textColor="@color/handy_tertiary_gray"
+        tools:text="@string/value_added_tax_included_indicator"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 </LinearLayout>

@@ -64,17 +64,17 @@
                     />
 
                 <TextView
-                    android:id="@+id/total_price_footnote_text"
+                    android:layout_marginTop="@dimen/default_margin_quarter"
+                    android:id="@+id/total_price_sub_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="*includes VAT"
-                    style="@style/TextView.Small"
+                    tools:text="@string/value_added_tax_included_indicator"
+                    style="@style/TextView.XSmall"
                     android:textColor="@color/handy_tertiary_gray"
                     android:visibility="gone"
                     tools:visibility="visible"
                     />
             </LinearLayout>
-
 
         </LinearLayout>
 
