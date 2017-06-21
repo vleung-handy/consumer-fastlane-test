@@ -139,7 +139,7 @@ public final class BookingDetailView extends InjectedRelativeLayout {
         ));
 
         if (booking.shouldHideEndTime()) {
-            //only should 5:00 pm
+            //should only display the start time
             timeText.setText(startTimeDisplayString);
         }
         else {
