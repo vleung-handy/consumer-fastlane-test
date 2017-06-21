@@ -14,6 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
@@ -303,6 +304,7 @@ public class RatingFlowActivity extends BaseActivity {
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
+                        Crashlytics.log("Failed to fetch reward!");
                     }
                 }
         );
