@@ -3,16 +3,10 @@ package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionPaymentView;
-import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.User;
-
-import javax.inject.Inject;
 
 public class BookingDetailSectionFragmentPayment
         extends BookingDetailSectionFragment<BookingDetailSectionPaymentView> {
-
-    @Inject
-    ConfigurationManager mConfigurationManager;
 
     @Override
     protected int getEntryTitleTextResourceId(Booking booking) {
