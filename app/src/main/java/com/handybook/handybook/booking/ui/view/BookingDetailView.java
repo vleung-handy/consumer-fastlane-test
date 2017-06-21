@@ -18,10 +18,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.util.DateTimeUtils;
-import com.handybook.handybook.library.util.StringUtils;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,11 +76,7 @@ public final class BookingDetailView extends InjectedRelativeLayout {
         mBooking = booking;
         navText.setText(booking.getServiceName());
         bookingText.setText(getContext().getString(R.string.booking_number, booking.getId()));
-        updateDateTimeInfoText(
-                booking,
-                booking.getStartDate(),
-                isBookingHoursClarificationExperimentEnabled
-        );
+        updateDateTimeInfoText(booking, isBookingHoursClarificationExperimentEnabled);
         updateFrequencySectionDisplay(booking);
         updateServiceIcon(booking, serviceList);
     }
@@ -123,20 +116,15 @@ public final class BookingDetailView extends InjectedRelativeLayout {
     // possible, this view is going to be supplanted by new sub fragments
     public void updateDateTimeInfoText(
             final Booking booking,
-            final Date startDate,
             boolean isBookingHoursClarificationExperimentEnabled
     ) {
         //Set the start date
-        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
+        dateText.setText(DateTimeUtils.formatDate(booking.getStartDate(), "EEEE',' MMM d',' yyyy",
                                                   booking.getBookingTimezone()
         ));
 
         //we want to display the time using the booking location's time zone
-        String startTimeDisplayString = StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                startDate,
-                DateTimeUtils.CLOCK_FORMATTER_12HR,
-                booking.getBookingTimezone()
-        ));
+        String startTimeDisplayString = BookingUtil.getStartTime(booking);
 
         if (booking.shouldHideEndTime()) {
             //should only display the start time
@@ -161,21 +149,10 @@ public final class BookingDetailView extends InjectedRelativeLayout {
                 ));
             }
             else {
-                final Calendar endDate = Calendar.getInstance();
-
-                endDate.setTime(startDate);
-                endDate.add(Calendar.MINUTE, minutes);
-                //5:00 pm - 8:00 pm (3 hours)
-                String endTimeDisplayString =
-                        StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                                endDate.getTime(),
-                                DateTimeUtils.CLOCK_FORMATTER_12HR,
-                                booking.getBookingTimezone()
-                        ));
                 timeText.setText(getResources().getString(
                         R.string.booking_details_hours_formatted,
                         startTimeDisplayString,
-                        endTimeDisplayString,
+                        BookingUtil.getEndTime(booking),
                         numHoursDisplayString
                 ));
             }

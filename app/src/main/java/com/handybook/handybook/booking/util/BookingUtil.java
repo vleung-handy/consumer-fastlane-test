@@ -19,7 +19,6 @@ import com.handybook.handybook.library.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,26 +180,10 @@ public class BookingUtil {
      * Returns in the form of 3:00 pm - 7:00 pm
      */
     public static String getSubtitle(Booking booking, Context context) {
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(booking.getStartDate());
-        cal.add(
-                Calendar.MINUTE,
-                Math.round(booking.getHours() * MINUTES_PER_HOUR)
-        ); // adds booking duration
-        final Date endDate = cal.getTime();
-
-        //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String end = StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                endDate,
-                SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone()
-        ));
-
         return context.getString(
                 R.string.booking_card_row_hours_formatted,
                 getStartTime(booking),
-                end
+                getEndTime(booking)
         );
     }
 
@@ -259,6 +242,21 @@ public class BookingUtil {
                 SUBTITLE_DATE_FORMAT,
                 booking.getBookingTimezone()
         ));
+    }
+
+    public static String getEndTime(Booking booking) {
+        //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
+        final int minutes = Math.round(booking.getHours() * MINUTES_PER_HOUR);
+        final Calendar endDate = Calendar.getInstance();
+        endDate.setTime(booking.getStartDate());
+        endDate.add(Calendar.MINUTE, minutes);
+
+        //End time
+       return StringUtils.toLowerCase(DateTimeUtils.formatDate(
+                        endDate.getTime(),
+                        DateTimeUtils.CLOCK_FORMATTER_12HR,
+                        booking.getBookingTimezone()
+                ));
     }
 
     /**
