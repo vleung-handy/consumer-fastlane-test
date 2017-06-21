@@ -181,12 +181,6 @@ public class BookingUtil {
      * Returns in the form of 3:00 pm - 7:00 pm
      */
     public static String getSubtitle(Booking booking, Context context) {
-        //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String startDate = StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                booking.getStartDate(),
-                SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone()
-        ));
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(booking.getStartDate());
@@ -205,7 +199,7 @@ public class BookingUtil {
 
         return context.getString(
                 R.string.booking_card_row_hours_formatted,
-                startDate,
+                getStartTime(booking),
                 end
         );
     }
@@ -230,7 +224,10 @@ public class BookingUtil {
             Context context,
             boolean bookingHoursClarificationExperimentEnabled
     ) {
-        if (bookingHoursClarificationExperimentEnabled) {
+        if (booking.shouldHideEndTime()) {
+            //only should 5:00 pm
+            return getStartTime(booking);
+        } else if (bookingHoursClarificationExperimentEnabled) {
             return getSubtitleForHoursClarificationExperiment(booking, context);
         }
         else {
@@ -245,13 +242,7 @@ public class BookingUtil {
             Booking booking,
             Context context
     ) {
-        //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String startTime = StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                booking.getStartDate(),
-                SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone()
-        ));
-
+        final String startTime = getStartTime(booking);
         float hours = booking.getHours();
         String hoursDisplayString = getNumHoursDisplayString(hours, context);
         return context.getString(
@@ -259,6 +250,15 @@ public class BookingUtil {
                 startTime,
                 hoursDisplayString
         );
+    }
+
+    public static String getStartTime(Booking booking) {
+        //make sure this date is in the timezone of the booking location. This will be shown to the user
+        return StringUtils.toLowerCase(DateTimeUtils.formatDate(
+                booking.getStartDate(),
+                SUBTITLE_DATE_FORMAT,
+                booking.getBookingTimezone()
+        ));
     }
 
     /**

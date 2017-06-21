@@ -126,13 +126,10 @@ public final class BookingDetailView extends InjectedRelativeLayout {
             final Date startDate,
             boolean isBookingHoursClarificationExperimentEnabled
     ) {
-        final float hours = booking.getHours();
-        //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
-        final int minutes = (int) (60 * hours);
-        final Calendar endDate = Calendar.getInstance();
-
-        endDate.setTime(startDate);
-        endDate.add(Calendar.MINUTE, minutes);
+        //Set the start date
+        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
+                                                  booking.getBookingTimezone()
+        ));
 
         //we want to display the time using the booking location's time zone
         String startTimeDisplayString = StringUtils.toLowerCase(DateTimeUtils.formatDate(
@@ -141,36 +138,48 @@ public final class BookingDetailView extends InjectedRelativeLayout {
                 booking.getBookingTimezone()
         ));
 
-        //in the format "3 hours"
-        String numHoursDisplayString = BookingUtil.getNumHoursDisplayString(hours, getContext());
-
-        if (isBookingHoursClarificationExperimentEnabled) {
-            //5:00 pm (up to 3 hours)
-            timeText.setText(getResources().getString(
-                    R.string.booking_details_hours_clarification_experiment_hours_formatted,
-                    startTimeDisplayString,
-                    numHoursDisplayString
-            ));
+        if (booking.shouldHideEndTime()) {
+            //only should 5:00 pm
+            timeText.setText(startTimeDisplayString);
         }
         else {
-            //5:00 pm - 8:00 pm (3 hours)
-            String endTimeDisplayString =
-                    StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                            endDate.getTime(),
-                            DateTimeUtils.CLOCK_FORMATTER_12HR,
-                            booking.getBookingTimezone()
-                    ));
-            timeText.setText(getResources().getString(
-                    R.string.booking_details_hours_formatted,
-                    startTimeDisplayString,
-                    endTimeDisplayString,
-                    numHoursDisplayString
-            ));
-        }
+            final float hours = booking.getHours();
+            //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
+            final int minutes = (int) (60 * hours);
+            //in the format "3 hours"
+            String numHoursDisplayString = BookingUtil.getNumHoursDisplayString(
+                    hours,
+                    getContext()
+            );
 
-        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
-                                                  booking.getBookingTimezone()
-        ));
+            if (isBookingHoursClarificationExperimentEnabled) {
+                //5:00 pm (up to 3 hours)
+                timeText.setText(getResources().getString(
+                        R.string.booking_details_hours_clarification_experiment_hours_formatted,
+                        startTimeDisplayString,
+                        numHoursDisplayString
+                ));
+            }
+            else {
+                final Calendar endDate = Calendar.getInstance();
+
+                endDate.setTime(startDate);
+                endDate.add(Calendar.MINUTE, minutes);
+                //5:00 pm - 8:00 pm (3 hours)
+                String endTimeDisplayString =
+                        StringUtils.toLowerCase(DateTimeUtils.formatDate(
+                                endDate.getTime(),
+                                DateTimeUtils.CLOCK_FORMATTER_12HR,
+                                booking.getBookingTimezone()
+                        ));
+                timeText.setText(getResources().getString(
+                        R.string.booking_details_hours_formatted,
+                        startTimeDisplayString,
+                        endTimeDisplayString,
+                        numHoursDisplayString
+                ));
+            }
+        }
     }
 
     public void updateReportIssueButton(

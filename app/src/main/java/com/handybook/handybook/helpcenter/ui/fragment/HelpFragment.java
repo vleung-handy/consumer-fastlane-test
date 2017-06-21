@@ -190,9 +190,11 @@ public class HelpFragment extends ProgressSpinnerFragment {
                     mRecentBookingDateText.setText(
                             DateTimeUtils.DAY_MONTH_DATE_FORMATTER.format(bookingStartDate));
 
-                    String bookingTime = DateTimeUtils.LOCAL_TIME_12_HOURS_FORMATTER
-                            .format(bookingStartDate);
-                    if (!Strings.isNullOrEmpty(bookingTime)) {
+                    String bookingTime = BookingUtil.getStartTime(mBooking);
+                    if(mBooking.shouldHideEndTime()) {
+                        mRecentBookingTimeText.setText(bookingTime);
+                    }
+                    else if (!Strings.isNullOrEmpty(bookingTime)) {
                         /* Show one decimal digit for booking hours
                          when required, Example: 3.0 -> 3, 2.5 - > 2.5 */
                         DecimalFormat df = new DecimalFormat();

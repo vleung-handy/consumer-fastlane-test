@@ -107,6 +107,8 @@ public class Booking implements Parcelable {
     private boolean mShouldShowPaymentSection;
     @SerializedName("chat_options")
     private ChatOptions mChatOptions;
+    @SerializedName("hide_end_time")
+    private boolean mCanHideEndTime;
 
     public ProviderAssignmentInfo getProviderAssignmentInfo() {
         return mProviderAssignmentInfo;
@@ -201,6 +203,10 @@ public class Booking implements Parcelable {
 
     public ChatOptions getChatOptions() {
         return mChatOptions;
+    }
+
+    public boolean shouldHideEndTime() {
+        return mCanHideEndTime;
     }
 
     //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table,
@@ -429,7 +435,7 @@ public class Booking implements Parcelable {
         mExtrasInfo = new ArrayList<>();
         in.readTypedList(mExtrasInfo, ExtraInfo.CREATOR);
 
-        final boolean[] booleanData = new boolean[6];
+        final boolean[] booleanData = new boolean[7];
         in.readBooleanArray(booleanData);
 
         mCanEditFrequency = booleanData[0];
@@ -438,6 +444,7 @@ public class Booking implements Parcelable {
         mCanLeaveTip = booleanData[3];
         mMilestonesEnabled = booleanData[4];
         mShouldShowPaymentSection = booleanData[5];
+        mCanHideEndTime = booleanData[6];
 
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
 
@@ -487,7 +494,8 @@ public class Booking implements Parcelable {
                                               mCanEditHours,
                                               mCanLeaveTip,
                                               mMilestonesEnabled,
-                                              mShouldShowPaymentSection
+                                              mShouldShowPaymentSection,
+                                              mCanHideEndTime
                                               });
         out.writeParcelable(mInstructions, 0);
         out.writeSerializable(mEntryMethodOption);
