@@ -30,11 +30,11 @@ import butterknife.ButterKnife;
 
 public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
 
-    @BindView(R.id.pay_lines_section)
+    @BindView(R.id.payment_info_lines_section)
     public LinearLayout paymentLinesSection;
-    @BindView(R.id.total_text)
+    @BindView(R.id.payment_info_total_price_text)
     public TextView totalText;
-    @BindView(R.id.total_price_sub_text)
+    @BindView(R.id.payment_info_total_price_sub_text)
     TextView mTotalPriceSubText;
 
     public BookingDetailSectionPaymentView(final Context context) {
