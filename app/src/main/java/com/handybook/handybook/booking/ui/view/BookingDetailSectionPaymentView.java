@@ -4,7 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -61,15 +61,14 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
 
     //TODO: Clean this up
     public void updatePaymentDisplay(
-            final Booking booking,
-            final User user,
-            @Nullable final String totalPriceSubText
+            @NonNull final Booking booking,
+            @NonNull final User user
     ) {
         totalText.setText(booking.formatPrice(user.getCurrencyChar()));
-        mTotalPriceSubText.setVisibility(TextUtils.isEmpty(totalPriceSubText)
+        mTotalPriceSubText.setVisibility(TextUtils.isEmpty(booking.getTotalPriceSubText())
                                               ? GONE
                                               : VISIBLE);
-        mTotalPriceSubText.setText(totalPriceSubText);
+        mTotalPriceSubText.setText(booking.getTotalPriceSubText());
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
 

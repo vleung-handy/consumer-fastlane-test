@@ -28,10 +28,6 @@ public class BookingDetailSectionFragmentPayment
     public void updateDisplay(Booking booking, User user) {
         //This one is worth having a different view for
         super.updateDisplay(booking, user);
-        String priceSubText = null;
-        if (mConfigurationManager.getPersistentConfiguration().isUkVatIndicatorEnabled()) {
-            priceSubText = getString(R.string.value_added_tax_included_indicator);
-        }
-        getSectionView().updatePaymentDisplay(booking, user, priceSubText);
+        getSectionView().updatePaymentDisplay(booking, user);
     }
 }
