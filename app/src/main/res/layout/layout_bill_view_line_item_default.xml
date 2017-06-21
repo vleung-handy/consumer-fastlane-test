@@ -58,7 +58,7 @@
             android:layout_marginTop="@dimen/default_margin_quarter"
             android:textColor="@color/handy_tertiary_gray"
             android:visibility="gone"
-            tools:text="@string/value_added_tax_included_indicator"
+            tools:text="*includes VAT"
             tools:visibility="visible"
             />
     </LinearLayout>
