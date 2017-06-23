@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class RescheduleDialogFragment extends BaseDialogFragment {
     private ProTeam.ProTeamCategory mCategory;
     private Booking mBooking;
 
-    public static RescheduleDialogFragment newInstance(final Booking booking) {
+    public static RescheduleDialogFragment newInstance(@NonNull final Booking booking) {
         return newInstance(null, booking);
     }
 
