@@ -20,7 +20,6 @@ import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,7 +28,7 @@ import butterknife.OnClick;
 // are BookingDetailSectionFragments
 public final class BookingDetailView extends InjectedRelativeLayout {
 
-    private static final String FORMATTED_START_TIME = "EEEE',' MMM d',' yyyy";
+    private static final String START_DATE_FORMAT_PATTERN = "EEEE',' MMM d',' yyyy";
     @BindView(R.id.date_text)
     TextView dateText;
     @BindView(R.id.time_text)
@@ -155,7 +154,7 @@ public final class BookingDetailView extends InjectedRelativeLayout {
                 timeText.setText(getResources().getString(
                         R.string.booking_details_hours_formatted,
                         startTimeDisplayString,
-                        BookingUtil.getEndTime(booking),
+                        BookingUtil.getFormattedEndTime(booking),
                         numHoursDisplayString
                 ));
             }

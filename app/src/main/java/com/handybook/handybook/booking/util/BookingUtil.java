@@ -184,7 +184,7 @@ public class BookingUtil {
         return context.getString(
                 R.string.booking_card_row_hours_formatted,
                 getFormattedStartTime(booking),
-                getEndTime(booking)
+                getFormattedEndTime(booking)
         );
     }
 
@@ -245,12 +245,12 @@ public class BookingUtil {
         ));
     }
 
-    public static String getEndTime(@NonNull Booking booking) {
+    public static String getFormattedEndTime(@NonNull Booking booking) {
         //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
-        final int minutes = Math.round(booking.getHours() * MINUTES_PER_HOUR);
+        final int bookingDurationMinutes = Math.round(booking.getHours() * MINUTES_PER_HOUR);
         final Calendar endDate = Calendar.getInstance();
         endDate.setTime(booking.getStartDate());
-        endDate.add(Calendar.MINUTE, minutes);
+        endDate.add(Calendar.MINUTE, bookingDurationMinutes);
 
         //End time
        return StringUtils.toLowerCase(DateTimeUtils.formatDate(
