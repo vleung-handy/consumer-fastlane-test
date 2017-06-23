@@ -121,7 +121,7 @@ public final class BookingDetailView extends InjectedRelativeLayout {
     ) {
         //Set the start date
         dateText.setText(DateTimeUtils.formatDate(booking.getStartDate(),
-                                                  FORMATTED_START_TIME,
+                                                  START_DATE_FORMAT_PATTERN,
                                                   booking.getBookingTimezone()
         ));
 
