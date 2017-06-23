@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -182,7 +183,7 @@ public class BookingUtil {
     public static String getSubtitle(Booking booking, Context context) {
         return context.getString(
                 R.string.booking_card_row_hours_formatted,
-                getStartTime(booking),
+                getFormattedStartTime(booking),
                 getEndTime(booking)
         );
     }
@@ -209,7 +210,7 @@ public class BookingUtil {
     ) {
         if (booking.shouldHideEndTime()) {
             //only should 5:00 pm
-            return getStartTime(booking);
+            return getFormattedStartTime(booking);
         } else if (bookingHoursClarificationExperimentEnabled) {
             return getSubtitleForHoursClarificationExperiment(booking, context);
         }
@@ -225,7 +226,7 @@ public class BookingUtil {
             Booking booking,
             Context context
     ) {
-        final String startTime = getStartTime(booking);
+        final String startTime = getFormattedStartTime(booking);
         float hours = booking.getHours();
         String hoursDisplayString = getNumHoursDisplayString(hours, context);
         return context.getString(
@@ -235,7 +236,7 @@ public class BookingUtil {
         );
     }
 
-    public static String getStartTime(Booking booking) {
+    public static String getFormattedStartTime(@NonNull Booking booking) {
         //make sure this date is in the timezone of the booking location. This will be shown to the user
         return StringUtils.toLowerCase(DateTimeUtils.formatDate(
                 booking.getStartDate(),
@@ -244,7 +245,7 @@ public class BookingUtil {
         ));
     }
 
-    public static String getEndTime(Booking booking) {
+    public static String getEndTime(@NonNull Booking booking) {
         //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
         final int minutes = Math.round(booking.getHours() * MINUTES_PER_HOUR);
         final Calendar endDate = Calendar.getInstance();

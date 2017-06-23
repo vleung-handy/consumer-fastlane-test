@@ -190,7 +190,7 @@ public class HelpFragment extends ProgressSpinnerFragment {
                     mRecentBookingDateText.setText(
                             DateTimeUtils.DAY_MONTH_DATE_FORMATTER.format(bookingStartDate));
 
-                    String bookingTime = BookingUtil.getStartTime(mBooking);
+                    String bookingTime = BookingUtil.getFormattedStartTime(mBooking);
                     if(mBooking.shouldHideEndTime()) {
                         mRecentBookingTimeText.setText(bookingTime);
                     }

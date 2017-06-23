@@ -20,6 +20,7 @@ import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -28,6 +29,7 @@ import butterknife.OnClick;
 // are BookingDetailSectionFragments
 public final class BookingDetailView extends InjectedRelativeLayout {
 
+    private static final String FORMATTED_START_TIME = "EEEE',' MMM d',' yyyy";
     @BindView(R.id.date_text)
     TextView dateText;
     @BindView(R.id.time_text)
@@ -119,12 +121,13 @@ public final class BookingDetailView extends InjectedRelativeLayout {
             boolean isBookingHoursClarificationExperimentEnabled
     ) {
         //Set the start date
-        dateText.setText(DateTimeUtils.formatDate(booking.getStartDate(), "EEEE',' MMM d',' yyyy",
+        dateText.setText(DateTimeUtils.formatDate(booking.getStartDate(),
+                                                  FORMATTED_START_TIME,
                                                   booking.getBookingTimezone()
         ));
 
         //we want to display the time using the booking location's time zone
-        String startTimeDisplayString = BookingUtil.getStartTime(booking);
+        String startTimeDisplayString = BookingUtil.getFormattedStartTime(booking);
 
         if (booking.shouldHideEndTime()) {
             //should only display the start time
