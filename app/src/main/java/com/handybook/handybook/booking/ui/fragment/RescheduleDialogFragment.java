@@ -2,6 +2,7 @@ package com.handybook.handybook.booking.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,13 @@ import butterknife.OnClick;
  */
 public class RescheduleDialogFragment extends BaseDialogFragment {
 
+    public static String TAG = "rescheduleDialogTag";
     private ProTeam.ProTeamCategory mCategory;
     private Booking mBooking;
+
+    public static RescheduleDialogFragment newInstance(@NonNull final Booking booking) {
+        return newInstance(null, booking);
+    }
 
     public static RescheduleDialogFragment newInstance(
             final ProTeam.ProTeamCategory category,

@@ -66,13 +66,18 @@ public class FragmentUtils {
      *
      * @return true if the DialogFragment was successfully launched
      */
-    private static boolean safeLaunchDialogFragment(
+    public static boolean safeLaunchDialogFragment(
             @NonNull DialogFragment dialogFragment,
             @NonNull FragmentManager fragmentManager,
             String dialogFragmentTag
     ) {
         try {
-            dialogFragment.show(fragmentManager, dialogFragmentTag);
+            DialogFragment fragment = (DialogFragment) fragmentManager.findFragmentByTag(dialogFragmentTag);
+            //Only show the dialog if it hasn't been added yet to the activity. stackoverflow suggests
+            //  using isAdded vs isVisible
+            if(fragment == null || !fragment.isAdded()) {
+                dialogFragment.show(fragmentManager, dialogFragmentTag);
+            }
             return true;
         }
         catch (Exception e) {
