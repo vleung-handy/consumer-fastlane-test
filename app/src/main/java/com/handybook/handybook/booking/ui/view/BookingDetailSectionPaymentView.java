@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,10 +30,12 @@ import butterknife.ButterKnife;
 
 public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
 
-    @BindView(R.id.pay_lines_section)
+    @BindView(R.id.payment_info_lines_section)
     public LinearLayout paymentLinesSection;
-    @BindView(R.id.total_text)
+    @BindView(R.id.payment_info_total_price_text)
     public TextView totalText;
+    @BindView(R.id.payment_info_total_price_sub_text)
+    TextView mTotalPriceSubText;
 
     public BookingDetailSectionPaymentView(final Context context) {
         super(context);
@@ -56,8 +60,15 @@ public class BookingDetailSectionPaymentView extends BookingDetailSectionView {
     }
 
     //TODO: Clean this up
-    public void updatePaymentDisplay(final Booking booking, final User user) {
+    public void updatePaymentDisplay(
+            @NonNull final Booking booking,
+            @NonNull final User user
+    ) {
         totalText.setText(booking.formatPrice(user.getCurrencyChar()));
+        mTotalPriceSubText.setVisibility(TextUtils.isEmpty(booking.getTotalPriceSubText())
+                                              ? GONE
+                                              : VISIBLE);
+        mTotalPriceSubText.setText(booking.getTotalPriceSubText());
 
         final ArrayList<Booking.LineItem> paymentInfo = booking.getPaymentInfo();
 

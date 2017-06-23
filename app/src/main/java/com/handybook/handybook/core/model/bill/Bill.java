@@ -215,6 +215,16 @@ public class Bill implements Serializable {
          **/
         @SerializedName("help_text")
         private String mHelpText;
+        /**
+         * the text to show below the amount, ex. "*includes VAT"
+         */
+        @SerializedName("amount_subtext")
+        private String mAmountSubText;
+
+        @Nullable
+        public String getAmountSubText() {
+            return mAmountSubText;
+        }
 
         @NonNull
         public ItemType getType() {

@@ -17,7 +17,7 @@
         >
 
         <LinearLayout
-            android:id="@+id/pay_lines_section"
+            android:id="@+id/payment_info_lines_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -32,7 +32,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pay_lines_section"
+            android:layout_below="@id/payment_info_lines_section"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
@@ -48,13 +48,33 @@
                 android:text="@string/total"
                 />
 
-            <TextView
-                android:id="@+id/total_text"
-                style="@style/TextView.Bold"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="$0"
-                />
+                android:orientation="vertical"
+                android:gravity="right"
+                >
+
+                <TextView
+                    android:id="@+id/payment_info_total_price_text"
+                    style="@style/TextView.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="$0"
+                    />
+
+                <TextView
+                    android:layout_marginTop="@dimen/default_margin_quarter"
+                    android:id="@+id/payment_info_total_price_sub_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="*includes VAT"
+                    style="@style/TextView.XSmall"
+                    android:textColor="@color/handy_tertiary_gray"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 

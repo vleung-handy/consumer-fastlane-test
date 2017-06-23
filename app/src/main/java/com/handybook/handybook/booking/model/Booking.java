@@ -50,7 +50,9 @@ public class Booking implements Parcelable {
     @SerializedName("hours")
     private float mHours;
     @SerializedName("price")
-    private float mPrice;
+    private float mTotalPrice;
+    @SerializedName("price_subtext")
+    private String mTotalPriceSubText;
     @SerializedName("recurring")
     private int mRecurring;
     //WARNING DECEPTIVE VARIABLE NAME! THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
@@ -227,7 +229,7 @@ public class Booking implements Parcelable {
     public String formatPrice(final String currencyChar) {
         final DecimalFormat decimalFormat = new DecimalFormat("0.00");
         return (currencyChar != null ? currencyChar : "$")
-               + decimalFormat.format(getPrice());
+               + decimalFormat.format(getTotalPrice());
     }
 
     /*
@@ -344,12 +346,17 @@ public class Booking implements Parcelable {
         mHours = hours;
     }
 
-    public final float getPrice() {
-        return mPrice;
+    @Nullable
+    public final String getTotalPriceSubText() {
+        return mTotalPriceSubText;
     }
 
-    final void setPrice(float price) {
-        mPrice = price;
+    public final float getTotalPrice() {
+        return mTotalPrice;
+    }
+
+    final void setTotalPrice(float totalPrice) {
+        mTotalPrice = totalPrice;
     }
 
     public Address getAddress() {
@@ -415,7 +422,7 @@ public class Booking implements Parcelable {
         final float[] floatData = new float[2];
         in.readFloatArray(floatData);
         mHours = floatData[0];
-        mPrice = floatData[1];
+        mTotalPrice = floatData[1];
 
         mStartDate = new Date(in.readLong());
         mAddress = (Address) in.readSerializable();
@@ -472,7 +479,7 @@ public class Booking implements Parcelable {
         );
 
         out.writeIntArray(new int[]{mIsPast, mEntryType});
-        out.writeFloatArray(new float[]{mHours, mPrice});
+        out.writeFloatArray(new float[]{mHours, mTotalPrice});
         out.writeLong(mStartDate.getTime());
         out.writeSerializable(mAddress);
         out.writeSerializable(mProvider);
