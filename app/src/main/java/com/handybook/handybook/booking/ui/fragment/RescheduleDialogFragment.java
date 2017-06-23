@@ -22,6 +22,7 @@ import butterknife.OnClick;
  */
 public class RescheduleDialogFragment extends BaseDialogFragment {
 
+    public static String TAG = "rescheduleDialogTag";
     private ProTeam.ProTeamCategory mCategory;
     private Booking mBooking;
 

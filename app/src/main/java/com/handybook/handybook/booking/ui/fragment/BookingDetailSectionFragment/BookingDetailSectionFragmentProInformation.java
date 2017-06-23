@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -197,8 +198,7 @@ public class BookingDetailSectionFragmentProInformation extends
         }
 
         //if pro profile enabled, launch pro profile page on profile image click
-        if (pro.getIsProProfileEnabled())
-        {
+        if (pro.getIsProProfileEnabled()) {
             getSectionView().setProProfileClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
@@ -211,8 +211,7 @@ public class BookingDetailSectionFragmentProInformation extends
                 }
             });
         }
-        else
-        {
+        else {
             getSectionView().setProProfileClickListener(null);
         }
 
@@ -236,19 +235,38 @@ public class BookingDetailSectionFragmentProInformation extends
             getSectionView().setPreferDifferentProOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                DialogFragment fragment = RescheduleDialogFragment.newInstance(booking);
-                FragmentUtils.safeLaunchDialogFragment(fragment, getFragmentManager(), null);
+                    Fragment fragment = getFragmentManager().findFragmentByTag(
+                            RescheduleDialogFragment.TAG);
+                    //If this is a first time, create fragment
+                    if (fragment == null) {
+                        fragment = RescheduleDialogFragment.newInstance(booking);
+                    }
+
+                    FragmentUtils.safeLaunchDialogFragment(
+                            (DialogFragment) fragment,
+                            getFragmentManager(),
+                            RescheduleDialogFragment.TAG
+                    );
                 }
             });
         }
     }
 
     private void onTipButtonClicked() {
-        TipDialogFragment tipDialogFragment = TipDialogFragment.newInstance(
-                Integer.parseInt(booking.getId()),
-                booking.getProvider().getFirstName()
+        Fragment fragment = getFragmentManager().findFragmentByTag(TipDialogFragment.TAG);
+        //If this is a first time, create fragment
+        if (fragment == null) {
+            fragment = TipDialogFragment.newInstance(
+                    Integer.parseInt(booking.getId()),
+                    booking.getProvider().getFirstName()
+            );
+        }
+
+        FragmentUtils.safeLaunchDialogFragment(
+                (DialogFragment) fragment,
+                getFragmentManager(),
+                TipDialogFragment.TAG
         );
-        tipDialogFragment.show(getActivity().getSupportFragmentManager(), TipDialogFragment.TAG);
     }
 
     private void onManageProTeamButtonClicked() {
