@@ -107,7 +107,7 @@ public class VegasGame implements Serializable {
         game.preGame = new PreGame();
         game.preGame.title = "You've unlocked a game!";
         game.preGame.description
-                = "Who says cleaning isn't fun?/nWe've got lots of great rewards/nwaiting to be revealed.";
+                = "Who says cleaning isn't fun?\nWe've got lots of great rewards\nwaiting to be revealed.";
         game.preGame.prizeTitle = "YOU COULD WIN...";
         game.preGame.prizeDescription = "Free Cleanings for 1 year";
         game.preGame.buttonTitle = "Play Now!";

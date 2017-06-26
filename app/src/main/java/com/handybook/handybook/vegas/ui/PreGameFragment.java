@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.databinding.FragmentPreGameBinding;
+import com.handybook.handybook.databinding.VegasPreGameFragmentBinding;
 import com.handybook.handybook.vegas.model.VegasGame;
 
 public class PreGameFragment extends Fragment {
@@ -43,7 +43,7 @@ public class PreGameFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        final FragmentPreGameBinding binding = FragmentPreGameBinding
+        final VegasPreGameFragmentBinding binding = VegasPreGameFragmentBinding
                 .inflate(inflater, container, false);
         final View view = binding.getRoot();
         binding.setFragment(this);
@@ -59,7 +59,7 @@ public class PreGameFragment extends Fragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pre_game_x_button:
-                ((VegasActivity) getActivity()).finish();
+                getActivity().finish();
                 break;
             case R.id.pre_game_play_button:
                 ((VegasActivity) getActivity()).continueFlow();

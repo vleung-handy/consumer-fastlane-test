@@ -22,12 +22,14 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.vegas.VegasManager;
+import com.handybook.handybook.vegas.model.GameSymbol;
 import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.view.GameSymbolView;
 import com.handybook.handybook.vegas.ui.view.MaybeScrollView;
 import com.handybook.handybook.vegas.ui.view.ScratchOffView;
 import com.plattysoft.leonids.ParticleSystem;
 
+import java.util.HashSet;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -41,12 +43,12 @@ public class GameFragment extends InjectedFragment {
     public static final String TAG = GameFragment.class.getName();
 
     private static final String KEY_GAME_VM = "key::game_view_model";
+    public static final double RATIO_TO_REVEAL = .55;
 
     @Inject
     VegasManager mVegasManager;
 
     private VegasGame mVegasGame;
-    private double mRevealedPercentage = 0;
     private int[] mParticleIds = {
             R.drawable.confetti_1,
             R.drawable.confetti_2,
@@ -63,9 +65,7 @@ public class GameFragment extends InjectedFragment {
 
     };
 
-    private boolean mIsSpongeAttached;
     private boolean mIsResultSheetVisible;
-    private TranslateAnimation mSpongeAnimation;
     private float mSpongeStartX;
     private float mSpongeStartY;
 
@@ -122,7 +122,35 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void init() {
-        mScrollView.requestDisallowInterceptTouchEvent(true);
+        initScratchOffView();
+        initSponge();
+        initSymbols();
+        updatePercentage(0);
+    }
+
+    private void initSymbols() {
+        mSymbolTL.setSymbol(mVegasGame.result.symbols[0]);
+        mSymbolTR.setSymbol(mVegasGame.result.symbols[1]);
+        mSymbolBL.setSymbol(mVegasGame.result.symbols[2]);
+        mSymbolBR.setSymbol(mVegasGame.result.symbols[3]);
+        animateWinningSymbols();
+
+    }
+
+    private void initSponge() {
+        mSpongeActor.getViewTreeObserver()
+                    .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            mSpongeActor.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            mSpongeStartX = mSpongeActor.getX();
+                            mSpongeStartY = mSpongeActor.getY();
+                            animateView(mSpongeActor, R.animator.vegas_sponge_restless);
+                        }
+                    });
+    }
+
+    private void initScratchOffView() {
         mScratchOffView.setOnScratchListener(new ScratchOffView.OnScratchListener() {
             @Override
             public void onScratchStart(final float x, final float y) {
@@ -139,19 +167,6 @@ public class GameFragment extends InjectedFragment {
                 detachSponge(x, y);
             }
         });
-        mSpongeActor.getViewTreeObserver()
-                    .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            mSpongeActor.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            mSpongeStartX = mSpongeActor.getX();
-                            mSpongeStartY = mSpongeActor.getY();
-                            animateView(mSpongeActor, R.animator.vegas_sponge_restless);
-                        }
-                    });
-        animateView(mSymbolTR, R.animator.vegas_symbol_winning);
-        animateView(mSymbolBR, R.animator.vegas_symbol_winning);
-        updatePercentage(0);
     }
 
     private float getSpongeX(final float x) {
@@ -201,10 +216,8 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void moveSponge(final float x, final float y) {
-        //        if (mIsSpongeAttached) {
         mSpongeActor.setX(getSpongeX(x));
         mSpongeActor.setY(getSpongeY(y));
-        //        }
     }
 
     private void detachSponge(final float x, final float y) {
@@ -240,16 +253,42 @@ public class GameFragment extends InjectedFragment {
     }
 
     protected void updatePercentage(double ratio) {
-        mRevealedPercentage = ratio;
         String txt = String.format(Locale.getDefault(), "%.2f", ratio);
         mPercentage.setText(txt);
-        if (ratio > .7) {
-            mScratchOffView.scratchOffAll();
-            rollDownShades();
-            blastConfetti();
-            swipeRightBucket();
-            swipeRightSponge();
-            swipeDownBottomBanner();
+        if (ratio > RATIO_TO_REVEAL) {
+            revealClaim();
+        }
+    }
+
+    private void revealClaim() {
+        mScratchOffView.scratchOffAll();
+        rollDownShades();
+        blastConfetti();
+        swipeRightBucket();
+        swipeRightSponge();
+        swipeDownBottomBanner();
+    }
+
+    private void animateWinningSymbols() {
+        final HashSet<GameSymbol> existingSymbols = new HashSet<>();
+        GameSymbol winningSymbol = null;
+        for (GameSymbol symbol : mVegasGame.result.symbols) {
+            if (existingSymbols.contains(symbol)) {
+                winningSymbol = symbol;
+                break;
+            }
+            existingSymbols.add(symbol);
+        }
+        if (winningSymbol == null) { return;}
+        for (GameSymbolView symbolView : new GameSymbolView[]{
+                mSymbolTL,
+                mSymbolTR,
+                mSymbolBL,
+                mSymbolBR
+        }) {
+            if (winningSymbol.equals(symbolView.getSymbol())) {
+                animateView(symbolView, R.animator.vegas_symbol_winning);
+            }
         }
     }
 
@@ -282,7 +321,12 @@ public class GameFragment extends InjectedFragment {
         final int scrW = metrics.widthPixels;
         for (final int drawableId : mParticleIds) {
             for (int x = 0; x <= scrW; x += scrW / 5) {
-                emitFromXY(x, -10, partsPerSec, emitTime, maxParts, timeToLive, drawableId);
+                new ParticleSystem(getActivity(), maxParts, drawableId, timeToLive)
+                        .setSpeedModuleAndAngleRange(0.1f, 0.3f, 225, 315)
+                        .setRotationSpeed(144)
+                        .setAcceleration(0.000785f, 90)
+                        .setScaleRange(0.3f, 0.5f)
+                        .emit(x, -10, partsPerSec, emitTime);
             }
         }
     }
@@ -322,23 +366,6 @@ public class GameFragment extends InjectedFragment {
         set.start();
         view.setTag(set);
         return set;
-    }
-
-    private void emitFromXY(
-            final int x,
-            final int y,
-            final int partNumPerSecond,
-            final int emitTime,
-            final int maxParticles,
-            final int timeToLive,
-            final int drawableId
-    ) {
-        new ParticleSystem(getActivity(), maxParticles, drawableId, timeToLive)
-                .setSpeedModuleAndAngleRange(0.1f, 0.3f, 225, 315)
-                .setRotationSpeed(144)
-                .setAcceleration(0.000785f, 90)
-                .setScaleRange(0.3f, 0.5f)
-                .emit(x, y, partNumPerSecond, emitTime);
     }
 
     public void expandView(final View view) {

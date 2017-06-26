@@ -2,6 +2,7 @@ package com.handybook.handybook.vegas.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.handybook.handybook.R;
@@ -92,8 +93,12 @@ public class GameSymbolView extends android.support.v7.widget.AppCompatImageView
         update();
     }
 
+    @Nullable
+    public GameSymbol getSymbol() {
+        return mSymbol;
+    }
+
     private static int gerResourceId(final GameSymbol symbol) {
         return SYMBOLS_TO_RESOURCE_IDS.get(symbol);
     }
-
 }
