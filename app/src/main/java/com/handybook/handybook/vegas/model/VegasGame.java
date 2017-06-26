@@ -13,7 +13,7 @@ public class VegasGame implements Serializable {
     @SerializedName("type")
     public Type type;
     @SerializedName("id")
-    long id;
+    public long id;
     @SerializedName("pre_game")
     public PreGame preGame;
     @SerializedName("info")
@@ -40,8 +40,8 @@ public class VegasGame implements Serializable {
         return !isValid();
     }
 
-    private enum Type implements Serializable {
-        @SerializedName("scratch_window")SCRATCH_WINDOW;
+    public enum Type implements Serializable {
+        @SerializedName("scratch_window")SCRATCH_WINDOW
     }
 
 
@@ -61,7 +61,7 @@ public class VegasGame implements Serializable {
     }
 
 
-    private static class Info implements Serializable {
+    public static class Info implements Serializable {
 
         @SerializedName("title")
         public String title;
@@ -72,7 +72,7 @@ public class VegasGame implements Serializable {
     }
 
 
-    private static class Result implements Serializable {
+    public static class Result implements Serializable {
 
         @SerializedName("symbols")
         public GameSymbol[] symbols;
@@ -81,7 +81,7 @@ public class VegasGame implements Serializable {
     }
 
 
-    private static class ClaimInfo implements Serializable {
+    public static class ClaimInfo implements Serializable {
 
         @SerializedName("title")
         public String title;

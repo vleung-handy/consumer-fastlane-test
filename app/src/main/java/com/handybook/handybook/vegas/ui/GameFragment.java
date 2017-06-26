@@ -19,7 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
+import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.vegas.VegasManager;
 import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.view.GameSymbolView;
 import com.handybook.handybook.vegas.ui.view.MaybeScrollView;
@@ -27,6 +29,8 @@ import com.handybook.handybook.vegas.ui.view.ScratchOffView;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +41,9 @@ public class GameFragment extends InjectedFragment {
     public static final String TAG = GameFragment.class.getName();
 
     private static final String KEY_GAME_VM = "key::game_view_model";
+
+    @Inject
+    VegasManager mVegasManager;
 
     private VegasGame mVegasGame;
     private double mRevealedPercentage = 0;
@@ -361,6 +368,30 @@ public class GameFragment extends InjectedFragment {
             }
         });
         view.startAnimation(anim);
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rfgf_button_close:
+                getActivity().finish();
+                break;
+            case R.id.rfgf_submit_button:
+                showUiBlockers();
+                mVegasManager.claimReward(mVegasGame.id, new DataManager.Callback<Void>() {
+                    @Override
+                    public void onSuccess(final Void response) {
+                        removeUiBlockers();
+                        ((VegasActivity) getActivity()).continueFlow();
+                    }
+
+                    @Override
+                    public void onError(final DataManager.DataManagerError error) {
+                        removeUiBlockers();
+                        dataManagerErrorHandler.handleError(getActivity(), error);
+                    }
+                });
+                break;
+        }
     }
 
 }
