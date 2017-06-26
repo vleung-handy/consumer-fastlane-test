@@ -64,7 +64,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:gravity="center_horizontal"
-                    android:text="@{game.info.title}"
+                    android:text="@{game.gameInfo.title}"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -82,7 +82,7 @@
                     android:layout_marginStart="56dp"
                     android:layout_marginTop="16dp"
                     android:gravity="center_horizontal"
-                    android:text="@{game.info.description}"
+                    android:text="@{game.gameInfo.description}"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -275,7 +275,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="48dp"
                                 android:gravity="center_horizontal"
-                                android:text="@{game.claimInfo.title}"
+                                android:text="@{game.claimInfo.reward.title}"
                                 android:textColor="@color/handy_white"
                                 />
 
@@ -295,7 +295,7 @@
                                 android:layout_marginTop="@dimen/default_margin"
                                 android:gravity="center_horizontal"
                                 android:lineSpacingMultiplier="1.1"
-                                android:text="@{game.claimInfo.rewardDescription}"
+                                android:text="@{game.claimInfo.reward.summary}"
                                 android:textColor="@color/handy_white"
                                 />
 
@@ -307,7 +307,7 @@
                                 android:layout_marginTop="@dimen/default_margin"
                                 android:gravity="center_horizontal"
                                 android:lineSpacingMultiplier="1.1"
-                                android:text="@{game.claimInfo.claimText}"
+                                android:text="@{game.claimInfo.reward.description}"
                                 android:textColor="@color/handy_white"
                                 />
                         </LinearLayout>
@@ -426,7 +426,7 @@
                 android:background="@color/handy_blue"
                 android:gravity="center"
                 android:padding="@dimen/default_padding"
-                android:text="@{game.info.footerText}"
+                android:text="@{game.gameInfo.footerText}"
                 android:textColor="@color/handy_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

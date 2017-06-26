@@ -14,10 +14,10 @@ public class VegasGame implements Serializable {
     public Type type;
     @SerializedName("id")
     public long id;
-    @SerializedName("pre_game")
-    public PreGame preGame;
-    @SerializedName("info")
-    public Info info;
+    @SerializedName("pre_game_info")
+    public PreGameInfo preGameInfo;
+    @SerializedName("game_info")
+    public GameInfo gameInfo;
     @SerializedName("result")
     public Result result;
     @SerializedName("claim_info")
@@ -45,23 +45,23 @@ public class VegasGame implements Serializable {
     }
 
 
-    public static class PreGame {
+    public static class PreGameInfo {
 
         @SerializedName("title")
         public String title;
         @SerializedName("description")
         public String description;
-        @SerializedName("prize_title")
-        public String prizeTitle;
-        @SerializedName("prize_description")
-        public String prizeDescription;
+        @SerializedName("reward_title")
+        public String rewardTitle;
+        @SerializedName("reward_description")
+        public String rewardDescription;
         @SerializedName("button_title")
         public String buttonTitle;
 
     }
 
 
-    public static class Info implements Serializable {
+    public static class GameInfo implements Serializable {
 
         @SerializedName("title")
         public String title;
@@ -85,17 +85,28 @@ public class VegasGame implements Serializable {
 
         @SerializedName("title")
         public String title;
-        @SerializedName("symbol")
-        public GameSymbol symbol;
-        @SerializedName("symbol_chip")
-        public String symbolChip;
-        @SerializedName("reward_description")
-        public String rewardDescription;
-        @SerializedName("claim_text")
-        public String claimText;
+        @SerializedName("description")
+        public String description;
+        @SerializedName("reward")
+        public Reward reward;
         @SerializedName("button_title")
         public String buttonTitle;
 
+
+        public static class Reward implements Serializable {
+
+            @SerializedName("title")
+            public String title;
+            @SerializedName("symbol")
+            public GameSymbol symbol;
+            @SerializedName("symbol_chip")
+            public String symbolChip;
+            @SerializedName("summary")
+            public String summary;
+            @SerializedName("description")
+            public String description;
+
+        }
     }
 
     @NonNull
@@ -104,35 +115,38 @@ public class VegasGame implements Serializable {
         game.type = Type.SCRATCH_WINDOW;
         game.id = 123456;
 
-        game.preGame = new PreGame();
-        game.preGame.title = "You've unlocked a game!";
-        game.preGame.description
-                = "Who says cleaning isn't fun?\nWe've got lots of great rewards\nwaiting to be revealed.";
-        game.preGame.prizeTitle = "YOU COULD WIN...";
-        game.preGame.prizeDescription = "Free Cleanings for 1 year";
-        game.preGame.buttonTitle = "Play Now!";
+        game.preGameInfo = new PreGameInfo();
+        game.preGameInfo.title = "Wipe out!";
+        game.preGameInfo.description
+                = "Now every time you complete a\nbooking you'll have the chance to\nclaim great rewards.";
+        game.preGameInfo.rewardTitle = "Possible rewards include...";
+        game.preGameInfo.rewardDescription = "Free Cleanings\nfor 1 year!";
+        game.preGameInfo.buttonTitle = "Play Now!";
 
-        game.info = new Info();
-        game.info.title = "Clean to Win";
-        game.info.description = "Use the sponge to clean the window and reveal rewards.";
-        game.info.footerText = "The more icons you match, the better the reward!";
+        game.gameInfo = new GameInfo();
+        game.gameInfo.title = "Wipe out!";
+        game.gameInfo.description = "Use the sponge to clean the window and reveal rewards.";
+        game.gameInfo.footerText = "The more icons you match, the better the reward!";
 
         game.result = new Result();
         game.result.symbols = new GameSymbol[]{
-                GameSymbol.SOAP_BOTTLE,
+                GameSymbol.BUCKET_GREEN,
                 GameSymbol.SOAP_BOTTLE,
                 GameSymbol.HEART,
-                GameSymbol.PIGGY_BANK
+                GameSymbol.BUCKET_GREEN
         };
         game.result.isWinner = true;
 
         game.claimInfo = new ClaimInfo();
-        game.claimInfo.title = "WINNER!";
-        game.claimInfo.symbol = GameSymbol.SOAP_BOTTLE;
-        game.claimInfo.symbolChip = "x2";
-        game.claimInfo.rewardDescription = "$5 in Handy credit";
-        game.claimInfo.claimText = "Tap claim to have this prize credited to your account.";
-        game.claimInfo.buttonTitle = "Claim";
+        game.claimInfo.title = "CONGRATS!";
+        game.claimInfo.buttonTitle = "Done";
+
+        game.claimInfo.reward = new ClaimInfo.Reward();
+        game.claimInfo.reward.symbol = GameSymbol.BUCKET_GREEN;
+        game.claimInfo.reward.symbolChip = "x2";
+        game.claimInfo.reward.summary = "$5 in Handy credit";
+        game.claimInfo.reward.description
+                = "Tap claim to have this prize credited to your account.";
 
         return game;
     }

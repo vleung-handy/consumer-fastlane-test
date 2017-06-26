@@ -662,5 +662,7 @@
     <string name="cd.background_image">Game Background</string>
     <string name="cd.screen_background">Screen Background</string>
     <string name="shade">shade</string>
+    <string name="vegas_cd_sponge_swipe_background">Sponge swipe background</string>
+    <string name="vegas_cd_dismiss_button">Dismiss button</string>
 </resources>
 

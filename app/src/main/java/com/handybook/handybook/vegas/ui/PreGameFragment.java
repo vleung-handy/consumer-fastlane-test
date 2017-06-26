@@ -47,7 +47,7 @@ public class PreGameFragment extends Fragment {
                 .inflate(inflater, container, false);
         final View view = binding.getRoot();
         binding.setFragment(this);
-        binding.setPreGame(mVegasGame.preGame);
+        binding.setPreGameInfo(mVegasGame.preGameInfo);
         init();
         return view;
     }

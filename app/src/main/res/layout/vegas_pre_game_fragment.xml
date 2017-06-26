@@ -11,8 +11,8 @@
             />
 
         <variable
-            name="preGame"
-            type="com.handybook.handybook.vegas.model.VegasGame.PreGame"
+            name="preGameInfo"
+            type="com.handybook.handybook.vegas.model.VegasGame.PreGameInfo"
             />
     </data>
 
@@ -32,7 +32,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:gravity="center_horizontal"
-            android:text="@{preGame.title}"
+            android:text="@{preGameInfo.title}"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -52,7 +52,7 @@
             android:layout_marginTop="24dp"
             android:gravity="center_horizontal"
             android:lineSpacingMultiplier="1.1"
-            android:text="@{preGame.description}"
+            android:text="@{preGameInfo.description}"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -69,7 +69,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="32dp"
             android:gravity="center_horizontal"
-            android:text="@{preGame.prizeTitle}"
+            android:text="@{preGameInfo.rewardTitle}"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -89,6 +89,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pre_game_prize_title"
             app:srcCompat="@drawable/img_game_intro_sponge_swipe"
+            android:contentDescription="@string/vegas_cd_sponge_swipe_background"
             />
 
         <TextView
@@ -104,7 +105,7 @@
             android:layout_marginTop="0dp"
             android:gravity="center_horizontal"
             android:lineSpacingMultiplier="1.1"
-            android:text="Free cleanings for a year!"
+            android:text="@{preGameInfo.rewardDescription}"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintLeft_toLeftOf="@+id/imageView"
             app:layout_constraintRight_toRightOf="@+id/imageView"
@@ -124,7 +125,7 @@
             android:layout_marginRight="0dp"
             android:layout_marginStart="24dp"
             android:onClick="@{fragment::onClick}"
-            android:text="@{preGame.buttonTitle}"
+            android:text="@{preGameInfo.buttonTitle}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -144,6 +145,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="@string/vegas_cd_dismiss_button"
             />
 
     </android.support.constraint.ConstraintLayout>
