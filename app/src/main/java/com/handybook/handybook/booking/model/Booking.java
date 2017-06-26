@@ -398,7 +398,7 @@ public class Booking implements Parcelable {
     }
 
     private Booking(final Parcel in) {
-        final String[] stringData = new String[12];
+        final String[] stringData = new String[13];
         in.readStringArray(stringData);
         mId = stringData[0];
         mServiceName = stringData[1];
@@ -419,6 +419,7 @@ public class Booking implements Parcelable {
         mRecurringId = stringData[9];
         mBookingTimezone = stringData[10];
         mLockboxCode = stringData[11];
+        mTotalPriceSubText = stringData[12];
 
         final int[] intData = new int[2];
         in.readIntArray(intData);
@@ -481,7 +482,8 @@ public class Booking implements Parcelable {
                                              mBilledStatus,
                                              mRecurringId,
                                              mBookingTimezone,
-                                             mLockboxCode
+                                             mLockboxCode,
+                                             mTotalPriceSubText
                                      }
         );
 
