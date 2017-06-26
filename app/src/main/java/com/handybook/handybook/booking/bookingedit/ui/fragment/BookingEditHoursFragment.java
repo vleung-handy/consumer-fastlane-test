@@ -82,7 +82,7 @@ public final class BookingEditHoursFragment extends ProgressSpinnerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        showProgressSpinner(true);
+        showUiBlockers();
         bus.post(new BookingEditEvent.RequestEditHoursInfoViewModel(Integer.parseInt(mBooking.getId())));
     }
 
@@ -127,7 +127,7 @@ public final class BookingEditHoursFragment extends ProgressSpinnerFragment {
 
     @OnClick(R.id.next_button)
     public void onSaveButtonPressed() {
-        showProgressSpinner(true);
+        showUiBlockers();
         double selectedHours = Double.parseDouble(mOptionsView.getCurrentValue());
         BookingEditHoursRequest bookingEditHoursRequest = new BookingEditHoursRequest();
         bookingEditHoursRequest.setNewBaseHrs(selectedHours);
@@ -289,7 +289,7 @@ public final class BookingEditHoursFragment extends ProgressSpinnerFragment {
         mBookingEditHoursViewModel = event.editHoursInfoViewModel;
         initializeUiForEditHoursInfo();
         updateUiForOptionSelected();
-        hideProgressSpinner();
+        removeUiBlockers();
     }
 
     @Subscribe
@@ -309,7 +309,7 @@ public final class BookingEditHoursFragment extends ProgressSpinnerFragment {
     @Subscribe
     public final void onReceiveEditHoursError(BookingEditEvent.ReceiveEditHoursError event) {
         dataManagerErrorHandler.handleError(getActivity(), event.error);
-        hideProgressSpinner(); //allow user to try again
+        removeUiBlockers(); //allow user to try again
     }
 
 }

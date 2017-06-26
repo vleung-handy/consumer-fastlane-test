@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -19,7 +20,6 @@ import com.handybook.handybook.library.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,32 +181,10 @@ public class BookingUtil {
      * Returns in the form of 3:00 pm - 7:00 pm
      */
     public static String getSubtitle(Booking booking, Context context) {
-        //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String startDate = StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                booking.getStartDate(),
-                SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone()
-        ));
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(booking.getStartDate());
-        cal.add(
-                Calendar.MINUTE,
-                Math.round(booking.getHours() * MINUTES_PER_HOUR)
-        ); // adds booking duration
-        final Date endDate = cal.getTime();
-
-        //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String end = StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                endDate,
-                SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone()
-        ));
-
         return context.getString(
                 R.string.booking_card_row_hours_formatted,
-                startDate,
-                end
+                getFormattedStartTime(booking),
+                getFormattedEndTime(booking)
         );
     }
 
@@ -230,7 +208,10 @@ public class BookingUtil {
             Context context,
             boolean bookingHoursClarificationExperimentEnabled
     ) {
-        if (bookingHoursClarificationExperimentEnabled) {
+        if (booking.shouldHideEndTime()) {
+            //only should 5:00 pm
+            return getFormattedStartTime(booking);
+        } else if (bookingHoursClarificationExperimentEnabled) {
             return getSubtitleForHoursClarificationExperiment(booking, context);
         }
         else {
@@ -245,13 +226,7 @@ public class BookingUtil {
             Booking booking,
             Context context
     ) {
-        //make sure this date is in the timezone of the booking location. This will be shown to the user
-        final String startTime = StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                booking.getStartDate(),
-                SUBTITLE_DATE_FORMAT,
-                booking.getBookingTimezone()
-        ));
-
+        final String startTime = getFormattedStartTime(booking);
         float hours = booking.getHours();
         String hoursDisplayString = getNumHoursDisplayString(hours, context);
         return context.getString(
@@ -259,6 +234,30 @@ public class BookingUtil {
                 startTime,
                 hoursDisplayString
         );
+    }
+
+    public static String getFormattedStartTime(@NonNull Booking booking) {
+        //make sure this date is in the timezone of the booking location. This will be shown to the user
+        return StringUtils.toLowerCase(DateTimeUtils.formatDate(
+                booking.getStartDate(),
+                SUBTITLE_DATE_FORMAT,
+                booking.getBookingTimezone()
+        ));
+    }
+
+    public static String getFormattedEndTime(@NonNull Booking booking) {
+        //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
+        final int bookingDurationMinutes = Math.round(booking.getHours() * MINUTES_PER_HOUR);
+        final Calendar endDate = Calendar.getInstance();
+        endDate.setTime(booking.getStartDate());
+        endDate.add(Calendar.MINUTE, bookingDurationMinutes);
+
+        //End time
+       return StringUtils.toLowerCase(DateTimeUtils.formatDate(
+                        endDate.getTime(),
+                        DateTimeUtils.CLOCK_FORMATTER_12HR,
+                        booking.getBookingTimezone()
+                ));
     }
 
     /**

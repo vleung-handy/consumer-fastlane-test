@@ -50,7 +50,9 @@ public class Booking implements Parcelable {
     @SerializedName("hours")
     private float mHours;
     @SerializedName("price")
-    private float mPrice;
+    private float mTotalPrice;
+    @SerializedName("price_subtext")
+    private String mTotalPriceSubText;
     @SerializedName("recurring")
     private int mRecurring;
     //WARNING DECEPTIVE VARIABLE NAME! THIS DOES NOT ACTUALLY INDICATE IF A BOOKING IS RECURRING!!!! - this can be 0 if it is either a non-isRecurring booking or is a booking in a isRecurring series but is not the first one, use recurring_id to check if is isRecurring
@@ -107,6 +109,8 @@ public class Booking implements Parcelable {
     private boolean mShouldShowPaymentSection;
     @SerializedName("chat_options")
     private ChatOptions mChatOptions;
+    @SerializedName("hide_end_time")
+    private boolean mShouldHideEndTime;
 
     public ProviderAssignmentInfo getProviderAssignmentInfo() {
         return mProviderAssignmentInfo;
@@ -203,6 +207,10 @@ public class Booking implements Parcelable {
         return mChatOptions;
     }
 
+    public boolean shouldHideEndTime() {
+        return mShouldHideEndTime;
+    }
+
     //TODO: Auto-enum these vars a la Booking.LaundryStatus . From the Service table,
     // select distinct(machine_name) from service
     public static final String SERVICE_CLEANING = "cleaning";
@@ -227,7 +235,7 @@ public class Booking implements Parcelable {
     public String formatPrice(final String currencyChar) {
         final DecimalFormat decimalFormat = new DecimalFormat("0.00");
         return (currencyChar != null ? currencyChar : "$")
-               + decimalFormat.format(getPrice());
+               + decimalFormat.format(getTotalPrice());
     }
 
     /*
@@ -344,12 +352,17 @@ public class Booking implements Parcelable {
         mHours = hours;
     }
 
-    public final float getPrice() {
-        return mPrice;
+    @Nullable
+    public final String getTotalPriceSubText() {
+        return mTotalPriceSubText;
     }
 
-    final void setPrice(float price) {
-        mPrice = price;
+    public final float getTotalPrice() {
+        return mTotalPrice;
+    }
+
+    final void setTotalPrice(float totalPrice) {
+        mTotalPrice = totalPrice;
     }
 
     public Address getAddress() {
@@ -415,7 +428,7 @@ public class Booking implements Parcelable {
         final float[] floatData = new float[2];
         in.readFloatArray(floatData);
         mHours = floatData[0];
-        mPrice = floatData[1];
+        mTotalPrice = floatData[1];
 
         mStartDate = new Date(in.readLong());
         mAddress = (Address) in.readSerializable();
@@ -429,7 +442,7 @@ public class Booking implements Parcelable {
         mExtrasInfo = new ArrayList<>();
         in.readTypedList(mExtrasInfo, ExtraInfo.CREATOR);
 
-        final boolean[] booleanData = new boolean[6];
+        final boolean[] booleanData = new boolean[7];
         in.readBooleanArray(booleanData);
 
         mCanEditFrequency = booleanData[0];
@@ -438,6 +451,7 @@ public class Booking implements Parcelable {
         mCanLeaveTip = booleanData[3];
         mMilestonesEnabled = booleanData[4];
         mShouldShowPaymentSection = booleanData[5];
+        mShouldHideEndTime = booleanData[6];
 
         mInstructions = in.readParcelable(Instructions.class.getClassLoader());
 
@@ -472,7 +486,7 @@ public class Booking implements Parcelable {
         );
 
         out.writeIntArray(new int[]{mIsPast, mEntryType});
-        out.writeFloatArray(new float[]{mHours, mPrice});
+        out.writeFloatArray(new float[]{mHours, mTotalPrice});
         out.writeLong(mStartDate.getTime());
         out.writeSerializable(mAddress);
         out.writeSerializable(mProvider);
@@ -487,7 +501,8 @@ public class Booking implements Parcelable {
                                               mCanEditHours,
                                               mCanLeaveTip,
                                               mMilestonesEnabled,
-                                              mShouldShowPaymentSection
+                                              mShouldShowPaymentSection,
+                                              mShouldHideEndTime
                                               });
         out.writeParcelable(mInstructions, 0);
         out.writeSerializable(mEntryMethodOption);

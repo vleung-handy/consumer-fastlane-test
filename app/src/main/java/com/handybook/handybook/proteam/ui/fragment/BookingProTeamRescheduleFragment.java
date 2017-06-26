@@ -17,6 +17,8 @@ import com.handybook.handybook.booking.ui.activity.BookingDateActivity;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -85,19 +87,42 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
 
         ButterKnife.bind(this, view);
 
-        initRecyclerView();
+        //If we don't have the list of pro team then request the list
+        if(mProTeamCategory == null) {
+            showProgressSpinner();
+            FragmentSafeCallback<ProTeam.ProTeamCategory> mProTeamCallback = new FragmentSafeCallback<ProTeam.ProTeamCategory>(this) {
+                @Override
+                public void onCallbackSuccess(final ProTeam.ProTeamCategory response) {
+                    hideProgressSpinner();
+                    mProTeamCategory = response;
+                    initRecyclerView();
+                }
+
+                @Override
+                public void onCallbackError(final DataManager.DataManagerError error) {
+                    hideProgressSpinner();
+                    dataManagerErrorHandler.handleError(getContext(), error);
+                }
+            };
+            mProTeamManager.requestBookingProTeam(mBooking.getId(), mProTeamCallback);
+        }
+        else {
+            initRecyclerView();
+        }
 
         return view;
     }
 
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSelectedProShown(
-                mProTeamCategory.getPreferred().size())));
     }
 
     private void initRecyclerView() {
         if (mRecyclerView == null || mProTeamCategory == null) { return; }
+
+        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.RescheduleSelectedProShown(
+                mProTeamCategory.getPreferred().size())));
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         mAdapter = new ProRescheduleAdapter(

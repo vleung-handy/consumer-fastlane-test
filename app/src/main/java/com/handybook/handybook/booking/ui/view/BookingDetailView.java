@@ -18,10 +18,7 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.library.ui.view.InjectedRelativeLayout;
 import com.handybook.handybook.library.util.DateTimeUtils;
-import com.handybook.handybook.library.util.StringUtils;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,6 +28,7 @@ import butterknife.OnClick;
 // are BookingDetailSectionFragments
 public final class BookingDetailView extends InjectedRelativeLayout {
 
+    private static final String START_DATE_FORMAT_PATTERN = "EEEE',' MMM d',' yyyy";
     @BindView(R.id.date_text)
     TextView dateText;
     @BindView(R.id.time_text)
@@ -79,11 +77,7 @@ public final class BookingDetailView extends InjectedRelativeLayout {
         mBooking = booking;
         navText.setText(booking.getServiceName());
         bookingText.setText(getContext().getString(R.string.booking_number, booking.getId()));
-        updateDateTimeInfoText(
-                booking,
-                booking.getStartDate(),
-                isBookingHoursClarificationExperimentEnabled
-        );
+        updateDateTimeInfoText(booking, isBookingHoursClarificationExperimentEnabled);
         updateFrequencySectionDisplay(booking);
         updateServiceIcon(booking, serviceList);
     }
@@ -123,54 +117,48 @@ public final class BookingDetailView extends InjectedRelativeLayout {
     // possible, this view is going to be supplanted by new sub fragments
     public void updateDateTimeInfoText(
             final Booking booking,
-            final Date startDate,
             boolean isBookingHoursClarificationExperimentEnabled
     ) {
-        final float hours = booking.getHours();
-        //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
-        final int minutes = (int) (60 * hours);
-        final Calendar endDate = Calendar.getInstance();
-
-        endDate.setTime(startDate);
-        endDate.add(Calendar.MINUTE, minutes);
-
-        //we want to display the time using the booking location's time zone
-        String startTimeDisplayString = StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                startDate,
-                DateTimeUtils.CLOCK_FORMATTER_12HR,
-                booking.getBookingTimezone()
-        ));
-
-        //in the format "3 hours"
-        String numHoursDisplayString = BookingUtil.getNumHoursDisplayString(hours, getContext());
-
-        if (isBookingHoursClarificationExperimentEnabled) {
-            //5:00 pm (up to 3 hours)
-            timeText.setText(getResources().getString(
-                    R.string.booking_details_hours_clarification_experiment_hours_formatted,
-                    startTimeDisplayString,
-                    numHoursDisplayString
-            ));
-        }
-        else {
-            //5:00 pm - 8:00 pm (3 hours)
-            String endTimeDisplayString =
-                    StringUtils.toLowerCase(DateTimeUtils.formatDate(
-                            endDate.getTime(),
-                            DateTimeUtils.CLOCK_FORMATTER_12HR,
-                            booking.getBookingTimezone()
-                    ));
-            timeText.setText(getResources().getString(
-                    R.string.booking_details_hours_formatted,
-                    startTimeDisplayString,
-                    endTimeDisplayString,
-                    numHoursDisplayString
-            ));
-        }
-
-        dateText.setText(DateTimeUtils.formatDate(startDate, "EEEE',' MMM d',' yyyy",
+        //Set the start date
+        dateText.setText(DateTimeUtils.formatDate(booking.getStartDate(),
+                                                  START_DATE_FORMAT_PATTERN,
                                                   booking.getBookingTimezone()
         ));
+
+        //we want to display the time using the booking location's time zone
+        String startTimeDisplayString = BookingUtil.getFormattedStartTime(booking);
+
+        if (booking.shouldHideEndTime()) {
+            //should only display the start time
+            timeText.setText(startTimeDisplayString);
+        }
+        else {
+            final float hours = booking.getHours();
+            //hours is a float may come back as something like 3.5, and can't add float hours to a calendar
+            final int minutes = (int) (60 * hours);
+            //in the format "3 hours"
+            String numHoursDisplayString = BookingUtil.getNumHoursDisplayString(
+                    hours,
+                    getContext()
+            );
+
+            if (isBookingHoursClarificationExperimentEnabled) {
+                //5:00 pm (up to 3 hours)
+                timeText.setText(getResources().getString(
+                        R.string.booking_details_hours_clarification_experiment_hours_formatted,
+                        startTimeDisplayString,
+                        numHoursDisplayString
+                ));
+            }
+            else {
+                timeText.setText(getResources().getString(
+                        R.string.booking_details_hours_formatted,
+                        startTimeDisplayString,
+                        BookingUtil.getFormattedEndTime(booking),
+                        numHoursDisplayString
+                ));
+            }
+        }
     }
 
     public void updateReportIssueButton(

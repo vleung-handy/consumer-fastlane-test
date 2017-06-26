@@ -229,7 +229,12 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadServices();
+
+        //Only request if we don't have it
+        if (mServices == null || mServices.size() == 0 ||
+            mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled()) {
+            loadServices();
+        }
     }
 
     @Override

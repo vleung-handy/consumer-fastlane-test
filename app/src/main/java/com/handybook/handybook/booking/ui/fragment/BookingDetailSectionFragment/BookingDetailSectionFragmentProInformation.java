@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,7 @@ import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
-import com.handybook.handybook.library.util.Utils;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
@@ -33,8 +33,6 @@ import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
-import com.handybook.handybook.proteam.manager.ProTeamManager;
-import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
 import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
@@ -45,28 +43,9 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class BookingDetailSectionFragmentProInformation extends
         BookingDetailSectionFragment<BookingDetailSectionProInfoView>
         implements ConversationCallback {
-
-    @Inject
-    ProTeamManager mProTeamManager;
-
-    private FragmentSafeCallback<ProTeam.ProTeamCategory> mCallback;
-
-    {
-        mCallback = new FragmentSafeCallback<ProTeam.ProTeamCategory>(this) {
-            @Override
-            public void onCallbackSuccess(final ProTeam.ProTeamCategory response) {
-                onReceiveBookingProTeamSuccess(response);
-            }
-
-            @Override
-            public void onCallbackError(final DataManager.DataManagerError error) {}
-        };
-    }
 
     public static BookingDetailSectionFragmentProInformation newInstance() {
         return new BookingDetailSectionFragmentProInformation();
@@ -123,38 +102,6 @@ public class BookingDetailSectionFragmentProInformation extends
                 actionTextView.setVisibility(View.VISIBLE);
             }
             //handle more actions
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleCTAEnabled()) {
-            mProTeamManager.requestBookingProTeam(booking.getId(), mCallback);
-        }
-    }
-
-    private void onReceiveBookingProTeamSuccess(final ProTeam.ProTeamCategory category) {
-        if (!mConfigurationManager.getPersistentConfiguration().isProTeamRescheduleCTAEnabled()
-            || category == null
-            || category.getPreferred() == null
-            || category.getPreferred().isEmpty()
-            || booking.getProvider() == null
-            || booking.getProvider().getId() == null
-            || booking.isPast()
-            || Utils.containsProvider(category.getPreferred(), booking.getProvider().getId())) {
-            getSectionView().showPreferDifferentProLayout(false);
-        }
-        else {
-            getSectionView().showPreferDifferentProLayout(true);
-            getSectionView().setPreferDifferentProOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    RescheduleDialogFragment fragment =
-                            RescheduleDialogFragment.newInstance(category, booking);
-                    fragment.show(getFragmentManager(), null);
-                }
-            });
         }
     }
 
@@ -251,8 +198,7 @@ public class BookingDetailSectionFragmentProInformation extends
         }
 
         //if pro profile enabled, launch pro profile page on profile image click
-        if (pro.getIsProProfileEnabled())
-        {
+        if (pro.getIsProProfileEnabled()) {
             getSectionView().setProProfileClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
@@ -265,8 +211,7 @@ public class BookingDetailSectionFragmentProInformation extends
                 }
             });
         }
-        else
-        {
+        else {
             getSectionView().setProProfileClickListener(null);
         }
 
@@ -282,14 +227,46 @@ public class BookingDetailSectionFragmentProInformation extends
                 onManageProTeamButtonClicked();
             }
         });
+
+        //If there is a provider assignment info and they're not on your pro team
+        if (booking.getProviderAssignmentInfo() != null &&
+            !booking.getProviderAssignmentInfo().isProTeamMatch()) {
+            getSectionView().showPreferDifferentProLayout(true);
+            getSectionView().setPreferDifferentProOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    Fragment fragment = getFragmentManager().findFragmentByTag(
+                            RescheduleDialogFragment.TAG);
+                    //If this is a first time, create fragment
+                    if (fragment == null) {
+                        fragment = RescheduleDialogFragment.newInstance(booking);
+                    }
+
+                    FragmentUtils.safeLaunchDialogFragment(
+                            (DialogFragment) fragment,
+                            getFragmentManager(),
+                            RescheduleDialogFragment.TAG
+                    );
+                }
+            });
+        }
     }
 
     private void onTipButtonClicked() {
-        TipDialogFragment tipDialogFragment = TipDialogFragment.newInstance(
-                Integer.parseInt(booking.getId()),
-                booking.getProvider().getFirstName()
+        Fragment fragment = getFragmentManager().findFragmentByTag(TipDialogFragment.TAG);
+        //If this is a first time, create fragment
+        if (fragment == null) {
+            fragment = TipDialogFragment.newInstance(
+                    Integer.parseInt(booking.getId()),
+                    booking.getProvider().getFirstName()
+            );
+        }
+
+        FragmentUtils.safeLaunchDialogFragment(
+                (DialogFragment) fragment,
+                getFragmentManager(),
+                TipDialogFragment.TAG
         );
-        tipDialogFragment.show(getActivity().getSupportFragmentManager(), TipDialogFragment.TAG);
     }
 
     private void onManageProTeamButtonClicked() {
