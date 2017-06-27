@@ -6,11 +6,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
+import android.support.v7.app.AlertDialog;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+
+import com.handybook.handybook.R;
+import com.handybook.handybook.library.ui.view.TitleView;
 
 public final class UiUtils {
 
@@ -119,5 +125,17 @@ public final class UiUtils {
                 }
             }
         });
+    }
+
+    @NonNull
+    public static AlertDialog.Builder createDialogBuilderWithTitle(
+            final Context context, @StringRes final int titleResId
+    ) {
+        final AlertDialog.Builder dialogBuilder =
+                new AlertDialog.Builder(context, R.style.AlertDialogStyle);
+        final TitleView titleView = new TitleView(context);
+        titleView.setText(titleResId);
+        dialogBuilder.setCustomTitle(titleView);
+        return dialogBuilder;
     }
 }

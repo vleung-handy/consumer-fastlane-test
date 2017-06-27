@@ -1,8 +1,6 @@
 package com.handybook.handybook.core.ui.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -18,7 +16,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
@@ -35,6 +32,7 @@ import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
+import com.handybook.handybook.library.util.EnvironmentUtils;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
@@ -129,10 +127,8 @@ public abstract class MenuDrawerActivity extends BaseActivity
             @Subscribe
             public void userAuthUpdated(final UserLoggedInEvent event) {
                 checkLayerInitiation();
-                if (!event.isLoggedIn())
-                {
-                    if (requiresOnboardingV2(mConfigurationManager.getPersistentConfiguration()))
-                    {
+                if (!event.isLoggedIn()) {
+                    if (requiresOnboardingV2(mConfigurationManager.getPersistentConfiguration())) {
                         //upon logout, if onboarding is enabled, then we bring user back to onboarding screen.
                         final Intent intent = new Intent(
                                 MenuDrawerActivity.this,
@@ -251,7 +247,7 @@ public abstract class MenuDrawerActivity extends BaseActivity
         Button envButton = (Button) mNavigationView.getHeaderView(0).findViewById(R.id.env_button);
         envButton.setText(String.format(
                 getString(R.string.env_format),
-                mEnvironmentModifier.getEnvironment(),
+                mEnvironmentModifier.getEnvironmentPrefix(),
                 BuildConfig.VERSION_NAME,
                 Integer.valueOf(BuildConfig.VERSION_CODE).toString()
                           )
@@ -262,20 +258,11 @@ public abstract class MenuDrawerActivity extends BaseActivity
         envButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final EditText input = new EditText(MenuDrawerActivity.this);
-                input.setText(mEnvironmentModifier.getEnvironment());
-                new AlertDialog.Builder(MenuDrawerActivity.this)
-                        .setTitle(R.string.set_environment)
-                        .setView(input)
-                        .setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                mEnvironmentModifier.setEnvironment(input.getText().toString());
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, null)
-                        .create()
-                        .show();
+                EnvironmentUtils.showEnvironmentModifierDialog(
+                        mEnvironmentModifier,
+                        getApplicationContext(),
+                        null
+                );
             }
         });
     }

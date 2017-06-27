@@ -267,7 +267,7 @@ public class TestApplicationModule {
     @Singleton
     final EnvironmentModifier provideEnvironmentModifier() {
         EnvironmentModifier environmentModifier = mock(EnvironmentModifier.class);
-        when(environmentModifier.getEnvironment()).thenReturn("s");
+        when(environmentModifier.getEnvironmentPrefix()).thenReturn("s");
         return environmentModifier;
     }
 
