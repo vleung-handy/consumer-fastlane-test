@@ -47,6 +47,9 @@ public class BookingTransaction extends Observable {
     @SerializedName("hrs")
     private float mHours;
 
+    @SerializedName("terms_of_use")
+    private TermsOfUse mTermsOfUse;
+
     /**
      * This frequency field is used both in the legacy pricing tables, and the new
      * {@link com.handybook.handybook.booking.model.subscription.CommitmentType} pricing
@@ -239,6 +242,15 @@ public class BookingTransaction extends Observable {
 
     public void setHours(final float hours) {
         mHours = hours;
+        triggerObservers();
+    }
+
+    public TermsOfUse getTermsOfUse() {
+        return mTermsOfUse;
+    }
+
+    public void setTermsOfUse(final TermsOfUse termsOfUse) {
+        mTermsOfUse = termsOfUse;
         triggerObservers();
     }
 
