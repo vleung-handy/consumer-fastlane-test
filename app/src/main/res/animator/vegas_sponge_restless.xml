@@ -7,14 +7,7 @@
         android:propertyName="translationY"
         android:repeatCount="-1"
         android:repeatMode="reverse"
-        android:valueTo="20"
+        android:valueTo="30"
         android:valueType="floatType"
-        />
-    <objectAnimator
-        android:duration="400"
-        android:propertyName="alpha"
-        android:repeatCount="-1"
-        android:repeatMode="reverse"
-        android:valueTo="0.4f"
         />
 </set>

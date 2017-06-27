@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.vegas.model.VegasGame;
 
@@ -63,6 +64,7 @@ public class VegasActivity extends BaseActivity {
                 return;
 
         }
+        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
         ft.commit();
     }
 

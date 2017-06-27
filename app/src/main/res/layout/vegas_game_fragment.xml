@@ -327,61 +327,6 @@
                     app:layout_constraintRight_toRightOf="parent"
                     />
 
-                <Button
-                    android:id="@+id/rfgf_reset_button"
-                    style="@android:style/Widget.Holo.Button.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="-1dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/reset"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <Button
-                    android:id="@+id/rfgf_blast_button"
-                    style="@android:style/Widget.Holo.Button.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginRight="0dp"
-                    android:text="@string/blast"
-                    app:layout_constraintBottom_toTopOf="@+id/rfgf_reset_button"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
-
-                <Button
-                    android:id="@+id/rfgf_shades_button"
-                    style="@android:style/Widget.Holo.Button.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginRight="0dp"
-                    android:text="@string/shade"
-                    app:layout_constraintBottom_toTopOf="@+id/rfgf_blast_button"
-                    app:layout_constraintRight_toRightOf="@+id/rfgf_reset_button"
-                    />
-
-                <TextView
-                    android:id="@+id/rfgf_percentage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:textColor="#000000"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toTopOf="@+id/rfgf_shades_button"
-                    app:layout_constraintRight_toRightOf="@+id/rfgf_reset_button"
-                    tools:text="0.00"
-                    />
-
-
             </android.support.constraint.ConstraintLayout>
         </com.handybook.handybook.vegas.ui.view.MaybeScrollView>
 
@@ -396,7 +341,7 @@
                 android:id="@+id/rfgf_sponge_actor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="64dp"
+                android:layout_marginBottom="80dp"
                 android:elevation="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/rfgf_bucket"
                 app:layout_constraintLeft_toLeftOf="@+id/rfgf_bucket"

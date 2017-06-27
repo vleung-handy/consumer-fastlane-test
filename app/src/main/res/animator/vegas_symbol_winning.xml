@@ -5,7 +5,7 @@
     <objectAnimator
         android:duration="400"
         android:propertyName="scaleX"
-        android:repeatCount="-1"
+        android:repeatCount="4"
         android:repeatMode="reverse"
         android:valueTo="1.2"
         android:valueType="floatType"
@@ -13,7 +13,7 @@
     <objectAnimator
         android:duration="400"
         android:propertyName="scaleY"
-        android:repeatCount="-1"
+        android:repeatCount="4"
         android:repeatMode="reverse"
         android:valueTo="1.2"
         android:valueType="floatType"
@@ -29,7 +29,7 @@
         <objectAnimator
             android:duration="400"
             android:propertyName="rotation"
-            android:repeatCount="-1"
+            android:repeatCount="4"
             android:repeatMode="reverse"
             android:valueTo="10"
             android:valueType="floatType"

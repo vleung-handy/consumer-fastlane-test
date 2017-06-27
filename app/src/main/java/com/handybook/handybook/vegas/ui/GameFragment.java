@@ -43,7 +43,8 @@ public class GameFragment extends InjectedFragment {
     public static final String TAG = GameFragment.class.getName();
 
     private static final String KEY_GAME_VM = "key::game_view_model";
-    public static final double RATIO_TO_REVEAL = .55;
+    public static final double RATIO_TO_REVEAL = .65;
+    public static final int DELAY_SHADE_DOWN_MS = 3000;
 
     @Inject
     VegasManager mVegasManager;
@@ -133,7 +134,6 @@ public class GameFragment extends InjectedFragment {
         mSymbolTR.setSymbol(mVegasGame.result.symbols[1]);
         mSymbolBL.setSymbol(mVegasGame.result.symbols[2]);
         mSymbolBR.setSymbol(mVegasGame.result.symbols[3]);
-        animateWinningSymbols();
 
     }
 
@@ -189,7 +189,9 @@ public class GameFragment extends InjectedFragment {
                     .setListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(final Animator animation) {
+                            mSpongeActor.clearAnimation();
                             mSpongeActor.setAlpha(1f);
+                            mSpongeActor.setImageAlpha(255);
                             mSpongeActor.setTranslationY(0f);
                             final AnimatorSet set = (AnimatorSet) mSpongeActor.getTag();
                             if (set != null) {
@@ -261,12 +263,21 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void revealClaim() {
+
         mScratchOffView.scratchOffAll();
-        rollDownShades();
+        mScratchOffView.setOnScratchListener(null);
+        animateWinningSymbols();
         blastConfetti();
-        swipeRightBucket();
-        swipeRightSponge();
-        swipeDownBottomBanner();
+        Runnable delayedTask = new Runnable() {
+            @Override
+            public void run() {
+                rollDownShades();
+                swipeRightBucket();
+                swipeRightSponge();
+                swipeDownBottomBanner();
+            }
+        };
+        mScratchOffView.postDelayed(delayedTask, DELAY_SHADE_DOWN_MS);
     }
 
     private void animateWinningSymbols() {
@@ -371,14 +382,14 @@ public class GameFragment extends InjectedFragment {
     public void expandView(final View view) {
         view.setVisibility(View.VISIBLE);
         TranslateAnimation anim = new TranslateAnimation(0.0f, 0.0f, -view.getHeight(), 0.0f);
-        anim.setDuration(300);
+        anim.setDuration(500);
         anim.setInterpolator(new AnticipateOvershootInterpolator());
         view.startAnimation(anim);
     }
 
     public void collapseView(final View view) {
         TranslateAnimation anim = new TranslateAnimation(0.0f, 0.0f, 0.0f, -view.getHeight());
-        anim.setDuration(300);
+        anim.setDuration(500);
         anim.setInterpolator(new AnticipateOvershootInterpolator());
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override

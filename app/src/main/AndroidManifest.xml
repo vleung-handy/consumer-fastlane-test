@@ -568,7 +568,12 @@
             android:name=".booking.ui.activity.ZipActivity"
             android:windowSoftInputMode="adjustResize"
             />
-        <activity android:name=".vegas.ui.VegasActivity">
+        <activity
+            android:name=".vegas.ui.VegasActivity"
+            android:icon="@drawable/img_game_sponge"
+            android:screenOrientation="portrait"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
