@@ -110,6 +110,8 @@
                   value="5"/>
             <enum name="star"
                   value="6"/>
+            <enum name="crying_sponge"
+                  value="7"/>
         </attr>
     </declare-styleable>
 
