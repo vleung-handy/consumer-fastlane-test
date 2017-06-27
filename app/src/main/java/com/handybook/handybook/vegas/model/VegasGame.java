@@ -139,15 +139,14 @@ public class VegasGame implements Serializable {
 
         game.claimInfo = new ClaimInfo();
         game.claimInfo.title = "CONGRATS!";
+        game.claimInfo.description = "Thanks for cleaning! We'll see\nyou after your next booking.";
         game.claimInfo.buttonTitle = "Done";
 
         game.claimInfo.reward = new ClaimInfo.Reward();
         game.claimInfo.reward.symbol = GameSymbol.BUCKET_GREEN;
         game.claimInfo.reward.symbolChip = "x2";
         game.claimInfo.reward.summary = "$5 in Handy credit";
-        game.claimInfo.reward.description
-                = "Tap claim to have this prize credited to your account.";
-
+        game.claimInfo.reward.description = "Check your email to redeem your reward.";
         return game;
     }
 }
