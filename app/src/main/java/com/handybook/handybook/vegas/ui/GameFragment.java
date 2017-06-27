@@ -12,14 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.databinding.VegasGameFragmentBinding;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.vegas.VegasManager;
 import com.handybook.handybook.vegas.model.GameSymbol;
@@ -30,13 +32,11 @@ import com.handybook.handybook.vegas.ui.view.ScratchOffView;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.HashSet;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class GameFragment extends InjectedFragment {
 
@@ -44,7 +44,7 @@ public class GameFragment extends InjectedFragment {
 
     private static final String KEY_GAME_VM = "key::game_view_model";
     public static final double RATIO_TO_REVEAL = .65;
-    public static final int DELAY_SHADE_DOWN_MS = 3000;
+    public static final int DELAY_SHADE_DOWN_MS = 2200;
 
     @Inject
     VegasManager mVegasManager;
@@ -66,12 +66,14 @@ public class GameFragment extends InjectedFragment {
 
     };
 
-    private boolean mIsResultSheetVisible;
     private float mSpongeStartX;
     private float mSpongeStartY;
 
     @BindView(R.id.rfgf_background_image) ImageView mBackground;
     @BindView(R.id.rfgf_scroll_container) MaybeScrollView mScrollView;
+    @BindView(R.id.rfgf_subtitle) TextView mDescription;
+    @BindView(R.id.rfgf_button_dismiss) ImageButton mDismissButton;
+    @BindView(R.id.rfgf_button_submit) Button mSubmitButton;
     @BindView(R.id.rfgf_scratch_symbol_top_left) GameSymbolView mSymbolTL;
     @BindView(R.id.rfgf_scratch_symbol_top_right) GameSymbolView mSymbolTR;
     @BindView(R.id.rfgf_scratch_symbol_bottom_left) GameSymbolView mSymbolBL;
@@ -86,9 +88,6 @@ public class GameFragment extends InjectedFragment {
     @BindView(R.id.rfgf_result_symbol) GameSymbolView mResultSymbol;
     @BindView(R.id.rfgf_banner_bottom_container) ViewGroup mBottomBannerContainer;
     @BindView(R.id.rfgf_banner_bottom_text) TextView mBottomBannerText;
-
-    //TODO: Remove below
-    @BindView(R.id.rfgf_percentage) TextView mPercentage;
 
     public GameFragment() {
     }
@@ -115,8 +114,11 @@ public class GameFragment extends InjectedFragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_rating_flow_game, container, false);
+        final VegasGameFragmentBinding binding = VegasGameFragmentBinding
+                .inflate(inflater, container, false);
+        final View view = binding.getRoot();
+        binding.setFragment(this);
+        binding.setGame(mVegasGame);
         ButterKnife.bind(this, view);
         init();
         return view;
@@ -126,7 +128,6 @@ public class GameFragment extends InjectedFragment {
         initScratchOffView();
         initSponge();
         initSymbols();
-        updatePercentage(0);
     }
 
     private void initSymbols() {
@@ -223,7 +224,10 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void detachSponge(final float x, final float y) {
-        updatePercentage(mScratchOffView.getScratchedOffRatio(10));
+        double ratio = mScratchOffView.getScratchedOffRatio(10);
+        if (ratio > RATIO_TO_REVEAL) {
+            revealClaim();
+        }
         mScrollView.setScrollingEnabled(true);
         mSpongeActor.animate()
                     .setDuration(100)
@@ -254,27 +258,21 @@ public class GameFragment extends InjectedFragment {
                     .start();
     }
 
-    protected void updatePercentage(double ratio) {
-        String txt = String.format(Locale.getDefault(), "%.2f", ratio);
-        mPercentage.setText(txt);
-        if (ratio > RATIO_TO_REVEAL) {
-            revealClaim();
-        }
-    }
-
     private void revealClaim() {
-
         mScratchOffView.scratchOffAll();
         mScratchOffView.setOnScratchListener(null);
+        mDescription.setText(mVegasGame.claimInfo.description);
+        mDismissButton.setVisibility(View.GONE);
+        mSubmitButton.setVisibility(View.VISIBLE);
         animateWinningSymbols();
         blastConfetti();
         Runnable delayedTask = new Runnable() {
             @Override
             public void run() {
-                rollDownShades();
-                swipeRightBucket();
-                swipeRightSponge();
-                swipeDownBottomBanner();
+                expandView(mResultSheet);
+                animateView(mBucket, R.animator.vegas_swipe_out_right);
+                animateView(mSpongeActor, R.animator.vegas_swipe_out_right);
+                animateView(mBottomBannerContainer, R.animator.vegas_swipe_out_down);
             }
         };
         mScratchOffView.postDelayed(delayedTask, DELAY_SHADE_DOWN_MS);
@@ -303,68 +301,20 @@ public class GameFragment extends InjectedFragment {
         }
     }
 
-    private void swipeRightBucket() {
-        animateView(mBucket, R.animator.vegas_swipe_out_right);
-    }
-
-    private void swipeRightSponge() {
-        animateView(mSpongeActor, R.animator.vegas_swipe_out_right);
-    }
-
-    private void swipeDownBottomBanner() {
-        animateView(mBottomBannerContainer, R.animator.vegas_swipe_out_down);
-    }
-
-    @OnClick(R.id.rfgf_reset_button)
-    void onReset() {
-        mScratchOffView.reset();
-        updatePercentage(0);
-    }
-
-    @OnClick(R.id.rfgf_blast_button)
     void blastConfetti() {
-        int partsPerSec = 6;
-        int emitTime = 1000;
-        int maxParts = 300;
-        int timeToLive = 5000;
         final DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         final int scrW = metrics.widthPixels;
         for (final int drawableId : mParticleIds) {
             for (int x = 0; x <= scrW; x += scrW / 5) {
-                new ParticleSystem(getActivity(), maxParts, drawableId, timeToLive)
+                new ParticleSystem(getActivity(), 300, drawableId, 5000)
                         .setSpeedModuleAndAngleRange(0.1f, 0.3f, 225, 315)
                         .setRotationSpeed(144)
                         .setAcceleration(0.000785f, 90)
                         .setScaleRange(0.3f, 0.5f)
-                        .emit(x, -10, partsPerSec, emitTime);
+                        .emit(x, -10, 6, 1000);
             }
         }
-    }
-
-    @OnClick(R.id.rfgf_shades_button)
-    void toggleShades() {
-        if (mIsResultSheetVisible) {
-            rollUpShades();
-        }
-        else {
-            rollDownShades();
-        }
-    }
-
-    @OnClick(R.id.rfgf_submit_button)
-    void submitRewardClaim() {
-        ((VegasActivity) getActivity()).continueFlow();
-    }
-
-    private void rollDownShades() {
-        expandView(mResultSheet);
-        mIsResultSheetVisible = true;
-    }
-
-    private void rollUpShades() {
-        collapseView(mResultSheet);
-        mIsResultSheetVisible = false;
     }
 
     @NonNull
@@ -387,33 +337,12 @@ public class GameFragment extends InjectedFragment {
         view.startAnimation(anim);
     }
 
-    public void collapseView(final View view) {
-        TranslateAnimation anim = new TranslateAnimation(0.0f, 0.0f, 0.0f, -view.getHeight());
-        anim.setDuration(500);
-        anim.setInterpolator(new AnticipateOvershootInterpolator());
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.GONE);
-            }
-        });
-        view.startAnimation(anim);
-    }
-
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rfgf_button_close:
+            case R.id.rfgf_button_dismiss:
                 getActivity().finish();
                 break;
-            case R.id.rfgf_submit_button:
+            case R.id.rfgf_button_submit:
                 showUiBlockers();
                 mVegasManager.claimReward(mVegasGame.id, new DataManager.Callback<Void>() {
                     @Override
