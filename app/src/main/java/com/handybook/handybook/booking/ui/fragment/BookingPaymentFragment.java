@@ -8,21 +8,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,12 +43,12 @@ import com.google.android.gms.wallet.MaskedWalletRequest;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.constant.BookingRecurrence;
 import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingPostInfo;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.FinalizeBookingRequestPayload;
+import com.handybook.handybook.booking.model.TermsOfUse;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.CreditCard;
@@ -63,6 +67,7 @@ import com.handybook.handybook.core.ui.widget.CreditCardIconImageView;
 import com.handybook.handybook.core.ui.widget.CreditCardNumberInputTextView;
 import com.handybook.handybook.core.util.WalletUtils;
 import com.handybook.handybook.library.ui.view.FreezableInputTextView;
+import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -86,6 +91,10 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     private static final String STATE_CARD_EXP_HIGHLIGHT = "CARD_EXP_HIGHLIGHT";
     private static final String STATE_CARD_CVC_HIGHLIGHT = "CARD_CVC_HIGHLIGHT";
     private static final String STATE_USE_EXISTING_CARD = "USE_EXISTING_CARD";
+
+    private static final String PRIVACY_POLICY_URL_KEYWORD = "privacy";
+    private static final String TERMS_OF_USE_URL_KEYWORD = "terms";
+    private static final String NO_HEADER_PARAM = "?hide_header=1";
 
     @Inject
     ServicesManager mServicesManager;
@@ -130,6 +139,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     BillView mBillView;
     @BindView(R.id.payment_fragment_price_header_container)
     View mHeaderContainer;
+    @BindView(R.id.terms_and_condition_checkbox)
+    AppCompatCheckBox mTermsAndConditionCheckbox;
 
     private boolean mUseExistingCard;
     private boolean mUseAndroidPay;
@@ -315,7 +326,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
 
         initializePromoCodeView();
         initializeBill();
-        initializeTermsOfUseText();
+        initializeTermsOfUse();
 
         return view;
     }
@@ -361,17 +372,32 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * must do this in code because cannot specify textview to render text as html
      * from the layout xml
      */
-    private void initializeTermsOfUseText() {
-        if (mCurrentTransaction != null && mCurrentTransaction.getRecurringFrequency() !=
-                                           BookingRecurrence.ONE_TIME) {
-            mTermsOfUseText.setText(TextUtils.fromHtml(
-                    getString(R.string.booking_payment_recurring_plan_terms_of_use_agreement)));
-        }
-        else {
-            mTermsOfUseText.setText(TextUtils.fromHtml(
-                    getString(R.string.booking_payment_terms_of_use_agreement)));
-        }
+    private void initializeTermsOfUse() {
+        TermsOfUse termsOfUse = mCurrentTransaction.getTermsOfUse();
+        mTermsOfUseText.setText(TextUtils.fromHtml(termsOfUse.getTermsOfUseForCurrentType()));
         TextUtils.stripUnderlines(mTermsOfUseText);
+
+        //If the terms of use checkbox is enabled then we show it and default to false
+        if (termsOfUse.isCheckboxEnabled()) {
+            mTermsAndConditionCheckbox.setVisibility(View.VISIBLE);
+            mTermsAndConditionCheckbox.setChecked(false);
+
+            mTermsAndConditionCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(
+                        final CompoundButton buttonView,
+                        final boolean isChecked
+                ) {
+                    //If checked, change color to tertiary gray
+                    if (isChecked) {
+                        mTermsOfUseText.setTextColor(ContextCompat.getColor(
+                                getContext(),
+                                R.color.handy_tertiary_gray
+                        ));
+                    }
+                }
+            });
+        }
 
         //need to override the click event for the link.
         // TODO: is there a cleaner way to override click events for links?
@@ -397,7 +423,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                     //get the link at the tap position
                     final ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
                     if (link.length != 0 && off < buffer.length()) {
-                        showTermsWebViewModal();
+                        showWebViewModal((URLSpan) link[0]);
                         return true;
                     }
                 }
@@ -406,18 +432,32 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         });
     }
 
-    private void showTermsWebViewModal() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag(NavbarWebViewDialogFragment.FRAGMENT_TAG) == null)
-        //only show if there isn't an instance of the fragment showing already
-        {
-            NavbarWebViewDialogFragment df = NavbarWebViewDialogFragment
-                    .newInstance(
-                            getString(R.string.handy_terms_of_use_title),
-                            getString(R.string.handy_terms_of_use_url)
-                    );
-            df.show(fragmentManager, NavbarWebViewDialogFragment.FRAGMENT_TAG);
+    private void showWebViewModal(URLSpan link) {
+        String navBarHeaderTitle;
+        String fragmentTag;
+        //Get the url and add the no header param
+        String url = link.getURL() + NO_HEADER_PARAM;
+        if (url.contains(PRIVACY_POLICY_URL_KEYWORD)) {
+            navBarHeaderTitle = getString(R.string.handy_privacy_policy_title);
+            fragmentTag = navBarHeaderTitle;
         }
+        else if (url.contains(TERMS_OF_USE_URL_KEYWORD)) {
+            navBarHeaderTitle = getString(R.string.handy_terms_of_use_title);
+            fragmentTag = navBarHeaderTitle;
+        }
+        else {
+            navBarHeaderTitle = "";
+            fragmentTag = NavbarWebViewDialogFragment.FRAGMENT_TAG;
+        }
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        DialogFragment fragment = (DialogFragment) fragmentManager.findFragmentByTag(fragmentTag);
+        //only show if there isn't an instance of the fragment showing already
+        if (fragment == null) {
+            fragment = NavbarWebViewDialogFragment.newInstance(navBarHeaderTitle, url);
+        }
+
+        FragmentUtils.safeLaunchDialogFragment(fragment, fragmentManager, fragmentTag);
     }
 
     /**
@@ -564,6 +604,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
             if (!mCreditCardText.validate()) { validate = false; }
             if (!mExpText.validate()) { validate = false; }
             if (!mCvcText.validate()) { validate = false; }
+        }
+
+        if (!mTermsAndConditionCheckbox.isChecked()) {
+            validate = false;
+            mTermsOfUseText.setTextColor(ContextCompat.getColor(getContext(), R.color.error_red));
         }
 
         return validate;

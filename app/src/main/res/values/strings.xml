@@ -373,6 +373,7 @@
     <string name="booking_payment_recurring_plan_terms_of_use_agreement"><![CDATA[By clicking Complete Booking I understand that I am purchasing a recurring cleaning plan subject to Handy\'s Cancellation Policy and <a href="">Terms of Use</a>]]></string>
     <string name="handy_terms_of_use_title">Terms Of Use</string>
     <string name="handy_terms_of_use_url">https://www.handy.com/terms</string>
+    <string name="handy_privacy_policy_title">Privacy Policy</string>
     <string name="scan_credit_card_button">Scan credit card</string>
     <string name="free_cleanings">Get Free Cleanings</string>
     <string name="referral_title">Earn free cleanings</string>
