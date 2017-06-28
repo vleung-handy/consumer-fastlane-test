@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -52,6 +54,11 @@ public class TermsOfUse implements Serializable {
         private String mHtml;
         @SerializedName("checkbox_enabled")
         private boolean mIsCheckboxEnabled;
+
+        public TermsOfUseType(@NonNull String html, boolean isCheckboxEnabled) {
+            mHtml = html;
+            mIsCheckboxEnabled = isCheckboxEnabled;
+        }
 
         public boolean isCheckboxEnabled() {
             return mIsCheckboxEnabled;
