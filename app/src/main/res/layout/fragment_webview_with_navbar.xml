@@ -1,50 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
     >
 
-    <LinearLayout
+    <!--TODO: put this into a separate layout file-->
+    <RelativeLayout
+        android:id="@+id/nav_bar_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
         >
 
-        <!--TODO: put this into a separate layout file-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            >
-
-            <TextView
-                android:id="@+id/nav_text"
-                style="@style/TextView.Navbar"
-                tools:text="Title"
-                />
-
-            <ImageButton
-                android:id="@+id/exit_button"
-                android:layout_width="@dimen/default_icon_size"
-                android:layout_height="@dimen/default_icon_size"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:background="@android:color/transparent"
-                android:padding="@dimen/icon_padding"
-                android:src="@drawable/ic_x_dark"
-                android:tint="@color/white"
-                />
-        </RelativeLayout>
-
-        <com.handybook.handybook.library.ui.view.HandyWebView
-            android:id="@+id/handy_webview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+        <TextView
+            android:id="@+id/nav_text"
+            style="@style/TextView.Navbar"
+            tools:text="Title"
             />
 
-    </LinearLayout>
-</LinearLayout>
+        <ImageButton
+            android:id="@+id/exit_button"
+            android:layout_width="@dimen/default_icon_size"
+            android:layout_height="@dimen/default_icon_size"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/icon_padding"
+            android:src="@drawable/ic_x_dark"
+            android:tint="@color/white"
+            />
+
+        <ProgressBar
+            android:id="@+id/horizontal_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_below="@id/nav_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="-2dp"
+            android:layout_marginTop="-3dp"
+            android:indeterminate="true"
+            android:maxHeight="6dp"
+            android:minHeight="6dp"
+            android:theme="@style/LinearProgress"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+
+    <com.handybook.handybook.library.ui.view.HandyWebView
+        android:id="@+id/handy_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_bar_header"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
