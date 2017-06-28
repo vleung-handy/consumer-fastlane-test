@@ -61,7 +61,7 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenWithStatusBarDialogTheme);
-        mWebViewUrl = "http://www.handy.com/privacy";//getArguments().getString(BUNDLE_KEY_WEBVIEW_URL);
+        mWebViewUrl = getArguments().getString(BUNDLE_KEY_WEBVIEW_URL);
         mNavbarTitleString = getArguments().getString(BUNDLE_KEY_NAVBAR_TITLE);
     }
 

@@ -94,7 +94,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
 
     private static final String PRIVACY_POLICY_URL_KEYWORD = "privacy";
     private static final String TERMS_OF_USE_URL_KEYWORD = "terms";
-    private static final String NO_HEADER_PARAM = "?hide_header=1";
 
     @Inject
     ServicesManager mServicesManager;
@@ -437,7 +436,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
         String navBarHeaderTitle;
         String fragmentTag;
         //Get the url and add the no header param
-        String url = link.getURL() + NO_HEADER_PARAM;
+        String url = link.getURL();
         if (url.contains(PRIVACY_POLICY_URL_KEYWORD)) {
             navBarHeaderTitle = getString(R.string.handy_privacy_policy_title);
             fragmentTag = navBarHeaderTitle;
