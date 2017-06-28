@@ -109,17 +109,17 @@ public class VegasGame implements Serializable {
         game.id = 123456;
 
         game.preGameInfo = new PreGameInfo();
-        game.preGameInfo.title = "Wipe out!";
+        game.preGameInfo.title = "_Wipe out!";
         game.preGameInfo.description
-                = "Now every time you complete a\nbooking you'll have the chance to\nclaim great rewards.";
-        game.preGameInfo.rewardTitle = "Possible rewards include...";
-        game.preGameInfo.rewardDescription = "Free Cleanings\nfor 1 year!";
-        game.preGameInfo.buttonTitle = "Play Now!";
+                = "_Now every time you complete a\nbooking you'll have the chance to\nclaim great rewards.";
+        game.preGameInfo.rewardTitle = "_Possible rewards include...";
+        game.preGameInfo.rewardDescription = "_Free Cleanings\nfor 1 year!";
+        game.preGameInfo.buttonTitle = "_Play Now!";
 
         game.gameInfo = new GameInfo();
-        game.gameInfo.title = "Wipe out!";
-        game.gameInfo.description = "Use the sponge to clean the window and reveal rewards.";
-        game.gameInfo.footerText = "The more icons you match, the better the rewardInfo!";
+        game.gameInfo.title = "_Wipe out!";
+        game.gameInfo.description = "_Use the sponge to clean the window and reveal rewards.";
+        game.gameInfo.footerText = "_The more icons you match, the better the rewardInfo!";
         game.gameInfo.isWinner = true;
         game.gameInfo.symbols = new GameSymbol[]{
                 GameSymbol.BUCKET_GREEN,
@@ -129,9 +129,9 @@ public class VegasGame implements Serializable {
         };
 
         game.claimInfo = new ClaimInfo();
-        game.claimInfo.title = "CONGRATS!";
-        game.claimInfo.description = "Thanks for cleaning! We'll see\nyou after your next booking.";
-        game.claimInfo.buttonTitle = "Done";
+        game.claimInfo.title = "_CONGRATS!";
+        game.claimInfo.description = "_Thanks for cleaning! We'll see\nyou after your next booking.";
+        game.claimInfo.buttonTitle = "_Done";
 
         game.claimInfo.rewardInfo = new ClaimInfo.RewardInfo();
         game.claimInfo.rewardInfo.symbol = GameSymbol.BUCKET_GREEN;

@@ -88,7 +88,7 @@ public class GameFragment extends InjectedFragment {
     @BindView(R.id.rfgf_result_title) TextView mResultTitle;
     @BindView(R.id.rfgf_result_subtitle) TextView mResultSubtitle;
     @BindView(R.id.rfgf_result_header) TextView mResultHeader;
-    @BindView(R.id.rfgf_result_symbol) GameSymbolView mResultSymbol;
+    @BindView(R.id.rfgf_result_symbol) GameSymbolView mSymbolClaim;
     @BindView(R.id.rfgf_banner_bottom_container) ViewGroup mBottomBannerContainer;
     @BindView(R.id.rfgf_banner_bottom_text) TextView mBottomBannerText;
 
@@ -139,7 +139,7 @@ public class GameFragment extends InjectedFragment {
         mSymbolTR.setSymbol(mVegasGame.gameInfo.symbols[1]);
         mSymbolBL.setSymbol(mVegasGame.gameInfo.symbols[2]);
         mSymbolBR.setSymbol(mVegasGame.gameInfo.symbols[3]);
-
+        mSymbolClaim.setSymbol(mVegasGame.claimInfo.rewardInfo.symbol);
     }
 
     private void initSponge() {

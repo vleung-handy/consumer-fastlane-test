@@ -5,7 +5,7 @@
     <objectAnimator
         android:duration="400"
         android:propertyName="translationY"
-        android:valueTo="500"
+        android:valueTo="700"
         android:valueType="floatType"
         android:interpolator="@android:anim/anticipate_interpolator"
         />

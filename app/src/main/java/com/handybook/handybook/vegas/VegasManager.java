@@ -4,6 +4,7 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitCallback;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.vegas.model.RewardsWrapper;
+import com.handybook.handybook.vegas.model.WrappedId;
 
 import org.json.JSONObject;
 
@@ -33,7 +34,9 @@ public class VegasManager {
             final long rewardId,
             final DataManager.Callback<Void> cb
     ) {
-        mService.claimReward(rewardId, new HandyRetrofitCallback(cb) {
+
+
+        mService.claimReward(new WrappedId(rewardId), new HandyRetrofitCallback(cb) {
             @Override
             protected void success(final JSONObject response) {
                 cb.onSuccess(null);

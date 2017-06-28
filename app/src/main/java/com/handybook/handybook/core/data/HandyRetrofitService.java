@@ -18,6 +18,7 @@ import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.model.request.CreateUserRequest;
 import com.handybook.handybook.core.model.request.UpdateUserRequest;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
+import com.handybook.handybook.vegas.model.WrappedId;
 
 import java.util.Date;
 
@@ -499,6 +500,6 @@ public interface HandyRetrofitService {
     @GET("/rewards")
     void getRewards(HandyRetrofitCallback cb);
 
-    @POST("/rewards/{reward_id}/claim")
-    void claimReward(@Path("reward_id") long rewardId, HandyRetrofitCallback cb);
+    @POST("/rewards")
+    void claimReward(@Body WrappedId id, HandyRetrofitCallback cb);
 }
