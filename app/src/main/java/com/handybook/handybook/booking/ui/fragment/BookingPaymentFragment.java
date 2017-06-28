@@ -373,7 +373,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * from the layout xml
      */
     private void initializeTermsOfUse() {
-        TermsOfUse termsOfUse = mCurrentTransaction.getTermsOfUse();
+        TermsOfUse termsOfUse = mCurrentQuote.getTermsOfUse();
         mTermsOfUseText.setText(TextUtils.fromHtml(termsOfUse.getTermsOfUseForCurrentType()));
         TextUtils.stripUnderlines(mTermsOfUseText);
 
@@ -906,6 +906,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                 .getButton(applicationContext)
                 .getReferrerToken();
         mCurrentTransaction.setReferrerToken(referrerToken);
+
+        //We need to set additional param for the terms of Use. We use the ckbox fieldname and always set to "1"
+        TermsOfUse termsOfUse = mCurrentQuote.getTermsOfUse();
+        mCurrentTransaction.setAddtionalQueryParam(termsOfUse.getCheckboxFieldName(), "1");
+
         dataManager.createBooking(
                 mCurrentTransaction,
                 new FragmentSafeCallback<BookingCompleteTransaction>(this) {
