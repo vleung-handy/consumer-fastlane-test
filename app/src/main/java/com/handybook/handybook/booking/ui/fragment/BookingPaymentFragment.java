@@ -373,12 +373,13 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * from the layout xml
      */
     private void initializeTermsOfUse() {
-        TermsOfUse termsOfUse = mCurrentQuote.getTermsOfUse();
-        mTermsOfUseText.setText(TextUtils.fromHtml(termsOfUse.getTermsOfUseForCurrentType()));
+        TermsOfUse.TermsOfUseType termsOfUseType = mCurrentQuote.getTermsOfUse()
+                                                                .getTermsOfUseForCurrentType();
+        mTermsOfUseText.setText(TextUtils.fromHtml(termsOfUseType.getTermsInHtml()));
         TextUtils.stripUnderlines(mTermsOfUseText);
 
         //If the terms of use checkbox is enabled then we show it and default to false
-        if (termsOfUse.isCheckboxEnabled()) {
+        if (termsOfUseType.isCheckboxEnabled()) {
             mTermsAndConditionCheckbox.setVisibility(View.VISIBLE);
             mTermsAndConditionCheckbox.setChecked(false);
 

@@ -730,6 +730,7 @@ public class BookingQuote extends Observable {
                     context.serialize(value.getActiveCommitmentTypes())
             );
             jsonObj.add(KEY_COMMITMENT_TOOLTIP, context.serialize(value.getCommitmentTooltip()));
+            jsonObj.add(KEY_TERMS_OF_USE, context.serialize(value.getTermsOfUse()));
             return jsonObj;
         }
     }

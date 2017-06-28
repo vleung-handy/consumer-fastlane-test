@@ -12,12 +12,11 @@ import java.util.Map;
  */
 
 public class TermsOfUse implements Serializable {
-    private static final String KEY_STYLE_TYPE = "html";
+
+    //Note: https://hackmd.io/s/Sk0GtZv7W
 
     @SerializedName("types")
-    private Map<String, Map<String, String>> mTypes;
-    @SerializedName("checkbox_enabled")
-    private boolean mIsCheckboxEnabled;
+    private Map<String, TermsOfUseType> mTypes;
     //This is used to pass the field name and a value of 1 when submitting a booking
     @SerializedName("checkbox_field_name")
     private String mCheckboxFieldName;
@@ -36,23 +35,30 @@ public class TermsOfUse implements Serializable {
      *
      * @return the Terms if type is set, otherwise, return null
      */
-    public String getTermsOfUseForCurrentType() {
-        if(mType != null) {
-            return getTermsForType(mType);
-        }
-
-        return mType;
+    public TermsOfUseType getTermsOfUseForCurrentType() {
+        return mType != null ? getTermsOfUseTypeForType(mType) : null;
     }
 
-    public String getTermsForType(String type) {
-        return mTypes.get(type).get(KEY_STYLE_TYPE);
-    }
-
-    public boolean isCheckboxEnabled() {
-        return mIsCheckboxEnabled;
+    public TermsOfUseType getTermsOfUseTypeForType(String type) {
+        return mTypes.get(type);
     }
 
     public String getCheckboxFieldName() {
         return mCheckboxFieldName;
+    }
+
+    public class TermsOfUseType implements Serializable {
+        @SerializedName("html")
+        private String mHtml;
+        @SerializedName("checkbox_enabled")
+        private boolean mIsCheckboxEnabled;
+
+        public boolean isCheckboxEnabled() {
+            return mIsCheckboxEnabled;
+        }
+
+        public String getTermsInHtml() {
+            return mHtml;
+        }
     }
 }
