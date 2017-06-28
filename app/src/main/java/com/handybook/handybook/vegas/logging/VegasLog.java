@@ -38,8 +38,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "prompt_screen_dismissed";
 
-        private PromptScreenDismissed(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private PromptScreenDismissed(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -48,8 +48,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "play_now_selected";
 
-        private PlayNowSelected(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private PlayNowSelected(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -58,8 +58,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "game_screen_shown";
 
-        private GameScreenShown(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private GameScreenShown(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -68,8 +68,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "game_screen_dismissed";
 
-        private GameScreenDismissed(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private GameScreenDismissed(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -78,8 +78,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "game_play_started";
 
-        private GamePlayStarted(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private GamePlayStarted(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -88,8 +88,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "reward_claim_shown";
 
-        private RewardClaimShown(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private RewardClaimShown(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -98,8 +98,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "reward_claim_selected";
 
-        private RewardClaimSelected(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private RewardClaimSelected(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -110,8 +110,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "game_request_submitted";
 
-        private GameRequestSubmitted(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private GameRequestSubmitted(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -120,8 +120,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "game_request_success";
 
-        private GameRequestSuccess(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private GameRequestSuccess(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -133,11 +133,11 @@ public abstract class VegasLog extends EventLog {
         private String mErrorInfo;
 
         private GameRequestError(
-                final String eventType,
+                final String EVENT_TYPE,
                 final VegasGame game,
                 final String errorInfo
         ) {
-            super(eventType, game);
+            super(EVENT_TYPE, game);
             mErrorInfo = errorInfo;
         }
     }
@@ -147,8 +147,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "claim_request_submitted";
 
-        private ClaimRequestSubmitted(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private ClaimRequestSubmitted(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -157,8 +157,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "claim_request_success";
 
-        private ClaimRequestSuccess(final String eventType, final VegasGame game) {
-            super(eventType, game);
+        private ClaimRequestSuccess(final VegasGame game) {
+            super(EVENT_TYPE, game);
         }
     }
 
@@ -170,12 +170,8 @@ public abstract class VegasLog extends EventLog {
         @SerializedName("error_info")
         private String mErrorInfo;
 
-        private ClaimRequestError(
-                final String eventType,
-                final VegasGame game,
-                final String errorInfo
-        ) {
-            super(eventType, game);
+        private ClaimRequestError(final VegasGame game, final String errorInfo) {
+            super(EVENT_TYPE, game);
             mErrorInfo = errorInfo;
         }
     }
