@@ -29,8 +29,8 @@ public class VegasActivity extends BaseActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //        mVegasGame = (VegasGame) getIntent().getSerializableExtra(EXTRA_GAME_VIEW_MODEL);
-        mVegasGame = VegasGame.demo(); //FIXME: Replace this line with above
+        mVegasGame = (VegasGame) getIntent().getSerializableExtra(EXTRA_GAME_VIEW_MODEL);
+        //mVegasGame = VegasGame.demo(); //FIXME: Replace this line with above
         if (mVegasGame == null || mVegasGame.isInvalid()) {
             finish();
             return;

@@ -23,7 +23,9 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.databinding.VegasGameFragmentBinding;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.vegas.VegasManager;
+import com.handybook.handybook.vegas.logging.VegasLog;
 import com.handybook.handybook.vegas.model.GameSymbol;
 import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.view.GameSymbolView;
@@ -68,6 +70,7 @@ public class GameFragment extends InjectedFragment {
 
     private float mSpongeStartX;
     private float mSpongeStartY;
+    private boolean mIsFirstInteraction = true;
 
     @BindView(R.id.rfgf_background_image) ImageView mBackground;
     @BindView(R.id.rfgf_scroll_container) MaybeScrollView mScrollView;
@@ -121,6 +124,7 @@ public class GameFragment extends InjectedFragment {
         binding.setGame(mVegasGame);
         ButterKnife.bind(this, view);
         init();
+        bus.post(new LogEvent.AddLogEvent(new VegasLog.GameScreenShown(mVegasGame)));
         return view;
     }
 
@@ -131,10 +135,10 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void initSymbols() {
-        mSymbolTL.setSymbol(mVegasGame.result.symbols[0]);
-        mSymbolTR.setSymbol(mVegasGame.result.symbols[1]);
-        mSymbolBL.setSymbol(mVegasGame.result.symbols[2]);
-        mSymbolBR.setSymbol(mVegasGame.result.symbols[3]);
+        mSymbolTL.setSymbol(mVegasGame.gameInfo.symbols[0]);
+        mSymbolTR.setSymbol(mVegasGame.gameInfo.symbols[1]);
+        mSymbolBL.setSymbol(mVegasGame.gameInfo.symbols[2]);
+        mSymbolBR.setSymbol(mVegasGame.gameInfo.symbols[3]);
 
     }
 
@@ -155,6 +159,10 @@ public class GameFragment extends InjectedFragment {
         mScratchOffView.setOnScratchListener(new ScratchOffView.OnScratchListener() {
             @Override
             public void onScratchStart(final float x, final float y) {
+                if (mIsFirstInteraction) {
+                    bus.post(new LogEvent.AddLogEvent(new VegasLog.GamePlayStarted(mVegasGame)));
+                    mIsFirstInteraction = false;
+                }
                 attachSponge(x, y);
             }
 
@@ -259,6 +267,7 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void revealClaim() {
+        bus.post(new LogEvent.AddLogEvent(new VegasLog.RewardClaimShown(mVegasGame)));
         mScratchOffView.scratchOffAll();
         mScratchOffView.setOnScratchListener(null);
         mDescription.setText(mVegasGame.claimInfo.description);
@@ -281,7 +290,7 @@ public class GameFragment extends InjectedFragment {
     private void animateWinningSymbols() {
         final HashSet<GameSymbol> existingSymbols = new HashSet<>();
         GameSymbol winningSymbol = null;
-        for (GameSymbol symbol : mVegasGame.result.symbols) {
+        for (GameSymbol symbol : mVegasGame.gameInfo.symbols) {
             if (existingSymbols.contains(symbol)) {
                 winningSymbol = symbol;
                 break;
@@ -340,19 +349,28 @@ public class GameFragment extends InjectedFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rfgf_button_dismiss:
+                bus.post(new LogEvent.AddLogEvent(new VegasLog.GameScreenDismissed(mVegasGame)));
                 getActivity().finish();
                 break;
             case R.id.rfgf_button_submit:
+                bus.post(new LogEvent.AddLogEvent(new VegasLog.RewardClaimSelected(mVegasGame)));
+                bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestSubmitted(mVegasGame)));
                 showUiBlockers();
                 mVegasManager.claimReward(mVegasGame.id, new DataManager.Callback<Void>() {
                     @Override
                     public void onSuccess(final Void response) {
+                        bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestSuccess(
+                                mVegasGame)));
                         removeUiBlockers();
                         ((VegasActivity) getActivity()).continueFlow();
                     }
 
                     @Override
                     public void onError(final DataManager.DataManagerError error) {
+                        bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestError(
+                                mVegasGame,
+                                error.getMessage()
+                        )));
                         removeUiBlockers();
                         dataManagerErrorHandler.handleError(getActivity(), error);
                     }

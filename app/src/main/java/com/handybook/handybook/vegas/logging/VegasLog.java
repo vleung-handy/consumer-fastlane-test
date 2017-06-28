@@ -14,14 +14,18 @@ public abstract class VegasLog extends EventLog {
     private boolean mIsWinner;
 
     public VegasLog(final String eventType, VegasGame game) {
-        super(eventType, EVENT_CONTEXT);
+        this(eventType);
         try {
             mGameType = game.type.toString();
-            mIsWinner = game.result.isWinner;
+            mIsWinner = game.gameInfo.isWinner;
         }
         catch (Exception e) {
             //Do nothing - Info noise bad
         }
+    }
+
+    public VegasLog(final String eventType) {
+        super(eventType, EVENT_CONTEXT);
     }
 
     public static class PromptScreenShown extends VegasLog {
@@ -98,12 +102,7 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "reward_claim_selected";
 
-        @Override
-        public int getSessionEventCount() {
-            return super.getSessionEventCount();
-        }
-
-        RewardClaimSelected(final VegasGame game) {
+        public RewardClaimSelected(final VegasGame game) {
             super(EVENT_TYPE, game);
         }
     }
@@ -115,8 +114,8 @@ public abstract class VegasLog extends EventLog {
 
         private static final String EVENT_TYPE = "game_request_submitted";
 
-        public GameRequestSubmitted(final VegasGame game) {
-            super(EVENT_TYPE, game);
+        public GameRequestSubmitted() {
+            super(EVENT_TYPE);
         }
     }
 
@@ -125,8 +124,8 @@ public abstract class VegasLog extends EventLog {
 
         public static final String EVENT_TYPE = "game_request_success";
 
-        private GameRequestSuccess(final VegasGame game) {
-            super(EVENT_TYPE, game);
+        public GameRequestSuccess() {
+            super(EVENT_TYPE);
         }
     }
 
@@ -137,12 +136,8 @@ public abstract class VegasLog extends EventLog {
         @SerializedName("error_info")
         private String mErrorInfo;
 
-        public GameRequestError(
-                final String EVENT_TYPE,
-                final VegasGame game,
-                final String errorInfo
-        ) {
-            super(EVENT_TYPE, game);
+        public GameRequestError(final String errorInfo) {
+            super(EVENT_TYPE);
             mErrorInfo = errorInfo;
         }
     }

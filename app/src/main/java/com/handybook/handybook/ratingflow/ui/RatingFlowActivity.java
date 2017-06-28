@@ -26,6 +26,7 @@ import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.data.VoidRetrofitCallback;
 import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
@@ -34,9 +35,11 @@ import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
 import com.handybook.handybook.vegas.VegasManager;
+import com.handybook.handybook.vegas.logging.VegasLog;
 import com.handybook.handybook.vegas.model.RewardsWrapper;
 import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.VegasActivity;
+import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
 
@@ -52,6 +55,9 @@ public class RatingFlowActivity extends BaseActivity {
 
     @Inject
     VegasManager mVegasManager;
+
+    @Inject
+    Bus mBus;
 
     private static final int EXCELLENT_PRO_RATING = 5;
 
@@ -79,7 +85,6 @@ public class RatingFlowActivity extends BaseActivity {
         startRatingFlow();
         fetchPrerateInfo();
         fetchReferralInfo();
-        fetchRewardInfo();
     }
 
     private void startRatingFlow() {
@@ -96,6 +101,7 @@ public class RatingFlowActivity extends BaseActivity {
                 fragment = RatingFlowRateAndTipFragment.newInstance(mBooking);
                 break;
             case FEEDBACK_STEP:
+                fetchRewardInfo();
                 if (mPrerateProInfo != null) {
                     fragment = RatingFlowFeedbackFragment.newInstance(
                             mBooking,
@@ -118,8 +124,8 @@ public class RatingFlowActivity extends BaseActivity {
                     finish();
                     return;
                 }
-                finish();
                 startActivity(VegasActivity.getIntent(this, mVegasGame));
+                finish();
                 return;
             default:
                 finish();
@@ -286,10 +292,12 @@ public class RatingFlowActivity extends BaseActivity {
     }
 
     private void fetchRewardInfo() {
+        mBus.post(new LogEvent.AddLogEvent(new VegasLog.GameRequestSubmitted()));
         mVegasManager.getReward(
                 new ActivitySafeCallback<RewardsWrapper, RatingFlowActivity>(this) {
                     @Override
                     public void onCallbackSuccess(final RewardsWrapper response) {
+                        mBus.post(new LogEvent.AddLogEvent(new VegasLog.GameRequestSuccess()));
                         final VegasGame[] games = response.games;
                         if (games == null) {
                             return;
@@ -304,7 +312,10 @@ public class RatingFlowActivity extends BaseActivity {
 
                     @Override
                     public void onCallbackError(final DataManager.DataManagerError error) {
-                        Crashlytics.log("Failed to fetch reward!");
+                        mBus.post(new LogEvent.AddLogEvent(
+                                new VegasLog.GameRequestError(error.getMessage())
+                        ));
+                        Crashlytics.log("Failed to fetch rewardInfo!");
                     }
                 }
         );

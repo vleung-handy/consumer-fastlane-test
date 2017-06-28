@@ -24,7 +24,7 @@ public class VegasManager {
         mService.getRewards(new RewardsWrapperCallback(cb) {
             @Override
             public void success(final JSONObject response) {
-
+                cb.onSuccess(RewardsWrapper.fromJson(response.toString()));
             }
         });
     }

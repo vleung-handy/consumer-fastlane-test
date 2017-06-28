@@ -278,7 +278,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="48dp"
                                 android:gravity="center_horizontal"
-                                android:text="@{game.claimInfo.reward.title}"
+                                android:text="@{game.claimInfo.rewardInfo.title}"
                                 android:textColor="@color/handy_white"
                                 />
 
@@ -315,9 +315,9 @@
                                     android:background="@drawable/vegas_circle_black_fill_blue_stroke"
                                     android:gravity="center"
                                     android:padding="4dp"
-                                    android:text="@{game.claimInfo.reward.symbolChip}"
+                                    android:text="@{game.claimInfo.rewardInfo.symbolChip}"
                                     android:textColor="@color/handy_white"
-                                    android:visibility="@{game.result.isWinner ? View.VISIBLE : View.GONE}"
+                                    android:visibility="@{game.gameInfo.isWinner ? View.VISIBLE : View.GONE}"
                                     tools:text="x2"
                                     />
                             </FrameLayout>
@@ -330,7 +330,7 @@
                                 android:layout_marginTop="@dimen/default_margin"
                                 android:gravity="center_horizontal"
                                 android:lineSpacingMultiplier="1.1"
-                                android:text="@{game.claimInfo.reward.summary}"
+                                android:text="@{game.claimInfo.rewardInfo.summary}"
                                 android:textColor="@color/handy_white"
                                 />
 
@@ -342,7 +342,7 @@
                                 android:layout_marginTop="@dimen/default_margin"
                                 android:gravity="center_horizontal"
                                 android:lineSpacingMultiplier="1.1"
-                                android:text="@{game.claimInfo.reward.description}"
+                                android:text="@{game.claimInfo.rewardInfo.description}"
                                 android:textColor="@color/handy_white"
                                 />
                         </LinearLayout>

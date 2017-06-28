@@ -2,16 +2,18 @@ package com.handybook.handybook.vegas.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.databinding.VegasPreGameFragmentBinding;
+import com.handybook.handybook.library.ui.fragment.InjectedFragment;
+import com.handybook.handybook.logger.handylogger.LogEvent;
+import com.handybook.handybook.vegas.logging.VegasLog;
 import com.handybook.handybook.vegas.model.VegasGame;
 
-public class PreGameFragment extends Fragment {
+public class PreGameFragment extends InjectedFragment {
 
     public static final String TAG = PreGameFragment.class.getSimpleName();
     private static final String KEY_GAME_VM = "key::game_view_model";
@@ -49,6 +51,7 @@ public class PreGameFragment extends Fragment {
         binding.setFragment(this);
         binding.setPreGameInfo(mVegasGame.preGameInfo);
         init();
+        bus.post(new LogEvent.AddLogEvent(new VegasLog.PromptScreenShown(mVegasGame)));
         return view;
     }
 
@@ -59,9 +62,11 @@ public class PreGameFragment extends Fragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pre_game_x_button:
+                bus.post(new LogEvent.AddLogEvent(new VegasLog.PromptScreenDismissed(mVegasGame)));
                 getActivity().finish();
                 break;
             case R.id.pre_game_play_button:
+                bus.post(new LogEvent.AddLogEvent(new VegasLog.PlayNowSelected(mVegasGame)));
                 ((VegasActivity) getActivity()).continueFlow();
                 break;
         }
