@@ -1,13 +1,15 @@
 package com.handybook.handybook.vegas.ui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.StaleDataException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.vegas.model.VegasGame;
@@ -20,7 +22,7 @@ public class VegasActivity extends BaseActivity {
     private VegasGame mVegasGame;
 
     @NonNull
-    public static Intent getIntent(Activity activity, VegasGame vegasGame) {
+    public static Intent getIntent(@NonNull Context activity, @NonNull VegasGame vegasGame) {
         Intent intent = new Intent(activity, VegasActivity.class);
         intent.putExtra(EXTRA_GAME_VIEW_MODEL, vegasGame);
         return intent;
@@ -30,8 +32,11 @@ public class VegasActivity extends BaseActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mVegasGame = (VegasGame) getIntent().getSerializableExtra(EXTRA_GAME_VIEW_MODEL);
-        //mVegasGame = VegasGame.demo(); //FIXME: Replace this line with above
-        if (mVegasGame == null || mVegasGame.isInvalid()) {
+        if (mVegasGame.isInvalid()) {
+            Crashlytics.logException(new StaleDataException(String.format(
+                    "Invalid game type %s",
+                    mVegasGame.type.toString()
+            )));
             finish();
             return;
         }

@@ -29,7 +29,7 @@ import com.handybook.handybook.vegas.logging.VegasLog;
 import com.handybook.handybook.vegas.model.GameSymbol;
 import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.view.GameSymbolView;
-import com.handybook.handybook.vegas.ui.view.MaybeScrollView;
+import com.handybook.handybook.vegas.ui.view.LockableScrollView;
 import com.handybook.handybook.vegas.ui.view.ScratchOffView;
 import com.plattysoft.leonids.ParticleSystem;
 
@@ -73,7 +73,7 @@ public class GameFragment extends InjectedFragment {
     private boolean mIsFirstInteraction = true;
 
     @BindView(R.id.rfgf_background_image) ImageView mBackground;
-    @BindView(R.id.rfgf_scroll_container) MaybeScrollView mScrollView;
+    @BindView(R.id.rfgf_scroll_container) LockableScrollView mScrollView;
     @BindView(R.id.rfgf_subtitle) TextView mDescription;
     @BindView(R.id.rfgf_button_dismiss) ImageButton mDismissButton;
     @BindView(R.id.rfgf_button_submit) Button mSubmitButton;
@@ -96,7 +96,7 @@ public class GameFragment extends InjectedFragment {
     }
 
     @NonNull
-    public static GameFragment newInstance(VegasGame vegasGame) {
+    public static GameFragment newInstance(@NonNull VegasGame vegasGame) {
         GameFragment fragment = new GameFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_GAME_VM, vegasGame);
@@ -158,22 +158,28 @@ public class GameFragment extends InjectedFragment {
     private void initScratchOffView() {
         mScratchOffView.setOnScratchListener(new ScratchOffView.OnScratchListener() {
             @Override
-            public void onScratchStart(final float x, final float y) {
+            public void onScratchStart(final float rawX, final float rawY) {
                 if (mIsFirstInteraction) {
                     bus.post(new LogEvent.AddLogEvent(new VegasLog.GamePlayStarted(mVegasGame)));
                     mIsFirstInteraction = false;
                 }
-                attachSponge(x, y);
+                attachSponge(rawX, rawY);
             }
 
             @Override
-            public void onScratchMove(final float x, final float y) {
-                moveSponge(x, y);
+            public void onScratchMove(final float rawX, final float rawY) {
+                double ratio = mScratchOffView.getScratchedOffRatio(10);
+                if (ratio > RATIO_TO_REVEAL) {
+                    revealClaim();
+                    detachSponge(rawX, rawY);
+                }
+
+                moveSponge(rawX, rawY);
             }
 
             @Override
-            public void onScratchStop(final float x, final float y) {
-                detachSponge(x, y);
+            public void onScratchStop(final float rawX, final float rawY) {
+                detachSponge(rawX, rawY);
             }
         });
     }
@@ -232,10 +238,6 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void detachSponge(final float x, final float y) {
-        double ratio = mScratchOffView.getScratchedOffRatio(10);
-        if (ratio > RATIO_TO_REVEAL) {
-            revealClaim();
-        }
         mScrollView.setScrollingEnabled(true);
         mSpongeActor.animate()
                     .setDuration(100)
@@ -274,7 +276,9 @@ public class GameFragment extends InjectedFragment {
         mDismissButton.setVisibility(View.GONE);
         mSubmitButton.setVisibility(View.VISIBLE);
         animateWinningSymbols();
-        blastConfetti();
+        if (mVegasGame.gameInfo.isWinner) {
+            blastConfetti();
+        }
         Runnable delayedTask = new Runnable() {
             @Override
             public void run() {
@@ -327,7 +331,7 @@ public class GameFragment extends InjectedFragment {
     }
 
     @NonNull
-    private AnimatorSet animateView(final View view, final @AnimatorRes int resId) {
+    private AnimatorSet animateView(@NonNull final View view, final @AnimatorRes int resId) {
         final AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(
                 getContext(),
                 resId
@@ -338,7 +342,7 @@ public class GameFragment extends InjectedFragment {
         return set;
     }
 
-    public void expandView(final View view) {
+    public void expandView(@NonNull final View view) {
         view.setVisibility(View.VISIBLE);
         TranslateAnimation anim = new TranslateAnimation(0.0f, 0.0f, -view.getHeight(), 0.0f);
         anim.setDuration(500);
@@ -346,8 +350,8 @@ public class GameFragment extends InjectedFragment {
         view.startAnimation(anim);
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(@NonNull View view) {
+        switch (view.getId()) {
             case R.id.rfgf_button_dismiss:
                 bus.post(new LogEvent.AddLogEvent(new VegasLog.GameScreenDismissed(mVegasGame)));
                 getActivity().finish();

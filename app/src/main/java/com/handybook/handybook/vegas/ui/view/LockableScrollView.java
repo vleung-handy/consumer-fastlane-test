@@ -8,7 +8,7 @@ import android.widget.ScrollView;
 
 import com.handybook.handybook.R;
 
-public class MaybeScrollView extends ScrollView {
+public class LockableScrollView extends ScrollView {
 
     private boolean mIsScrollingEnabled = true;
 
@@ -16,27 +16,30 @@ public class MaybeScrollView extends ScrollView {
         mIsScrollingEnabled = scrollingEnabled;
     }
 
-    public MaybeScrollView(Context context, AttributeSet attrs, int defStyle) {
+    public LockableScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
 
-    public MaybeScrollView(Context context, AttributeSet attrs) {
+    public LockableScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public MaybeScrollView(Context context) {
+    public LockableScrollView(Context context) {
         super(context);
     }
 
     private void init(Context context, AttributeSet attrs) {
         final TypedArray ta = context
                 .getTheme()
-                .obtainStyledAttributes(attrs, R.styleable.GameSymbolView, 0, 0);
+                .obtainStyledAttributes(attrs, R.styleable.LockableScrollView, 0, 0);
 
         try {
-            setScrollingEnabled(ta.getBoolean(R.styleable.MaybeScrollView_scrollingEnabled, true));
+            setScrollingEnabled(ta.getBoolean(
+                    R.styleable.LockableScrollView_scrollingEnabled,
+                    true
+            ));
         }
         finally {
             ta.recycle();

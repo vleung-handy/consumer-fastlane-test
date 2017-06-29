@@ -33,9 +33,27 @@ public class ScratchOffView extends AppCompatImageView {
     private float mPathStartX;
     private float mPathStartY;
     private Bitmap mDrawableBitmap;
-    private Paint mScratchPaint;
-    private Paint mBitmapPaint;
+    private final Paint mScratchPaint;
+    private final Paint mBitmapPaint;
     private Matrix mMatrix;
+
+    {
+        mScratchPaint = new Paint();
+        mScratchPaint.setColor(Color.TRANSPARENT);
+        mScratchPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        mScratchPaint.setAntiAlias(true);
+        mScratchPaint.setStyle(Paint.Style.STROKE);
+        mScratchPaint.setStrokeCap(Paint.Cap.BUTT);
+        mScratchPaint.setStrokeJoin(Paint.Join.ROUND);
+        mScratchPaint.setStrokeWidth(DEFAULT_STROKE_WIDTH);
+
+        mBitmapPaint = new Paint();
+        mBitmapPaint.setAntiAlias(true);
+        mBitmapPaint.setFilterBitmap(true);
+        mBitmapPaint.setDither(true);
+
+
+    }
 
     public ScratchOffView(final Context context) {
         super(context);
@@ -59,21 +77,6 @@ public class ScratchOffView extends AppCompatImageView {
         if (getDrawable() != null) {
             mDrawableBitmap = ((BitmapDrawable) getDrawable()).getBitmap();
         }
-
-        mScratchPaint = new Paint();
-        mScratchPaint.setColor(Color.TRANSPARENT);
-        mScratchPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        mScratchPaint.setAntiAlias(true);
-        mScratchPaint.setStyle(Paint.Style.STROKE);
-        mScratchPaint.setStrokeCap(Paint.Cap.BUTT);
-        mScratchPaint.setStrokeJoin(Paint.Join.ROUND);
-        mScratchPaint.setStrokeWidth(DEFAULT_STROKE_WIDTH);
-
-        mBitmapPaint = new Paint();
-        mBitmapPaint.setAntiAlias(true);
-        mBitmapPaint.setFilterBitmap(true);
-        mBitmapPaint.setDither(true);
-
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         reset();
     }
@@ -113,6 +116,8 @@ public class ScratchOffView extends AppCompatImageView {
     }
 
     public void reset() {
+        mPathStartX = 0;
+        mPathStartY = 0;
         mPath = new Path();
         mPaths = new ArrayList<>();
         mIsScratching = false;
@@ -146,7 +151,7 @@ public class ScratchOffView extends AppCompatImageView {
     }
 
     private boolean shouldStartScratch(float oldX, float x, float oldY, float y) {
-        float distance = (float) Math.sqrt(Math.pow(oldX - x, 2) + Math.pow(oldY - y, 2));
+        float distance = (float) Math.hypot(oldX - x, oldY - y);
         return distance >= MIN_SCRATCH_DISTANCE;
     }
 
@@ -201,11 +206,11 @@ public class ScratchOffView extends AppCompatImageView {
 
     public interface OnScratchListener {
 
-        void onScratchStart(float x, float y);
+        void onScratchStart(float rawX, float rawY);
 
-        void onScratchMove(float x, float y);
+        void onScratchMove(float rawX, float rawY);
 
-        void onScratchStop(float x, float y);
+        void onScratchStop(float rawX, float rawY);
 
     }
 }

@@ -115,7 +115,7 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="MaybeScrollView">
+    <declare-styleable name="LockableScrollView">
         <attr name="scrollingEnabled"
               format="boolean"/>
     </declare-styleable>

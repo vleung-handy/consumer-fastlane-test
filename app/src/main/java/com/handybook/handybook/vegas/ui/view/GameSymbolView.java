@@ -85,7 +85,7 @@ public class GameSymbolView extends android.support.v7.widget.AppCompatImageView
         if (mSymbol == null) {
             return;
         }
-        setImageResource(gerResourceId(mSymbol));
+        setImageResource(getResourceId(mSymbol));
     }
 
     public void setSymbol(final GameSymbol symbol) {
@@ -98,7 +98,7 @@ public class GameSymbolView extends android.support.v7.widget.AppCompatImageView
         return mSymbol;
     }
 
-    private static int gerResourceId(final GameSymbol symbol) {
+    private static int getResourceId(final GameSymbol symbol) {
         return SYMBOLS_TO_RESOURCE_IDS.get(symbol);
     }
 }

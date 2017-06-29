@@ -25,7 +25,7 @@
         android:animateLayoutChanges="true"
         >
 
-        <com.handybook.handybook.vegas.ui.view.MaybeScrollView
+        <com.handybook.handybook.vegas.ui.view.LockableScrollView
             android:id="@+id/rfgf_scroll_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -252,7 +252,7 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:src="@drawable/bg_vegas_result_sheet"
+                            android:src="@drawable/vegas_bg_result_sheet"
                             />
 
                         <LinearLayout
@@ -262,7 +262,7 @@
                             android:layout_marginBottom="32dp"
                             android:layout_marginTop="-48dp"
                             android:animateLayoutChanges="true"
-                            android:background="@drawable/bg_vegas_result_sheet"
+                            android:background="@drawable/vegas_bg_result_sheet"
                             android:orientation="vertical"
                             android:paddingLeft="@dimen/default_padding_double"
                             android:paddingRight="@dimen/default_padding_double"
@@ -382,7 +382,7 @@
 
 
             </android.support.constraint.ConstraintLayout>
-        </com.handybook.handybook.vegas.ui.view.MaybeScrollView>
+        </com.handybook.handybook.vegas.ui.view.LockableScrollView>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/rfgf_banner_bottom_container"

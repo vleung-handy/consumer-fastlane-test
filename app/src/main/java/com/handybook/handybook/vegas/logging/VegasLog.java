@@ -1,5 +1,8 @@
 package com.handybook.handybook.vegas.logging;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 import com.handybook.handybook.vegas.model.VegasGame;
@@ -13,7 +16,7 @@ public abstract class VegasLog extends EventLog {
     @SerializedName("is_winner")
     private boolean mIsWinner;
 
-    public VegasLog(final String eventType, VegasGame game) {
+    public VegasLog(@NonNull final String eventType, @Nullable VegasGame game) {
         this(eventType);
         try {
             mGameType = game.type.toString();

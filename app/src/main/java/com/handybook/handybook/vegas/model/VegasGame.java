@@ -2,8 +2,6 @@ package com.handybook.handybook.vegas.model;
 
 import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -20,11 +18,6 @@ public class VegasGame implements Serializable {
     public GameInfo gameInfo;
     @SerializedName("claim_info")
     public ClaimInfo claimInfo;
-
-    @NonNull
-    public static VegasGame from(final JsonObject jsonGame) {
-        return new Gson().fromJson(jsonGame, VegasGame.class);
-    }
 
     public boolean isValid() {
         return type == Type.SCRATCH_WINDOW;
