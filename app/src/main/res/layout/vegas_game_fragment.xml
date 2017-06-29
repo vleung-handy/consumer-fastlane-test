@@ -72,6 +72,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Wipe Out!"
                     />
 
                 <TextView
@@ -90,6 +91,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rfgf_title"
+                    tools:text="Use the sponge to clean the window and reveal rewards."
                     />
 
 
@@ -138,8 +140,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         app:layout_constraintGuide_begin="196dp"
-                        tools:layout_editor_absoluteX="0dp"
-                        tools:layout_editor_absoluteY="196dp"
                         />
 
                     <android.support.constraint.Guideline
@@ -164,8 +164,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.5"
-                        tools:layout_editor_absoluteX="170dp"
-                        tools:layout_editor_absoluteY="0dp"
                         />
 
                     <android.support.constraint.Guideline
@@ -241,6 +239,8 @@
                         android:layout_height="0dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="32dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
                         android:layout_marginStart="32dp"
                         android:paddingTop="8dp"
                         app:layout_constraintBottom_toBottomOf="@+id/rfgf_background_image_bottom_spacer"
@@ -268,7 +268,7 @@
                             android:paddingRight="@dimen/default_padding_double"
                             android:paddingTop="32dp"
                             android:visibility="invisible"
-                            tools:visibility="visible"
+                            tools:visibility="gone"
                             >
 
                             <TextView
@@ -280,6 +280,7 @@
                                 android:gravity="center_horizontal"
                                 android:text="@{game.claimInfo.rewardInfo.title}"
                                 android:textColor="@color/handy_white"
+                                tools:text="CONGRATS!"
                                 />
 
                             <FrameLayout
@@ -332,6 +333,7 @@
                                 android:lineSpacingMultiplier="1.1"
                                 android:text="@{game.claimInfo.rewardInfo.summary}"
                                 android:textColor="@color/handy_white"
+                                tools:text="$15 off Handyman"
                                 />
 
                             <TextView
@@ -344,6 +346,7 @@
                                 android:lineSpacingMultiplier="1.1"
                                 android:text="@{game.claimInfo.rewardInfo.description}"
                                 android:textColor="@color/handy_white"
+                                tools:text="Check your email to redeem your reward."
                                 />
                         </LinearLayout>
                     </FrameLayout>
@@ -386,38 +389,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
-            android:clickable="false"
             >
-
-            <ImageView
-                android:id="@+id/rfgf_sponge_actor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="80dp"
-                android:elevation="2dp"
-                app:layout_constraintBottom_toBottomOf="@+id/rfgf_bucket"
-                app:layout_constraintLeft_toLeftOf="@+id/rfgf_bucket"
-                app:layout_constraintRight_toRightOf="@+id/rfgf_bucket"
-                app:srcCompat="@drawable/img_game_sponge"
-                tools:targetApi="lollipop"
-                />
-
-            <ImageView
-                android:id="@+id/rfgf_bucket"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="2dp"
-                app:layout_constraintBottom_toTopOf="@+id/rfgf_banner_bottom_text"
-                app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@drawable/img_game_bucket_red"
-                tools:targetApi="lollipop"
-                />
 
             <TextView
                 android:id="@+id/rfgf_banner_bottom_text"
                 style="@style/TextView.Large.Bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="0dp"
                 android:background="@color/handy_blue"
@@ -429,6 +408,37 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                />
+
+            <android.support.v4.widget.Space
+                android:id="@+id/rfgf_spacer_bucket"
+                android:layout_width="0dp"
+                android:layout_height="5dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rfgf_banner_bottom_text"
+                />
+
+            <ImageView
+                android:id="@+id/rfgf_sponge_actor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rfgf_bucket"
+                app:layout_constraintLeft_toLeftOf="@+id/rfgf_bucket"
+                app:layout_constraintRight_toRightOf="@+id/rfgf_bucket"
+                app:srcCompat="@drawable/img_game_sponge"
+                />
+
+            <ImageView
+                android:id="@+id/rfgf_bucket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rfgf_spacer_bucket"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/img_game_bucket_red"
                 />
 
         </android.support.constraint.ConstraintLayout>
