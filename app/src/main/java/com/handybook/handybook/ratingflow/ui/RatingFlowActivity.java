@@ -14,6 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
@@ -25,6 +26,7 @@ import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.data.VoidRetrofitCallback;
 import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
+import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.proteam.event.ProTeamEvent;
 import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
@@ -32,6 +34,12 @@ import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
+import com.handybook.handybook.vegas.VegasManager;
+import com.handybook.handybook.vegas.logging.VegasLog;
+import com.handybook.handybook.vegas.model.RewardsWrapper;
+import com.handybook.handybook.vegas.model.VegasGame;
+import com.handybook.handybook.vegas.ui.VegasActivity;
+import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
 
@@ -45,11 +53,18 @@ public class RatingFlowActivity extends BaseActivity {
     @Inject
     HandyRetrofitService mService;
 
+    @Inject
+    VegasManager mVegasManager;
+
+    @Inject
+    Bus mBus;
+
     private static final int EXCELLENT_PRO_RATING = 5;
 
     private static final int RATE_TIP_STEP = 0;
     private static final int FEEDBACK_STEP = 1;
     private static final int REFERRAL_STEP = 2;
+    private static final int GAME_STEP = 3;
 
     private Booking mBooking;
     private PrerateProInfo mPrerateProInfo;
@@ -60,6 +75,7 @@ public class RatingFlowActivity extends BaseActivity {
     private ProviderMatchPreference mSelectedPreference;
     private ArrayList<Provider> mRecommendedProviders;
     private boolean mIsFetchingRecommendedProviders = false;
+    private VegasGame mVegasGame;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -85,6 +101,7 @@ public class RatingFlowActivity extends BaseActivity {
                 fragment = RatingFlowRateAndTipFragment.newInstance(mBooking);
                 break;
             case FEEDBACK_STEP:
+                fetchRewardInfo();
                 if (mPrerateProInfo != null) {
                     fragment = RatingFlowFeedbackFragment.newInstance(
                             mBooking,
@@ -102,6 +119,14 @@ public class RatingFlowActivity extends BaseActivity {
                         mRecommendedProviders
                 );
                 break;
+            case GAME_STEP:
+                if (mVegasGame == null) {
+                    finish();
+                    return;
+                }
+                startActivity(VegasActivity.getIntent(this, mVegasGame));
+                finish();
+                return;
             default:
                 finish();
                 return;
@@ -264,6 +289,36 @@ public class RatingFlowActivity extends BaseActivity {
                 new VoidRetrofitCallback()
         );
         fetchRecommendedProvidersIfNecessary();
+    }
+
+    private void fetchRewardInfo() {
+        mBus.post(new LogEvent.AddLogEvent(new VegasLog.GameRequestSubmitted()));
+        mVegasManager.getReward(
+                new ActivitySafeCallback<RewardsWrapper, RatingFlowActivity>(this) {
+                    @Override
+                    public void onCallbackSuccess(final RewardsWrapper response) {
+                        mBus.post(new LogEvent.AddLogEvent(new VegasLog.GameRequestSuccess()));
+                        final VegasGame[] games = response.games;
+                        if (games == null) {
+                            return;
+                        }
+                        for (VegasGame game : games) {
+                            if (game.isValid()) {
+                                mVegasGame = game;
+                                break; // First game we can show goes
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCallbackError(final DataManager.DataManagerError error) {
+                        mBus.post(new LogEvent.AddLogEvent(
+                                new VegasLog.GameRequestError(error.getMessage())
+                        ));
+                        Crashlytics.log("Failed to fetch rewardInfo!");
+                    }
+                }
+        );
     }
 
     private synchronized void fetchRecommendedProvidersIfNecessary() {

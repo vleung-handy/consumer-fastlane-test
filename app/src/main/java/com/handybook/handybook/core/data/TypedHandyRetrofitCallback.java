@@ -42,7 +42,7 @@ public abstract class TypedHandyRetrofitCallback<T> extends HandyRetrofitCallbac
             "yyyy-MM-dd'T'HH:mm:ssZ").create();
     protected T returnData;
 
-    TypedHandyRetrofitCallback(DataManager.Callback callback) {
+    protected TypedHandyRetrofitCallback(DataManager.Callback callback) {
         super(callback);
     }
 
