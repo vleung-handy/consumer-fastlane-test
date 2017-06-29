@@ -1,5 +1,8 @@
 package com.handybook.handybook.booking.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -13,6 +16,24 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
     private static final String PRICE_MONTHLY_RECURRING_KEY = "monthly_recurring_price";
     private static final String PRICE_BIMONTHLY_RECURRING_KEY = "bimonthly_recurring_price";
     private static final String NO_COMMITMENT_KEY = "no_commitment";
+
+    /**
+     *
+     * @return CommitmentRecurrenceFrequency if there is only One, otherwise return null
+     */
+    @Nullable
+    CommitmentRecurrenceFrequency getCommitmentRecurrenceFrequencyIfOnlyOne() {
+        HashMap<String, CommitmentRecurrenceFrequency> crf = get(NO_COMMITMENT_KEY)
+                .get("0")
+                .getFrequencyHashMap();
+
+        if(crf.size() == 1) {
+            //Get the item
+            return crf.get(crf.keySet().iterator().next());
+        }
+
+        return null;
+    }
 
     ArrayList<BookingPriceInfo> toPriceTable() {
         final ArrayList<BookingPriceInfo> priceTable = new ArrayList<>();
@@ -118,13 +139,21 @@ public class CommitmentPricesMap extends HashMap<String, CommitmentPricesMap.Com
     }
 
 
-    private static class CommitmentRecurrenceFrequency {
+    static class CommitmentRecurrenceFrequency {
 
         @SerializedName("hours")
         private HashMap<String, CommitmentPriceItem> mPriceItemHashMap;
 
+        @SerializedName("terms_of_use_type")
+        private String mTermsOfUseType;
+
         HashMap<String, CommitmentPriceItem> getPriceItemHashMap() {
             return mPriceItemHashMap;
+        }
+
+        @NonNull
+        String getTermsOfUseType() {
+            return mTermsOfUseType;
         }
     }
 

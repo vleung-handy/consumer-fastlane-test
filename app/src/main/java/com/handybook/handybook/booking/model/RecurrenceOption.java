@@ -45,6 +45,9 @@ public class RecurrenceOption implements Serializable, Option {
     @SerializedName("price_info_text")
     private String mPriceInfoText;
 
+    @SerializedName("terms_of_use_type")
+    private String mTermsOfUseType;
+
     public Integer getFrequencyValue() {
         return mFrequencyValue;
     }
@@ -69,5 +72,9 @@ public class RecurrenceOption implements Serializable, Option {
 
     public boolean isDefault() {
         return mDefault;
+    }
+
+    public String getTermsOfUseType() {
+        return mTermsOfUseType;
     }
 }

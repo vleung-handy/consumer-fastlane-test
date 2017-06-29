@@ -36,6 +36,7 @@ public class CommitmentType implements Serializable {
     private static final String JSON_KEY_FREQUENCY = "frequency";
     private static final String JSON_KEY_FULL_PRICE = "full_price";
     private static final String JSON_KEY_AMOUNT_DUE = "amount_due";
+    private static final String JSON_KEY_TERMS_OF_USE_TYPE = "terms_of_use_type";
 
     @SerializedName(STRING_NO_COMMITMENT)
     private JsonObject mNoCommitment;
@@ -187,7 +188,8 @@ public class CommitmentType implements Serializable {
                 SubscriptionFrequency frequency = new SubscriptionFrequency(
                         freqKey,
                         GsonUtil.safeGetAsString(freqInformation.get(JSON_KEY_TITLE)),
-                        GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DEFAULT))
+                        GsonUtil.safeGetAsBoolean(freqInformation.get(JSON_KEY_DEFAULT)),
+                        GsonUtil.safeGetAsString(freqInformation.get(JSON_KEY_TERMS_OF_USE_TYPE))
                 );
                 mUniqueFrequencies.add(frequency);
             }

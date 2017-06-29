@@ -1,5 +1,7 @@
 package com.handybook.handybook.booking.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -13,6 +15,8 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 
 import java.lang.reflect.Type;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -70,6 +74,10 @@ public class BookingTransaction extends Observable {
     private String mReferrerToken;
     @SerializedName("_android_promo_applied")
     private String mPromoCode;
+
+    //this is used for creating additional params to post for the create booking
+    private Map<String, Object> mAdditionalQueryParamMap;
+
     /**
      * TODO for ugly promo code hotfix
      * ideally this shouldn't be sent to server
@@ -363,6 +371,22 @@ public class BookingTransaction extends Observable {
         triggerObservers();
     }
 
+    public Map<String, Object> getAdditionalQueryParamMap() {
+        return mAdditionalQueryParamMap;
+    }
+
+    /**
+     * This is used to set additional query parameters for create a booking post
+     * @param key Key name for the query param
+     * @param value value for the query param
+     */
+    public void setAddtionalQueryParam(@NonNull String key, @NonNull Object value) {
+        if(mAdditionalQueryParamMap == null)
+            mAdditionalQueryParamMap = new HashMap<>();
+
+        mAdditionalQueryParamMap.put(key, value);
+    }
+
     public String getReferrerToken() {
         return mReferrerToken;
     }
@@ -398,6 +422,14 @@ public class BookingTransaction extends Observable {
             jsonObj.add("mobile", context.serialize(1));
             jsonObj.add("button_referrer_token", context.serialize(value.getReferrerToken()));
             jsonObj.add("_android_promo_applied", context.serialize(value.getPromoCode()));
+
+            Map<String, Object> map = value.getAdditionalQueryParamMap();
+            if(map != null) {
+                for (String key : map.keySet()) {
+                    jsonObj.add(key, context.serialize(map.get(key)));
+                }
+            }
+
             jsonObj.add(
                     "should_promo_code_be_hidden",
                     context.serialize(value.shouldPromoCodeBeHidden())
