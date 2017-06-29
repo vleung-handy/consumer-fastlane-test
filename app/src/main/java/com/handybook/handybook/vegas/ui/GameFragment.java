@@ -232,12 +232,12 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void detachSponge(final float rawX, final float rawY) {
-        mScrollView.setScrollingEnabled(true);
         double ratio = mScratchOffView.getScratchedOffRatio(10);
         if (ratio > RATIO_TO_REVEAL) {
             revealClaim();
             detachSponge(rawX, rawY);
         }
+        mScrollView.setScrollingEnabled(true);
 
         mSpongeActor.animate()
                     .setDuration(100)
