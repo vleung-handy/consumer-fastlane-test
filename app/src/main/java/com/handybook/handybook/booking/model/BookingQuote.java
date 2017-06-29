@@ -596,6 +596,15 @@ public class BookingQuote extends Observable {
                         CommitmentPricesMap.class
                 ));
                 bookingQuote.mPriceTable = bookingQuote.getCommitmentPricesMap().toPriceTable();
+
+                //Note: For non-subscription and non-cleanings, there should always only be one frequency
+                // If there's only one then grab the terms of use type and set it
+                CommitmentPricesMap.CommitmentRecurrenceFrequency crf
+                        = bookingQuote.getCommitmentPricesMap()
+                                      .getCommitmentRecurrenceFrequencyIfOnlyOne();
+                if (crf != null) {
+                    bookingQuote.getTermsOfUse().setType(crf.getTermsOfUseType());
+                }
             }
         }
         return bookingQuote;
