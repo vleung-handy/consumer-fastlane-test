@@ -235,7 +235,6 @@ public class GameFragment extends InjectedFragment {
         double ratio = mScratchOffView.getScratchedOffRatio(10);
         if (ratio > RATIO_TO_REVEAL) {
             revealClaim();
-            detachSponge(rawX, rawY);
         }
         mScrollView.setScrollingEnabled(true);
 
