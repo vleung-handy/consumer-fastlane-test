@@ -14,12 +14,15 @@ public abstract class VegasLog extends EventLog {
     @SerializedName("game_type")
     private String mGameType;
     @SerializedName("is_winner")
-    private boolean mIsWinner;
+    private Boolean mIsWinner;
+    @SerializedName("reward_id")
+    private Long mRewardId;
 
     public VegasLog(@NonNull final String eventType, @Nullable VegasGame game) {
         this(eventType);
         try {
             mGameType = game.type.toString();
+            mRewardId = game.id;
             mIsWinner = game.gameInfo.isWinner;
         }
         catch (Exception e) {
