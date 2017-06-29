@@ -1,6 +1,7 @@
 package com.handybook.handybook.booking.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -26,7 +27,7 @@ public class TermsOfUse implements Serializable {
     private String mType;
 
     public void setType(String type) {
-        this.mType = type;
+        mType = type;
     }
 
     public String getType() {
@@ -37,14 +38,12 @@ public class TermsOfUse implements Serializable {
      *
      * @return the Terms if type is set, otherwise, return null
      */
+    @Nullable
     public TermsOfUseType getTermsOfUseForCurrentType() {
-        return mType != null ? getTermsOfUseTypeForType(mType) : null;
+        return mType != null ? mTypes.get(mType) : null;
     }
 
-    public TermsOfUseType getTermsOfUseTypeForType(String type) {
-        return mTypes.get(type);
-    }
-
+    @NonNull
     public String getCheckboxFieldName() {
         return mCheckboxFieldName;
     }
@@ -64,6 +63,7 @@ public class TermsOfUse implements Serializable {
             return mIsCheckboxEnabled;
         }
 
+        @NonNull
         public String getTermsInHtml() {
             return mHtml;
         }

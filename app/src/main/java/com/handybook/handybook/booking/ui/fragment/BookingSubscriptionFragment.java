@@ -288,7 +288,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
             @NonNull String commitmentType,
             final SubscriptionFrequency recurringFrequency,
             final int commitmentLength
-            ) {
+    ) {
         mBookingTransaction.setCommitmentType(commitmentType);
         mBookingTransaction.setRecurringFrequency(Integer.parseInt(recurringFrequency.getKey()));
         mBookingTransaction.setCommitmentLength(commitmentLength);
@@ -303,7 +303,8 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
         //This is here only because unit tests fail here. Should never happen in real life
         if (mFrequencyView.getListSize() == 0) { return "0"; }
 
-        return mFrequencyValueToSubscriptionFrequency.get(mFrequencyView.getCurrentValue())
+        return mFrequencyValueToSubscriptionFrequency.get(mFrequencyView
+                                                                  .getCurrentValue())
                                                      .getKey();
     }
 
@@ -517,10 +518,13 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     }
 
     private void handleTrialCommitment() {
-        CommitmentType trialCommitmentType = bookingManager.getCurrentQuote()
-                                                           .getTrialCommitmentType();
-        updateBookingTransaction(CommitmentType.STRING_TRIAL,
-                                 trialCommitmentType.getUniqueFrequencies().get(0),
-                                 0);
+        CommitmentType trialCommitmentType = bookingManager
+                .getCurrentQuote()
+                .getTrialCommitmentType();
+        updateBookingTransaction(
+                CommitmentType.STRING_TRIAL,
+                trialCommitmentType.getUniqueFrequencies().get(0),
+                0
+        );
     }
 }

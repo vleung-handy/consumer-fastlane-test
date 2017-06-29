@@ -76,7 +76,7 @@ public class BookingTransaction extends Observable {
     private String mPromoCode;
 
     //this is used for creating additional params to post for the create booking
-    private Map<String, String> mAdditionalQueryParamMap;
+    private Map<String, Object> mAdditionalQueryParamMap;
 
     /**
      * TODO for ugly promo code hotfix
@@ -371,16 +371,16 @@ public class BookingTransaction extends Observable {
         triggerObservers();
     }
 
-    public Map<String, String> getAdditionalQueryParamMap() {
+    public Map<String, Object> getAdditionalQueryParamMap() {
         return mAdditionalQueryParamMap;
     }
 
     /**
      * This is used to set additional query parameters for create a booking post
-     * @param key
-     * @param value
+     * @param key Key name for the query param
+     * @param value value for the query param
      */
-    public void setAddtionalQueryParam(@NonNull String key, @NonNull String value) {
+    public void setAddtionalQueryParam(@NonNull String key, @NonNull Object value) {
         if(mAdditionalQueryParamMap == null)
             mAdditionalQueryParamMap = new HashMap<>();
 
@@ -423,7 +423,7 @@ public class BookingTransaction extends Observable {
             jsonObj.add("button_referrer_token", context.serialize(value.getReferrerToken()));
             jsonObj.add("_android_promo_applied", context.serialize(value.getPromoCode()));
 
-            Map<String, String> map = value.getAdditionalQueryParamMap();
+            Map<String, Object> map = value.getAdditionalQueryParamMap();
             if(map != null) {
                 for (String key : map.keySet()) {
                     jsonObj.add(key, context.serialize(map.get(key)));

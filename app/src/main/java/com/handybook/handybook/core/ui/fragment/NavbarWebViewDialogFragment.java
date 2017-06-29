@@ -27,13 +27,13 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment {
     private final static String BUNDLE_KEY_WEBVIEW_URL = "WEBVIEW_URL";
     private final static String BUNDLE_KEY_NAVBAR_TITLE = "NAVBAR_TITLE";
 
-    @BindView(R.id.handy_webview)
+    @BindView(R.id.navbar_webview_dialog_handy_webview)
     protected HandyWebView mHandyWebView;
 
-    @BindView(R.id.nav_text)
+    @BindView(R.id.navbar_webview_dialog_nav_text)
     protected TextView mTitleText;
 
-    @BindView(R.id.horizontal_progress_bar)
+    @BindView(R.id.navbar_webview_dialog_horizontal_progress_bar)
     protected ProgressBar mProgressBar;
 
     private String mWebViewUrl;

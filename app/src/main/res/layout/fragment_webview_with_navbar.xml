@@ -7,7 +7,7 @@
 
     <!--TODO: put this into a separate layout file-->
     <RelativeLayout
-        android:id="@+id/nav_bar_header"
+        android:id="@+id/navbar_webview_dialog_nav_bar_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -15,13 +15,13 @@
         >
 
         <TextView
-            android:id="@+id/nav_text"
+            android:id="@+id/navbar_webview_dialog_nav_text"
             style="@style/TextView.Navbar"
             tools:text="Title"
             />
 
         <ImageButton
-            android:id="@+id/exit_button"
+            android:id="@+id/navbar_webview_dialog_exit_button"
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
             android:layout_alignParentLeft="true"
@@ -34,7 +34,7 @@
             />
 
         <ProgressBar
-            android:id="@+id/horizontal_progress_bar"
+            android:id="@+id/navbar_webview_dialog_horizontal_progress_bar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_below="@id/nav_text"
             android:layout_width="match_parent"
@@ -51,10 +51,10 @@
     </RelativeLayout>
 
     <com.handybook.handybook.library.ui.view.HandyWebView
-        android:id="@+id/handy_webview"
+        android:id="@+id/navbar_webview_dialog_handy_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/nav_bar_header"
+        android:layout_below="@id/navbar_webview_dialog_nav_bar_header"
         android:layout_alignParentBottom="true"
         />
 

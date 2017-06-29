@@ -305,6 +305,7 @@ public class BookingQuote extends Observable {
         triggerObservers();
     }
 
+    @NonNull
     public TermsOfUse getTermsOfUse() {
         return mTermsOfUse;
     }

@@ -139,9 +139,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     BillView mBillView;
     @BindView(R.id.payment_fragment_price_header_container)
     View mHeaderContainer;
-    @BindView(R.id.terms_and_condition_checkbox)
+    @BindView(R.id.payment_fragment_terms_and_condition_checkbox)
     AppCompatCheckBox mTermsAndConditionCheckbox;
-    @BindView(R.id.terms_and_condition_layout)
+    @BindView(R.id.payment_fragment_terms_and_condition_layout)
     View mTermsAndConditionLayout;
 
     private boolean mUseExistingCard;
@@ -375,8 +375,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
      * from the layout xml
      */
     private void initializeTermsOfUse() {
-        TermsOfUse.TermsOfUseType termsOfUseType = mCurrentQuote.getTermsOfUse()
-                                                                .getTermsOfUseForCurrentType();
+        TermsOfUse.TermsOfUseType termsOfUseType = mCurrentQuote
+                .getTermsOfUse()
+                .getTermsOfUseForCurrentType();
         mTermsOfUseText.setText(TextUtils.fromHtml(termsOfUseType.getTermsInHtml()));
         TextUtils.stripUnderlines(mTermsOfUseText);
 
@@ -915,9 +916,9 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                 .getReferrerToken();
         mCurrentTransaction.setReferrerToken(referrerToken);
 
-        //We need to set additional param for the terms of Use. We use the ckbox fieldname and always set to "1"
         TermsOfUse termsOfUse = mCurrentQuote.getTermsOfUse();
-        mCurrentTransaction.setAddtionalQueryParam(termsOfUse.getCheckboxFieldName(), "1");
+        //We need to set additional param for the terms of Use. We use the ckbox fieldname and always set to 1
+        mCurrentTransaction.setAddtionalQueryParam(termsOfUse.getCheckboxFieldName(), Boolean.TRUE);
 
         dataManager.createBooking(
                 mCurrentTransaction,
