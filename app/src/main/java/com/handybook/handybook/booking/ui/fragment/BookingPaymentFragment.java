@@ -20,6 +20,7 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -140,6 +141,8 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
     View mHeaderContainer;
     @BindView(R.id.terms_and_condition_checkbox)
     AppCompatCheckBox mTermsAndConditionCheckbox;
+    @BindView(R.id.terms_and_condition_layout)
+    View mTermsAndConditionLayout;
 
     private boolean mUseExistingCard;
     private boolean mUseAndroidPay;
@@ -397,6 +400,11 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                     }
                 }
             });
+        }
+        else {
+            //remove background and center horizontally so terms don't stand out
+            mTermsAndConditionLayout.setBackground(null);
+            mTermsOfUseText.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
         }
 
         //need to override the click event for the link.
