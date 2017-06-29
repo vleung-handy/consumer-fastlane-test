@@ -168,12 +168,6 @@ public class GameFragment extends InjectedFragment {
 
             @Override
             public void onScratchMove(final float rawX, final float rawY) {
-                double ratio = mScratchOffView.getScratchedOffRatio(10);
-                if (ratio > RATIO_TO_REVEAL) {
-                    revealClaim();
-                    detachSponge(rawX, rawY);
-                }
-
                 moveSponge(rawX, rawY);
             }
 
@@ -194,13 +188,13 @@ public class GameFragment extends InjectedFragment {
         return newY - mScratchOffView.getTop();
     }
 
-    private void attachSponge(final float x, final float y) {
+    private void attachSponge(final float rawX, final float rawY) {
         mScrollView.setScrollingEnabled(false);
         mSpongeActor.animate()
                     .setDuration(100)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
-                    .x(getSpongeX(x))
-                    .y(getSpongeY(y))
+                    .x(getSpongeX(rawX))
+                    .y(getSpongeY(rawY))
                     .setListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(final Animator animation) {
@@ -232,13 +226,19 @@ public class GameFragment extends InjectedFragment {
                     .start();
     }
 
-    private void moveSponge(final float x, final float y) {
-        mSpongeActor.setX(getSpongeX(x));
-        mSpongeActor.setY(getSpongeY(y));
+    private void moveSponge(final float rawX, final float rawY) {
+        mSpongeActor.setX(getSpongeX(rawX));
+        mSpongeActor.setY(getSpongeY(rawY));
     }
 
-    private void detachSponge(final float x, final float y) {
+    private void detachSponge(final float rawX, final float rawY) {
         mScrollView.setScrollingEnabled(true);
+        double ratio = mScratchOffView.getScratchedOffRatio(10);
+        if (ratio > RATIO_TO_REVEAL) {
+            revealClaim();
+            detachSponge(rawX, rawY);
+        }
+
         mSpongeActor.animate()
                     .setDuration(100)
                     .x(mSpongeStartX)
