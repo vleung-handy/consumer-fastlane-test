@@ -16,6 +16,7 @@ import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.RecurrenceOption;
+import com.handybook.handybook.booking.model.TermsOfUse;
 import com.handybook.handybook.booking.ui.view.BookingOptionsSelectView;
 import com.handybook.handybook.booking.ui.view.BookingOptionsView;
 import com.handybook.handybook.booking.util.OptionListToAttributeArrayConverter;
@@ -166,6 +167,9 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
             bookingTransaction.setRecurringFrequency(
                     recurrenceOption.getFrequencyValue());
 
+            //Set the type in the terms of use and update the booking Transaction object with it
+            TermsOfUse termsOfUse = bookingManager.getCurrentQuote().getTermsOfUse();
+            termsOfUse.setType(recurrenceOption.getTermsOfUseType());
         }
 
         @Override

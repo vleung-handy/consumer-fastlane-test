@@ -3,6 +3,7 @@ package com.handybook.handybook.core;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import com.google.gson.GsonBuilder;
@@ -44,6 +45,8 @@ import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.ratingflow.RatingFlowModule;
 import com.handybook.handybook.referral.ReferralModule;
+import com.handybook.handybook.vegas.VegasManager;
+import com.handybook.handybook.vegas.VegasModule;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.okhttp.CertificatePinner;
@@ -75,6 +78,7 @@ import retrofit.converter.GsonConverter;
                 ReferralModule.class,
                 PromosModule.class,
                 RatingFlowModule.class,
+                VegasModule.class,
                 ProProfileModule.class,
         }
 )
@@ -468,6 +472,13 @@ public final class ApplicationModule {
                 defaultPreferencesManager,
                 userManager
         );
+    }
+
+    @Provides
+    @Singleton
+    @NonNull
+    final VegasManager provideVegasManager(final HandyRetrofitService service) {
+        return new VegasManager(service);
     }
 
     @Provides

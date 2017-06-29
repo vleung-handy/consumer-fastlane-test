@@ -15,11 +15,13 @@ public class EnvironmentModifier {
 
     public static final class Environment {
 
-        public static final String PRODUCTION = "p";
-        public static final String STAGING = "s";
-        public static final String LOCAL = "l";
+        public static final String PRODUCTION = "production";
+        public static final String NAMESPACE = "namespace";
+        public static final String LOCAL = "local";
     }
 
+
+    private static final String DEFAULT_NAMESPACE = "s";
 
     private final Bus mBus;
     private final DefaultPreferencesManager mDefaultPreferencesManager;
@@ -34,13 +36,13 @@ public class EnvironmentModifier {
 
         try {
             Properties properties = PropertiesReader.getProperties(context, "override.properties");
-            String environment = properties.getProperty("environment", Environment.STAGING);
-            environment = mDefaultPreferencesManager.getString(
+            String environmentPrefix = properties.getProperty("environment", DEFAULT_NAMESPACE);
+            environmentPrefix = mDefaultPreferencesManager.getString(
                     PrefsKey.ENVIRONMENT_PREFIX,
-                    environment
+                    environmentPrefix
             ); // whatever is stored in prefs is higher priority
 
-            mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
+            mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environmentPrefix);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -49,23 +51,16 @@ public class EnvironmentModifier {
 
     public String getEnvironment() {
         String defaultEnvironment = BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) ?
-                                    Environment.PRODUCTION : Environment.STAGING;
-
-        String response = mDefaultPreferencesManager.getString(
-                PrefsKey.ENVIRONMENT_PREFIX,
-                defaultEnvironment
-        );
-
-        if (android.text.TextUtils.isEmpty(response)) {
-            return defaultEnvironment;
-        }
-        else {
-            return response;
-        }
+                                    Environment.PRODUCTION : Environment.NAMESPACE;
+        return mDefaultPreferencesManager.getString(PrefsKey.ENVIRONMENT, defaultEnvironment);
     }
 
-    public boolean isStaging() {
-        return Environment.STAGING.equals(getEnvironment());
+    public String getEnvironmentPrefix() {
+        return mDefaultPreferencesManager.getString(PrefsKey.ENVIRONMENT_PREFIX, DEFAULT_NAMESPACE);
+    }
+
+    public boolean isNamespace() {
+        return Environment.NAMESPACE.equals(getEnvironment());
     }
 
     public boolean isProduction() {
@@ -78,8 +73,20 @@ public class EnvironmentModifier {
 
     public void setEnvironment(String environment) {
         String previousEnvironment = getEnvironment();
-        mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environment);
+        mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT, environment);
 
         mBus.post(new EnvironmentUpdatedEvent(environment, previousEnvironment));
+    }
+
+    public void setEnvironmentPrefix(String environmentPrefix) {
+        String previousEnvironmentPrefix = getEnvironmentPrefix();
+        mDefaultPreferencesManager.setString(PrefsKey.ENVIRONMENT_PREFIX, environmentPrefix);
+
+        mBus.post(new EnvironmentUpdatedEvent(environmentPrefix, previousEnvironmentPrefix));
+    }
+
+    public interface OnEnvironmentChangedListener {
+
+        void onEnvironmentChanged(String newEnvironment, String newEnvironmentPrefix);
     }
 }

@@ -21,10 +21,18 @@ public class SubscriptionFrequency extends SubscriptionType {
     public static final String PRICE_MONTHLY_RECURRING_KEY = "monthly_recurring_price";
     public static final String PRICE_BIMONTHLY_RECURRING_KEY = "bimonthly_recurring_price";
 
-    public SubscriptionFrequency(String key, String title, boolean isDefault) {
+    //This is the terms of use type
+    private String mTermsOfUseType;
+
+    public SubscriptionFrequency(String key, String title, boolean isDefault, @NonNull String termsOfUseType) {
         mKey = key;
         mTitle = title;
         mIsDefault = isDefault;
+        mTermsOfUseType = termsOfUseType;
+    }
+
+    public String getTermsOfUseType() {
+        return mTermsOfUseType;
     }
 
     /**

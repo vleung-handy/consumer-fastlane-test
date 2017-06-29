@@ -18,6 +18,7 @@ import com.handybook.handybook.booking.rating.ReviewProRequest;
 import com.handybook.handybook.core.model.request.CreateUserRequest;
 import com.handybook.handybook.core.model.request.UpdateUserRequest;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
+import com.handybook.handybook.vegas.model.WrappedId;
 
 import java.util.Date;
 
@@ -142,12 +143,14 @@ public interface HandyRetrofitService {
     void getProviderProfile(@Path("id") String providerId, HandyRetrofitCallback cb);
 
     @GET("/providers/{id}/reviews")
-    void getProviderReviews(@Path("id") String providerId,
-                            @Query("starting_after_id") String startingAfterId,
-                            @Query("limit") Integer pageSizeLimit,
-                            @Query("min_rating") Float minRating,
-                            @Query("order") String sortOrder,
-                            HandyRetrofitCallback cb);
+    void getProviderReviews(
+            @Path("id") String providerId,
+            @Query("starting_after_id") String startingAfterId,
+            @Query("limit") Integer pageSizeLimit,
+            @Query("min_rating") Float minRating,
+            @Query("order") String sortOrder,
+            HandyRetrofitCallback cb
+    );
 
     @GET("/bookings/{id}/milestones")
     void getBookingMilestones(@Path("id") String bookingId, HandyRetrofitCallback cb);
@@ -398,9 +401,11 @@ public interface HandyRetrofitService {
     );
 
     @GET("/configuration")
-    void requestConfiguration(@Query("installation_id") String installationId,
-                              @Query("session_id") String sessionId,
-                              HandyRetrofitCallback cb);
+    void requestConfiguration(
+            @Query("installation_id") String installationId,
+            @Query("session_id") String sessionId,
+            HandyRetrofitCallback cb
+    );
 
     // Notification Feed
     @GET("/users/{user_id}/notifications")
@@ -486,12 +491,15 @@ public interface HandyRetrofitService {
             HandyRetrofitCallback cb
     );
 
-
-
     @POST("/events")
     void postLogs(@Body JsonObject eventLogBundle, HandyRetrofitCallback cb);
 
     @GET("/help/help_info")
     void getHelpCenterInfo(HandyRetrofitCallback cb);
 
+    @GET("/rewards")
+    void getRewards(HandyRetrofitCallback cb);
+
+    @POST("/rewards")
+    void claimReward(@Body WrappedId id, HandyRetrofitCallback cb);
 }

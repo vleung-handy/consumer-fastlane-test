@@ -11,6 +11,7 @@ import com.handybook.handybook.booking.model.BookingCompleteTransaction;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.TermsOfUse;
 import com.handybook.handybook.booking.ui.activity.BookingFinalizeActivity;
 import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
@@ -53,6 +54,10 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper {
     @Mock
     private BookingQuote mMockQuote;
     @Mock
+    private TermsOfUse mMockTermsOfUse;
+    @Mock
+    private TermsOfUse.TermsOfUseType mMockTermsOfUseType;
+    @Mock
     private BookingRequest mMockRequest;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private BookingCompleteTransaction mCompleteTransaction;
@@ -85,6 +90,13 @@ public class BookingPaymentFragmentTest extends RobolectricGradleTestWrapper {
         when(mMockQuote.isAndroidPayEnabled()).thenReturn(true);
         when(mMockQuote.getAndroidPayCouponCode()).thenReturn("ANDROIDPAY");
         when(mMockQuote.getAndroidPayCouponValueFormatted()).thenReturn("$10");
+
+        //Terms of use
+        when(mMockQuote.getTermsOfUse()).thenReturn(mMockTermsOfUse);
+        when(mMockTermsOfUse.getTermsOfUseForCurrentType()).thenReturn(mMockTermsOfUseType);
+        when(mMockTermsOfUseType.getTermsInHtml()).thenReturn("terms html");
+        when(mMockTermsOfUseType.isCheckboxEnabled()).thenReturn(true);
+
         when(mBookingManager.getCurrentQuote()).thenReturn(mMockQuote);
         when(mBookingManager.getCurrentRequest()).thenReturn(mMockRequest);
         mFragment = BookingPaymentFragment.newInstance(null);

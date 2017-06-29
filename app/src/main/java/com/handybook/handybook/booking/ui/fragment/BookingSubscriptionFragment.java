@@ -24,6 +24,7 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingTransaction;
+import com.handybook.handybook.booking.model.TermsOfUse;
 import com.handybook.handybook.booking.model.subscription.CommitmentType;
 import com.handybook.handybook.booking.model.subscription.Price;
 import com.handybook.handybook.booking.model.subscription.SubscriptionFrequency;
@@ -88,8 +89,9 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     protected BookingOptionsSpinnerView mFrequencyView;
     //This used to do a looking up from the selected subscription value to the subscription key
     private Map<String, String> mSubscriptionLengthToKey;
-    //This used to do a looking up from the selected frequency value to the frequency key
-    private Map<String, String> mFrequencyValueToKey;
+
+    //This used to do a looking up from the selected frequency value to the SubscriptionFrequency
+    private Map<String, SubscriptionFrequency> mFrequencyValueToSubscriptionFrequency;
 
     private boolean mIsTrialExpanded = false;
     private boolean mIsMonthsDisabled = false;
@@ -236,7 +238,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     private void onTrialCheckedChanged(final boolean isChecked) {
         if (isChecked) {
-            updateBookingTransaction(CommitmentType.STRING_TRIAL, 0, 0);
+            handleTrialCommitment();
             bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingOneTimeTrialSelectedLog()));
             disableMonths();
         }
@@ -284,19 +286,30 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
     private void updateBookingTransaction(
             @NonNull String commitmentType,
-            final int recurringFrequency,
+            final SubscriptionFrequency recurringFrequency,
             final int commitmentLength
     ) {
         mBookingTransaction.setCommitmentType(commitmentType);
-        mBookingTransaction.setRecurringFrequency(recurringFrequency);
+        mBookingTransaction.setRecurringFrequency(Integer.parseInt(recurringFrequency.getKey()));
         mBookingTransaction.setCommitmentLength(commitmentLength);
+
+        //Set the type in the terms of use and update the booking Transaction object with it
+        TermsOfUse termsOfUse = bookingManager.getCurrentQuote().getTermsOfUse();
+        termsOfUse.setType(recurringFrequency.getTermsOfUseType());
     }
 
     @NonNull
     private String getCurrentFrequencyKey() {
         //This is here only because unit tests fail here. Should never happen in real life
         if (mFrequencyView.getListSize() == 0) { return "0"; }
-        return mFrequencyValueToKey.get(mFrequencyView.getCurrentValue());
+
+        return mFrequencyValueToSubscriptionFrequency.get(mFrequencyView
+                                                                  .getCurrentValue())
+                                                     .getKey();
+    }
+
+    private SubscriptionFrequency getCurrentSubscriptionFrequency() {
+        return mFrequencyValueToSubscriptionFrequency.get(mFrequencyView.getCurrentValue());
     }
 
     @NonNull
@@ -312,7 +325,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
                                                                 .getCommitmentType()
                                                                 .getUniqueFrequencies();
         String[] frequencyTitles = new String[frequencies.size()];
-        mFrequencyValueToKey = new HashMap<>();
+        mFrequencyValueToSubscriptionFrequency = new HashMap<>();
 
         BookingOption bookingOption = new BookingOption();
         bookingOption.setType(BookingOption.TYPE_OPTION_PICKER);
@@ -322,7 +335,7 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
 
         for (int i = 0; i < frequencies.size(); i++) {
             SubscriptionFrequency frequency = frequencies.get(i);
-            mFrequencyValueToKey.put(frequency.getTitle(), frequency.getKey());
+            mFrequencyValueToSubscriptionFrequency.put(frequency.getTitle(), frequency);
             frequencyTitles[i] = frequency.getTitle();
 
             if (frequency.isDefault()) {
@@ -492,15 +505,26 @@ public final class BookingSubscriptionFragment extends BookingFlowFragment {
     @OnClick(R.id.next_button)
     public void onNextButtonClick() {
         if (mTrialCheckbox.isChecked()) {
-            updateBookingTransaction(CommitmentType.STRING_TRIAL, 0, 0);
+            handleTrialCommitment();
         }
         else {
             updateBookingTransaction(
                     CommitmentType.STRING_MONTHS,
-                    Integer.parseInt(getCurrentFrequencyKey()),
+                    getCurrentSubscriptionFrequency(),
                     Integer.parseInt(getCurrentCommitmentKey())
             );
         }
         continueBookingFlow();
+    }
+
+    private void handleTrialCommitment() {
+        CommitmentType trialCommitmentType = bookingManager
+                .getCurrentQuote()
+                .getTrialCommitmentType();
+        updateBookingTransaction(
+                CommitmentType.STRING_TRIAL,
+                trialCommitmentType.getUniqueFrequencies().get(0),
+                0
+        );
     }
 }

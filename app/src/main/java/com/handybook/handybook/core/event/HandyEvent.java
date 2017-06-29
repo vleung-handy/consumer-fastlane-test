@@ -32,17 +32,6 @@ public abstract class HandyEvent {
                 mCount = count;
             }
 
-            public HandyNotificationsEvent(
-                    final Long count,
-                    final Long untilId,
-                    final Long sinceId
-            ) {
-                mUserId = USER_ID_FOR_LOGGED_OUT_USERS;
-                mCount = count;
-                mUntilId = untilId;
-                mSinceId = sinceId;
-            }
-
             public long getUserId() {
                 return mUserId;
             }
