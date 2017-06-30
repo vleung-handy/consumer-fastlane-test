@@ -52,7 +52,7 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment {
         return navbarWebViewDialogFragment;
     }
 
-    @OnClick(R.id.exit_button)
+    @OnClick(R.id.navbar_webview_dialog_exit_button)
     public void onExitButtonClick() {
         dismiss();
     }
@@ -88,8 +88,8 @@ public class NavbarWebViewDialogFragment extends InjectedDialogFragment {
         mHandyWebView.setWebViewClient(new HandyWebViewClient(getActivity()) {
             @Override
             public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
                 mProgressBar.setVisibility(View.VISIBLE);
+                super.onPageStarted(view, url, favicon);
             }
 
             @Override
