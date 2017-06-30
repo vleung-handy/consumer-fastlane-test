@@ -1,7 +1,6 @@
 package com.handybook.handybook.core.data;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.handybook.handybook.booking.bookingedit.model.BookingEditEntryInformationRequest;
@@ -154,13 +153,6 @@ public interface HandyRetrofitService {
 
     @GET("/bookings/{id}/milestones")
     void getBookingMilestones(@Path("id") String bookingId, HandyRetrofitCallback cb);
-
-    @GET("/bookings")
-    void getBookings(
-            @Nullable @Query("only_bookings") String bookingType,
-            @Nullable @Query("provider_id") String providerId,
-            HandyRetrofitCallback cb
-    );
 
     @GET("/bookings/{bookingId}/edit_hours")
     void getEditHoursInfo(

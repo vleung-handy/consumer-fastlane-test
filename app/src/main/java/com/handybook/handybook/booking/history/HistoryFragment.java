@@ -21,7 +21,7 @@ import com.handybook.handybook.booking.model.UserBookingsWrapper;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.data.callback.Retrofit2FragmentSafeCallback;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
 import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
@@ -140,14 +140,14 @@ public class HistoryFragment extends ProgressSpinnerFragment
         //fixme test
         bookingManager.requestBookings(
                 Booking.List.VALUE_ONLY_BOOKINGS_PAST,
-                new FragmentSafeCallback<UserBookingsWrapper>(this) {
+                new Retrofit2FragmentSafeCallback<UserBookingsWrapper>(this) {
                     @Override
-                    public void onCallbackSuccess(final UserBookingsWrapper response) {
+                    public void onSuccess(final UserBookingsWrapper response) {
                         onReceiveBookingsSuccess(response);
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error) {
+                    public void onError(final DataManager.DataManagerError error) {
                         onReceiveBookingsError(error);
                     }
                 }

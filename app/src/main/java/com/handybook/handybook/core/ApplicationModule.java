@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.handybook.handybook.BuildConfig;
 import com.handybook.handybook.R;
@@ -20,6 +21,7 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
+import com.handybook.handybook.core.data.HandyRetrofit2Service;
 import com.handybook.handybook.core.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.data.SecurePreferences;
@@ -53,6 +55,7 @@ import com.squareup.okhttp.CertificatePinner;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 
+import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -60,10 +63,16 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module(
         injects = {
@@ -251,6 +260,128 @@ public final class ApplicationModule {
 
     @Provides
     @Singleton
+    final HandyRetrofit2Service provideRetrofit2Service(
+            final HandyRetrofitEndpoint endpoint,
+            final UserManager userManager
+    ) {
+
+        final String username = mConfigs.getProperty("api_username");
+        String password = mConfigs.getProperty("api_password_internal");
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD)) {
+            password = mConfigs.getProperty("api_password");
+        }
+        final String auth = "Basic " + Base64.encodeToString(
+                (username + ":" + password).getBytes(),
+                Base64.NO_WRAP
+        );
+        final User user = userManager.getCurrentUser();
+
+        HttpLoggingInterceptor httpInterceptor = new HttpLoggingInterceptor();
+        httpInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        okhttp3.OkHttpClient.Builder httpClientBuilder = new okhttp3.OkHttpClient
+                .Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+
+                        Request original = chain.request();
+                        HttpUrl originalHttpUrl = original.url();
+
+                        okhttp3.HttpUrl.Builder urlBuilder = originalHttpUrl
+                                .newBuilder()
+                                .addQueryParameter("client", "android")
+                                .addQueryParameter("app_version", BuildConfig.VERSION_NAME)
+                                .addQueryParameter("api_sub_version", "6.0")
+                                .addQueryParameter("app_device_id", getDeviceId())
+                                .addQueryParameter("app_device_model", getDeviceName())
+                                .addQueryParameter("app_device_os", Build.VERSION.RELEASE)
+                                .addQueryParameter(
+                                        "app_version_code",
+                                        String.valueOf(BuildConfig.VERSION_CODE)
+                                );
+                        if (user != null) {
+                            urlBuilder.addQueryParameter("app_user_id", user.getId());
+                        }
+                        // Request customization: add request headers
+                        Request.Builder requestBuilder = original
+                                .newBuilder()
+                                .addHeader("Authorization", auth)
+                                .addHeader("Accept", "application/json")
+                                .url(urlBuilder.build());
+                        if (user != null && user.getAuthToken() != null) {
+                            requestBuilder.addHeader("X-Auth-Token", user.getAuthToken());
+                        }
+
+                        Request request = requestBuilder.build();
+                        return chain.proceed(request);
+                    }
+                })
+                .addInterceptor(httpInterceptor);
+
+        if (BuildConfig.FLAVOR.equals(BaseApplication.FLAVOR_PROD) && !BuildConfig.DEBUG) {
+            httpClientBuilder.certificatePinner(
+                    new okhttp3.CertificatePinner.Builder().add(
+                            mConfigs.getProperty("hostname"),
+                            "sha1/tbHJQrYmt+5isj5s44sk794iYFc=",
+                            "sha1/SXxoaOSEzPC6BgGmxAt/EAcsajw=",
+                            "sha1/blhOM3W9V/bVQhsWAcLYwPU6n24=",
+                            "sha1/T5x9IXmcrQ7YuQxXnxoCmeeQ84c="
+                    ).build());
+        }
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .setExclusionStrategies(
+                        BookingRequest.getExclusionStrategy()
+                )
+                .registerTypeAdapter(
+                        BookingRequest.class,
+                        new BookingRequest.BookingRequestApiSerializer()
+                )
+                .setExclusionStrategies(
+                        BookingQuote
+                                .getExclusionStrategy())
+                .registerTypeAdapter(
+                        BookingQuote.class,
+                        new BookingQuote.BookingQuoteSerializer()
+                )
+                .setExclusionStrategies(
+                        BookingPostInfo
+                                .getExclusionStrategy())
+                .registerTypeAdapter(
+                        BookingPostInfo.class,
+                        new BookingPostInfo.BookingPostInfoSerializer()
+                )
+                .setExclusionStrategies(
+                        BookingTransaction
+                                .getExclusionStrategy())
+                .registerTypeAdapter(
+                        BookingTransaction.class,
+                        new BookingTransaction.BookingTransactionSerializer()
+                )
+                .setExclusionStrategies(
+                        User.getExclusionStrategy())
+                .registerTypeAdapter(
+                        User.class,
+                        new User.UserSerializer()
+                )
+                .create();
+
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(endpoint.getUrl())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(httpClientBuilder.build())
+                .build();
+
+        return retrofit.create(HandyRetrofit2Service.class);
+    }
+
+    @Provides
+    @Singleton
     final SessionManager provideSessionCacheManager() {
         return new SessionManager();
     }
@@ -267,9 +398,10 @@ public final class ApplicationModule {
     @Singleton
     final DataManager provideDataManager(
             final HandyRetrofitService service,
+            final HandyRetrofit2Service service2,
             final HandyRetrofitEndpoint endpoint
     ) {
-        return new DataManager(service, endpoint);
+        return new DataManager(service, service2, endpoint);
     }
 
     @Provides
