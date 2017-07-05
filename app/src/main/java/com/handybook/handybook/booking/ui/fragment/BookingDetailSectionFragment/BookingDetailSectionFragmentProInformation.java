@@ -28,6 +28,7 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
+import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
@@ -94,6 +95,8 @@ public class BookingDetailSectionFragmentProInformation extends
                 actionTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
+                        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ChangeProSelected(
+                                booking)));
                         getParentFragment().startActivityForResult(
                                 new Intent(
                                         getActivity(),
