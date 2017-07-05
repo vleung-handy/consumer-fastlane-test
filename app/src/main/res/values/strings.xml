@@ -207,9 +207,6 @@
     <string name="email_receipt">Email Receipt</string>
     <string name="updated_preferences">Preferences updated</string>
     <string name="updated_entry_information">Entry information updated</string>
-    <string name="booking_detail_pro_assignment_pending_title">You\'re all set!</string>
-    <string name="booking_detail_pro_assignment_pending_text">Prefer working with specific pros?</string>
-    <string name="manage_pro_team">Manage Pro Team</string>
     <string name="blank_string"/>
     <string name="call">Call</string>
     <string name="text">Text</string>
@@ -434,8 +431,6 @@
     <string name="currently_assigned">Currently assigned</string>
     <string name="conversation_tip_title">Ask for a time that works for you both.</string>
     <string name="conversation_tip_body">Tap the calendar to set your new date and time.</string>
-    <string name="prefer_different_pro">Prefer another pro?</string>
-    <string name="reschedule_with_pro">None of your pros are free for this booking. Reschedule with them directly or try the top-rated Backup Pro we found for you.</string>
     <string name="favorite_pro">Favorite Pro</string>
     <string name="pro_team">Pro Team</string>
     <string name="no_favorite_pro_title">Have a Favorite Pro?</string>

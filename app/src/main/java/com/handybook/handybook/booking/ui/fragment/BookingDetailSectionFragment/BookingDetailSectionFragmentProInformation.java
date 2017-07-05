@@ -18,7 +18,6 @@ import com.handybook.handybook.booking.constant.BookingAction;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.LocalizedMonetaryAmount;
 import com.handybook.handybook.booking.model.Provider;
-import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.booking.util.BookingUtil;
@@ -28,13 +27,11 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventContext;
 import com.handybook.handybook.logger.handylogger.constants.SourcePage;
-import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
-import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
 import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
@@ -81,28 +78,6 @@ public class BookingDetailSectionFragmentProInformation extends
             });
             actionTextView.setVisibility(View.VISIBLE);
         }
-        else if (!booking.isPast()) {
-            if (!booking.hasAssignedProvider()
-                //don't want to show team management button when booking already has provider
-                && booking.getProviderAssignmentInfo() != null
-                    /*
-                    when provider assignment info is missing, we fall back to a
-                    legacy view that has this same action button in a different location,
-                    so don't want to show two of them
-                     */
-                    ) {
-                //action text should be "manage pro team"
-                actionTextView.setText(R.string.manage_pro_team);
-                actionTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        onManageProTeamButtonClicked();
-                    }
-                });
-                actionTextView.setVisibility(View.VISIBLE);
-            }
-            //handle more actions
-        }
     }
 
     /**
@@ -113,12 +88,10 @@ public class BookingDetailSectionFragmentProInformation extends
      * because those are managed/updates are triggered by the super class
      */
     private void hideAllClassManagedViews() {
-        getSectionView().setLegacyNoProViewVisible(false);
         getSectionView().setProProfileVisible(false);
         getSectionView().setAssignedProTeamMatchIndicatorVisible(false);
         getSectionView().getEntryText().setVisibility(View.GONE);
         getSectionView().getEntryTitle().setVisibility(View.GONE);
-        getSectionView().showPreferDifferentProLayout(false);
     }
 
     /**
@@ -174,10 +147,6 @@ public class BookingDetailSectionFragmentProInformation extends
             getSectionView().getEntryTitle().setVisibility(View.VISIBLE);
             updateAndShowEntryText(providerAssignmentInfo);
         }
-        else {
-            //fallback view for when there's no provider assignment info object and pro teams are enabled
-            getSectionView().setLegacyNoProViewVisible(true);
-        }
     }
 
     @Override
@@ -221,35 +190,6 @@ public class BookingDetailSectionFragmentProInformation extends
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         updateDisplay(booking, userManager.getCurrentUser());
-        getSectionView().setLegacyNoProViewProTeamButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                onManageProTeamButtonClicked();
-            }
-        });
-
-        //If there is a provider assignment info and they're not on your pro team
-        if (booking.getProviderAssignmentInfo() != null &&
-            !booking.getProviderAssignmentInfo().isProTeamMatch()) {
-            getSectionView().showPreferDifferentProLayout(true);
-            getSectionView().setPreferDifferentProOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    Fragment fragment = getFragmentManager().findFragmentByTag(
-                            RescheduleDialogFragment.TAG);
-                    //If this is a first time, create fragment
-                    if (fragment == null) {
-                        fragment = RescheduleDialogFragment.newInstance(booking);
-                    }
-
-                    FragmentUtils.safeLaunchDialogFragment(
-                            (DialogFragment) fragment,
-                            getFragmentManager(),
-                            RescheduleDialogFragment.TAG
-                    );
-                }
-            });
-        }
     }
 
     private void onTipButtonClicked() {
@@ -267,12 +207,6 @@ public class BookingDetailSectionFragmentProInformation extends
                 getFragmentManager(),
                 TipDialogFragment.TAG
         );
-    }
-
-    private void onManageProTeamButtonClicked() {
-        //start pro team activity
-        bus.post(new LogEvent.AddLogEvent(new BookingDetailsLog.ProTeamOpenTapped()));
-        startActivity(new Intent(getActivity(), ProTeamEditActivity.class));
     }
 
     /*
