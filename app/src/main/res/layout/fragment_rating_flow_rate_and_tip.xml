@@ -66,6 +66,21 @@
                 android:transitionName="@string/transition_divider"
                 />
 
+            <FrameLayout
+                android:id="@+id/rating_flow_match_preference_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/default_margin_quarter"
+                android:background="@color/handy_bg"
+                />
+
             <LinearLayout
                 android:id="@+id/rating_flow_tip_section"
                 android:layout_width="match_parent"

@@ -38,7 +38,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
 
 
     private enum Step {
-        MATCH_PREFERENCE, IMPROVEMENT, REVIEW_PROVIDER, SHARE_PROVIDER
+        IMPROVEMENT, REVIEW_PROVIDER, SHARE_PROVIDER
     }
 
 
@@ -204,7 +204,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
 
     private boolean shouldDisplayStep(@NonNull final Step step) {
         switch (step) {
-            case MATCH_PREFERENCE:
             case REVIEW_PROVIDER:
                 return true;
             case IMPROVEMENT:
@@ -224,11 +223,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     @Nullable
     private RatingFlowFeedbackChildFragment createFragmentForStep(@NonNull Step step) {
         switch (step) {
-            case MATCH_PREFERENCE:
-                return RatingFlowMatchPreferenceFragment.newInstance(
-                        mBooking,
-                        mProRating >= GOOD_PRO_RATING ? PREFERRED : NEVER
-                );
             case IMPROVEMENT:
                 return RatingFlowImprovementFragment.newInstance(
                         Lists.newArrayList(mPrerateProInfo.getReasons()),

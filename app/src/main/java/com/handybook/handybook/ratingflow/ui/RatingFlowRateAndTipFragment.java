@@ -31,20 +31,22 @@ import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
+import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.BindString;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
 
     public static final String CUSTOM_TIP_AMOUNT_PATTERN = "^\\$?([0-9]+(?:\\.[0-9]{1,2})?)$";
+    private static final int MATCH_PREFERENCE_YES_INDEX = 0;
 
     @BindView(R.id.rating_flow_pro_image)
     ImageView mProImage;
@@ -52,6 +54,8 @@ public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
     TextView mRatePrompt;
     @BindView(R.id.rating_flow_stars)
     RatingFlowFiveStarsView mStars;
+    @BindView(R.id.rating_flow_match_preference_section)
+    ViewGroup mMatchPreferenceSection;
     @BindView(R.id.rating_flow_tip_section)
     ViewGroup mTipSection;
     @BindView(R.id.rating_flow_tip_options)
@@ -67,6 +71,7 @@ public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
     private List<Integer> mTipAmountsInCentsByIndex;
     private int mSelectedRating;
     private String mCurrencyChar;
+    private BookingOptionsSpinnerView mMatchPreferenceSpinner;
     private BookingOptionsSpinnerView mTipOptionsSpinner;
     private BookingOptionsView.OnUpdatedListener mTipSelectionUpdateListener
             = new BookingOptionsView.OnUpdatedListener() {
@@ -130,11 +135,15 @@ public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
         }
         Utils.hideSoftKeyboard(getActivity(), mCustomTip);
         showProgressSpinner(true);
+        final ProviderMatchPreference selectedMatchPreference =
+                mMatchPreferenceSpinner.getCurrentIndex() == MATCH_PREFERENCE_YES_INDEX
+                ? ProviderMatchPreference.PREFERRED
+                : ProviderMatchPreference.NEVER;
         dataManager.ratePro(
                 Integer.parseInt(mBooking.getId()),
                 mSelectedRating,
                 tipAmountCents == 0 ? null : tipAmountCents,
-                null,
+                selectedMatchPreference,
                 new FragmentSafeCallback<Void>(this) {
                     @Override
                     public void onCallbackSuccess(final Void response) {
@@ -212,6 +221,7 @@ public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         initTipSection();
+        initMatchPreferenceSection();
         initRateSection();
     }
 
@@ -230,6 +240,28 @@ public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
                 mBooking.getProvider().getFirstName()
         ));
         mStars.setRatingSelectionListener(mRatingSelectionListener);
+    }
+
+    private void initMatchPreferenceSection() {
+        mMatchPreferenceSection.removeAllViews();
+        final BookingOption matchPreferenceOptions = new BookingOption();
+        matchPreferenceOptions.setType(BookingOption.TYPE_OPTION_PICKER);
+        matchPreferenceOptions.setDefaultValue("0");
+        matchPreferenceOptions.setOptions(new String[]{
+                getString(R.string.yes),
+                getString(R.string.no)
+        });
+        matchPreferenceOptions.setTitle(getString(
+                R.string.would_you_like_to_work_with_x_again,
+                mBooking.getProvider().getFirstName()
+        ));
+        mMatchPreferenceSpinner = new BookingOptionsSpinnerView(
+                getActivity(),
+                matchPreferenceOptions,
+                null
+        );
+        mMatchPreferenceSpinner.findViewById(R.id.rel_layout).setBackground(null);
+        mMatchPreferenceSection.addView(mMatchPreferenceSpinner);
     }
 
     private void initTipSection() {
