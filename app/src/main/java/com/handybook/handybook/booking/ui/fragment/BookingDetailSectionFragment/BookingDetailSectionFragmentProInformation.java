@@ -22,6 +22,7 @@ import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
 import com.handybook.handybook.booking.ui.view.BookingDetailSectionProInfoView;
 import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.User;
+import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -31,6 +32,7 @@ import com.handybook.handybook.logger.handylogger.model.booking.ProContactedLog;
 import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.handybook.handybook.proteam.callback.ConversationCallback;
 import com.handybook.handybook.proteam.callback.ConversationCallbackWrapper;
+import com.handybook.handybook.proteam.ui.activity.BookingProTeamRescheduleActivity;
 import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.shared.core.HandyLibrary;
@@ -39,6 +41,9 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.handybook.handybook.booking.model.Booking.ProviderAssignmentInfo.State.ASSIGNED;
+import static com.handybook.handybook.booking.model.Booking.ProviderAssignmentInfo.State.PENDING;
 
 public class BookingDetailSectionFragmentProInformation extends
         BookingDetailSectionFragment<BookingDetailSectionProInfoView>
@@ -68,7 +73,6 @@ public class BookingDetailSectionFragmentProInformation extends
         actionTextView.setVisibility(View.GONE);
         if (userCanLeaveTip(booking)) //note that tips can be made when booking.isPast() == true
         {
-            //action text should be "leave a tip"
             actionTextView.setText(R.string.leave_a_tip);
             actionTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,6 +81,30 @@ public class BookingDetailSectionFragmentProInformation extends
                 }
             });
             actionTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            final Booking.ProviderAssignmentInfo providerAssignmentInfo
+                    = booking.getProviderAssignmentInfo();
+            if (providerAssignmentInfo != null && providerAssignmentInfo.isChangeProEnabled()) {
+                final Booking.ProviderAssignmentInfo.State state
+                        = providerAssignmentInfo.getState();
+                actionTextView.setText(state == PENDING || state == ASSIGNED
+                                       ? R.string.change_pro
+                                       : R.string.request_pro);
+                actionTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        getParentFragment().startActivityForResult(
+                                new Intent(
+                                        getActivity(),
+                                        BookingProTeamRescheduleActivity.class
+                                ).putExtra(BundleKeys.BOOKING, booking),
+                                ActivityResult.RESCHEDULE_NEW_DATE
+                        );
+                    }
+                });
+                actionTextView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
