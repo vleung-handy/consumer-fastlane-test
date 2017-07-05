@@ -149,8 +149,8 @@ public class RatingFlowRateAndTipFragment extends ProgressSpinnerFragment {
                     public void onCallbackSuccess(final Void response) {
                         hideProgressSpinner();
                         if (getActivity() instanceof RatingFlowActivity) {
-                            ((RatingFlowActivity) getActivity())
-                                    .finishStepWithProRating(mSelectedRating);
+                            ((RatingFlowActivity) getActivity()).finishStepWithProRatingAndMatchPreference(
+                                    mSelectedRating, selectedMatchPreference);
                         }
                         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.RatingSuccess(
                                 mSelectedRating,

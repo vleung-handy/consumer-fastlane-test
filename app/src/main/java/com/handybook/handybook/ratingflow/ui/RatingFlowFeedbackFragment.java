@@ -18,7 +18,6 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.booking.rating.RateImprovementFeedback;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.proteam.model.ProTeamEdit;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.squareup.picasso.Picasso;
@@ -28,7 +27,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.FAVORITE;
-import static com.handybook.handybook.proteam.model.ProviderMatchPreference.NEVER;
 import static com.handybook.handybook.proteam.model.ProviderMatchPreference.PREFERRED;
 
 public class RatingFlowFeedbackFragment extends InjectedFragment {
@@ -53,7 +51,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     private PrerateProInfo mPrerateProInfo;
     private ReferralDescriptor mReferralDescriptor;
     private int mProRating;
-    private ProviderMatchPreference mSelectedPreference;
+    private ProviderMatchPreference mMatchPreference;
     private Step mCurrentStep;
 
     @NonNull
@@ -61,6 +59,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
             @NonNull final Booking booking,
             @NonNull final PrerateProInfo prerateProInfo,
             @NonNull final ReferralDescriptor referralDescriptor,
+            @Nullable final ProviderMatchPreference matchPreference,
             final int proRating
     ) {
         final RatingFlowFeedbackFragment fragment = new RatingFlowFeedbackFragment();
@@ -68,6 +67,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         arguments.putParcelable(BundleKeys.BOOKING, booking);
         arguments.putSerializable(BundleKeys.PRERATE_PRO_INFO, prerateProInfo);
         arguments.putSerializable(BundleKeys.REFERRAL_DESCRIPTOR, referralDescriptor);
+        arguments.putSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE, matchPreference);
         arguments.putInt(BundleKeys.PRO_RATING, proRating);
         fragment.setArguments(arguments);
         return fragment;
@@ -77,11 +77,12 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBooking = getArguments().getParcelable(BundleKeys.BOOKING);
-        mPrerateProInfo =
-                (PrerateProInfo) getArguments().getSerializable(BundleKeys.PRERATE_PRO_INFO);
-        mReferralDescriptor =
-                (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
-
+        mPrerateProInfo = (PrerateProInfo) getArguments()
+                .getSerializable(BundleKeys.PRERATE_PRO_INFO);
+        mReferralDescriptor = (ReferralDescriptor) getArguments()
+                .getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
+        mMatchPreference = (ProviderMatchPreference) getArguments()
+                .getSerializable(BundleKeys.PRO_TEAM_PRO_PREFERENCE);
         mProRating = getArguments().getInt(BundleKeys.PRO_RATING);
     }
 
@@ -127,12 +128,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
         final Fragment fragment
                 = getChildFragmentManager().findFragmentById(R.id.rating_flow_feedback_content);
         if (fragment != null && fragment instanceof RatingFlowFeedbackChildFragment) {
-
-            if (fragment instanceof RatingFlowMatchPreferenceFragment) {
-                mSelectedPreference
-                        = ((RatingFlowMatchPreferenceFragment) fragment).getSelectedPreference();
-            }
-
             ((RatingFlowFeedbackChildFragment) fragment).onSubmit();
         }
     }
@@ -163,13 +158,6 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                 ((RatingFlowActivity) getActivity()).finishStep();
             }
         }
-    }
-
-    void continueFeedbackFlowWithProTeamEditRequest(final ProTeamEdit proTeamEdit) {
-        if (getActivity() instanceof RatingFlowActivity) {
-            ((RatingFlowActivity) getActivity()).requestProTeamEdit(proTeamEdit);
-        }
-        continueFeedbackFlow();
     }
 
     void showFragment(final RatingFlowFeedbackChildFragment fragment) {
@@ -213,8 +201,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
                 //elected to work with pro again.
                 return mProRating >= GOOD_PRO_RATING &&
                        mPrerateProInfo.getProReferralInfo() != null &&
-                       (mSelectedPreference == PREFERRED ||
-                        mSelectedPreference == FAVORITE);
+                       (mMatchPreference == PREFERRED || mMatchPreference == FAVORITE);
             default:
                 return false;
         }

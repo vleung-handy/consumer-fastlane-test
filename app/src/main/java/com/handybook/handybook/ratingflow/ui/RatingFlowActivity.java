@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Provider;
@@ -23,13 +22,9 @@ import com.handybook.handybook.booking.rating.PrerateProInfo;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.HandyRetrofitService;
-import com.handybook.handybook.core.data.VoidRetrofitCallback;
 import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.proteam.event.ProTeamEvent;
-import com.handybook.handybook.proteam.model.ProTeamEdit;
-import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
 import com.handybook.handybook.proteam.model.RecommendedProvidersWrapper;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
@@ -72,7 +67,7 @@ public class RatingFlowActivity extends BaseActivity {
     private int mCurrentStep;
     private boolean mBackPressed;
     private int mProRating;
-    private ProviderMatchPreference mSelectedPreference;
+    private ProviderMatchPreference mMatchPreference;
     private ArrayList<Provider> mRecommendedProviders;
     private boolean mIsFetchingRecommendedProviders = false;
     private VegasGame mVegasGame;
@@ -107,6 +102,7 @@ public class RatingFlowActivity extends BaseActivity {
                             mBooking,
                             mPrerateProInfo,
                             mReferralDescriptor,
+                            mMatchPreference,
                             mProRating
                     );
                 }
@@ -206,8 +202,12 @@ public class RatingFlowActivity extends BaseActivity {
         }
     }
 
-    public void finishStepWithProRating(final int proRating) {
+    public void finishStepWithProRatingAndMatchPreference(
+            final int proRating,
+            final ProviderMatchPreference matchPreference
+    ) {
         mProRating = proRating;
+        mMatchPreference = matchPreference;
         fetchRecommendedProvidersIfNecessary();
         finishStep();
     }
@@ -278,19 +278,6 @@ public class RatingFlowActivity extends BaseActivity {
         );
     }
 
-    void requestProTeamEdit(final ProTeamEdit proTeamEdit) {
-        mSelectedPreference = proTeamEdit.getMatchPreference();
-        mService.editProTeam(
-                mUserManager.getCurrentUser().getId(),
-                new ProTeamEditWrapper(
-                        Lists.newArrayList(proTeamEdit),
-                        ProTeamEvent.Source.RATING_FLOW.toString()
-                ),
-                new VoidRetrofitCallback()
-        );
-        fetchRecommendedProvidersIfNecessary();
-    }
-
     private void fetchRewardInfo() {
         mBus.post(new LogEvent.AddLogEvent(new VegasLog.GameRequestSubmitted()));
         mVegasManager.getReward(
@@ -332,7 +319,7 @@ public class RatingFlowActivity extends BaseActivity {
 
     private boolean shouldShowRecommendedProviders() {
         return (mProRating > 0 && mProRating < EXCELLENT_PRO_RATING)
-               || mSelectedPreference == ProviderMatchPreference.NEVER;
+               || mMatchPreference == ProviderMatchPreference.NEVER;
     }
 
     @Override
