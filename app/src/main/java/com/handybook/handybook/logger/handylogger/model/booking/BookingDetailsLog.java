@@ -3,7 +3,6 @@ package com.handybook.handybook.logger.handylogger.model.booking;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
-import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.model.Provider;
 import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.logger.handylogger.constants.EventType;
@@ -334,23 +333,6 @@ public abstract class BookingDetailsLog extends EventLog {
 
         public RescheduleIndifferenceSelected() {
             super(EVENT_TYPE);
-        }
-    }
-
-
-    public static class ChangeProSelected extends BookingDetailsLog {
-
-        @SerializedName("booking_id")
-        private String mBookingId;
-        @SerializedName("current_provider_id")
-        private String mCurrentProviderId;
-
-        public ChangeProSelected(final Booking booking) {
-            super("change_pro_selected");
-            mBookingId = booking.getId();
-            if (booking.hasAssignedProvider()) {
-                mCurrentProviderId = booking.getProvider().getId();
-            }
         }
     }
 }

@@ -505,7 +505,7 @@ public class Booking implements Parcelable {
                                               mMilestonesEnabled,
                                               mShouldShowPaymentSection,
                                               mShouldHideEndTime
-                                      });
+                                              });
         out.writeParcelable(mInstructions, 0);
         out.writeSerializable(mEntryMethodOption);
         out.writeSerializable(mProviderAssignmentInfo);
@@ -556,15 +556,6 @@ public class Booking implements Parcelable {
 
     public static class ProviderAssignmentInfo implements Serializable {
 
-        public enum State {
-            @SerializedName("none")NONE,
-            @SerializedName("pending")PENDING,
-            @SerializedName("assigned")ASSIGNED
-        }
-
-
-        @SerializedName("state")
-        private State mState;
         @SerializedName("title")
         private String mMainText;
         @SerializedName("subtitle")
@@ -573,13 +564,6 @@ public class Booking implements Parcelable {
         private boolean mProTeamMatch;
         @SerializedName("show_profile_image")
         private boolean shouldShowProfileImage;
-        @SerializedName("change_pro_enabled")
-        private boolean changeProEnabled;
-
-        @Nullable
-        public State getState() {
-            return mState;
-        }
 
         public boolean isProTeamMatch() {
             return mProTeamMatch;
@@ -595,10 +579,6 @@ public class Booking implements Parcelable {
 
         public boolean shouldShowProfileImage() {
             return shouldShowProfileImage;
-        }
-
-        public boolean isChangeProEnabled() {
-            return changeProEnabled;
         }
     }
 

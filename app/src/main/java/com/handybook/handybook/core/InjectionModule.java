@@ -99,6 +99,7 @@ import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragm
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
+import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
@@ -259,6 +260,7 @@ import dagger.Module;
                 BookingSubscriptionFragment.class,
                 BookingProTeamRescheduleActivity.class,
                 BookingProTeamRescheduleFragment.class,
+                RescheduleDialogFragment.class,
                 EditContactInfoActivity.class,
                 EditPasswordActivity.class,
                 EditPlanFrequencyActivity.class,

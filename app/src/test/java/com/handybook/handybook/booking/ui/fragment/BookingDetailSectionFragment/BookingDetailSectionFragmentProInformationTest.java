@@ -1,5 +1,6 @@
 package com.handybook.handybook.booking.ui.fragment.BookingDetailSectionFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.handybook.handybook.core.TestBaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.BundleKeys;
+import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,9 +32,12 @@ import javax.inject.Inject;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.Shadows.shadowOf;
 
 public class BookingDetailSectionFragmentProInformationTest extends RobolectricGradleTestWrapper {
 
@@ -46,8 +51,6 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     private User mUser;
     @Mock
     private LocalizedMonetaryAmount mTipAmount;
-    @Mock
-    private Booking.ProviderAssignmentInfo mProviderAssignmentInfo;
 
     @Inject
     UserManager mUserManager;
@@ -61,7 +64,6 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
                                                 .getApplicationContext()).inject(this);
         when(mBooking.getProvider()).thenReturn(mProvider);
         when(mUserManager.getCurrentUser()).thenReturn(mUser);
-        when(mBooking.getProviderAssignmentInfo()).thenReturn(mProviderAssignmentInfo);
 
         mFragment =
                 BookingDetailSectionFragmentProInformation.newInstance();
@@ -72,16 +74,22 @@ public class BookingDetailSectionFragmentProInformationTest extends RobolectricG
     }
 
     @Test
-    public void shouldShowChangeProButtonWhenPendingProviderAssignment() throws Exception {
+    public void shouldShowManageProTeamButtonWhenPendingProviderAssignment() throws Exception {
+        when(mBooking.hasAssignedProvider()).thenReturn(false);
         when(mBooking.isPast()).thenReturn(false);
-        when(mProviderAssignmentInfo.getState()).thenReturn(Booking.ProviderAssignmentInfo.State.PENDING);
-        when(mProviderAssignmentInfo.isChangeProEnabled()).thenReturn(true);
 
         SupportFragmentTestUtil.startVisibleFragment(mFragment);
 
         TextView actionTextView = (TextView) mFragment.getSectionView()
                                                       .findViewById(R.id.entry_action_text);
-        assertEquals(actionTextView.getText(), mFragment.getString(R.string.change_pro));
+        assertEquals(actionTextView.getText(), mFragment.getString(R.string.manage_pro_team));
+
+        actionTextView.performClick();
+        Intent nextStartedActivity = shadowOf(mFragment.getActivity()).getNextStartedActivity();
+        assertThat(
+                nextStartedActivity.getComponent().getClassName(),
+                equalTo(ProTeamEditActivity.class.getName())
+        );
     }
 
     @Test
