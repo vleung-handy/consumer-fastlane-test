@@ -45,7 +45,7 @@ public class GameFragment extends InjectedFragment {
     public static final String TAG = GameFragment.class.getName();
 
     private static final String KEY_GAME_VM = "key::game_view_model";
-    public static final double RATIO_TO_REVEAL = .65;
+    public static final double RATIO_TO_REVEAL = .70;
     public static final int DELAY_SHADE_DOWN_MS = 2200;
 
     @Inject
@@ -71,6 +71,7 @@ public class GameFragment extends InjectedFragment {
     private float mSpongeStartX;
     private float mSpongeStartY;
     private boolean mIsFirstInteraction = true;
+    private double mStartRevealRatio;
 
     @BindView(R.id.rfgf_background_image) ImageView mBackground;
     @BindView(R.id.rfgf_scroll_container) LockableScrollView mScrollView;
@@ -161,6 +162,7 @@ public class GameFragment extends InjectedFragment {
             public void onScratchStart(final float rawX, final float rawY) {
                 if (mIsFirstInteraction) {
                     bus.post(new LogEvent.AddLogEvent(new VegasLog.GamePlayStarted(mVegasGame)));
+                    mStartRevealRatio = mScratchOffView.getScratchedOffRatio(10);
                     mIsFirstInteraction = false;
                 }
                 attachSponge(rawX, rawY);
@@ -232,8 +234,13 @@ public class GameFragment extends InjectedFragment {
     }
 
     private void detachSponge(final float rawX, final float rawY) {
-        double ratio = mScratchOffView.getScratchedOffRatio(10);
-        if (ratio > RATIO_TO_REVEAL) {
+        double currentScratchOffRatio = mScratchOffView.getScratchedOffRatio(10);
+        // Reveal when the actual scratched off part is larger than the requiredd ratio.
+        // The image can (and does) start with transparent sections
+        final boolean shouldReveal =
+                ((1 - mStartRevealRatio) / (currentScratchOffRatio - mStartRevealRatio)) >
+                RATIO_TO_REVEAL;
+        if (currentScratchOffRatio > RATIO_TO_REVEAL) {
             revealClaim();
         }
         mScrollView.setScrollingEnabled(true);
@@ -359,25 +366,28 @@ public class GameFragment extends InjectedFragment {
                 bus.post(new LogEvent.AddLogEvent(new VegasLog.RewardClaimSelected(mVegasGame)));
                 bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestSubmitted(mVegasGame)));
                 showUiBlockers();
-                mVegasManager.claimReward(mVegasGame.id, new DataManager.Callback<Void>() {
-                    @Override
-                    public void onSuccess(final Void response) {
-                        bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestSuccess(
-                                mVegasGame)));
-                        removeUiBlockers();
-                        ((VegasActivity) getActivity()).continueFlow();
-                    }
+                mVegasManager.claimReward(
+                        mVegasGame.rewardOfferId,
+                        new DataManager.Callback<Void>() {
+                            @Override
+                            public void onSuccess(final Void response) {
+                                bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestSuccess(
+                                        mVegasGame)));
+                                removeUiBlockers();
+                                ((VegasActivity) getActivity()).continueFlow();
+                            }
 
-                    @Override
-                    public void onError(final DataManager.DataManagerError error) {
-                        bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestError(
-                                mVegasGame,
-                                error.getMessage()
-                        )));
-                        removeUiBlockers();
-                        dataManagerErrorHandler.handleError(getActivity(), error);
-                    }
-                });
+                            @Override
+                            public void onError(final DataManager.DataManagerError error) {
+                                bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestError(
+                                        mVegasGame,
+                                        error.getMessage()
+                                )));
+                                removeUiBlockers();
+                                dataManagerErrorHandler.handleError(getActivity(), error);
+                            }
+                        }
+                );
                 break;
         }
     }
