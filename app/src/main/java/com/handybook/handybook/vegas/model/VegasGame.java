@@ -10,8 +10,8 @@ public class VegasGame implements Serializable {
 
     @SerializedName("type")
     public Type type;
-    @SerializedName("id")
-    public long id;
+    @SerializedName("reward_offer_id")
+    public long rewardOfferId;
     @SerializedName("pre_game_info")
     public PreGameInfo preGameInfo;
     @SerializedName("game_info")
@@ -46,6 +46,8 @@ public class VegasGame implements Serializable {
         public String rewardTitle;
         @SerializedName("reward_description")
         public String rewardDescription;
+        @SerializedName("terms")
+        public String terms;
         @SerializedName("button_title")
         public String buttonTitle;
 
@@ -99,7 +101,7 @@ public class VegasGame implements Serializable {
     public static VegasGame demo() {
         final VegasGame game = new VegasGame();
         game.type = Type.SCRATCH_WINDOW;
-        game.id = 123456;
+        game.rewardOfferId = 123456;
 
         game.preGameInfo = new PreGameInfo();
         game.preGameInfo.title = "_Wipe out!";

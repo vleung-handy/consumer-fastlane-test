@@ -20,11 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.handybook.handybook.R;
-import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.databinding.VegasGameFragmentBinding;
-import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
-import com.handybook.handybook.vegas.VegasManager;
 import com.handybook.handybook.vegas.logging.VegasLog;
 import com.handybook.handybook.vegas.model.GameSymbol;
 import com.handybook.handybook.vegas.model.VegasGame;
@@ -359,7 +356,7 @@ public class GameFragment extends InjectedFragment {
                 bus.post(new LogEvent.AddLogEvent(new VegasLog.RewardClaimSelected(mVegasGame)));
                 bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestSubmitted(mVegasGame)));
                 showUiBlockers();
-                mVegasManager.claimReward(mVegasGame.id, new DataManager.Callback<Void>() {
+                mVegasManager.claimReward(mVegasGame.rewardOfferId, new DataManager.Callback<Void>() {
                     @Override
                     public void onSuccess(final Void response) {
                         bus.post(new LogEvent.AddLogEvent(new VegasLog.ClaimRequestSuccess(
