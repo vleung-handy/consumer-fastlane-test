@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
-import com.handybook.handybook.proteam.model.ProTeamEdit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,13 +53,6 @@ public abstract class RatingFlowFeedbackChildFragment extends InjectedFragment {
         final RatingFlowFeedbackFragment parentFragment = getRatingFlowFeedbackFragment();
         if (parentFragment != null) {
             parentFragment.continueFeedbackFlow();
-        }
-    }
-
-    protected void finishStepWithProTeamEditRequest(@NonNull ProTeamEdit proTeamEdit) {
-        final RatingFlowFeedbackFragment parentFragment = getRatingFlowFeedbackFragment();
-        if (parentFragment != null) {
-            parentFragment.continueFeedbackFlowWithProTeamEditRequest(proTeamEdit);
         }
     }
 
