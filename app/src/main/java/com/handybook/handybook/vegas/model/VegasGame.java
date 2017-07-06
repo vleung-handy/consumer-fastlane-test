@@ -109,6 +109,7 @@ public class VegasGame implements Serializable {
                 = "_Now every time you complete a\nbooking you'll have the chance to\nclaim great rewards.";
         game.preGameInfo.rewardTitle = "_Possible rewards include...";
         game.preGameInfo.rewardDescription = "_Free Cleanings\nfor 1 year!";
+        game.preGameInfo.terms = "_By clicking the button below, I agree to<br>Handy's <a href=\"https://handy.com/terms?hide_header=1\">Terms &amp; Conditions";
         game.preGameInfo.buttonTitle = "_Play Now!";
 
         game.gameInfo = new GameInfo();
