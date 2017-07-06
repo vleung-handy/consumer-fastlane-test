@@ -5,6 +5,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -13,14 +14,21 @@ public class HtmlTextView extends android.support.v7.widget.AppCompatTextView {
 
     public HtmlTextView(Context context) {
         super(context);
+        init(context, null, 0);
     }
 
     public HtmlTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context, attrs, 0);
     }
 
     public HtmlTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context, attrs, defStyleAttr);
+    }
+
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+        setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
