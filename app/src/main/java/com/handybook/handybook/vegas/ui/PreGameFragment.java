@@ -50,13 +50,8 @@ public class PreGameFragment extends InjectedFragment {
         final View view = binding.getRoot();
         binding.setFragment(this);
         binding.setPreGameInfo(mVegasGame.preGameInfo);
-        init();
         bus.post(new LogEvent.AddLogEvent(new VegasLog.PromptScreenShown(mVegasGame)));
         return view;
-    }
-
-    private void init() {
-
     }
 
     public void onClick(View v) {
