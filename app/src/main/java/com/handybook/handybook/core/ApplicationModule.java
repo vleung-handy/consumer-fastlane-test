@@ -74,6 +74,8 @@ import retrofit.converter.GsonConverter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.handybook.handybook.library.util.DateTimeUtils.UNIVERSAL_DATE_FORMAT;
+
 @Module(
         injects = {
                 BaseApplication.class,
@@ -274,7 +276,6 @@ public final class ApplicationModule {
                 (username + ":" + password).getBytes(),
                 Base64.NO_WRAP
         );
-        final User user = userManager.getCurrentUser();
 
         HttpLoggingInterceptor httpInterceptor = new HttpLoggingInterceptor();
         httpInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -302,6 +303,7 @@ public final class ApplicationModule {
                                         "app_version_code",
                                         String.valueOf(BuildConfig.VERSION_CODE)
                                 );
+                        final User user = userManager.getCurrentUser();
                         if (user != null) {
                             urlBuilder.addQueryParameter("app_user_id", user.getId());
                         }
@@ -333,7 +335,7 @@ public final class ApplicationModule {
         }
 
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .setDateFormat(UNIVERSAL_DATE_FORMAT)
                 .setExclusionStrategies(
                         BookingRequest.getExclusionStrategy()
                 )
