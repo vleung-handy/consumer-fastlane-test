@@ -1,5 +1,7 @@
 package com.handybook.handybook.core.model.response;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 public class ErrorResponse {
@@ -17,14 +19,17 @@ public class ErrorResponse {
         return mError;
     }
 
+    @Nullable
     public Integer getErrorCode() {
         return mErrorCode;
     }
 
+    @Nullable
     public String[] getMessages() {
         return messages;
     }
 
+    @Nullable
     public String[] getInvalidInputs() {
         return invalidInputs;
     }

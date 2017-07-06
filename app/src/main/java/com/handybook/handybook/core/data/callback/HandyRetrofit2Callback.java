@@ -26,7 +26,8 @@ public abstract class HandyRetrofit2Callback<T extends ErrorResponse> implements
             DataManager.DataManagerError error = new DataManager.DataManagerError(
                     body.getErrorCode(),
                     DataManager.Type.CLIENT,
-                    body.getMessages().length >= 1 ? body.getMessages()[0] : null
+                    body.getMessages() != null && body.getMessages().length >= 1
+                    ? body.getMessages()[0] : null
             );
             error.setInvalidInputs(body.getInvalidInputs());
             onError(error);
