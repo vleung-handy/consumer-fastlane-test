@@ -1,13 +1,8 @@
 package com.handybook.handybook.booking.ui.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.model.Booking;
@@ -19,29 +14,11 @@ import butterknife.ButterKnife;
 
 public class BookingDetailSectionProInfoView extends BookingDetailSectionView {
 
-    /**
-     * fallback that is shown when there is no pro assigned AND no provider assignment state object
-     * AND pro teams enabled
-     */
-    @BindView(R.id.element_booking_detail_section_pro_info_no_pro_view)
-    View mLegacyNoProView;
-
-    /**
-     * part of the fallback no pro view
-     */
-    @BindView(R.id.element_booking_detail_section_pro_info_no_pro_view_pro_team_button)
-    Button mLegacyNoProViewProTeamButton;
-
     @BindView(R.id.action_buttons_layout_slot_1)
     public LinearLayout actionButtonsLayoutSlot1;
 
     @BindView(R.id.action_buttons_layout_slot_2)
     public LinearLayout actionButtonsLayoutSlot2;
-
-    @BindView(R.id.element_booking_detail_section_pro_info_prefer_diff_pro_layout)
-    ViewGroup mPreferDifferentProLayout;
-    @BindView(R.id.element_booking_detail_section_pro_info_prefer_diff_pro_text)
-    TextView mPreferDifferentProText;
 
     /**
      * mini pro profile
@@ -90,22 +67,6 @@ public class BookingDetailSectionProInfoView extends BookingDetailSectionView {
         if (providerAssignmentInfo.shouldShowProfileImage()) {
             mProProfile.setImage(provider.getImageUrl());
         }
-    }
-
-    public void setLegacyNoProViewProTeamButtonClickListener(@NonNull OnClickListener onClickListener) {
-        mLegacyNoProViewProTeamButton.setOnClickListener(onClickListener);
-    }
-
-    public void setLegacyNoProViewVisible(boolean visible) {
-        mLegacyNoProView.setVisibility(visible ? VISIBLE : GONE);
-    }
-
-    public void showPreferDifferentProLayout(boolean show) {
-        mPreferDifferentProLayout.setVisibility(show ? VISIBLE : GONE);
-    }
-
-    public void setPreferDifferentProOnClickListener(OnClickListener onClickListener) {
-        mPreferDifferentProText.setOnClickListener(onClickListener);
     }
 
     public void setProProfileClickListener(OnClickListener onClickListener)
