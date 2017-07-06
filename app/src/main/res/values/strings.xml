@@ -584,7 +584,8 @@
     <string name="transition_stars">stars</string>
     <string name="transition_divider">divider</string>
     <string name="write_a_review_formatted">Write a public review for %1$s\'s profile.</string>
-    <string name="rating_flow_review_hint">Write your review</string>
+    <string name="rating_flow_review_hint_cleaner">Example: This was my second booking with %1$s. We have a cat and %1$s does a wonderful job of vacuuming all the pet hair off our living room couches and carpet.</string>
+    <string name="rating_flow_review_hint_handyman">Example: %1$s did an amazing job of mounting my new TV on the living room wall. %1$s showed up on time and brought all the necessary tools for the project, and was extremely careful, professional, and friendly.</string>
     <string name="rating_flow_feedback_hint">Enter your message</string>
     <string name="rating_flow_help_prompt">Tell Handy what happened:</string>
     <string name="rating_flow_pro_team_addition_note_formatted">%1$s will be added to your Pro Team.</string>

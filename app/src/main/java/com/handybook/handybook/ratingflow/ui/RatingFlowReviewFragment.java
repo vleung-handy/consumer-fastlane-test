@@ -18,6 +18,7 @@ import com.handybook.handybook.core.data.VoidDataManagerCallback;
 import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventType;
+import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
 
 import butterknife.BindColor;
@@ -26,12 +27,12 @@ import butterknife.BindDimen;
 public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
 
     private EditText mReviewTextField;
-    @BindColor(R.color.dark_grey_pressed)
+    @BindColor(R.color.handy_tertiary_gray_trans)
     int mHintColor;
-    @BindColor(R.color.black)
+    @BindColor(R.color.handy_text_black)
     int mBlackColor;
-    @BindDimen(R.dimen.text_size_medium)
-    float mMediumTextSize;
+    @BindDimen(R.dimen.text_size_small)
+    float mSmallTextSize;
     @BindDimen(R.dimen.default_padding)
     int mDefaultPadding;
 
@@ -74,11 +75,17 @@ public class RatingFlowReviewFragment extends RatingFlowFeedbackChildFragment {
     @NonNull
     private EditText createReviewTextField() {
         final EditText editText = new EditText(getActivity());
-        editText.setHint(R.string.rating_flow_review_hint);
+        final int hintStringResId =
+                mBooking.getProvider().getCategoryType() == ProTeamCategoryType.CLEANING
+                ? R.string.rating_flow_review_hint_cleaner
+                : R.string.rating_flow_review_hint_handyman;
+        final String hint = getString(hintStringResId, mBooking.getProvider().getFirstName());
+        editText.setHint(hint);
         editText.setHintTextColor(mHintColor);
         editText.setBackground(null);
         editText.setTextColor(mBlackColor);
-        editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mMediumTextSize);
+        editText.setLineSpacing(0f, 1.2f);
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mSmallTextSize);
         editText.setTypeface(TextUtils.get(
                 getContext(),
                 com.handybook.handybook.library.util.TextUtils.Fonts.CIRCULAR_BOOK
