@@ -28,7 +28,6 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.booking.BookingEvent;
 import com.handybook.handybook.booking.model.PromoCode;
 import com.handybook.handybook.booking.model.Service;
-import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.booking.ui.activity.ZipActivity;
 import com.handybook.handybook.booking.ui.adapter.ServicesCategoryHomeAdapter;
@@ -38,7 +37,6 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.library.util.EnvironmentUtils;
 import com.handybook.handybook.library.util.FragmentUtils;
@@ -380,12 +378,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
 
     @OnClick(R.id.fragment_service_categories_home_promo_container)
     public void onCouponClick() {
-        if (getActivity() instanceof MenuDrawerActivity) {
-            ((MenuDrawerActivity) getActivity()).navigateToActivity(PromosActivity.class, null);
-        }
-        else {
-            FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
-        }
+        FragmentUtils.switchToFragment(this, PromosFragment.newInstance(null), true);
     }
 
     /**

@@ -114,7 +114,6 @@ import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.core.receiver.LayerPushReceiver;
 import com.handybook.handybook.core.ui.activity.BlockingActivity;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.OldDeeplinkSplashActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
@@ -170,7 +169,6 @@ import dagger.Module;
                 ServiceCategoriesActivity.class,
                 ServicesActivity.class, ProfileActivity.class,
                 PeakPricingActivity.class,
-                MenuDrawerActivity.class,
                 LoginActivity.class,
                 BookingsActivity.class,
                 HistoryActivity.class,

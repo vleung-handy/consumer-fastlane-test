@@ -1,6 +1,5 @@
 package com.handybook.handybook.booking.ui.activity;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
@@ -8,9 +7,9 @@ import com.handybook.handybook.booking.model.Instructions;
 import com.handybook.handybook.booking.ui.fragment.BookingEntryInfoFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPasswordPromptFragment;
 import com.handybook.handybook.booking.ui.fragment.BookingPreferencesFragment;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 
-public final class BookingFinalizeActivity extends MenuDrawerActivity {
+public final class BookingFinalizeActivity extends SingleFragmentActivity {
 
     public static final String EXTRA_PAGE = "com.handy.handy.EXTRA_PAGE";
     public static final String EXTRA_NEW_USER = "com.handy.handy.EXTRA_NEW_USER";
@@ -54,16 +53,5 @@ public final class BookingFinalizeActivity extends MenuDrawerActivity {
                         getIntent().getExtras()
                 );
         }
-    }
-
-    @Override
-    protected final String getNavItemTitle() {
-        return null;
-    }
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        disableDrawer = true;
     }
 }

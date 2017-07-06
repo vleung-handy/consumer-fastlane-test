@@ -3,8 +3,6 @@ package com.handybook.handybook.helpcenter;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.helpcenter.helpcontact.manager.HelpContactManager;
-import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
-import com.handybook.handybook.helpcenter.helpcontact.ui.fragment.HelpContactFragment;
 import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
@@ -22,8 +20,6 @@ import dagger.Provides;
         injects = {
                 HelpActivity.class,
                 HelpWebViewFragment.class,
-                HelpContactFragment.class,
-                HelpContactActivity.class,
                 HelpFragment.class
         })
 public final class HelpModule {

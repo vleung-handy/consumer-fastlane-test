@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import com.handybook.handybook.booking.model.Booking;
 import com.handybook.handybook.booking.ui.fragment.BookingReschedulePreferencesFragment;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 import com.handybook.handybook.proteam.model.ProTeam;
 
-public class BookingReschedulePreferencesActivity extends MenuDrawerActivity {
+public class BookingReschedulePreferencesActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
@@ -16,10 +16,5 @@ public class BookingReschedulePreferencesActivity extends MenuDrawerActivity {
                 = getIntent().getParcelableExtra(BundleKeys.PRO_TEAM_CATEGORY);
         final Booking booking = getIntent().getParcelableExtra(BundleKeys.BOOKING);
         return BookingReschedulePreferencesFragment.newInstance(category, booking);
-    }
-
-    @Override
-    protected String getNavItemTitle() {
-        return null;
     }
 }

@@ -20,7 +20,6 @@ import com.handybook.handybook.booking.util.BookingUtil;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.model.response.HelpCenterResponse;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.view.HelpCenterActionItemView;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
@@ -91,10 +90,7 @@ public class HelpFragment extends ProgressSpinnerFragment {
         ButterKnife.bind(this, view);
 
         setupToolbar(mToolbar, getString(R.string.help));
-        if (getActivity() instanceof MenuDrawerActivity) {
-            mToolbar.setNavigationIcon(R.drawable.ic_menu);
-            ((MenuDrawerActivity) getActivity()).setupHamburgerMenu(mToolbar);
-        }
+
         return view;
     }
 

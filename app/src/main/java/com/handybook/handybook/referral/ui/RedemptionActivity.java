@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 import com.handybook.handybook.referral.util.ReferralIntentUtil;
 
-public class RedemptionActivity extends MenuDrawerActivity {
+public class RedemptionActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
@@ -19,11 +19,6 @@ public class RedemptionActivity extends MenuDrawerActivity {
         }
         return com.handybook.handybook.referral.ui.RedemptionFragment.newInstance(
                 referralGuid);
-    }
-
-    @Override
-    protected String getNavItemTitle() {
-        return null;
     }
 
     private void navigateToHomeScreen() {

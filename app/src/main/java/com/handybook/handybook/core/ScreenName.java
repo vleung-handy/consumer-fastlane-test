@@ -28,10 +28,8 @@ import com.handybook.handybook.booking.ui.activity.ServicesActivity;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.core.ui.activity.BlockingActivity;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.OldDeeplinkSplashActivity;
 import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
-import com.handybook.handybook.helpcenter.helpcontact.ui.activity.HelpContactActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.notifications.ui.activity.NotificationsActivity;
 import com.handybook.handybook.onboarding.OnboardActivity;
@@ -85,7 +83,6 @@ public class ScreenName {
         sScreenNames.put(PromosActivity.class.getCanonicalName(), "Promos");
         sScreenNames.put(ServiceCategoriesActivity.class.getCanonicalName(), "Service Categories");
         sScreenNames.put(ServicesActivity.class.getCanonicalName(), "Services");
-        sScreenNames.put(HelpContactActivity.class.getCanonicalName(), "Help Contact");
         sScreenNames.put(HelpActivity.class.getCanonicalName(), "Help");
         sScreenNames.put(NotificationsActivity.class.getCanonicalName(), "Notifications");
         sScreenNames.put(RedemptionActivity.class.getCanonicalName(), "Redemption");
@@ -93,7 +90,6 @@ public class ScreenName {
         sScreenNames.put(BaseActivity.class.getCanonicalName(), "Base Activity");
         sScreenNames.put(BlockingActivity.class.getCanonicalName(), "Blocking Screen");
         sScreenNames.put(LoginActivity.class.getCanonicalName(), "Login");
-        sScreenNames.put(MenuDrawerActivity.class.getCanonicalName(), "Menu Drawer");
         sScreenNames.put(OnboardActivity.class.getCanonicalName(), "Onboard");
         sScreenNames.put(ProfileActivity.class.getCanonicalName(), "Profile");
         sScreenNames.put(OldDeeplinkSplashActivity.class.getCanonicalName(), "Splash");

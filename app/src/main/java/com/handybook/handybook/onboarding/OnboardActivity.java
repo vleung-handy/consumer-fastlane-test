@@ -1,46 +1,37 @@
 package com.handybook.handybook.onboarding;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
+import com.handybook.handybook.R;
 import com.handybook.handybook.core.constant.ActivityResult;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 
-public final class OnboardActivity extends MenuDrawerActivity {
+public final class OnboardActivity extends SingleFragmentActivity {
 
     @Override
     protected final Fragment createFragment() {
         if (mConfigurationManager.getPersistentConfiguration().isSaveZipCodeEnabled()) {
-            setActiveFragment(OnboardV2Fragment.newInstance());
+            return OnboardV2Fragment.newInstance();
         }
         else {
-            setActiveFragment(OnboardFragment.newInstance());
+            return OnboardFragment.newInstance();
         }
-
-        return getActiveFragemnt();
     }
 
     @Override
     public void onBackPressed() {
-        if (getActiveFragemnt() != null && getActiveFragemnt() instanceof OnboardV2Fragment) {
-            if (((OnboardV2Fragment) getActiveFragemnt()).onBackPressed()) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+
+        if (fragment != null && fragment instanceof OnboardV2Fragment) {
+            if (((OnboardV2Fragment) fragment).onBackPressed()) {
                 return;
             }
         }
 
         super.onBackPressed();
-    }
-
-    @Override
-    protected final String getNavItemTitle() {
-        return null;
-    }
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        disableDrawer = true;
     }
 
     @Override
