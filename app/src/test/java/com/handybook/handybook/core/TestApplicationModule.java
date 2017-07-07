@@ -81,6 +81,7 @@ import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
+import com.handybook.handybook.core.data.HandyRetrofit2Service;
 import com.handybook.handybook.core.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.manager.AppBlockManager;
@@ -294,6 +295,12 @@ public class TestApplicationModule {
 
     @Provides
     @Singleton
+    final HandyRetrofit2Service provideHandyService2() {
+        return mock(HandyRetrofit2Service.class);
+    }
+
+    @Provides
+    @Singleton
     final PlacesService providesPlacesService() {
         return mock(PlacesService.class);
     }
@@ -308,9 +315,10 @@ public class TestApplicationModule {
     @Singleton
     final DataManager provideDataManager(
             final HandyRetrofitService service,
+            final HandyRetrofit2Service service2,
             final HandyRetrofitEndpoint endpoint
     ) {
-        return spy(new TestDataManager(service, endpoint));
+        return spy(new TestDataManager(service, service2, endpoint));
     }
 
     @Provides

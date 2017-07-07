@@ -1,10 +1,11 @@
 package com.handybook.handybook.booking.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.handybook.handybook.core.model.response.ErrorResponse;
 
 import java.util.List;
 
-public final class UserBookingsWrapper {
+public final class UserBookingsWrapper extends ErrorResponse {
 
     @SerializedName("user_bookings")
     private List<Booking> mBookings;
