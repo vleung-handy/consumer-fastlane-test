@@ -330,7 +330,7 @@ public class BookingOptionsFragment extends BookingFlowFragment {
                      && option.getTitle().contains("professional")) {
                 headerText.setText(option.getTitle());
                 headerText.setVisibility(View.VISIBLE);
-                setToolbarTitle(getString(R.string.request_pro));
+                setToolbarTitle(getString(R.string.choose_pro));
                 ((BookingOptionsIndexView) optionsView).hideTitle();
 
                 bus.post(new LogEvent.AddLogEvent(new BookingRequestProLog.BookingRequestProShownLog()));

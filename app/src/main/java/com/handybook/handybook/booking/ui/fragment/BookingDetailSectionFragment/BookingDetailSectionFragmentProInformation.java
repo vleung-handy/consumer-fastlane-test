@@ -91,7 +91,7 @@ public class BookingDetailSectionFragmentProInformation extends
                         = providerAssignmentInfo.getState();
                 actionTextView.setText(state == PENDING || state == ASSIGNED
                                        ? R.string.change_pro
-                                       : R.string.request_pro);
+                                       : R.string.choose_pro);
                 actionTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
