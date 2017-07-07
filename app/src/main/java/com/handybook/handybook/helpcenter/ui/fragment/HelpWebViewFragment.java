@@ -8,11 +8,9 @@ import android.view.View;
 
 import com.google.common.base.Strings;
 import com.handybook.handybook.R;
-import com.handybook.handybook.booking.ui.activity.ServiceCategoriesActivity;
 import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.squareup.otto.Subscribe;
 
@@ -93,16 +91,7 @@ public class HelpWebViewFragment extends WebViewFragment {
 
             @Override
             public void onCancel() {
-                if (getActivity() instanceof MenuDrawerActivity) {
-                    ((MenuDrawerActivity) getActivity())
-                            .navigateToActivity(
-                                    ServiceCategoriesActivity.class,
-                                    R.id.nav_menu_home
-                            );
-                }
-                else {
-                    getActivity().onBackPressed();
-                }
+                getActivity().onBackPressed();
             }
         });
     }

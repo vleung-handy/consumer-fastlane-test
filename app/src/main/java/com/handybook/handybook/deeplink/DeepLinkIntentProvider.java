@@ -7,10 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.airbnb.deeplinkdispatch.DeepLink;
-import com.handybook.handybook.account.ui.ProfileActivity;
 import com.handybook.handybook.booking.history.HistoryActivity;
 import com.handybook.handybook.booking.ui.activity.BookingDetailActivity;
-import com.handybook.handybook.booking.ui.activity.BookingsActivity;
 import com.handybook.handybook.booking.ui.activity.PromosActivity;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
@@ -20,8 +18,6 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
-import com.handybook.handybook.proteam.ui.activity.ProTeamActivity;
-import com.handybook.handybook.referral.ui.ReferralActivity;
 
 import javax.inject.Inject;
 
@@ -32,7 +28,7 @@ public class DeepLinkIntentProvider {
     //TODO: can split this out so that each module has a routes file
     //TODO: put in properties?
     public static final String DEEP_LINK_BASE_URL = "handybook://deep_link/";
-    //FIXME: If the handy:// is not used anywhere, let's remove it from here
+    //TODO: If the handy:// is not used anywhere, let's remove it from here
     private static final String DEEP_LINK_NEW_BASE_URL = "handy://";
     private static final String DEEP_LINK_SIDE_MENU_URL = DEEP_LINK_BASE_URL + "side_menu/";
     private static UserManager sUserManager;
@@ -69,18 +65,17 @@ public class DeepLinkIntentProvider {
         return intent;
     }
 
-    //TODO update this to handle bottom nav arch
     public static Intent getLoginIntent(Context context, Class<?> destinationClass) {
-        return getLoginIntent(context, destinationClass, null);
+        return getLoginIntent(context, destinationClass, new Bundle());
     }
 
     private static Intent getLoginIntent(
-            Context context,
-            Class<?> destinationClass,
-            Bundle extras
+            @NonNull Context context,
+            @NonNull Class<?> destinationClass,
+            @NonNull Bundle extras
     ) {
         Intent intent = new Intent(context, LoginActivity.class);
-        intent.putExtras(extras); //TODO test if this can be null
+        intent.putExtras(extras);
         intent.putExtra(BundleKeys.ACTIVITY, destinationClass.getName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -104,7 +99,7 @@ public class DeepLinkIntentProvider {
             return createBottomNavActivityIntent(context, MainNavTab.BOOKINGS);
         }
         else {
-            return new Intent(context, BookingsActivity.class);
+            return createBottomNavLoginActivityIntent(context, MainNavTab.BOOKINGS);
         }
     }
 
@@ -141,7 +136,7 @@ public class DeepLinkIntentProvider {
             return createBottomNavActivityIntent(context, MainNavTab.ACCOUNT);
         }
         else {
-            return new Intent(context, ProfileActivity.class);
+            return createBottomNavLoginActivityIntent(context, MainNavTab.ACCOUNT);
         }
     }
 
@@ -158,12 +153,11 @@ public class DeepLinkIntentProvider {
                       DEEP_LINK_NEW_BASE_URL + "pro_team"
               })
     public static Intent getProTeamIntent(Context context) {
-        //TODO need to handle case in which user not logged in
         if (isUserLoggedIn()) {
             return createBottomNavActivityIntent(context, MainNavTab.MESSAGES);
         }
         else {
-            return new Intent(context, ProTeamActivity.class);
+            return createBottomNavLoginActivityIntent(context, MainNavTab.MESSAGES);
         }
     }
 
@@ -172,12 +166,11 @@ public class DeepLinkIntentProvider {
                       DEEP_LINK_NEW_BASE_URL + "share"
               })
     public static Intent getReferralIntent(Context context) {
-        //TODO need to handle case in which user not logged in
         if (isUserLoggedIn()) {
             return createBottomNavActivityIntent(context, MainNavTab.SHARE);
         }
         else {
-            return new Intent(context, ReferralActivity.class);
+            return createBottomNavLoginActivityIntent(context, MainNavTab.SHARE);
         }
     }
 

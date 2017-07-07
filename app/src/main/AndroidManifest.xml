@@ -241,10 +241,6 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".helpcenter.helpcontact.ui.activity.HelpContactActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity
             android:name=".booking.bookingedit.ui.activity.BookingEditPreferencesActivity"
             android:screenOrientation="portrait"
             />

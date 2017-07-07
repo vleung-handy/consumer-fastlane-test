@@ -1,16 +1,15 @@
 package com.handybook.handybook.booking.ui.activity;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.handybook.handybook.booking.model.BookingOption;
 import com.handybook.handybook.booking.ui.fragment.BookingOptionsFragment;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public final class BookingOptionsActivity extends MenuDrawerActivity {
+public final class BookingOptionsActivity extends SingleFragmentActivity {
 
     public static final String EXTRA_OPTIONS = "com.handy.handy.EXTRA_OPTIONS";
     public static final String EXTRA_POST_OPTIONS = "com.handy.handy.EXTRA_POST_OPTIONS";
@@ -40,16 +39,5 @@ public final class BookingOptionsActivity extends MenuDrawerActivity {
                 isPost,
                 getIntent().getExtras()
         );
-    }
-
-    @Override
-    protected final String getNavItemTitle() {
-        return null;
-    }
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        disableDrawer = true;
     }
 }
