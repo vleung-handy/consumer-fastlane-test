@@ -114,7 +114,7 @@
     <string name="skip_booking">Skip Booking</string>
     <string name="why_cancel">Why are you canceling?</string>
     <string name="get_started">Get Started</string>
-    <string name="onboard_msg">Book *trusted cleaners\n &amp; handymen instantly</string>
+    <string name="onboard_msg">Book top-rated cleaners\n &amp; handymen instantly</string>
     <string name="onboard_msg_pro">We’ll match you with\n a highly rated professional</string>
     <string name="onboard_msg_manage">Manage your bookings\n on the go</string>
     <string name="onboard_msg_rate">Rate to help us\n maintain quality service</string>
@@ -304,7 +304,7 @@
     <string name="plumber_slogan_long">From faucets and drains to all your plumbed-in appliances.</string>
     <string name="electrician_slogan_long">Wiring lights, fixing switches and everything electrical.</string>
     <string name="light_fixtures">Lighting</string>
-    <string name="light_fixtures_service_description">Does it have a bulb? A *trusted pro can make it shine.</string>
+    <string name="light_fixtures_service_description">Does it have a bulb? A top-rated pro can make it shine.</string>
     <string name="ceiling_fan">Ceiling/Bath fans</string>
     <string name="ceiling_fan_service_description">Handy makes repairing or installing fans a breeze.</string>
     <string name="outlets"><![CDATA[Outlets & light switches]]></string>
@@ -567,7 +567,7 @@
     <string name="service_not_supported_sub_title">We\'ll let you know when we\'re \n in your city</string>
     <string name="service_not_supported_zip_formatted">ZIP Code: %1$s</string>
     <string name="onboard_try_another_zip">Try Another ZIP Code</string>
-    <string name="onboard_title">Book *trusted cleaners &amp; handymen instantly</string>
+    <string name="onboard_title">Book top-rated cleaners &amp; handymen instantly</string>
     <string name="onboard_already_account">Already have an account?</string>
     <string name="onboard_location_prompt">Where are you \n located?</string>
     <string name="onboard_email_prompt">What\'s your email \n address?</string>

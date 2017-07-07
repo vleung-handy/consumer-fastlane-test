@@ -705,7 +705,7 @@
     "warning": null
   },
   "quote_config": {
-    "disclaimer_text": "*Plans are flexible. Skip, cancel, or reschedule anytime.",
+    "disclaimer_text": "Plans are flexible. Skip, or reschedule anytime.",
     "recurrence_options": [
       {
         "frequency": 1,
