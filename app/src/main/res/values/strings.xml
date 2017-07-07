@@ -64,7 +64,7 @@
     <string name="select_start_time">Select a start time</string>
     <string name="pro_x_availability_formatted">%1$s\'s Availability</string>
     <string name="change_pro">Change Pro</string>
-    <string name="request_pro">Request Pro</string>
+    <string name="choose_pro">Choose Pro</string>
     <string name="request_pro_formatted">Request %1$s</string>
     <string name="street_addr">Street Address</string>
     <string name="apt_num">Apt #</string>
