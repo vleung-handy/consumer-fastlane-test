@@ -3,7 +3,9 @@ package com.handybook.handybook.vegas.ui;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.AnimatorRes;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
@@ -47,6 +49,7 @@ public class GameFragment extends InjectedFragment {
     private static final String KEY_GAME_VM = "key::game_view_model";
     public static final double RATIO_TO_REVEAL = .70;
     public static final int DELAY_SHADE_DOWN_MS = 2200;
+    private static final long[] VIBRATOR_PATTERN_WIN = {0, 100, 150, 200, 150, 75, 25, 75, 25};
 
     @Inject
     VegasManager mVegasManager;
@@ -284,6 +287,7 @@ public class GameFragment extends InjectedFragment {
         animateWinningSymbols();
         if (mVegasGame.gameInfo.isWinner) {
             blastConfetti();
+            vibrate(VIBRATOR_PATTERN_WIN);
         }
         Runnable delayedTask = new Runnable() {
             @Override
@@ -295,6 +299,14 @@ public class GameFragment extends InjectedFragment {
             }
         };
         mScratchOffView.postDelayed(delayedTask, DELAY_SHADE_DOWN_MS);
+    }
+
+    private void vibrate(final long[] pattern) {
+        Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator == null) {
+            return;
+        }
+        vibrator.vibrate(pattern, -1);
     }
 
     private void animateWinningSymbols() {
