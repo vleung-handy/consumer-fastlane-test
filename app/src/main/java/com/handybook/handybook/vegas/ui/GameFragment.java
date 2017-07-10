@@ -385,6 +385,7 @@ public class GameFragment extends InjectedFragment {
                                 )));
                                 removeUiBlockers();
                                 dataManagerErrorHandler.handleError(getActivity(), error);
+                                ((VegasActivity) getActivity()).continueFlow();
                             }
                         }
                 );
