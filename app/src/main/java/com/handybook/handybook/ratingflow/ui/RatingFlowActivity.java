@@ -33,7 +33,8 @@ import com.handybook.handybook.vegas.logging.VegasLog;
 import com.handybook.handybook.vegas.model.RewardsWrapper;
 import com.handybook.handybook.vegas.model.VegasGame;
 import com.handybook.handybook.vegas.ui.VegasActivity;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class RatingFlowActivity extends BaseActivity {
     VegasManager mVegasManager;
 
     @Inject
-    Bus mBus;
+    EventBus mBus;
 
     private static final int EXCELLENT_PRO_RATING = 5;
 

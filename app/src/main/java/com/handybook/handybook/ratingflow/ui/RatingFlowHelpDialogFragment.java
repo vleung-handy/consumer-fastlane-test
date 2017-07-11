@@ -22,7 +22,8 @@ import com.handybook.handybook.library.ui.fragment.SlideUpDialogFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.constants.EventType;
 import com.handybook.handybook.ratingflow.RatingFlowLog;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -38,7 +39,7 @@ public class RatingFlowHelpDialogFragment extends SlideUpDialogFragment {
     DataManager mDataManager;
 
     @Inject
-    Bus mBus;
+    EventBus mBus;
 
     @BindView(R.id.rating_flow_help_text)
     EditText mHelpTextField;

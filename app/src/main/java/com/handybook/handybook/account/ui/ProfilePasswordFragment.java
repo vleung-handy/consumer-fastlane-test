@@ -21,7 +21,8 @@ import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +61,18 @@ public class ProfilePasswordFragment extends ProgressSpinnerFragment
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = userManager.getCurrentUser();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -164,7 +177,7 @@ public class ProfilePasswordFragment extends ProgressSpinnerFragment
     }
     //endregion
 
-    //region Bus events
+    //region EventBus events
     @Subscribe
     public void onReceiveUserPasswordUpdateSuccess(
             UserEvent.ReceiveUserPasswordUpdateSuccess event

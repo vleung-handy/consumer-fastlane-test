@@ -21,7 +21,8 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataSynchronizer;
 import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -58,6 +59,19 @@ public class CancelRecurringBookingSelectionFragment extends ProgressSpinnerFrag
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         showProgressSpinner(true);

@@ -3,7 +3,7 @@ package com.handybook.handybook.logger.handylogger.model.booking;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
-public class UpcomingBookingsLog extends EventLog {
+public abstract class UpcomingBookingsLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "upcoming_bookings";
 

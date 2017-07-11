@@ -39,7 +39,8 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel;
 import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.ActionType;
 import com.handybook.handybook.referral.model.ProReferral;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -121,6 +122,18 @@ public class NewProTeamProListFragment extends ProgressSpinnerFragment {
                     ));
                 }
             };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
+    }
 
     /**
      * We do this typically after a pro has been "favorited" -- launch a dialog offering the user
@@ -242,7 +255,6 @@ public class NewProTeamProListFragment extends ProgressSpinnerFragment {
         mReferralDescriptor
                 = (ReferralDescriptor) getArguments().getSerializable(BundleKeys.REFERRAL_DESCRIPTOR);
     }
-
 
     @Nullable
     @Override

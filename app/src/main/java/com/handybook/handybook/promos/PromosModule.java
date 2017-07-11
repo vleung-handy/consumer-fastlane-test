@@ -7,7 +7,8 @@ import com.handybook.handybook.promos.persistent.PersistentPromoCoordinatorLayou
 import com.handybook.handybook.promos.persistent.PersistentPromoManager;
 import com.handybook.handybook.promos.splash.SplashPromoDialogFragment;
 import com.handybook.handybook.promos.splash.SplashPromoManager;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Singleton;
 
@@ -37,7 +38,7 @@ public final class PromosModule {
             final UserManager userManager,
             final DataManager dataManager,
             final SecurePreferencesManager securePreferencesManager,
-            final Bus bus
+            final EventBus bus
     ) {
         return new SplashPromoManager(
                 userManager,

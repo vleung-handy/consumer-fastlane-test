@@ -3,7 +3,7 @@ package com.handybook.handybook.logger.handylogger.model.booking;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
-public class IssueResolutionLog extends EventLog {
+public abstract class IssueResolutionLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "location_based_issue_resolution";
 

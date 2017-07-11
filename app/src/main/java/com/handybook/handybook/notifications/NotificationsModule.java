@@ -4,7 +4,8 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.notifications.manager.NotificationManager;
 import com.handybook.handybook.notifications.ui.activity.NotificationsActivity;
 import com.handybook.handybook.notifications.ui.fragment.NotificationFeedFragment;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Singleton;
 
@@ -23,7 +24,7 @@ public final class NotificationsModule {
     @Provides
     @Singleton
     final NotificationManager provideNotificationManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager
     ) {
         return new NotificationManager(bus, dataManager);

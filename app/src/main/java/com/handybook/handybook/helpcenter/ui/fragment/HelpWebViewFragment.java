@@ -12,7 +12,8 @@ import com.handybook.handybook.configuration.event.ConfigurationEvent;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.WebViewFragment;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 public class HelpWebViewFragment extends WebViewFragment {
 
@@ -49,6 +50,18 @@ public class HelpWebViewFragment extends WebViewFragment {
             mId = getArguments().getString(BundleKeys.HELP_ID);
             mLinkType = getArguments().getString(BundleKeys.HELP_LINK_TYPE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override

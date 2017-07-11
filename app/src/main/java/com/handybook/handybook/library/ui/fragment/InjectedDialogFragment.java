@@ -11,11 +11,10 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.library.ui.view.ProgressDialog;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 
 public class InjectedDialogFragment extends DialogFragment {
 
@@ -33,7 +32,7 @@ public class InjectedDialogFragment extends DialogFragment {
     @Inject
     protected DataManagerErrorHandler dataManagerErrorHandler;
     @Inject
-    protected Bus mBus;
+    protected EventBus mBus;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -62,18 +61,6 @@ public class InjectedDialogFragment extends DialogFragment {
     public void onStop() {
         super.onStop();
         allowCallbacks = false;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mBus.register(this);
-    }
-
-    @Override
-    public void onPause() {
-        mBus.unregister(this);
-        super.onPause();
     }
 
     protected void disableInputs() {}

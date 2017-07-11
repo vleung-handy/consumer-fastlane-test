@@ -55,7 +55,8 @@ import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.manager.ReferralsManager;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -213,6 +214,18 @@ public final class BookingDetailFragment extends ProgressSpinnerFragment
         else {
             mProBusyView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override

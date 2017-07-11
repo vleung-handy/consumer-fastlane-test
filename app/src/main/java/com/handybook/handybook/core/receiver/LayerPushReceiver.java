@@ -14,14 +14,15 @@ import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.shared.layer.LayerConstants;
 import com.handybook.shared.layer.receiver.PushNotificationReceiver;
 import com.layer.sdk.messaging.Message;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
 public class LayerPushReceiver extends PushNotificationReceiver {
 
     @Inject
-    Bus mBus;
+    EventBus mBus;
 
     private static final String MESSAGES_DEEPLINK =
             DeepLinkIntentProvider.DEEP_LINK_BASE_URL + "pro_team";

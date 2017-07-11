@@ -5,7 +5,7 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
 
 /**
  */
-public class PastBookingsLog extends EventLog {
+public abstract class PastBookingsLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "past_bookings";
 

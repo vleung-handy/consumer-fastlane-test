@@ -2,7 +2,7 @@ package com.handybook.handybook.logger.handylogger.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class HandybookDefaultLog extends EventLog {
+public abstract class HandybookDefaultLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "hbk_default";
 

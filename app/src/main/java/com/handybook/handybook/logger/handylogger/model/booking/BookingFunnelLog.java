@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class BookingFunnelLog extends EventLog {
+public abstract class BookingFunnelLog extends EventLog {
 
     // For user login logging
     public static final String AUTH_TYPE_FACEBOOK = "facebook";

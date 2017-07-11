@@ -18,7 +18,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.deeplink.DeepLinkActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HelpCenterLog;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,16 +37,16 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
 
     private String mDeepLink;
     private String mTitle;
-    private Bus mBus;
+    private EventBus mBus;
 
-    public HelpCenterActionItemView(final Context context, final Bus bus) {
+    public HelpCenterActionItemView(final Context context, final EventBus bus) {
         super(context);
         init(bus);
     }
 
     public HelpCenterActionItemView(
             final Context context, final AttributeSet attrs,
-            final Bus bus
+            final EventBus bus
     ) {
         super(context, attrs);
         init(bus);
@@ -55,7 +56,7 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
             final Context context,
             final AttributeSet attrs,
             final int defStyleAttr,
-            final Bus bus
+            final EventBus bus
     ) {
         super(context, attrs, defStyleAttr);
         init(mBus);
@@ -67,7 +68,7 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
             final AttributeSet attrs,
             final int defStyleAttr,
             final int defStyleRes,
-            final Bus bus
+            final EventBus bus
     ) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(bus);
@@ -81,7 +82,7 @@ public class HelpCenterActionItemView extends FrameLayout implements View.OnClic
         mHelpActionImage.setImageResource(icon);
     }
 
-    private void init(final Bus bus) {
+    private void init(final EventBus bus) {
         mBus = bus;
         inflate(getContext(), R.layout.element_help_center_action, this);
         ButterKnife.bind(this);

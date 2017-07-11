@@ -4,17 +4,18 @@ import android.support.annotation.NonNull;
 
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.AddressAutocompleteLog;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
 public class AddressAutoCompleteManager {
 
     private final PlacesService mService;
-    private final Bus mBus;
+    private final EventBus mBus;
 
     @Inject
-    public AddressAutoCompleteManager(final Bus bus, final PlacesService service) {
+    public AddressAutoCompleteManager(final EventBus bus, final PlacesService service) {
         this.mBus = bus;
         this.mService = service;
     }

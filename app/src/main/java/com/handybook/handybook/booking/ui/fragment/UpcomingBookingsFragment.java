@@ -50,7 +50,8 @@ import com.handybook.handybook.logger.handylogger.model.booking.UpcomingBookings
 import com.handybook.handybook.logger.handylogger.model.booking.ViewAvailabilityLog;
 import com.handybook.handybook.logger.handylogger.model.user.ShareModalLog;
 import com.handybook.handybook.referral.ui.ReferralV2Fragment;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -615,6 +616,7 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
     @Override
     public final void onStart() {
         super.onStart();
+        bus.register(this);
         // Workaround to be able to display the SwipeRefreshLayout onStart
         // as in: http://stackoverflow.com/a/26860930/486332
         mSwipeRefreshLayout.setProgressViewOffset(
@@ -624,6 +626,12 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
                                                 24, getResources().getDisplayMetrics()
                 )
         );
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override

@@ -14,7 +14,8 @@ import com.handybook.handybook.referral.ui.ReferralActivity;
 import com.handybook.handybook.referral.ui.ReferralFragment;
 import com.handybook.handybook.referral.ui.ReferralV2Fragment;
 import com.handybook.handybook.referral.ui.SimpleProReferralFragment;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Singleton;
 
@@ -42,7 +43,7 @@ public final class ReferralModule {
     @Provides
     @Singleton
     final ReferralsManager provideReferralsManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final DefaultPreferencesManager defaultPreferencesManager
     ) {

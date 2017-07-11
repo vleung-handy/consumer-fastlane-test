@@ -49,7 +49,8 @@ import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerHelper;
 import com.squareup.okhttp.CertificatePinner;
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -105,7 +106,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final EnvironmentModifier provideEnvironmentModifier(
-            Bus bus,
+            EventBus bus,
             DefaultPreferencesManager defaultPreferencesManager
     ) {
         EnvironmentModifier environmentModifier = new EnvironmentModifier(mContext, bus,
@@ -428,7 +429,7 @@ public final class CoreTestApplicationModule {
 
     @Provides
     @Singleton
-    final Bus provideBus() {
+    final EventBus provideBus() {
         return new MainBus();
     }
 
@@ -446,7 +447,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final BookingManager provideBookingManager(
-            final Bus bus,
+            final EventBus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DataManager dataManager
     ) {
@@ -462,7 +463,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final AddressAutoCompleteManager provideAddressAutoCompleteManager(
-            final Bus bus,
+            final EventBus bus,
             final PlacesService service
     ) {
         return new AddressAutoCompleteManager(bus, service);
@@ -471,7 +472,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final BookingEditManager provideBookingEditManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager
     ) {
         return new BookingEditManager(bus, dataManager);
@@ -480,7 +481,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final UserManager provideUserManager(
-            final Bus bus,
+            final EventBus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DefaultPreferencesManager defaultPreferencesManager
     ) {
@@ -492,7 +493,7 @@ public final class CoreTestApplicationModule {
     final UserDataManager provideUserDataManager(
             final UserManager userManager,
             final DataManager dataManager,
-            final Bus bus
+            final EventBus bus
     ) {
         return new UserDataManager(userManager, dataManager, bus);
     }
@@ -501,7 +502,7 @@ public final class CoreTestApplicationModule {
     @Singleton
     final ServicesManager provideServicesManager(
             final DataManager dataManager,
-            final Bus bus,
+            final EventBus bus,
             final SecurePreferencesManager securePreferencesManager,
             final ConfigurationManager configurationManager,
             final SessionManager sessionManager
@@ -548,7 +549,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final AppBlockManager provideAppBlockManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final SecurePreferencesManager securePreferencesManager
     ) {
@@ -558,7 +559,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final StripeManager provideStripeManager(
-            final Bus bus
+            final EventBus bus
     ) {
         return new StripeManager(bus, mConfigs);
     }
@@ -566,7 +567,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final UrbanAirshipManager provideUrbanAirshipManager(
-            final Bus bus,
+            final EventBus bus,
             final UserManager userManager
     ) {
         return new UrbanAirshipManager(mContext, bus, userManager);
@@ -575,7 +576,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final ConfigurationManager provideConfigurationManager(
-            final Bus bus,
+            final EventBus bus,
             final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
     ) {
@@ -585,7 +586,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final EventLogManager provideLogEventsManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final FileManager fileManager,
             final DefaultPreferencesManager defaultPreferencesManager,
@@ -604,7 +605,7 @@ public final class CoreTestApplicationModule {
     @Provides
     @Singleton
     final ProTeamManager provideProTeamManager(
-            final Bus bus,
+            final EventBus bus,
             final HandyRetrofitService service,
             final DataManager dataManager,
             final UserManager userDataManager

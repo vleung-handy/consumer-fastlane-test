@@ -39,10 +39,11 @@ import com.handybook.handybook.push.manager.UrbanAirshipManager;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.shared.core.HandyLibrary;
 import com.squareup.leakcanary.LeakCanary;
-import com.squareup.otto.Bus;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.notifications.DefaultNotificationFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 import java.util.Properties;
@@ -76,7 +77,7 @@ public class BaseApplication extends MultiDexApplication {
     @Inject
     DataManager dataManager;
     @Inject
-    Bus bus;
+    EventBus bus;
     // We are injecting all of our event bus listening managers in BaseApplication to start them
     // up for event listening
     @Inject

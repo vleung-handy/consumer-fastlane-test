@@ -7,7 +7,8 @@ import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.library.util.PropertiesReader;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Properties;
 
@@ -23,12 +24,12 @@ public class EnvironmentModifier {
 
     private static final String DEFAULT_NAMESPACE = "s";
 
-    private final Bus mBus;
+    private final EventBus mBus;
     private final DefaultPreferencesManager mDefaultPreferencesManager;
 
     public EnvironmentModifier(
             Context context,
-            Bus bus,
+            EventBus bus,
             DefaultPreferencesManager defaultPreferencesManager
     ) {
         mBus = bus;

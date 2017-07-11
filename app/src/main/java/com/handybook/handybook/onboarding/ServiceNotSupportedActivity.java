@@ -9,7 +9,8 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.OnboardingLog;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -29,7 +30,7 @@ public class ServiceNotSupportedActivity extends BaseActivity {
     TextView mTextZip;
 
     @Inject
-    public Bus bus;
+    public EventBus bus;
 
     boolean mFromZipFragment;
 

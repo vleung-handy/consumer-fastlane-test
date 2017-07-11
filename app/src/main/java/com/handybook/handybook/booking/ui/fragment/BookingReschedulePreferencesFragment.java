@@ -19,7 +19,8 @@ import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLog;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.ui.fragment.BookingProTeamRescheduleFragment;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +64,18 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
+    }
+
+    @Override
     public View onCreateView(
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
@@ -89,13 +102,17 @@ public class BookingReschedulePreferencesFragment extends ProgressSpinnerFragmen
         }
         else {
             mProTeamListLayout.setVisibility(View.VISIBLE);
-            BookingProTeamRescheduleFragment mBookingProTeamRescheduleFragment = BookingProTeamRescheduleFragment.newInstance(
+            BookingProTeamRescheduleFragment mBookingProTeamRescheduleFragment
+                    = BookingProTeamRescheduleFragment.newInstance(
                     mProTeamCategory,
                     mBooking
             );
             getChildFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.reschedule_pro_team_list_container, mBookingProTeamRescheduleFragment)
+                    .replace(
+                            R.id.reschedule_pro_team_list_container,
+                            mBookingProTeamRescheduleFragment
+                    )
                     .commit();
         }
     }

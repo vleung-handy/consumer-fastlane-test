@@ -20,7 +20,8 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.BaseDialogFragment;
 import com.handybook.handybook.library.ui.view.SwipeableViewPager;
 import com.handybook.handybook.library.util.FragmentUtils;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -86,6 +87,18 @@ public class RateImprovementDialogFragment extends BaseDialogFragment
         args.putSerializable(BundleKeys.PRERATE_PRO_INFO, prerateProInfo);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        mBus.unregister(this);
+        super.onStop();
     }
 
     @Nullable

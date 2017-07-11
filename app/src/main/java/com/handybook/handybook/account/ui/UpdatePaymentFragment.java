@@ -33,9 +33,10 @@ import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.account.AccountLog;
-import com.squareup.otto.Subscribe;
 import com.stripe.android.model.Card;
 import com.stripe.exception.CardException;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -209,6 +210,18 @@ public class UpdatePaymentFragment extends ProgressSpinnerFragment {
 
         hideProgressSpinner();
         showToast(R.string.default_error_string);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Nullable

@@ -1,11 +1,12 @@
 package com.handybook.handybook.core.manager;
 
 import com.handybook.handybook.core.event.StripeEvent;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Token;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Properties;
 
@@ -13,11 +14,11 @@ import javax.inject.Inject;
 
 public class StripeManager {
 
-    private Bus mBus;
+    private EventBus mBus;
     private Properties mConfig;
 
     @Inject
-    public StripeManager(final Bus bus, final Properties config) {
+    public StripeManager(final EventBus bus, final Properties config) {
         mBus = bus;
         mConfig = config;
         mBus.register(this);

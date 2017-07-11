@@ -9,10 +9,11 @@ import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import com.urbanairship.UAirship;
 import com.usebutton.sdk.Button;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -22,7 +23,7 @@ import javax.inject.Inject;
 public class UserManager implements Observer {
 
     private Context mContext;
-    private Bus mBus;
+    private EventBus mBus;
     private User mUser;
     private SecurePreferencesManager mSecurePreferencesManager;
     private DefaultPreferencesManager mDefaultPreferencesManager;
@@ -30,7 +31,7 @@ public class UserManager implements Observer {
     @Inject
     UserManager(
             final Context context,
-            final Bus bus,
+            final EventBus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DefaultPreferencesManager defaultPreferencesManager
     ) {
