@@ -56,10 +56,6 @@ public class PreGameFragment extends InjectedFragment {
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.pre_game_x_button:
-                bus.post(new LogEvent.AddLogEvent(new VegasLog.PromptScreenDismissed(mVegasGame)));
-                getActivity().finish();
-                break;
             case R.id.pre_game_play_button:
                 bus.post(new LogEvent.AddLogEvent(new VegasLog.PlayNowSelected(mVegasGame)));
                 ((VegasActivity) getActivity()).continueFlow();
