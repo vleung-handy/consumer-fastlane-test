@@ -1,5 +1,6 @@
 package com.handybook.handybook.core.manager;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
@@ -115,7 +116,7 @@ public class UserDataManager {
     public void onRequestAuthFacebookUser(final HandyEvent.RequestAuthFacebookUser event) {
         final AccessToken accessToken = event.getAccessToken();
         // Request user info from FB through a GraphRequest
-        GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+        GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject user, GraphResponse response) {
                 if (response.getError() != null) {
@@ -130,7 +131,11 @@ public class UserDataManager {
                     authFacebookUser(user, accessToken, event.getReferralGuid());
                 }
             }
-        }).executeAsync();
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "first_name,last_name,email,picture.height(320)");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     public void requestAndSetCurrentUser(
