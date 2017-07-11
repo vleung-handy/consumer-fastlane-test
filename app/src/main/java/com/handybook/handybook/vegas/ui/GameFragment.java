@@ -49,7 +49,10 @@ public class GameFragment extends InjectedFragment {
     private static final String KEY_GAME_VM = "key::game_view_model";
     public static final double RATIO_TO_REVEAL = .65;
     public static final int DELAY_SHADE_DOWN_MS = 2200;
-    private static final long[] VIBRATOR_PATTERN_WIN = {0, 100, 150, 200, 150, 75, 25, 75, 25};
+    private static final long[] VIBRATOR_PATTERN_WIN = {
+            0, 100, 150, 200, 150, 75, 25, 75, 25,
+            0, 100, 150, 250, 150, 75, 25, 75, 25,
+            };
 
     @Inject
     VegasManager mVegasManager;
