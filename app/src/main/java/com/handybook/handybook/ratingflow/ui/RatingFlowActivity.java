@@ -2,7 +2,6 @@ package com.handybook.handybook.ratingflow.ui;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -108,9 +107,13 @@ public class RatingFlowActivity extends BaseActivity {
                 }
                 break;
             case REFERRAL_STEP:
+                if (shouldSkipReferralStep()) {
+                    finishStep();
+                    return;
+                }
                 fragment = RatingFlowReferralFragment.newInstance(
                         mBooking,
-                        getReferralMode(),
+                        shouldShowRecommendedProviders() ? FEEDBACK : REFERRAL,
                         mReferralDescriptor,
                         mRecommendedProviders
                 );
@@ -130,23 +133,15 @@ public class RatingFlowActivity extends BaseActivity {
         displayFragmentOrSkip(fragment);
     }
 
-    /**
-     * Determines which "mode" the RatingFlowReferralFragment should be going into.
-     * @return
-     */
-    @NonNull
-    private RatingFlowReferralFragment.Mode getReferralMode() {
+    private boolean shouldSkipReferralStep() {
         Fragment activeFragment
                 = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (activeFragment instanceof RatingFlowFeedbackFragment) {
             if (((RatingFlowFeedbackFragment) activeFragment).getActiveFragment() instanceof RatingFlowShareProFragment) {
-                //if we're currently at the step displaying RatingFlowShareProFragment,
-                //then the next step has to be to the RatingFlowReferralFragment with mode = REVIEW
-                return RatingFlowReferralFragment.Mode.REVIEW;
+                return true;
             }
         }
-
-        return shouldShowRecommendedProviders() ? FEEDBACK : REFERRAL;
+        return false;
     }
 
     private void displayFragmentOrSkip(@Nullable final Fragment fragment) {
