@@ -31,6 +31,7 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.callback.ActivitySafeCallback;
+import com.handybook.handybook.core.data.callback.Retrofit2ActivitySafeCallback;
 import com.handybook.handybook.core.manager.ServicesManager;
 import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
@@ -524,19 +525,19 @@ public class ProMessagesActivity extends MessagesListActivity {
 
 
     private static class BookingsCallback
-            extends ActivitySafeCallback<UserBookingsWrapper, ProMessagesActivity> {
+            extends Retrofit2ActivitySafeCallback<UserBookingsWrapper, ProMessagesActivity> {
 
         public BookingsCallback(ProMessagesActivity activity) {
             super(activity);
         }
 
         @Override
-        public void onCallbackSuccess(final UserBookingsWrapper response) {
+        public void onSuccess(final UserBookingsWrapper response) {
             mActivityWeakReference.get().onBookingReceived(response.getBookings());
         }
 
         @Override
-        public void onCallbackError(final DataManager.DataManagerError error) {
+        public void onError(final DataManager.DataManagerError error) {
             mActivityWeakReference.get().onBookingsRequestError();
         }
     }

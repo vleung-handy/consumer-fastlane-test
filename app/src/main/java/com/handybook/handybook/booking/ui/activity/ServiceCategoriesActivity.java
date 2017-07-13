@@ -5,16 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 
-import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.bottomnav.BottomNavActivity;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 import com.handybook.handybook.deeplink.DeepLinkParams;
 
 import javax.inject.Inject;
 
-public final class ServiceCategoriesActivity extends MenuDrawerActivity {
+public final class ServiceCategoriesActivity extends SingleFragmentActivity {
 
     @Inject
     SecurePreferencesManager mSecurePreferencesManager;
@@ -56,10 +55,5 @@ public final class ServiceCategoriesActivity extends MenuDrawerActivity {
             }
         }
         return null;
-    }
-
-    @Override
-    protected final String getNavItemTitle() {
-        return getString(R.string.home);
     }
 }

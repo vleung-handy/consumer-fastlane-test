@@ -17,6 +17,7 @@ import com.handybook.handybook.booking.ui.fragment.BookingDetailFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
+import com.handybook.handybook.core.data.callback.Retrofit2ActivitySafeCallback;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.core.ui.view.BookingListItem;
 import com.handybook.handybook.core.ui.view.SimpleDividerItemDecoration;
@@ -192,26 +193,22 @@ public class RescheduleUpcomingActivity extends BaseActivity {
     }
 
 
-    private static class BookingsCallback implements DataManager.Callback<UserBookingsWrapper> {
-
-        private final WeakReference<RescheduleUpcomingActivity> mActivity;
+    private static class BookingsCallback
+            extends Retrofit2ActivitySafeCallback<UserBookingsWrapper, RescheduleUpcomingActivity> {
 
         public BookingsCallback(RescheduleUpcomingActivity activity) {
-            mActivity = new WeakReference<>(activity);
+            super(activity);
         }
 
         @Override
         public void onSuccess(final UserBookingsWrapper response) {
-            if (mActivity.get() != null) {
-                mActivity.get().onBookingReceived(response.getBookings());
-            }
+            mActivityWeakReference.get().onBookingReceived(response.getBookings());
+
         }
 
         @Override
         public void onError(final DataManager.DataManagerError error) {
-            if (mActivity.get() != null) {
-                mActivity.get().onBookingsRequestError();
-            }
+            mActivityWeakReference.get().onBookingsRequestError();
         }
     }
 }

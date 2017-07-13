@@ -68,20 +68,24 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import retrofit.mime.TypedInput;
+import retrofit2.Call;
 
 import static com.handybook.handybook.booking.model.Booking.List.VALUE_ONLY_BOOKINGS_RESCHEDULABLE;
 
 public class DataManager {
 
     private final HandyRetrofitService mService;
+    private final HandyRetrofit2Service mService2;
     private final HandyRetrofitEndpoint mEndpoint;
 
     @Inject
     public DataManager(
             final HandyRetrofitService service,
+            final HandyRetrofit2Service service2,
             final HandyRetrofitEndpoint endpoint
     ) {
         mService = service;
+        mService2 = service2;
         mEndpoint = endpoint;
     }
 
@@ -351,21 +355,23 @@ public class DataManager {
         );
     }
 
-    public void getProviderProfile(final String providerId, final Callback<ProProfile> cb)
-    {
+    public void getProviderProfile(final String providerId, final Callback<ProProfile> cb) {
         mService.getProviderProfile(providerId, new ProProfileCallback(cb));
     }
 
-    public void getProviderReviews(final String providerId,
-                                   ProReviewsRequest proReviewsRequest,
-                                   final Callback<ProReviews> cb)
-    {
-        mService.getProviderReviews(providerId,
-                                    proReviewsRequest.getCurrentPageLastReviewId(),
-                                    proReviewsRequest.getMaxReviewsPerPage(),
-                                    proReviewsRequest.getMinRating(),
-                                    proReviewsRequest.getSortOrder(),
-                                    new ProReviewsCallback(cb));
+    public void getProviderReviews(
+            final String providerId,
+            ProReviewsRequest proReviewsRequest,
+            final Callback<ProReviews> cb
+    ) {
+        mService.getProviderReviews(
+                providerId,
+                proReviewsRequest.getCurrentPageLastReviewId(),
+                proReviewsRequest.getMaxReviewsPerPage(),
+                proReviewsRequest.getMinRating(),
+                proReviewsRequest.getSortOrder(),
+                new ProReviewsCallback(cb)
+        );
     }
 
     public void getBookingMilestones(final String bookingId, final Callback<JobStatus> cb) {
@@ -374,24 +380,19 @@ public class DataManager {
 
     public final void getBookings(
             @NonNull @Booking.List.OnlyBookingValues final String onlyBookingValue,
-            final Callback<UserBookingsWrapper> cb
+            final retrofit2.Callback<UserBookingsWrapper> callback
     ) {
-        mService.getBookings(
-                onlyBookingValue,
-                null,
-                new UserBookingsWrapperHandyRetroFitCallback(cb)
-        );
+        Call<UserBookingsWrapper> call = mService2.getBookings(onlyBookingValue, null);
+        call.enqueue(callback);
     }
 
     public final void getBookingsForReschedule(
             final String providerId,
-            final Callback<UserBookingsWrapper> cb
+            final retrofit2.Callback<UserBookingsWrapper> callback
     ) {
-        mService.getBookings(
-                VALUE_ONLY_BOOKINGS_RESCHEDULABLE,
-                providerId,
-                new UserBookingsWrapperHandyRetroFitCallback(cb)
-        );
+        Call<UserBookingsWrapper> call =
+                mService2.getBookings(VALUE_ONLY_BOOKINGS_RESCHEDULABLE, providerId);
+        call.enqueue(callback);
     }
 
     public final void getEntryMethodsInfo(
@@ -1160,7 +1161,7 @@ public class DataManager {
             return mInvalidInputs;
         }
 
-        final void setInvalidInputs(final String[] inputs) {
+        public void setInvalidInputs(final String[] inputs) {
             mInvalidInputs = inputs;
         }
 

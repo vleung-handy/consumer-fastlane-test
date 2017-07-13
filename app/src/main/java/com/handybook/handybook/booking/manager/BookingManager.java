@@ -218,14 +218,10 @@ public class BookingManager implements Observer {
     }
 
     public void requestBookings(
-            @Booking.List.OnlyBookingValues
-                    String onlyBookingsValue,
-            DataManager.Callback<UserBookingsWrapper> cb
+            @Booking.List.OnlyBookingValues String onlyBookingsValue,
+            retrofit2.Callback<UserBookingsWrapper> cb
     ) {
-        mDataManager.getBookings(
-                onlyBookingsValue,
-                cb
-        );
+        mDataManager.getBookings(onlyBookingsValue, cb);
     }
 
     @Subscribe

@@ -99,7 +99,6 @@ import com.handybook.handybook.booking.ui.fragment.RateServiceConfirmDialogFragm
 import com.handybook.handybook.booking.ui.fragment.RateServiceDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReferralDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ReportIssueFragment;
-import com.handybook.handybook.booking.ui.fragment.RescheduleDialogFragment;
 import com.handybook.handybook.booking.ui.fragment.ServiceCategoriesHomeFragment;
 import com.handybook.handybook.booking.ui.fragment.ServicesFragment;
 import com.handybook.handybook.booking.ui.fragment.TipDialogFragment;
@@ -114,7 +113,6 @@ import com.handybook.handybook.core.manager.SessionManager;
 import com.handybook.handybook.core.receiver.LayerPushReceiver;
 import com.handybook.handybook.core.ui.activity.BlockingActivity;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
 import com.handybook.handybook.core.ui.activity.OldDeeplinkSplashActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
 import com.handybook.handybook.core.ui.activity.UpdatePaymentActivity;
@@ -170,7 +168,6 @@ import dagger.Module;
                 ServiceCategoriesActivity.class,
                 ServicesActivity.class, ProfileActivity.class,
                 PeakPricingActivity.class,
-                MenuDrawerActivity.class,
                 LoginActivity.class,
                 BookingsActivity.class,
                 HistoryActivity.class,
@@ -260,7 +257,6 @@ import dagger.Module;
                 BookingSubscriptionFragment.class,
                 BookingProTeamRescheduleActivity.class,
                 BookingProTeamRescheduleFragment.class,
-                RescheduleDialogFragment.class,
                 EditContactInfoActivity.class,
                 EditPasswordActivity.class,
                 EditPlanFrequencyActivity.class,

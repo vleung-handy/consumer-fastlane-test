@@ -8,19 +8,14 @@ import com.handybook.handybook.booking.ui.fragment.UpcomingAndPastBookingsFragme
 import com.handybook.handybook.booking.ui.fragment.UpcomingBookingsFragment;
 import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 
 import javax.inject.Inject;
 
-public final class BookingsActivity extends MenuDrawerActivity {
+public final class BookingsActivity extends SingleFragmentActivity {
 
     @Inject
     ConfigurationManager mConfigurationManager;
-
-    @Override
-    protected boolean requiresUser() {
-        return true;
-    }
 
     @Override
     protected final Fragment createFragment() {
@@ -45,11 +40,6 @@ public final class BookingsActivity extends MenuDrawerActivity {
         else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    protected final String getNavItemTitle() {
-        return getString(R.string.my_bookings);
     }
 
     @Override

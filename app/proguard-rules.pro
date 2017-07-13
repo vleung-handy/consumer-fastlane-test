@@ -101,6 +101,7 @@
 -dontwarn rx.**
 -dontwarn okio.**
 -dontwarn retrofit.appengine.UrlFetchClient
+-dontwarn retrofit2.Platform$Java8
 -keepattributes Annotation
 -keep class retrofit.** { *; }
 -keepclasseswithmembers class * { @retrofit.http.* <methods>; }

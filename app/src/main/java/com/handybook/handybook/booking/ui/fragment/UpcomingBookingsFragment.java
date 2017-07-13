@@ -37,7 +37,7 @@ import com.handybook.handybook.booking.ui.view.ServiceCategoriesOverlayFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.callback.FragmentSafeCallback;
+import com.handybook.handybook.core.data.callback.Retrofit2FragmentSafeCallback;
 import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.core.ui.view.BookingListItem;
 import com.handybook.handybook.core.ui.view.NoBookingsView;
@@ -272,14 +272,15 @@ public class UpcomingBookingsFragment extends ProgressSpinnerFragment
         mBookingsRequestCompleted = false;
         bookingManager.requestBookings(
                 Booking.List.VALUE_ONLY_BOOKINGS_UPCOMING,
-                new FragmentSafeCallback<UserBookingsWrapper>(this) {
+                new Retrofit2FragmentSafeCallback<UserBookingsWrapper>(this) {
+
                     @Override
-                    public void onCallbackSuccess(final UserBookingsWrapper response) {
+                    public void onSuccess(final UserBookingsWrapper response) {
                         onReceiveBookingsSuccess(response);
                     }
 
                     @Override
-                    public void onCallbackError(final DataManager.DataManagerError error) {
+                    public void onError(final DataManager.DataManagerError error) {
                         onReceiveBookingsError(error);
                     }
                 }

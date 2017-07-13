@@ -3,7 +3,9 @@ package com.handybook.handybook.vegas.ui;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.AnimatorRes;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
@@ -45,8 +47,12 @@ public class GameFragment extends InjectedFragment {
     public static final String TAG = GameFragment.class.getName();
 
     private static final String KEY_GAME_VM = "key::game_view_model";
-    public static final double RATIO_TO_REVEAL = .70;
+    public static final double RATIO_TO_REVEAL = .65;
     public static final int DELAY_SHADE_DOWN_MS = 2200;
+    private static final long[] VIBRATOR_PATTERN_WIN = {
+            0, 100, 150, 200, 150, 75, 25, 75, 25,
+            0, 100, 150, 250, 150, 75, 25, 75, 25,
+            };
 
     @Inject
     VegasManager mVegasManager;
@@ -71,7 +77,6 @@ public class GameFragment extends InjectedFragment {
     private float mSpongeStartX;
     private float mSpongeStartY;
     private boolean mIsFirstInteraction = true;
-    private double mStartRevealRatio;
 
     @BindView(R.id.rfgf_background_image) ImageView mBackground;
     @BindView(R.id.rfgf_scroll_container) LockableScrollView mScrollView;
@@ -162,7 +167,6 @@ public class GameFragment extends InjectedFragment {
             public void onScratchStart(final float rawX, final float rawY) {
                 if (mIsFirstInteraction) {
                     bus.post(new LogEvent.AddLogEvent(new VegasLog.GamePlayStarted(mVegasGame)));
-                    mStartRevealRatio = mScratchOffView.getScratchedOffRatio(10);
                     mIsFirstInteraction = false;
                 }
                 attachSponge(rawX, rawY);
@@ -235,11 +239,6 @@ public class GameFragment extends InjectedFragment {
 
     private void detachSponge(final float rawX, final float rawY) {
         double currentScratchOffRatio = mScratchOffView.getScratchedOffRatio(10);
-        // Reveal when the actual scratched off part is larger than the requiredd ratio.
-        // The image can (and does) start with transparent sections
-        final boolean shouldReveal =
-                ((1 - mStartRevealRatio) / (currentScratchOffRatio - mStartRevealRatio)) >
-                RATIO_TO_REVEAL;
         if (currentScratchOffRatio > RATIO_TO_REVEAL) {
             revealClaim();
         }
@@ -284,6 +283,7 @@ public class GameFragment extends InjectedFragment {
         animateWinningSymbols();
         if (mVegasGame.gameInfo.isWinner) {
             blastConfetti();
+            vibrate(VIBRATOR_PATTERN_WIN);
         }
         Runnable delayedTask = new Runnable() {
             @Override
@@ -295,6 +295,14 @@ public class GameFragment extends InjectedFragment {
             }
         };
         mScratchOffView.postDelayed(delayedTask, DELAY_SHADE_DOWN_MS);
+    }
+
+    private void vibrate(final long[] pattern) {
+        Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator == null) {
+            return;
+        }
+        vibrator.vibrate(pattern, -1);
     }
 
     private void animateWinningSymbols() {
@@ -385,6 +393,7 @@ public class GameFragment extends InjectedFragment {
                                 )));
                                 removeUiBlockers();
                                 dataManagerErrorHandler.handleError(getActivity(), error);
+                                ((VegasActivity) getActivity()).continueFlow();
                             }
                         }
                 );

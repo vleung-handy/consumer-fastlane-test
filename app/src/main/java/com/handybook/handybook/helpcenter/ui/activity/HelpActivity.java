@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.google.common.base.Strings;
-import com.handybook.handybook.R;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.constant.BundleKeys;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
 
-public class HelpActivity extends MenuDrawerActivity {
+public class HelpActivity extends SingleFragmentActivity {
 
     private static final String LINK_TYPE_ARTICLES = "/articles/";
     private static final String LINK_TYPE_SECTIONS = "/sections/";
@@ -64,11 +63,6 @@ public class HelpActivity extends MenuDrawerActivity {
         else {
             return launchHelpFragmentWithOptionalArgsIfEnabled();
         }
-    }
-
-    @Override
-    protected String getNavItemTitle() {
-        return getString(R.string.help);
     }
 
     private Fragment launchHelpFragmentWithOptionalArgsIfEnabled() {

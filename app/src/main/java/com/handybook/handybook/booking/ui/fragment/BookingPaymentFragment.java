@@ -937,7 +937,7 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                                         mServicesManager.getServiceNameByServiceId(
                                                 mCurrentTransaction.getServiceId())
                                 )));
-                        if (!allowCallbacks) { return; }
+                        hideProgressSpinner();
                         mCurrentTransaction.setBookingId(trans.getId());
                         boolean isNewUser = false;
                         if (userManager.getCurrentUser() == null) {
@@ -977,7 +977,6 @@ public class BookingPaymentFragment extends BookingFlowFragment implements
                         );
                         startActivity(intent);
                         enableInputs();
-                        hideProgressSpinner();
                     }
 
                     @Override

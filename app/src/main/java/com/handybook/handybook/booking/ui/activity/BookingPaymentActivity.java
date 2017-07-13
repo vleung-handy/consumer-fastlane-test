@@ -1,31 +1,19 @@
 package com.handybook.handybook.booking.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.google.android.gms.wallet.WalletConstants;
 import com.handybook.handybook.R;
 import com.handybook.handybook.booking.ui.fragment.BookingPaymentFragment;
 import com.handybook.handybook.core.constant.ActivityResult;
-import com.handybook.handybook.core.ui.activity.MenuDrawerActivity;
+import com.handybook.handybook.core.ui.activity.SingleFragmentActivity;
 
-public final class BookingPaymentActivity extends MenuDrawerActivity {
+public final class BookingPaymentActivity extends SingleFragmentActivity {
 
     @Override
     protected final Fragment createFragment() {
         return BookingPaymentFragment.newInstance(getIntent().getExtras());
-    }
-
-    @Override
-    protected final String getNavItemTitle() {
-        return null;
-    }
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        disableDrawer = true;
     }
 
     @Override
