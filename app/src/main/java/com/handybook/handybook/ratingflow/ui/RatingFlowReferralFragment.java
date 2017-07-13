@@ -52,8 +52,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.BindInt;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -103,7 +103,7 @@ public class RatingFlowReferralFragment extends ProgressSpinnerFragment {
 
 
     enum Mode {
-        REFERRAL, FEEDBACK, REVIEW
+        REFERRAL, FEEDBACK
     }
 
     @NonNull
@@ -416,12 +416,6 @@ public class RatingFlowReferralFragment extends ProgressSpinnerFragment {
         }
 
         if (getActivity() instanceof RatingFlowActivity) {
-
-            if (mMode == Mode.REVIEW && mReviewFragment != null) {
-                //save the review
-                mReviewFragment.onSubmit();
-            }
-
             ((RatingFlowActivity) getActivity()).finishStep();
         }
     }
