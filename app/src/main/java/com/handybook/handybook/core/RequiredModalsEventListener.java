@@ -3,7 +3,8 @@ package com.handybook.handybook.core;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.promos.splash.SplashPromoEvent;
 import com.handybook.handybook.referral.event.ReferralsEvent;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 public class RequiredModalsEventListener //TODO: rename + move to better package
 {

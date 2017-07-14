@@ -20,7 +20,8 @@ import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.OnboardingLog;
 import com.handybook.handybook.onboarding.ServiceNotSupportedActivity;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 import java.util.Locale;
@@ -53,6 +54,18 @@ public class ZipFragment extends InjectedFragment {
 
     public static ZipFragment newInstance() {
         return new ZipFragment();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Nullable

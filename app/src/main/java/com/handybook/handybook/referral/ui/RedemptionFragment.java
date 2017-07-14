@@ -17,7 +17,8 @@ import com.handybook.handybook.library.util.TextUtils;
 import com.handybook.handybook.library.util.ValidationUtils;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.RedemptionDetails;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.InvalidObjectException;
 
@@ -45,6 +46,18 @@ public class RedemptionFragment extends ProgressSpinnerFragment {
             Crashlytics.logException(new InvalidObjectException("Referral GUID is null or empty."));
             navigateToHomeScreen();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Nullable

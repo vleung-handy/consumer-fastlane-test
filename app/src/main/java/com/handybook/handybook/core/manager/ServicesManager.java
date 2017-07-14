@@ -10,9 +10,9 @@ import com.handybook.handybook.booking.model.Service;
 import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,7 +31,7 @@ public class ServicesManager {
     private static final String CACHE_KEY = "servicesJson";
 
     private DataManager mDataManager;
-    private Bus mBus;
+    private EventBus mBus;
     private final SecurePreferencesManager mSecurePreferencesManager;
     private final ConfigurationManager mConfigurationManager;
     private final SessionManager mSessionManager;
@@ -39,7 +39,7 @@ public class ServicesManager {
     @Inject
     public ServicesManager(
             final DataManager dataManager,
-            final Bus bus,
+            final EventBus bus,
             final SecurePreferencesManager securePreferencesManager,
             final ConfigurationManager configurationManager,
             final SessionManager sessionManager

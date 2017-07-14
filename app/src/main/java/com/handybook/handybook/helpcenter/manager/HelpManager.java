@@ -8,8 +8,9 @@ import com.handybook.handybook.core.model.response.HelpCenterResponse;
 import com.handybook.handybook.helpcenter.model.HelpEvent;
 import com.handybook.handybook.helpcenter.model.HelpNode;
 import com.handybook.handybook.helpcenter.model.HelpNodeWrapper;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,7 @@ public class HelpManager {
     //server still expects us to send null in the request but we can cache by assuming null means root
     public static final String ROOT_NODE_ID = "root";
 
-    private final Bus bus;
+    private final EventBus bus;
     private final DataManager dataManager;
     private final UserManager userManager;
 
@@ -28,7 +29,7 @@ public class HelpManager {
 
     @Inject
     public HelpManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final UserManager userManager
     ) {

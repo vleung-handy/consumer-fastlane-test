@@ -27,8 +27,9 @@ import com.handybook.handybook.core.event.EnvironmentUpdatedEvent;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.model.response.ProAvailabilityResponse;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -40,7 +41,7 @@ public class BookingManager implements Observer {
 
     private final SecurePreferencesManager mSecurePreferencesManager;
     private final DataManager mDataManager;
-    private final Bus mBus;
+    private final EventBus mBus;
     private BookingRequest mBookingRequest;
     private BookingQuote mBookingQuote;
     private BookingTransaction mBookingTransaction;
@@ -49,7 +50,7 @@ public class BookingManager implements Observer {
 
     @Inject
     public BookingManager(
-            final Bus bus,
+            final EventBus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DataManager dataManager
     ) {

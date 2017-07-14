@@ -20,7 +20,8 @@ import com.handybook.handybook.proprofiles.ui.ProProfileActivity;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamCategoryType;
 import com.handybook.handybook.proteam.ui.activity.ProTeamEditActivity;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,7 @@ class ProTeamRecyclerViewAdapter
     /**
      * used for logging purposes only
      */
-    private Bus mBus;
+    private EventBus mBus;
 
     /**
      * creating the viewmodels from ProTeam in this class rather than passing them in from outside
@@ -48,7 +49,7 @@ class ProTeamRecyclerViewAdapter
      * @param proTeam the pro team to be used to display the recycler view
      * @param bus used for logging purposes only
      */
-    ProTeamRecyclerViewAdapter(@Nullable ProTeam proTeam, @NonNull Bus bus) {
+    ProTeamRecyclerViewAdapter(@Nullable ProTeam proTeam, @NonNull EventBus bus) {
         /*
         specific view model list ordering requirements:
         - the first item of this list is the favorite pro

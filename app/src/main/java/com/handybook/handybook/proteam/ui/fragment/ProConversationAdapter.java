@@ -18,7 +18,8 @@ import com.handybook.shared.layer.LayerHelper;
 import com.handybook.shared.layer.ui.LayerRecyclerAdapter;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +35,7 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
     private final LayerHelper mLayerHelper;
     private final View.OnClickListener mOnClickListener;
     private List<String> mChatEligibleMemberIds;
-    private Bus mBus;
+    private EventBus mBus;
     private boolean mHideConversation;
 
     /**
@@ -46,7 +47,7 @@ public class ProConversationAdapter extends LayerRecyclerAdapter<RecyclerView.Vi
             @Nullable final ProTeam.ProTeamCategory proTeamCategory,
             @NonNull final LayerHelper layerHelper,
             @NonNull final View.OnClickListener onClickListener,
-            @NonNull final Bus bus
+            @NonNull final EventBus bus
     ) {
         super(layerHelper);
         mProTeamCategory = proTeamCategory;

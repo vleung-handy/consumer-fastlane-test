@@ -50,8 +50,9 @@ import com.handybook.shared.layer.ui.AttachmentItemView;
 import com.handybook.shared.layer.ui.MessagesListActivity;
 import com.layer.sdk.messaging.Conversation;
 import com.layer.sdk.messaging.Identity;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -81,7 +82,7 @@ public class ProMessagesActivity extends MessagesListActivity {
     @Inject
     BookingManager mBookingManager;
     @Inject
-    Bus mBus;
+    EventBus mBus;
 
     private ProMessagesViewModel mProMessageViewModel;
     private User mUser;
@@ -149,7 +150,10 @@ public class ProMessagesActivity extends MessagesListActivity {
         button.setText(R.string.send);
         button.setAllCaps(false);
         button.setTypeface(button.getTypeface(), Typeface.NORMAL);
-        button.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.default_text_size));
+        button.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimension(R.dimen.default_text_size)
+        );
         //Update hint
         EditText messageEditText = (EditText) findViewById(R.id.message_edit_text);
         messageEditText.setHint(R.string.type_something);
@@ -229,9 +233,9 @@ public class ProMessagesActivity extends MessagesListActivity {
      */
     private void initCleaningService() {
         //we can safely assume that by this point, there is a valid cached services
-        Service cachedHomeCleaningService = mServiceManager.getCachedService(Booking.SERVICE_HOME_CLEANING);
-        if(cachedHomeCleaningService != null)
-        {
+        Service cachedHomeCleaningService
+                = mServiceManager.getCachedService(Booking.SERVICE_HOME_CLEANING);
+        if (cachedHomeCleaningService != null) {
             mCleaningService = cachedHomeCleaningService;
         }
     }

@@ -7,7 +7,8 @@ import com.handybook.handybook.helpcenter.manager.HelpManager;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Singleton;
 
@@ -27,7 +28,7 @@ public final class HelpModule {
     @Provides
     @Singleton
     final HelpManager provideHelpManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final UserManager userManager
     ) {
@@ -37,7 +38,7 @@ public final class HelpModule {
     @Provides
     @Singleton
     final HelpContactManager provideHelpContactManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager
     ) {
         return new HelpContactManager(bus, dataManager);

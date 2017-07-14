@@ -42,7 +42,8 @@ import com.handybook.handybook.library.util.EnvironmentUtils;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HandybookDefaultLog;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -373,7 +374,14 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     @Override
     public void onStart() {
         super.onStart();
+        bus.register(this);
         showCouponAppliedNotificationIfNecessary();
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @OnClick(R.id.fragment_service_categories_home_promo_container)

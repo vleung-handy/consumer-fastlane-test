@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 import com.handybook.handybook.R;
@@ -46,6 +47,8 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
     RatingFlowFiveStarsView mStars;
     @BindView(R.id.rating_flow_next_button)
     Button mNextButton;
+    @BindView(R.id.rating_flow_skip_button)
+    TextView mSkipCta;
 
     private Booking mBooking;
     private PrerateProInfo mPrerateProInfo;
@@ -109,6 +112,7 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
             @Override
             public void run() {
                 continueFeedbackFlow();
+
             }
         }, START_DELAY_MILLIS);
     }
@@ -157,6 +161,10 @@ public class RatingFlowFeedbackFragment extends InjectedFragment {
             if (getActivity() instanceof RatingFlowActivity) {
                 ((RatingFlowActivity) getActivity()).finishStep();
             }
+        }
+        if (mCurrentStep == Step.SHARE_PROVIDER) {
+            mNextButton.setText(R.string.complete);
+            mSkipCta.setVisibility(View.GONE);
         }
     }
 

@@ -32,9 +32,9 @@ import com.handybook.handybook.logger.handylogger.model.EventSuperProperties;
 import com.handybook.handybook.logger.handylogger.model.EventSuperPropertiesBase;
 import com.handybook.handybook.logger.handylogger.model.Session;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +59,7 @@ public class EventLogManager {
     private static final Gson GSON = new Gson();
     private static EventLogBundle sCurrentEventLogBundle;
     private final Context mContext;
-    private final Bus mBus;
+    private final EventBus mBus;
     private int mSendingLogsCount;
     private final DataManager mDataManager;
     private final FileManager mFileManager;
@@ -73,7 +73,7 @@ public class EventLogManager {
     @Inject
     public EventLogManager(
             final Context context,
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final FileManager fileManager,
             final DefaultPreferencesManager prefsManager,

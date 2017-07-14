@@ -6,12 +6,13 @@ import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class TestConfigurationManager extends ConfigurationManager {
 
     public TestConfigurationManager(
-            final Bus bus,
+            final EventBus bus,
             final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
     ) {

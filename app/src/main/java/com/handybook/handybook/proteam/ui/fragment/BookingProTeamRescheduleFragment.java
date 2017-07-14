@@ -26,7 +26,8 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingDetailsLo
 import com.handybook.handybook.proteam.manager.ProTeamManager;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -73,6 +74,18 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
+    }
+
+    @Override
     public View onCreateView(
             final LayoutInflater inflater,
             @Nullable final ViewGroup container,
@@ -88,9 +101,10 @@ public class BookingProTeamRescheduleFragment extends ProgressSpinnerFragment {
         ButterKnife.bind(this, view);
 
         //If we don't have the list of pro team then request the list
-        if(mProTeamCategory == null) {
+        if (mProTeamCategory == null) {
             showProgressSpinner();
-            FragmentSafeCallback<ProTeam.ProTeamCategory> mProTeamCallback = new FragmentSafeCallback<ProTeam.ProTeamCategory>(this) {
+            FragmentSafeCallback<ProTeam.ProTeamCategory> mProTeamCallback
+                    = new FragmentSafeCallback<ProTeam.ProTeamCategory>(this) {
                 @Override
                 public void onCallbackSuccess(final ProTeam.ProTeamCategory response) {
                     hideProgressSpinner();

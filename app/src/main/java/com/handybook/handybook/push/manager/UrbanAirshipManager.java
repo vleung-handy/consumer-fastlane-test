@@ -12,12 +12,13 @@ import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.event.UserLoggedInEvent;
 import com.handybook.handybook.push.action.PushActionConstants;
 import com.handybook.handybook.push.action.PushActionWidgets;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import com.urbanairship.AirshipConfigOptions;
 import com.urbanairship.UAirship;
 import com.urbanairship.push.notifications.DefaultNotificationFactory;
 import com.urbanairship.push.notifications.NotificationFactory;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -26,7 +27,7 @@ public class UrbanAirshipManager {
     private UserManager mUserManager;
 
     @Inject
-    public UrbanAirshipManager(Context context, Bus bus, UserManager userManager) {
+    public UrbanAirshipManager(Context context, EventBus bus, UserManager userManager) {
         mUserManager = userManager;
         if (!UAirship.isTakingOff() && !UAirship.isFlying()) {
             startUrbanAirship((Application) context.getApplicationContext());

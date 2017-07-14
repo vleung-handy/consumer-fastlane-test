@@ -35,7 +35,8 @@ import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog
 import com.handybook.handybook.logger.handylogger.model.chat.ChatLog;
 import com.handybook.handybook.proteam.ui.view.ProTeamProItemView;
 import com.handybook.handybook.proteam.viewmodel.ProTeamProViewModel;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -167,6 +168,18 @@ public final class BookingDateFragment extends BookingFlowFragment
 
             }
         };
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     public static BookingDateFragment newInstance(

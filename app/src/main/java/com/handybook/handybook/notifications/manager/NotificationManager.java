@@ -5,18 +5,19 @@ import android.support.annotation.NonNull;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.notifications.model.HandyNotification;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
 public class NotificationManager {
 
     private final DataManager mDataManager;
-    private final Bus mBus;
+    private final EventBus mBus;
 
     @Inject
-    public NotificationManager(final Bus bus, final DataManager dataManager) {
+    public NotificationManager(final EventBus bus, final DataManager dataManager) {
         this.mBus = bus;
         this.mBus.register(this);
         this.mDataManager = dataManager;

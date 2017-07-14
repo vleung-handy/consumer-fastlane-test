@@ -34,7 +34,8 @@ import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.RatingDialogLog;
 import com.handybook.handybook.proteam.model.ProviderMatchPreference;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -156,6 +157,18 @@ public class RateServiceDialogFragment extends BaseDialogFragment {
 
         rateServiceDialogFragment.setArguments(bundle);
         return rateServiceDialogFragment;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        mBus.unregister(this);
+        super.onStop();
     }
 
     @Override

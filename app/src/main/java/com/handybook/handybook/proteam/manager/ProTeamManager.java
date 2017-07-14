@@ -12,9 +12,9 @@ import com.handybook.handybook.proteam.model.BookingProTeam;
 import com.handybook.handybook.proteam.model.ProTeam;
 import com.handybook.handybook.proteam.model.ProTeamEditWrapper;
 import com.handybook.handybook.proteam.model.ProTeamWrapper;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 public class ProTeamManager {
 
     private static final String DEFAULT_USER_ID = "0";
-    private final Bus mBus;
+    private final EventBus mBus;
     private final HandyRetrofitService mService;
     private final DataManager mDataManager;
     private final UserManager mUserManager;
@@ -35,7 +35,7 @@ public class ProTeamManager {
 
     @Inject
     public ProTeamManager(
-            final Bus bus,
+            final EventBus bus,
             HandyRetrofitService service,
             DataManager dataManager,
             UserManager userManager
