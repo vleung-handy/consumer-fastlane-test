@@ -7,7 +7,7 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
  * Created by sng on 9/22/16.
  */
 
-public class AccountLog extends EventLog {
+public abstract class AccountLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "account";
 

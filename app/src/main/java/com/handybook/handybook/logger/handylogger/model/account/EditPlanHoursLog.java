@@ -3,7 +3,7 @@ package com.handybook.handybook.logger.handylogger.model.account;
 import com.google.gson.annotations.SerializedName;
 import com.handybook.handybook.logger.handylogger.model.EventLog;
 
-public class EditPlanHoursLog extends EventLog {
+public abstract class EditPlanHoursLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "plan_management";
     @SerializedName("recurring_booking_id")

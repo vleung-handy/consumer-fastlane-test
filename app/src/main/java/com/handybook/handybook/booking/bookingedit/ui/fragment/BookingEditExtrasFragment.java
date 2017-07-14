@@ -24,7 +24,8 @@ import com.handybook.handybook.core.constant.ActivityResult;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.LabelValueView;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -78,6 +79,18 @@ public final class BookingEditExtrasFragment extends ProgressSpinnerFragment {
         if (mBooking != null) {
             Crashlytics.log("Showing edit extras for booking with id " + mBooking.getId());
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -178,9 +191,10 @@ public final class BookingEditExtrasFragment extends ProgressSpinnerFragment {
 
     //TODO: clean up
     private void createOptionsView() {
-        mOptionsView = new BookingOptionsSelectView(getActivity(),
-                                                    mBookingEditExtrasViewModel.getBookingOption(),
-                                                    optionUpdated
+        mOptionsView = new BookingOptionsSelectView(
+                getActivity(),
+                mBookingEditExtrasViewModel.getBookingOption(),
+                optionUpdated
         );
 
         mOptionsView.hideTitle();

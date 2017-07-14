@@ -15,7 +15,8 @@ import com.handybook.handybook.core.ui.fragment.NotificationRecyclerViewAdapter;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.ui.view.EmptiableRecyclerView;
 import com.handybook.handybook.notifications.model.HandyNotification;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +52,18 @@ public class NotificationFeedFragment extends InjectedFragment
         args.putSerializable(ARG_NOTIFICATIONS, notifications);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override

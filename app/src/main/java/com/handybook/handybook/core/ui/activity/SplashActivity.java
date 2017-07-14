@@ -22,8 +22,9 @@ import com.handybook.handybook.onboarding.OnboardActivity;
 import com.handybook.handybook.promos.splash.SplashPromo;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralResponse;
-import com.squareup.otto.Subscribe;
 import com.usebutton.sdk.Button;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -124,7 +125,7 @@ public class SplashActivity extends BaseActivity {
         }
         //if onboarding is enabled, and we haven't collected email and zip yet, then show the onboarding page
         else if (requiresOnboardingV2(config) ||
-                !mDefaultPreferencesManager.getBoolean(PrefsKey.APP_ONBOARD_SHOWN, false)) {
+                 !mDefaultPreferencesManager.getBoolean(PrefsKey.APP_ONBOARD_SHOWN, false)) {
             startActivity(new Intent(this, OnboardActivity.class));
         }
         else {

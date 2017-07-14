@@ -118,7 +118,8 @@ import com.handybook.handybook.referral.ui.ReferralFragmentTest;
 import com.handybook.handybook.referral.ui.ReferralV2Fragment;
 import com.handybook.handybook.referral.ui.ReferralV2FragmentTest;
 import com.handybook.shared.layer.LayerHelper;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Properties;
 
@@ -324,7 +325,7 @@ public class TestApplicationModule {
     @Provides
     @Singleton
     final EventLogManager provideLogEventsManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final FileManager fileManager,
             final DefaultPreferencesManager defaultPreferencesManager,
@@ -343,7 +344,7 @@ public class TestApplicationModule {
     @Provides
     @Singleton
     final UserManager provideUserManager(
-            final Bus bus,
+            final EventBus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DefaultPreferencesManager defaultPreferencesManager
     ) {
@@ -357,8 +358,8 @@ public class TestApplicationModule {
 
     @Provides
     @Singleton
-    final Bus provideBus() {
-        return mock(Bus.class);
+    final EventBus provideBus() {
+        return mock(MainBus.class);
     }
 
     @Provides
@@ -430,7 +431,7 @@ public class TestApplicationModule {
     @Provides
     @Singleton
     final ConfigurationManager provideConfigurationManager(
-            final Bus bus,
+            final EventBus bus,
             final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
     ) {

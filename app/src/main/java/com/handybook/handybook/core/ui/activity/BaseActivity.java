@@ -55,16 +55,15 @@ import com.handybook.handybook.promos.splash.SplashPromoDialogFragment;
 import com.handybook.handybook.ratingflow.ui.RatingFlowActivity;
 import com.handybook.handybook.referral.manager.ReferralsManager;
 import com.handybook.handybook.referral.model.ReferralResponse;
-import com.squareup.otto.Bus;
 import com.yozio.android.Yozio;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static com.handybook.handybook.R.string.set;
 
 public abstract class BaseActivity extends AppCompatActivity implements RequiredModalsLauncher {
 
@@ -89,7 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     @Inject
     AppseeManager mAppseeManager;
     @Inject
-    protected Bus mBus;
+    protected EventBus mBus;
 
     private RequiredModalsEventListener mRequiredModalsEventListener;
     private OnBackPressedListener mOnBackPressedListener;
@@ -118,6 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
     // into account that it won't break existing behavior for all Activities that call
     // setSupportActionBar. Also, InjectedFragment calls activity.setSupportActionBar, and will
     // need to test those fragments also
+
     /**
      * This method will be used by those that actually have a toolbar
      *
@@ -135,7 +135,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Required
             final Toolbar toolbar,
             final String title,
             final boolean setDisplayHomeAsUp,
-            final @DrawableRes int navigationIcon) {
+            final @DrawableRes int navigationIcon
+    ) {
 
         super.setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

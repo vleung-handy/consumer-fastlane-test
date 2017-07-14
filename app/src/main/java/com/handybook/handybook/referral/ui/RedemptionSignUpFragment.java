@@ -20,7 +20,8 @@ import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.ui.view.LeftIconButton;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -111,6 +112,18 @@ public class RedemptionSignUpFragment extends ProgressSpinnerFragment {
                 mFacebookCallback
         );
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Nullable

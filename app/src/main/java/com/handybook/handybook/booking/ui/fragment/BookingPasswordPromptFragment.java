@@ -22,7 +22,8 @@ import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.core.ui.widget.PasswordInputTextView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,6 +88,18 @@ public final class BookingPasswordPromptFragment extends BookingFlowFragment
                 mPasswordText.highlight();
             }
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override

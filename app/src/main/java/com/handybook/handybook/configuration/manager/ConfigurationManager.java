@@ -12,8 +12,9 @@ import com.handybook.handybook.core.constant.PrefsKey;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.logger.handylogger.model.Session;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +22,7 @@ import javax.inject.Inject;
 
 public class ConfigurationManager {
 
-    private final Bus mBus;
+    private final EventBus mBus;
     private final DataManager mDataManager;
     private final DefaultPreferencesManager mDefaultPreferencesManager;
     private static final String KEY_CONFIGURATION_CACHE = "configuration";
@@ -31,7 +32,7 @@ public class ConfigurationManager {
 
     @Inject
     public ConfigurationManager(
-            final Bus bus,
+            final EventBus bus,
             final DefaultPreferencesManager defaultPreferencesManager,
             final DataManager dataManager
     ) {

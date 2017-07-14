@@ -10,8 +10,9 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.ActivityLifecycleEvent;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.ui.activity.BlockingActivity;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class AppBlockManager {
 
@@ -20,10 +21,10 @@ public class AppBlockManager {
     private Context appContext;
     private SecurePreferencesManager mSecurePreferencesManager;
     private DataManager dataManager;
-    private Bus bus;
+    private EventBus bus;
 
     public AppBlockManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final SecurePreferencesManager securePreferencesManager
     ) {

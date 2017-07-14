@@ -20,7 +20,8 @@ import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.library.ui.fragment.InjectedFragment;
 import com.handybook.handybook.library.util.Utils;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,18 @@ public abstract class BookingDetailSectionFragment<T extends BookingDetailSectio
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.booking = getArguments().getParcelable(BundleKeys.BOOKING);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override

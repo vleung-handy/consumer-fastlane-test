@@ -11,8 +11,9 @@ import com.handybook.handybook.core.event.ActivityLifecycleEvent;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.structures.SerializableHashSet;
 import com.handybook.handybook.library.util.DateTimeUtils;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -25,7 +26,7 @@ public class SplashPromoManager {
     private final UserManager mUserManager;
     private final DataManager mDataManager;
     private final SecurePreferencesManager mSecurePreferencesManager;
-    private final Bus mBus;
+    private final EventBus mBus;
 
     //every 30 minutes
     private static final long REQUEST_AVAILABLE_PROMO_MIN_DELAY_MS =
@@ -37,7 +38,7 @@ public class SplashPromoManager {
             final UserManager userManager,
             final DataManager dataManager,
             final SecurePreferencesManager securePreferencesManager,
-            final Bus bus
+            final EventBus bus
     ) {
         mUserManager = userManager;
         mDataManager = dataManager;

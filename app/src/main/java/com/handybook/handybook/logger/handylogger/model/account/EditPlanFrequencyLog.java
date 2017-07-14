@@ -7,7 +7,7 @@ import com.handybook.handybook.logger.handylogger.model.EventLog;
  * Created by sng on 9/22/16.
  */
 
-public class EditPlanFrequencyLog extends EventLog {
+public abstract class EditPlanFrequencyLog extends EventLog {
 
     private static final String EVENT_CONTEXT = "plan_management";
 

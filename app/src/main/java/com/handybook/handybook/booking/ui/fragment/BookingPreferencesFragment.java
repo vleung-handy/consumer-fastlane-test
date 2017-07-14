@@ -26,7 +26,8 @@ import com.handybook.handybook.core.ui.activity.BaseActivity;
 import com.handybook.handybook.library.ui.view.BasicInputTextView;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.booking.BookingFunnelLog;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -129,6 +130,18 @@ public final class BookingPreferencesFragment extends BookingFlowFragment
 
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingShareInfoShownLog()));
         bus.post(new LogEvent.AddLogEvent(new BookingFunnelLog.BookingRoutineShownLog()));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override

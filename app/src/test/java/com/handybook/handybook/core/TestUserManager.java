@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class TestUserManager extends UserManager {
 
@@ -12,7 +13,7 @@ public class TestUserManager extends UserManager {
 
     TestUserManager(
             final Context context,
-            final Bus bus,
+            final EventBus bus,
             final SecurePreferencesManager securePreferencesManager,
             final DefaultPreferencesManager defaultPreferencesManager
     ) {

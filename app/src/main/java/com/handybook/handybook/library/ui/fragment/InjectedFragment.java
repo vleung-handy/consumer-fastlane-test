@@ -20,7 +20,8 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
 import com.handybook.handybook.library.util.ValidationUtils;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
 
     //TODO: acknowledged this is not ideal
     @Inject
-    public Bus bus;
+    public EventBus bus;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -119,18 +120,6 @@ public class InjectedFragment extends android.support.v4.app.Fragment {
     public void onStop() {
         super.onStop();
         allowCallbacks = false;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        this.bus.register(this);
-    }
-
-    @Override
-    public void onPause() {
-        this.bus.unregister(this);
-        super.onPause();
     }
 
     protected void disableInputs() {}

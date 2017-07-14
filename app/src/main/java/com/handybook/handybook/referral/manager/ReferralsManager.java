@@ -7,8 +7,9 @@ import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.referral.event.ReferralsEvent;
 import com.handybook.handybook.referral.model.RedemptionDetailsResponse;
 import com.handybook.handybook.referral.model.ReferralResponse;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -19,7 +20,7 @@ public class ReferralsManager {
     }
 
 
-    private final Bus mBus;
+    private final EventBus mBus;
     private final DataManager mDataManager;
     private final DefaultPreferencesManager mDefaultPreferencesManager;
 
@@ -34,7 +35,7 @@ public class ReferralsManager {
 
     @Inject
     public ReferralsManager(
-            final Bus bus,
+            final EventBus bus,
             final DataManager dataManager,
             final DefaultPreferencesManager defaultPreferencesManager
     ) {

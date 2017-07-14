@@ -13,18 +13,19 @@ import com.handybook.handybook.booking.bookingedit.viewmodel.BookingEditHoursVie
 import com.handybook.handybook.booking.model.EntryMethodsInfo;
 import com.handybook.handybook.core.SuccessWrapper;
 import com.handybook.handybook.core.data.DataManager;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
 public class BookingEditManager {
 
     private final DataManager mDataManager;
-    private final Bus mBus;
+    private final EventBus mBus;
 
     @Inject
-    public BookingEditManager(final Bus bus, final DataManager dataManager) {
+    public BookingEditManager(final EventBus bus, final DataManager dataManager) {
         mDataManager = dataManager;
         mBus = bus;
         mBus.register(this);

@@ -16,7 +16,8 @@ import com.handybook.handybook.R;
 import com.handybook.handybook.library.util.Utils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.AppLog;
-import com.squareup.otto.Bus;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -51,7 +52,7 @@ public class PersistentPromoCoordinatorLayout extends CoordinatorLayout {
      * TODO what are better alternatives?
      */
     @Inject
-    Bus mBus;
+    EventBus mBus;
 
     /**
      * the model that was used to create the UI

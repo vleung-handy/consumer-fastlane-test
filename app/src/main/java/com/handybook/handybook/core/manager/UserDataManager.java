@@ -14,9 +14,9 @@ import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.event.HandyEvent;
 import com.handybook.handybook.core.event.UserEvent;
 import com.handybook.handybook.core.model.request.CreateUserRequest;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ public class UserDataManager {
 
     private final UserManager mUserManager;
     private final DataManager mDataManager;
-    private final Bus mBus;
+    private final EventBus mBus;
 
     private static final String KEY_FACEBOOK_ID = "id";
     private static final String KEY_FACEBOOK_EMAIL = "email";
@@ -40,7 +40,7 @@ public class UserDataManager {
     @Inject
     public UserDataManager(
             final UserManager userManager, final DataManager dataManager,
-            final Bus bus
+            final EventBus bus
     ) {
         mUserManager = userManager;
         mDataManager = dataManager;

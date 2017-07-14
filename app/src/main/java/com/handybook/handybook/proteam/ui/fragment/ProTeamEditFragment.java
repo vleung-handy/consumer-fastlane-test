@@ -39,7 +39,8 @@ import com.handybook.handybook.proteam.viewmodel.ProTeamActionPickerViewModel.Ac
 import com.handybook.handybook.referral.model.ProReferral;
 import com.handybook.handybook.referral.model.ReferralDescriptor;
 import com.handybook.handybook.referral.model.ReferralResponse;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,6 +89,18 @@ public class ProTeamEditFragment extends ProgressSpinnerFragment implements
 
     public static ProTeamEditFragment newInstance() {
         return new ProTeamEditFragment();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Override

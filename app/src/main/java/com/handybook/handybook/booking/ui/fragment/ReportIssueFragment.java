@@ -39,7 +39,8 @@ import com.handybook.handybook.proteam.ui.activity.ProMessagesActivity;
 import com.handybook.handybook.proteam.viewmodel.ProMessagesViewModel;
 import com.handybook.shared.core.HandyLibrary;
 import com.handybook.shared.layer.LayerConstants;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -136,6 +137,18 @@ public final class ReportIssueFragment extends ProgressSpinnerFragment
     public void onCreateConversationError() {
         hideProgressSpinner();
         showToast(R.string.an_error_has_occurred);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     public static ReportIssueFragment newInstance(

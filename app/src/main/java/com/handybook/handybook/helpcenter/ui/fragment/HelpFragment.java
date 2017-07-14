@@ -26,7 +26,8 @@ import com.handybook.handybook.library.ui.fragment.ProgressSpinnerFragment;
 import com.handybook.handybook.library.util.DateTimeUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
 import com.handybook.handybook.logger.handylogger.model.HelpCenterLog;
-import com.squareup.otto.Subscribe;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -75,6 +76,18 @@ public class HelpFragment extends ProgressSpinnerFragment {
         if (args != null && !args.isEmpty()) {
             mHelpCenterUrl = args.getString(BundleKeys.HELP_CENTER_URL);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        bus.unregister(this);
+        super.onStop();
     }
 
     @Nullable
@@ -187,7 +200,7 @@ public class HelpFragment extends ProgressSpinnerFragment {
                             DateTimeUtils.DAY_MONTH_DATE_FORMATTER.format(bookingStartDate));
 
                     String bookingTime = BookingUtil.getFormattedStartTime(mBooking);
-                    if(mBooking.shouldHideEndTime()) {
+                    if (mBooking.shouldHideEndTime()) {
                         mRecentBookingTimeText.setText(bookingTime);
                     }
                     else if (!Strings.isNullOrEmpty(bookingTime)) {
