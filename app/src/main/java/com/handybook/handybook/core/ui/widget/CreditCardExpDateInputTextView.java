@@ -3,12 +3,11 @@ package com.handybook.handybook.core.ui.widget;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 
 import com.crashlytics.android.Crashlytics;
 import com.handybook.handybook.library.ui.view.InputTextField;
-import com.handybook.handybook.library.util.TextUtils;
+import com.handybook.handybook.library.util.CreditCardUtils;
 import com.stripe.android.model.Card;
 
 public final class CreditCardExpDateInputTextView extends InputTextField {
@@ -52,39 +51,24 @@ public final class CreditCardExpDateInputTextView extends InputTextField {
         setText(expMonthString + "/" + expYearString);
     }
 
-    protected void init() {
-        super.init();
-
+    private void init() {
         InputFilter[] filterArray = new InputFilter[]{new InputFilter.LengthFilter(5)};
-        this.setFilters(filterArray);
+        setFilters(filterArray);
 
-        this.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(
-                    final CharSequence charSequence, final int start,
-                    final int count, final int after
-            ) {
-            }
-
-            @Override
-            public void onTextChanged(
-                    final CharSequence charSequence, final int start,
-                    final int before, final int count
-            ) {
-            }
+        addTextChangedListener(new HandyTextWatcher() {
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                CreditCardExpDateInputTextView.this.removeTextChangedListener(this);
+                super.afterTextChanged(editable);
 
-                CreditCardExpDateInputTextView.this.setText(TextUtils
-                                                                    .formatCreditCardExpDate(
-                                                                            editable.toString()));
+                if (isDeletingFromEnd()) { return; }
 
-                CreditCardExpDateInputTextView.this
-                        .setSelection(CreditCardExpDateInputTextView.this.getText().length());
+                final String date = editable.toString();
+                final String formattedDate = CreditCardUtils.formatCreditCardExpDate(date);
 
-                CreditCardExpDateInputTextView.this.addTextChangedListener(this);
+                if (!date.equals(formattedDate)) {
+                    changeText(CreditCardExpDateInputTextView.this, formattedDate);
+                }
             }
         });
     }

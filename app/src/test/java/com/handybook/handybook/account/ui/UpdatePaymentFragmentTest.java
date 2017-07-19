@@ -147,7 +147,7 @@ public class UpdatePaymentFragmentTest extends RobolectricGradleTestWrapper {
 
         mFragment.onReceiveUpdatePaymentSuccess(null);
 
-        verify(mFragment.mCreditCardIcon).setCardIcon(CreditCard.Type.VISA);
+        verify(mFragment.mCreditCardIcon).setCardIcon(CreditCard.Type.OTHER);
         assertThat(mFragment.mCreditCardText.getText().toString(), equalTo(""));
         assertThat(mFragment.mCreditCardText.getHint().toString(), equalTo("•••• 4242"));
         assertThat(mFragment.mCardExtrasLayout.getVisibility(), equalTo(View.GONE));

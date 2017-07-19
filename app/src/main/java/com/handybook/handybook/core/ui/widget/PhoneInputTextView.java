@@ -2,7 +2,6 @@ package com.handybook.handybook.core.ui.widget;
 
 import android.content.Context;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 
 import com.handybook.handybook.library.ui.view.InputTextField;
@@ -27,33 +26,19 @@ public final class PhoneInputTextView extends InputTextField {
         init();
     }
 
-    protected void init() {
-        super.init();
-        this.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(
-                    final CharSequence charSequence, final int start,
-                    final int count, final int after
-            ) {
-            }
-
-            @Override
-            public void onTextChanged(
-                    final CharSequence charSequence, final int start,
-                    final int before, final int count
-            ) {
-            }
-
+    private void init() {
+        this.addTextChangedListener(new HandyTextWatcher() {
             @Override
             public void afterTextChanged(final Editable editable) {
-                PhoneInputTextView.this.removeTextChangedListener(this);
-                PhoneInputTextView.this.setText(TextUtils.formatPhone(
-                        editable.toString(),
-                        getCountryCode()
-                ));
+                super.afterTextChanged(editable);
+                if (isDeletingFromEnd()) { return; }
 
-                PhoneInputTextView.this.setSelection(PhoneInputTextView.this.getText().length());
-                PhoneInputTextView.this.addTextChangedListener(this);
+                final String phone = editable.toString();
+                final String formattedPhone =
+                        TextUtils.formatPhone(editable.toString(), getCountryCode());
+                if (!phone.equals(formattedPhone)) {
+                    changeText(PhoneInputTextView.this, formattedPhone);
+                }
             }
         });
     }
