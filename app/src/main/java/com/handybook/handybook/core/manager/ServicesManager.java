@@ -152,8 +152,10 @@ public class ServicesManager {
                     );
 
                     //updates the cache with fresh version of services
-                    mSessionManager.putToSessionCache(CACHE_KEY, new Gson()
-                            .toJsonTree(servicesMenu).getAsJsonArray().toString());
+                    String servicesStr =
+                            new Gson().toJsonTree(servicesMenu).getAsJsonArray().toString();
+                    mSessionManager.putToSessionCache(CACHE_KEY, servicesStr);
+                    mSecurePreferencesManager.setString(PrefsKey.CACHED_SERVICES, servicesStr);
                 }
 
                 mBus.post(new BookingEvent.ReceiveServicesSuccess(
@@ -277,8 +279,7 @@ public class ServicesManager {
      * @return the cached Service model for the given service machine name
      */
     @Nullable
-    public Service getCachedService(String serviceMachineName)
-    {
+    public Service getCachedService(String serviceMachineName) {
         List<Service> cachedServices = getCachedServices();
         if (cachedServices != null) {
             for (final Service service : cachedServices) {
