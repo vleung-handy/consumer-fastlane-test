@@ -97,6 +97,7 @@ public class GameFragment extends InjectedFragment {
     @BindView(R.id.rfgf_result_symbol) GameSymbolView mSymbolClaim;
     @BindView(R.id.rfgf_banner_bottom_container) ViewGroup mBottomBannerContainer;
     @BindView(R.id.rfgf_banner_bottom_text) TextView mBottomBannerText;
+    private VegasGameFragmentBinding mBinding;
 
     public GameFragment() {
     }
@@ -123,11 +124,11 @@ public class GameFragment extends InjectedFragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        final VegasGameFragmentBinding binding = VegasGameFragmentBinding
+        mBinding = VegasGameFragmentBinding
                 .inflate(inflater, container, false);
-        final View view = binding.getRoot();
-        binding.setFragment(this);
-        binding.setGame(mVegasGame);
+        final View view = mBinding.getRoot();
+        mBinding.setFragment(this);
+        mBinding.setGame(mVegasGame);
         ButterKnife.bind(this, view);
         init();
         bus.post(new LogEvent.AddLogEvent(new VegasLog.GameScreenShown(mVegasGame)));
@@ -138,6 +139,30 @@ public class GameFragment extends InjectedFragment {
         initScratchOffView();
         initSponge();
         initSymbols();
+        initTwinkle();
+    }
+
+    private void initTwinkle() {
+        animateView(mBinding.rfgfTwinkle0, R.animator.vegas_star_twinkle);
+        mBackground.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                animateView(mBinding.rfgfTwinkle1, R.animator.vegas_star_twinkle);
+            }
+        }, 1100);
+        mBackground.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                animateView(mBinding.rfgfTwinkle2, R.animator.vegas_star_twinkle);
+            }
+        }, 2300);
+        mBackground.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                animateView(mBinding.rfgfTwinkle3, R.animator.vegas_star_twinkle);
+            }
+        }, 3300);
+
     }
 
     private void initSymbols() {
