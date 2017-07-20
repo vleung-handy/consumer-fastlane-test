@@ -35,9 +35,11 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.core.constant.PrefsKey;
+import com.handybook.handybook.core.data.DataManager.DataManagerError;
 import com.handybook.handybook.core.manager.SecurePreferencesManager;
 import com.handybook.handybook.core.ui.activity.LoginActivity;
 import com.handybook.handybook.core.ui.activity.SplashActivity;
+import com.handybook.handybook.library.ui.DataViewStateHandler;
 import com.handybook.handybook.library.util.EnvironmentUtils;
 import com.handybook.handybook.library.util.FragmentUtils;
 import com.handybook.handybook.logger.handylogger.LogEvent;
@@ -56,7 +58,8 @@ import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
 
-public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
+public final class ServiceCategoriesHomeFragment extends BookingFlowFragment implements
+        DataViewStateHandler<DataManagerError, List<Service>> {
 
     private static final String EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID";
     private static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
@@ -284,7 +287,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
     }
 
     private void loadServices() {
-        showProgressSpinner();
+        showLoadingView();
         mUsedCache = false;
         bus.post(new BookingEvent.RequestServices());
     }
@@ -314,27 +317,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         mServices = services;
         handleBundleArguments();
 
-        if (mAdapter == null) {
-            mAdapter = new ServicesCategoryHomeAdapter(getContext(), mServices);
-            mGridView.setAdapter(mAdapter);
-            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(
-                        final AdapterView<?> parent,
-                        final View view,
-                        final int position,
-                        final long id
-                ) {
-                    //Get the service and launch it
-                    launchServiceActivity(mAdapter.getItem(position), view);
-                }
-            });
-        }
-        else {
-            mAdapter.refreshData(mServices);
-        }
-
-        hideProgressSpinner();
+        showLoadedDataView(services);
     }
 
     @Subscribe
@@ -342,8 +325,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         if (!allowCallbacks || mUsedCache) {
             return;
         }
-        hideProgressSpinner();
-        dataManagerErrorHandler.handleError(getActivity(), event.error);
+        showErrorView(event.error);
     }
 
     private void showCouponAppliedNotificationIfNecessary() {
@@ -416,5 +398,40 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment {
         else {
             startBookingFlow(service.getId(), service.getUniq());
         }
+    }
+
+    @Override
+    public void showErrorView(@NonNull final DataManagerError error) {
+        hideProgressSpinner();
+        dataManagerErrorHandler.handleError(getActivity(), error);
+    }
+
+    @Override
+    public void showLoadingView() {
+        showProgressSpinner();
+    }
+
+    @Override
+    public void showLoadedDataView(final List<Service> data) {
+        if (mAdapter == null) {
+            mAdapter = new ServicesCategoryHomeAdapter(getContext(), data);
+            mGridView.setAdapter(mAdapter);
+            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(
+                        final AdapterView<?> parent,
+                        final View view,
+                        final int position,
+                        final long id
+                ) {
+                    //Get the service and launch it
+                    launchServiceActivity(mAdapter.getItem(position), view);
+                }
+            });
+        }
+        else {
+            mAdapter.refreshData(data);
+        }
+        hideProgressSpinner();
     }
 }
