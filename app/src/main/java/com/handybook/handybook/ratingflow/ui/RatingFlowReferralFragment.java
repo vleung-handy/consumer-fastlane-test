@@ -398,7 +398,7 @@ public class RatingFlowReferralFragment extends ProgressSpinnerFragment {
         }
     }
 
-    @OnClick(R.id.rating_flow_done_button)
+    @OnClick(R.id.rating_flow_complete_button)
     public void onDoneClicked() {
         bus.post(new LogEvent.AddLogEvent(new RatingFlowLog.ConfirmationSubmitted(
                          Integer.parseInt(mBooking.getId()),
