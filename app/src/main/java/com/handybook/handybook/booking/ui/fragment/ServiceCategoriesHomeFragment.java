@@ -59,7 +59,7 @@ import butterknife.OnClick;
 import static android.app.Activity.RESULT_OK;
 
 public final class ServiceCategoriesHomeFragment extends BookingFlowFragment implements
-        DataViewStateHandler<DataManagerError, List<Service>> {
+        DataViewStateHandler<DataManagerError, Void, Void> {
 
     private static final String EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID";
     private static final String EXTRA_PROMO_CODE = "EXTRA_PROMO_CODE";
@@ -287,7 +287,7 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment imp
     }
 
     private void loadServices() {
-        showLoadingView();
+        showLoadingView(null);
         mUsedCache = false;
         bus.post(new BookingEvent.RequestServices());
     }
@@ -317,7 +317,27 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment imp
         mServices = services;
         handleBundleArguments();
 
-        showLoadedDataView(services);
+        if (mAdapter == null) {
+            mAdapter = new ServicesCategoryHomeAdapter(getContext(), mServices);
+            mGridView.setAdapter(mAdapter);
+            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(
+                        final AdapterView<?> parent,
+                        final View view,
+                        final int position,
+                        final long id
+                ) {
+                    //Get the service and launch it
+                    launchServiceActivity(mAdapter.getItem(position), view);
+                }
+            });
+        }
+        else {
+            mAdapter.refreshData(mServices);
+        }
+
+        showLoadedDataView(null);
     }
 
     @Subscribe
@@ -403,35 +423,18 @@ public final class ServiceCategoriesHomeFragment extends BookingFlowFragment imp
     @Override
     public void showErrorView(@NonNull final DataManagerError error) {
         hideProgressSpinner();
+
+        //the method below performs UI actions only
         dataManagerErrorHandler.handleError(getActivity(), error);
     }
 
     @Override
-    public void showLoadingView() {
+    public void showLoadingView(final Void data) {
         showProgressSpinner();
     }
 
     @Override
-    public void showLoadedDataView(final List<Service> data) {
-        if (mAdapter == null) {
-            mAdapter = new ServicesCategoryHomeAdapter(getContext(), data);
-            mGridView.setAdapter(mAdapter);
-            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(
-                        final AdapterView<?> parent,
-                        final View view,
-                        final int position,
-                        final long id
-                ) {
-                    //Get the service and launch it
-                    launchServiceActivity(mAdapter.getItem(position), view);
-                }
-            });
-        }
-        else {
-            mAdapter.refreshData(data);
-        }
+    public void showLoadedDataView(final Void data) {
         hideProgressSpinner();
     }
 }

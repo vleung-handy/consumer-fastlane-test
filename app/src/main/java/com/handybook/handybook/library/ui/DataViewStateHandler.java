@@ -9,11 +9,11 @@ package com.handybook.handybook.library.ui;
  * - when the data is loaded and invalid, or there is an error getting it (ex. network timeout, or user input invalid)
  *
  */
-public interface DataViewStateHandler<ErrorDataClass, LoadedDataClass> {
+public interface DataViewStateHandler<ErrorDataClass, LoadingDataClass, LoadedDataClass> {
 
-    void showErrorView(ErrorDataClass errorData);
+    void showErrorView(ErrorDataClass data);
 
-    void showLoadingView();
+    void showLoadingView(LoadingDataClass data);
 
     void showLoadedDataView(LoadedDataClass data);
 }
