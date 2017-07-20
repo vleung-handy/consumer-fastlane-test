@@ -16,9 +16,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.robolectric.Robolectric;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
-import org.robolectric.util.ActivityController;
 
 import javax.inject.Inject;
 
