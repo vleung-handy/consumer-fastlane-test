@@ -26,8 +26,7 @@ public class FreezableInputTextView extends InputTextField {
         init();
     }
 
-    protected void init() {
-        super.init();
+    private void init() {
         defaultInputType = this.getInputType();
     }
 

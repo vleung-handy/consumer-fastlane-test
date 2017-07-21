@@ -29,8 +29,7 @@ public final class CreditCardCVCInputTextView extends InputTextField {
         init();
     }
 
-    protected void init() {
-        super.init();
+    private void init() {
         InputFilter[] filterArray
                 = new InputFilter[]{new InputFilter.LengthFilter(MAX_INPUT_LENGTH)};
         this.setFilters(filterArray);
