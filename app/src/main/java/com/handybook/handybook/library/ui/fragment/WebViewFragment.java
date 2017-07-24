@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 import com.handybook.handybook.R;
 import com.handybook.handybook.core.HandyWebViewClient;
@@ -18,12 +19,14 @@ import com.handybook.handybook.library.ui.view.HandyWebView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WebViewFragment extends ProgressSpinnerFragment {
+public class WebViewFragment extends InjectedFragment {
 
     @BindView(R.id.handy_web_view)
     HandyWebView mWebView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.horizontal_progress_bar)
+    ProgressBar mHorizontalProgressBar;
 
     public static WebViewFragment newInstance(@NonNull final String uri) {
         return newInstance(uri, "");
@@ -50,8 +53,7 @@ public class WebViewFragment extends ProgressSpinnerFragment {
             final ViewGroup container,
             final Bundle savedInstanceState
     ) {
-        ViewGroup view = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
-        view.addView(inflater.inflate(R.layout.fragment_web_view, container, false));
+        View view = inflater.inflate(R.layout.fragment_web_view, container, false);
 
         ButterKnife.bind(this, view);
         setupToolbar(mToolbar, getArguments().getString(BundleKeys.TITLE));
@@ -74,19 +76,19 @@ public class WebViewFragment extends ProgressSpinnerFragment {
         mWebView.setWebViewClient(new HandyWebViewClient(getActivity()) {
             @Override
             public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
-                showProgressSpinner();
+                showProgressBar();
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
-                showProgressSpinner();
+                showProgressBar();
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
             @Override
             public void onPageFinished(final WebView view, final String url) {
-                hideProgressSpinner();
+                hideProgressBar();
                 super.onPageFinished(view, url);
             }
         });
@@ -98,5 +100,13 @@ public class WebViewFragment extends ProgressSpinnerFragment {
 
     protected void loadURL(String url) {
         mWebView.loadUrl(url);
+    }
+
+    protected void showProgressBar() {
+        mHorizontalProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgressBar() {
+        mHorizontalProgressBar.setVisibility(View.GONE);
     }
 }

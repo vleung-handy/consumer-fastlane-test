@@ -101,6 +101,7 @@ import com.handybook.handybook.core.ui.fragment.ReviewAppBannerFragment;
 import com.handybook.handybook.helpcenter.ui.activity.HelpActivity;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpFragment;
 import com.handybook.handybook.helpcenter.ui.fragment.HelpWebViewFragment;
+import com.handybook.handybook.library.ui.fragment.WebViewFragment;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.logger.handylogger.EventLogManagerTest;
 import com.handybook.handybook.onboarding.OnboardV2Fragment;
@@ -231,6 +232,7 @@ import static org.mockito.Mockito.when;
         BottomNavActivity.class,
         BookingFlowFragment.class,
         ServiceCategoriesHomeFragment.class,
+        WebViewFragment.class,
 
 }, library = true)
 public class TestApplicationModule {

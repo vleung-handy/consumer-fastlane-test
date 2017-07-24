@@ -8,7 +8,7 @@
     tools:context=".core.ui.activity.WebViewActivity"
     >
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar_with_horizontal_progress"/>
 
     <com.handybook.handybook.library.ui.view.HandyWebView
         android:id="@+id/handy_web_view"
