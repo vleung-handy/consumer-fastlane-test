@@ -81,9 +81,11 @@ import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.configuration.model.Configuration;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
+import com.handybook.handybook.core.data.DynamicBaseUrlServiceProvider;
 import com.handybook.handybook.core.data.HandyRetrofit2Service;
 import com.handybook.handybook.core.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.core.data.HandyRetrofitService;
+import com.handybook.handybook.core.data.UrlResolver;
 import com.handybook.handybook.core.manager.AppBlockManager;
 import com.handybook.handybook.core.manager.AppseeManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
@@ -243,6 +245,18 @@ public class TestApplicationModule {
 
     @Provides
     @Singleton
+    final UrlResolver provideUrlResolver() {
+        return mock(UrlResolver.class);
+    }
+
+    @Provides
+    @Singleton
+    final DynamicBaseUrlServiceProvider provideRetrofit2ServiceProvider() {
+        return mock(DynamicBaseUrlServiceProvider.class);
+    }
+
+    @Provides
+    @Singleton
     final Properties providerProperties() {
         return mock(Properties.class);
     }
@@ -316,10 +330,9 @@ public class TestApplicationModule {
     @Singleton
     final DataManager provideDataManager(
             final HandyRetrofitService service,
-            final HandyRetrofit2Service service2,
-            final HandyRetrofitEndpoint endpoint
+            final DynamicBaseUrlServiceProvider dynamicBaseUrlServiceProvider
     ) {
-        return spy(new TestDataManager(service, service2, endpoint));
+        return spy(new TestDataManager(service, dynamicBaseUrlServiceProvider));
     }
 
     @Provides

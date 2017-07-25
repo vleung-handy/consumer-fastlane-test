@@ -272,7 +272,7 @@ public final class ApplicationModule {
 
     @Provides
     @Singleton
-    final DynamicBaseUrlServiceProvider provideRetrofit2Service(
+    final DynamicBaseUrlServiceProvider provideRetrofit2ServiceProvider(
             @NonNull final UrlResolver serviceUrlResolver,
             @NonNull final UserManager userManager
     ) {
