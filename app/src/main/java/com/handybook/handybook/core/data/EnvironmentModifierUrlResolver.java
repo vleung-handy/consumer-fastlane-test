@@ -17,10 +17,6 @@ public class EnvironmentModifierUrlResolver implements UrlResolver {
     private String mApiEndpointNamespace;
     private String mApiEndpointLocal;
 
-    private String mBaseUrl;
-    private String mBaseUrlNamespace;
-    private String mBaseUrlLocal;
-
     public EnvironmentModifierUrlResolver(
             @NonNull EnvironmentModifier environmentModifier,
             @NonNull Context context
@@ -34,14 +30,10 @@ public class EnvironmentModifierUrlResolver implements UrlResolver {
         mApiEndpoint = properties.getProperty("api_endpoint");
         mApiEndpointNamespace = properties.getProperty("api_endpoint_namespace");
         mApiEndpointLocal = properties.getProperty("api_endpoint_local");
-
-        mBaseUrl = properties.getProperty("base_url");
-        mBaseUrlNamespace = properties.getProperty("base_url_namespace");
-        mBaseUrlLocal = properties.getProperty("base_url_local");
     }
 
     @Override
-    public String getApiUrl() {
+    public String getUrl() {
         String apiUrl;
         if (mEnvironmentModifier.isNamespace()) {
             apiUrl = mApiEndpointNamespace.replace(
@@ -56,22 +48,5 @@ public class EnvironmentModifierUrlResolver implements UrlResolver {
             apiUrl = mApiEndpoint;
         }
         return apiUrl;
-    }
-
-    @Override
-    public final String getHostUrl() {
-        if (mEnvironmentModifier.isNamespace()) {
-            return mBaseUrlNamespace.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
-        }
-        else if (mEnvironmentModifier.isLocal()) {
-            return mBaseUrlLocal.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
-        }
-        else {
-            return mBaseUrl;
-        }
-    }
-
-    public final String getName() {
-        return mEnvironmentModifier.getEnvironment();
     }
 }

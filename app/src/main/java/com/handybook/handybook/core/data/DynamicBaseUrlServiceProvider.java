@@ -40,17 +40,17 @@ public class DynamicBaseUrlServiceProvider {
     private Retrofit mRetrofit;
     private HandyRetrofit2Service mHandyRetrofit2Service;
 
-    private UrlResolver mUrlResolver;
+    private UrlResolver mServiceUrlResolver;
 
     public DynamicBaseUrlServiceProvider(
             @NonNull Context context,
-            @NonNull UrlResolver urlResolver,
+            @NonNull UrlResolver serviceUrlResolver,
             @NonNull UserManager userManager
     ) {
 
         mContext = context;
         mUserManager = userManager;
-        mUrlResolver = urlResolver;
+        mServiceUrlResolver = serviceUrlResolver;
 
         mConfigProperties = PropertiesReader.getProperties(mContext, "config.properties");
 
@@ -62,8 +62,8 @@ public class DynamicBaseUrlServiceProvider {
         if (!mRetrofit.baseUrl()
                       .url()
                       .toString()
-                      .equalsIgnoreCase(mUrlResolver.getApiUrl())) {
-            mRetrofit = mRetrofit.newBuilder().baseUrl(mUrlResolver.getApiUrl()).build();
+                      .equalsIgnoreCase(mServiceUrlResolver.getUrl())) {
+            mRetrofit = mRetrofit.newBuilder().baseUrl(mServiceUrlResolver.getUrl()).build();
             mHandyRetrofit2Service = mRetrofit.create(HandyRetrofit2Service.class);
         }
         //else unchanged
@@ -96,7 +96,7 @@ public class DynamicBaseUrlServiceProvider {
 
         mRetrofit = new Retrofit
                 .Builder()
-                .baseUrl(mUrlResolver.getApiUrl())
+                .baseUrl(mServiceUrlResolver.getUrl())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClientBuilder.build())
                 .build();

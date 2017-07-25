@@ -1,55 +1,35 @@
 package com.handybook.handybook.core.data;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.handybook.handybook.core.EnvironmentModifier;
-import com.handybook.handybook.library.util.PropertiesReader;
-
-import java.util.Properties;
 
 import javax.inject.Inject;
 
 import retrofit.Endpoint;
 
-public class HandyRetrofitEndpoint implements Endpoint {
+public class HandyRetrofitEndpoint implements Endpoint, UrlResolver {
 
     private final EnvironmentModifier mEnvironmentModifier;
-
-    private final String mApiEndpoint;
-    private final String mApiEndpointNamespace;
-    private final String mApiEndpointLocal;
-
-    private final String mBaseUrl;
-    private final String mBaseUrlNamespace;
-    private final String mBaseUrlLocal;
+    private final UrlResolver mServiceUrlResolver;
 
     @Inject
-    public HandyRetrofitEndpoint(Context context, EnvironmentModifier environmentModifier) {
+    public HandyRetrofitEndpoint(
+            @NonNull EnvironmentModifier environmentModifier,
+            @NonNull UrlResolver serviceUrlResolver
+    ) {
         mEnvironmentModifier = environmentModifier;
-        final Properties config = PropertiesReader.getProperties(context, "config.properties");
-
-        mApiEndpoint = config.getProperty("api_endpoint");
-        mApiEndpointNamespace = config.getProperty("api_endpoint_namespace");
-        mApiEndpointLocal = config.getProperty("api_endpoint_local");
-
-        mBaseUrl = config.getProperty("base_url");
-        mBaseUrlNamespace = config.getProperty("base_url_namespace");
-        mBaseUrlLocal = config.getProperty("base_url_local");
+        mServiceUrlResolver = serviceUrlResolver;
     }
 
     @Override
     public final String getUrl() {
-        if (mEnvironmentModifier.isNamespace()) {
-            return mApiEndpointNamespace.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
-        }
-        else if (mEnvironmentModifier.isLocal()) {
-            return mApiEndpointLocal.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
-        }
-        else {
-            return mApiEndpoint;
-        }
+        return mServiceUrlResolver.getUrl();
     }
 
+    /**
+     * not sure how this is used
+     */
     @Override
     public final String getName() {
         return mEnvironmentModifier.getEnvironment();

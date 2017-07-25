@@ -119,8 +119,11 @@ public final class ApplicationModule {
 
     @Provides
     @Singleton
-    final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(EnvironmentModifier environmentModifier) {
-        return new HandyRetrofitEndpoint(mContext, environmentModifier);
+    final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(
+            @NonNull EnvironmentModifier environmentModifier,
+            @NonNull UrlResolver serviceUrlResolver
+    ) {
+        return new HandyRetrofitEndpoint(environmentModifier, serviceUrlResolver);
     }
 
     @Provides
@@ -264,12 +267,12 @@ public final class ApplicationModule {
     @Provides
     @Singleton
     final DynamicBaseUrlServiceProvider provideRetrofit2Service(
-            final UrlResolver urlResolver,
-            final UserManager userManager
+            @NonNull final UrlResolver serviceUrlResolver,
+            @NonNull final UserManager userManager
     ) {
         return new DynamicBaseUrlServiceProvider(
                 mContext,
-                urlResolver,
+                serviceUrlResolver,
                 userManager
         );
     }
