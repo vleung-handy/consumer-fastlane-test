@@ -2,7 +2,6 @@ package com.handybook.handybook.core;
 
 import android.content.Context;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
@@ -39,6 +38,7 @@ import com.handybook.handybook.core.manager.UserDataManager;
 import com.handybook.handybook.deeplink.DeepLinkIntentProvider;
 import com.handybook.handybook.helpcenter.HelpModule;
 import com.handybook.handybook.library.util.PropertiesReader;
+import com.handybook.handybook.library.util.SystemUtils;
 import com.handybook.handybook.logger.handylogger.EventLogManager;
 import com.handybook.handybook.notifications.NotificationsModule;
 import com.handybook.handybook.onboarding.OnboardingModule;
@@ -193,8 +193,14 @@ public final class ApplicationModule {
                                         String.valueOf(BuildConfig.VERSION_CODE)
                                 );
                                 request.addQueryParam("api_sub_version", "6.0");
-                                request.addQueryParam("app_device_id", getDeviceId());
-                                request.addQueryParam("app_device_model", getDeviceName());
+                                request.addQueryParam(
+                                        "app_device_id",
+                                        SystemUtils.getDeviceId(mContext)
+                                );
+                                request.addQueryParam(
+                                        "app_device_model",
+                                        SystemUtils.getDeviceModel()
+                                );
                                 request.addQueryParam("app_device_os", Build.VERSION.RELEASE);
                                 final User user = userManager.getCurrentUser();
                                 if (user != null) {
@@ -518,21 +524,5 @@ public final class ApplicationModule {
             final UserManager userDataManager
     ) {
         return new ProTeamManager(bus, service, dataManager, userDataManager);
-    }
-
-    private String getDeviceId() {
-        return Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-    }
-
-    private String getDeviceName() {
-        final String manufacturer = Build.MANUFACTURER;
-        final String model = Build.MODEL;
-
-        if (model.startsWith(manufacturer)) {
-            return model;
-        }
-        else {
-            return manufacturer + " " + model;
-        }
     }
 }

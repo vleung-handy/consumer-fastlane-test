@@ -2,7 +2,6 @@ package com.handybook.handybook.core.data;
 
 import android.content.Context;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
@@ -17,6 +16,7 @@ import com.handybook.handybook.core.BaseApplication;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.library.util.PropertiesReader;
+import com.handybook.handybook.library.util.SystemUtils;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -126,8 +126,8 @@ public class DynamicBaseUrlServiceProvider {
                         .addQueryParameter("client", "android")
                         .addQueryParameter("app_version", BuildConfig.VERSION_NAME)
                         .addQueryParameter("api_sub_version", "6.0")
-                        .addQueryParameter("app_device_id", getDeviceId())
-                        .addQueryParameter("app_device_model", getDeviceName())
+                        .addQueryParameter("app_device_id", SystemUtils.getDeviceId(mContext))
+                        .addQueryParameter("app_device_model", SystemUtils.getDeviceModel())
                         .addQueryParameter("app_device_os", Build.VERSION.RELEASE)
                         .addQueryParameter(
                                 "app_version_code",
@@ -192,23 +192,5 @@ public class DynamicBaseUrlServiceProvider {
                         new User.UserSerializer()
                 )
                 .create();
-    }
-
-    //FIXME put in utils
-    private String getDeviceId() {
-        return Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-    }
-
-    //FIXME put in utils
-    private String getDeviceName() {
-        final String manufacturer = Build.MANUFACTURER;
-        final String model = Build.MODEL;
-
-        if (model.startsWith(manufacturer)) {
-            return model;
-        }
-        else {
-            return manufacturer + " " + model;
-        }
     }
 }
