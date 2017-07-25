@@ -14,7 +14,6 @@ import com.handybook.handybook.booking.model.BookingQuote;
 import com.handybook.handybook.booking.model.BookingRequest;
 import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.core.BaseApplication;
-import com.handybook.handybook.core.EnvironmentModifier;
 import com.handybook.handybook.core.User;
 import com.handybook.handybook.core.UserManager;
 import com.handybook.handybook.library.util.PropertiesReader;
@@ -32,78 +31,46 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.handybook.handybook.library.util.DateTimeUtils.UNIVERSAL_DATE_FORMAT;
 
-/**
- * for Retrofit2 only
- */
 public class DynamicBaseUrlServiceProvider {
 
     private Context mContext;
-    private EnvironmentModifier mEnvironmentModifier;
     private UserManager mUserManager;
     private Properties mConfigProperties;
-
-    private String mApiEndpoint;
-    private String mApiEndpointNamespace;
-    private String mApiEndpointLocal;
-
-    private String mBaseUrl;
-    private String mBaseUrlNamespace;
-    private String mBaseUrlLocal;
 
     private Retrofit mRetrofit;
     private HandyRetrofit2Service mHandyRetrofit2Service;
 
+    private UrlResolver mUrlResolver;
+
     public DynamicBaseUrlServiceProvider(
             @NonNull Context context,
-            @NonNull EnvironmentModifier environmentModifier,
+            @NonNull UrlResolver urlResolver,
             @NonNull UserManager userManager
     ) {
 
         mContext = context;
         mUserManager = userManager;
-        mEnvironmentModifier = environmentModifier;
+        mUrlResolver = urlResolver;
 
         mConfigProperties = PropertiesReader.getProperties(mContext, "config.properties");
 
-        mApiEndpoint = mConfigProperties.getProperty("api_endpoint");
-        mApiEndpointNamespace = mConfigProperties.getProperty("api_endpoint_namespace");
-        mApiEndpointLocal = mConfigProperties.getProperty("api_endpoint_local");
-
-        mBaseUrl = mConfigProperties.getProperty("base_url");
-        mBaseUrlNamespace = mConfigProperties.getProperty("base_url_namespace");
-        mBaseUrlLocal = mConfigProperties.getProperty("base_url_local");
-
-        initializeRetrofit();
+        initializeRetrofitAndService();
     }
 
     @NonNull
     public HandyRetrofit2Service getService() {
-        if (!mRetrofit.baseUrl().url().toString().equalsIgnoreCase(getBaseUrl())) {
-            mRetrofit = mRetrofit.newBuilder().baseUrl(getBaseUrl()).build();
+        if (!mRetrofit.baseUrl()
+                      .url()
+                      .toString()
+                      .equalsIgnoreCase(mUrlResolver.getApiUrl())) {
+            mRetrofit = mRetrofit.newBuilder().baseUrl(mUrlResolver.getApiUrl()).build();
             mHandyRetrofit2Service = mRetrofit.create(HandyRetrofit2Service.class);
         }
         //else unchanged
         return mHandyRetrofit2Service;
     }
 
-    private String getBaseUrl() {
-        String apiUrl;
-        if (mEnvironmentModifier.isNamespace()) {
-            apiUrl = mApiEndpointNamespace.replace(
-                    "#",
-                    mEnvironmentModifier.getEnvironmentPrefix()
-            );
-        }
-        else if (mEnvironmentModifier.isLocal()) {
-            apiUrl = mApiEndpointLocal.replace("#", mEnvironmentModifier.getEnvironmentPrefix());
-        }
-        else {
-            apiUrl = mApiEndpoint;
-        }
-        return apiUrl;
-    }
-
-    private void initializeRetrofit() {
+    private void initializeRetrofitAndService() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -129,7 +96,7 @@ public class DynamicBaseUrlServiceProvider {
 
         mRetrofit = new Retrofit
                 .Builder()
-                .baseUrl(getBaseUrl())
+                .baseUrl(mUrlResolver.getApiUrl())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClientBuilder.build())
                 .build();

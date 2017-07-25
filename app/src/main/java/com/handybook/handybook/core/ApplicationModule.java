@@ -21,9 +21,11 @@ import com.handybook.handybook.configuration.manager.ConfigurationManager;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.data.DynamicBaseUrlServiceProvider;
+import com.handybook.handybook.core.data.EnvironmentModifierUrlResolver;
 import com.handybook.handybook.core.data.HandyRetrofitEndpoint;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.core.data.SecurePreferences;
+import com.handybook.handybook.core.data.UrlResolver;
 import com.handybook.handybook.core.manager.AppBlockManager;
 import com.handybook.handybook.core.manager.AppseeManager;
 import com.handybook.handybook.core.manager.DefaultPreferencesManager;
@@ -253,13 +255,21 @@ public final class ApplicationModule {
 
     @Provides
     @Singleton
+    final UrlResolver provideUrlResolver(
+            final EnvironmentModifier environmentModifier
+    ) {
+        return new EnvironmentModifierUrlResolver(environmentModifier, mContext);
+    }
+
+    @Provides
+    @Singleton
     final DynamicBaseUrlServiceProvider provideRetrofit2Service(
-            final EnvironmentModifier environmentModifier,
+            final UrlResolver urlResolver,
             final UserManager userManager
     ) {
         return new DynamicBaseUrlServiceProvider(
                 mContext,
-                environmentModifier,
+                urlResolver,
                 userManager
         );
     }
@@ -282,10 +292,9 @@ public final class ApplicationModule {
     @Singleton
     final DataManager provideDataManager(
             final HandyRetrofitService service,
-            final DynamicBaseUrlServiceProvider dynamicBaseUrlServiceProvider,
-            final HandyRetrofitEndpoint endpoint
+            final DynamicBaseUrlServiceProvider dynamicBaseUrlServiceProvider
     ) {
-        return new DataManager(service, dynamicBaseUrlServiceProvider, endpoint);
+        return new DataManager(service, dynamicBaseUrlServiceProvider);
     }
 
     @Provides

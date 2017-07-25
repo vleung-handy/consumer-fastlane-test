@@ -76,22 +76,14 @@ public class DataManager {
 
     private final HandyRetrofitService mService;
     private final DynamicBaseUrlServiceProvider mRetrofit2ServiceProvider;
-    private final HandyRetrofitEndpoint mEndpoint;
 
     @Inject
     public DataManager(
             @NonNull final HandyRetrofitService service,
-            @NonNull final DynamicBaseUrlServiceProvider retrofit2ServiceProvider,
-            @NonNull final HandyRetrofitEndpoint endpoint
+            @NonNull final DynamicBaseUrlServiceProvider retrofit2ServiceProvider
     ) {
         mService = service;
         mRetrofit2ServiceProvider = retrofit2ServiceProvider;
-        mEndpoint = endpoint;
-    }
-
-    @NonNull
-    public String getBaseUrl() {
-        return mEndpoint.getBaseUrl();
     }
 
     /**
