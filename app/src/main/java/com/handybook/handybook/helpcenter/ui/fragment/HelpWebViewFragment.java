@@ -83,7 +83,7 @@ public class HelpWebViewFragment extends WebViewFragment {
     public void onReceiveConfigurationSuccess(
             final ConfigurationEvent.ReceiveConfigurationSuccess event
     ) {
-        hideProgressSpinner();
+        hideProgressBar();
         final Configuration configuration = event.getConfiguration();
         if (configuration != null) {
             mHelpCenterUrl = configuration.getHelpCenterUrl();
@@ -95,7 +95,7 @@ public class HelpWebViewFragment extends WebViewFragment {
     public void onReceiveConfigurationError(
             final ConfigurationEvent.ReceiveConfigurationError event
     ) {
-        hideProgressSpinner();
+        hideProgressBar();
         showErrorDialog(event.error.getMessage(), new DialogCallback() {
             @Override
             public void onRetry() {
@@ -110,7 +110,7 @@ public class HelpWebViewFragment extends WebViewFragment {
     }
 
     private void requestConfiguration() {
-        showProgressSpinner(true);
+        showProgressBar();
         bus.post(new ConfigurationEvent.RequestConfiguration());
     }
 
