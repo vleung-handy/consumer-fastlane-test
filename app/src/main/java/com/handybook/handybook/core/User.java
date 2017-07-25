@@ -279,7 +279,7 @@ public class User extends Observable {
         }
     }
 
-    static ExclusionStrategy getExclusionStrategy() {
+    public static ExclusionStrategy getExclusionStrategy() {
         return new ExclusionStrategy() {
             @Override
             public boolean shouldSkipField(final FieldAttributes f) {
@@ -316,7 +316,7 @@ public class User extends Observable {
         return mHasActiveSubscription;
     }
 
-    static final class UserSerializer implements JsonSerializer<User> {
+    public static final class UserSerializer implements JsonSerializer<User> {
 
         @Override
         public final JsonElement serialize(
