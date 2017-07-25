@@ -41,7 +41,6 @@
                 android:id="@+id/options_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin_double"
                 android:background="@color/white"
                 android:orientation="vertical"
                 />
@@ -51,12 +50,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/default_margin_double"
                 android:drawableRight="@drawable/ic_down_arrow"
                 android:text="@string/booking_recurrence_show_more_options"
                 android:textColor="@color/handy_blue"
                 android:visibility="gone"
                 tools:visibility="visible"
                 />
+
+            <LinearLayout
+                android:id="@+id/fragment_booking_recurrence_coupon_banner_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_half"
+                android:layout_marginBottom="@dimen/default_margin_half"
+                android:background="@color/handy_white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                >
+
+                <TextView
+                    android:id="@+id/fragment_booking_recurrence_coupon_banner_title"
+                    style="@style/TextView.Large.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/handy_darkened_blue"
+                    tools:text="Get 30% off your first cleaning"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_booking_recurrence_coupon_banner_subtitle"
+                    style="@style/TextView.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/handy_text_gray"
+                    tools:text="when you sign up for a plan"
+                    />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/fragment_booking_recurrence_disclaimer_text"

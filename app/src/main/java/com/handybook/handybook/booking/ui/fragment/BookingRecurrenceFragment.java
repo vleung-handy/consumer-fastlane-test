@@ -43,6 +43,12 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
     View mShowMoreOptionsButton;
     @BindView(R.id.fragment_booking_recurrence_disclaimer_text)
     TextView mDisclaimerText;
+    @BindView(R.id.fragment_booking_recurrence_coupon_banner_container)
+    ViewGroup mBannerContainer;
+    @BindView(R.id.fragment_booking_recurrence_coupon_banner_title)
+    TextView mBannerTitle;
+    @BindView(R.id.fragment_booking_recurrence_coupon_banner_subtitle)
+    TextView mBannerSubtitle;
 
     public static BookingRecurrenceFragment newInstance(@Nullable final Bundle extras) {
         BookingRecurrenceFragment fragment = new BookingRecurrenceFragment();
@@ -80,12 +86,25 @@ public final class BookingRecurrenceFragment extends BookingFlowFragment {
          */
         BookingQuote.QuoteConfig quoteConfig = bookingManager.getCurrentQuote().getQuoteConfig();
         initFromQuoteConfig(quoteConfig);
-
+        initBanner();
         nextButton.setOnClickListener(nextClicked);
         mProgressBar.setVisibility(View.VISIBLE);
         mProgressBar.setIndeterminate(false);
         mProgressBar.setProgress(40);
         return view;
+    }
+
+    private void initBanner() {
+        final BookingQuote.RecurrenceBanner recurrenceBanner = bookingManager
+                .getCurrentQuote()
+                .getRecurrenceBanner();
+        if (recurrenceBanner == null) {
+            mBannerContainer.setVisibility(View.GONE);
+            return;
+        }
+        mBannerContainer.setVisibility(View.VISIBLE);
+        mBannerTitle.setText(recurrenceBanner.getTitle());
+        mBannerSubtitle.setText(recurrenceBanner.getSubtitle());
     }
 
     /**
