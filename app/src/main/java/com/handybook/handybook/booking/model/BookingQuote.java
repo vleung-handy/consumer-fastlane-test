@@ -64,6 +64,8 @@ public class BookingQuote extends Observable {
     public static final String KEY_COMMITMENT_FAQ_URL = "commitment_faq_url";
     public static final String KEY_TERMS_OF_USE = "terms_of_use";
     public static final String KEY_COMMITMENT_TOOLTIP = "commitment_tooltip_text";
+    public static final String KEY_RECURRENCE_BANNER = "recurrence_banner";
+
 
     @SerializedName(KEY_ID)
     private int mBookingId;
@@ -135,6 +137,8 @@ public class BookingQuote extends Observable {
     private UserExistsResponse mUserExistsResponse;
     @SerializedName(KEY_COMMITMENT_TOOLTIP)
     private String mCommitmentTooltip;
+    @SerializedName(KEY_RECURRENCE_BANNER)
+    private RecurrenceBanner mRecurrenceBanner;
 
     public UserExistsResponse getUserExistsResponse() {
         return mUserExistsResponse;
@@ -701,6 +705,10 @@ public class BookingQuote extends Observable {
         return getCoupon() != null && getCoupon().getWarning() != null;
     }
 
+    public RecurrenceBanner getRecurrenceBanner() {
+        return mRecurrenceBanner;
+    }
+
     public static class BookingQuoteSerializer implements JsonSerializer<BookingQuote> {
 
         @Override
@@ -741,6 +749,7 @@ public class BookingQuote extends Observable {
             );
             jsonObj.add(KEY_COMMITMENT_TOOLTIP, context.serialize(value.getCommitmentTooltip()));
             jsonObj.add(KEY_TERMS_OF_USE, context.serialize(value.getTermsOfUse()));
+            jsonObj.add(KEY_RECURRENCE_BANNER, context.serialize(value.getRecurrenceBanner()));
             return jsonObj;
         }
     }
@@ -793,6 +802,23 @@ public class BookingQuote extends Observable {
         @NonNull
         public String getDisclaimer() {
             return mDisclaimer;
+        }
+    }
+
+
+    public static class RecurrenceBanner implements Serializable {
+
+        @SerializedName("title")
+        private String mTitle;
+        @SerializedName("subtitle")
+        private String mSubtitle;
+
+        public String getTitle() {
+            return mTitle;
+        }
+
+        public String getSubtitle() {
+            return mSubtitle;
         }
     }
 }
