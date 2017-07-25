@@ -54,23 +54,30 @@ public class DynamicBaseUrlServiceProvider {
 
         mConfigProperties = PropertiesReader.getProperties(mContext, "config.properties");
 
-        initializeRetrofitAndService();
+        initializeRetrofit();
     }
 
     @NonNull
     public HandyRetrofit2Service getService() {
-        if (!mRetrofit.baseUrl()
-                      .url()
-                      .toString()
-                      .equalsIgnoreCase(mServiceUrlResolver.getUrl())) {
-            mRetrofit = mRetrofit.newBuilder().baseUrl(mServiceUrlResolver.getUrl()).build();
+        String currentServiceUrl = mRetrofit.baseUrl().url().toString();
+        String resolvedServiceUrl = mServiceUrlResolver.getUrl();
+
+        //current service url is different from the resolved service url
+        if (!currentServiceUrl.equalsIgnoreCase(resolvedServiceUrl)) {
+
+            //change the base url of Retrofit and rebuild the service
+            mRetrofit = mRetrofit.newBuilder().baseUrl(resolvedServiceUrl).build();
             mHandyRetrofit2Service = mRetrofit.create(HandyRetrofit2Service.class);
         }
-        //else unchanged
+        else if (mHandyRetrofit2Service == null) {
+            mHandyRetrofit2Service = mRetrofit.create(HandyRetrofit2Service.class);
+        }
+        //else unchanged. don't rebuild
+
         return mHandyRetrofit2Service;
     }
 
-    private void initializeRetrofitAndService() {
+    private void initializeRetrofit() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -100,7 +107,6 @@ public class DynamicBaseUrlServiceProvider {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClientBuilder.build())
                 .build();
-        mHandyRetrofit2Service = mRetrofit.create(HandyRetrofit2Service.class);
     }
 
     @NonNull
