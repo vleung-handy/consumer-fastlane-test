@@ -117,6 +117,9 @@ public final class ApplicationModule {
         return environmentModifier;
     }
 
+    /**
+     * for Retrofit 1
+     */
     @Provides
     @Singleton
     final HandyRetrofitEndpoint provideHandyRetrofitEndpoint(

@@ -8,11 +8,14 @@ import javax.inject.Inject;
 
 import retrofit.Endpoint;
 
-public class HandyRetrofitEndpoint implements Endpoint, UrlResolver {
+public class HandyRetrofitEndpoint implements Endpoint {
 
     private final EnvironmentModifier mEnvironmentModifier;
     private final UrlResolver mServiceUrlResolver;
 
+    /**
+     * @param environmentModifier this is only needed because getName() needs it which we
+     */
     @Inject
     public HandyRetrofitEndpoint(
             @NonNull EnvironmentModifier environmentModifier,

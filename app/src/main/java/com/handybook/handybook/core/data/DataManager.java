@@ -374,11 +374,8 @@ public class DataManager {
             @NonNull @Booking.List.OnlyBookingValues final String onlyBookingValue,
             final retrofit2.Callback<UserBookingsWrapper> callback
     ) {
-        Call<UserBookingsWrapper> call = mRetrofit2ServiceProvider.getService()
-                                                                  .getBookings(
-                                                                          onlyBookingValue,
-                                                                          null
-                                                                  );
+        Call<UserBookingsWrapper> call =
+                mRetrofit2ServiceProvider.getService().getBookings(onlyBookingValue, null);
         call.enqueue(callback);
     }
 
