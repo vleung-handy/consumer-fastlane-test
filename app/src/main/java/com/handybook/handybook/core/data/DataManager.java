@@ -75,23 +75,15 @@ import static com.handybook.handybook.booking.model.Booking.List.VALUE_ONLY_BOOK
 public class DataManager {
 
     private final HandyRetrofitService mService;
-    private final HandyRetrofit2Service mService2;
-    private final HandyRetrofitEndpoint mEndpoint;
+    private final DynamicBaseUrlServiceProvider mRetrofit2ServiceProvider;
 
     @Inject
     public DataManager(
-            final HandyRetrofitService service,
-            final HandyRetrofit2Service service2,
-            final HandyRetrofitEndpoint endpoint
+            @NonNull final HandyRetrofitService service,
+            @NonNull final DynamicBaseUrlServiceProvider retrofit2ServiceProvider
     ) {
         mService = service;
-        mService2 = service2;
-        mEndpoint = endpoint;
-    }
-
-    @NonNull
-    public String getBaseUrl() {
-        return mEndpoint.getBaseUrl();
+        mRetrofit2ServiceProvider = retrofit2ServiceProvider;
     }
 
     /**
@@ -382,7 +374,8 @@ public class DataManager {
             @NonNull @Booking.List.OnlyBookingValues final String onlyBookingValue,
             final retrofit2.Callback<UserBookingsWrapper> callback
     ) {
-        Call<UserBookingsWrapper> call = mService2.getBookings(onlyBookingValue, null);
+        Call<UserBookingsWrapper> call =
+                mRetrofit2ServiceProvider.getService().getBookings(onlyBookingValue, null);
         call.enqueue(callback);
     }
 
@@ -391,7 +384,11 @@ public class DataManager {
             final retrofit2.Callback<UserBookingsWrapper> callback
     ) {
         Call<UserBookingsWrapper> call =
-                mService2.getBookings(VALUE_ONLY_BOOKINGS_RESCHEDULABLE, providerId);
+                mRetrofit2ServiceProvider.getService()
+                                         .getBookings(
+                                                 VALUE_ONLY_BOOKINGS_RESCHEDULABLE,
+                                                 providerId
+                                         );
         call.enqueue(callback);
     }
 

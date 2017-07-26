@@ -10,8 +10,7 @@ import com.handybook.handybook.booking.model.BookingTransaction;
 import com.handybook.handybook.booking.model.RecurringBookingsResponse;
 import com.handybook.handybook.booking.model.ZipValidationResponse;
 import com.handybook.handybook.core.data.DataManager;
-import com.handybook.handybook.core.data.HandyRetrofit2Service;
-import com.handybook.handybook.core.data.HandyRetrofitEndpoint;
+import com.handybook.handybook.core.data.DynamicBaseUrlServiceProvider;
 import com.handybook.handybook.core.data.HandyRetrofitService;
 import com.handybook.handybook.referral.model.ReferralResponse;
 import com.handybook.handybook.testutil.ModelFactory;
@@ -20,10 +19,9 @@ public class TestDataManager extends DataManager {
 
     public TestDataManager(
             final HandyRetrofitService service,
-            final HandyRetrofit2Service service2,
-            final HandyRetrofitEndpoint endpoint
+            final DynamicBaseUrlServiceProvider dynamicBaseUrlServiceProvider
     ) {
-        super(service, service2, endpoint);
+        super(service, dynamicBaseUrlServiceProvider);
     }
 
     @Override

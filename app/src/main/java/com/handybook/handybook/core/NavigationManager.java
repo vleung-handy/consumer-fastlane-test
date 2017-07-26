@@ -18,7 +18,6 @@ import com.handybook.handybook.core.constant.BundleKeys;
 import com.handybook.handybook.core.data.DataManager;
 import com.handybook.handybook.core.data.DataManagerErrorHandler;
 import com.handybook.handybook.core.ui.activity.BaseActivity;
-import com.handybook.handybook.core.ui.widget.CTANavigationData;
 import com.handybook.handybook.library.util.PropertiesReader;
 
 import java.util.Collections;
@@ -143,64 +142,6 @@ public final class NavigationManager {
     ///////
     //Private
     ///////
-
-    ///////
-    //Web
-    ///////
-
-    private String constructWebUrlFromNavData(CTANavigationData data) {
-        String baseUrl = this.dataManager.getBaseUrl();
-        String separatorCharacter = (data.nodeContentWebUrl.contains(WEB_PARAM_TOKEN)
-                                     ? WEB_ADDITIONAL_PARAM_TOKEN
-                                     : WEB_PARAM_TOKEN);
-
-        String[] tokens = data.nodeContentWebUrl.split("#");
-        String fullUrl;
-        //user/booking targeted URLs need to be split at # to insert params like auth token
-        if (tokens.length == 2) {
-            fullUrl = (baseUrl + tokens[0] + separatorCharacter + getAuthToken(data) +
-                       WEB_PARAM_DISABLE_MOBILE_SPLASH + "#" + tokens[1]);
-        }
-        else {
-            fullUrl = (baseUrl + data.nodeContentWebUrl + separatorCharacter + getAuthToken(data) +
-                       WEB_PARAM_DISABLE_MOBILE_SPLASH);
-        }
-
-        return fullUrl;
-    }
-
-    private String getAuthToken(CTANavigationData data) {
-        String authToken = "";
-        if (data.loginToken != null && !data.loginToken.isEmpty()) {
-            authToken = WEB_AUTH_TOKEN + data.loginToken;
-        }
-        else if (userManager.getCurrentUser() != null) {
-            authToken = WEB_AUTH_TOKEN + userManager.getCurrentUser().getAuthToken();
-        }
-        return authToken;
-    }
-
-    //Open external web page
-    private void navigateToWeb(String webUrl) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl));
-        browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(browserIntent);
-    }
-
-    ///////
-    //Deeplinks
-    ///////
-
-    private String actionIdToDeepLinkId(String actionId) {
-        if (ACTION_ID_TO_DEEP_LINK_ID.containsKey(actionId)) {
-            return ACTION_ID_TO_DEEP_LINK_ID.get(actionId);
-        }
-        return "";
-    }
-
-    private Boolean validateDeepLink(String deepLinkId) {
-        return deepLinkId != null && !deepLinkId.isEmpty();
-    }
 
     private void navigateToDeepLink(String deepLinkId, Map<String, String> params) {
         //this log may be useful for debugging
