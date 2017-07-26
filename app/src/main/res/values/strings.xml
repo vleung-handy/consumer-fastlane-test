@@ -665,5 +665,6 @@
     <string name="cd.screen_background">Screen Background</string>
     <string name="vegas_cd_sponge_swipe_background">Sponge swipe background</string>
     <string name="vegas_cd_dismiss_button">Dismiss button</string>
+    <string name="membership_fragment_title">Membership</string>
 </resources>
 

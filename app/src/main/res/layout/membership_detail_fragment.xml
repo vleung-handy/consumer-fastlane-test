@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="membership"
+            type="com.handybook.handybook.account.model.Membership"
+            />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/mdf_appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            >
+
+            <include layout="@layout/toolbar"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <TextView
+                    android:id="@+id/mdf_membership_section_title"
+                    style="@style/TextView.Medium.Grey"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="MEMBERSHIP"
+                    />
+
+                <TextView
+                    android:id="@+id/mdf_membership_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mdf_membership_section_title"
+                    tools:text="Monthly Unlimited"
+                    />
+
+                <TextView
+                    android:id="@+id/mdf_membership_price"
+                    style="@style/TextView.Medium.Grey"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mdf_membership_title"
+                    app:layout_constraintLeft_toRightOf="@+id/mdf_membership_title"
+                    app:layout_constraintRight_toRightOf="parent"
+
+                    tools:text="$10/mo."
+                    />
+
+                <TextView
+
+                    android:id="@+id/mdf_renewal_info"
+                    style="@style/TextView.Medium.Grey"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintHorizontal_bias="0.504"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mdf_membership_title"
+                    tools:text="Renews on7/28/17"
+                    />
+
+                <TextView
+                    android:id="@+id/mdf_membership_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mdf_renewal_info"
+                    tools:text="Unlimited one-time cleanings\nAll cleaning cost $25/hours"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/mdf_autoscheduled_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mdf_membership_description"
+                    >
+
+                    <TextView
+                        style="@style/TextView.Medium.Grey"
+                        android:layout_width="344dp"
+                        android:layout_height="wrap_content"
+                        tools:layout_editor_absoluteX="8dp"
+                        tools:layout_editor_absoluteY="81dp"
+                        tools:text="AUTO-SCHEDULED CLEANINGS"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/mdf_autoscheduled_template"
+                        android:layout_width="344dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/default_padding_half"
+                        android:paddingTop="@dimen/default_padding_half"
+                        tools:layout_editor_absoluteX="8dp"
+                        tools:layout_editor_absoluteY="81dp"
+                        >
+
+                        <TextView
+                            android:id="@+id/mdf_autocheduled_template_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            tools:text="Every 2 weeks, 3 hours"
+                            />
+
+                        <TextView
+                            android:id="@+id/mdf_autoscheduled_template_cta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/handy_darkened_blue"
+                            android:textSize="@dimen/text_size_medium"
+                            tools:text="Edit"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mdf_cancel_membership_ctq"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="0dp"
+                    tools:text="Cancel Membership"
+                    app:layout_constraintTop_toBottomOf="@+id/mdf_autoscheduled_container"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="16dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
