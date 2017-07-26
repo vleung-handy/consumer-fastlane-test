@@ -31,7 +31,6 @@ public final class PhoneInputTextView extends InputTextField {
             @Override
             public void afterTextChanged(final Editable editable) {
                 super.afterTextChanged(editable);
-                if (isDeletingFromEnd()) { return; }
 
                 final String phone = editable.toString();
                 final String formattedPhone =
