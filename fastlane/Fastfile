@@ -289,8 +289,6 @@ end
 
 # Build the prod APK and uploads it to Github and Fabric
 private_lane :build_and_upload_release_assets do
-  ensure_required_env_variables_present
-
   gradle(task: "clean")
   gradle(task: "assembleProdRelease")
 
@@ -304,8 +302,8 @@ private_lane :build_and_upload_release_assets do
     content_type: "text"
   )
 
-  beta(skip_build: true)
-  playstore(skip_build: true)
+  #beta(skip_build: true)
+  #playstore(skip_build: true)
 end
 
 # helper methods
