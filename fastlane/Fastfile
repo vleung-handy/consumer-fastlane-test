@@ -7,21 +7,22 @@ default_platform :android
 
 before_all do
   ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
-  ENV["GITHUB_API_URL"] = "https://api.github.com/repos/handybook/android-consumer"
-  ENV["GITHUB_URL"] = "https://github.com/handybook/android-consumer"
+  ENV["GITHUB_API_URL"] = "https://api.github.com/repos/vleung-handy/consumer-fastlane-test"
+  ENV["GITHUB_URL"] = "https://github.com/handybook/vleung-handy/consumer-fastlane-test"
+  ENV["APP_BUILD_OUTPUT_DIR"] = Dir.pwd + '/../app/build/outputs'
+  ENV["APK_DIR"] = "#{ENV['APP_BUILD_OUTPUT_DIR']}/apk"
 end
 
-lane :release do
-  ensure_git_branch_release_candidate
-  ensure_git_branch_clean_and_latest
-
-  gradle(task: "clean")
-  gradle(task: "assembleProdRelease")
-
-  beta(skip_build: true)
-  playstore(skip_build: true)
-
-  # TODO: Upload assets to Github
+desc "options: type:<patch|new>"
+lane :release do |options|
+  type = options[:type]
+  if type == "patch"
+    release_patch
+  elsif type == "new"
+    release_new
+  else
+    exit_with_error(error_message: 'Missing or invalid release type. Options: type:<patch|new>')
+  end
 end
 
 lane :beta do |options|
@@ -79,18 +80,7 @@ lane :applause do |options|
   # Remove namespace override
   sh("cd ..; ./scripts/kill-override")
 
-  apk_dir = '../app/build/outputs/apk'
-  apk_name = Dir.entries(apk_dir).select{ |entry| entry.start_with?('handy-stage-release') }.first
-  unless apk_name
-    exit_with_error(error_message: "APK not found")
-  end
-  tag_name = "v#{get_current_version}"
-  upload_asset_github(
-    tag:          tag_name,
-    path:         "#{apk_dir}/#{apk_name}",
-    name:         "#{namespace}-#{apk_name}",
-    content_type: "application/vnd.android.package-archive"
-  )
+  upload_apk_to_current_github_release(apk_file_name_pattern: 'handy-stage-release*')
 
   slack(
     message: "New Applause Android build uploaded to Github! #{ENV["GITHUB_URL"]}/releases/tag/#{tag_name}",
@@ -228,6 +218,30 @@ private_lane :upload_asset_github do |options|
   UI.success("Upload success!")
 end
 
+private_lane :upload_asset_to_current_github_release do |options|
+  options[:tag] = "v#{get_current_version}"
+  upload_asset_github(options)
+end
+
+private_lane :upload_apk_to_current_github_release do |options|
+  apk_file_name_pattern = options[:apk_file_name_pattern]
+  unless apk_file_name_pattern
+    exit_with_error(error_message: "Must specify apk_file_name_pattern (ex. 'handy-pro*')")
+  end
+  apk_dir = ENV["APK_DIR"]
+
+  apk_file_name = get_apk_file_name_by_pattern(apk_file_name_pattern)
+  unless apk_file_name
+    exit_with_error(error_message: "APK with pattern #{apk_file_name_pattern} not found in #{apk_dir}")
+  end
+
+  upload_asset_to_current_github_release(
+    path:         "#{apk_dir}/#{apk_file_name}",
+    name:         "#{apk_file_name}",
+    content_type: "application/vnd.android.package-archive"
+  )
+end
+
 private_lane :get_current_version do
   sh('cat ../app/build.gradle | sed -n -E "s/^.*\versionName[[:space:]]+\'(.*)\'.*$/\1/p"').strip
 end
@@ -251,4 +265,52 @@ end
 private_lane :exit_with_error do |options|
   UI.error(options[:error_message])
   exit
+end
+
+# from develop, creates an RC branch, does everything in release_patch, switches back to the develop branch, and bumps up the minor version
+private_lane :release_new do |options|
+  ensure_git_branch(branch: 'develop')
+  ensure_git_branch_clean_and_latest
+  release_candidate
+  release_patch
+  sh('git checkout develop')
+  ensure_git_branch(branch: 'develop') #just in case above fails for some reason
+  ensure_git_branch_clean_and_latest
+  version_bump(type:"minor")
+end
+
+# from an RC branch, bumps up the patch version, and builds and uploads the prod apk + mapping file to Github and Fabric beta
+private_lane :release_patch do
+  ensure_git_branch_release_candidate
+  ensure_git_branch_clean_and_latest
+  version_bump(type:"patch")
+  build_and_upload_release_assets
+end
+
+# Build the prod APK and uploads it to Github and Fabric
+private_lane :build_and_upload_release_assets do
+  ensure_required_env_variables_present
+
+  gradle(task: "clean")
+  gradle(task: "assembleProdRelease")
+
+  #upload apk and mapping file to github
+  apk_file_name = get_apk_file_name_by_pattern('handy-prod-release*')
+  apk_file_base_name = File.basename(apk_file_name, File.extname(apk_file_name))
+  upload_apk_to_current_github_release(apk_file_name_pattern: apk_file_name)
+  upload_asset_to_current_github_release(
+    path: "#{ENV['APP_BUILD_OUTPUT_DIR']}/mapping/prod/release/mapping.txt",
+    name: "#{apk_file_base_name}-mapping.txt",
+    content_type: "text"
+  )
+
+  beta(skip_build: true)
+  playstore(skip_build: true)
+end
+
+# helper methods
+
+def get_apk_file_name_by_pattern(apk_file_name_pattern)
+  apk_dir = ENV["APK_DIR"]
+  return Dir.entries(apk_dir).select{ |entry| /#{apk_file_name_pattern}/.match(entry) }.first
 end
